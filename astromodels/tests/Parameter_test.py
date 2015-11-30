@@ -2,7 +2,7 @@ __author__ = 'giacomov'
 
 import unittest
 
-from astromodels.Parameter import Parameter, SettingOutOfBounds
+from astromodels.parameter import Parameter, SettingOutOfBounds
 
 
 def suite():
