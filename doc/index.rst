@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-.. automodule:: Parameter
+.. automodule:: parameter
 
 .. autoclass:: Parameter
      :members:
@@ -20,7 +20,8 @@ Contents:
                        get_delta, set_delta,
                        get_min_value, set_min_value,
                        get_max_value, set_max_value,
-                       get_prior, set_prior 
+                       get_prior, set_prior,
+                       get_name
 
 
 
