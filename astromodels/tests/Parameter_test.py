@@ -2,7 +2,7 @@ __author__ = 'giacomov'
 
 import unittest
 
-from astromodels.parameter import Parameter, SettingOutOfBounds
+from astromodels.parameter import Parameter, SettingOutOfBounds, AuxiliaryVariable
 
 
 def suite():
@@ -137,3 +137,24 @@ class ParameterTestCase(unittest.TestCase):
         # Check that the name of the parameter is read-only
         with self.assertRaises(AttributeError):
             p.name = "new name"
+
+    def test_auxiliary_variable(self):
+
+        p = Parameter("test",1.0)
+
+        t = AuxiliaryVariable("time",0.0)
+
+        law = lambda x: 3.2 * x + 5.6
+
+        p.add_auxiliary_variable(t,law)
+
+        self.assertEqual(p._auxVariable['law'],law)
+        self.assertEqual(p._auxVariable['variable'],t)
+
+        #Test the values
+        self.assertEqual(p.value,5.6)
+
+        #Test link
+        t.value = 10.0
+
+        self.assertEqual(p.value,law(t.value))

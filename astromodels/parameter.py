@@ -27,15 +27,18 @@ def _behaves_like_a_number(obj):
         return True
 
 
-# Read-only exception
+# Exception for when a parameter is out of its bounds
 class SettingOutOfBounds(exceptions.Exception):
     pass
 
+# Exception for when an object should be callable but it isn't
+class NotCallableOrErrorInCall(exceptions.Exception):
+    pass
 
 class Parameter(object):
     """
 
-    Implements a numerical parameter.
+    Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).
 
     :param name: Name for the parameter
     :param initial_value: Initial value
@@ -43,46 +46,50 @@ class Parameter(object):
     :keyword max: maximum allowed value for the parameter (default: None)
     :keyword delta: initial step used by some fitting engines (default: 0.1 * value)
 
-    Examples
-    --------
+    =============
+    Description
+    =============
 
     Create a parameter with::
 
-    > p = Parameter("param1",1.0)
+      > p = Parameter("param1",1.0)
 
     This will create a parameter called "param1" with initial value 1.0 and no boundaries. It will also have a
     default delta of 10% the value, in this case 0.1 * 1 = 0.1.
 
     You can use optional keywords to define the boundaries of the parameter as well as its delta::
 
-    > p = Parameter("param1",1.0, min = -10.0, max = 35, delta = 3)
+      > p = Parameter("param1",1.0, min = -10.0, max = 35, delta = 3)
 
     This will create a parameter bounded between -10.0 and 35, with initial delta = 3.
 
     You can set the current value of the parameter as::
 
-    > p.value = 2.5
+      > p.value = 2.5
 
     or get its current value as::
 
-    > current_value = p.value
+      > current_value = p.value
 
     You can set its boundaries with::
 
-    > p.set_bounds(-10, 35)
+      > p.set_bounds(-10, 35)
 
     A value of None for either the minimum or the maximum will remove the boundary in that direction.
 
     You can get the current boundaries as::
 
-    > min_value, max_value = p.get_bounds()
-
-
+      > min_value, max_value = p.get_bounds()
 
     You can set or get the value for delta as::
 
-    > p.delta = 0.3
-    > current_delta = p.delta
+      > p.delta = 0.3
+      > current_delta = p.delta
+
+
+    ==========
+    Callbacks
+    ==========
 
     The Parameter class provides also a functionality to set callbacks which are called whenever the value of the
     parameter changes. This can be used for tracing purposes or other things. This code for example sets a simple
@@ -116,6 +123,62 @@ class Parameter(object):
 
     More than one callback can be registered. The callbacks will be executed in the order they are entered. To clear all
     callbacks use the method empty_callbacks().
+
+    .. _parameter_auxvar:
+    ===================
+    Auxiliary variable
+    ===================
+
+    Sometimes it is useful to specify the parameter as a function of another variable ("auxiliary variable"). For
+    example, we want the parameter to vary with time according to a linear law. This can be done as follows.
+
+    First define the auxiliary variable "time" starting at 0, and a linear law 3.2 t + 5.6:
+
+      > t = AuxiliaryVariable("time",0.0)
+      > law = lambda x: 3.2 * x + 5.6
+
+    For example, in t=0 our law evaluate to:
+
+      > print( law(t.value) )
+      5.6
+
+    Now we link the value of the parameter p to the law we just created::
+
+      > p = Parameter("test",1.0)
+      > p.add_auxiliary_variable(t,law)
+
+    Since t is still at 0, we can immediately see that the value of the parameter is now law(0) = 3.2 * 0 + 5.6 = 5.6::
+
+      > p.value
+      5.6
+
+    Note hence that the init values we gave during the constructor looses its meaning in this case, by design.
+
+    If we now change the value of t, the value of the parameter will change automatically according to the law::
+
+      > t.value = 10.0
+      > p.value
+      37.6
+
+    This becomes even more powerful when the law contains parameters itself::
+
+      > a = Parameter("a",3.2)
+      > b = Parameter("b",5.6)
+      > law = lambda x: a.value * x + b.value
+      > p.add_auxiliary_variable(t,law)
+
+    If we now change the value of one of the parameters, we see the parameter p changing accordingly:
+      > t.value = 10.0
+      > print(p.value)
+      5.6
+      > a.value = 1.23
+      > print(p.value)
+      17.9
+      > b.value = -2.12
+      > print(p.value)
+      10.18
+
+
     """
 
     def __init__(self, name, initial_value, **kwargs):
@@ -169,6 +232,10 @@ class Parameter(object):
         # pre-defined prior is no prior
         self._prior = None
 
+        # by default we have no auxiliary variable
+
+        self._auxVariable = {}
+
         # Now perform a very lazy check that we can perform math operations on all members
 
         if not _behaves_like_a_number(self._value):
@@ -198,6 +265,15 @@ class Parameter(object):
 
     def get_value(self):
         """Return current parameter value"""
+
+        # If this parameter has a law of variation, use it to compute the current value
+
+        # (remember: an empty dictionary test as False, a non-empty as true)
+
+        if self._auxVariable:
+
+            self.value = self._auxVariable['law'](self._auxVariable['variable'].value)
+
         return self._value
 
     def set_value(self, value):
@@ -223,7 +299,7 @@ class Parameter(object):
 
             except:
 
-                raise RuntimeError("Could not get callback for parameter %s with value %s" % (self.name, value))
+                raise NotCallableOrErrorInCall("Could not get callback for parameter %s with value %s" % (self.name, value))
 
         self._value = value
 
@@ -340,7 +416,7 @@ class Parameter(object):
 
         except:
 
-            raise RuntimeError("Could not call the provided prior. " +
+            raise NotCallableOrErrorInCall("Could not call the provided prior. " +
                                "Is it a function accepting the current value of the parameter?")
 
         self._prior = prior
@@ -349,3 +425,33 @@ class Parameter(object):
                      doc="Gets or sets the current prior for this parameter. The prior must be a callable function " +
                          "accepting the current value of the parameter as input and returning the probability " +
                          "density as output")
+
+    def add_auxiliary_variable(self, variable, law):
+
+        assert isinstance(variable, AuxiliaryVariable)
+
+        #Test the law
+        try:
+
+            this_value = law(variable.value)
+
+        except:
+
+            raise NotCallableOrErrorInCall("The provided law for the auxiliary variable failed on call")
+
+
+        self._auxVariable['law'] = law
+        self._auxVariable['variable'] = variable
+
+        # Set the value of the parameter to the current value of the law
+
+        self.value = this_value
+
+class AuxiliaryVariable(Parameter):
+    """
+    A variable which can be used to express a parameter as a function of it. This is at the moment essentially another
+    name of the :Parameter: class, used for clarity to differentiate between a parameter and a variable. See the
+    documentation of the :Parameter: class (section :ref:`parameter_auxvar`) for an example of use.
+    """
+
+    pass
