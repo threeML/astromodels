@@ -1,8 +1,5 @@
 __author__ = 'giacomov'
 
-import warnings
-import exceptions
-
 """
 =============
 Description
@@ -136,6 +133,11 @@ If we now change the value of one of the parameters, we see the parameter p chan
   > print(p.value)
   10.18
 """
+
+
+import warnings
+import exceptions
+
 
 def _behaves_like_a_number(obj):
     """
