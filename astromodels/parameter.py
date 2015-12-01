@@ -123,6 +123,7 @@ This becomes even more powerful when the law contains parameters itself::
   > p.add_auxiliary_variable(t,law)
 
 If we now change the value of one of the parameters, we see the parameter p changing accordingly::
+
   > t.value = 10.0
   > print(p.value)
   5.6
@@ -132,6 +133,7 @@ If we now change the value of one of the parameters, we see the parameter p chan
   > b.value = -2.12
   > print(p.value)
   10.18
+  
 """
 
 
