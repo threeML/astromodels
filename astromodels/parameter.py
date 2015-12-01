@@ -1,6 +1,6 @@
 __author__ = 'giacomov'
 
-"""
+__doc__ = """
 =============
 Description
 =============
