@@ -3,6 +3,139 @@ __author__ = 'giacomov'
 import warnings
 import exceptions
 
+"""
+=============
+Description
+=============
+
+Create a parameter with::
+
+  > p = Parameter("param1",1.0)
+
+This will create a parameter called "param1" with initial value 1.0 and no boundaries. It will also have a
+default delta of 10% the value, in this case 0.1 * 1 = 0.1.
+
+You can use optional keywords to define the boundaries of the parameter as well as its delta::
+
+  > p = Parameter("param1",1.0, min = -10.0, max = 35, delta = 3)
+
+This will create a parameter bounded between -10.0 and 35, with initial delta = 3.
+
+You can set the current value of the parameter as::
+
+  > p.value = 2.5
+
+or get its current value as::
+
+  > current_value = p.value
+
+You can set its boundaries with::
+
+  > p.set_bounds(-10, 35)
+
+A value of None for either the minimum or the maximum will remove the boundary in that direction.
+
+You can get the current boundaries as::
+
+  > min_value, max_value = p.get_bounds()
+
+You can set or get the value for delta as::
+
+  > p.delta = 0.3
+  > current_delta = p.delta
+
+
+==========
+Callbacks
+==========
+
+The Parameter class provides also a functionality to set callbacks which are called whenever the value of the
+parameter changes. This can be used for tracing purposes or other things. This code for example sets a simple
+callback which just prints the value of the parameter any time it is changed::
+
+  > def callback( value ):
+        print("The parameter changed value. It is now %s" % value )
+  > p.add_callback( callback )
+  > p.value = 10.0
+  The parameter changed value. It is now 10.0
+
+This is instead a more elaborated example where a class is used to keep track of all the values the parameter has
+assumed with time::
+
+  > class MyRecorder( object ):
+      def __init__(self):
+          self.values = []
+      def __call__(self, value):
+          self.values.append(value)
+      def print_values(self):
+          print("This is the history of all the values this parameter has been set to:")
+          print(self.values)
+  > recorder = MyRecorder()
+  > p.add_callback( recorder )
+  > p.value = 5.0
+  > p.value = -2.0
+  > p.value = 18.0
+  > recorder.print_values()
+  This is the history of all the values this parameter has been set to:
+  [5.0, -2.0, 18.0]
+
+More than one callback can be registered. The callbacks will be executed in the order they are entered. To clear all
+callbacks use the method empty_callbacks().
+
+.. _parameter_auxvar:
+===================
+Auxiliary variable
+===================
+
+Sometimes it is useful to specify the parameter as a function of another variable ("auxiliary variable"). For
+example, we want the parameter to vary with time according to a linear law. This can be done as follows.
+
+First define the auxiliary variable "time" starting at 0, and a linear law 3.2 t + 5.6::
+
+  > t = AuxiliaryVariable("time",0.0)
+  > law = lambda x: 3.2 * x + 5.6
+
+For example, in t=0 our law evaluate to::
+
+  > print( law(t.value) )
+  5.6
+
+Now we link the value of the parameter p to the law we just created::
+
+  > p = Parameter("test",1.0)
+  > p.add_auxiliary_variable(t,law)
+
+Since t is still at 0, we can immediately see that the value of the parameter is now law(0) = 3.2 * 0 + 5.6 = 5.6::
+
+  > p.value
+  5.6
+
+Note hence that the init values we gave during the constructor looses its meaning in this case, by design.
+
+If we now change the value of t, the value of the parameter will change automatically according to the law::
+
+  > t.value = 10.0
+  > p.value
+  37.6
+
+This becomes even more powerful when the law contains parameters itself::
+
+  > a = Parameter("a",3.2)
+  > b = Parameter("b",5.6)
+  > law = lambda x: a.value * x + b.value
+  > p.add_auxiliary_variable(t,law)
+
+If we now change the value of one of the parameters, we see the parameter p changing accordingly:
+  > t.value = 10.0
+  > print(p.value)
+  5.6
+  > a.value = 1.23
+  > print(p.value)
+  17.9
+  > b.value = -2.12
+  > print(p.value)
+  10.18
+"""
 
 def _behaves_like_a_number(obj):
     """
@@ -45,139 +178,6 @@ class Parameter(object):
     :keyword min: minimum allowed value for the parameter (default: None)
     :keyword max: maximum allowed value for the parameter (default: None)
     :keyword delta: initial step used by some fitting engines (default: 0.1 * value)
-
-    =============
-    Description
-    =============
-
-    Create a parameter with::
-
-      > p = Parameter("param1",1.0)
-
-    This will create a parameter called "param1" with initial value 1.0 and no boundaries. It will also have a
-    default delta of 10% the value, in this case 0.1 * 1 = 0.1.
-
-    You can use optional keywords to define the boundaries of the parameter as well as its delta::
-
-      > p = Parameter("param1",1.0, min = -10.0, max = 35, delta = 3)
-
-    This will create a parameter bounded between -10.0 and 35, with initial delta = 3.
-
-    You can set the current value of the parameter as::
-
-      > p.value = 2.5
-
-    or get its current value as::
-
-      > current_value = p.value
-
-    You can set its boundaries with::
-
-      > p.set_bounds(-10, 35)
-
-    A value of None for either the minimum or the maximum will remove the boundary in that direction.
-
-    You can get the current boundaries as::
-
-      > min_value, max_value = p.get_bounds()
-
-    You can set or get the value for delta as::
-
-      > p.delta = 0.3
-      > current_delta = p.delta
-
-
-    ==========
-    Callbacks
-    ==========
-
-    The Parameter class provides also a functionality to set callbacks which are called whenever the value of the
-    parameter changes. This can be used for tracing purposes or other things. This code for example sets a simple
-    callback which just prints the value of the parameter any time it is changed::
-
-      > def callback( value ):
-            print("The parameter changed value. It is now %s" % value )
-      > p.add_callback( callback )
-      > p.value = 10.0
-      The parameter changed value. It is now 10.0
-
-    This is instead a more elaborated example where a class is used to keep track of all the values the parameter has
-    assumed with time::
-
-      > class MyRecorder( object ):
-          def __init__(self):
-              self.values = []
-          def __call__(self, value):
-              self.values.append(value)
-          def print_values(self):
-              print("This is the history of all the values this parameter has been set to:")
-              print(self.values)
-      > recorder = MyRecorder()
-      > p.add_callback( recorder )
-      > p.value = 5.0
-      > p.value = -2.0
-      > p.value = 18.0
-      > recorder.print_values()
-      This is the history of all the values this parameter has been set to:
-      [5.0, -2.0, 18.0]
-
-    More than one callback can be registered. The callbacks will be executed in the order they are entered. To clear all
-    callbacks use the method empty_callbacks().
-
-    .. _parameter_auxvar:
-    ===================
-    Auxiliary variable
-    ===================
-
-    Sometimes it is useful to specify the parameter as a function of another variable ("auxiliary variable"). For
-    example, we want the parameter to vary with time according to a linear law. This can be done as follows.
-
-    First define the auxiliary variable "time" starting at 0, and a linear law 3.2 t + 5.6:
-
-      > t = AuxiliaryVariable("time",0.0)
-      > law = lambda x: 3.2 * x + 5.6
-
-    For example, in t=0 our law evaluate to:
-
-      > print( law(t.value) )
-      5.6
-
-    Now we link the value of the parameter p to the law we just created::
-
-      > p = Parameter("test",1.0)
-      > p.add_auxiliary_variable(t,law)
-
-    Since t is still at 0, we can immediately see that the value of the parameter is now law(0) = 3.2 * 0 + 5.6 = 5.6::
-
-      > p.value
-      5.6
-
-    Note hence that the init values we gave during the constructor looses its meaning in this case, by design.
-
-    If we now change the value of t, the value of the parameter will change automatically according to the law::
-
-      > t.value = 10.0
-      > p.value
-      37.6
-
-    This becomes even more powerful when the law contains parameters itself::
-
-      > a = Parameter("a",3.2)
-      > b = Parameter("b",5.6)
-      > law = lambda x: a.value * x + b.value
-      > p.add_auxiliary_variable(t,law)
-
-    If we now change the value of one of the parameters, we see the parameter p changing accordingly:
-      > t.value = 10.0
-      > print(p.value)
-      5.6
-      > a.value = 1.23
-      > print(p.value)
-      17.9
-      > b.value = -2.12
-      > print(p.value)
-      10.18
-
 
     """
 
