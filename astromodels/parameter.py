@@ -122,7 +122,7 @@ This becomes even more powerful when the law contains parameters itself::
   > law = lambda x: a.value * x + b.value
   > p.add_auxiliary_variable(t,law)
 
-If we now change the value of one of the parameters, we see the parameter p changing accordingly:
+If we now change the value of one of the parameters, we see the parameter p changing accordingly::
   > t.value = 10.0
   > print(p.value)
   5.6
