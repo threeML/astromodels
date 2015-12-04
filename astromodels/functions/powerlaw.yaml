@@ -1,0 +1,85 @@
+powerlaw:
+    
+    description : 
+          
+        A simple power-law with normalization expressed as 
+        a logarithm
+          
+    formula :
+        
+        expression : 10**logK * (x / piv)**index
+    
+        latex :
+        
+            \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index}
+        
+    parameters:
+        
+        logK :
+            
+            desc : Logarithm of normalization
+            initial value : 0
+            min : -40
+            max : 40
+        
+        piv :
+            
+            desc : Pivot energy
+            initial value : 1
+            fix : yes
+            
+        index :
+            
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+
+powerlaw_flux:
+    
+    description:
+        
+        A simple power-law with the integral between two extremes as 
+        normalization parameter
+    
+    formula:
+        
+        expression : 10**(logK) * (index + 1) * (x / piv)**index / 
+                     ( xmin**(index+1) - xmax**(index+1) )
+        
+        latex :
+        
+            \frac{dN}{dx} = \frac{index + 1}{xmin^{index+1} - xmax^{index+1}}
+                            10^{logK}~\frac{x}{piv}^{index} 
+    
+    parameters:
+        
+        logK :
+            
+            desc : Logarithm of normalization
+            initial value : 0
+            min : -40
+            max : 40
+        
+        piv :
+            
+            desc : Pivot energy
+            initial value : 1
+            fix : yes
+            
+        index :
+            
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+        
+        xmin :
+            
+            desc : Lower bound of integration
+            initial value : 1
+        
+        xmax :
+            
+            desc : Upper bound of integration
+            initial value : 10

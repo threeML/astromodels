@@ -133,7 +133,7 @@ If we now change the value of one of the parameters, we see the parameter p chan
   > b.value = -2.12
   > print(p.value)
   10.18
-  
+
 """
 
 
