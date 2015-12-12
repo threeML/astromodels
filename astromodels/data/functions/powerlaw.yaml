@@ -13,7 +13,7 @@ powerlaw:
         
             \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index}
         
-    parameters:
+    parameters :
         
         logK :
             
@@ -34,6 +34,11 @@ powerlaw:
             initial value : -2
             min : -10
             max : 10
+    
+    tests : 
+        - { x : 10, function value: 0.01, tolerance: 1e-20}
+        - { x : 100, function value: 0.0001, tolerance: 1e-20}
+    
 
 powerlaw_flux:
     

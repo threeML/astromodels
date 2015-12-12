@@ -139,6 +139,7 @@ If we now change the value of one of the parameters, we see the parameter p chan
 
 import warnings
 import exceptions
+import copy
 
 
 def _behaves_like_a_number(obj):
@@ -168,9 +169,11 @@ def _behaves_like_a_number(obj):
 class SettingOutOfBounds(exceptions.Exception):
     pass
 
+
 # Exception for when an object should be callable but it isn't
 class NotCallableOrErrorInCall(exceptions.Exception):
     pass
+
 
 class Parameter(object):
     """
@@ -179,13 +182,13 @@ class Parameter(object):
 
     :param name: Name for the parameter
     :param initial_value: Initial value
-    :keyword min: minimum allowed value for the parameter (default: None)
-    :keyword max: maximum allowed value for the parameter (default: None)
-    :keyword delta: initial step used by some fitting engines (default: 0.1 * value)
-
+    :param min_value: minimum allowed value for the parameter (default: None)
+    :param max_value: maximum allowed value for the parameter (default: None)
+    :param delta: initial step used by some fitting engines (default: 0.1 * value)
+    :param desc: description of parameter (default: '')
     """
 
-    def __init__(self, name, initial_value, **kwargs):
+    def __init__(self, name, initial_value, min_value=None, max_value=None, delta=None, desc=None, free=True):
 
         # NOTE: we avoid enforcing a particular type or even that initial_values, max, min and delta are python numbers.
         # Indeed, as long as they behave as numbers we are going to be fine. We want to keep the possibility to use
@@ -203,11 +206,13 @@ class Parameter(object):
 
         self._value = initial_value
 
+        self._free = bool(free)
+
         # Set minimum if provided, otherwise use default
 
-        if 'min' in kwargs.keys():
+        if min_value is not None:
 
-            self._min_value = kwargs['min']
+            self._min_value = min_value
 
         else:
 
@@ -215,9 +220,9 @@ class Parameter(object):
 
         # Set maximum if provided, otherwise use default
 
-        if 'max' in kwargs.keys():
+        if max_value is not None:
 
-            self._max_value = kwargs['max']
+            self._max_value = max_value
 
         else:
 
@@ -225,13 +230,21 @@ class Parameter(object):
 
         # Set delta if provided, otherwise use default
 
-        if 'delta' in kwargs.keys():
+        if delta is not None:
 
-            self._delta = kwargs['delta']
+            self._delta = delta
 
         else:
 
             self._delta = 0.1 * self._value
+
+        # Store description
+
+        self.__desc = desc
+
+        # Make the description the documentation as well
+
+        self.__doc__ = desc
 
         # pre-defined prior is no prior
         self._prior = None
@@ -263,6 +276,12 @@ class Parameter(object):
     @property
     def name(self):
         return self.__name
+
+    # Define the property 'description' and make it read-only
+
+    @property
+    def description(self):
+        return self.__desc
 
     # Define the property "value" with a control that the parameter cannot be set
     # outside of its bounds
@@ -430,6 +449,23 @@ class Parameter(object):
                          "accepting the current value of the parameter as input and returning the probability " +
                          "density as output")
 
+    # Define property "free"
+
+    @property
+    def set_free(self):
+
+        self._free = True
+
+    def get_free(self):
+
+        return self._free
+
+    free = property(get_free,set_free,
+                    doc="Gets or sets whether the parameter is free or not. Use booleans, like: 'p.free = True' "
+                        " or 'p.free = False'. ")
+
+
+
     def add_auxiliary_variable(self, variable, law):
 
         assert isinstance(variable, AuxiliaryVariable)
@@ -450,6 +486,27 @@ class Parameter(object):
         # Set the value of the parameter to the current value of the law
 
         self.value = this_value
+
+    def duplicate(self):
+        """
+        Returns an exact copy of the current parameter
+        """
+
+        # Deep copy everything to make sure that there are no ties between the new instance and the old one
+
+        new_parameter = copy.deepcopy(self)
+
+        return new_parameter
+
+    def __repr__(self):
+        return "Parameter %s = %s\n" \
+               "(min_value = %s, max_value = %s, delta = %s, free = %s)" %(self.name,
+                                                                           self.value,
+                                                                           self.min_value,
+                                                                           self.max_value,
+                                                                           self.delta,
+                                                                           self.free)
+
 
 class AuxiliaryVariable(Parameter):
     """

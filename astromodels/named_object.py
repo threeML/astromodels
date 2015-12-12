@@ -1,5 +1,6 @@
 __author__ = 'giacomov'
 
+
 class NamedObject(object):
 
     def __init__(self, name):

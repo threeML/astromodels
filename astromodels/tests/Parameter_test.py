@@ -25,9 +25,10 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.1 * p.value)
+        self.assertEqual(p.free,True)
 
     def test_constructor_with_min(self):
-        p = Parameter("test", 1, min=0)
+        p = Parameter("test", 1, min_value=0)
 
         self.assertEqual(p.value, 1)
         self.assertEqual(p.name, "test")
@@ -35,9 +36,10 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.1 * p.value)
+        self.assertEqual(p.free,True)
 
     def test_constructor_with_max(self):
-        p = Parameter("test", 1, max=10)
+        p = Parameter("test", 1, max_value=10)
 
         self.assertEqual(p.value, 1)
         self.assertEqual(p.name, "test")
@@ -45,6 +47,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertEqual(p.max_value, 10)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.1 * p.value)
+        self.assertEqual(p.free,True)
 
     def test_constructor_with_delta(self):
         p = Parameter("test", 1, delta=0.43)
@@ -55,6 +58,37 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.43)
+        self.assertEqual(p.free,True)
+
+    def test_constructor_with_desc(self):
+
+        description = "Just a fake parameter"
+
+        p = Parameter("test", 1, desc=description)
+
+        self.assertEqual(p.value, 1)
+        self.assertEqual(p.name, "test")
+        self.assertIsNone(p.min_value)
+        self.assertIsNone(p.max_value)
+        self.assertIsNone(p._prior)
+        self.assertEqual(p.delta, 0.43)
+        self.assertEqual(p.description, description)
+        self.assertEqual(p.__doc__,description)
+        self.assertEqual(p.free,True)
+
+    def test_constructor_with_free(self):
+
+        free = False
+
+        p = Parameter("test", 1, free=free)
+
+        self.assertEqual(p.value, 1)
+        self.assertEqual(p.name, "test")
+        self.assertIsNone(p.min_value)
+        self.assertIsNone(p.max_value)
+        self.assertIsNone(p._prior)
+        self.assertEqual(p.delta, 0.43)
+        self.assertEqual(p.free,free)
 
     def test_set_get_value(self):
         p = Parameter("test", 1)
@@ -66,7 +100,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertEqual(p.value, 2.0)
 
     def test_set_value_outside_bounds(self):
-        p = Parameter("test", 1, min=0, max=2)
+        p = Parameter("test", 1, min_value=0, max_value=2)
 
         with self.assertRaises(SettingOutOfBounds):
             p.value = 100
@@ -84,7 +118,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertEqual(p.delta, 0.312)
 
     def test_set_get_min_value(self):
-        p = Parameter("test", 1, min=0)
+        p = Parameter("test", 1, min_value=0)
 
         self.assertEqual(p.min_value, 0)
 
@@ -93,13 +127,26 @@ class ParameterTestCase(unittest.TestCase):
         self.assertEqual(p.min_value, -10)
 
     def test_set_get_max_value(self):
-        p = Parameter("test", 1, max=10)
+        p = Parameter("test", 1, max_value=10)
 
         self.assertEqual(p.max_value, 10)
 
         p.max_value = 1000.12
 
         self.assertEqual(p.max_value, 1000.12)
+
+    def test_set_get_free(self):
+        p = Parameter("test", 1, free=True)
+
+        self.assertEqual(p.free, True)
+
+        p.free = False
+
+        self.assertEqual(p.free, False)
+
+        p.free = True
+
+        self.assertEqual(p.free, True)
 
     def test_set_bounds(self):
         p = Parameter("test", 1)
@@ -110,7 +157,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertEqual(p.max_value, 1.23)
 
     def test_get_bounds(self):
-        p = Parameter("test", 1, min=-10, max=10)
+        p = Parameter("test", 1, min_value=-10, max_value=10)
 
         min_val, max_val = p.get_bounds()
 

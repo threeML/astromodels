@@ -1,0 +1,121 @@
+black hole:
+    
+    point source:
+         
+         RA : 
+         Dec :
+         
+         spectrum :
+              
+              main :
+                  
+                  powerlaw:
+                      
+                      logK :
+                      index :
+                  
+                  polarization :
+                      
+                      linear :
+                          
+                          degree : 
+                              
+                              poly3 :
+                                  
+                                  function of:
+                                      
+                                      - energy
+                                  
+                                  p0 :
+                                  p1 :
+                                  p2 :
+                                  
+                          angle :
+                              
+                              poly1 :
+                                  
+                                  function of:
+                                      
+                                      - energy
+                                  
+                                  p0 : 
+                                  p1 : 
+
+pulsar :
+    
+    point source :
+        
+        RA : 
+        Dec :
+        
+        spectrum :
+            
+            powerlaw_expcut :
+                
+                logK :
+                    
+                    template :
+                        
+                        file : $TEMPLATE/flux.fits
+                    
+                        function of :
+                        
+                            time
+                        
+                        norm :
+                    
+                index :
+                    
+                    template :
+                        
+                        file : $TEMPLATE/index.fits
+                    
+                        function of :
+                        
+                            time
+                        
+                        norm :
+                        
+                
+                Ec :
+                    
+                    template :
+                        
+                        file : $TEMPLATE/Ec.fits
+                    
+                        function of :
+                        
+                            time
+                        
+                        norm :
+        
+            polarization :
+                    
+                linear :
+                        
+                    degree : 
+                        
+                        template2d : 
+                                
+                            file : $TEMPLATE/t2d_degree.fits
+                                
+                            function of :
+                                    
+                                - time
+                                - energy
+                                
+                            norm :
+                        
+                    angle :
+                            
+                        template2d :
+                                
+                            file : $TEMPLATE/t2d_angle.fits
+                                
+                            function of :
+                                    
+                                - time
+                                - energy
+                                
+                            norm :
+            

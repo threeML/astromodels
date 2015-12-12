@@ -2,12 +2,16 @@ __author__ = 'giacomov'
 
 import ast
 
+import numpy
+
 
 class ExpressionCannotBeParsed(Exception):
     pass
 
+
 class ErrorInFormula(Exception):
     pass
+
 
 class Formula(object):
 
@@ -78,8 +82,22 @@ class Formula(object):
 
                     if isinstance(node.func.value, ast.Attribute):
 
-                        raise ErrorInFormula("In a formula you can only use math functions from numpy or python"
-                                             " built-in functions.")
+                        raise ErrorInFormula("In a formula you can only use math functions from numpy")
+
+
+                # Now check if this function is really a numpy function
+
+                if not hasattr(numpy, node.func.id):
+
+                    raise ErrorInFormula("The function %s is not a valid numpy math function" % node.func_id)
+
+                else:
+
+                    # Check that the function is a ufunc
+
+                    if not isinstance(getattr(numpy,node.func.id),numpy.ufunc):
+
+                        raise ErrorInFormula("The function %s is not a numpy ufunc" % node.func_id)
 
                 self._functions.append(node.func.id)
 
@@ -163,6 +181,15 @@ class Formula(object):
         :return: list of functions used in the formula
         """
         return self._functions
+
+    @property
+    def formula(self):
+        """
+
+        :return: the formula as a string
+        """
+
+        return self._formula
 
     def __repr__(self):
 
