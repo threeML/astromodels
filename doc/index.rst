@@ -23,7 +23,7 @@ Contents:
                        get_prior, set_prior,
                        get_name
 
-.. automodule:: sources.point_source
+.. automodule:: point_source
 
 .. autoclass:: PointSource
     :members:
