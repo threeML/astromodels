@@ -22,6 +22,27 @@ import shlex
 sys.path.insert(0, os.path.abspath('../astromodels'))
 sys.path.insert(0, os.path.abspath('../astromodels/sources'))
 
+import sys
+
+try:
+
+   from unittest.mock import MagicMock
+
+except:
+
+    # Not in the readthedocs environment
+
+    pass
+
+else:
+    class Mock(MagicMock):
+        @classmethod
+        def __getattr__(cls, name):
+                return Mock()
+
+    MOCK_MODULES = ['pygtk', 'gtk', 'gobject', 'argparse', 'numpy', 'pandas']
+    sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
