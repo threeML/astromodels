@@ -140,6 +140,7 @@ If we now change the value of one of the parameters, we see the parameter p chan
 import warnings
 import exceptions
 import copy
+import collections
 
 
 def _behaves_like_a_number(obj):
@@ -181,14 +182,14 @@ class Parameter(object):
     Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).
 
     :param name: Name for the parameter
-    :param initial_value: Initial value
+    :param value: Initial value
     :param min_value: minimum allowed value for the parameter (default: None)
     :param max_value: maximum allowed value for the parameter (default: None)
     :param delta: initial step used by some fitting engines (default: 0.1 * value)
     :param desc: description of parameter (default: '')
     """
 
-    def __init__(self, name, initial_value, min_value=None, max_value=None, delta=None, desc=None, free=True):
+    def __init__(self, name, value, min_value=None, max_value=None, delta=None, desc=None, free=True, unit=''):
 
         # NOTE: we avoid enforcing a particular type or even that initial_values, max, min and delta are python numbers.
         # Indeed, as long as they behave as numbers we are going to be fine. We want to keep the possibility to use
@@ -204,9 +205,11 @@ class Parameter(object):
 
         self.__name = name
 
-        self._value = initial_value
+        self._value = value
 
         self._free = bool(free)
+
+        self._unit = unit
 
         # Set minimum if provided, otherwise use default
 
@@ -282,6 +285,20 @@ class Parameter(object):
     @property
     def description(self):
         return self.__desc
+
+    # Define the property 'unit'
+    def set_unit(self, new_unit):
+
+        #TODO use astropy units
+
+        self._unit = new_unit
+
+    def get_unit(self):
+
+        return self._unit
+
+    unit = property(get_unit,set_unit,
+                     doc="""Gets or sets the unit for the parameter""")
 
     # Define the property "value" with a control that the parameter cannot be set
     # outside of its bounds
@@ -451,10 +468,9 @@ class Parameter(object):
 
     # Define property "free"
 
-    @property
-    def set_free(self):
+    def set_free(self, value):
 
-        self._free = True
+        self._free = value
 
     def get_free(self):
 
@@ -464,7 +480,19 @@ class Parameter(object):
                     doc="Gets or sets whether the parameter is free or not. Use booleans, like: 'p.free = True' "
                         " or 'p.free = False'. ")
 
+    # Define property "fix"
 
+    def set_fix(self, value):
+
+        self._free = (not value)
+
+    def get_fix(self):
+
+        return not self._free
+
+    fix = property(get_fix,set_fix,
+                    doc="Gets or sets whether the parameter is fixed or not. Use booleans, like: 'p.fix = True' "
+                        " or 'p.fix = False'. ")
 
     def add_auxiliary_variable(self, variable, law):
 
@@ -506,6 +534,26 @@ class Parameter(object):
                                                                            self.max_value,
                                                                            self.delta,
                                                                            self.free)
+
+    def to_dict(self):
+
+        """Returns the minimal representation for serialization"""
+
+        data = collections.OrderedDict()
+
+        data['value'] = self.value
+        data['min_value'] = self.min_value
+        data['max_value'] = self.max_value
+        data['delta'] = self.delta
+        data['free'] = self.free
+        data['unit'] = self.unit
+
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+
+        return cls(**data)
 
 
 class AuxiliaryVariable(Parameter):

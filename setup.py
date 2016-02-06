@@ -31,6 +31,7 @@ setup(
 
     install_requires=[
         'numpy >= 1.6',
-        'pyyaml']
+        'PyYAML',
+        'astropy >= 1.0']
 
 )

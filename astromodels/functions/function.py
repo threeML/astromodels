@@ -2,13 +2,13 @@ import numpy as np
 from astromodels.formula_parser import Formula
 from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
+from astromodels.named_object import NamedObject
+
 import parser
 import collections
 import warnings
 import sys
-import os
 import functools
-import glob
 import pkg_resources
 
 
@@ -158,8 +158,14 @@ def output_always_finite(method):
 
 
 class FunctionContainer(object):
+
     def add_function(self, name, function_class):
+
         self.__setattr__(name, function_class)
+
+    def get_function(self, name):
+
+        return self.__getattribute__(name)
 
 
 class DefinitionParser(object):
@@ -268,10 +274,10 @@ class DefinitionParser(object):
 
         return Parameter(par_name, value, min_value=min_value, max_value=max_value, delta=delta, desc=desc, free=free)
 
-    def simple_function_generator(self, name, description, formula, parameters, tests=None, latex=None):
+    def simple_function_generator(self, function_name, description, formula, parameters, tests=None, latex=None):
         """
 
-        :param name:
+        :param function_name:
         :param description:
         :param formula:
         :param parameters:
@@ -348,7 +354,12 @@ class DefinitionParser(object):
         members['_parsed_formula'] = parsed_formula
 
         # Copy the compiled formula in a private member
+
         members['_compiled_formula'] = compiled_formula
+
+        # Store the name of the function
+
+        members['_function_name'] = function_name
 
         # If the LATEX expression has been given, store it in the formula,
         # otherwise store None
@@ -398,15 +409,15 @@ class DefinitionParser(object):
 
         if n_var == 1:
 
-            new_class = type(name, (SimpleFunction1D,), members)
+            new_class = type(function_name, (SimpleFunction1D,), members)
 
         elif n_var == 2:
 
-            new_class = type(name, (SimpleFunction2D,), members)
+            new_class = type(function_name, (SimpleFunction2D,), members)
 
         elif n_var == 3:
 
-            new_class = type(name, (SimpleFunction3D,), members)
+            new_class = type(function_name, (SimpleFunction3D,), members)
 
         else:
 
@@ -423,7 +434,7 @@ class DefinitionParser(object):
 
         if tests is None:
 
-            warnings.warn("The function %s contains no tests." % name, WarningNoTests)
+            warnings.warn("The function %s contains no tests." % function_name, WarningNoTests)
 
         else:
 
@@ -432,7 +443,7 @@ class DefinitionParser(object):
             for test in tests:
                 # this function will raise if the test is failed
 
-                self.test_simple_function(name, test, parsed_formula.variables, new_class_instance)
+                self.test_simple_function(function_name, test, parsed_formula.variables, new_class_instance)
 
         return new_class
 
@@ -453,9 +464,7 @@ class DefinitionParser(object):
             raise TestSpecificationError("Test specification for %s lacks 'function value' or 'tolerance' attribute" %
                                          name)
 
-
         # Run the test
-
         # Build the point dictionary with the right number of variables
 
         point = {}
@@ -484,12 +493,13 @@ class DefinitionParser(object):
 
         distance = value - test_specification['function value']
 
-        if abs(distance) > test_specification['tolerance']:
+        if abs(distance) > float(test_specification['tolerance']):
 
             raise TestFailed("The function %s has value of %s instead of %s in point %s, and the difference "
                              "is larger than the tolerance %g" % (name, value,
                                                                   test_specification['function value'],
-                                                                  point_repr, test_specification['tolerance']))
+                                                                  point_repr,
+                                                                  float(test_specification['tolerance'])))
 
         else:
 
@@ -497,13 +507,33 @@ class DefinitionParser(object):
             pass
 
 
-class Function(object):
+class Function(NamedObject):
+
+    def __init__(self, function_name):
+
+        super(Function, self).__init__(function_name, allow_spaces=False)
+
     @property
     def parameters(self):
         return self._parameters
 
+    def __getitem__(self, item):
+
+        return self._parameters[item]
+
+    def to_dict(self):
+
+        data = collections.OrderedDict()
+
+        for par_name, parameter in self.parameters.iteritems():
+
+            data[par_name] = parameter.to_dict()
+
+        return {self.name: data}
+
 
 class SimpleFunction(Function):
+
     def __init__(self):
 
         # This class must only be created by the simple_function_generator function. Such function for example
@@ -540,7 +570,14 @@ class SimpleFunction(Function):
 
             self._instance_locals[par_name] = par.value
 
-        super(SimpleFunction, self).__init__()
+        super(SimpleFunction, self).__init__(self._function_name)
+
+    def __repr__(self):
+
+        representation = "Function %s:\n" % self.name
+        representation += "    -parameters: %s\n" % ",".join(self.parameters.keys())
+
+        return representation
 
 
 class SimpleFunction1D(SimpleFunction):
@@ -631,5 +668,10 @@ def build_function_containers():
                 raise NotImplementedError("Cannot handle a function of type %s" % type(func_class))
 
 
+
 # Run this on import
 build_function_containers()
+
+# Now add all the functions to the dictionary of this module, so pickle will find them
+
+# __dict__['powerlaw'] = f1d.powerlaw
