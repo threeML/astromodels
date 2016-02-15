@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Astromodels documentation build configuration file, created by
-# sphinx-quickstart on Mon Nov 23 22:10:27 2015.
+# sphinx-quickstart on Mon Feb 15 11:54:33 2016.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -19,29 +19,8 @@ import shlex
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('../astromodels'))
-sys.path.insert(0, os.path.abspath('../astromodels/sources'))
-
-import sys
-
-try:
-
-   from unittest.mock import MagicMock
-
-except:
-
-    # Not in the readthedocs environment
-
-    pass
-
-else:
-    class Mock(MagicMock):
-        @classmethod
-        def __getattr__(cls, name):
-                return Mock()
-
-    MOCK_MODULES = ['pygtk', 'gtk', 'gobject', 'argparse', 'numpy', 'pandas']
-    sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(1, os.path.abspath('../astromodels'))
 
 # -- General configuration ------------------------------------------------
 
@@ -53,6 +32,7 @@ else:
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
 ]
 
@@ -72,8 +52,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Astromodels'
-copyright = u'2015, Giacomo Vianello'
-author = u'Giacomo Vianello'
+copyright = u'2016, Giacomo Vianello (giacomov@stanford.edu)'
+author = u'Giacomo Vianello (giacomov@stanford.edu)'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -248,7 +228,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
   (master_doc, 'Astromodels.tex', u'Astromodels Documentation',
-   u'Giacomo Vianello', 'manual'),
+   u'Giacomo Vianello (giacomov@stanford.edu)', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of

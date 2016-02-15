@@ -13,6 +13,8 @@ Contents:
 
 .. automodule:: parameter
 
+.. automodule:: astromodels
+
 .. autoclass:: Parameter
      :members:
      :exclude-members: set_prior, get_prior, 
@@ -22,8 +24,6 @@ Contents:
                        get_max_value, set_max_value,
                        get_prior, set_prior,
                        get_name
-
-.. automodule:: point_source
 
 .. autoclass:: PointSource
     :members:
