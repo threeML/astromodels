@@ -18,7 +18,7 @@ import shlex
 
 try:
 
-    from unittest.mock import MagicMock
+    from mock import Mock as MagicMock
 
 except ImportError:
 
