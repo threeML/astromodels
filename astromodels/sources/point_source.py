@@ -9,45 +9,45 @@ from astromodels.spectral_component import SpectralComponent
 
 
 class PointSource(Source):
+    """
+    A point source. You can instance this class in many ways.
+
+    - with Equatorial position and a function as spectrum (the component will be automatically called 'main')::
+
+        point_source = PointSource('my_source', 125.6, -75.3, f1d.powerlaw())
+
+    - with Galactic position and a function as spectrum (the component will be automatically called 'main')::
+
+        point_source = PointSource('my_source', l=15.67, b=80.75, spectral_shape=f1d.powerlaw())
+
+    - with Equatorial position or Galactic position and a list of spectral components::
+
+        c1 = SpectralComponent("component1", f1d.powerlaw())
+        c2 = SpectralComponent("component2", f1d.powerlaw())
+        point_source = PointSource("test_source",125.6, -75.3,components=[c1,c2])
+        # Or with Galactic position:
+        point_source = PointSource("test_source",l=15.67, b=80.75,components=[c1,c2])
+
+    - with a SkyDirection instance and either a single or a list of components::
+
+        c1 = SpectralComponent("component1", f1d.powerlaw())
+        c2 = SpectralComponent("component2", f1d.powerlaw())
+        sky_dir = SkyDirection(RA=125.6, Dec=-75.3)
+        point_source = PointSource("test_source",sky_direction=sky_dir,components=[c1,c2])
+
+    :param source_name: name for the source
+    :param ra: Equatorial J2000 Right Ascension (ICRS)
+    :param dec: Equatorial J2000 Declination (ICRS)
+    :param spectral_shape: a 1d function representing the spectral shape of the source
+    :param l: Galactic latitude
+    :param b: Galactic longitude
+    :param components: list of spectral components (instances of SpectralComponent)
+    :param sky_position: an instance of SkyDirection
+    :return:
+    """
 
     def __init__(self, source_name, ra=None, dec=None, spectral_shape=None,
                  l=None, b=None, components=None, sky_position=None):
-        """
-        A point source. You can instance this class in many ways.
-
-        - with Equatorial position and a function as spectrum (the component will be automatically called 'main')::
-
-            point_source = PointSource('my_source', 125.6, -75.3, f1d.powerlaw())
-
-        - with Galactic position and a function as spectrum (the component will be automatically called 'main')::
-
-            point_source = PointSource('my_source', l=15.67, b=80.75, spectral_shape=f1d.powerlaw())
-
-        - with Equatorial position or Galactic position and a list of spectral components::
-
-            c1 = SpectralComponent("component1", f1d.powerlaw())
-            c2 = SpectralComponent("component2", f1d.powerlaw())
-            point_source = PointSource("test_source",125.6, -75.3,components=[c1,c2])
-            # Or with Galactic position:
-            point_source = PointSource("test_source",l=15.67, b=80.75,components=[c1,c2])
-
-        - with a SkyDirection instance and either a single or a list of components::
-
-            c1 = SpectralComponent("component1", f1d.powerlaw())
-            c2 = SpectralComponent("component2", f1d.powerlaw())
-            sky_dir = SkyDirection(RA=125.6, Dec=-75.3)
-            point_source = PointSource("test_source",sky_direction=sky_dir,components=[c1,c2])
-
-        :param source_name: name for the source
-        :param ra: Equatorial J2000 Right Ascension (ICRS)
-        :param dec: Equatorial J2000 Declination (ICRS)
-        :param spectral_shape: a 1d function representing the spectral shape of the source
-        :param l: Galactic latitude
-        :param b: Galactic longitude
-        :param components: list of spectral components (instances of SpectralComponent)
-        :param sky_position: an instance of SkyDirection
-        :return:
-        """
 
         # Check that we have all the required information
 
