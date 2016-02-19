@@ -23,6 +23,8 @@ class SpectralComponent(NamedObject):
 
         self._spectral_shape = shape
 
+        # Store the polarization
+
         self._polarization = polarization
 
     @property

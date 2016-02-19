@@ -13,13 +13,11 @@ class Source(NamedObject, DualAccessClass):
         NamedObject.__init__(self, source_name, allow_spaces=False)
 
         # Make the dictionary of components
-        components = collections.OrderedDict()
+        self._components = collections.OrderedDict()
 
         for component in list_of_components:
 
-            components[component.name] = component
-
-        self._components = components
+            self._components[component.name] = component
 
         # This will allow to access the components as instance.component, instead of instance.components['component']
 
@@ -27,5 +25,10 @@ class Source(NamedObject, DualAccessClass):
 
     @property
     def components(self):
+        """
+        Return the dictionary of components
+
+        :return: dictionary of components
+        """
 
         return self._components

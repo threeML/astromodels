@@ -34,7 +34,9 @@ class PointSource(Source):
         c2 = SpectralComponent("component2", f1d.powerlaw())
         sky_dir = SkyDirection(RA=125.6, Dec=-75.3)
         point_source = PointSource("test_source",sky_direction=sky_dir,components=[c1,c2])
-
+    
+    NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)
+    
     :param source_name: name for the source
     :param ra: Equatorial J2000 Right Ascension (ICRS)
     :param dec: Equatorial J2000 Declination (ICRS)
@@ -84,6 +86,10 @@ class PointSource(Source):
                 sky_position = SkyDirection(l=l, b=b)
 
         self._sky_position = sky_position
+        
+        # Fix the position by default
+        
+        self._sky_position.fix()
 
         # Now gather the component(s)
 
@@ -117,7 +123,7 @@ class PointSource(Source):
 
         representation = ''
         representation += 'Point source %s\n' % self.name
-        representation += '    -position: (R.A., Dec) = (%s, %s)\n' % (self.position.RA, self.position.Dec)
+        representation += '    -position: (R.A., Dec) = (%s, %s)\n' % (self.position.ra, self.position.dec)
         representation += '    -components: %s\n' % ",".join(self.components.keys())
 
         return representation

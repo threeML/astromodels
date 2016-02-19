@@ -76,7 +76,6 @@ resulted in a very long sequence. Thus, all redundant expressions have been remo
 
 """
 
-import collections
 from astromodels import sky_direction
 from astromodels.functions import function
 from astromodels import spectral_component
@@ -100,6 +99,19 @@ class ModelYAMLError(my_yaml.YAMLError):
 class ModelSyntaxError(RuntimeError):
 
     pass
+
+
+def load_model(filename):
+    """
+    Load a model from a file.
+
+    :param filename: the name of the file containing the model
+    :return: an instance of a Model
+    """
+
+    parser = ModelParser(filename)
+
+    return parser.get_model()
 
 
 class ModelParser(object):
@@ -264,7 +276,6 @@ class SourceParser(object):
 
         return this_sky_direction
 
-
     def _parse_spectral_component(self, component_name, component_definition):
 
         # Parse the shape definition
@@ -280,7 +291,9 @@ class SourceParser(object):
 
         shape = self._parse_shape_definition(component_name, shape_definition)
 
-        this_polarization = polarization.Polarization() #TODO
+        # this_polarization = polarization.Polarization() #TODO
+
+        this_polarization = None
 
         this_spectral_component = spectral_component.SpectralComponent(component_name, shape, this_polarization)
 
@@ -296,7 +309,7 @@ class SourceParser(object):
 
         try:
 
-            this_function = function.f1d.get_function(function_name)
+            this_function = function.get_function(function_name)
 
         except AttributeError:
 

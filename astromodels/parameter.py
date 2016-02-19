@@ -141,6 +141,7 @@ import warnings
 import exceptions
 import copy
 import collections
+import astropy.units as u
 
 
 def _behaves_like_a_number(obj):
@@ -209,7 +210,13 @@ class Parameter(object):
 
         self._free = bool(free)
 
-        self._unit = unit
+        if self.name.find("log") == 0:
+
+            self._unit = u.LogUnit(unit)
+
+        else:
+
+            self._unit = u.Unit(unit)
 
         # Set minimum if provided, otherwise use default
 
@@ -546,7 +553,7 @@ class Parameter(object):
         data['max_value'] = self.max_value
         data['delta'] = self.delta
         data['free'] = self.free
-        data['unit'] = self.unit
+        data['unit'] = str(self.unit.to_string())
 
         return data
 

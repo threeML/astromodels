@@ -8,7 +8,9 @@ setup(
 
     packages=['astromodels',
               'astromodels/functions',
-              'astromodels/tests'
+              'astromodels/tests',
+              'astromodels/sources',
+              'astromodels/utils'
               ],
 
     data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
@@ -32,6 +34,7 @@ setup(
     install_requires=[
         'numpy >= 1.6',
         'PyYAML',
-        'astropy >= 1.0']
+        'astropy >= 1.0',
+        'scipy>=0.15']
 
 )

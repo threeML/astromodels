@@ -1,4 +1,7 @@
 import numpy as np
+import scipy.integrate
+import inspect
+
 from astromodels.formula_parser import Formula
 from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
@@ -13,6 +16,10 @@ import pkg_resources
 
 
 class WarningNoTests(Warning):
+    pass
+
+
+class WarningUnitsAreSlow(Warning):
     pass
 
 
@@ -31,6 +38,15 @@ class TestSpecificationError(Exception):
 class TestFailed(Exception):
     pass
 
+
+class DocstringIsNotRaw(ValueError):
+
+    pass
+
+
+class UnknownFunction(ValueError):
+
+    pass
 
 def input_as_array(method):
     """
@@ -157,90 +173,339 @@ def output_always_finite(method):
     return wrapper
 
 
-class FunctionContainer(object):
+# This dictionary will contain the known function by name, so that the model_parser can instance
+# them by looking into this dictionary. It will be filled by the FunctionMeta meta-class.
 
-    def add_function(self, name, function_class):
+_known_functions = {}
 
-        self.__setattr__(name, function_class)
+# The following is a metaclass for all the functions
 
-    def get_function(self, name):
+import scipy.integrate
+import inspect
+import yaml as my_yaml
+from yaml.reader import ReaderError
+import collections
+from astromodels.parameter import Parameter
+import sys
+import numpy as np
+import functools
 
-        return self.__getattribute__(name)
 
+# The following is a metaclass for all the functions
+class FunctionMeta(type):
+    """
+    A metaclass for the models, which takes care of setting up the parameters and the other attributes
+    according to the definition given in the documentation of the function class.
 
-class DefinitionParser(object):
-    def __init__(self, yaml_file):
-        """
+    The rationale for using this solution, instead of a more usual class-inheritance mechanism, is to avoid
+    re-reading and re-testing every time a new instance is created. Using a meta-class ensure that this is
+    executed only once during import.
+    """
 
-        :param yaml_file: resource defining the functions
-        :return:
-        """
+    def __init__(cls, name, bases, dct):
 
-        self._yaml_file = yaml_file
+        # This method is called at the very beginning during the import of the module,
+        # after the class cls has been built.
+        # We use it to perform simple checks on the function class to verify that it is
+        # implemented well, and add properties and methods according to the definition
+        # given in the docstring of cls
 
-        # Parse the YAML file
-        # (we don't catch any exception on purpose because if the file cannot be read there is nothing we can do)
+        # Enforce the presence of the evaluate method
 
-        definitions = my_yaml.load(pkg_resources.resource_string('astromodels', yaml_file))
+        if 'evaluate' not in dct:
 
-        # Now read the functions defined there
+            raise AttributeError("You have to implement the 'evaluate' method in %s" % name)
 
-        self.functions = {}
+        else:
 
-        for func_name, func_definition in definitions.iteritems():
+            # Set the __call__ attribute to a wrapper which allows to call the function as
+            # function(x), instead of function(x, par1, par2...)
 
-            # Fill the dictionary of parameters
+            cls.__call__ = FunctionMeta.instance_call_wrapper
 
-            these_parameters = collections.OrderedDict()
+        # If the 'integral' method is not in there, add the default integration
+        # method to the function class
 
-            for par_name, definition in func_definition['parameters'].iteritems():
-                these_parameters[par_name] = self.parse_parameter_definition(func_name, par_name, definition)
+        if 'integral' not in dct:
 
-            # Now instance the function
+            # Use predefined numerical integral
 
-            if 'formula' in func_definition:
+            cls.integral = FunctionMeta.numerical_integrator
 
-                # This is a simple function
+        # Minimal check of the 'evaluate' function
 
-                if 'expression' in func_definition['formula']:
+        variables, parameters_in_calling_sequence = FunctionMeta.check_calling_sequence(name, 'evaluate',
+                                                                                         cls.evaluate,['x','y','z'])
 
-                    expression = func_definition['formula']['expression']
+        # Figure out the dimensionality of this function
 
-                else:
+        n_dim = len(variables)
 
-                    raise FunctionDefinitionError("No 'expression' attribute in function %s" % func_name)
+        # Add a property to the *type* indicating the number of variables, which will be
+        # propagated to the class instance as a property
 
-                if 'latex' in func_definition['formula']:
+        cls.n_dim = property(lambda x: n_dim, doc="Return the number of dimensions for this function.")
 
-                    latex = func_definition['formula']['latex']
+        # Now parse the documentation of the function which contains the parameter specification
 
-                else:
+        # The doc is a YAML document containing among other things the definition of the parameters
 
-                    latex = None
+        # First substitute all '\' characters (which might be used in the latex formula)
+        # with '\\', as otherwise the yaml load will fail
 
-                if 'tests' in func_definition:
+        escaped_docstring = cls.__doc__.replace(chr(92),r'\\')
 
-                    # Note that the proper specification of the tests will be
-                    # made in the SimpleFunction constructor
+        # Parse it
 
-                    tests = func_definition['tests']
+        try:
 
-                else:
+            function_definition = my_yaml.safe_load(escaped_docstring)
 
-                    tests = None
+        except ReaderError:
 
-                new_class = self.simple_function_generator(func_name,
-                                                           func_definition['description'],
-                                                           expression,
-                                                           these_parameters,
-                                                           latex=latex,
-                                                           tests=tests)
+            raise DocstringIsNotRaw("Docstring parsing has failed. " \
+                                    "Did you remember to specify the docstring of %s as raw? " \
+                                    "To do that, you have to put a r before the docstring, " \
+                                    '''like in \n\nr"""\n(docstring)\n"""\n\ninstead of just\n\n''' \
+                                    '''"""\ndocstring\n"""'''% name)
 
-                self.functions[func_name] = new_class
+        # Enforce the presence of a description and of a parameters dictionary
+
+        assert "description" in function_definition.keys(),"You have to provide a 'description' token in the " \
+                                                           "documentation of class %s" % name
+
+        assert "parameters" in function_definition.keys(),"You have to provide a 'parameters' token in the " \
+                                                          "documentation of class %s" % name
+
+        # If there is a latex formula, store it in the type
+
+        if 'latex' in function_definition:
+
+            # First remove the escaping we did to overcome the limitation of the YAML parser
+
+            latex_formula = function_definition['latex'].replace(r"\\",chr(92))
+
+        else:
+
+            latex_formula = '(not provided)'
+
+        # Add a property with the latex formula
+
+        cls.latex = property(lambda x:latex_formula, doc="Get the formula in LaTEX (if provided).")
+
+        # Parse the parameters' dictionary
+
+        assert isinstance(function_definition['parameters'],dict),"Wrong syntax in 'parameters' token. It must be a " \
+                                                                  "dictionary. Refers to the documentation."
+
+        # Add the parameters as attribute of the *type* (not the instance of course, since we are working
+        # on the type). During the __call__ method below this dictionary will be used to create a copy
+        # of each parameter which will be made available as attribute of the instance.
+
+        cls._parameters = collections.OrderedDict()
+
+        for parameter_name, parameter_definition in function_definition['parameters'].iteritems():
+
+            this_parameter = FunctionMeta.parse_parameter_definition(name, parameter_name, parameter_definition)
+
+            cls._parameters[this_parameter.name] = this_parameter
+
+        # Now check that all the parameters used in 'evaluate' are part of the documentation,
+        # and that there are no unused parameters
+
+        set1 = set(cls._parameters.keys())
+        set2 = set(parameters_in_calling_sequence)
+
+        if set1 != set2:
+
+            # The parameters are different. Figure out who is missing and raise an exception accordingly
+
+            if set1 > set2:
+
+                missing = set1 - set2
+
+                msg = "Parameters %s have init values but are not used in 'evaluate' in %s" % (",".join(missing), name)
 
             else:
 
-                raise NotImplemented("Only simple functions with formulas are implemented at the moment")
+                missing = set2 - set1
+
+                msg = "Parameters %s are used in 'evaluate' but do not have init values in %s" % (",".join(missing), name)
+
+            raise FunctionDefinitionError(msg)
+
+        # Add the name of the function as a property
+
+        cls.name = property(lambda x: cls.__name__)
+
+        # Add a property returning the parameters dictionary
+        cls.parameters = property(lambda instance: instance._parameters)
+
+        # Finally add the to_dict method to serialize the class
+
+        cls.to_dict = FunctionMeta.to_dict
+
+        # We now proceed with the testing
+
+        if 'tests' not in function_definition:
+
+            warnings.warn("The function class %s contains no tests." % name, WarningNoTests)
+
+        else:
+
+            # Let's instance and test the class
+
+            test_instance = cls()
+
+            # Gather the test specifications and execute them
+
+            for test in function_definition['tests']:
+
+                FunctionMeta.test_simple_function(name, test, test_instance)
+
+        # All went well, add this as a known function
+
+        _known_functions[name] = cls
+
+    def __call__(cls, *args, **kwargs):
+
+        # Note that this is actually called when the class
+        # cls is instanced, as a sort of decorator for the
+        # constructor
+
+        # Create the instance
+
+        instance = type.__call__(cls, *args)
+
+        # Create the dictionary for the parameters
+
+        instance._parameters = collections.OrderedDict()
+
+        # Loop over the parameters in the type, create a copy and put it in the parameters
+        # dictionary. Moreover, if the value for some or all the
+        # parameters have been specified in the constructor, use that so that a function can be instanced
+        # as:
+        # my_powerlaw = powerlaw(logK=1.2, index=-3)
+
+        for key, value in cls._parameters.iteritems():
+
+            # Create a copy and add to the parameters dictionary
+            # Then we will add a property with the name of the parameter.
+            # This is done so that the user cannot overwrite by mistake
+            # the parameter
+
+            instance._parameters[key] = value.duplicate()
+
+            # Now add a property with the name of the parameter.
+
+            this_setter = functools.partial(FunctionMeta.set_parameter, parameter_name=key)
+            this_getter = functools.partial(FunctionMeta.get_parameter, parameter_name=key)
+
+            setattr(cls, key, property(this_getter, this_setter, doc="Get or set %s" % key))
+
+            if key in kwargs:
+
+                instance._parameters[key].value = kwargs[key]
+
+        return instance
+
+    @staticmethod
+    def to_dict(instance):
+
+        data = collections.OrderedDict()
+
+        for par_name, parameter in instance._parameters.iteritems():
+
+            data[par_name] = parameter.to_dict()
+
+        return {instance.name: data}
+
+    @staticmethod
+    def instance_call_wrapper(instance, x):
+
+        # Gather the current parameters' values
+
+        values = {parameter_name: parameter.value for parameter_name, parameter in instance._parameters.iteritems()}
+
+        return instance.evaluate(x, **values)
+
+    @staticmethod
+    def check_calling_sequence(name, function_name, function, possible_variables):
+        """
+        Check the calling sequence for the function looking for the variables specified.
+        One or more of the variables can be in the calling sequence. Note that the
+        order of the variables will be enforced.
+        It will also enforce that the first parameter in the calling sequence is called 'self'.
+
+        :param function: the function to check
+        :param possible_variables: a list of variables to check, The order is important, and will be enforced
+        :return: a tuple containing the list of found variables, and the name of the other parameters in the calling
+        sequence
+        """
+
+        # Get calling sequence
+
+        calling_sequence = inspect.getargspec(function).args
+
+        assert calling_sequence[0] == 'self',"Wrong syntax for 'evaluate' in %s. The first argument " \
+                                             "should be called 'self'." % name
+
+        # Figure out how many variables are used
+
+        variables = filter(lambda var: var in possible_variables, calling_sequence)
+
+        # Check that they actually make sense. They must be used in the same order
+        # as specified in possible_variables
+
+        assert len(variables) > 0, "The name of the variables for 'evaluate' in %s must be one or more "\
+                                   "among %s" % (name,','.join(possible_variables))
+
+        if variables != possible_variables[:len(variables)]:
+
+            raise AssertionError("The variables %s are out of order in '%s' of %s. Should be %s."
+                                 % (",".join(variables), function_name, name, possible_variables[:len(variables)]))
+
+        other_parameters = filter(lambda var: var not in variables and var != 'self', calling_sequence)
+
+        return variables, other_parameters
+
+    @staticmethod
+    def numerical_integrator(instance, e1, e2):
+
+        return scipy.integrate.quad(instance.evaluate, e1, e2)[0]
+
+    @staticmethod
+    def get_parameter(instance, parameter_name):
+        """
+        Generic getter for a parameter
+        """
+        return instance._parameters[parameter_name]
+
+    @staticmethod
+    def set_parameter(instance, value, parameter_name):
+        """
+        Set a parameter to a new value, performing conversions if necessary
+        """
+
+        try:
+
+            # This works if value is a astropy.Quantity
+
+            new_value = value.to(instance._parameters[parameter_name].unit).value
+
+        except AttributeError:
+
+            # We get here if instead value is a simple number
+
+            instance._parameters[parameter_name].value = value
+
+        else:
+
+            # Even if the to() method works, we need to warn the user that this is
+            # very slow, and should only be used in interactive sessions for convenience
+
+            warnings.warn("Using units is convenient but slow. Do not use them during computing-intensive work.",
+                          WarningUnitsAreSlow)
 
     @staticmethod
     def parse_parameter_definition(func_name, par_name, definition):
@@ -267,200 +532,32 @@ class DefinitionParser(object):
         min_value = (None if 'min' not in definition else definition['min'])
         max_value = (None if 'max' not in definition else definition['max'])
         delta = (None if 'delta' not in definition else definition['delta'])
+        unit = ('' if 'unit' not in definition else definition['unit'])
 
         # A parameter can be fixed by using fix=yes, otherwise it is free by default
 
         free = (True if 'fix' not in definition else not bool(definition['fix']))
 
-        return Parameter(par_name, value, min_value=min_value, max_value=max_value, delta=delta, desc=desc, free=free)
-
-    def simple_function_generator(self, function_name, description, formula, parameters, tests=None, latex=None):
-        """
-
-        :param function_name:
-        :param description:
-        :param formula:
-        :param parameters:
-        :param tests: a dictionary containing the tests
-        :param latex:
-        :return:
-        """
-
-        # Parse the formula
-
-        parsed_formula = Formula(formula)
-
-        # Check that the parameters match between the definition received and the one needed by the formula
-
-        set1 = set(parameters.keys())
-        set2 = set(parsed_formula.parameters)
-
-        if set1 != set2:
-
-            # The parameters are different. Figure out who is missing and raise an exception accordingly
-
-            if set1 > set2:
-
-                missing = set1 - set2
-
-                msg = "Parameters %s have init values but are not used in function" % ",".join(missing)
-
-            else:
-
-                missing = set2 - set1
-
-                msg = "Parameters %s are used in function but do not have init values" % ",".join(missing)
-
-            raise FunctionDefinitionError(msg)
-
-        # Now create the dictionary which will be used as the locals dictionary by the __call__ method
-
-        class_locals = {}
-
-        # Transfer to the locals all the functions used by the formula
-
-        for func in parsed_formula.functions:
-            # Note that the Formula class already checked that all functions are members in numpy and that they
-            # are ufuncs
-
-            class_locals[func] = getattr(np, func)
-
-        # Finally, compile the formula and test it
-        # NOTE: we don't catch exceptions because we already sanitized the input, and if we fail here we want
-        # to crash
-
-        parsed = parser.expr(parsed_formula.formula)
-
-        compiled_formula = parsed.compile()
-
-        # Generate the new class type
-
-        # Members
-
-        members = collections.OrderedDict()
-
-        # Create a duplicate of the parameters and store them in a private member. This private member will be
-        # used during the SimpleFunction construction
-
-        members['_original_parameters'] = collections.OrderedDict()
-
-        for k, v in parameters.iteritems():
-            # Duplicate the parameter to remove any ties with this function (avoiding creating a closure)
-
-            members['_original_parameters'][k] = v.duplicate()
-
-        # Copy the parsed formula in a private member
-
-        members['_parsed_formula'] = parsed_formula
-
-        # Copy the compiled formula in a private member
-
-        members['_compiled_formula'] = compiled_formula
-
-        # Store the name of the function
-
-        members['_function_name'] = function_name
-
-        # If the LATEX expression has been given, store it in the formula,
-        # otherwise store None
-
-        if latex is not None:
-
-            members['_latex'] = latex
-
-        else:
-
-            members['_latex'] = None
-
-        # Add locals
-
-        members['_class_locals'] = class_locals
-
-        # Now for all the parameters for this function, add a property to the class so that the user can
-        # set a parameter by doing powerlaw.logK = 5.0 and get a parameter by doing powerlaw.logK
-
-        def my_setter(name, cls, value):
-
-            # Update the parameter in the dictionary
-
-            cls.parameters[name].value = value
-
-            # Update the value of the parameter in the locals
-
-            cls._instance_locals[name] = value
-
-        def my_getter(name, cls):
-            return cls.parameters[name]
-
-        for par_name, par in members['_original_parameters'].iteritems():
-            this_setter = functools.partial(my_setter, par_name)
-            this_getter = functools.partial(my_getter, par_name)
-
-            members[par_name] = property(this_getter,
-                                         this_setter,
-                                         doc='Set the value of parameter %s or get its instance' % par_name)
-
-        # This create a new class named the content of name, derived from SimpleFunction, with the members in the
-        # members dictionary
-
-        n_var = len(parsed_formula.variables)
-
-        members['ndim'] = n_var
-
-        if n_var == 1:
-
-            new_class = type(function_name, (SimpleFunction1D,), members)
-
-        elif n_var == 2:
-
-            new_class = type(function_name, (SimpleFunction2D,), members)
-
-        elif n_var == 3:
-
-            new_class = type(function_name, (SimpleFunction3D,), members)
-
-        else:
-
-            raise FunctionDefinitionError("Only up to 3 variables are permitted")
-
-
-        # Let's test it
-
-        # First create an instance
-
-        new_class_instance = new_class()
-
-        # Now perform the tests, if defined, otherwise issue a warning
-
-        if tests is None:
-
-            warnings.warn("The function %s contains no tests." % function_name, WarningNoTests)
-
-        else:
-
-            # Loop over the tests and execute them
-
-            for test in tests:
-                # this function will raise if the test is failed
-
-                self.test_simple_function(function_name, test, parsed_formula.variables, new_class_instance)
-
-        return new_class
+        return Parameter(par_name, value, min_value=min_value, max_value=max_value,
+                         delta=delta, desc=desc, free=free, unit=unit)
 
     @staticmethod
-    def test_simple_function(name, test_specification, variables, new_class_instance):
+    def test_simple_function(name, test_specification, new_class_instance):
 
         # Check that all required variables are in the test
 
-        for var in variables:
+        var_names = ['x','y','z']
 
-            if var not in test_specification:
-                raise TestSpecificationError("Variable %s not specified in one of the tests for %s" % (var, name))
+        for var_name in var_names[:new_class_instance.n_dim]:
+
+            if var_name not in test_specification:
+                raise TestSpecificationError("Variable %s not specified in one of the tests for %s" % (var_name, name))
 
         # Check that we have the minimum amount of specifications
 
         if 'function value' not in test_specification or \
-                        'tolerance' not in test_specification:
+            'tolerance' not in test_specification:
+
             raise TestSpecificationError("Test specification for %s lacks 'function value' or 'tolerance' attribute" %
                                          name)
 
@@ -469,9 +566,9 @@ class DefinitionParser(object):
 
         point = {}
 
-        for var in variables:
+        for var_name in var_names[:new_class_instance.n_dim]:
 
-            point[var] = test_specification[var]
+            point[var_name] = float(test_specification[var_name])
 
         # Make a string representing the point, to be used in warnings or exceptions
 
@@ -483,13 +580,18 @@ class DefinitionParser(object):
 
             value = new_class_instance(**point)
 
+        except TypeError:
+
+            raise TestFailed("Cannot call function %s at point %s. Did you remember to use .value "\
+                             "to access the value of a parameter in the 'evaluate' method?" % (name, point_repr))
+
         except:
 
             exc_type, value, traceback = sys.exc_info()
 
-            raise TestFailed("Cannot call function at point %s because of exception %s: '%s'" % (point_repr,
-                                                                                                 exc_type,
-                                                                                                 value))
+            raise TestFailed("Error in 'evaluate' for %s at point %s. Exception %s: '%s'" % (name, point_repr,
+                                                                                             exc_type,
+                                                                                             value))
 
         distance = value - test_specification['function value']
 
@@ -507,171 +609,75 @@ class DefinitionParser(object):
             pass
 
 
-class Function(NamedObject):
+class powerlaw(object):
+    r"""
+    description :
 
-    def __init__(self, function_name):
+        A simple power-law with normalization expressed as
+        a logarithm
 
-        super(Function, self).__init__(function_name, allow_spaces=False)
+    latex : \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index}
 
-    @property
-    def parameters(self):
-        return self._parameters
+    parameters :
 
-    def __getitem__(self, item):
+        logK :
 
-        return self._parameters[item]
+            desc : Logarithm of normalization
+            initial value : 0
+            min : -40
+            max : 40
+            unit : "1 / (keV cm2 s)"
 
-    def to_dict(self):
+        piv :
 
-        data = collections.OrderedDict()
+            desc : Pivot energy
+            initial value : 1
+            fix : yes
+            unit: keV
 
-        for par_name, parameter in self.parameters.iteritems():
+        index :
 
-            data[par_name] = parameter.to_dict()
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
 
-        return {self.name: data}
+    tests :
+        - { x : 10, function value: 0.01, tolerance: 1e-20}
+        - { x : 100, function value: 0.0001, tolerance: 1e-20}
 
+    """
 
-class SimpleFunction(Function):
+    __metaclass__ = FunctionMeta
 
-    def __init__(self):
+    def evaluate(self, x, logK, piv, index):
 
-        # This class must only be created by the simple_function_generator function. Such function for example
-        # add a private member _original_parameters which contains the parameters specified in the yaml file
-        # describing the function. In this constructor we need to duplicate the parameters so that we have copies
-        # that we can change
+        return 10**logK * np.power(x / piv, index)
 
-        # Enforce proper use
+    def integral(self, e1, e2):
 
-        if not hasattr(self, '_original_parameters'):
-            raise DesignViolation("You cannot instance SimpleFunction directly, but only through "
-                                  "the simple_function_generator function.")
+        integral =  ( 10**self.logK * np.power(e2, self.index+1) -
+                      10**self.logK * np.power(e1, self.index+1) )
 
-        # Duplicate the parameters so we remove the link between the different instances of this function,
-        # which share the _original_parameters
+        return integral
 
-        self._parameters = collections.OrderedDict()
 
-        for k, v in self._original_parameters.iteritems():
-            self._parameters[k] = v.duplicate()
+def get_function(function_name):
+    """
+    Returns the function class "name", which must be among the known functions.
 
-        # Now create a new local dictionary to keep the locals for this instance
+    :param function_name: the name of the function
+    :return: the class (note: this is not the instance!). You have to build it yourself, like::
 
-        self._instance_locals = {}
+      my_powerlaw = get_function('powerlaw')()
 
-        # Add the members of the __class_locals for a faster access during the __call__ method
+    """
 
-        for k,v in self._class_locals.iteritems():
-            self._instance_locals[k] = v
+    if function_name in _known_functions:
 
-        # Now set the parameters in the locals to the default values
+        return _known_functions[function_name]
 
-        for par_name, par in self._parameters.iteritems():
+    else:
 
-            self._instance_locals[par_name] = par.value
-
-        super(SimpleFunction, self).__init__(self._function_name)
-
-    def __repr__(self):
-
-        representation = "Function %s:\n" % self.name
-        representation += "    -parameters: %s\n" % ",".join(self.parameters.keys())
-
-        return representation
-
-
-class SimpleFunction1D(SimpleFunction):
-    def __call__(self, x):
-        # Transfer variables to the local dictionary used by eval
-
-        self._instance_locals['x'] = x
-
-        # Note that when parameters change values, they are updated in the _class_locals dictionary by
-        # the setter defined in the simple_function_generator
-
-        # Using an empty globals dictionary speed things up, because looking into the locals dictionary is much
-        # faster than looking in the globals one
-
-        return eval(self._compiled_formula, {}, self._instance_locals)
-
-
-class SimpleFunction2D(SimpleFunction):
-    def __call__(self, x, y, z):
-
-        # Transfer variables to the local dictionary used by eval
-
-        self._instance_locals['x'] = x
-        self._instance_locals['y'] = y
-
-        # Note that when parameters change values, they are updated in the _class_locals dictionary by
-        # the setter defined in the simple_function_generator
-
-        # Using an empty globals dictionary speed things up, because looking into the locals dictionary is much
-        # faster than looking in the globals one
-
-        return eval(self._compiled_formula, {}, self._instance_locals)
-
-
-class SimpleFunction3D(SimpleFunction):
-    def __call__(self, x, y, z):
-        # Transfer variables to the local dictionary used by eval
-
-        self._instance_locals['x'] = x
-        self._instance_locals['y'] = y
-        self._instance_locals['z'] = z
-
-        # Note that when parameters change values, they are updated in the _class_locals dictionary by
-        # the setter defined in the simple_function_generator
-
-        # Using an empty globals dictionary speed things up, because looking into the locals dictionary is much
-        # faster than looking in the globals one
-
-        return eval(self._compiled_formula, {}, self._instance_locals)
-
-
-# Init this here to be a global variable, so it can be imported with "from astromodels.functions.function import f1d"
-
-f1d = None
-f2d = None
-f3d = None
-
-
-def build_function_containers():
-    global f1d, f2d, f3d
-
-    # Build the function containers
-
-    f1d = FunctionContainer()
-
-    yaml_files = pkg_resources.resource_listdir('astromodels', 'data/functions/')
-
-    for yaml_file in yaml_files:
-
-        df = DefinitionParser('data/functions/' + yaml_file)
-
-        for func_name, func_class in df.functions.iteritems():
-
-            if func_class.ndim==1:
-
-                f1d.add_function(func_name, func_class)
-
-            elif func_class.ndim==2:
-
-                f2d.add_function(func_name, func_class)
-
-            elif func_class.ndim==3:
-
-                f3d.add_function(func_name, func_class)
-
-            else:
-
-                raise NotImplementedError("Cannot handle a function of type %s" % type(func_class))
-
-
-
-# Run this on import
-build_function_containers()
-
-# Now add all the functions to the dictionary of this module, so pickle will find them
-
-# __dict__['powerlaw'] = f1d.powerlaw
+        raise UnknownFunction("Function %s is not known. Known functions are: %s" %
+                              (function_name,",".join(_known_functions.keys())))
