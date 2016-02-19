@@ -7,7 +7,6 @@ import yaml as my_yaml
 
 import collections
 
-
 _mapping_tag = my_yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG
 
 

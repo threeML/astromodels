@@ -136,7 +136,6 @@ If we now change the value of one of the parameters, we see the parameter p chan
 
 """
 
-
 import warnings
 import exceptions
 import copy
@@ -296,7 +295,7 @@ class Parameter(object):
     # Define the property 'unit'
     def set_unit(self, new_unit):
 
-        #TODO use astropy units
+        # TODO use astropy units
 
         self._unit = new_unit
 
@@ -304,8 +303,8 @@ class Parameter(object):
 
         return self._unit
 
-    unit = property(get_unit,set_unit,
-                     doc="""Gets or sets the unit for the parameter""")
+    unit = property(get_unit, set_unit,
+                    doc="""Gets or sets the unit for the parameter""")
 
     # Define the property "value" with a control that the parameter cannot be set
     # outside of its bounds
@@ -318,7 +317,6 @@ class Parameter(object):
         # (remember: an empty dictionary test as False, a non-empty as true)
 
         if self._auxVariable:
-
             self.value = self._auxVariable['law'](self._auxVariable['variable'].value)
 
         return self._value
@@ -346,7 +344,8 @@ class Parameter(object):
 
             except:
 
-                raise NotCallableOrErrorInCall("Could not get callback for parameter %s with value %s" % (self.name, value))
+                raise NotCallableOrErrorInCall(
+                    "Could not get callback for parameter %s with value %s" % (self.name, value))
 
         self._value = value
 
@@ -464,13 +463,13 @@ class Parameter(object):
         except:
 
             raise NotCallableOrErrorInCall("Could not call the provided prior. " +
-                               "Is it a function accepting the current value of the parameter?")
+                                           "Is it a function accepting the current value of the parameter?")
 
         self._prior = prior
 
     prior = property(get_prior, set_prior,
-                     doc="Gets or sets the current prior for this parameter. The prior must be a callable function " +
-                         "accepting the current value of the parameter as input and returning the probability " +
+                     doc='Gets or sets the current prior for this parameter. The prior must be a callable function '
+                         "accepting the current value of the parameter as input and returning the probability "
                          "density as output")
 
     # Define property "free"
@@ -483,7 +482,7 @@ class Parameter(object):
 
         return self._free
 
-    free = property(get_free,set_free,
+    free = property(get_free, set_free,
                     doc="Gets or sets whether the parameter is free or not. Use booleans, like: 'p.free = True' "
                         " or 'p.free = False'. ")
 
@@ -497,15 +496,15 @@ class Parameter(object):
 
         return not self._free
 
-    fix = property(get_fix,set_fix,
-                    doc="Gets or sets whether the parameter is fixed or not. Use booleans, like: 'p.fix = True' "
-                        " or 'p.fix = False'. ")
+    fix = property(get_fix, set_fix,
+                   doc="Gets or sets whether the parameter is fixed or not. Use booleans, like: 'p.fix = True' "
+                       " or 'p.fix = False'. ")
 
     def add_auxiliary_variable(self, variable, law):
 
         assert isinstance(variable, AuxiliaryVariable)
 
-        #Test the law
+        # Test the law
         try:
 
             this_value = law(variable.value)
@@ -513,7 +512,6 @@ class Parameter(object):
         except:
 
             raise NotCallableOrErrorInCall("The provided law for the auxiliary variable failed on call")
-
 
         self._auxVariable['law'] = law
         self._auxVariable['variable'] = variable
@@ -535,12 +533,12 @@ class Parameter(object):
 
     def __repr__(self):
         return "Parameter %s = %s\n" \
-               "(min_value = %s, max_value = %s, delta = %s, free = %s)" %(self.name,
-                                                                           self.value,
-                                                                           self.min_value,
-                                                                           self.max_value,
-                                                                           self.delta,
-                                                                           self.free)
+               "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
+                                                                            self.value,
+                                                                            self.min_value,
+                                                                            self.max_value,
+                                                                            self.delta,
+                                                                            self.free)
 
     def to_dict(self):
 

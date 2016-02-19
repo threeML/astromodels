@@ -4,8 +4,7 @@ import astropy.table
 
 
 def dict_to_table(dictionary):
-
-    assert len(dictionary.values()) > 0,"Dictionary cannot be empty"
+    assert len(dictionary.values()) > 0, "Dictionary cannot be empty"
 
     # Create an empty table
 
@@ -24,7 +23,6 @@ def dict_to_table(dictionary):
     column_names = prototype.keys()
 
     for column_name in column_names:
-
         table[column_name] = map(lambda x: x[column_name], dictionary.values())
 
     return table
@@ -60,7 +58,5 @@ class Table(astropy.table.Table):
 
 
 class NumericMatrix(Table):
-
-    def _base_repr_(self, html=False):
+    def _base_repr_(self, html=False, show_name=True, **kwargs):
         return super(NumericMatrix, self)._base_repr_(html, False)
-

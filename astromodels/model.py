@@ -2,6 +2,7 @@ __author__ = 'giacomov'
 
 import collections
 import os
+
 from astromodels.dual_access_class import DualAccessClass
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.extended_source import ExtendedSource
@@ -9,7 +10,7 @@ from astromodels.my_yaml import my_yaml
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.table import dict_to_table
 from astromodels.utils.io import display
-from astromodels.parameter import Parameter
+
 
 class ModelFileExists(IOError):
     pass
@@ -20,20 +21,18 @@ class InvalidInput(ValueError):
 
 
 class CannotWriteModel(IOError):
-
     def __init__(self, directory, message):
-
         # Add a report on disk usage to the message
 
         free_space = disk_usage(directory).free
 
-        message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (directory, free_space/1024.0/1024.0)
+        message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (
+            directory, free_space / 1024.0 / 1024.0)
 
         super(CannotWriteModel, self).__init__(message)
 
 
 class Model(DualAccessClass):
-
     def __init__(self, *sources):
 
         # Dictionary to keep all parameters
@@ -100,7 +99,6 @@ class Model(DualAccessClass):
         for param_name, param_dict in parameters_dictionary.iteritems():
 
             if param_dict['free']:
-
                 param = self.get_parameter(param_name)
 
                 free_parameters_dictionary[param_name] = param
@@ -172,7 +170,7 @@ class Model(DualAccessClass):
 
         for source_name, source in dict_representation.iteritems():
 
-            representation += "%s%s%s" %(div,source_name,div)
+            representation += "%s%s%s" % (div, source_name, div)
 
             # Create a dictionary with only one key
 
@@ -217,7 +215,6 @@ class Model(DualAccessClass):
         # Loop over all sources and get the serializations to dictionaries
 
         for source_name, source in self.sources.iteritems():
-
             data[source_name] = source.to_dict()
 
         return data
@@ -226,7 +223,7 @@ class Model(DualAccessClass):
 
         """Save the model to disk"""
 
-        if os.path.exists(output_file) and overwrite==False:
+        if os.path.exists(output_file) and overwrite is False:
 
             raise ModelFileExists("The file %s exists already. If you want to overwrite it, use the 'overwrite=True' "
                                   "options as 'model.save(\"%s\", overwrite=True)'. " % (output_file, output_file))
@@ -245,17 +242,17 @@ class Model(DualAccessClass):
 
                 representation = my_yaml.dump(data)
 
-                with open(output_file,"w+") as f:
+                with open(output_file, "w+") as f:
 
                     # Add a new line at the end of each voice (just for clarity)
 
-                    f.write(representation.replace("\n","\n\n"))
+                    f.write(representation.replace("\n", "\n\n"))
 
             except IOError:
 
                 raise CannotWriteModel(os.path.dirname(os.path.abspath(output_file)),
                                        "Could not write model file %s. Check your permissions to write or the "
-                                       "report on the free space which follows: "% output_file)
+                                       "report on the free space which follows: " % output_file)
 
     @staticmethod
     def _user_friendly_repr_of_parameters(sources, add_source_name=True):
@@ -289,7 +286,7 @@ class Model(DualAccessClass):
 
             # Check whether this is a point source or an extended one
 
-            if src_type=='point source':
+            if src_type == 'point source':
 
                 # Get the position parameters
 
@@ -298,7 +295,6 @@ class Model(DualAccessClass):
                     # Check whether this is effectively a parameter
 
                     if isinstance(param, dict):
-
                         # Generate the key and add it to the dictionary
 
                         key = '%sposition.%s' % (master_key, param_name)
@@ -318,8 +314,7 @@ class Model(DualAccessClass):
                     for param_name, param in function_parameters.iteritems():
 
                         if isinstance(param, dict):
-
-                            key = '%s%s.%s.%s' % (master_key,component_name, function_name, param_name)
+                            key = '%s%s.%s.%s' % (master_key, component_name, function_name, param_name)
 
                             params[key] = param
 
@@ -385,7 +380,7 @@ class Model(DualAccessClass):
 
         return self._extended_sources_list[id].get_brightness(j2000_ra, j2000_dec, energies)
 
-    def get_extended_source_name(self,id):
+    def get_extended_source_name(self, id):
         """
         Return the name of the n-th extended source
 
@@ -404,5 +399,3 @@ class Model(DualAccessClass):
     def is_inside_any_extended_source(self, j2000_ra, j2000_dec):
 
         return True
-
-

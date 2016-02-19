@@ -6,16 +6,15 @@ from astromodels.parameter import Parameter, SettingOutOfBounds, AuxiliaryVariab
 
 
 def suite():
-
-    #This will automatically add all methods in the ParameterTestCase class starting with
+    # This will automatically add all methods in the ParameterTestCase class starting with
     # test* to the test suite
 
     suite = unittest.TestLoader().loadTestsFromTestCase(ParameterTestCase)
 
     return suite
 
-class ParameterTestCase(unittest.TestCase):
 
+class ParameterTestCase(unittest.TestCase):
     def test_minimal_constructor(self):
         p = Parameter("test", 1)
 
@@ -25,7 +24,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.1 * p.value)
-        self.assertEqual(p.free,True)
+        self.assertEqual(p.free, True)
 
     def test_constructor_with_min(self):
         p = Parameter("test", 1, min_value=0)
@@ -36,7 +35,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.1 * p.value)
-        self.assertEqual(p.free,True)
+        self.assertEqual(p.free, True)
 
     def test_constructor_with_max(self):
         p = Parameter("test", 1, max_value=10)
@@ -47,7 +46,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertEqual(p.max_value, 10)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.1 * p.value)
-        self.assertEqual(p.free,True)
+        self.assertEqual(p.free, True)
 
     def test_constructor_with_delta(self):
         p = Parameter("test", 1, delta=0.43)
@@ -58,10 +57,9 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.43)
-        self.assertEqual(p.free,True)
+        self.assertEqual(p.free, True)
 
     def test_constructor_with_desc(self):
-
         description = "Just a fake parameter"
 
         p = Parameter("test", 1, desc=description)
@@ -73,11 +71,10 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.43)
         self.assertEqual(p.description, description)
-        self.assertEqual(p.__doc__,description)
-        self.assertEqual(p.free,True)
+        self.assertEqual(p.__doc__, description)
+        self.assertEqual(p.free, True)
 
     def test_constructor_with_free(self):
-
         free = False
 
         p = Parameter("test", 1, free=free)
@@ -88,7 +85,7 @@ class ParameterTestCase(unittest.TestCase):
         self.assertIsNone(p.max_value)
         self.assertIsNone(p._prior)
         self.assertEqual(p.delta, 0.43)
-        self.assertEqual(p.free,free)
+        self.assertEqual(p.free, free)
 
     def test_set_get_value(self):
         p = Parameter("test", 1)
@@ -186,22 +183,21 @@ class ParameterTestCase(unittest.TestCase):
             p.name = "new name"
 
     def test_auxiliary_variable(self):
+        p = Parameter("test", 1.0)
 
-        p = Parameter("test",1.0)
-
-        t = AuxiliaryVariable("time",0.0)
+        t = AuxiliaryVariable("time", 0.0)
 
         law = lambda x: 3.2 * x + 5.6
 
-        p.add_auxiliary_variable(t,law)
+        p.add_auxiliary_variable(t, law)
 
-        self.assertEqual(p._auxVariable['law'],law)
-        self.assertEqual(p._auxVariable['variable'],t)
+        self.assertEqual(p._auxVariable['law'], law)
+        self.assertEqual(p._auxVariable['variable'], t)
 
-        #Test the values
-        self.assertEqual(p.value,5.6)
+        # Test the values
+        self.assertEqual(p.value, 5.6)
 
-        #Test link
+        # Test link
         t.value = 10.0
 
-        self.assertEqual(p.value,law(t.value))
+        self.assertEqual(p.value, law(t.value))

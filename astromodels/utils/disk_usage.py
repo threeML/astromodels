@@ -1,6 +1,5 @@
 __author__ = 'Giampaolo Rodola <g.rodola [AT] gmail [DOT] com>'
 
-
 """
 Return disk usage statistics about the given path as a (total, used, free)
 namedtuple.  Values are expressed in bytes.
@@ -13,7 +12,6 @@ import collections
 
 _ntuple_diskusage = collections.namedtuple('usage', 'total used free')
 
-
 if hasattr(os, 'statvfs'):  # POSIX
     def disk_usage(path):
         st = os.statvfs(path)
@@ -22,13 +20,13 @@ if hasattr(os, 'statvfs'):  # POSIX
         used = (st.f_blocks - st.f_bfree) * st.f_frsize
         return _ntuple_diskusage(total, used, free)
 
-elif os.name == 'nt':       # Windows
+elif os.name == 'nt':  # Windows
     import ctypes
     import sys
 
+
     def disk_usage(path):
-        _, total, free = ctypes.c_ulonglong(), ctypes.c_ulonglong(), \
-                           ctypes.c_ulonglong()
+        _, total, free = ctypes.c_ulonglong(), ctypes.c_ulonglong(), ctypes.c_ulonglong()
         if sys.version_info >= (3,) or isinstance(path, unicode):
             fun = ctypes.windll.kernel32.GetDiskFreeSpaceExW
         else:
@@ -42,5 +40,3 @@ else:
     raise NotImplementedError("platform not supported")
 
 disk_usage.__doc__ = __doc__
-
-

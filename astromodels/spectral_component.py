@@ -7,7 +7,6 @@ from astromodels.dual_access_class import ProtectedAttribute
 
 
 class SpectralComponent(NamedObject):
-
     # This is needed to avoid problems when constructing the class, due to the fact that we are overriding
     # the __setattr__ and __getattr__ attributes
 
@@ -43,7 +42,6 @@ class SpectralComponent(NamedObject):
         # Print the polarization only if it's not None
 
         if self._polarization is not None:
-
             representation += "    -polarization: %s\n" % self.polarization.name
 
         return representation
@@ -57,7 +55,7 @@ class SpectralComponent(NamedObject):
 
         # The first check is needed to avoid infinite recursion during the constructor
 
-        if self._spectral_shape is not None and item==self._spectral_shape.name:
+        if self._spectral_shape is not None and item == self._spectral_shape.name:
 
             return self._spectral_shape
 
@@ -72,7 +70,7 @@ class SpectralComponent(NamedObject):
 
         # The first check is needed to avoid infinite recursion during the constructor
 
-        if self._spectral_shape is not None and key==self.shape.name:
+        if self._spectral_shape is not None and key == self.shape.name:
 
             raise ProtectedAttribute("You cannot overwrite the shape %s" % key)
 

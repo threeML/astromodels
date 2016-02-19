@@ -48,12 +48,10 @@ class SkyDirection(object):
             # with either Parameter instances or just floats
 
             if isinstance(ra, float):
-
-                ra = Parameter('ra',ra,min_value=0.0,max_value=360.0)
+                ra = Parameter('ra', ra, min_value=0.0, max_value=360.0)
 
             if isinstance(dec, float):
-
-                dec = Parameter('dec',dec,min_value=-90.0, max_value=90.0)
+                dec = Parameter('dec', dec, min_value=-90.0, max_value=90.0)
 
             assert 0 <= ra.value <= 360, "R.A. cannot have a value of %s, it must be 0 <= ra <= 360" % ra
             assert -90 <= dec.value <= 90, "dec cannot have a value of %s, it must be -90 <= dec <= 90" % dec
@@ -76,12 +74,10 @@ class SkyDirection(object):
             # with either Parameter instances or just floats
 
             if isinstance(l, float):
-
-                l = Parameter('l',l,min_value=0.0,max_value=360.0)
+                l = Parameter('l', l, min_value=0.0, max_value=360.0)
 
             if isinstance(b, float):
-
-                b = Parameter('b',b,min_value=-90.0, max_value=90.0)
+                b = Parameter('b', b, min_value=-90.0, max_value=90.0)
 
             assert 0 <= l.value <= 360, "L cannot have a value of %s, it must be 0 <= L <= 360" % l
             assert -90 <= b.value <= 90, "B cannot have a value of %s, it must be -90 <= B <= 90" % b
@@ -107,7 +103,7 @@ class SkyDirection(object):
             l = self._parameters['l'].value
             b = self._parameters['b'].value
 
-            return coordinates.SkyCoord(l=l* u.deg, b=b * u.deg,
+            return coordinates.SkyCoord(l=l * u.deg, b=b * u.deg,
                                         frame='galactic', equinox=self._equinox)
 
         else:
@@ -160,8 +156,8 @@ class SkyDirection(object):
 
             return sky_pos.icrs.ra.value
 
-    ra = property(get_ra,set_ra,doc="Get/set the new Right Ascension. Note that you can set R.A. only if you have "
-                                    "instanced the object with the pair (R.A., Dec)")
+    ra = property(get_ra, set_ra, doc="Get/set the new Right Ascension. Note that you can set R.A. only if you have "
+                                      "instanced the object with the pair (R.A., Dec)")
 
     def set_dec(self, value):
         """
@@ -195,8 +191,8 @@ class SkyDirection(object):
 
             return sky_pos.icrs.dec.value
 
-    dec = property(get_dec,set_dec,doc="Get/set the new Declination. Note that you can set Dec. only if you have "
-                                       "instanced the object with the pair (R.A., Dec)")
+    dec = property(get_dec, set_dec, doc="Get/set the new Declination. Note that you can set Dec. only if you have "
+                                         "instanced the object with the pair (R.A., Dec)")
 
     def set_l(self, value):
         """
@@ -230,8 +226,8 @@ class SkyDirection(object):
 
             return sky_pos.galactic.l.value
 
-    l = property(get_l,set_l,doc="Get/set the new L. Note that you can set L only if you have "
-                                 "instanced the object with the pair (L,B)")
+    l = property(get_l, set_l, doc="Get/set the new L. Note that you can set L only if you have "
+                                   "instanced the object with the pair (L,B)")
 
     def set_b(self, value):
         """
@@ -265,8 +261,8 @@ class SkyDirection(object):
 
             return sky_pos.galactic.b.value
 
-    b = property(get_b,set_b,doc="Get/set the new B. Note that you can set B only if you have "
-                                 "instanced the object with the pair (L,B)")
+    b = property(get_b, set_b, doc="Get/set the new B. Note that you can set B only if you have "
+                                   "instanced the object with the pair (L,B)")
 
     def to_dict(self):
 
@@ -285,42 +281,41 @@ class SkyDirection(object):
             data['equinox'] = self._equinox
 
         return data
-    
+
     def fix(self):
         """
         Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class
         has been instanced)
         
         """
-        
+
         if self._coord_type == 'equatorial':
-            
+
             self._parameters['ra'].fix = True
             self._parameters['dec'].fix = True
-        
+
         else:
-            
+
             self._parameters['l'].fix = True
             self._parameters['b'].fix = True
-    
+
     def free(self):
         """
         Free the parameters with the coordinates (either ra,dec or l,b depending on how the class
         has been instanced)
         
         """
-        
+
         if self._coord_type == 'equatorial':
-            
+
             self._parameters['ra'].fix = False
             self._parameters['dec'].fix = False
-        
+
         else:
-            
+
             self._parameters['l'].fix = False
             self._parameters['b'].fix = False
-        
-    
+
     @classmethod
     def from_dict(cls, data):
 

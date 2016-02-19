@@ -17,8 +17,7 @@ class DualAccessClass(object):
         self._lookup_dictionary = dictionary
         self._dictionary_label = label
 
-        for key,value in self._lookup_dictionary.iteritems():
-
+        for key, value in self._lookup_dictionary.iteritems():
             super(DualAccessClass, self).__setattr__(key, value)
 
     def __setattr__(self, key, value):

@@ -14,7 +14,6 @@ class ErrorInFormula(Exception):
 
 
 class Formula(object):
-
     def __init__(self, formula):
         """
 
@@ -64,14 +63,14 @@ class Formula(object):
 
                     if isinstance(node.func.value, ast.Name):
 
-                        if node.func.value.id=='np' or node.func.value.id=='numpy':
+                        if node.func.value.id == 'np' or node.func.value.id == 'numpy':
 
                             # Advice to use only the function instead of np.function
 
                             v = "%s.%s" % (node.func.value.id, node.func.attr)
 
-                            raise ErrorInFormula( "Do not express numpy math function as '%s'. "
-                                                  "Use just '%s' instead." % (v,node.func.attr))
+                            raise ErrorInFormula("Do not express numpy math function as '%s'. "
+                                                 "Use just '%s' instead." % (v, node.func.attr))
 
                         else:
 
@@ -81,9 +80,7 @@ class Formula(object):
                     # Check if this is something like scipy.stats.norm.pdf (i.e., multiple attributes)
 
                     if isinstance(node.func.value, ast.Attribute):
-
                         raise ErrorInFormula("In a formula you can only use math functions from numpy")
-
 
                 # Now check if this function is really a numpy function
 
@@ -95,8 +92,7 @@ class Formula(object):
 
                     # Check that the function is a ufunc
 
-                    if not isinstance(getattr(numpy,node.func.id),numpy.ufunc):
-
+                    if not isinstance(getattr(numpy, node.func.id), numpy.ufunc):
                         raise ErrorInFormula("The function %s is not a numpy ufunc" % node.func_id)
 
                 self._functions.append(node.func.id)
@@ -120,27 +116,23 @@ class Formula(object):
                     # This is a variable. Add it to the list if it is not there already
 
                     if node.id not in self._names:
-
                         self._names.append(node.id)
 
         # Now divide parameters from variables such as x,y,z
 
-        self._variables = filter(lambda token: token in ['x','y','z'], self._names)
+        self._variables = filter(lambda token: token in ['x', 'y', 'z'], self._names)
 
         # Safety check: the user must name the variables in order. In other words, if there is a y variable there
         # MUST be a x as well. If there is a z variable, there must be both x and y as well.
 
         if 'z' in self._variables and ('x' not in self._variables or 'y' not in self._variables):
-
             raise ErrorInFormula("The first variable must be called 'x', the second 'y' and the third 'z'."
                                  " If you have 'z' you must have also 'x' and 'y'. Rename your variables accordingly.")
 
         if 'y' in self._variables and 'x' not in self._variables:
-
             raise ErrorInFormula("You have 'y' in your formula but you don't have 'x'. Rename your variable as 'x'.")
 
-        self._parameters = filter(lambda token: token not in ['x','y','z'], self._names)
-
+        self._parameters = filter(lambda token: token not in ['x', 'y', 'z'], self._names)
 
     @property
     def variables(self):

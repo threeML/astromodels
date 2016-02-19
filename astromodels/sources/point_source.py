@@ -67,14 +67,14 @@ class PointSource(Source):
 
             if (ra is not None) and (dec is not None):
 
-                 # Check that ra and dec are actually numbers
+                # Check that ra and dec are actually numbers
 
                 try:
 
                     ra = float(ra)
                     dec = float(dec)
 
-                except (TypeError,ValueError):
+                except (TypeError, ValueError):
 
                     raise AssertionError("RA and Dec must be numbers. If you are confused by this message, you "
                                          "are likely using the constructor in the wrong way. Check the documentation.")
@@ -86,9 +86,9 @@ class PointSource(Source):
                 sky_position = SkyDirection(l=l, b=b)
 
         self._sky_position = sky_position
-        
+
         # Fix the position by default
-        
+
         self._sky_position.fix()
 
         # Now gather the component(s)
@@ -102,8 +102,7 @@ class PointSource(Source):
         # If the user specified only one component, make a list of one element
 
         if spectral_shape is not None:
-
-            components = [SpectralComponent("main",spectral_shape)]
+            components = [SpectralComponent("main", spectral_shape)]
 
         super(PointSource, self).__init__(source_name, components)
 
@@ -117,7 +116,7 @@ class PointSource(Source):
 
         results = [component.shape(energies) for component in self.components.values()]
 
-        return numpy.sum(results,0)
+        return numpy.sum(results, 0)
 
     def __repr__(self):
 
@@ -149,7 +148,6 @@ class PointSource(Source):
         components_dict = collections.OrderedDict()
 
         for component_name, component in self.components.iteritems():
-
             components_dict[component_name] = component.to_dict()
 
         data[components_key] = components_dict

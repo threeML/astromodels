@@ -87,17 +87,14 @@ from astromodels.my_yaml import my_yaml
 
 
 class ModelIOError(IOError):
-
     pass
 
 
 class ModelYAMLError(my_yaml.YAMLError):
-
     pass
 
 
 class ModelSyntaxError(RuntimeError):
-
     pass
 
 
@@ -115,7 +112,6 @@ def load_model(filename):
 
 
 class ModelParser(object):
-
     def __init__(self, model_file):
 
         # Read model file and deserialize into a dictionary
@@ -145,7 +141,6 @@ class ModelParser(object):
         self._sources = []
 
         for source_name, source_definition in self._model_dict.iteritems():
-
             this_parser = SourceParser(source_name, source_definition)
 
             self._sources.append(this_parser.get_source())
@@ -156,10 +151,9 @@ class ModelParser(object):
 
 
 class SourceParser(object):
-
     def __init__(self, source_name, source_definition):
 
-        assert len(source_definition.values())==1, "Source %s cannot have multiple types" % source_name
+        assert len(source_definition.values()) == 1, "Source %s cannot have multiple types" % source_name
 
         self._source_name = source_name
 
@@ -178,7 +172,7 @@ class SourceParser(object):
         else:
 
             raise ModelSyntaxError("Don't recognize source type '%s' for source %s. "
-                                   "Valid types are 'point source' or 'extended source'." %(source_type, source_name) )
+                                   "Valid types are 'point source' or 'extended source'." % (source_type, source_name))
 
     def get_source(self):
 
@@ -211,7 +205,6 @@ class SourceParser(object):
         components = []
 
         for component_name, component_definition in pts_source_definition['spectrum'].iteritems():
-
             this_component = self._parse_spectral_component(component_name, component_definition)
 
             components.append(this_component)
@@ -229,11 +222,11 @@ class SourceParser(object):
 
         if 'ra' in sky_direction_definition and 'dec' in sky_direction_definition:
 
-            ra = parameter.Parameter('RA',sky_direction_definition['ra']['value'])
+            ra = parameter.Parameter('RA', sky_direction_definition['ra']['value'])
             ra.set_bounds(0, 360)
             ra.fix = True
 
-            dec = parameter.Parameter('Dec',sky_direction_definition['dec']['value'])
+            dec = parameter.Parameter('Dec', sky_direction_definition['dec']['value'])
             dec.set_bounds(-90, 90)
             dec.fix = True
 
@@ -242,11 +235,11 @@ class SourceParser(object):
 
         elif 'l' in sky_direction_definition and 'b' in sky_direction_definition:
 
-            l = parameter.Parameter('l',sky_direction_definition['l']['value'])
+            l = parameter.Parameter('l', sky_direction_definition['l']['value'])
             l.set_bounds(0, 360)
             l.fix = True
 
-            b = parameter.Parameter('b',sky_direction_definition['b']['value'])
+            b = parameter.Parameter('b', sky_direction_definition['b']['value'])
             b.set_bounds(-90, 90)
             b.fix = True
 
@@ -262,7 +255,6 @@ class SourceParser(object):
         # Check if there is a equinox specification
 
         if 'equinox' in sky_direction_definition:
-
             coordinates['equinox'] = sky_direction_definition['equinox']
 
         try:
@@ -301,7 +293,7 @@ class SourceParser(object):
 
     def _parse_shape_definition(self, component_name, shape_definition):
 
-        assert len(shape_definition.values())==1, "Source %s has more than one shape" % self._source_name
+        assert len(shape_definition.values()) == 1, "Source %s has more than one shape" % self._source_name
 
         # Get the name of the function
 
@@ -314,7 +306,7 @@ class SourceParser(object):
         except AttributeError:
 
             raise ModelSyntaxError("Function %s, specified as shape for component %s of source %s, is not a "
-                                   "known 1d function" %(function_name, component_name, self._source_name))
+                                   "known 1d function" % (function_name, component_name, self._source_name))
 
         # Instance the function and set its parameters
 
@@ -335,7 +327,7 @@ class SourceParser(object):
 
                 raise ModelSyntaxError("Function %s, specified as shape for component %s of source %s, lacks "
                                        "the definition for parameter %s"
-                                       %(function_name, component_name, self._source_name, parameter_name))
+                                       % (function_name, component_name, self._source_name, parameter_name))
 
             # Update the parameter. Note that the order is important, because trying to set the value before the
             # minimum and maximum could result in a error.
@@ -344,27 +336,21 @@ class SourceParser(object):
             # already contained in the instance of the function will be used
 
             if 'min' in this_definition:
-
                 function_instance.parameters[parameter_name].min_value = this_definition['min']
 
             if 'max' in this_definition:
-
                 function_instance.parameters[parameter_name].max_value = this_definition['max']
 
             if 'delta' in this_definition:
-
                 function_instance.parameters[parameter_name].delta = this_definition['delta']
 
             if 'fix' in this_definition:
-
                 function_instance.parameters[parameter_name].fix = this_definition['fix']
 
             if 'free' in this_definition:
-
                 function_instance.parameters[parameter_name].free = this_definition['free']
 
             if 'unit' in this_definition:
-
                 function_instance.parameters[parameter_name].unit = this_definition['unit']
 
             # Now set the value, which must be present

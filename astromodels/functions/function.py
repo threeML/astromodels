@@ -2,17 +2,14 @@ import numpy as np
 import scipy.integrate
 import inspect
 
-from astromodels.formula_parser import Formula
 from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
-from astromodels.named_object import NamedObject
+from yaml.reader import ReaderError
 
-import parser
 import collections
 import warnings
 import sys
 import functools
-import pkg_resources
 
 
 class WarningNoTests(Warning):
@@ -40,13 +37,12 @@ class TestFailed(Exception):
 
 
 class DocstringIsNotRaw(ValueError):
-
     pass
 
 
 class UnknownFunction(ValueError):
-
     pass
+
 
 def input_as_array(method):
     """
@@ -178,18 +174,6 @@ def output_always_finite(method):
 
 _known_functions = {}
 
-# The following is a metaclass for all the functions
-
-import scipy.integrate
-import inspect
-import yaml as my_yaml
-from yaml.reader import ReaderError
-import collections
-from astromodels.parameter import Parameter
-import sys
-import numpy as np
-import functools
-
 
 # The following is a metaclass for all the functions
 class FunctionMeta(type):
@@ -227,7 +211,6 @@ class FunctionMeta(type):
         # method to the function class
 
         if 'integral' not in dct:
-
             # Use predefined numerical integral
 
             cls.integral = FunctionMeta.numerical_integrator
@@ -235,7 +218,7 @@ class FunctionMeta(type):
         # Minimal check of the 'evaluate' function
 
         variables, parameters_in_calling_sequence = FunctionMeta.check_calling_sequence(name, 'evaluate',
-                                                                                         cls.evaluate,['x','y','z'])
+                                                                                        cls.evaluate, ['x', 'y', 'z'])
 
         # Figure out the dimensionality of this function
 
@@ -253,7 +236,7 @@ class FunctionMeta(type):
         # First substitute all '\' characters (which might be used in the latex formula)
         # with '\\', as otherwise the yaml load will fail
 
-        escaped_docstring = cls.__doc__.replace(chr(92),r'\\')
+        escaped_docstring = cls.__doc__.replace(chr(92), r'\\')
 
         # Parse it
 
@@ -263,19 +246,19 @@ class FunctionMeta(type):
 
         except ReaderError:
 
-            raise DocstringIsNotRaw("Docstring parsing has failed. " \
-                                    "Did you remember to specify the docstring of %s as raw? " \
-                                    "To do that, you have to put a r before the docstring, " \
-                                    '''like in \n\nr"""\n(docstring)\n"""\n\ninstead of just\n\n''' \
-                                    '''"""\ndocstring\n"""'''% name)
+            raise DocstringIsNotRaw("Docstring parsing has failed. "
+                                    "Did you remember to specify the docstring of %s as raw? "
+                                    "To do that, you have to put a r before the docstring, "
+                                    '''like in \n\nr"""\n(docstring)\n"""\n\ninstead of just\n\n'''
+                                    '''"""\ndocstring\n"""''' % name)
 
         # Enforce the presence of a description and of a parameters dictionary
 
-        assert "description" in function_definition.keys(),"You have to provide a 'description' token in the " \
-                                                           "documentation of class %s" % name
+        assert "description" in function_definition.keys(), "You have to provide a 'description' token in the " \
+                                                            "documentation of class %s" % name
 
-        assert "parameters" in function_definition.keys(),"You have to provide a 'parameters' token in the " \
-                                                          "documentation of class %s" % name
+        assert "parameters" in function_definition.keys(), "You have to provide a 'parameters' token in the " \
+                                                           "documentation of class %s" % name
 
         # If there is a latex formula, store it in the type
 
@@ -283,7 +266,7 @@ class FunctionMeta(type):
 
             # First remove the escaping we did to overcome the limitation of the YAML parser
 
-            latex_formula = function_definition['latex'].replace(r"\\",chr(92))
+            latex_formula = function_definition['latex'].replace(r"\\", chr(92))
 
         else:
 
@@ -291,12 +274,12 @@ class FunctionMeta(type):
 
         # Add a property with the latex formula
 
-        cls.latex = property(lambda x:latex_formula, doc="Get the formula in LaTEX (if provided).")
+        cls.latex = property(lambda x: latex_formula, doc="Get the formula in LaTEX (if provided).")
 
         # Parse the parameters' dictionary
 
-        assert isinstance(function_definition['parameters'],dict),"Wrong syntax in 'parameters' token. It must be a " \
-                                                                  "dictionary. Refers to the documentation."
+        assert isinstance(function_definition['parameters'], dict), "Wrong syntax in 'parameters' token. It must be a " \
+                                                                    "dictionary. Refers to the documentation."
 
         # Add the parameters as attribute of the *type* (not the instance of course, since we are working
         # on the type). During the __call__ method below this dictionary will be used to create a copy
@@ -305,7 +288,6 @@ class FunctionMeta(type):
         cls._parameters = collections.OrderedDict()
 
         for parameter_name, parameter_definition in function_definition['parameters'].iteritems():
-
             this_parameter = FunctionMeta.parse_parameter_definition(name, parameter_name, parameter_definition)
 
             cls._parameters[this_parameter.name] = this_parameter
@@ -330,7 +312,8 @@ class FunctionMeta(type):
 
                 missing = set2 - set1
 
-                msg = "Parameters %s are used in 'evaluate' but do not have init values in %s" % (",".join(missing), name)
+                msg = "Parameters %s are used in 'evaluate' but do not have init values in %s" % \
+                      (",".join(missing), name)
 
             raise FunctionDefinitionError(msg)
 
@@ -360,12 +343,15 @@ class FunctionMeta(type):
             # Gather the test specifications and execute them
 
             for test in function_definition['tests']:
-
                 FunctionMeta.test_simple_function(name, test, test_instance)
 
         # All went well, add this as a known function
 
         _known_functions[name] = cls
+
+        # Finally call the super class init
+
+        super(FunctionMeta, cls).__init__(name, bases, dct)
 
     def __call__(cls, *args, **kwargs):
 
@@ -404,7 +390,6 @@ class FunctionMeta(type):
             setattr(cls, key, property(this_getter, this_setter, doc="Get or set %s" % key))
 
             if key in kwargs:
-
                 instance._parameters[key].value = kwargs[key]
 
         return instance
@@ -415,7 +400,6 @@ class FunctionMeta(type):
         data = collections.OrderedDict()
 
         for par_name, parameter in instance._parameters.iteritems():
-
             data[par_name] = parameter.to_dict()
 
         return {instance.name: data}
@@ -447,8 +431,8 @@ class FunctionMeta(type):
 
         calling_sequence = inspect.getargspec(function).args
 
-        assert calling_sequence[0] == 'self',"Wrong syntax for 'evaluate' in %s. The first argument " \
-                                             "should be called 'self'." % name
+        assert calling_sequence[0] == 'self', "Wrong syntax for 'evaluate' in %s. The first argument " \
+                                              "should be called 'self'." % name
 
         # Figure out how many variables are used
 
@@ -457,11 +441,10 @@ class FunctionMeta(type):
         # Check that they actually make sense. They must be used in the same order
         # as specified in possible_variables
 
-        assert len(variables) > 0, "The name of the variables for 'evaluate' in %s must be one or more "\
-                                   "among %s" % (name,','.join(possible_variables))
+        assert len(variables) > 0, "The name of the variables for 'evaluate' in %s must be one or more " \
+                                   "among %s" % (name, ','.join(possible_variables))
 
         if variables != possible_variables[:len(variables)]:
-
             raise AssertionError("The variables %s are out of order in '%s' of %s. Should be %s."
                                  % (",".join(variables), function_name, name, possible_variables[:len(variables)]))
 
@@ -493,11 +476,13 @@ class FunctionMeta(type):
 
             new_value = value.to(instance._parameters[parameter_name].unit).value
 
+            instance.parameters[parameter_name].value = new_value
+
         except AttributeError:
 
             # We get here if instead value is a simple number
 
-            instance._parameters[parameter_name].value = value
+            instance.parameters[parameter_name].value = value
 
         else:
 
@@ -546,7 +531,7 @@ class FunctionMeta(type):
 
         # Check that all required variables are in the test
 
-        var_names = ['x','y','z']
+        var_names = ['x', 'y', 'z']
 
         for var_name in var_names[:new_class_instance.n_dim]:
 
@@ -555,8 +540,7 @@ class FunctionMeta(type):
 
         # Check that we have the minimum amount of specifications
 
-        if 'function value' not in test_specification or \
-            'tolerance' not in test_specification:
+        if 'function value' not in test_specification or 'tolerance' not in test_specification:
 
             raise TestSpecificationError("Test specification for %s lacks 'function value' or 'tolerance' attribute" %
                                          name)
@@ -567,7 +551,6 @@ class FunctionMeta(type):
         point = {}
 
         for var_name in var_names[:new_class_instance.n_dim]:
-
             point[var_name] = float(test_specification[var_name])
 
         # Make a string representing the point, to be used in warnings or exceptions
@@ -582,7 +565,7 @@ class FunctionMeta(type):
 
         except TypeError:
 
-            raise TestFailed("Cannot call function %s at point %s. Did you remember to use .value "\
+            raise TestFailed("Cannot call function %s at point %s. Did you remember to use .value "
                              "to access the value of a parameter in the 'evaluate' method?" % (name, point_repr))
 
         except:
@@ -609,6 +592,7 @@ class FunctionMeta(type):
             pass
 
 
+# noinspection PyPep8Naming
 class powerlaw(object):
     r"""
     description :
@@ -650,14 +634,13 @@ class powerlaw(object):
 
     __metaclass__ = FunctionMeta
 
+    # noinspection PyPep8Naming
     def evaluate(self, x, logK, piv, index):
-
-        return 10**logK * np.power(x / piv, index)
+        return 10 ** logK * np.power(x / piv, index)
 
     def integral(self, e1, e2):
-
-        integral =  ( 10**self.logK * np.power(e2, self.index+1) -
-                      10**self.logK * np.power(e1, self.index+1) )
+        integral = (10 ** self.logK * np.power(e2, self.index + 1) -
+                    10 ** self.logK * np.power(e1, self.index + 1))
 
         return integral
 
@@ -680,4 +663,4 @@ def get_function(function_name):
     else:
 
         raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                              (function_name,",".join(_known_functions.keys())))
+                              (function_name, ",".join(_known_functions.keys())))
