@@ -77,8 +77,7 @@ assumed with time::
   [5.0, -2.0, 18.0]
 
 More than one callback can be registered. The callbacks will be executed in the order they are entered. To clear all
-callbacks use the method empty_callbacks().
-
+callbacks use the method empty_callbacks.
 .. _parameter_auxvar:
 ===================
 Auxiliary variable
@@ -141,7 +140,6 @@ import exceptions
 import copy
 import collections
 import astropy.units as u
-
 
 def _behaves_like_a_number(obj):
     """
@@ -540,18 +538,37 @@ class Parameter(object):
                                                                             self.delta,
                                                                             self.free)
 
-    def to_dict(self):
+    def to_dict(self, minimal=False):
 
         """Returns the minimal representation for serialization"""
 
         data = collections.OrderedDict()
 
-        data['value'] = self.value
-        data['min_value'] = self.min_value
-        data['max_value'] = self.max_value
-        data['delta'] = self.delta
-        data['free'] = self.free
-        data['unit'] = str(self.unit.to_string())
+        if minimal:
+
+            # In the minimal representation we just output the value
+
+            data['value'] = self.value
+
+        else:
+
+            # In the complete representaton we output everything
+
+            data['value'] = self.value
+            data['min_value'] = self.min_value
+            data['max_value'] = self.max_value
+            data['delta'] = self.delta
+            data['free'] = self.free
+
+            # Try to use the unit as an astropy.Unit instance
+            # If that doesn't work, treat the unit as a simple string
+            try:
+
+                data['unit'] = str(self.unit.to_string())
+
+            except AttributeError:
+
+                data['unit'] = str(self.unit)
 
         return data
 

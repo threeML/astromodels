@@ -264,20 +264,20 @@ class SkyDirection(object):
     b = property(get_b, set_b, doc="Get/set the new B. Note that you can set B only if you have "
                                    "instanced the object with the pair (L,B)")
 
-    def to_dict(self):
+    def to_dict(self, minimal=False):
 
         data = collections.OrderedDict()
 
         if self._coord_type == 'equatorial':
 
-            data['ra'] = self._parameters['ra'].to_dict()
-            data['dec'] = self._parameters['dec'].to_dict()
+            data['ra'] = self._parameters['ra'].to_dict(minimal)
+            data['dec'] = self._parameters['dec'].to_dict(minimal)
             data['equinox'] = self._equinox
 
         else:
 
-            data['l'] = self._parameters['l'].to_dict()
-            data['b'] = self._parameters['b'].to_dict()
+            data['l'] = self._parameters['l'].to_dict(minimal)
+            data['b'] = self._parameters['b'].to_dict(minimal)
             data['equinox'] = self._equinox
 
         return data

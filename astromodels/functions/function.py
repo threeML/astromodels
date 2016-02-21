@@ -4,6 +4,8 @@ import inspect
 
 from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
+from astromodels.utils.io import display
+from astromodels.utils.pretty_list import dict_to_list
 from yaml.reader import ReaderError
 
 import collections
@@ -43,6 +45,9 @@ class DocstringIsNotRaw(ValueError):
 class UnknownFunction(ValueError):
     pass
 
+
+# Value to indicate that no latex formula has been given
+NO_LATEX_FORMULA = '(no latex formula available)'
 
 def input_as_array(method):
     """
@@ -236,13 +241,11 @@ class FunctionMeta(type):
         # First substitute all '\' characters (which might be used in the latex formula)
         # with '\\', as otherwise the yaml load will fail
 
-        escaped_docstring = cls.__doc__.replace(chr(92), r'\\')
-
         # Parse it
 
         try:
 
-            function_definition = my_yaml.safe_load(escaped_docstring)
+            function_definition = my_yaml.load(cls.__doc__)
 
         except ReaderError:
 
@@ -251,6 +254,11 @@ class FunctionMeta(type):
                                     "To do that, you have to put a r before the docstring, "
                                     '''like in \n\nr"""\n(docstring)\n"""\n\ninstead of just\n\n'''
                                     '''"""\ndocstring\n"""''' % name)
+
+        else:
+
+            # Store the function definition
+            cls._function_definition = function_definition
 
         # Enforce the presence of a description and of a parameters dictionary
 
@@ -270,7 +278,7 @@ class FunctionMeta(type):
 
         else:
 
-            latex_formula = '(not provided)'
+            latex_formula = NO_LATEX_FORMULA
 
         # Add a property with the latex formula
 
@@ -324,9 +332,15 @@ class FunctionMeta(type):
         # Add a property returning the parameters dictionary
         cls.parameters = property(lambda instance: instance._parameters)
 
-        # Finally add the to_dict method to serialize the class
+        # add the to_dict method to serialize the class
 
         cls.to_dict = FunctionMeta.to_dict
+
+        # Add the methods for displaying the class
+        cls.display = FunctionMeta.cls_display
+        cls.__repr__ = FunctionMeta.cls__repr__
+        cls._repr_html_ = FunctionMeta.cls_repr_html_
+        cls.__repr__base = FunctionMeta.cls__repr__base
 
         # We now proceed with the testing
 
@@ -395,14 +409,66 @@ class FunctionMeta(type):
         return instance
 
     @staticmethod
-    def to_dict(instance):
+    def to_dict(instance, minimal=False):
 
         data = collections.OrderedDict()
 
         for par_name, parameter in instance._parameters.iteritems():
-            data[par_name] = parameter.to_dict()
+
+            data[par_name] = parameter.to_dict(minimal)
 
         return {instance.name: data}
+
+    @staticmethod
+    def cls__repr__base(instance, rich_output):
+
+        repr_dict = collections.OrderedDict()
+
+        repr_dict['description'] = instance._function_definition['description']
+
+        if 'latex' in instance._function_definition:
+
+            repr_dict['formula'] = instance._function_definition['latex']
+
+        # Add the description of each parameter and their current value
+        repr_dict['parameters'] = collections.OrderedDict()
+
+        for parameter_name in instance._function_definition['parameters'].keys():
+
+            repr_dict['parameters'][parameter_name] = instance._parameters[parameter_name].to_dict()
+
+        return dict_to_list(repr_dict, rich_output)
+
+    @staticmethod
+    def cls__repr__(instance):
+        """
+        Textual representation for console
+
+        :return: representation
+        """
+        return instance.__repr__base(rich_output=False)
+
+    @staticmethod
+    def cls_repr_html_(instance):
+        """
+        HTML representation for the IPython notebook
+
+        :return: HTML representation
+        """
+        return instance.__repr__base(rich_output=True)
+
+    @staticmethod
+    def cls_display(instance):
+        """
+        Display information about the point source.
+
+        :return: (none)
+        """
+
+        # This will automatically choose the best representation among repr and repr_html
+
+        display(instance)
+
 
     @staticmethod
     def instance_call_wrapper(instance, x):
@@ -600,7 +666,7 @@ class powerlaw(object):
         A simple power-law with normalization expressed as
         a logarithm
 
-    latex : \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index}
+    latex : $ \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index} $
 
     parameters :
 

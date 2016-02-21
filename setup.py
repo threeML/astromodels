@@ -15,7 +15,7 @@ setup(
 
     data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
 
-    version='v0.1',
+    version='0.1',
 
     description="Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy",
 

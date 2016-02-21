@@ -11,6 +11,8 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   create_model
+
 .. automodule:: parameter
 
 .. automodule:: astromodels

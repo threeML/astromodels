@@ -78,11 +78,11 @@ class SpectralComponent(NamedObject):
 
             super(SpectralComponent, self).__setattr__(key, value)
 
-    def to_dict(self):
+    def to_dict(self, minimal=False):
 
         data = collections.OrderedDict()
 
-        data['shape'] = self.shape.to_dict()
+        data['shape'] = self.shape.to_dict(minimal)
 
         if self.polarization is not None:
 

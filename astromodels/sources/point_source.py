@@ -6,6 +6,8 @@ import numpy
 from astromodels.sources.source import Source
 from astromodels.sky_direction import SkyDirection
 from astromodels.spectral_component import SpectralComponent
+from astromodels.utils.io import display
+from astromodels.utils.pretty_list import dict_to_list
 
 
 class PointSource(Source):
@@ -118,14 +120,58 @@ class PointSource(Source):
 
         return numpy.sum(results, 0)
 
+    def __repr__base(self, rich_output=False):
+        """
+        Representation of the object
+
+        :param rich_output: if True, generates HTML, otherwise text
+        :return: the representation
+        """
+
+        # Make a dictionary which will then be transformed in a list
+
+        repr_dict = collections.OrderedDict()
+
+        key = '%s (point source)' % self.name
+
+        repr_dict[key] = collections.OrderedDict()
+        repr_dict[key]['position'] = self._sky_position.to_dict(minimal=True)
+        repr_dict[key]['components'] = collections.OrderedDict()
+
+        for component_name, component in self.components.iteritems():
+
+            repr_dict[key]['components'][component_name] = component.to_dict(minimal=True)
+
+        return dict_to_list(repr_dict, rich_output)
+
     def __repr__(self):
+        """
+        Textual representation for console
 
-        representation = ''
-        representation += 'Point source %s\n' % self.name
-        representation += '    -position: (R.A., Dec) = (%s, %s)\n' % (self.position.ra, self.position.dec)
-        representation += '    -components: %s\n' % ",".join(self.components.keys())
+        :return: representation
+        """
 
-        return representation
+        return self.__repr__base(rich_output=False)
+
+    def _repr_html_(self):
+        """
+        HTML representation for the IPython notebook
+
+        :return: HTML representation
+        """
+
+        return self.__repr__base(rich_output=True)
+
+    def display(self):
+        """
+        Display information about the point source.
+
+        :return: (none)
+        """
+
+        # This will automatically choose the best representation among repr and repr_html
+
+        display(self)
 
     def to_dict(self):
 
