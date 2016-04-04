@@ -1,14 +1,13 @@
 __author__ = 'giacomov'
 
 from astromodels.named_object import NamedObject
+from astromodels.tree import Node
 
 
-class Polarization(NamedObject):
+class Polarization(NamedObject, Node):
 
     def __init__(self):
 
-        super(Polarization, self).__init__("(to be implemented)")
+        NamedObject.__init__(self, "polarization")
 
-    def to_dict(self):
-
-        return {}
+        Node.__init__(self)

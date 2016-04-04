@@ -1,24 +1,26 @@
-import numpy as np
-import scipy.integrate
-import inspect
+__author__ = 'giacomov'
+
 
 from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
-from astromodels.utils.io import display
 from astromodels.utils.pretty_list import dict_to_list
-from yaml.reader import ReaderError
+from astromodels.tree import Node
 
 import collections
 import warnings
 import sys
-import functools
+import os
+import copy
+import uuid
+import re
+import ast
+from yaml.reader import ReaderError
+import numpy as np
+import scipy.integrate
+import inspect
 
 
 class WarningNoTests(Warning):
-    pass
-
-
-class WarningUnitsAreSlow(Warning):
     pass
 
 
@@ -29,6 +31,9 @@ class FunctionDefinitionError(Exception):
 class DesignViolation(Exception):
     pass
 
+
+class WrongDimensionality(Exception):
+    pass
 
 class TestSpecificationError(Exception):
     pass
@@ -48,6 +53,15 @@ class UnknownFunction(ValueError):
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = '(no latex formula available)'
+
+# Codes to indicate to Composite Function the operation between two functions
+_operations = {'+': np.add,
+               '-': np.subtract,
+               '*': np.multiply,
+               '/': np.divide,
+               '**': np.power,
+               'abs': np.abs}
+
 
 def input_as_array(method):
     """
@@ -189,6 +203,7 @@ class FunctionMeta(type):
     The rationale for using this solution, instead of a more usual class-inheritance mechanism, is to avoid
     re-reading and re-testing every time a new instance is created. Using a meta-class ensure that this is
     executed only once during import.
+
     """
 
     def __init__(cls, name, bases, dct):
@@ -205,41 +220,25 @@ class FunctionMeta(type):
 
             raise AttributeError("You have to implement the 'evaluate' method in %s" % name)
 
-        else:
-
-            # Set the __call__ attribute to a wrapper which allows to call the function as
-            # function(x), instead of function(x, par1, par2...)
-
-            cls.__call__ = FunctionMeta.instance_call_wrapper
-
-        # If the 'integral' method is not in there, add the default integration
-        # method to the function class
-
-        if 'integral' not in dct:
-            # Use predefined numerical integral
-
-            cls.integral = FunctionMeta.numerical_integrator
-
         # Minimal check of the 'evaluate' function
 
         variables, parameters_in_calling_sequence = FunctionMeta.check_calling_sequence(name, 'evaluate',
                                                                                         cls.evaluate, ['x', 'y', 'z'])
 
+        #print("Function %s: \n variables: %s\n parameters: %s\n" % (cls.__name__, ",".join(variables),
+        #                                                            ",".join(parameters_in_calling_sequence)))
+
         # Figure out the dimensionality of this function
 
         n_dim = len(variables)
 
-        # Add a property to the *type* indicating the number of variables, which will be
-        # propagated to the class instance as a property
+        # Store the dimensionality in the *type*
 
-        cls.n_dim = property(lambda x: n_dim, doc="Return the number of dimensions for this function.")
+        cls._n_dim = n_dim
 
         # Now parse the documentation of the function which contains the parameter specification
 
         # The doc is a YAML document containing among other things the definition of the parameters
-
-        # First substitute all '\' characters (which might be used in the latex formula)
-        # with '\\', as otherwise the yaml load will fail
 
         # Parse it
 
@@ -257,7 +256,8 @@ class FunctionMeta(type):
 
         else:
 
-            # Store the function definition
+            # Store the function definition in the type
+
             cls._function_definition = function_definition
 
         # Enforce the presence of a description and of a parameters dictionary
@@ -280,30 +280,31 @@ class FunctionMeta(type):
 
             latex_formula = NO_LATEX_FORMULA
 
-        # Add a property with the latex formula
+        # Store latex formula in the type
+        cls._latex = latex_formula
 
-        cls.latex = property(lambda x: latex_formula, doc="Get the formula in LaTEX (if provided).")
+        # Store the name in the type
+        cls._name = cls.__name__
 
         # Parse the parameters' dictionary
 
-        assert isinstance(function_definition['parameters'], dict), "Wrong syntax in 'parameters' token. It must be a " \
-                                                                    "dictionary. Refers to the documentation."
+        assert isinstance(function_definition['parameters'], dict), "Wrong syntax in 'parameters' token. It must be " \
+                                                                    "a dictionary. Refers to the documentation."
 
-        # Add the parameters as attribute of the *type* (not the instance of course, since we are working
-        # on the type). During the __call__ method below this dictionary will be used to create a copy
-        # of each parameter which will be made available as attribute of the instance.
+        # Add the parameters as attribute of the *type*. During the __call__ method below this dictionary will be used
+        # to create a copy of each parameter which will be made available as attribute of the instance.
 
-        cls._parameters = collections.OrderedDict()
+        cls.__parameters = collections.OrderedDict()
 
         for parameter_name, parameter_definition in function_definition['parameters'].iteritems():
             this_parameter = FunctionMeta.parse_parameter_definition(name, parameter_name, parameter_definition)
 
-            cls._parameters[this_parameter.name] = this_parameter
+            cls.__parameters[this_parameter.name] = this_parameter
 
         # Now check that all the parameters used in 'evaluate' are part of the documentation,
         # and that there are no unused parameters
 
-        set1 = set(cls._parameters.keys())
+        set1 = set(cls.__parameters.keys())
         set2 = set(parameters_in_calling_sequence)
 
         if set1 != set2:
@@ -325,22 +326,8 @@ class FunctionMeta(type):
 
             raise FunctionDefinitionError(msg)
 
-        # Add the name of the function as a property
-
-        cls.name = property(lambda x: cls.__name__)
-
-        # Add a property returning the parameters dictionary
-        cls.parameters = property(lambda instance: instance._parameters)
-
-        # add the to_dict method to serialize the class
-
-        cls.to_dict = FunctionMeta.to_dict
-
-        # Add the methods for displaying the class
-        cls.display = FunctionMeta.cls_display
-        cls.__repr__ = FunctionMeta.cls__repr__
-        cls._repr_html_ = FunctionMeta.cls_repr_html_
-        cls.__repr__base = FunctionMeta.cls__repr__base
+        # Now add the constructor to the class
+        cls.__init__ = FunctionMeta.class_init
 
         # We now proceed with the testing
 
@@ -354,130 +341,23 @@ class FunctionMeta(type):
 
             test_instance = cls()
 
+            # First add the default parameters which will be used during the test
+
+            #test_instance._parameters = cls.__parameters
+
             # Gather the test specifications and execute them
 
             for test in function_definition['tests']:
+
                 FunctionMeta.test_simple_function(name, test, test_instance)
 
         # All went well, add this as a known function
 
         _known_functions[name] = cls
 
-        # Finally call the super class init
+        # Finally call the type init
 
         super(FunctionMeta, cls).__init__(name, bases, dct)
-
-    def __call__(cls, *args, **kwargs):
-
-        # Note that this is actually called when the class
-        # cls is instanced, as a sort of decorator for the
-        # constructor
-
-        # Create the instance
-
-        instance = type.__call__(cls, *args)
-
-        # Create the dictionary for the parameters
-
-        instance._parameters = collections.OrderedDict()
-
-        # Loop over the parameters in the type, create a copy and put it in the parameters
-        # dictionary. Moreover, if the value for some or all the
-        # parameters have been specified in the constructor, use that so that a function can be instanced
-        # as:
-        # my_powerlaw = powerlaw(logK=1.2, index=-3)
-
-        for key, value in cls._parameters.iteritems():
-
-            # Create a copy and add to the parameters dictionary
-            # Then we will add a property with the name of the parameter.
-            # This is done so that the user cannot overwrite by mistake
-            # the parameter
-
-            instance._parameters[key] = value.duplicate()
-
-            # Now add a property with the name of the parameter.
-
-            this_setter = functools.partial(FunctionMeta.set_parameter, parameter_name=key)
-            this_getter = functools.partial(FunctionMeta.get_parameter, parameter_name=key)
-
-            setattr(cls, key, property(this_getter, this_setter, doc="Get or set %s" % key))
-
-            if key in kwargs:
-                instance._parameters[key].value = kwargs[key]
-
-        return instance
-
-    @staticmethod
-    def to_dict(instance, minimal=False):
-
-        data = collections.OrderedDict()
-
-        for par_name, parameter in instance._parameters.iteritems():
-
-            data[par_name] = parameter.to_dict(minimal)
-
-        return {instance.name: data}
-
-    @staticmethod
-    def cls__repr__base(instance, rich_output):
-
-        repr_dict = collections.OrderedDict()
-
-        repr_dict['description'] = instance._function_definition['description']
-
-        if 'latex' in instance._function_definition:
-
-            repr_dict['formula'] = instance._function_definition['latex']
-
-        # Add the description of each parameter and their current value
-        repr_dict['parameters'] = collections.OrderedDict()
-
-        for parameter_name in instance._function_definition['parameters'].keys():
-
-            repr_dict['parameters'][parameter_name] = instance._parameters[parameter_name].to_dict()
-
-        return dict_to_list(repr_dict, rich_output)
-
-    @staticmethod
-    def cls__repr__(instance):
-        """
-        Textual representation for console
-
-        :return: representation
-        """
-        return instance.__repr__base(rich_output=False)
-
-    @staticmethod
-    def cls_repr_html_(instance):
-        """
-        HTML representation for the IPython notebook
-
-        :return: HTML representation
-        """
-        return instance.__repr__base(rich_output=True)
-
-    @staticmethod
-    def cls_display(instance):
-        """
-        Display information about the point source.
-
-        :return: (none)
-        """
-
-        # This will automatically choose the best representation among repr and repr_html
-
-        display(instance)
-
-
-    @staticmethod
-    def instance_call_wrapper(instance, x):
-
-        # Gather the current parameters' values
-
-        values = {parameter_name: parameter.value for parameter_name, parameter in instance._parameters.iteritems()}
-
-        return instance.evaluate(x, **values)
 
     @staticmethod
     def check_calling_sequence(name, function_name, function, possible_variables):
@@ -517,46 +397,6 @@ class FunctionMeta(type):
         other_parameters = filter(lambda var: var not in variables and var != 'self', calling_sequence)
 
         return variables, other_parameters
-
-    @staticmethod
-    def numerical_integrator(instance, e1, e2):
-
-        return scipy.integrate.quad(instance.evaluate, e1, e2)[0]
-
-    @staticmethod
-    def get_parameter(instance, parameter_name):
-        """
-        Generic getter for a parameter
-        """
-        return instance._parameters[parameter_name]
-
-    @staticmethod
-    def set_parameter(instance, value, parameter_name):
-        """
-        Set a parameter to a new value, performing conversions if necessary
-        """
-
-        try:
-
-            # This works if value is a astropy.Quantity
-
-            new_value = value.to(instance._parameters[parameter_name].unit).value
-
-            instance.parameters[parameter_name].value = new_value
-
-        except AttributeError:
-
-            # We get here if instead value is a simple number
-
-            instance.parameters[parameter_name].value = value
-
-        else:
-
-            # Even if the to() method works, we need to warn the user that this is
-            # very slow, and should only be used in interactive sessions for convenience
-
-            warnings.warn("Using units is convenient but slow. Do not use them during computing-intensive work.",
-                          WarningUnitsAreSlow)
 
     @staticmethod
     def parse_parameter_definition(func_name, par_name, definition):
@@ -617,6 +457,7 @@ class FunctionMeta(type):
         point = {}
 
         for var_name in var_names[:new_class_instance.n_dim]:
+
             point[var_name] = float(test_specification[var_name])
 
         # Make a string representing the point, to be used in warnings or exceptions
@@ -624,7 +465,6 @@ class FunctionMeta(type):
         point_repr = ', '.join("{!s}={!r}".format(k, v) for (k, v) in point.iteritems())
 
         # Test that the value of the function is what is expected within the tolerance
-
         try:
 
             value = new_class_instance(**point)
@@ -642,91 +482,681 @@ class FunctionMeta(type):
                                                                                              exc_type,
                                                                                              value))
 
-        distance = value - test_specification['function value']
+        # The eval(str()) bit is needed so that a function value can be specified as np.inf or np.pi
+
+        distance = value - eval(str(test_specification['function value']))
 
         if abs(distance) > float(test_specification['tolerance']):
 
             raise TestFailed("The function %s has value of %s instead of %s in point %s, and the difference "
-                             "is larger than the tolerance %g" % (name, value,
-                                                                  test_specification['function value'],
-                                                                  point_repr,
-                                                                  float(test_specification['tolerance'])))
+                             "%s is larger than the tolerance %g" % (name, value,
+                                                                     test_specification['function value'],
+                                                                     point_repr,
+                                                                     abs(distance),
+                                                                     float(test_specification['tolerance'])))
 
         else:
 
             # Do nothing, test is ok
             pass
 
+    @staticmethod
+    def class_init(instance, **kwargs):
 
-# noinspection PyPep8Naming
-class powerlaw(object):
-    r"""
-    description :
+        # Create a copy of the parameters dictionary which is in the type,
+        # otherwise every instance would share the same dictionary
 
-        A simple power-law with normalization expressed as
-        a logarithm
+        copy_of_parameters = collections.OrderedDict()
 
-    latex : $ \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index} $
+        # Fill it by duplicating the parameters contained in the dictionary in the type
 
-    parameters :
+        for key, value in type(instance).__parameters.iteritems():
 
-        logK :
+            copy_of_parameters[key] = value.duplicate()
 
-            desc : Logarithm of normalization
-            initial value : 0
-            min : -40
-            max : 40
-            unit : "1 / (keV cm2 s)"
+            # If the user has specified a value in the constructor, update the
+            # corresponding parameters value. This allow to use a constructor as:
+            # my_powerlaw = powerlaw(logK=1.0, index=-2)
 
-        piv :
+            if key in kwargs:
 
-            desc : Pivot energy
-            initial value : 1
-            fix : yes
-            unit: keV
+                copy_of_parameters[key].value = kwargs[key]
 
-        index :
+        # Now call the parent class
 
-            desc : Photon index
-            initial value : -2
-            min : -10
-            max : 10
-
-    tests :
-        - { x : 10, function value: 0.01, tolerance: 1e-20}
-        - { x : 100, function value: 0.0001, tolerance: 1e-20}
-
-    """
-
-    __metaclass__ = FunctionMeta
-
-    # noinspection PyPep8Naming
-    def evaluate(self, x, logK, piv, index):
-        return 10 ** logK * np.power(x / piv, index)
-
-    def integral(self, e1, e2):
-        integral = (10 ** self.logK * np.power(e2, self.index + 1) -
-                    10 ** self.logK * np.power(e1, self.index + 1))
-
-        return integral
+        Function.__init__(instance,
+                          type(instance)._name,
+                          type(instance)._function_definition,
+                          copy_of_parameters,
+                          type(instance)._n_dim)
 
 
-def get_function(function_name):
+class Function(Node):
+
+    def __init__(self, name, function_definition, parameters, n_dim):
+
+        # (this is called by the constructor defined in the metaclass)
+
+        # Store name, number of dimensions and the latex formula
+
+        # Note; in a normal situation these are stored in the type already. Thus, this is a small waste of memory.
+        # However, doing this will allow to subclass the Function class without using the FunctionMeta meta-class.
+
+        self._name = name
+        self._n_dim = n_dim
+
+        # Start with an ID of 1. The ID is used in composite function to keep track of the number of unique
+        # instances of a given function
+
+        self._uuid = 1
+
+        # Store also the function definition
+
+        assert 'description' in function_definition,"Function definition must contain a description"
+
+        assert 'latex' in function_definition, "Function definition must contain a latex formula"
+
+        self._function_definition = function_definition
+
+        # Set up the node
+
+        Node.__init__(self)
+
+        # Add the parameters as children. Since the name of the key in the dictionary might
+        # be different than the actual name of the parameter, use the .add_child method instead
+        # of the add_children method
+
+        for child_name, child in parameters.iteritems():
+
+            self.add_child(child, child_name)
+
+        # Finally generate a unique identifier (UUID) in a thread safe, multi-processing safe
+        # way. This is used for example in the CompositeFunction class to keep track of the different
+        # instances of the same function
+        self._uuid = "{" + str(self._generate_uuid()) + "}"
+
+    @staticmethod
+    def _generate_uuid():
+        """
+        Generate a unique identifier for this function.
+
+        :return: the UUID
+        """
+        return uuid.UUID(bytes=os.urandom(16), version=4)
+
+    def numerical_integrator(self, e1, e2):
+
+        return scipy.integrate.quad(self.__call__, e1, e2)[0]
+
+    # Add the name of the function as a property
+    @property
+    def name(self):
+        """Returns the name of this function"""
+        return self._name
+
+    # Add a property returning the parameters dictionary
+    @property
+    def parameters(self):
+        """
+        Returns a dictionary of parameters
+        """
+        return self.children
+
+    @property
+    def n_dim(self):
+        """
+        Returns the number of dimensions for this function (1, 2 or 3)
+        """
+        return self._n_dim
+
+    @property
+    def latex(self):
+        """
+        Returns the LaTEX formula for this function
+        """
+        return self._function_definition['latex']
+
+    def evaluate(self, *args, **kwargs):
+
+        raise NotImplementedError("You have to re-implement this")
+
+    def __call__(self, *args, **kwargs):
+
+        # Gather the current parameters' values
+
+        kwargs.update({parameter_name: parameter.value for parameter_name, parameter in self.children.iteritems()})
+
+        # Enclose this in a try/except so that in the most common case (when the input are numpy.array),
+        # the function has only a very very small performance hit (the price of the .shape call).
+        # If that fails, fail back to a version where the input is first casted to an array,
+        # and then casted back after completion
+
+        return self.evaluate(*args, **kwargs)
+
+    # Define now all the operators which allow to combine functions. Each operator will return a new
+    # instance of a CompositeFunction, which can then be used as a function on its own
+
+    @staticmethod
+    def __get_second_uuid(other_instance):
+        """
+        Return a name for the object. If the object is a function instance, return its name. Otherwise, return
+        the object itself.
+
+        :param other_instance:
+        :return:
+        """
+        if hasattr(other_instance,'uuid'):
+
+            # Another function
+
+            second_uuid = other_instance.uuid
+
+        else:
+
+            # A number
+
+            second_uuid = '%s' % other_instance
+
+        return second_uuid
+
+    def of(self, another_function):
+        """
+        Compose this function with another as in this_function(another_function(x))
+
+        :param another_function: another function to compose with the current one
+        :return: a composite function instance
+        """
+        return CompositeFunction('of', self, another_function)
+
+    def __neg__(self):
+
+        return CompositeFunction('-', self)
+
+    def __abs__(self):
+
+        return CompositeFunction('abs', self)
+
+    def __pow__(self, other_instance):
+
+        second_uuid = self.__get_second_uuid(other_instance)
+
+        return CompositeFunction('**', self, other_instance)
+
+    def __rpow__(self, other_instance):
+
+        return CompositeFunction('**', other_instance, self)
+
+    def __add__(self, other_instance):
+        """
+        Return a composite function where the current instance is summed with the given instance
+
+        :param other_instance: the other instance. This can be either a number, or a Function instance.
+        """
+
+        return CompositeFunction('+', self, other_instance)
+
+    __radd__ = __add__
+
+    def __sub__(self, other_instance):
+
+        return CompositeFunction('-', self, other_instance)
+
+    __rsub__ = __sub__
+
+    def __mul__(self, other_instance):
+
+        return CompositeFunction('*', self, other_instance)
+
+    __rmul__ = __mul__
+
+    def __div__(self, other_instance):
+
+        return CompositeFunction('/', self, other_instance)
+
+    def __rdiv__(self, other_instance):
+
+        return CompositeFunction('/', other_instance, self)
+
+    __truediv__ = __div__
+    __rtruediv__ = __rdiv__
+
+    def _repr__base(self, rich_output):
+
+        repr_dict = collections.OrderedDict()
+
+        repr_dict['description'] = self._function_definition['description']
+
+        if 'latex' in self._function_definition:
+
+            repr_dict['formula'] = self._function_definition['latex']
+
+        # Add the description of each parameter and their current value
+        repr_dict['parameters'] = collections.OrderedDict()
+
+        for parameter_name in self.children.keys():
+
+            repr_dict['parameters'][parameter_name] = self.children[parameter_name].to_dict()
+
+        return dict_to_list(repr_dict, rich_output)
+
+    @property
+    def uuid(self):
+        """
+        Returns the ID of the current function. The ID is used by the CompositeFunction class to keep track of the
+        unique instances of each function. It should not be used by the user for any specific purpose.
+
+        :return: (none)
+        """
+        return self._uuid
+
+    def duplicate(self):
+        """
+        Create a copy of the current function with all the parameters equal to the current value
+
+        :return: a new copy of the function
+        """
+
+        # Create a copy
+
+        function_copy = copy.deepcopy(self)
+
+        return function_copy
+
+
+class CompositeFunction(Function):
+
+    def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
+
+        assert operation in _operations,"Do not know operation %s" % operation
+
+        # Set the new evaluate
+
+        if function_or_scalar_2 is None:
+
+            # Unary operation
+
+            self.set_evaluate(self._composite_function_factory_unary(function_or_scalar_1, _operations[operation]))
+
+        else:
+
+            # Binary operation
+
+            self.set_evaluate(self._composite_function_factory_binary(function_or_scalar_1, _operations[operation],
+                                                                      function_or_scalar_2))
+
+        # Save a description, but using the unique IDs of the functions involved, to keep track
+        # of where they appear in the expression
+
+        self._uuid_expression = self._get_uuid_expression(operation, function_or_scalar_1, function_or_scalar_2)
+
+        # Makes the list of unique functions which compose this composite function.
+
+        self._functions = []
+
+        for function in [function_or_scalar_1, function_or_scalar_2]:
+
+            # Check whether this is already a composite function. If it is, add the functions contained
+            # in it
+
+            if isinstance(function, CompositeFunction):
+
+                for sub_function in function.functions:
+
+                    if sub_function not in self._functions:
+
+                        self._functions.append(sub_function)
+
+            elif isinstance(function, Function):
+
+                # This is a simple function. Add it only if it is not there already (avoid duplicate)
+
+                if function not in self._functions:
+
+                    self._functions.append(function)
+
+            else:
+
+                # This is a scalar, no need to add it among the functions
+
+                pass
+
+        # Check that the functions have all the same dimensionality
+
+        n_dim = self._functions[0].n_dim
+
+        for function in self._functions[1:]:
+
+            if function.n_dim != n_dim:
+
+                raise WrongDimensionality("Dimensionality mismatch when composing functions.")
+
+        # Now assign a unique name to all the functions, to make clear which is which in the definition
+        # and give an easy way for the user to understand which parameter belongs to which function
+
+        self._id_to_uid = {}
+
+        self._name = self._uuid_expression
+
+        for i,function in enumerate(self._functions):
+
+            self._id_to_uid[i+1] = function.uuid
+
+            self._name = self._name.replace(function.uuid, "%s{%s}" % (function.name, i+1))
+
+        # Build the parameters dictionary assigning a new name to each parameter to account for possible
+        # duplicates.
+
+        parameters = collections.OrderedDict()
+
+        for i, function in enumerate(self._functions):
+
+            for parameter_name, parameter in function.parameters.iteritems():
+
+                # New name to avoid possible duplicates
+
+                new_name = "%s_%i" % (parameter.name, i+1)
+
+                # Store the parameter under the new name (obviously this is a reference to the
+                # parameter, not a copy, as always in python)
+
+                parameters[new_name] = parameter
+
+        # Now build a meaningful description
+
+        _function_definition = {'description': self._name, 'latex': NO_LATEX_FORMULA}
+
+        Function.__init__(self, self._name, _function_definition, parameters, n_dim)
+
+        self._uuid = self._uuid_expression
+
+    @staticmethod
+    def _get_uuid_expression(operation, name_1, name_2=None):
+
+        if name_2 is None:
+
+            return '(%s %s)' % (operation, name_1.uuid)
+
+        if hasattr(name_1, 'uuid'):
+
+            name_1_uuid = name_1.uuid
+
+        else:
+
+            name_1_uuid = '%s' % name_1
+
+        if hasattr(name_2,'uuid'):
+
+            name_2_uuid = name_2.uuid
+
+        else:
+
+            name_2_uuid = '%s' % name_2
+
+        return '(%s %s %s)' % (name_1_uuid, operation, name_2_uuid)
+
+    @staticmethod
+    def _composite_function_factory_unary(instance, numpy_operator):
+
+        def new_evaluate(*args, **kwargs):
+
+            return numpy_operator(instance.__call__(*args, **kwargs))
+
+        return new_evaluate
+
+    @staticmethod
+    def _composite_function_factory_binary(first_instance, numpy_operator, second_instance):
+
+        # Check whether the second member is a function, or a number
+
+        if hasattr(first_instance, 'evaluate'):
+
+            if hasattr(second_instance, 'evaluate'):
+
+                def new_evaluate(*args):
+
+                    return numpy_operator(first_instance.__call__(*args),
+                                          second_instance.__call__(*args))
+
+                return new_evaluate
+
+            else:
+
+                def new_evaluate(*args):
+
+                    return numpy_operator(first_instance.__call__(*args),
+                                          second_instance)
+
+                return new_evaluate
+
+        else:
+
+            if hasattr(second_instance, 'evaluate'):
+
+                def new_evaluate(*args):
+
+                    return numpy_operator(first_instance,
+                                          second_instance.__call__(*args))
+
+                return new_evaluate
+
+            else:
+
+                # Should never get here!
+
+                raise RuntimeError("Should never get here")
+
+    @property
+    def functions(self):
+        "A list containing the function used to build this composite function"
+        return self._functions
+
+    def evaluate(self):
+
+        raise NotImplementedError("You cannot instance and use a composite function by itself. Use the factories.")
+
+    def set_evaluate(self, new_evaluate_method):
+        """
+        This is called by the factory which create the composite function, and set the evaluate method
+        to the new method which will collect the results from all the functions
+        """
+
+        self.evaluate = new_evaluate_method
+
+    # Override the __call__ method of the Function class because the single functions in _functions
+    # will handle their own collection of parameters
+
+    def __call__(self, *args, **kwargs):
+
+        return self.evaluate(*args, **kwargs)
+
+
+def get_function(function_specification):
     """
     Returns the function class "name", which must be among the known functions.
 
-    :param function_name: the name of the function
+    :param function_specification: the name of the function, or a composite function specification such as
+    ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
     :return: the class (note: this is not the instance!). You have to build it yourself, like::
 
       my_powerlaw = get_function('powerlaw')()
 
     """
 
-    if function_name in _known_functions:
+    # Check whether this is a composite function or a simple function
 
-        return _known_functions[function_name]
+    if '{' in function_specification:
+
+        # Composite function
+
+        return _parse_function_expression(function_specification)
 
     else:
 
-        raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                              (function_name, ",".join(_known_functions.keys())))
+        if function_specification in _known_functions:
+
+            return _known_functions[function_specification]()
+
+        else:
+
+            raise UnknownFunction("Function %s is not known. Known functions are: %s" %
+                                  (function_specification, ",".join(_known_functions.keys())))
+
+
+def _parse_function_expression(function_specification):
+    """
+    Parse a complex function expression like:
+
+    ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
+
+    and return a composite function instance
+
+    :param function_specification:
+    :return: a composite function instance
+    """
+
+    # NOTE FOR SECURITY
+    # This function has some security concerns. Security issues could arise if the user tries to read a model
+    # file which has been maliciously formatted to contain harmful code. In this function we close all the doors
+    # to a similar attack, except for those attacks which assume that the user has full access to a python environment.
+    # Indeed, if that is the case, then the user can already do harm to the system, and so there is no point in
+    # safeguard that from here. For example, the user could format a subclass of the Function class which perform
+    # malicious operations in the constructor, add that to the dictionary of known functions, and then interpret
+    # it with this code. However, if the user can instance malicious classes, then why would he use astromodels to
+    # carry out the attack? Instead, what we explicitly check is the content of the function_specification string,
+    # so that it cannot by itself do any harm (by for example containing instructions such as os.remove).
+
+    # This can be a arbitrarily complex specification, like
+    # ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
+
+    # Use regular expressions to extract the set of functions like function_name{number},
+    # then build the set of unique functions by using the constructor set()
+
+    unique_functions = set(re.findall(r'\b([a-zA-Z0-9]+)\{([0-9]?)\}',function_specification))
+
+    # NB: unique functions is a set like:
+    # {('powerlaw', '1'), ('sin', '2')}
+
+    # Create instances of the unique functions
+
+    instances = {}
+
+    # Loop over the unique functions and create instances
+
+    for (unique_function, number) in unique_functions:
+
+        complete_function_specification = "%s{%s}" % (unique_function, number)
+
+        # As first safety measure, check that the unique function is in the dictionary of _known_functions.
+        # This could still be easily hacked, so it won't be the only check
+
+        if unique_function in _known_functions:
+
+            # Get the function class and check that it is indeed a proper Function class
+
+            function_class = _known_functions[unique_function]
+
+            if issubclass(function_class, Function):
+
+                # Ok, let's create the instance
+
+                instance = function_class()
+
+                # Append the instance to the list
+
+                instances[complete_function_specification] = instance
+
+            else:
+
+                raise FunctionDefinitionError("The function specification %s does not contain a proper function"
+                                              % unique_function )
+
+        else:
+
+            raise UnknownFunction("Function %s in expression %s is unknown" % (unique_function, function_specification))
+
+    # Check that we have found at least one instance.
+
+    if len(instances)==0:
+
+        raise DesignViolation("No known function in function specification")
+
+    # The following presents a slight security problem if the model file that has been parsed comes from an untrusted
+    # source. Indeed, the use of eval could make possible to execute things like os.remove.
+    # In order to avoid this, first we substitute the function instances with numbers and remove the operators like
+    # +,-,/ and so on. Then we try to execute the string with ast.literal_eval, which according to its documentation:
+
+    # Safely evaluate an expression node or a Unicode or Latin-1 encoded string containing a Python literal or
+    # container display. The string or node provided may only consist of the following Python literal structures:
+    # strings, numbers, tuples, lists, dicts, booleans, and None.This can be used for safely evaluating strings
+    # containing Python values from untrusted sources without the need to parse the values oneself.
+    # It is not capable of evaluating arbitrarily complex expressions, for example involving operators or indexing.
+
+    # If literal_eval cannot parse the string, it means that it contains unsafe input.
+
+    # Create a copy of the function_specification
+
+    string_for_literal_eval = function_specification
+
+    # Remove from the function_specification all the known operators and function_expressions, and substitute them
+    # with a 0 and a space
+
+    # Let's start from the function expression
+
+    for function_expression in instances.keys():
+
+        string_for_literal_eval = string_for_literal_eval.replace(function_expression, '0 ')
+
+    # Now remove all the known operators
+
+    for operator in _operations.keys():
+
+        string_for_literal_eval = string_for_literal_eval.replace(operator,'0 ')
+
+    # The string at this point should contains only numbers and parenthesis separated by one or more spaces
+
+    if re.match('''([a-zA-Z]+)''', string_for_literal_eval):
+
+        raise DesignViolation("Extraneous input in function specification")
+
+    # By using split() we separate all the numbers and parenthesis in a list, then we join them
+    # with a comma, to end up with a comma-separated list of parenthesis and numbers like:
+    # ((((0,0,(0,0,3)),0,(0,0,25)),0,(0,0,16)),0,(0,0,0,3.0))
+    # This string can be parsed by literal_eval as a tuple containing other tuples, which is fine.
+    # If the user has inserted some malicious content, like os.remove or more weird stuff like code objects,
+    # the parsing will fail
+
+    string_for_literal_eval = ",".join(string_for_literal_eval.split())
+
+    print(string_for_literal_eval)
+
+    # At this point the string should be just a comma separated list of numbers
+
+    # Now try to execute the string
+    try:
+
+        ast.literal_eval(string_for_literal_eval)
+
+    except (ValueError, SyntaxError):
+
+        raise DesignViolation("The given expression is not a valid function expression")
+
+    else:
+
+        # The expression is safe, let's eval it
+
+        # First substitute the reference to the functions (like 'powerlaw{1}') with a string
+        # corresponding to the instance dictionary
+
+        sanitized_function_specification = function_specification
+
+        for function_expression in instances.keys():
+
+            sanitized_function_specification = sanitized_function_specification.replace(function_expression,
+                                                                                        'instances["%s"]' %
+                                                                                        function_expression)
+
+        # Now eval it. For safety measure, I remove all globals, and the only local is the 'instances' dictionary
+
+        composite_function = eval(sanitized_function_specification, {}, {'instances': instances})
+
+        return composite_function

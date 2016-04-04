@@ -6,11 +6,13 @@ import numpy
 from astromodels.sources.source import Source
 from astromodels.sky_direction import SkyDirection
 from astromodels.spectral_component import SpectralComponent
-from astromodels.utils.io import display
 from astromodels.utils.pretty_list import dict_to_list
+from astromodels.tree import Node
+
+POINT_SOURCE = 'point source'
 
 
-class PointSource(Source):
+class PointSource(Source, Node):
     """
     A point source. You can instance this class in many ways.
 
@@ -96,21 +98,41 @@ class PointSource(Source):
         # Now gather the component(s)
 
         # We need either a single component, or a list of components, but not both
+        # (that's the ^ symbol)
 
         assert (spectral_shape is not None) ^ (components is not None), "You have to provide either a single " \
                                                                         "component, or a list of components " \
                                                                         "(but not both)."
 
-        # If the user specified only one component, make a list of one element
+        # If the user specified only one component, make a list of one element with a default name ("main")
 
         if spectral_shape is not None:
+
             components = [SpectralComponent("main", spectral_shape)]
 
-        super(PointSource, self).__init__(source_name, components)
+        Source.__init__(self, source_name, components, POINT_SOURCE)
 
-    @property
-    def position(self):
-        return self._sky_position
+        # A source is also a Node in the tree
+
+        Node.__init__(self)
+
+        # Add the position as a child node, with an explicit name
+
+        self._sky_position.name = 'position'
+
+        self.add_child(self._sky_position)
+
+        # Add a node called 'spectrum'
+
+        spectrum_node = Node()
+        spectrum_node.name = 'spectrum'
+        spectrum_node.add_children(self._components.values())
+
+        self.add_child(spectrum_node)
+
+    def __call__(self, *args, **kwargs):
+
+        return self.get_flux(*args, **kwargs)
 
     def get_flux(self, energies):
 
@@ -120,7 +142,7 @@ class PointSource(Source):
 
         return numpy.sum(results, 0)
 
-    def __repr__base(self, rich_output=False):
+    def _repr__base(self, rich_output=False):
         """
         Representation of the object
 
@@ -144,58 +166,3 @@ class PointSource(Source):
 
         return dict_to_list(repr_dict, rich_output)
 
-    def __repr__(self):
-        """
-        Textual representation for console
-
-        :return: representation
-        """
-
-        return self.__repr__base(rich_output=False)
-
-    def _repr_html_(self):
-        """
-        HTML representation for the IPython notebook
-
-        :return: HTML representation
-        """
-
-        return self.__repr__base(rich_output=True)
-
-    def display(self):
-        """
-        Display information about the point source.
-
-        :return: (none)
-        """
-
-        # This will automatically choose the best representation among repr and repr_html
-
-        display(self)
-
-    def to_dict(self):
-
-        key = 'point source'
-
-        data = collections.OrderedDict()
-
-        # Serialize position
-
-        position_key = 'position'
-
-        position_dict = self.position.to_dict()
-
-        data[position_key] = position_dict
-
-        # Serialize components
-
-        components_key = 'spectrum'
-
-        components_dict = collections.OrderedDict()
-
-        for component_name, component in self.components.iteritems():
-            components_dict[component_name] = component.to_dict()
-
-        data[components_key] = components_dict
-
-        return {key: data}

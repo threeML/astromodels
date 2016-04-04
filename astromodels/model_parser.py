@@ -84,7 +84,9 @@ from astromodels.sources import point_source
 from astromodels import parameter
 from astromodels import model
 from astromodels.my_yaml import my_yaml
-
+from astromodels.sources.point_source import POINT_SOURCE
+from astromodels.sources.extended_source import EXTENDED_SOURCE
+import re
 
 class ModelIOError(IOError):
     pass
@@ -139,40 +141,105 @@ class ModelParser(object):
         # The first level is the source level
 
         self._sources = []
+        self._independent_variables = []
+        self._links = []
 
-        for source_name, source_definition in self._model_dict.iteritems():
-            this_parser = SourceParser(source_name, source_definition)
+        for source_or_var_name, source_or_var_definition in self._model_dict.iteritems():
 
-            self._sources.append(this_parser.get_source())
+            if source_or_var_name.find("(IndependentVariable)") > 0:
+
+                var_name = source_or_var_name.split("(")[0].replace(" ","")
+
+                this_parser = IndependentVariableParser(var_name, source_or_var_definition)
+
+                self._independent_variables.append(this_parser.get_variable())
+
+            else:
+
+                this_parser = SourceParser(source_or_var_name, source_or_var_definition)
+
+                self._sources.append(this_parser.get_source())
+
+                self._links.extend(this_parser.links)
+
+
 
     def get_model(self):
 
-        return model.Model(*self._sources)
+        # Instance the model with all the parsed sources
+
+        new_model = model.Model(*self._sources)
+
+        # Now set up IndependentVariable instances (if any)
+
+        for independent_variable in self._independent_variables:
+
+            new_model.add_independent_variable(independent_variable)
+
+        # Now set up the links
+
+        for link in self._links:
+
+            path = link['parameter_path']
+            variable = link['variable']
+            law = link['law']
+
+            new_model[path].add_auxiliary_variable(new_model[variable],law)
+
+        return new_model
+
+
+class IndependentVariableParser(object):
+
+    def __init__(self, name, definition):
+
+        self._variable = parameter.IndependentVariable(name, **definition)
+
+    def get_variable(self):
+
+        return self._variable
 
 
 class SourceParser(object):
     def __init__(self, source_name, source_definition):
 
-        assert len(source_definition.values()) == 1, "Source %s cannot have multiple types" % source_name
+        # Get the type of the source
 
-        self._source_name = source_name
+        try:
 
-        # Point source or extended source?
+            # Point source or extended source?
 
-        source_type = source_definition.keys()[0]
+            source_type = re.findall('\((%s|%s)\)' % (POINT_SOURCE, EXTENDED_SOURCE), source_name)[-1]
 
-        if source_type == 'point source':
+        except IndexError:
 
-            self._parsed_source = self._parse_point_source(source_definition['point source'])
-
-        elif source_type == 'extended source':
-
-            self._parsed_source = self._parse_extended_source(source_definition['extended source'])
+            raise ModelSyntaxError("Don't recognize type for source '%s'. "
+                                   "Valid types are '%s' or '%s'." %
+                                   (source_name, POINT_SOURCE, EXTENDED_SOURCE))
 
         else:
 
-            raise ModelSyntaxError("Don't recognize source type '%s' for source %s. "
-                                   "Valid types are 'point source' or 'extended source'." % (source_type, source_name))
+            # Strip the source_type from the name
+
+            source_name = source_name.split()[0]
+
+        self._source_name = source_name
+
+        # This will store the links (if any)
+        self._links = []
+
+        if source_type == POINT_SOURCE:
+
+            self._parsed_source = self._parse_point_source(source_definition)
+
+        elif source_type == EXTENDED_SOURCE:
+
+            self._parsed_source = self._parse_extended_source(source_definition)
+
+    @property
+    def links(self):
+
+        return self._links
 
     def get_source(self):
 
@@ -222,11 +289,11 @@ class SourceParser(object):
 
         if 'ra' in sky_direction_definition and 'dec' in sky_direction_definition:
 
-            ra = parameter.Parameter('RA', sky_direction_definition['ra']['value'])
+            ra = parameter.Parameter('ra', sky_direction_definition['ra']['value'])
             ra.set_bounds(0, 360)
             ra.fix = True
 
-            dec = parameter.Parameter('Dec', sky_direction_definition['dec']['value'])
+            dec = parameter.Parameter('dec', sky_direction_definition['dec']['value'])
             dec.set_bounds(-90, 90)
             dec.fix = True
 
@@ -270,49 +337,38 @@ class SourceParser(object):
 
     def _parse_spectral_component(self, component_name, component_definition):
 
-        # Parse the shape definition
+        # Parse the shape definition, which is the first to occur
 
         try:
 
-            shape_definition = component_definition['shape']
+            function_name = component_definition.keys()[0]
+            parameters_definition = component_definition[function_name]
 
         except KeyError:
 
-            raise ModelSyntaxError("The component %s of source %s is missing the 'shape' attribute"
+            raise ModelSyntaxError("The component %s of source %s is malformed"
                                    % (component_name, self._source_name))
 
-        shape = self._parse_shape_definition(component_name, shape_definition)
+        shape = self._parse_shape_definition(component_name, function_name, parameters_definition)
 
-        # this_polarization = polarization.Polarization() #TODO
-
-        this_polarization = None
+        this_polarization = polarization.Polarization()
 
         this_spectral_component = spectral_component.SpectralComponent(component_name, shape, this_polarization)
 
         return this_spectral_component
 
-    def _parse_shape_definition(self, component_name, shape_definition):
+    def _parse_shape_definition(self, component_name, function_name, parameters_definition):
 
-        assert len(shape_definition.values()) == 1, "Source %s has more than one shape" % self._source_name
-
-        # Get the name of the function
-
-        function_name = shape_definition.keys()[0]
+        # Get the function
 
         try:
 
-            this_function = function.get_function(function_name)
+            function_instance = function.get_function(function_name)
 
         except AttributeError:
 
             raise ModelSyntaxError("Function %s, specified as shape for component %s of source %s, is not a "
                                    "known 1d function" % (function_name, component_name, self._source_name))
-
-        # Instance the function and set its parameters
-
-        function_instance = this_function()
-
-        parameters_definition = shape_definition[function_name]
 
         # Loop over the parameters of the function instance, instead of the specification,
         # so we can understand if there are parameters missing from the specification
@@ -355,15 +411,53 @@ class SourceParser(object):
 
             # Now set the value, which must be present
 
-            try:
-
-                function_instance.parameters[parameter_name].value = this_definition['value']
-
-            except KeyError:
+            if 'value' not in this_definition:
 
                 raise ModelSyntaxError("The parameter %s in function %s, specified as shape for component %s "
                                        "of source %s, lacks a 'value' attribute"
                                        % (parameter_name, function_name, component_name, self._source_name))
+
+            # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
+
+            matches = re.findall('''f\((.+)\)''', str(this_definition['value']))
+
+            if matches:
+
+                # This is an expression which marks a parameter
+                # with a link to another parameter (or an IndependentVariable such as time)
+
+                # Get the variable
+                linked_variable = matches[0]
+
+                # Now get the law
+
+                if 'law' not in this_definition:
+
+                    raise ModelSyntaxError("The parameter %s in function %s, specified as shape for component %s "
+                                           "of source %s, is linked to %s but lacks a 'law' attribute"
+                                           % (parameter_name, function_name, component_name,
+                                              self._source_name, linked_variable))
+
+                link_function_name = this_definition['law'].keys()[0]
+
+                link_function_instance = self._parse_shape_definition(component_name, link_function_name,
+                                                                      this_definition['law'][link_function_name])
+
+                path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
+
+                self._links.append( {'parameter_path': path,
+                                     'law': link_function_instance,
+                                     'variable': linked_variable} )
+
+            else:
+
+                # This is a normal (not linked) parameter
+
+                function_instance.parameters[parameter_name].value = this_definition['value']
+
+
+
+
         return function_instance
 
     def _parse_extended_source(self, ext_source_definition):

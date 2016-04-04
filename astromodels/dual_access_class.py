@@ -18,14 +18,35 @@ class DualAccessClass(object):
         self._dictionary_label = label
 
         for key, value in self._lookup_dictionary.iteritems():
+
             super(DualAccessClass, self).__setattr__(key, value)
 
     def __setattr__(self, key, value):
 
         if hasattr(self, '_lookup_dictionary') and key in self._lookup_dictionary:
 
-            raise ProtectedAttribute("You cannot assign to a %s" % self._dictionary_label)
+            item = self._lookup_dictionary[key]
+
+            if hasattr(item, 'value'):
+
+                item.value = value
+
+            else:
+
+                raise ProtectedAttribute("You cannot assign to a %s" % self._dictionary_label)
 
         else:
 
             super(DualAccessClass, self).__setattr__(key, value)
+
+    def add_attribute(self, name, value):
+
+        self._lookup_dictionary[name] = value
+
+        super(DualAccessClass, self).__setattr__(name, value)
+
+    def del_attribute(self, name):
+
+        super(DualAccessClass, self).__delattr__(name)
+
+        return self._lookup_dictionary.pop(name)

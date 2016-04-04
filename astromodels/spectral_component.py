@@ -1,12 +1,13 @@
 __author__ = 'giacomov'
 
-import collections
-
 from astromodels.named_object import NamedObject
 from astromodels.dual_access_class import ProtectedAttribute
+from astromodels.tree import Node
+from astromodels.polarization import Polarization
 
 
-class SpectralComponent(NamedObject):
+class SpectralComponent(NamedObject, Node):
+
     # This is needed to avoid problems when constructing the class, due to the fact that we are overriding
     # the __setattr__ and __getattr__ attributes
 
@@ -24,72 +25,36 @@ class SpectralComponent(NamedObject):
 
         # Store the polarization
 
-        self._polarization = polarization
+        if polarization is None:
 
-    @property
-    def shape(self):
-        return self._spectral_shape
+            self._polarization = Polarization()
 
-    @property
-    def polarization(self):
-        return self._polarization
+        else:
+
+            self._polarization = polarization
+
+        # Add shape and polarization as children
+        Node.__init__(self)
+
+        self.add_children([self._spectral_shape, self._polarization])
 
     def __repr__(self):
 
         representation = "Spectral component %s\n" % self.name
-        representation += "    -shape: %s\n" % self.shape.name
+        representation += "    -shape: %s\n" % self._spectral_shape.name
 
         # Print the polarization only if it's not None
 
         if self._polarization is not None:
-            representation += "    -polarization: %s\n" % self.polarization.name
+            representation += "    -polarization: %s\n" % self._polarization.name
 
         return representation
 
-    # Allow access to the spectral shape also by name. For example, if the shape is a powerlaw,
-    # the user can access it either through component.shape or through component.powerlaw
-    # Remember that __getattr__ is called only if __getattribute__ fails to find the requested attribute,
-    # thus the performance impact of this is minimal
+    @property
+    def shape(self):
+        """
+        A generic name for the spectral shape.
 
-    def __getattr__(self, item):
-
-        # The first check is needed to avoid infinite recursion during the constructor
-
-        if self._spectral_shape is not None and item == self._spectral_shape.name:
-
-            return self._spectral_shape
-
-        else:
-
-            raise AttributeError("Attribute %s does not exist" % item)
-
-    # Implement this setattr to forbid the user from overwriting the attribute with the name of the shape.
-    # For example, if the shape is a powerlaw, this will fail: component.powerlaw = 'something'.
-
-    def __setattr__(self, key, value):
-
-        # The first check is needed to avoid infinite recursion during the constructor
-
-        if self._spectral_shape is not None and key == self.shape.name:
-
-            raise ProtectedAttribute("You cannot overwrite the shape %s" % key)
-
-        else:
-
-            super(SpectralComponent, self).__setattr__(key, value)
-
-    def to_dict(self, minimal=False):
-
-        data = collections.OrderedDict()
-
-        data['shape'] = self.shape.to_dict(minimal)
-
-        if self.polarization is not None:
-
-            data['polarization'] = self.polarization.to_dict()
-
-        else:
-
-            data['polarization'] = {}
-
-        return data
+        :return: the spectral shape instance
+        """
+        return self._spectral_shape

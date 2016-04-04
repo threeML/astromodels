@@ -88,7 +88,7 @@ example, we want the parameter to vary with time according to a linear law. This
 
 First define the auxiliary variable "time" starting at 0, and a linear law 3.2 t + 5.6::
 
-  > t = AuxiliaryVariable("time",0.0)
+  > t = IndependentVariable("time",0.0)
   > law = lambda x: 3.2 * x + 5.6
 
 For example, in t=0 our law evaluate to::
@@ -139,7 +139,17 @@ import warnings
 import exceptions
 import copy
 import collections
+
 import astropy.units as u
+import scipy.stats
+
+
+# The following import is necessary so that min_value and max_value can be specified as things like
+# '2 * np.pi'
+import numpy as np
+
+from astromodels.tree import Node
+
 
 def _behaves_like_a_number(obj):
     """
@@ -174,20 +184,17 @@ class NotCallableOrErrorInCall(exceptions.Exception):
     pass
 
 
-class Parameter(object):
-    """
+class WarningUnitsAreSlow(Warning):
+    pass
 
-    Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).
 
-    :param name: Name for the parameter
-    :param value: Initial value
-    :param min_value: minimum allowed value for the parameter (default: None)
-    :param max_value: maximum allowed value for the parameter (default: None)
-    :param delta: initial step used by some fitting engines (default: 0.1 * value)
-    :param desc: description of parameter (default: '')
-    """
+class IndependentVariableCannotBeLinked(exceptions.Exception):
+    pass
 
-    def __init__(self, name, value, min_value=None, max_value=None, delta=None, desc=None, free=True, unit=''):
+
+class ParameterBase(Node):
+
+    def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=''):
 
         # NOTE: we avoid enforcing a particular type or even that initial_values, max, min and delta are python numbers.
         # Indeed, as long as they behave as numbers we are going to be fine. We want to keep the possibility to use
@@ -201,11 +208,9 @@ class Parameter(object):
 
         # Assign to members
 
-        self.__name = name
+        self._name = name
 
-        self._value = value
-
-        self._free = bool(free)
+        self._value = float(eval(str(value)))
 
         if self.name.find("log") == 0:
 
@@ -219,7 +224,7 @@ class Parameter(object):
 
         if min_value is not None:
 
-            self._min_value = min_value
+            self.min_value = min_value
 
         else:
 
@@ -229,21 +234,11 @@ class Parameter(object):
 
         if max_value is not None:
 
-            self._max_value = max_value
+            self.max_value = max_value
 
         else:
 
             self._max_value = None
-
-        # Set delta if provided, otherwise use default
-
-        if delta is not None:
-
-            self._delta = delta
-
-        else:
-
-            self._delta = 0.1 * self._value
 
         # Store description
 
@@ -253,20 +248,10 @@ class Parameter(object):
 
         self.__doc__ = desc
 
-        # pre-defined prior is no prior
-        self._prior = None
-
-        # by default we have no auxiliary variable
-
-        self._auxVariable = {}
-
         # Now perform a very lazy check that we can perform math operations on all members
 
         if not _behaves_like_a_number(self._value):
             raise TypeError("The provided initial value is not a number")
-
-        if not _behaves_like_a_number(self._delta):
-            raise TypeError("The provided delta is not a number")
 
         if self._min_value is not None:
 
@@ -278,11 +263,15 @@ class Parameter(object):
             if not _behaves_like_a_number(self._max_value):
                 raise TypeError("The provided maximum value is not a number")
 
+        # Make this a node
+
+        Node.__init__(self)
+
     # Define the property "name" but make it read-only
 
     @property
     def name(self):
-        return self.__name
+        return self._name
 
     # Define the property 'description' and make it read-only
 
@@ -307,30 +296,33 @@ class Parameter(object):
     # Define the property "value" with a control that the parameter cannot be set
     # outside of its bounds
 
-    def get_value(self):
+    @property
+    def value(self):
         """Return current parameter value"""
-
-        # If this parameter has a law of variation, use it to compute the current value
-
-        # (remember: an empty dictionary test as False, a non-empty as true)
-
-        if self._auxVariable:
-            self.value = self._auxVariable['law'](self._auxVariable['variable'].value)
 
         return self._value
 
-    def set_value(self, value):
+    # I use the decorator here (instead of the usual style for getters and setters) because
+    # children classes need to override the getter, and using decorators is the only way
+    # to achieve that
+
+    @value.setter
+    def value(self, value):
         """Sets the current value of the parameter, ensuring that it is within the allowed range"""
 
-        if self._min_value is not None and value < self._min_value:
-            raise SettingOutOfBounds(
-                "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}".format(
-                    self.name, value, self._min_value))
+        try:
+            if self._min_value is not None and value < self._min_value:
+                raise SettingOutOfBounds(
+                    "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}".format(
+                        self.name, value, self._min_value))
 
-        if self._max_value is not None and value > self._max_value:
-            raise SettingOutOfBounds(
-                "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
-                    self.name, value, self._max_value))
+            if self._max_value is not None and value > self._max_value:
+                raise SettingOutOfBounds(
+                    "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
+                        self.name, value, self._max_value))
+        except u.UnitsError:
+
+            raise ValueError("If you want to use astropy units, you need to use the set() method for the parameter.")
 
         # Call the callbacks (if any)
 
@@ -347,25 +339,41 @@ class Parameter(object):
 
         self._value = value
 
-    value = property(get_value, set_value,
-                     doc="""Gets or sets the value for the parameter""")
+    def set(self, quantity):
+        """
+        Set the value of the parameter to the given value, given as a astropy.Quantity (with units).
+        Note that this is quite slow due to the astropy machinery, so do not use this functionality in computing
+        intensive situations. In such situations you are likely to use always the same unit, so you'd be better
+        off by performing your conversion directly on the values and use my_parameter.value = your_value.
 
-    # Define the property "delta"
+        :parameter quantity: an astropy.Quantity instance
+        :return: (none)
+        """
 
-    def get_delta(self):
-        """Gets the current value for the delta of the parameter"""
-        return self._delta
+        try:
 
-    def set_delta(self, delta):
-        """Sets the current delta for the parameter. The delta is used as initial step by some fitting engines"""
+            # This works if value is a astropy.Quantity
 
-        if not _behaves_like_a_number(delta):
-            raise ValueError("Provided delta is not a number" % delta)
+            new_value = quantity.to(self.unit).value
 
-        self._delta = delta
+        except AttributeError:
 
-    delta = property(get_delta, set_delta,
-                     doc='''Gets or sets the delta for the parameter''')
+            # We get here if instead value is a simple number
+
+            raise ValueError("You need to use a astropy.quantity object for the set() method.")
+
+        else:
+
+            # Even if the to() method works, we need to warn the user that this is
+            # very slow, and should only be used in interactive sessions for convenience
+
+            warnings.warn("Using units is convenient but slow. Do not use them during computing-intensive work.",
+                          WarningUnitsAreSlow)
+
+            # Set the value using the property, so the usual check about boundaries and so on is still
+            # performed
+
+            self.value = new_value
 
     # Define the property "min_value"
 
@@ -376,15 +384,28 @@ class Parameter(object):
     def set_min_value(self, min_value):
         """Sets current minimum allowed value"""
 
-        if min_value is not None and not _behaves_like_a_number(min_value):
-            raise ValueError("Provided minimum value is not a number nor None")
+        if isinstance(min_value, str):
 
-        self._min_value = min_value
+            # This allows to specify things like np.pi as min_value
 
-        # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
+            min_value = eval(min_value)
 
-        if self.value < self.min_value:
-            warnings.warn("The current value of the parameter is below the new minimum.", exceptions.RuntimeWarning)
+        if min_value is None:
+
+            self._min_value = None
+
+        else:
+
+            if not _behaves_like_a_number(min_value):
+                raise ValueError("Provided minimum value cannot be interpreted as a number nor None")
+
+            self._min_value = min_value
+
+            # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
+
+            if self.value < self.min_value:
+                warnings.warn("The current value of the parameter %s is below the new minimum." % self.name,
+                              exceptions.RuntimeWarning)
 
     min_value = property(get_min_value, set_min_value,
                          doc='Gets or sets the minimum allowed value for the parameter')
@@ -398,18 +419,30 @@ class Parameter(object):
         return self._max_value
 
     def set_max_value(self, max_value):
-
         """Sets current minimum allowed value"""
 
-        if max_value is not None and not _behaves_like_a_number(max_value):
-            raise ValueError("Provided maximum value is not a number nor None")
+        if isinstance(max_value, str):
 
-        self._max_value = max_value
+            # This allows to specify things like 'np.pi / 3' as max_value
 
-        # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
+            max_value = eval(max_value)
 
-        if self.value > self.max_value:
-            warnings.warn("The current value of the parameter is above the new maximum.", exceptions.RuntimeWarning)
+        if max_value is None:
+
+            self._max_value = None
+
+        else:
+
+            if not _behaves_like_a_number(max_value):
+                raise ValueError("Provided maximum value is not a number nor None")
+
+            self._max_value = max_value
+
+            # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
+
+            if self.value > self.max_value:
+                warnings.warn("The current value of the parameter %s is above the new maximum." % self.name,
+                              exceptions.RuntimeWarning)
 
     max_value = property(get_max_value, set_max_value,
                          doc='Gets or sets the maximum allowed value for the parameter')
@@ -439,6 +472,159 @@ class Parameter(object):
     def empty_callbacks(self):
         """Remove all callbacks for this parameter"""
         self._callbacks = []
+
+    def duplicate(self):
+        """
+        Returns an exact copy of the current parameter
+        """
+
+        # Deep copy everything to make sure that there are no ties between the new instance and the old one
+
+        new_parameter = copy.deepcopy(self)
+
+        return new_parameter
+
+    def to_dict(self, minimal=False):
+
+        """Returns the representation for serialization"""
+
+        data = collections.OrderedDict()
+
+        if minimal:
+
+            # In the minimal representation we just output the value
+
+            data['value'] = self._to_python_type(self.value)
+
+        else:
+
+            # In the complete representation we output everything is needed to re-build the object
+
+            data['value'] = self._to_python_type(self.value)
+
+            data['min_value'] = self._to_python_type(self.min_value)
+            data['max_value'] = self._to_python_type(self.max_value)
+
+            # Try to use the unit as an astropy.Unit instance
+            # If that doesn't work, treat the unit as a simple string
+            try:
+
+                data['unit'] = str(self.unit.to_string())
+
+            except AttributeError:
+
+                data['unit'] = str(self.unit)
+
+        return data
+
+    @staticmethod
+    def _to_python_type(variable):
+        """
+        Returns the value in the variable handling also np.array of one element
+
+        :param variable: input variable
+        :return: the value of the variable having a python type (int, float, ...)
+        """
+
+        # Assume variable is a np.array, fall back to the case where variable is already a primitive type
+
+        try:
+
+            return variable.item()
+
+        except AttributeError:
+
+            return variable
+
+
+class Parameter(ParameterBase):
+    """
+
+    Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).
+
+    :param name: Name for the parameter
+    :param value: Initial value
+    :param min_value: minimum allowed value for the parameter (default: None)
+    :param max_value: maximum allowed value for the parameter (default: None)
+    :param delta: initial step used by some fitting engines (default: 0.1 * value)
+    :param desc: description of parameter (default: '')
+    """
+
+    def __init__(self, name, value, min_value=None, max_value=None, delta=None, desc=None, free=True, unit=''):
+
+        # NOTE: we need to set up _aux_variable immediately because we are overriding the value getter which
+        # needs this
+
+        # by default we have no auxiliary variable
+
+        self._aux_variable = {}
+
+        # This extends ParameterBase by adding the possibility for free/fix, and a delta for fitting purposes, as
+        # well as a prior
+
+        super(Parameter, self).__init__(name, value, min_value=min_value, max_value=max_value, desc=desc, unit=unit)
+
+        self._free = bool(free)
+
+        # Set delta if provided, otherwise use default
+
+        if delta is not None:
+
+            self._delta = delta
+
+        else:
+
+            # Default is 10% of the value, unless the value is zero, in which case the delta is 0.1
+
+            if self._value == 0:
+
+                self._delta = 0.1
+
+            else:
+
+                self._delta = abs(0.1 * self._value)
+
+        # pre-defined prior is no prior
+        self._prior = None
+
+        # Now perform a very lazy check that we can perform math operations on the delta
+
+        if not _behaves_like_a_number(self._delta):
+            raise TypeError("The provided delta is not a number")
+
+    # Define the new get_value which accounts for the possibility of auxiliary variables
+    @ParameterBase.value.getter
+    def value(self):
+        """Return current parameter value"""
+
+        # If this parameter has a law of variation, use it to compute the current value
+
+        # (remember: an empty dictionary test as False, a non-empty as true)
+
+        if self._aux_variable:
+
+            return self._aux_variable['law'](self._aux_variable['variable'].value)
+
+        else:
+
+            return self._value
+
+    # Define the property "delta"
+
+    def get_delta(self):
+        """Gets the current value for the delta of the parameter"""
+        return self._delta
+
+    def set_delta(self, delta):
+        """Sets the current delta for the parameter. The delta is used as initial step by some fitting engines"""
+
+        if not _behaves_like_a_number(delta):
+            raise ValueError("Provided delta is not a number" % delta)
+
+        self._delta = delta
+
+    delta = property(get_delta, set_delta,
+                     doc='''Gets or sets the delta for the parameter''')
 
     # Define the property "prior"
 
@@ -500,89 +686,173 @@ class Parameter(object):
 
     def add_auxiliary_variable(self, variable, law):
 
-        assert isinstance(variable, AuxiliaryVariable)
+        # Check if another law was already here, in case remove it as child for this parameter
+
+        if 'law' in self._aux_variable:
+
+            law_name = self._aux_variable['law'].name
+            self.remove_child(law_name)
 
         # Test the law
         try:
 
-            this_value = law(variable.value)
+            _ = law(variable.value)
+
+        except AttributeError:
+
+            raise NotCallableOrErrorInCall("Cannot access the .value attribute of the aux. variable. "
+                                           "Is it of the proper class?")
 
         except:
 
             raise NotCallableOrErrorInCall("The provided law for the auxiliary variable failed on call")
 
-        self._auxVariable['law'] = law
-        self._auxVariable['variable'] = variable
+        self._aux_variable['law'] = law
+        self._aux_variable['variable'] = variable
 
-        # Set the value of the parameter to the current value of the law
+        # Now add the law as an attribute (through the mother class DualAccessClass),
+        # so the user will be able to access its parameters as this.name.parameter_name
 
-        self.value = this_value
+        self.add_attribute(law.name, law)
 
-    def duplicate(self):
+        # Now add the nodes
+
+        if law.name in self.get_children():
+
+            self.remove_child(law.name)
+
+        self.add_child(law)
+
+    def has_auxiliary_variable(self):
         """
-        Returns an exact copy of the current parameter
+        Returns whether the parameter is linked to an auxiliary variable
         """
+        if self._aux_variable:
 
-        # Deep copy everything to make sure that there are no ties between the new instance and the old one
-
-        new_parameter = copy.deepcopy(self)
-
-        return new_parameter
-
-    def __repr__(self):
-        return "Parameter %s = %s\n" \
-               "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
-                                                                            self.value,
-                                                                            self.min_value,
-                                                                            self.max_value,
-                                                                            self.delta,
-                                                                            self.free)
-
-    def to_dict(self, minimal=False):
-
-        """Returns the minimal representation for serialization"""
-
-        data = collections.OrderedDict()
-
-        if minimal:
-
-            # In the minimal representation we just output the value
-
-            data['value'] = self.value
+            return True
 
         else:
 
-            # In the complete representaton we output everything
+            return False
 
-            data['value'] = self.value
-            data['min_value'] = self.min_value
-            data['max_value'] = self.max_value
-            data['delta'] = self.delta
+    @property
+    def auxiliary_variable(self):
+        """
+        Returns a tuple with the auxiliary variable and the law
+
+        :return: tuple (variable, law)
+        """
+        return self._aux_variable['variable'], self._aux_variable['law']
+
+    def _repr__base(self, rich_output=False):
+
+        if not self.has_auxiliary_variable():
+
+            return "Parameter %s = %s\n" \
+                   "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
+                                                                                self.value,
+                                                                                self.min_value,
+                                                                                self.max_value,
+                                                                                self.delta,
+                                                                                self.free)
+        else:
+
+            return "Parameter %s = %s\n" \
+                   "(linked to auxiliary variable '%s' with law '%s')" % (self.name, self.value,
+                                                                      self._aux_variable['variable'].name,
+                                                                      self._aux_variable['law'].name)
+
+    def to_dict(self, minimal=False):
+
+        """Returns the representation for serialization"""
+
+        if minimal:
+
+            data = collections.OrderedDict()
+
+            # In the minimal representation we just output the value
+
+            data['value'] = self._to_python_type(self.value)
+
+        else:
+
+            data = super(Parameter, self).to_dict()
+
+            # In the complete representation we output everything is needed to re-build the object
+
+            if self.has_auxiliary_variable():
+
+                # Store the function and the auxiliary variable
+
+                data['value'] = 'f(%s)' % ".".join(self._aux_variable['variable'].get_path())
+                #data['function_of'] = {self._aux_variable['variable'].name: self._aux_variable['variable'].to_dict()}
+
+                aux_variable_law_data = collections.OrderedDict()
+                aux_variable_law_data[ self._aux_variable['law'].name ] = self._aux_variable['law'].to_dict()
+
+                data['law'] = aux_variable_law_data
+
+            # delta and free are attributes of Parameter, but not of ParameterBase
+
+            data['delta'] = self._to_python_type(self.delta)
             data['free'] = self.free
-
-            # Try to use the unit as an astropy.Unit instance
-            # If that doesn't work, treat the unit as a simple string
-            try:
-
-                data['unit'] = str(self.unit.to_string())
-
-            except AttributeError:
-
-                data['unit'] = str(self.unit)
 
         return data
 
-    @classmethod
-    def from_dict(cls, data):
+    def get_randomized_value(self, variance=0.1):
 
-        return cls(**data)
+        # Get a value close to the current value, but not identical
+        # (used for the inizialization of Bayesian samplers)
+
+        if (self.min_value is not None) or (self.max_value is not None):
+
+            # Bounded parameter. Use a truncated normal so we are guaranteed
+            # to have a random value within the boundaries
+
+            std = abs(variance * self.value)
+
+            if self.min_value is not None:
+
+                a = ( self.min_value - self.value ) / std
+
+            else:
+
+                a = - np.inf
+
+            if self.max_value is not None:
+
+                b = (self.max_value - self.value) / std
+
+            else:
+
+                b = np.inf
+
+            sample = scipy.stats.truncnorm.rvs( a, b, loc = self.value, scale = std, size = 1)
+
+            if sample < self.min_value or sample > self.max_value:
+
+                raise RuntimeError("This is a bug!!")
+
+            return sample[0]
+
+        else:
+
+            #The parameter has no boundaries
+
+            return np.random.normal( self.value, variance * self.value )
 
 
-class AuxiliaryVariable(Parameter):
+class IndependentVariable(ParameterBase):
     """
     A variable which can be used to express a parameter as a function of it. This is at the moment essentially another
     name of the :Parameter: class, used for clarity to differentiate between a parameter and a variable. See the
     documentation of the :Parameter: class (section :ref:`parameter_auxvar`) for an example of use.
     """
 
-    pass
+    def _repr__base(self, rich_output=False):
+
+        return "IndependentVariable %s = %s\n" \
+               "(min_value = %s, max_value = %s)" % (self.name,
+                                                     self.value,
+                                                     self.min_value,
+                                                     self.max_value)
