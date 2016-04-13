@@ -10,13 +10,13 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-
-   create_model
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   
+   Quick_start
+   Functions_tutorials
+   Point_source_tutorial
+   Extended_sources_tutorial
+   Model_tutorial
+   Priors_for_Bayesian_analysis
+   Additional_features_for_scripts_and_applications
+   api_doc/astromodels.rst
 
