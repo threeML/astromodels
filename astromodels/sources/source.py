@@ -2,20 +2,16 @@ __author__ = 'giacomov'
 
 import collections
 
-from astromodels.named_object import NamedObject
-from astromodels.dual_access_class import DualAccessClass
 
+class Source(object):
 
-class Source(NamedObject):
-
-    def __init__(self, source_name, list_of_components, src_type):
-
-        NamedObject.__init__(self, source_name, allow_spaces=False)
+    def __init__(self, list_of_components, src_type):
 
         # Make the dictionary of components
         self._components = collections.OrderedDict()
 
         for component in list_of_components:
+
             self._components[component.name] = component
 
         # Store the type string

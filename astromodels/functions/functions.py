@@ -1,24 +1,50 @@
 __author__ = 'giacomov'
 
+import math
+import numpy as np
+import warnings
+from scipy.special import gammaincc, gamma
+
 from astromodels.functions.function import Function
 from astromodels.functions.function import FunctionMeta
-import numpy as np
 
-from scipy.special import gammaincc, gamma
-import math
+# Now let's try and import optional dependencies
 
 try:
+
+    # Naima is for numerical computation of Synch. and Inverse compton spectra in randomly oriented
+    # magnetic fields
 
     import naima
     import astropy.units as u
 
-except:
+except ImportError:
+
+    warnings.warn("The naima package is not available. Models that depend on it will not be available")
 
     has_naima = False
 
 else:
 
     has_naima = True
+
+try:
+
+    # GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used by some
+    # functions for faster computation
+
+    from pygsl.testing.sf import gamma_inc
+
+except ImportError:
+
+    warnings.warn("The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
+                  "available.")
+
+    has_gsl = False
+
+else:
+
+    has_gsl = True
 
 # noinspection PyPep8Naming
 class powerlaw(Function):
@@ -67,12 +93,55 @@ class powerlaw(Function):
 
         return 10 ** logK * np.power(x / piv, index)
 
-    def integral(self, e1, e2):
-        integral = (10 ** self.logK * np.power(e2, self.index + 1) -
-                    10 ** self.logK * np.power(e1, self.index + 1))
+# noinspection PyPep8Naming
+class powerlaw_flux(Function):
+        r"""
+        description :
 
-        return integral
+            A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation
+            between the index and the normalization.
 
+        latex : $ \frac{10^{logF}(\gamma+1)} {b^{\gamma+1} - a^{\gamma+1}} x^{\gamma}$
+
+        parameters :
+
+            logF :
+
+                desc : Logarithm of the photon flux between a and b
+                initial value : 0
+                min : -40
+                max : 40
+                unit : "1 / (cm2 s)"
+
+            gamma :
+
+                desc : Photon index
+                initial value : -2
+                min : -10
+                max : 10
+
+            a :
+
+                desc : lower bound for the band in which computing the flux F
+                initial value : 1.0
+                fix : yes
+
+            b :
+
+                desc : upper bound for the band in which computing the flux F
+                initial value : 100.0
+                fix : yes
+
+        """
+
+        __metaclass__ = FunctionMeta
+
+        # noinspection PyPep8Naming
+        def evaluate(self, x, logF, gamma, a, b):
+
+            gp1 = gamma + 1
+
+            return 10 ** logF * gp1 / (b**gp1 - a**gp1) * np.power(x, gamma)
 
 # noinspection PyPep8Naming
 class gaussian(Function):
@@ -81,7 +150,7 @@ class gaussian(Function):
 
         A Gaussian function
 
-    latex : $ \exp{\frac{(x-\mu)^2}{2~\sigma^2}} $
+    latex : $ 10^{logK} \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~\sigma^2}} $
 
     parameters :
 
@@ -104,17 +173,21 @@ class gaussian(Function):
             initial value : 1.0
 
     tests :
-        - { x : 0.0, function value: 1.0, tolerance: 1e-20}
-        - { x : -1.0, function value: 0.60653065971263342, tolerance: 1e-9}
+        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}
+        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}
 
     """
 
     __metaclass__ = FunctionMeta
 
+    __norm = 1.0 / (math.sqrt(2 * np.pi))
+
     # noinspection PyPep8Naming
     def evaluate(self, x, logK, mu, sigma):
 
-        return 10**logK * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
+        norm = self.__norm / sigma
+
+        return 10**logK * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
 
 
 class uniform_prior(Function):
@@ -124,7 +197,7 @@ class uniform_prior(Function):
         A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
         extremes of the interval are counted as part of the interval.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ \0 & x > \text{upper_bound} \end{cases}$
+    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound} \end{cases}$
 
     parameters :
 
@@ -249,6 +322,8 @@ if has_naima:
 
             Synchrotron spectrum from an input particle distribution, using Naima (naima.readthedocs.org)
 
+        latex: not available
+
         parameters :
 
             B :
@@ -284,15 +359,34 @@ if has_naima:
 
         def set_particle_distribution(self, function):
 
-            self.particle_distribution = lambda x:function(x) * u.TeV
+            self._particle_distribution = function
+
+            self._particle_distribution_wrapper = lambda x: function(x / u.eV) / u.eV
+
+        def get_particle_distribution(self):
+
+            return self._particle_distribution
+
+        particle_distribution = property(get_particle_distribution, set_particle_distribution,
+                                         doc="""Get/set particle distribution for electrons""")
 
         # noinspection PyPep8Naming
         def evaluate(self, x, B, emin, emax, need):
 
-            _synch = naima.models.Synchrotron(self.particle_distribution, B * u.Gauss,
+            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B * u.Gauss,
                                               Eemin = emin * u.GeV, Eemax = emax * u.GeV, nEed = need)
 
             return _synch._spectrum(x * u.keV)
+
+        def to_dict(self, minimal=False):
+
+            data = super(Function, self).to_dict(minimal)
+
+            if not minimal:
+
+                data['extra_setup'] = {'particle_distribution': self.particle_distribution.path}
+
+            return data
 
 
 class line(Function):
@@ -335,6 +429,46 @@ class line(Function):
 
         return k * a * x + k * b
 
+class identity(Function):
+    r"""
+    description :
+
+        Return x
+
+    latex : $ x $
+
+    parameters : {}
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def evaluate(self, x):
+
+        return x
+
+class bias(Function):
+    r"""
+    description :
+
+        Return x plus a bias
+
+    latex : $ x + k$
+
+    parameters :
+
+        k :
+
+            desc : Constant value
+            initial value : 0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def evaluate(self, x, k):
+
+        return x + k
 
 class band(Function):
     r"""
@@ -348,14 +482,14 @@ class band(Function):
     parameters :
 
         alpha :
-            desc : The photon spectral index for energies smaller than the peak energy
+            desc : The photon index for energies smaller than the peak energy
             initial value : -1
             min : -10
             max : 10
 
         beta :
 
-            desc : photon spectral index for energies greater than the peak energy (only if opt=1, i.e., for the
+            desc : photon index for energies greater than the peak energy (only if opt=1, i.e., for the
                    Band model)
             initial value : -2.2
             min : -7
@@ -499,3 +633,129 @@ class band(Function):
                            np.power(x[nidx] / Ec, beta) )
 
         return flux
+
+
+class log_parabola(Function):
+    r"""
+    description :
+
+        A log-parabolic function
+
+    latex : $ 10^{logK} \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
+
+    parameters :
+
+        logK :
+
+            desc : Logarithm of scale factor
+            initial value : 0
+            min : -40
+            max : 40
+            unit : "1 / (keV cm2 s)"
+
+        piv :
+            desc : Pivot energy (keep this fixed)
+            initial value : 1
+            fix : yes
+            unit : keV
+
+        alpha :
+
+            desc : photon index
+            initial value : -2.0
+            min : -10
+            max : 0
+
+        beta :
+
+            desc : curvature
+            initial value : 1.0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def evaluate(self, x, logK, piv, alpha, beta):
+
+        xx = x/piv
+
+        return pow(10,logK) * xx**(alpha - beta * np.log10(xx))
+
+    @property
+    def peak_energy(self):
+        """
+        Returns the peak energy in the nuFnu spectrum
+
+        :return: peak energy in keV
+        """
+
+        # Eq. 6 in Massaro et al. 2004
+        # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
+
+        return self.piv.value * pow(10, (2 + self.alpha.value) / (2 * self.beta.value) )
+
+if has_gsl:
+
+    class cutoff_powerlaw_flux(Function):
+        r"""
+            description :
+
+                A cutoff power law having the flux as normalization, which should reduce the correlation among
+                parameters.
+
+            latex : $ \frac{10^{logK}}{T(b)-T(a)} ~x^{\alpha}~\exp{(x/10^{logC})}~\text{with}~T(x)=-x_{c}^{\alpha+1} \Gamma(\alpha+1, x/10^{logC})~\text{(}\Gamma\text{ is the incomplete gamma function)} $
+
+            parameters :
+
+                logK :
+
+                    desc : Logarithm of the flux F between a and b
+                    initial value : 0
+                    min : -40
+                    max : 40
+                    unit : "1 / (cm2 s)"
+
+                alpha :
+
+                    desc : photon index
+                    initial value : -2.0
+                    min : -10
+                    max : 10
+
+                logC :
+
+                    desc : logarithm of the cutoff value
+                    initial value : 1.0
+                    min : -5
+                    max : 10
+
+                a :
+
+                    desc : lower bound for the band in which computing the flux F
+                    initial value : 1.0
+                    fix : yes
+
+                b :
+
+                    desc : upper bound for the band in which computing the flux F
+                    initial value : 100.0
+                    fix : yes
+            """
+
+        __metaclass__ = FunctionMeta
+
+
+        @staticmethod
+        def _integral(a,b, alpha, ec):
+
+            integrand = lambda x: -ec * pow(x, alpha) * pow(x / ec, -alpha) * gamma_inc(alpha + 1, x / ec)
+
+            return integrand(b) - integrand(a)
+
+        def evaluate(self, x, logK, alpha, logC, a, b):
+
+            ec = pow(10, logC)
+
+            this_integral = self._integral(a,b, alpha, ec)
+
+            return pow(10, logK) / this_integral * np.power(x, alpha) * np.exp(-x / ec)

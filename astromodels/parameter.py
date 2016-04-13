@@ -135,14 +135,13 @@ If we now change the value of one of the parameters, we see the parameter p chan
 
 """
 
-import warnings
-import exceptions
-import copy
 import collections
+import copy
+import exceptions
+import warnings
 
 import astropy.units as u
 import scipy.stats
-
 
 # The following import is necessary so that min_value and max_value can be specified as things like
 # '2 * np.pi'
@@ -196,6 +195,10 @@ class ParameterBase(Node):
 
     def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=''):
 
+        # Make this a node
+
+        Node.__init__(self, name)
+
         # NOTE: we avoid enforcing a particular type or even that initial_values, max, min and delta are python numbers.
         # Indeed, as long as they behave as numbers we are going to be fine. We want to keep the possibility to use
         # numbers coming from C, C++ or other sources, for example. Note however that string
@@ -207,8 +210,6 @@ class ParameterBase(Node):
         self._callbacks = []
 
         # Assign to members
-
-        self._name = name
 
         self._value = float(eval(str(value)))
 
@@ -262,16 +263,6 @@ class ParameterBase(Node):
 
             if not _behaves_like_a_number(self._max_value):
                 raise TypeError("The provided maximum value is not a number")
-
-        # Make this a node
-
-        Node.__init__(self)
-
-    # Define the property "name" but make it read-only
-
-    @property
-    def name(self):
-        return self._name
 
     # Define the property 'description' and make it read-only
 
@@ -592,6 +583,10 @@ class Parameter(ParameterBase):
         if not _behaves_like_a_number(self._delta):
             raise TypeError("The provided delta is not a number")
 
+        # Create a backup copy of the status of the parameter (useful when an auxiliary variable
+        # is removed)
+        self._old_free = self._free
+
     # Define the new get_value which accounts for the possibility of auxiliary variables
     @ParameterBase.value.getter
     def value(self):
@@ -656,9 +651,18 @@ class Parameter(ParameterBase):
                          "accepting the current value of the parameter as input and returning the probability "
                          "density as output")
 
+    def has_prior(self):
+        """
+        Check whether the current parameter has a defined prior
+
+        :return: True or False
+        """
+
+        return self._prior is not None
+
     # Define property "free"
 
-    def set_free(self, value):
+    def set_free(self, value=True):
 
         self._free = value
 
@@ -672,7 +676,7 @@ class Parameter(ParameterBase):
 
     # Define property "fix"
 
-    def set_fix(self, value):
+    def set_fix(self, value=True):
 
         self._free = (not value)
 
@@ -685,13 +689,6 @@ class Parameter(ParameterBase):
                        " or 'p.fix = False'. ")
 
     def add_auxiliary_variable(self, variable, law):
-
-        # Check if another law was already here, in case remove it as child for this parameter
-
-        if 'law' in self._aux_variable:
-
-            law_name = self._aux_variable['law'].name
-            self.remove_child(law_name)
 
         # Test the law
         try:
@@ -713,7 +710,7 @@ class Parameter(ParameterBase):
         # Now add the law as an attribute (through the mother class DualAccessClass),
         # so the user will be able to access its parameters as this.name.parameter_name
 
-        self.add_attribute(law.name, law)
+        #self.add_attribute(law.name, law)
 
         # Now add the nodes
 
@@ -722,6 +719,41 @@ class Parameter(ParameterBase):
             self.remove_child(law.name)
 
         self.add_child(law)
+
+        # This parameter is not free anymore
+
+        # First make a backup of the old status, so that it will be restored if the
+        # law is removed
+        self._old_free = self._free
+
+        self.free = False
+
+    def remove_auxiliary_variable(self):
+        """
+        Remove an existing auxiliary variable
+
+        :return:
+        """
+
+        if not self.has_auxiliary_variable():
+
+            # do nothing, but print a warning
+
+            warnings.warn("Cannot remove a non-existing auxiliary variable")
+
+        else:
+
+            # Remove the law from the children
+
+            self.remove_child(self._aux_variable['law'].name)
+
+            # Clean up the dictionary
+
+            self._aux_variable = {}
+
+            # Set the parameter to the status it has before the auxiliary variable was created
+
+            self.free = self._old_free
 
     def has_auxiliary_variable(self):
         """
@@ -746,21 +778,30 @@ class Parameter(ParameterBase):
 
     def _repr__base(self, rich_output=False):
 
+        representation = ""
+
         if not self.has_auxiliary_variable():
 
-            return "Parameter %s = %s\n" \
-                   "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
-                                                                                self.value,
-                                                                                self.min_value,
-                                                                                self.max_value,
-                                                                                self.delta,
-                                                                                self.free)
+            representation = "Parameter %s = %s\n" \
+                             "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
+                                                                                          self.value,
+                                                                                          self.min_value,
+                                                                                          self.max_value,
+                                                                                          self.delta,
+                                                                                          self.free)
+
+            if self._prior is not None:
+
+                representation += " [prior: %s]" % self.prior.name
+
         else:
 
-            return "Parameter %s = %s\n" \
-                   "(linked to auxiliary variable '%s' with law '%s')" % (self.name, self.value,
-                                                                      self._aux_variable['variable'].name,
-                                                                      self._aux_variable['law'].name)
+            representation = "Parameter %s = %s\n" \
+                             "(linked to auxiliary variable '%s' with law '%s')" % (self.name, self.value,
+                                                                                    self._aux_variable['variable'].name,
+                                                                                    self._aux_variable['law'].name)
+
+        return representation
 
     def to_dict(self, minimal=False):
 
@@ -796,6 +837,10 @@ class Parameter(ParameterBase):
 
             data['delta'] = self._to_python_type(self.delta)
             data['free'] = self.free
+
+            if self.has_prior():
+
+                data['prior'] = {self.prior.name: self.prior.to_dict()}
 
         return data
 

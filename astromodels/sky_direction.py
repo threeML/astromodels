@@ -41,7 +41,7 @@ class SkyDirection(Node):
 
         # Create the node
 
-        Node.__init__(self)
+        Node.__init__(self, 'position')
 
         # Check that we have the right pairs of coordinates
 
@@ -86,6 +86,74 @@ class SkyDirection(Node):
 
             raise WrongCoordinatePair("You have to specify either (ra, dec) or (l, b).")
 
+    def get_ra(self):
+        """
+        Get R.A. corresponding to the current position (ICRS, J2000)
+
+        :return: Right Ascension
+        """
+
+        try:
+
+            return self.children['ra'].value
+
+        except KeyError:
+
+            # Transform from L,B to R.A., Dec
+
+            return self.sky_coord.transform_to('icrs').ra.deg
+
+    def get_dec(self):
+        """
+        Get Dec. corresponding to the current position (ICRS, J2000)
+
+        :return: Declination
+        """
+
+        try:
+
+            return self.children['dec'].value
+
+        except KeyError:
+
+            # Transform from L,B to R.A., Dec
+
+            return self.sky_coord.transform_to('icrs').dec.deg
+
+    def get_l(self):
+        """
+        Get Galactic Longitude (l) corresponding to the current position
+
+        :return: Galactic Longitude
+        """
+
+        try:
+
+            return self.children['l'].value
+
+        except KeyError:
+
+            # Transform from L,B to R.A., Dec
+
+            return float(self.sky_coord.transform_to('galactic').l.deg)
+
+    def get_b(self):
+        """
+        Get Galactic latitude (b) corresponding to the current position
+
+        :return: Latitude
+        """
+
+        try:
+
+            return self.children['b'].value
+
+        except KeyError:
+
+            # Transform from L,B to R.A., Dec
+
+            return float(self.sky_coord.transform_to('galactic').b.deg)
+
     def _get_sky_coord(self):
 
         if self._coord_type == 'galactic':
@@ -94,7 +162,8 @@ class SkyDirection(Node):
             b = self.children['b'].value
 
             return coordinates.SkyCoord(l=l * u.deg, b=b * u.deg,
-                                        frame='galactic', equinox=self._equinox)
+                                        frame='galactic', equinox=self._equinox,
+                                        unit="deg")
 
         else:
 
@@ -102,7 +171,18 @@ class SkyDirection(Node):
             dec = self.children['dec'].value
 
             return coordinates.SkyCoord(ra=ra * u.deg, dec=dec * u.deg,
-                                        frame='icrs', equinox=self._equinox)
+                                        frame='icrs', equinox=self._equinox,
+                                        unit="deg")
+
+    @property
+    def sky_coord(self):
+        """
+        Return an instance of astropy.coordinates.SkyCoord which can be used to make all transformations supported
+        by it
+
+        :return: astropy.coordinates.SkyCoord
+        """
+        return self._get_sky_coord()
 
     @property
     def parameters(self):

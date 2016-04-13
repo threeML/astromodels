@@ -81,11 +81,13 @@ from astromodels.functions import function
 from astromodels import spectral_component
 from astromodels import polarization
 from astromodels.sources import point_source
+from astromodels.sources import particle_source
 from astromodels import parameter
 from astromodels import model
 from astromodels.my_yaml import my_yaml
 from astromodels.sources.point_source import POINT_SOURCE
 from astromodels.sources.extended_source import EXTENDED_SOURCE
+from astromodels.sources.particle_source import PARTICLE_SOURCE
 import re
 
 class ModelIOError(IOError):
@@ -143,6 +145,7 @@ class ModelParser(object):
         self._sources = []
         self._independent_variables = []
         self._links = []
+        self._extra_setups = []
 
         for source_or_var_name, source_or_var_definition in self._model_dict.iteritems():
 
@@ -161,6 +164,8 @@ class ModelParser(object):
                 self._sources.append(this_parser.get_source())
 
                 self._links.extend(this_parser.links)
+
+                self._extra_setups.extend(this_parser.extra_setups)
 
 
 
@@ -186,6 +191,16 @@ class ModelParser(object):
 
             new_model[path].add_auxiliary_variable(new_model[variable],law)
 
+        # Finally the extra_setups (if any)
+
+        for extra_setup in self._extra_setups:
+
+            path = extra_setup['function_path']
+
+            for property, value in extra_setup['extra_setup'].iteritems():
+
+                new_model[path].__setattr__(property, new_model[value])
+
         return new_model
 
 
@@ -209,13 +224,14 @@ class SourceParser(object):
 
             # Point source or extended source?
 
-            source_type = re.findall('\((%s|%s)\)' % (POINT_SOURCE, EXTENDED_SOURCE), source_name)[-1]
+            source_type = re.findall('\((%s|%s|%s)\)' % (POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE),
+                                     source_name)[-1]
 
         except IndexError:
 
             raise ModelSyntaxError("Don't recognize type for source '%s'. "
-                                   "Valid types are '%s' or '%s'." %
-                                   (source_name, POINT_SOURCE, EXTENDED_SOURCE))
+                                   "Valid types are '%s', '%s' or '%s'." %
+                                   (source_name, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE))
 
         else:
 
@@ -228,6 +244,10 @@ class SourceParser(object):
         # This will store the links (if any)
         self._links = []
 
+        # This will store extra_setups (if any), used sometimes. For example, the function which uses naima
+        # to make a synchrotron spectrum uses this to save and set up the particle distribution
+        self._extra_setups = []
+
         if source_type == POINT_SOURCE:
 
             self._parsed_source = self._parse_point_source(source_definition)
@@ -235,6 +255,15 @@ class SourceParser(object):
         elif source_type == EXTENDED_SOURCE:
 
             self._parsed_source = self._parse_extended_source(source_definition)
+
+        elif source_type == PARTICLE_SOURCE:
+
+            self._parsed_source = self._parse_particle_source(source_definition)
+
+    @property
+    def extra_setups(self):
+
+        return self._extra_setups
 
     @property
     def links(self):
@@ -244,6 +273,30 @@ class SourceParser(object):
     def get_source(self):
 
         return self._parsed_source
+
+    def _parse_particle_source(self, particle_source_definition):
+
+        # Parse the spectral information
+
+        try:
+
+            spectrum = particle_source_definition['spectrum']
+
+        except KeyError:
+
+            raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
+
+        components = []
+
+        for component_name, component_definition in particle_source_definition['spectrum'].iteritems():
+
+            this_component = self._parse_spectral_component(component_name, component_definition)
+
+            components.append(this_component)
+
+        this_particle_source = particle_source.ParticleSource(self._source_name, components=components)
+
+        return this_particle_source
 
     def _parse_point_source(self, pts_source_definition):
 
@@ -361,14 +414,21 @@ class SourceParser(object):
 
         # Get the function
 
-        try:
+        if 'expression' in parameters_definition:
 
-            function_instance = function.get_function(function_name)
+            # This is a composite function
+            function_instance = function.get_function(function_name, parameters_definition['expression'])
 
-        except AttributeError:
+        else:
 
-            raise ModelSyntaxError("Function %s, specified as shape for component %s of source %s, is not a "
-                                   "known 1d function" % (function_name, component_name, self._source_name))
+            try:
+
+                function_instance = function.get_function(function_name)
+
+            except function.UnknownFunction:
+
+                raise ModelSyntaxError("Function %s, specified as shape for %s of source %s, is not a "
+                                       "known function" % (function_name, component_name, self._source_name))
 
         # Loop over the parameters of the function instance, instead of the specification,
         # so we can understand if there are parameters missing from the specification
@@ -381,7 +441,7 @@ class SourceParser(object):
 
             except KeyError:
 
-                raise ModelSyntaxError("Function %s, specified as shape for component %s of source %s, lacks "
+                raise ModelSyntaxError("Function %s, specified as shape for %s of source %s, lacks "
                                        "the definition for parameter %s"
                                        % (function_name, component_name, self._source_name, parameter_name))
 
@@ -413,7 +473,7 @@ class SourceParser(object):
 
             if 'value' not in this_definition:
 
-                raise ModelSyntaxError("The parameter %s in function %s, specified as shape for component %s "
+                raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
                                        "of source %s, lacks a 'value' attribute"
                                        % (parameter_name, function_name, component_name, self._source_name))
 
@@ -433,7 +493,7 @@ class SourceParser(object):
 
                 if 'law' not in this_definition:
 
-                    raise ModelSyntaxError("The parameter %s in function %s, specified as shape for component %s "
+                    raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
                                            "of source %s, is linked to %s but lacks a 'law' attribute"
                                            % (parameter_name, function_name, component_name,
                                               self._source_name, linked_variable))
@@ -455,7 +515,34 @@ class SourceParser(object):
 
                 function_instance.parameters[parameter_name].value = this_definition['value']
 
+            # Setup the prior for this parameter, if it exists
+            if 'prior' in this_definition:
 
+                # Get the function for this prior
+
+                # A name to display in case of errors
+
+                name_for_errors = 'prior for %s' % function_instance.parameters[parameter_name].path
+
+                prior_function_name = this_definition['prior'].keys()[0]
+
+                prior_function_definition = this_definition['prior'][prior_function_name]
+
+                prior_function = self._parse_shape_definition(name_for_errors,
+                                                              prior_function_name,
+                                                              prior_function_definition)
+
+                # Set it as prior for current parameter
+
+                function_instance.parameters[parameter_name].prior = prior_function
+
+        # Now handle extra_setup if any
+        if 'extra_setup' in parameters_definition:
+
+            path = ".".join([self._source_name, 'spectrum', component_name, function_name])
+
+            self._extra_setups.append({'function_path': path,
+                                       'extra_setup': parameters_definition['extra_setup']})
 
 
         return function_instance

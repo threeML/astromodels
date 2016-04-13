@@ -4,20 +4,57 @@ import collections
 
 from astromodels.utils.io import display
 from astromodels.dual_access_class import DualAccessClass
-
+import re
 
 class DuplicatedNode(Exception):
     pass
 
 
+def name_is_legal(name):
+    """
+    Check that the name is legal, i.e., it does not contain special characters nor spaces
+
+    :param name: the name to check
+    :return: True or False
+    """
+
+    # Define the set of valid characters
+    valid_char_sequence = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890-+_'
+
+    valid = set(valid_char_sequence).issuperset(name)
+
+    if valid:
+
+        # Check that the name does not start with -
+        if name[0] == '-':
+
+            return False
+
+    return valid
+
+
 class Node(DualAccessClass):
 
-    def __init__(self):
+    def __init__(self, name):
 
         self._children = collections.OrderedDict()
         self._parent = None
-        
+
+        assert name_is_legal(name),"Illegal characters in name %s. You can only use letters and numbers, " \
+                                   "and + and - (but the name cannot start with -)" % name
+
+        self._name = name
+
         super(Node, self).__init__('node', self._children)
+
+    @property
+    def name(self):
+        """
+        Returns the name of the node
+
+        :return: a string containing the name
+        """
+        return self._name
 
     @property
     def children(self):
@@ -169,16 +206,12 @@ class Node(DualAccessClass):
 
     def find_instances(self, cls):
         """
-        Find all the parameters below this node. Note that given the flexible way in which parameters can be defined,
-        linked and so on, they can be in many different places in the tree.
+        Find all the instances of cls below this node.
 
-        :return: a dictionary of parameters
+        :return: a dictionary of instances of cls
         """
 
-        # NOTE: parameters are always at the end of a branch in the tree. We exploit this fact
-        # so we can avoid using isinstance() or similar and we keep duck typing
-
-        parameters = collections.OrderedDict()
+        instances = collections.OrderedDict()
 
         for child_name, child in self.get_children().iteritems():
 
@@ -186,19 +219,19 @@ class Node(DualAccessClass):
 
                 key_name = ".".join(child.get_path())
 
-                parameters[key_name] = child
+                instances[key_name] = child
 
-                # Now check if the parameter has children,
+                # Now check if the instance has children,
                 # and if it does go deeper in the tree
 
                 # NOTE: an empty dictionary evaluate as False
 
                 if child.get_children():
 
-                    parameters.update(child.find_instances(cls))
+                    instances.update(child.find_instances(cls))
 
             else:
 
-                parameters.update(child.find_instances(cls))
+                instances.update(child.find_instances(cls))
 
-        return parameters
+        return instances

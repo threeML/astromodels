@@ -4,13 +4,16 @@ import collections
 import os
 import warnings
 
-from astromodels.sources.point_source import PointSource, POINT_SOURCE
-from astromodels.sources.extended_source import ExtendedSource, EXTENDED_SOURCE
+from astromodels.sources.point_source import POINT_SOURCE
+from astromodels.sources.extended_source import EXTENDED_SOURCE
+from astromodels.sources.particle_source import PARTICLE_SOURCE
+
 from astromodels.my_yaml import my_yaml
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.table import dict_to_table
 from astromodels.parameter import Parameter, IndependentVariable
 from astromodels.tree import Node
+from astromodels.functions.function import get_function
 
 
 class ModelFileExists(IOError):
@@ -39,7 +42,7 @@ class Model(Node):
 
         # Setup the node
 
-        super(Model, self).__init__()
+        super(Model, self).__init__("root")
 
         # Dictionary to keep point sources
 
@@ -48,6 +51,10 @@ class Model(Node):
         # Dictionary to keep extended sources
 
         self._extended_sources = collections.OrderedDict()
+
+        # Dictionary to keep particle sources
+
+        self._particle_sources = collections.OrderedDict()
 
         # Loop over the provided sources and process them
 
@@ -66,6 +73,10 @@ class Model(Node):
 
                 self._extended_sources[source.name] = source
 
+            elif source.source_type == PARTICLE_SOURCE:
+
+                self._particle_sources[source.name] = source
+
             else:
 
                 raise InvalidInput("Input sources must be either a point source or an extended source")
@@ -74,6 +85,7 @@ class Model(Node):
 
         self._point_sources_list = self._point_sources.values()
         self._extended_sources_list = self._extended_sources.values()
+        self._particle_sources_list = self._particle_sources.values()
 
         # Now make the list of all the existing parameters
 
@@ -118,6 +130,31 @@ class Model(Node):
 
         return free_parameters_dictionary
 
+    def linked_parameters(self):
+        """
+        Get a dictionary with all parameters in this model in a linked status. A parameter is in a linked status
+        if it is linked to another parameter (i.e. it is forced to have the same value of the other parameter), or
+        if it is linked with another parameter or an independent variable through a law.
+
+        :return: dictionary of linked parameters
+        """
+
+        # Refresh the list
+
+        self._update_parameters()
+
+        # Filter selecting only free parameters
+
+        linked_parameter_dictionary = collections.OrderedDict()
+
+        for parameter_name, parameter in self._parameters.iteritems():
+
+            if parameter.has_auxiliary_variable():
+
+                linked_parameter_dictionary[parameter_name] = parameter
+
+        return linked_parameter_dictionary
+
     def __getitem__(self, path):
         """
         Get a parameter from a path like "source_1.component.powerlaw.logK". This might be useful in certain
@@ -137,6 +174,10 @@ class Model(Node):
     def extended_sources(self):
         return self._extended_sources
 
+    @property
+    def particle_sources(self):
+        return self._particle_sources
+
     def add_independent_variable(self, variable):
         """
         Add a global independent variable to this model, such as time.
@@ -152,6 +193,43 @@ class Model(Node):
             self.remove_child(variable.name)
 
         self.add_child(variable)
+
+    def link(self, parameter_1, parameter_2, link_function=None):
+        """
+        Link two parameters so that they always have the same value.
+
+        :param parameter_1: the first parameter
+        :param parameter_2: the second parameter
+        :param link_function: a function instance. If not provided, the identity function will be used by default.
+        Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
+        :return: (none)
+        """
+
+        # Composite functions are not supported for links, because they don't have a unique name
+
+        # Create a lambda function which always return the value of parameter_1
+        if link_function is None:
+            # Use the identity function by default
+
+            link_function = get_function('identity')
+
+        parameter_1.add_auxiliary_variable(parameter_2, link_function)
+
+    def unlink(self, parameter):
+        """
+        Sets free a parameter which has been linked previously
+
+        :param parameter: the parameter to be set free
+        :return: (none)
+        """
+
+        if parameter.has_auxiliary_variable():
+
+            parameter.remove_auxiliary_variable()
+
+        else:
+
+            warnings.warn("Parameter %s has no link to be removed." % parameter.path)
 
     def _repr__base(self, rich_output=False):
 
@@ -187,6 +265,18 @@ class Model(Node):
 
             representation += "(none)"
 
+        # Print the name of extended sources if there are any
+
+        representation += "%s%sParticle sources: " % (div, div)
+
+        if self._particle_sources:
+
+            representation += ",".join(self._particle_sources.keys())
+
+        else:
+
+            representation += "(none)"
+
         representation += "%s%sFree parameters:%s" % (div, div, div)
 
         parameters_dict = collections.OrderedDict()
@@ -208,6 +298,42 @@ class Model(Node):
             representation += table.__repr__()
 
             representation += div
+
+        # Print linked parameters
+
+        linked_parameters = self.linked_parameters()
+
+        if linked_parameters:
+
+            representation += "%s%sLinked parameters:%s" % (div, div, div)
+
+            parameters_dict = collections.OrderedDict()
+
+            for parameter_name, parameter in linked_parameters.iteritems():
+
+                # Generate table with only a minimal set of info
+
+                variable, law = parameter.auxiliary_variable
+
+                this_dict = collections.OrderedDict()
+
+                this_dict['linked to'] = variable.path
+                this_dict['function'] = law.name
+                this_dict['current value'] = parameter.value
+
+                parameters_dict[parameter_name] = this_dict
+
+            table = dict_to_table(parameters_dict)
+
+            if rich_output:
+
+                representation += table._repr_html_()
+
+            else:
+
+                representation += table.__repr__()
+
+                representation += div
 
         return representation
 
@@ -295,7 +421,7 @@ class Model(Node):
 
         pts = self._point_sources_list[id]
 
-        return pts.position.ra.value, pts.position.dec.value
+        return pts.position.get_ra(), pts.position.get_dec()
 
     def get_point_source_fluxes(self, id, energies):
         """
@@ -352,3 +478,27 @@ class Model(Node):
     def is_inside_any_extended_source(self, j2000_ra, j2000_dec):
 
         return True
+
+    def get_number_of_particle_sources(self):
+        """
+        Return the number of particle sources
+
+        :return: number of particle sources
+        """
+
+        return len(self._particle_sources)
+
+    def get_particle_source_fluxes(self, id, energies):
+        """
+        Get the fluxes from the id-th point source
+
+        :param id: id of the source
+        :param energies: energies at which you need the flux
+        :return: fluxes
+        """
+
+        return self._particle_sources_list[id].get_flux(energies)
+
+    def get_particle_source_name(self, id):
+
+        return self._particle_sources_list[id].name

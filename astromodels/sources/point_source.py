@@ -110,25 +110,24 @@ class PointSource(Source, Node):
 
             components = [SpectralComponent("main", spectral_shape)]
 
-        Source.__init__(self, source_name, components, POINT_SOURCE)
+        Source.__init__(self, components, POINT_SOURCE)
 
         # A source is also a Node in the tree
 
-        Node.__init__(self)
+        Node.__init__(self, source_name)
 
         # Add the position as a child node, with an explicit name
-
-        self._sky_position.name = 'position'
 
         self.add_child(self._sky_position)
 
         # Add a node called 'spectrum'
 
-        spectrum_node = Node()
-        spectrum_node.name = 'spectrum'
+        spectrum_node = Node('spectrum')
         spectrum_node.add_children(self._components.values())
 
         self.add_child(spectrum_node)
+
+    # Link the __call__ method to get_flux, so they are equivalent
 
     def __call__(self, *args, **kwargs):
 
@@ -158,11 +157,11 @@ class PointSource(Source, Node):
 
         repr_dict[key] = collections.OrderedDict()
         repr_dict[key]['position'] = self._sky_position.to_dict(minimal=True)
-        repr_dict[key]['components'] = collections.OrderedDict()
+        repr_dict[key]['spectrum'] = collections.OrderedDict()
 
         for component_name, component in self.components.iteritems():
 
-            repr_dict[key]['components'][component_name] = component.to_dict(minimal=True)
+            repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
 

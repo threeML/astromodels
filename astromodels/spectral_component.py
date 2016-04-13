@@ -1,12 +1,10 @@
 __author__ = 'giacomov'
 
-from astromodels.named_object import NamedObject
-from astromodels.dual_access_class import ProtectedAttribute
 from astromodels.tree import Node
 from astromodels.polarization import Polarization
 
 
-class SpectralComponent(NamedObject, Node):
+class SpectralComponent(Node):
 
     # This is needed to avoid problems when constructing the class, due to the fact that we are overriding
     # the __setattr__ and __getattr__ attributes
@@ -14,8 +12,6 @@ class SpectralComponent(NamedObject, Node):
     _spectral_shape = None
 
     def __init__(self, name, shape, polarization=None):
-
-        NamedObject.__init__(self, name, allow_spaces=False)
 
         # Check that we can call the shape (i.e., it is a function)
 
@@ -34,11 +30,12 @@ class SpectralComponent(NamedObject, Node):
             self._polarization = polarization
 
         # Add shape and polarization as children
-        Node.__init__(self)
+
+        Node.__init__(self, name)
 
         self.add_children([self._spectral_shape, self._polarization])
 
-    def __repr__(self):
+    def _repr__base(self, rich_output):
 
         representation = "Spectral component %s\n" % self.name
         representation += "    -shape: %s\n" % self._spectral_shape.name
@@ -58,3 +55,7 @@ class SpectralComponent(NamedObject, Node):
         :return: the spectral shape instance
         """
         return self._spectral_shape
+
+    def __call__(self, energies):
+
+        return self._spectral_shape(energies)

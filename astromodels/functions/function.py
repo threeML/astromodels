@@ -5,6 +5,7 @@ from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
+from astromodels.utils.table import dict_to_table
 
 import collections
 import warnings
@@ -19,8 +20,20 @@ import numpy as np
 import scipy.integrate
 import inspect
 
+try:
 
-class WarningNoTests(Warning):
+    from IPython.display import display, HTML
+
+except:
+
+    has_ipython = False
+
+else:
+
+    has_ipython = True
+
+
+class WarningNoTests(ImportWarning):
     pass
 
 
@@ -287,7 +300,6 @@ class FunctionMeta(type):
         cls._name = cls.__name__
 
         # Parse the parameters' dictionary
-
         assert isinstance(function_definition['parameters'], dict), "Wrong syntax in 'parameters' token. It must be " \
                                                                     "a dictionary. Refers to the documentation."
 
@@ -328,6 +340,34 @@ class FunctionMeta(type):
 
         # Now add the constructor to the class
         cls.__init__ = FunctionMeta.class_init
+
+        # Finally, add the info() method to the type so that it can be called even without instancing the class
+
+        def info():
+
+            repr_dict = collections.OrderedDict()
+
+            repr_dict['description'] = function_definition['description']
+
+            if 'latex' in function_definition:
+                repr_dict['formula'] = function_definition['latex']
+
+            # Add the description of each parameter and their current value
+            repr_dict['default parameters'] = collections.OrderedDict()
+
+            for parameter_name in cls.__parameters.keys():
+
+                repr_dict['default parameters'][parameter_name] = cls.__parameters[parameter_name].to_dict()
+
+            if has_ipython:
+
+                display(HTML(dict_to_list(repr_dict, html=True)))
+
+            else:
+
+                print(dict_to_list(repr_dict, html=False))
+
+        cls.info = staticmethod(info)
 
         # We now proceed with the testing
 
@@ -531,6 +571,7 @@ class FunctionMeta(type):
                           type(instance)._n_dim)
 
 
+
 class Function(Node):
 
     def __init__(self, name, function_definition, parameters, n_dim):
@@ -542,13 +583,7 @@ class Function(Node):
         # Note; in a normal situation these are stored in the type already. Thus, this is a small waste of memory.
         # However, doing this will allow to subclass the Function class without using the FunctionMeta meta-class.
 
-        self._name = name
         self._n_dim = n_dim
-
-        # Start with an ID of 1. The ID is used in composite function to keep track of the number of unique
-        # instances of a given function
-
-        self._uuid = 1
 
         # Store also the function definition
 
@@ -560,7 +595,7 @@ class Function(Node):
 
         # Set up the node
 
-        Node.__init__(self)
+        Node.__init__(self, name)
 
         # Add the parameters as children. Since the name of the key in the dictionary might
         # be different than the actual name of the parameter, use the .add_child method instead
@@ -588,11 +623,13 @@ class Function(Node):
 
         return scipy.integrate.quad(self.__call__, e1, e2)[0]
 
-    # Add the name of the function as a property
     @property
-    def name(self):
-        """Returns the name of this function"""
-        return self._name
+    def description(self):
+        """
+        Returns a description for this function
+        """
+
+        return self._function_definition['description']
 
     # Add a property returning the parameters dictionary
     @property
@@ -625,11 +662,6 @@ class Function(Node):
         # Gather the current parameters' values
 
         kwargs.update({parameter_name: parameter.value for parameter_name, parameter in self.children.iteritems()})
-
-        # Enclose this in a try/except so that in the most common case (when the input are numpy.array),
-        # the function has only a very very small performance hit (the price of the .shape call).
-        # If that fails, fail back to a version where the input is first casted to an array,
-        # and then casted back after completion
 
         return self.evaluate(*args, **kwargs)
 
@@ -835,13 +867,16 @@ class CompositeFunction(Function):
 
         self._id_to_uid = {}
 
-        self._name = self._uuid_expression
+        expression = self._uuid_expression
 
         for i,function in enumerate(self._functions):
 
             self._id_to_uid[i+1] = function.uuid
 
-            self._name = self._name.replace(function.uuid, "%s{%s}" % (function.name, i+1))
+            expression = expression.replace(function.uuid, "%s{%s}" % (function.name, i+1))
+
+        # Save the expression
+        self._expression = expression
 
         # Build the parameters dictionary assigning a new name to each parameter to account for possible
         # duplicates.
@@ -863,11 +898,15 @@ class CompositeFunction(Function):
 
         # Now build a meaningful description
 
-        _function_definition = {'description': self._name, 'latex': NO_LATEX_FORMULA}
+        _function_definition = {'description': self.expression, 'latex': NO_LATEX_FORMULA}
 
-        Function.__init__(self, self._name, _function_definition, parameters, n_dim)
+        Function.__init__(self, 'composite', _function_definition, parameters, n_dim)
 
         self._uuid = self._uuid_expression
+
+    @property
+    def expression(self):
+        return self._expression
 
     @staticmethod
     def _get_uuid_expression(operation, name_1, name_2=None):
@@ -969,12 +1008,25 @@ class CompositeFunction(Function):
 
         return self.evaluate(*args, **kwargs)
 
+    # Override the to_dict method of the Node class to add the expression to re-build this
+    # composite function
+    def to_dict(self, minimal=False):
 
-def get_function(function_specification):
+        data = super(CompositeFunction, self).to_dict(minimal)
+
+        if not minimal:
+
+            data['expression'] = self._expression
+
+        return data
+
+
+def get_function(function_name, composite_function_expression=None):
     """
     Returns the function class "name", which must be among the known functions.
 
-    :param function_specification: the name of the function, or a composite function specification such as
+    :param function_name: the name of the function (use 'composite' if the function is a composite function)
+    :param composite_function_expression: composite function specification such as
     ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
     :return: the class (note: this is not the instance!). You have to build it yourself, like::
 
@@ -983,23 +1035,40 @@ def get_function(function_specification):
     """
 
     # Check whether this is a composite function or a simple function
-
-    if '{' in function_specification:
+    if composite_function_expression is not None:
 
         # Composite function
 
-        return _parse_function_expression(function_specification)
+        return _parse_function_expression(composite_function_expression)
 
     else:
 
-        if function_specification in _known_functions:
+        if function_name in _known_functions:
 
-            return _known_functions[function_specification]()
+            return _known_functions[function_name]()
 
         else:
 
             raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                                  (function_specification, ",".join(_known_functions.keys())))
+                                  (function_name, ",".join(_known_functions.keys())))
+
+
+def list_functions():
+
+    # Gather all defined functions and their descriptions
+
+    functions_and_descriptions = {key:{'Description': value._function_definition['description']}
+                                  for key,value in _known_functions.iteritems()}
+
+    # Order by key (i.e., by function name)
+
+    ordered = collections.OrderedDict(sorted(functions_and_descriptions.items()))
+
+    # Format in a table
+
+    table = dict_to_table(ordered)
+
+    return table
 
 
 def _parse_function_expression(function_specification):
