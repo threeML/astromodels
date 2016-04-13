@@ -806,7 +806,7 @@ session. You can do it with:
 
 
 
-.. image:: ../doc/Model_tutorial_files/../doc/Model_tutorial_53_1.png
+.. image:: Model_tutorial_files/Model_tutorial_53_1.png
 
 
 Linking parameters
@@ -1117,5 +1117,5 @@ We can now link any parameter to be a function of time, like this:
 
 
 
-.. image:: ../doc/Model_tutorial_files/../doc/Model_tutorial_75_1.png
+.. image:: Model_tutorial_files/Model_tutorial_75_1.png
 

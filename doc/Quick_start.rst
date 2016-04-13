@@ -83,6 +83,6 @@ Now let's use it:
 
 
 
-.. image:: ../doc/Quick_start_files/../doc/Quick_start_7_1.png
+.. image:: Quick_start_files/Quick_start_7_1.png
 
 

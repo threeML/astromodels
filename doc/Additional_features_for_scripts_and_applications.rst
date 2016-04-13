@@ -208,7 +208,7 @@ components from all sources:
 
 
 
-.. image:: ../doc/Additional_features_for_scripts_and_applications_files/../doc/Additional_features_for_scripts_and_applications_22_1.png
+.. image:: Additional_features_for_scripts_and_applications_files/Additional_features_for_scripts_and_applications_22_1.png
 
 
 Getting the path of an element and using it programmatically

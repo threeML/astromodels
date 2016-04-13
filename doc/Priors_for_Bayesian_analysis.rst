@@ -181,5 +181,5 @@ Let's plot the value of the prior at some random locations:
 
 
 
-.. image:: ../doc/Priors_for_Bayesian_analysis_files/../doc/Priors_for_Bayesian_analysis_11_1.png
+.. image:: Priors_for_Bayesian_analysis_files/Priors_for_Bayesian_analysis_11_1.png
 
