@@ -1,11 +1,9 @@
-__author__ = 'giacomov'
-
-
 from astromodels.parameter import Parameter
 from astromodels.my_yaml import my_yaml
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
 from astromodels.utils.table import dict_to_table
+import astropy.units as u
 
 import collections
 import warnings
@@ -19,6 +17,9 @@ from yaml.reader import ReaderError
 import numpy as np
 import scipy.integrate
 import inspect
+
+__author__ = 'giacomov'
+
 
 try:
 
@@ -48,6 +49,7 @@ class DesignViolation(Exception):
 class WrongDimensionality(Exception):
     pass
 
+
 class TestSpecificationError(Exception):
     pass
 
@@ -64,6 +66,10 @@ class UnknownFunction(ValueError):
     pass
 
 
+class UnknownParameter(ValueError):
+        pass
+
+
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = '(no latex formula available)'
 
@@ -73,7 +79,8 @@ _operations = {'+': np.add,
                '*': np.multiply,
                '/': np.divide,
                '**': np.power,
-               'abs': np.abs}
+               'abs': np.abs,
+               'of': 'compose'}
 
 
 def input_as_array(method):
@@ -562,6 +569,18 @@ class FunctionMeta(type):
 
                 copy_of_parameters[key].value = kwargs[key]
 
+        # Now check that all the parameters specified in the kwargs are actually parameters of this function
+        for key in kwargs.keys():
+
+            try:
+
+                copy_of_parameters[key]
+
+            except KeyError:
+
+                raise UnknownParameter("You specified an init value for %s, which is not a "
+                                       "parameter of function %s" % (key, type(instance)._name))
+
         # Now call the parent class
 
         Function.__init__(instance,
@@ -605,10 +624,105 @@ class Function(Node):
 
             self.add_child(child, child_name)
 
-        # Finally generate a unique identifier (UUID) in a thread safe, multi-processing safe
+        # Now generate a unique identifier (UUID) in a thread safe, multi-processing safe
         # way. This is used for example in the CompositeFunction class to keep track of the different
         # instances of the same function
         self._uuid = "{" + str(self._generate_uuid()) + "}"
+
+        # This will contain the units for the independent variables x(,y,z)
+        self._independent_variables_unit = [None] * self.n_dim
+
+    def set_independent_variables_unit(self, *units):
+        """
+        Set the independent variables for this function
+
+        :param units: as many strings (like 'keV') or astropy.units.Unit instances as needed depending on the number
+        of dimensions of this function.
+        :return: none
+        """
+
+        assert len(units) == self.n_dim, "Wrong number of variables for function with %s dimension(s)" % self.n_dim
+
+        self._independent_variables_unit = map(lambda x:u.Unit(x), units)
+
+    @property
+    def independent_variables_unit(self):
+        """
+        Returns a list with the units of the independent variables for this function
+
+        :return: a list
+        """
+        return self._independent_variables_unit
+
+    @property
+    def free_parameters(self):
+        """
+        Returns a dictionary of free parameters for this function
+
+        :return: dictionary of free parameters
+        """
+
+        free_parameters = collections.OrderedDict([(k,v) for k, v in self.parameters.iteritems() if v.free])
+
+        return free_parameters
+
+    def get_wrapper(self):
+        """
+        Returns a python function which can be used to call this function with the parameters in the calling sequence.
+        In other words, if you can call this function with f(x), with the returned wrapper you can call it with
+        f(x, parameter1, parameter2...), where parameter1, parameter2... are the *free* parameters.
+
+        :return: a python function
+        """
+
+        # Build a list of free parameters
+        free_parameters = [k for k,v in self.parameters.iteritems() if v.free]
+
+        # Prepare the method to set the parameters to their current value
+
+        def set_parameters(*args):
+
+            [self.get_child(free_parameters[i]).set_value(args[i]) for i in range(len(args))]
+
+        # Prepare the variable description
+
+        variables = None
+
+        if self.n_dim == 1:
+
+            variables = 'x'
+
+        elif self.n_dim == 2:
+
+            variables = 'x,y'
+
+        elif self.n_dim == 3:
+
+            variables = 'x,y,z'
+
+        # Prepare the free parameters string
+
+        free_parameters_string = ",".join(free_parameters)
+
+        # Build some code to generate a wrapper which takes care of updating the value of the parameters
+        # and return the value of the function
+
+        wrapper_code = '''
+
+        def wrapper(%s, %s):
+
+            set_parameters(%s)
+
+            return self(%s)
+
+        ''' % (variables, free_parameters_string, free_parameters_string, variables)
+
+        #print(wrapper_code)
+
+        exec(wrapper_code.replace("        ","")) in locals()
+
+        return wrapper
+
 
     @staticmethod
     def _generate_uuid():
@@ -813,8 +927,29 @@ class CompositeFunction(Function):
 
             # Binary operation
 
-            self.set_evaluate(self._composite_function_factory_binary(function_or_scalar_1, _operations[operation],
-                                                                      function_or_scalar_2))
+            # Check if this is a function composition with the .of method
+            if _operations[operation] == 'compose':
+
+                # Can only compose functions of 1 variable
+
+                assert hasattr(function_or_scalar_2, 'evaluate'), "Second member of .of cannot be a scalar"
+
+                assert function_or_scalar_1.n_dim == 1 and function_or_scalar_2.n_dim == 1, "Can only compose " \
+                                                                                            "with .of functions of " \
+                                                                                            "1 variable"
+
+                def new_evaluate(*args):
+
+                    value = function_or_scalar_2(*args)
+
+                    return function_or_scalar_1(value, *(args[1:]))
+
+                self.set_evaluate(new_evaluate)
+
+            else:
+
+                self.set_evaluate(self._composite_function_factory_binary(function_or_scalar_1, _operations[operation],
+                                                                          function_or_scalar_2))
 
         # Save a description, but using the unique IDs of the functions involved, to keep track
         # of where they appear in the expression
@@ -895,6 +1030,7 @@ class CompositeFunction(Function):
                 # parameter, not a copy, as always in python)
 
                 parameters[new_name] = parameter
+                parameter.change_name(new_name)
 
         # Now build a meaningful description
 
@@ -903,6 +1039,14 @@ class CompositeFunction(Function):
         Function.__init__(self, 'composite', _function_definition, parameters, n_dim)
 
         self._uuid = self._uuid_expression
+
+    def _set_units(self, x_unit, y_unit):
+
+        # Just rely on the single functions to adjust themselves.
+
+        for function in self.functions:
+
+            function._set_units(x_unit, y_unit)
 
     @property
     def expression(self):
@@ -950,6 +1094,9 @@ class CompositeFunction(Function):
         if hasattr(first_instance, 'evaluate'):
 
             if hasattr(second_instance, 'evaluate'):
+
+                # Get number of arguments for first function
+
 
                 def new_evaluate(*args):
 

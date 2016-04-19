@@ -1,7 +1,17 @@
 __author__ = 'giacomov'
 
 import collections
+import exceptions
 
+from astromodels.units import get_units
+
+PARTICLE_SOURCE = 'particle source'
+POINT_SOURCE = 'point source'
+EXTENDED_SOURCE = 'extended source'
+
+
+class UnknownSourceType(exceptions.Exception):
+    pass
 
 class Source(object):
 
@@ -17,9 +27,35 @@ class Source(object):
         # Store the type string
         self._src_type = str(src_type)
 
-        # This will allow to access the components as instance.component, instead of instance.components['component']
+        # Now sets the units of the parameters for the energy domain
 
-        #DualAccessClass.__init__(self, "component", self._components)
+        current_units = get_units()
+
+        if self._src_type == POINT_SOURCE:
+
+            # Components in this case have energy as x and differential flux as y
+
+            x_unit = current_units.photon_energy
+            y_unit = (current_units.photon_energy * current_units.area * current_units.time) ** (-1)
+
+        elif self._src_type == PARTICLE_SOURCE:
+
+            # energy as x and particle flux as y
+            x_unit = current_units.particle_energy
+            y_unit = 1 / current_units.particle_energy
+
+        elif self._src_type == EXTENDED_SOURCE:
+
+            pass
+
+        else:
+
+            raise UnknownSourceType("Source of type %s is unknown" % self._src_type)
+
+        # Now set the units of the components
+        for component in self._components.values():
+
+            component.shape._set_units(x_unit, y_unit)
 
     @property
     def components(self):

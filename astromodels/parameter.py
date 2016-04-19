@@ -147,6 +147,8 @@ import scipy.stats
 # '2 * np.pi'
 import numpy as np
 
+from math import log10
+
 from astromodels.tree import Node
 
 
@@ -191,9 +193,13 @@ class IndependentVariableCannotBeLinked(exceptions.Exception):
     pass
 
 
+class CannotUseLogScale(exceptions.Exception):
+    pass
+
+
 class ParameterBase(Node):
 
-    def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=''):
+    def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=u.dimensionless_unscaled):
 
         # Make this a node
 
@@ -211,17 +217,21 @@ class ParameterBase(Node):
 
         # Assign to members
 
+        # NOTE: the internal value stored in _value is always unscaled.
+        # In the Parameter children, if the user sets this a logarithmic
+        # parameter, _value will still be in linear scale. The same is true for the _min_value and _max_value.
+        # (see note in the constructor of the Parameter class)
+
+        # NOTE2: we use the eval of the str so that the value can be things like 1/2.0, np.pi and similar
+
         self._value = float(eval(str(value)))
 
-        if self.name.find("log") == 0:
+        # Store the units as an astropy.units.Unit instance
 
-            self._unit = u.LogUnit(unit)
-
-        else:
-
-            self._unit = u.Unit(unit)
+        self._unit = u.Unit(unit)
 
         # Set minimum if provided, otherwise use default
+        # (use the property so the checks that are there are performed also on construction)
 
         if min_value is not None:
 
@@ -229,7 +239,7 @@ class ParameterBase(Node):
 
         else:
 
-            self._min_value = None
+            self.min_value = None
 
         # Set maximum if provided, otherwise use default
 
@@ -239,11 +249,11 @@ class ParameterBase(Node):
 
         else:
 
-            self._max_value = None
+            self.max_value = None
 
         # Store description
 
-        self.__desc = desc
+        self._desc = desc
 
         # Make the description the documentation as well
 
@@ -268,14 +278,12 @@ class ParameterBase(Node):
 
     @property
     def description(self):
-        return self.__desc
+        return self._desc
 
     # Define the property 'unit'
     def set_unit(self, new_unit):
 
-        # TODO use astropy units
-
-        self._unit = new_unit
+        self._unit = u.Unit(new_unit)
 
     def get_unit(self):
 
@@ -390,7 +398,7 @@ class ParameterBase(Node):
             if not _behaves_like_a_number(min_value):
                 raise ValueError("Provided minimum value cannot be interpreted as a number nor None")
 
-            self._min_value = min_value
+            self._min_value = float(min_value)
 
             # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
@@ -427,7 +435,7 @@ class ParameterBase(Node):
             if not _behaves_like_a_number(max_value):
                 raise ValueError("Provided maximum value is not a number nor None")
 
-            self._max_value = max_value
+            self._max_value = float(max_value)
 
             # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
@@ -451,6 +459,14 @@ class ParameterBase(Node):
         """Returns the current boundaries for the parameter"""
 
         return self.min_value, self.max_value
+
+    def change_name(self, new_name):
+        """
+        Change the name of this parameter. Use with caution!
+
+        :return: none
+        """
+        self._name = new_name
 
     def add_callback(self, callback):
         """Add a callback to the list of functions which are called whenever the value of the parameter is changed.
@@ -485,7 +501,7 @@ class ParameterBase(Node):
 
             # In the minimal representation we just output the value
 
-            data['value'] = self._to_python_type(self.value)
+            data['value'] = self._to_python_type(self.value) * self.unit
 
         else:
 
@@ -587,6 +603,17 @@ class Parameter(ParameterBase):
         # is removed)
         self._old_free = self._free
 
+        # Now create the pieces needed for the mechanism which allow the user to transform a parameter
+        # in the log scale only for the fitting or bayesian engine. This is how it works:
+        # - if log is False, .value and .scaled_value are the same
+        # - if log is True, .scaled_value is the log10 of .value. Scaled_value should be used by fitting engines
+        #   and bayesian samplers, which will then work on the parameter in log scale. The user however will not
+        #   notice this and will continue to see and work with the parameter in linear scale.
+
+        # By default the log scale is False
+
+        self._log = False
+
     # Define the new get_value which accounts for the possibility of auxiliary variables
     @ParameterBase.value.getter
     def value(self):
@@ -604,6 +631,108 @@ class Parameter(ParameterBase):
 
             return self._value
 
+    def _get_log(self):
+
+        return self._log
+
+    def _set_log(self, new_value):
+
+        # Check that the minimum and the maximum are larger than zero. It is not possible to use the log scale
+        # on a parameter which can take zero or negative values, or which have no boundaries
+
+        if (self.min_value is None or self.min_value <= 0) or (self.max_value is None or self.max_value <= 0):
+
+            raise CannotUseLogScale("Cannot use log scale for parameter %s. It needs to have both a defined minimum "
+                                    "and maximum, and both must be strictly larger than 0" % self.name)
+
+        self._log = bool(new_value)
+
+    log = property(_get_log, _set_log, doc="Sets or gets the status of the log scale switch. If log is True, "
+                                           "the value, the minimum and the maximum for this parameter returned by "
+                                           "scaled_value, scaled_min_value and scaled_max_value will be equal to the "
+                                           "log10 of respectively the value, min_value and max_value. This is useful "
+                                           "for certain fitting engine such as MINUIT if the parameter has a wide "
+                                           "dynamical range.")
+
+    # Now define the machinery needed for the log scale mechanism (see the note in the constructor)
+    def _get_scaled_value(self):
+
+        if self.log:
+
+            return log10(self.value)
+
+        else:
+
+            return self.value
+
+    def _set_scaled_value(self, new_value):
+
+        if self.log:
+
+            # We assume that the new value is actually the logarithm of the desired value
+
+            self.value = pow(10, new_value)
+
+        else:
+
+            self.value = new_value
+
+    scaled_value = property(_get_scaled_value, _set_scaled_value, 
+                            doc="Get the current value of the parameter. You should use this in place of .value "
+                                "for fitting engines and Bayesian samplers")
+
+    def _get_scaled_min_value(self):
+
+        if self.log:
+
+            return log10(self.min_value)
+
+        else:
+
+            return self.min_value
+
+    def _set_scaled_min_value(self, new_minimum):
+
+        if self.log:
+
+            # We assume that the new minimum is actually the logarithm of the desired minimum
+
+            self.min_value = pow(10, new_minimum)
+
+        else:
+
+            self.min_value = new_minimum
+
+    scaled_min_value = property(_get_scaled_min_value, _set_scaled_min_value, 
+                                doc="Get the current minimum for the parameter. You should use this in place of "
+                                    ".min_value for fitting engines and Bayesian samplers")
+
+    def _get_scaled_max_value(self):
+
+        if self.log:
+
+            return log10(self.max_value)
+
+        else:
+
+            return self.max_value
+
+    def _set_scaled_max_value(self, new_maximum):
+
+        if self.log:
+
+            # We assume that the new maximum is actually the logarithm of the desired maximum
+
+            self.max_value = pow(10, new_maximum)
+
+        else:
+
+            self.max_value = new_maximum
+
+    scaled_max_value = property(_get_scaled_max_value, _set_scaled_max_value,
+                                doc="Get the current maximum for the parameter. You should use this in place of "
+                                    ".max_value for fitting engines and Bayesian samplers")
+
     # Define the property "delta"
 
     def get_delta(self):
@@ -620,6 +749,36 @@ class Parameter(ParameterBase):
 
     delta = property(get_delta, set_delta,
                      doc='''Gets or sets the delta for the parameter''')
+
+    # Define the property scaled_delta to be used by fitting engines and Bayesian samplers
+    def _get_scaled_delta(self):
+
+        if self.log:
+
+            # Keep the delta appropriate on the log scale
+
+            return log10(self.value + self.delta) - log10(self.value)
+
+        else:
+
+            return self.delta
+
+    def _set_scaled_delta(self, new_delta):
+
+        if self.log:
+
+            # The new delta is in the log scale. This equation comes from inverting the equation in the
+            # getter
+
+            self.delta = self.value * (pow(10, new_delta) - 1)
+
+        else:
+
+            self.delta = new_delta
+
+    scaled_delta = property(_get_scaled_delta, _set_scaled_delta,
+                            doc="Get the current maximum for the parameter. You should use this in place of "
+                                ".max_value for fitting engines and Bayesian samplers")
 
     # Define the property "prior"
 
@@ -782,9 +941,10 @@ class Parameter(ParameterBase):
 
         if not self.has_auxiliary_variable():
 
-            representation = "Parameter %s = %s\n" \
+            representation = "Parameter %s = %s [%s]\n" \
                              "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
                                                                                           self.value,
+                                                                                          self.unit,
                                                                                           self.min_value,
                                                                                           self.max_value,
                                                                                           self.delta,
@@ -796,8 +956,8 @@ class Parameter(ParameterBase):
 
         else:
 
-            representation = "Parameter %s = %s\n" \
-                             "(linked to auxiliary variable '%s' with law '%s')" % (self.name, self.value,
+            representation = "Parameter %s = %s [%s]\n" \
+                             "(linked to auxiliary variable '%s' with law '%s')" % (self.name, self.value, unit,
                                                                                     self._aux_variable['variable'].name,
                                                                                     self._aux_variable['law'].name)
 
@@ -813,7 +973,7 @@ class Parameter(ParameterBase):
 
             # In the minimal representation we just output the value
 
-            data['value'] = self._to_python_type(self.value)
+            data['value'] = "%s [%s]" % (self._to_python_type(self.value), self.unit)
 
         else:
 
@@ -874,7 +1034,8 @@ class Parameter(ParameterBase):
 
             sample = scipy.stats.truncnorm.rvs( a, b, loc = self.value, scale = std, size = 1)
 
-            if sample < self.min_value or sample > self.max_value:
+            if (self.min_value is not None and sample < self.min_value) or \
+               (self.max_value is not None and sample > self.max_value):
 
                 raise RuntimeError("This is a bug!!")
 
@@ -889,10 +1050,18 @@ class Parameter(ParameterBase):
 
 class IndependentVariable(ParameterBase):
     """
-    A variable which can be used to express a parameter as a function of it. This is at the moment essentially another
-    name of the :Parameter: class, used for clarity to differentiate between a parameter and a variable. See the
-    documentation of the :Parameter: class (section :ref:`parameter_auxvar`) for an example of use.
+    An independent variable like time or energy.
     """
+
+    # Override the constructor to make the unit specification mandatory
+
+    def __init__(self, name, value, unit, min_value=None, max_value=None, desc=None):
+
+        super(IndependentVariable, self).__init__(name, value, unit=unit,
+                                                  min_value=min_value,
+                                                  max_value=max_value,
+                                                  desc=desc)
+
 
     def _repr__base(self, rich_output=False):
 

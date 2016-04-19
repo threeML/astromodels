@@ -4,9 +4,7 @@ import collections
 import os
 import warnings
 
-from astromodels.sources.point_source import POINT_SOURCE
-from astromodels.sources.extended_source import EXTENDED_SOURCE
-from astromodels.sources.particle_source import PARTICLE_SOURCE
+from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
 
 from astromodels.my_yaml import my_yaml
 from astromodels.utils.disk_usage import disk_usage
@@ -130,6 +128,7 @@ class Model(Node):
 
         return free_parameters_dictionary
 
+    @property
     def linked_parameters(self):
         """
         Get a dictionary with all parameters in this model in a linked status. A parameter is in a linked status
@@ -196,7 +195,8 @@ class Model(Node):
 
     def link(self, parameter_1, parameter_2, link_function=None):
         """
-        Link two parameters so that they always have the same value.
+        Link the value of the provided parameters through the provided function (identity is the default, i.e.,
+        parameter_1 = parameter_2).
 
         :param parameter_1: the first parameter
         :param parameter_2: the second parameter
@@ -205,15 +205,15 @@ class Model(Node):
         :return: (none)
         """
 
-        # Composite functions are not supported for links, because they don't have a unique name
-
-        # Create a lambda function which always return the value of parameter_1
         if link_function is None:
             # Use the identity function by default
 
             link_function = get_function('identity')
 
         parameter_1.add_auxiliary_variable(parameter_2, link_function)
+
+        # Now set the units of the link function
+        link_function._set_units(parameter_2.unit, parameter_1.unit)
 
     def unlink(self, parameter):
         """
@@ -287,7 +287,7 @@ class Model(Node):
 
             parameters_dict[parameter_name] = parameter.to_dict()
 
-        table = dict_to_table(parameters_dict, ['value','min_value','max_value','delta','free'])
+        table = dict_to_table(parameters_dict, ['value','unit','min_value','max_value','delta','free'])
 
         if rich_output:
 
@@ -301,7 +301,7 @@ class Model(Node):
 
         # Print linked parameters
 
-        linked_parameters = self.linked_parameters()
+        linked_parameters = self.linked_parameters
 
         if linked_parameters:
 
@@ -320,6 +320,7 @@ class Model(Node):
                 this_dict['linked to'] = variable.path
                 this_dict['function'] = law.name
                 this_dict['current value'] = parameter.value
+                this_dict['unit'] = parameter.unit
 
                 parameters_dict[parameter_name] = this_dict
 

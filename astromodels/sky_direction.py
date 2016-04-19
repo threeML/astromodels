@@ -29,10 +29,10 @@ class SkyDirection(Node):
     def __init__(self, ra=None, dec=None, l=None, b=None, equinox='J2000'):
         """
 
-        :param ra: float or Parameter
-        :param dec: float or Parameter
-        :param l: float or Parameter
-        :param b: float or Parameter
+        :param ra: Right Ascension in degrees
+        :param dec: Declination in degrees
+        :param l: Galactic latitude in degrees
+        :param b: Galactic longitude in degrees
         :param equinox: string
         :return:
         """
@@ -51,10 +51,10 @@ class SkyDirection(Node):
             # with either Parameter instances or just floats
 
             if isinstance(ra, float):
-                ra = Parameter('ra', ra, min_value=0.0, max_value=360.0)
+                ra = Parameter('ra', ra, min_value=0.0, max_value=360.0, unit='deg')
 
             if isinstance(dec, float):
-                dec = Parameter('dec', dec, min_value=-90.0, max_value=90.0)
+                dec = Parameter('dec', dec, min_value=-90.0, max_value=90.0, unit='deg')
 
             assert 0 <= ra.value <= 360, "R.A. cannot have a value of %s, it must be 0 <= ra <= 360" % ra
             assert -90 <= dec.value <= 90, "dec cannot have a value of %s, it must be -90 <= dec <= 90" % dec
@@ -70,10 +70,10 @@ class SkyDirection(Node):
             # with either Parameter instances or just floats
 
             if isinstance(l, float):
-                l = Parameter('l', l, min_value=0.0, max_value=360.0)
+                l = Parameter('l', l, min_value=0.0, max_value=360.0, unit='deg')
 
             if isinstance(b, float):
-                b = Parameter('b', b, min_value=-90.0, max_value=90.0)
+                b = Parameter('b', b, min_value=-90.0, max_value=90.0, unit='deg')
 
             assert 0 <= l.value <= 360, "L cannot have a value of %s, it must be 0 <= L <= 360" % l
             assert -90 <= b.value <= 90, "B cannot have a value of %s, it must be -90 <= B <= 90" % b

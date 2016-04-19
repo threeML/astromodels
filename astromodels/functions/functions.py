@@ -4,9 +4,23 @@ import math
 import numpy as np
 import warnings
 from scipy.special import gammaincc, gamma
+import exceptions
 
 from astromodels.functions.function import Function
 from astromodels.functions.function import FunctionMeta
+from astromodels import units
+
+
+class GSLNotAvailable(UserWarning):
+    pass
+
+
+class NaimaNotAvailable(UserWarning):
+    pass
+
+
+class InvalidUsageForFunction(exceptions.Exception):
+    pass
 
 # Now let's try and import optional dependencies
 
@@ -20,7 +34,8 @@ try:
 
 except ImportError:
 
-    warnings.warn("The naima package is not available. Models that depend on it will not be available")
+    warnings.warn("The naima package is not available. Models that depend on it will not be available",
+                  NaimaNotAvailable)
 
     has_naima = False
 
@@ -38,7 +53,7 @@ try:
 except ImportError:
 
     warnings.warn("The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
-                  "available.")
+                  "available.", GSLNotAvailable)
 
     has_gsl = False
 
@@ -54,24 +69,20 @@ class powerlaw(Function):
         A simple power-law with normalization expressed as
         a logarithm
 
-    latex : $ \frac{dN}{dx} = 10^{logK}~\frac{x}{piv}^{index} $
+    latex : $ K~\frac{x}{piv}^{index} $
 
     parameters :
 
-        logK :
+        K :
 
-            desc : Logarithm of normalization
-            initial value : 0
-            min : -40
-            max : 40
-            unit : "1 / (keV cm2 s)"
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
 
         piv :
 
-            desc : Pivot energy
+            desc : Pivot value
             initial value : 1
             fix : yes
-            unit: keV
 
         index :
 
@@ -88,10 +99,22 @@ class powerlaw(Function):
 
     __metaclass__ = FunctionMeta
 
-    # noinspection PyPep8Naming
-    def evaluate(self, x, logK, piv, index):
+    def _set_units(self, x_unit, y_unit):
 
-        return 10 ** logK * np.power(x / piv, index)
+        # The index is always dimensionless
+        self.index.unit = u.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, piv, index):
+
+        return K * np.power(x / piv, index)
 
 # noinspection PyPep8Naming
 class powerlaw_flux(Function):
@@ -101,19 +124,16 @@ class powerlaw_flux(Function):
             A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation
             between the index and the normalization.
 
-        latex : $ \frac{10^{logF}(\gamma+1)} {b^{\gamma+1} - a^{\gamma+1}} x^{\gamma}$
+        latex : $ \frac{F(\gamma+1)} {b^{\gamma+1} - a^{\gamma+1}} (x)^{\gamma}$
 
         parameters :
 
-            logF :
+            F :
 
-                desc : Logarithm of the photon flux between a and b
-                initial value : 0
-                min : -40
-                max : 40
-                unit : "1 / (cm2 s)"
+                desc : Integral between a and b
+                initial value : 1
 
-            gamma :
+            index :
 
                 desc : Photon index
                 initial value : -2
@@ -122,13 +142,13 @@ class powerlaw_flux(Function):
 
             a :
 
-                desc : lower bound for the band in which computing the flux F
+                desc : lower bound for the band in which computing the integral F
                 initial value : 1.0
                 fix : yes
 
             b :
 
-                desc : upper bound for the band in which computing the flux F
+                desc : upper bound for the band in which computing the integral F
                 initial value : 100.0
                 fix : yes
 
@@ -136,12 +156,25 @@ class powerlaw_flux(Function):
 
         __metaclass__ = FunctionMeta
 
+        def _set_units(self, x_unit, y_unit):
+
+            # The flux is the integral over x, so:
+            self.F.unit = y_unit * x_unit
+
+            # The index is always dimensionless
+            self.index.unit = u.dimensionless_unscaled
+
+            # a and b have the same units as x
+
+            self.a.unit = x_unit
+            self.b.unit = x_unit
+
         # noinspection PyPep8Naming
-        def evaluate(self, x, logF, gamma, a, b):
+        def evaluate(self, x, F, index, a, b):
 
-            gp1 = gamma + 1
+            gp1 = index + 1
 
-            return 10 ** logF * gp1 / (b**gp1 - a**gp1) * np.power(x, gamma)
+            return F * gp1 / (b**gp1 - a**gp1) * np.power(x, index)
 
 # noinspection PyPep8Naming
 class gaussian(Function):
@@ -150,17 +183,14 @@ class gaussian(Function):
 
         A Gaussian function
 
-    latex : $ 10^{logK} \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~\sigma^2}} $
+    latex : $ K \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~(\sigma)^2}} $
 
     parameters :
 
-        logK :
+        F :
 
-            desc : Logarithm of normalization
-            initial value : 0
-            min : -40
-            max : 40
-            unit : "1 / (keV cm2 s)"
+            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+            initial value : 1
 
         mu :
 
@@ -169,8 +199,9 @@ class gaussian(Function):
 
         sigma :
 
-            desc : Standard deviation
+            desc : standard deviation
             initial value : 1.0
+            min : 1e-12
 
     tests :
         - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}
@@ -180,14 +211,28 @@ class gaussian(Function):
 
     __metaclass__ = FunctionMeta
 
-    __norm = 1.0 / (math.sqrt(2 * np.pi))
+    # Place this here to avoid recomputing it all the time
+
+    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+
+    def _set_units(self, x_unit, y_unit):
+
+        # The normalization is the integral from -inf to +inf, i.e., has dimensions of
+        # y_unit * x_unit
+        self.F.unit = y_unit * x_unit
+
+        # The mu has the same dimensions as the x
+        self.mu.unit = x_unit
+
+        # sigma has the same dimensions as x
+        self.sigma.unit = x_unit
 
     # noinspection PyPep8Naming
-    def evaluate(self, x, logK, mu, sigma):
+    def evaluate(self, x, F, mu, sigma):
 
-        norm = self.__norm / sigma
+        norm = self.__norm_const / sigma
 
-        return 10**logK * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
+        return F * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
 
 
 class uniform_prior(Function):
@@ -224,6 +269,15 @@ class uniform_prior(Function):
 
     __metaclass__ = FunctionMeta
 
+    def _set_units(self, x_unit, y_unit):
+
+        # Lower and upper bound has the same unit as x
+        self.lower_bound.unit = x_unit
+        self.upper_bound.unit = x_unit
+
+        # value has the same unit as y
+        self.value.unit = y_unit
+
     def evaluate(self, x, lower_bound, upper_bound, value):
 
         return np.where( (x >= lower_bound) & (x <= upper_bound), value, 0.0)
@@ -234,7 +288,7 @@ class log_uniform_prior(Function):
     description :
 
         A function which is 1/x on the interval lower_bound - upper_bound and 0 outside the interval. The
-        extremes of the interval are NOT counted as part of the interval. Lower_bound must be strictly positive.
+        extremes of the interval are NOT counted as part of the interval. Lower_bound must be >= 0.
 
     latex : $ f(x)=\begin{cases}0 & x \le \text{lower_bound} \\\frac{1}{x} & \text{lower_bound} < x < \text{upper_bound} \\ 0 & x \ge \text{upper_bound} \end{cases}$
 
@@ -244,7 +298,7 @@ class log_uniform_prior(Function):
 
             desc : Lower bound for the interval
             initial value : 0
-            min_value : 0
+            min : 0
 
         upper_bound :
 
@@ -259,9 +313,15 @@ class log_uniform_prior(Function):
 
     __metaclass__ = FunctionMeta
 
+    def _set_units(self, x_unit, y_unit):
+
+        # Lower and upper bound has the same unit as x
+        self.lower_bound.unit = x_unit
+        self.upper_bound.unit = x_unit
+
     def evaluate(self, x, lower_bound, upper_bound):
 
-        return np.where((x >= lower_bound) & (x <= upper_bound), 1/x, 0.0)
+        return np.where((x > lower_bound) & (x < upper_bound), 1.0/x, 0.0)
 
 
 # noinspection PyPep8Naming
@@ -271,25 +331,20 @@ class sin(Function):
 
         A sinusodial function
 
-    latex : $ 10^logK~\sin{2~\pi~f~x + \phi} $
+    latex : $ K~\sin{(2\pi f x + \phi)} $
 
     parameters :
 
-        logK :
+        K :
 
-            desc : Logarithm of normalization
-            initial value : 0
-            min : -40
-            max : 40
-            unit : "1 / (keV cm2 s)"
+            desc : Normalization
+            initial value : 1
 
         f :
 
             desc : frequency
-            initial value : 0.15915494309189535
+            initial value : 1.0 / (2 * np.pi)
             min : 0
-            max : None
-            unit: Hz
 
         phi :
 
@@ -299,7 +354,6 @@ class sin(Function):
             max : +np.pi
             unit: rad
 
-
     tests :
         - { x : 0.0, function value: 0.0, tolerance: 1e-10}
         - { x : 1.5707963267948966, function value: 1.0, tolerance: 1e-10}
@@ -308,10 +362,22 @@ class sin(Function):
 
     __metaclass__ = FunctionMeta
 
-    # noinspection PyPep8Naming
-    def evaluate(self, x, logK, f, phi):
+    def _set_units(self, x_unit, y_unit):
 
-        return 10**logK * np.sin(2 * np.pi * f * x + phi)
+        # The normalization has the same unit of y
+        self.K.unit = y_unit
+
+        # The unit of f is 1 / [x] because fx must be a pure number
+        self.f.unit = x_unit**(-1)
+
+        # The unit of phi is always the same (radians)
+
+        self.phi.unit = u.rad
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, f, phi):
+
+        return K * np.sin(2 * np.pi * f * x + phi)
 
 
 if has_naima:
@@ -331,6 +397,12 @@ if has_naima:
                 desc : magnetic field
                 initial value : 3.24e-6
                 unit: Gauss
+
+            distance :
+
+                desc : distance of the source
+                initial value : 1.0
+                unit : kpc
 
             emin :
 
@@ -357,11 +429,46 @@ if has_naima:
 
         __metaclass__ = FunctionMeta
 
+        def _set_units(self, x_unit, y_unit):
+
+            # This function can only be used as a spectrum,
+            # so let's check that x_unit is a energy and y_unit is
+            # differential flux
+
+            if hasattr(x_unit,"physical_type") and x_unit.physical_type == 'energy':
+
+                # Now check that y is a differential flux
+                current_units = units.get_units()
+                should_be_unitless = y_unit * (current_units.photon_energy * current_units.time * current_units.area)
+
+                if not hasattr(should_be_unitless,'physical_type') or \
+                   should_be_unitless.decompose().physical_type != 'dimensionless':
+
+                    # y is not a differential flux
+                    raise InvalidUsageForFunction("Unit for y is not differential flux. The function synchrotron "
+                                                  "can only be used as a spectrum.")
+            else:
+
+                raise InvalidUsageForFunction("Unit for x is not an energy. The function synchrotron can only be used "
+                                              "as a spectrum")
+
+            # we actually don't need to do anything as the units are already set up
+
         def set_particle_distribution(self, function):
 
             self._particle_distribution = function
 
-            self._particle_distribution_wrapper = lambda x: function(x / u.eV) / u.eV
+            # Now set the units for the function
+
+            current_units = units.get_units()
+
+            self._particle_distribution._set_units(current_units.particle_energy, current_units.particle_energy**(-1))
+
+            # Naima wants a function which accepts a quantity as x (in units of eV) and returns an astropy quantity,
+            # so we need to create a wrapper which will remove the unit from x and add the unit to the return
+            # value
+
+            self._particle_distribution_wrapper = lambda x: function(x.value) / current_units.particle_energy
 
         def get_particle_distribution(self):
 
@@ -371,12 +478,12 @@ if has_naima:
                                          doc="""Get/set particle distribution for electrons""")
 
         # noinspection PyPep8Naming
-        def evaluate(self, x, B, emin, emax, need):
+        def evaluate(self, x, B, distance, emin, emax, need):
 
             _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B * u.Gauss,
                                               Eemin = emin * u.GeV, Eemax = emax * u.GeV, nEed = need)
 
-            return _synch._spectrum(x * u.keV)
+            return _synch.flux(x * units.get_units().photon_energy, distance=distance * u.kpc).value
 
         def to_dict(self, minimal=False):
 
@@ -395,24 +502,14 @@ class line(Function):
 
         A linear function
 
-    latex : $ 10^logK~a * x + 10^logK~b) $
+    latex : $ a * x + b $
 
     parameters :
-
-        logK :
-
-            desc : Logarithm of scale factor
-            initial value : 0
-            min : -40
-            max : 40
-            unit : "1 / (keV cm2 s)"
 
         a :
 
             desc : linear coefficient
             initial value : 1
-            min : None
-            max : None
 
         b :
 
@@ -423,11 +520,17 @@ class line(Function):
 
     __metaclass__ = FunctionMeta
 
-    def evaluate(self, x, logK, a, b):
+    def _set_units(self, x_unit, y_unit):
 
-        k = 10**logK
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit / x_unit
 
-        return k * a * x + k * b
+        # b has units of y
+        self.b.unit = y_unit
+
+    def evaluate(self, x, a, b):
+
+        return a * x + b
 
 class identity(Function):
     r"""
@@ -443,9 +546,14 @@ class identity(Function):
 
     __metaclass__ = FunctionMeta
 
+    def _set_units(self, x_unit, y_unit):
+
+        pass
+
     def evaluate(self, x):
 
         return x
+
 
 class bias(Function):
     r"""
@@ -466,9 +574,20 @@ class bias(Function):
 
     __metaclass__ = FunctionMeta
 
+    def _set_units(self, x_unit, y_unit):
+
+        # k has units of x
+
+        self.k.unit = x_unit
+
+        if x_unit != y_unit:
+
+            raise InvalidUsageForFunction("Function bias cannot be given different units for x and y")
+
     def evaluate(self, x, k):
 
         return x + k
+
 
 class band(Function):
     r"""
@@ -482,51 +601,42 @@ class band(Function):
     parameters :
 
         alpha :
-            desc : The photon index for energies smaller than the peak energy
+            desc : The index for x smaller than the x peak
             initial value : -1
             min : -10
             max : 10
 
         beta :
 
-            desc : photon index for energies greater than the peak energy (only if opt=1, i.e., for the
+            desc : index for x greater than the x peak (only if opt=1, i.e., for the
                    Band model)
             initial value : -2.2
             min : -7
             max : -1
 
-        log_Ep :
+        xp :
 
-            desc : the logarithm of the energy of the spectrum peak in the nuFnu representation
-            initial value : 2.2
+            desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)
+            initial value : 200.0
             min : 0
-            max : 3
-            unit : keV
 
-        log_Flux :
+        F :
 
-            desc : the logarithm of the integrated flux in the energy band defined by Emin and Emax
-            initial value : -6
-            min : -40
-            max : 40
-            unit : erg / (cm2 * s)
+            desc : integral in the band defined by a and b
+            initial value : 1e-6
 
-        Emin:
+        a:
 
-            desc : lower limit of the energy band in which the flux will be computed
-            initial value : 10
+            desc : lower limit of the band in which the integral will be computed
+            initial value : 1.0
             min : 0
-            max : None
-            unit : keV
             fix : yes
 
-        Emax:
+        b:
 
-            desc : upper limit of the energy band in which the flux will be computed.
-            initial value : 10000
+            desc : upper limit of the band in which the integral will be computed
+            initial value : 10000.0
             min : 0
-            max : None
-            unit : keV
             fix : yes
 
         opt :
@@ -541,6 +651,25 @@ class band(Function):
 
     __metaclass__ = FunctionMeta
 
+    def _set_units(self, x_unit, y_unit):
+
+        # alpha and beta are always unitless
+
+        self.alpha.unit = u.dimensionless_unscaled
+        self.beta.unit = u.dimensionless_unscaled
+
+        # xp has the same dimension as x
+        self.xp.unit = x_unit
+
+        # F is the integral over x, so it has dimensions y_unit * x_unit
+        self.F.unit = y_unit * x_unit
+
+        # a and b have the same units of x
+        self.a.unit = x_unit
+        self.b.unit = x_unit
+
+        # opt is just a flag, and has no units
+        self.opt.unit = u.dimensionless_unscaled
 
     @staticmethod
     def ggrb_int_cpl( a, Ec, Emin, Emax):
@@ -563,7 +692,7 @@ class band(Function):
 
             return pre * math.log(Emax / Emin)
 
-    def evaluate(self, x, alpha, beta, log_Ep, log_Flux, Emin, Emax, opt):
+    def evaluate(self, x, alpha, beta, xp, F, a, b, opt):
 
         assert opt == 0 or opt == 1, "Opt must be either 0 or 1"
 
@@ -571,11 +700,11 @@ class band(Function):
 
         if alpha == -2:
 
-            Ec = pow(10, log_Ep) / 0.0001 #TRICK: avoid a=-2
+            Ec = xp / 0.0001 #TRICK: avoid a=-2
 
         else:
 
-            Ec = pow(10, log_Ep) / (2 + alpha)
+            Ec = xp / (2 + alpha)
 
         # Split energy
 
@@ -587,22 +716,22 @@ class band(Function):
 
             # Cutoff power law
 
-            intflux = self.ggrb_int_cpl(alpha, Ec, Emin, Emax)
+            intflux = self.ggrb_int_cpl(alpha, Ec, a, b)
 
         else:
 
             # Band model
 
-            if Emin <= Esplit and Esplit <= Emax:
+            if a <= Esplit and Esplit <= b:
 
-                intflux = ( self.ggrb_int_cpl(alpha,    Ec, Emin,   Esplit) +
-                            self.ggrb_int_pl (alpha, beta, Ec, Esplit, Emax) )
+                intflux = (self.ggrb_int_cpl(alpha, Ec, a, Esplit) +
+                           self.ggrb_int_pl (alpha, beta, Ec, Esplit, b))
 
             else:
 
-                if Esplit < Emin:
+                if Esplit < a:
 
-                    intflux = self.ggrb_int_pl(alpha, beta, Ec, Emin, Emax)
+                    intflux = self.ggrb_int_pl(alpha, beta, Ec, a, b)
 
                 else:
 
@@ -610,7 +739,7 @@ class band(Function):
 
         erg2keV = 6.24151e8
 
-        norm = pow(10, log_Flux) * erg2keV / intflux
+        norm = F * erg2keV / intflux
 
         if opt==0:
 
@@ -641,30 +770,24 @@ class log_parabola(Function):
 
         A log-parabolic function
 
-    latex : $ 10^{logK} \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
+    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
 
     parameters :
 
-        logK :
+        K :
 
-            desc : Logarithm of scale factor
+            desc : Normalization
             initial value : 0
-            min : -40
-            max : 40
-            unit : "1 / (keV cm2 s)"
 
         piv :
-            desc : Pivot energy (keep this fixed)
+            desc : Pivot (keep this fixed)
             initial value : 1
             fix : yes
-            unit : keV
 
         alpha :
 
-            desc : photon index
+            desc : index
             initial value : -2.0
-            min : -10
-            max : 0
 
         beta :
 
@@ -675,11 +798,24 @@ class log_parabola(Function):
 
     __metaclass__ = FunctionMeta
 
-    def evaluate(self, x, logK, piv, alpha, beta):
+    def _set_units(self, x_unit, y_unit):
+
+        # K has units of y
+
+        self.K.unit = y_unit
+
+        # piv has the same dimension as x
+        self.piv.unit = x_unit
+
+        # alpha and beta are dimensionless
+        self.alpha.unit = u.dimensionless_unscaled
+        self.beta.unit = u.dimensionless_unscaled
+
+    def evaluate(self, x, K, piv, alpha, beta):
 
         xx = x/piv
 
-        return pow(10,logK) * xx**(alpha - beta * np.log10(xx))
+        return K * xx**(alpha - beta * np.log10(xx))
 
     @property
     def peak_energy(self):
@@ -703,59 +839,64 @@ if has_gsl:
                 A cutoff power law having the flux as normalization, which should reduce the correlation among
                 parameters.
 
-            latex : $ \frac{10^{logK}}{T(b)-T(a)} ~x^{\alpha}~\exp{(x/10^{logC})}~\text{with}~T(x)=-x_{c}^{\alpha+1} \Gamma(\alpha+1, x/10^{logC})~\text{(}\Gamma\text{ is the incomplete gamma function)} $
+            latex : $ \frac{F}{T(b)-T(a)} ~x^{\alpha}~\exp{(-x/x_{c})}~\text{with}~T(x)=-x_{c}^{\alpha+1} \Gamma(\alpha+1, x/C)~\text{(}\Gamma\text{ is the incomplete gamma function)} $
 
             parameters :
 
-                logK :
+                F :
 
-                    desc : Logarithm of the flux F between a and b
+                    desc : Integral between a and b
                     initial value : 0
-                    min : -40
-                    max : 40
-                    unit : "1 / (cm2 s)"
 
                 alpha :
 
                     desc : photon index
                     initial value : -2.0
-                    min : -10
-                    max : 10
 
-                logC :
+                xc :
 
-                    desc : logarithm of the cutoff value
+                    desc : cutoff position
                     initial value : 1.0
-                    min : -5
-                    max : 10
 
                 a :
 
-                    desc : lower bound for the band in which computing the flux F
+                    desc : lower bound for the band in which computing the integral F
                     initial value : 1.0
                     fix : yes
 
                 b :
 
-                    desc : upper bound for the band in which computing the flux F
+                    desc : upper bound for the band in which computing the integral F
                     initial value : 100.0
                     fix : yes
             """
 
         __metaclass__ = FunctionMeta
 
+        def _set_units(self, x_unit, y_unit):
+
+            # K has units of y * x
+            self.K.unit = y_unit * x_unit
+
+            # alpha is dimensionless
+            self.alpha.unit = u.dimensionless_unscaled
+
+            # xc, a and b have the same dimension as x
+            self.xc.unit = x_unit
+            self.a.unit = x_unit
+            self.b.unit = x_unit
 
         @staticmethod
         def _integral(a,b, alpha, ec):
 
-            integrand = lambda x: -ec * pow(x, alpha) * pow(x / ec, -alpha) * gamma_inc(alpha + 1, x / ec)
+            ap1 = alpha + 1
+
+            integrand = lambda x: -pow(ec, ap1) * gamma_inc(ap1, x / ec)
 
             return integrand(b) - integrand(a)
 
-        def evaluate(self, x, logK, alpha, logC, a, b):
+        def evaluate(self, x, F, alpha, xc, a, b):
 
-            ec = pow(10, logC)
+            this_integral = self._integral(a, b, alpha, xc)
 
-            this_integral = self._integral(a,b, alpha, ec)
-
-            return pow(10, logK) / this_integral * np.power(x, alpha) * np.exp(-x / ec)
+            return F / this_integral * np.power(x, alpha) * np.exp(-x / xc)

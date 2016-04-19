@@ -1,81 +1,5 @@
 __author__ = 'giacomov'
 
-__doc__ = """
-=============
-Description
-=============
-
-Models in astromodels are defined with a language as closest as possible to the natural language. In the definition of
-the model, which happens only once in any given analysis, the syntax is very explicit and analytical, while the use of
-the Model class is geared towards usability.
-
-This is an example of a simple likelihood model, with one point source having two spectral components, both with
-a powerlaw shape but the first with a linear polarization, the second with a circular polarization::
-
-  test_source :
-
-      point source:
-
-          position:
-
-              RA : {value: 23.5}
-              Dec : {value: -45.4}
-
-          spectrum :
-
-              main :
-
-                  shape:
-
-                      powerlaw :
-
-                          logK : {value: 1}
-                          index : {value: -2}
-                          piv : {value: 100, unit: 'keV'}
-
-                  polarization :
-
-                      linear :
-
-                         degree : {value: 0.2}
-                         angle : {value: 45}
-
-              other :
-
-                  shape:
-
-                      powerlaw :
-
-                          logK : {value: 1}
-                          index : {value: -2}
-                          piv : {value: 200}
-
-                  polarization :
-
-                      stokes:
-
-                          I : {value : 1}
-                          Q : {value : 0}
-                          U : {value : 0}
-                          V : {value : 1}
-
-This model can be read like this:
-
-  > mp = model_parser.ModelParser('test.yml')
-  > mod = m.get_model()
-
-Now mod is a instance of a Model, and parameters can be accessed like::
-
-  > ra = mod.test_source.position.RA
-  > dec = mod.test_source.position.Dec
-  > logK = mod.test_source.main.shape.logK
-  > I = mod.test_source.other.polarization.I
-
-Although perhaps a more natural way would have been "mod.test_source.spectrum.main.shape.powerlaw.logK, this would have
-resulted in a very long sequence. Thus, all redundant expressions have been removed.
-
-"""
-
 from astromodels import sky_direction
 from astromodels.functions import function
 from astromodels import spectral_component
@@ -85,9 +9,7 @@ from astromodels.sources import particle_source
 from astromodels import parameter
 from astromodels import model
 from astromodels.my_yaml import my_yaml
-from astromodels.sources.point_source import POINT_SOURCE
-from astromodels.sources.extended_source import EXTENDED_SOURCE
-from astromodels.sources.particle_source import PARTICLE_SOURCE
+from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
 import re
 
 class ModelIOError(IOError):
@@ -410,6 +332,13 @@ class SourceParser(object):
 
         return this_spectral_component
 
+    @staticmethod
+    def _fix(value):
+        # Remove new lines where it shouldn't be any
+        # Sometimes YAML add new lines in the middle of definitions,
+        # such as in units
+        return value.replace("\n","")
+
     def _parse_shape_definition(self, component_name, function_name, parameters_definition):
 
         # Get the function
@@ -467,7 +396,7 @@ class SourceParser(object):
                 function_instance.parameters[parameter_name].free = this_definition['free']
 
             if 'unit' in this_definition:
-                function_instance.parameters[parameter_name].unit = this_definition['unit']
+                function_instance.parameters[parameter_name].unit = self._fix(this_definition['unit'])
 
             # Now set the value, which must be present
 

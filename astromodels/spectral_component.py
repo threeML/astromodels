@@ -2,7 +2,7 @@ __author__ = 'giacomov'
 
 from astromodels.tree import Node
 from astromodels.polarization import Polarization
-
+from astromodels import units
 
 class SpectralComponent(Node):
 

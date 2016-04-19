@@ -3,14 +3,10 @@ __author__ = 'giacomov'
 import collections
 import numpy
 
-from astromodels.sources.source import Source
-from astromodels.sky_direction import SkyDirection
+from astromodels.sources.source import Source, PARTICLE_SOURCE
 from astromodels.spectral_component import SpectralComponent
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
-
-PARTICLE_SOURCE = 'particle source'
-
 
 class ParticleSource(Source, Node):
     """

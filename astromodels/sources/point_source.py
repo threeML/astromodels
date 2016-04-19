@@ -3,13 +3,11 @@ __author__ = 'giacomov'
 import collections
 import numpy
 
-from astromodels.sources.source import Source
+from astromodels.sources.source import Source, POINT_SOURCE
 from astromodels.sky_direction import SkyDirection
 from astromodels.spectral_component import SpectralComponent
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
-
-POINT_SOURCE = 'point source'
 
 
 class PointSource(Source, Node):
