@@ -886,7 +886,7 @@ class log_parabola(Function):
 
         A log-parabolic function
 
-    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
+    latex : $ K \left( \frac{x}{piv} \right)^{\alpha +\beta \log{\left( \frac{x}{piv} \right)}} $
 
     parameters :
 
@@ -907,8 +907,8 @@ class log_parabola(Function):
 
         beta :
 
-            desc : curvature
-            initial value : 1.0
+            desc : curvature (negative is concave, positive is convex)
+            initial value : -1.0
 
     """
 
@@ -931,7 +931,7 @@ class log_parabola(Function):
 
         xx = np.divide(x, piv)
 
-        return K * xx**(alpha - beta * np.log10(xx))
+        return K * xx**(alpha + beta * np.log10(xx))
 
     @property
     def peak_energy(self):
