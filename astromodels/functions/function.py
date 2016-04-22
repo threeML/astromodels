@@ -3,7 +3,9 @@ from astromodels.my_yaml import my_yaml
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
 from astromodels.utils.table import dict_to_table
+from astromodels.units import get_units
 import astropy.units as u
+
 
 import collections
 import warnings
@@ -770,6 +772,53 @@ class Function(Node):
     def evaluate(self, *args, **kwargs):
 
         raise NotImplementedError("You have to re-implement this")
+
+    def get(self, *args, **kwargs):
+        """
+        Evaluate the function with units
+
+        :return:
+        """
+
+        # Get the active internal units
+        internal_units = get_units()
+
+        converted = []
+
+        for i in range(len(args)):
+
+            if not isinstance(args[i],u.Unit):
+
+                raise TypeError("If you use .get() you have to provide astropy quantities (with units)")
+
+            # This is either time or energy, normally
+            try:
+
+                physical_type = args[i].physical_type
+
+            except AttributeError:
+
+                raise TypeError("You cannot use get() with units without physical type")
+
+            try:
+
+                internal_unit = internal_units.__getattribute__(physical_type)
+
+            except AttributeError:
+
+                raise TypeError("The physical unit %s is not an elementary unit for astromodels" % physical_type)
+
+            this_converted = args[i].to(internal_unit)
+
+            converted.append(this_converted)
+
+        # Gather the current parameters' values
+
+        kwargs.update({parameter_name: parameter.value * parameter.unit for parameter_name, parameter
+                       in self.children.iteritems()})
+
+        return self.evaluate(*args, **kwargs)
+
 
     def __call__(self, *args, **kwargs):
 
