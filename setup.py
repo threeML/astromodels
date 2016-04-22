@@ -35,6 +35,6 @@ setup(
         'numpy >= 1.6',
         'PyYAML',
         'astropy >= 1.0',
-        'scipy>=0.15']
+        'scipy>=0.13']
 
 )
