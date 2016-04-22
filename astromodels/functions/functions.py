@@ -929,7 +929,7 @@ class log_parabola(Function):
 
     def evaluate(self, x, K, piv, alpha, beta):
 
-        xx = x/piv
+        xx = np.divide(x, piv)
 
         return K * xx**(alpha - beta * np.log10(xx))
 
