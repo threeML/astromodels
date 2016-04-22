@@ -845,6 +845,8 @@ class Parameter(ParameterBase):
             raise NotCallableOrErrorInCall("Could not call the provided prior. " +
                                            "Is it a function accepting the current value of the parameter?")
 
+        prior._set_units(self.unit, u.dimensionless_unscaled)
+
         self._prior = prior
 
     prior = property(get_prior, set_prior,
