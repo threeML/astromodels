@@ -176,6 +176,65 @@ class powerlaw_flux(Function):
 
             return F * gp1 / (b**gp1 - a**gp1) * np.power(x, index)
 
+class cutoffpl(Function):
+    r"""
+    description :
+
+        A power law multiplied by an exponential cutoff
+
+    latex : $ K~\frac{x}{piv}^{index}~\exp{(-x/xc)} $
+
+    parameters :
+
+        K :
+
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+
+        piv :
+
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+
+        index :
+
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+
+        xc :
+
+            desc : Photon index
+            initial value : 10.0
+            min : 1.0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        # The index is always dimensionless
+        self.index.unit = astropy_units.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        # The cutoff has the same dimensions as x
+        self.xc.unit = x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, piv, index, xc):
+        
+        return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x,xc))
+
+
 class broken_powerlaw(Function):
     r"""
     description :
@@ -896,7 +955,7 @@ if has_gsl:
                 A cutoff power law having the flux as normalization, which should reduce the correlation among
                 parameters.
 
-            latex : $ \frac{F}{T(b)-T(a)} ~x^{\alpha}~\exp{(-x/x_{c})}~\text{with}~T(x)=-x_{c}^{\alpha+1} \Gamma(\alpha+1, x/C)~\text{(}\Gamma\text{ is the incomplete gamma function)} $
+            latex : $ \frac{F}{T(b)-T(a)} ~x^{index}~\exp{(-x/x_{c})}~\text{with}~T(x)=-x_{c}^{index+1} \Gamma(index+1, x/C)~\text{(}\Gamma\text{ is the incomplete gamma function)} $
 
             parameters :
 
@@ -905,7 +964,7 @@ if has_gsl:
                     desc : Integral between a and b
                     initial value : 1e-5
 
-                alpha :
+                index :
 
                     desc : photon index
                     initial value : -2.0
@@ -936,7 +995,7 @@ if has_gsl:
             self.F.unit = y_unit * x_unit
 
             # alpha is dimensionless
-            self.alpha.unit = astropy_units.dimensionless_unscaled
+            self.index.unit = astropy_units.dimensionless_unscaled
 
             # xc, a and b have the same dimension as x
             self.xc.unit = x_unit
@@ -944,16 +1003,16 @@ if has_gsl:
             self.b.unit = x_unit
 
         @staticmethod
-        def _integral(a,b, alpha, ec):
+        def _integral(a, b, index, ec):
 
-            ap1 = alpha + 1
+            ap1 = index + 1
 
             integrand = lambda x: -pow(ec, ap1) * gamma_inc(ap1, x / ec)
 
             return integrand(b) - integrand(a)
 
-        def evaluate(self, x, F, alpha, xc, a, b):
+        def evaluate(self, x, F, index, xc, a, b):
 
-            this_integral = self._integral(a, b, alpha, xc)
+            this_integral = self._integral(a, b, index, xc)
 
-            return F / this_integral * np.power(x, alpha) * np.exp(-1 * np.divide(x ,xc))
+            return F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
