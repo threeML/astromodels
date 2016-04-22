@@ -903,7 +903,7 @@ if has_gsl:
                 F :
 
                     desc : Integral between a and b
-                    initial value : 0
+                    initial value : 1e-5
 
                 alpha :
 
@@ -913,7 +913,7 @@ if has_gsl:
                 xc :
 
                     desc : cutoff position
-                    initial value : 1.0
+                    initial value : 50.0
 
                 a :
 
@@ -933,7 +933,7 @@ if has_gsl:
         def _set_units(self, x_unit, y_unit):
 
             # K has units of y * x
-            self.K.unit = y_unit * x_unit
+            self.F.unit = y_unit * x_unit
 
             # alpha is dimensionless
             self.alpha.unit = astropy_units.dimensionless_unscaled
