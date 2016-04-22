@@ -176,7 +176,7 @@ class powerlaw_flux(Function):
 
             return F * gp1 / (b**gp1 - a**gp1) * np.power(x, index)
 
-class cutoffpl(Function):
+class cutoff_powerlaw(Function):
     r"""
     description :
 
@@ -231,7 +231,7 @@ class cutoffpl(Function):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, xc):
-        
+
         return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x,xc))
 
 
