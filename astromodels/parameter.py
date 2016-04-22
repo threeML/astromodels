@@ -310,18 +310,22 @@ class ParameterBase(Node):
         """Sets the current value of the parameter, ensuring that it is within the allowed range"""
 
         try:
-            if self._min_value is not None and value < self._min_value:
-                raise SettingOutOfBounds(
-                    "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}".format(
-                        self.name, value, self._min_value))
 
-            if self._max_value is not None and value > self._max_value:
-                raise SettingOutOfBounds(
-                    "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
-                        self.name, value, self._max_value))
-        except u.UnitsError:
+            value = float(value)
 
-            raise ValueError("If you want to use astropy units, you need to use the set() method for the parameter.")
+        except TypeError:
+
+            raise TypeError("If you want to use a astropy.units.Quantity you need to use the set() method")
+
+        if self._min_value is not None and value < self._min_value:
+            raise SettingOutOfBounds(
+                "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}".format(
+                    self.name, value, self._min_value))
+
+        if self._max_value is not None and value > self._max_value:
+            raise SettingOutOfBounds(
+                "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
+                    self.name, value, self._max_value))
 
         # Call the callbacks (if any)
 
@@ -359,7 +363,15 @@ class ParameterBase(Node):
 
             # We get here if instead value is a simple number
 
-            raise ValueError("You need to use a astropy.quantity object for the set() method.")
+            # If this parameter is unitless, print an appropriate message
+            if self.unit == u.dimensionless_unscaled:
+
+                raise TypeError("If you use set() you need to provide a unit. In this case this parameter is unitless, "
+                                "so you should use u.dimensionless_unscaled or assign directly by valye")
+
+            else:
+
+                raise TypeError("You need to use a astropy.quantity object for the set() method.")
 
         else:
 
@@ -411,6 +423,10 @@ class ParameterBase(Node):
 
             min_value = eval(min_value)
 
+        if isinstance(min_value, u.Quantity):
+
+            min_value = min_value.to(self.unit).value
+
         if min_value is None:
 
             self._min_value = None
@@ -447,6 +463,10 @@ class ParameterBase(Node):
             # This allows to specify things like 'np.pi / 3' as max_value
 
             max_value = eval(max_value)
+
+        if isinstance(max_value, u.Quantity):
+
+            max_value = max_value.to(self.unit).value
 
         if max_value is None:
 
