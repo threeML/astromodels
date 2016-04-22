@@ -780,37 +780,13 @@ class Function(Node):
         :return:
         """
 
-        # Get the active internal units
-        internal_units = get_units()
-
-        converted = []
+        # Check that the inputs have units
 
         for i in range(len(args)):
 
             if not isinstance(args[i],u.Quantity):
 
                 raise TypeError("If you use .get() you have to provide astropy quantities (with units)")
-
-            # This is either time or energy, normally
-            try:
-
-                physical_type = args[i].physical_type
-
-            except AttributeError:
-
-                raise TypeError("You cannot use get() with units without physical type")
-
-            try:
-
-                internal_unit = internal_units.__getattribute__(physical_type)
-
-            except AttributeError:
-
-                raise TypeError("The physical unit %s is not an elementary unit for astromodels" % physical_type)
-
-            this_converted = args[i].to(internal_unit)
-
-            converted.append(this_converted)
 
         # Gather the current parameters' values
 
