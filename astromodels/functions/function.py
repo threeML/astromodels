@@ -787,7 +787,7 @@ class Function(Node):
 
         for i in range(len(args)):
 
-            if not isinstance(args[i],u.Unit):
+            if not isinstance(args[i],u.Quantity):
 
                 raise TypeError("If you use .get() you have to provide astropy quantities (with units)")
 
