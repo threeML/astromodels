@@ -374,6 +374,28 @@ class ParameterBase(Node):
 
             self.value = new_value
 
+    def get(self, new_unit):
+
+        try:
+
+            value = (self.value * self.unit).to(new_unit)
+
+        except AttributeError:
+
+            # We get here if instead value is a simple number
+
+            raise ValueError("You need to use a astropy.quantity object for the get() method.")
+
+        else:
+
+            # Even if the to() method works, we need to warn the user that this is
+            # very slow, and should only be used in interactive sessions for convenience
+
+            warnings.warn("Using units is convenient but slow. Do not use them during computing-intensive work.",
+                          WarningUnitsAreSlow)
+
+            return value
+
     # Define the property "min_value"
 
     def get_min_value(self):
