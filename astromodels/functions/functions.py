@@ -956,4 +956,4 @@ if has_gsl:
 
             this_integral = self._integral(a, b, alpha, xc)
 
-            return F / this_integral * np.power(x, alpha) * np.exp(np.divide(-x ,xc))
+            return F / this_integral * np.power(x, alpha) * np.exp(-1 * np.divide(x ,xc))
