@@ -1067,7 +1067,7 @@ class Parameter(ParameterBase):
 
             #The parameter has no boundaries
 
-            return np.random.normal( self.value, variance * self.value )
+            return np.random.normal( self.value, abs(variance * self.value) )
 
 
 class IndependentVariable(ParameterBase):
