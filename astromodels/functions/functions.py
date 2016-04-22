@@ -8,7 +8,8 @@ import exceptions
 
 from astromodels.functions.function import Function
 from astromodels.functions.function import FunctionMeta
-from astromodels import units
+from astromodels.units import get_units
+import astropy.units as astropy_units
 
 
 class GSLNotAvailable(UserWarning):
@@ -66,8 +67,7 @@ class powerlaw(Function):
     r"""
     description :
 
-        A simple power-law with normalization expressed as
-        a logarithm
+        A simple power-law
 
     latex : $ K~\frac{x}{piv}^{index} $
 
@@ -102,7 +102,7 @@ class powerlaw(Function):
     def _set_units(self, x_unit, y_unit):
 
         # The index is always dimensionless
-        self.index.unit = u.dimensionless_unscaled
+        self.index.unit = astropy_units.dimensionless_unscaled
 
         # The pivot energy has always the same dimension as the x variable
         self.piv.unit = x_unit
@@ -162,7 +162,7 @@ class powerlaw_flux(Function):
             self.F.unit = y_unit * x_unit
 
             # The index is always dimensionless
-            self.index.unit = u.dimensionless_unscaled
+            self.index.unit = astropy_units.dimensionless_unscaled
 
             # a and b have the same units as x
 
@@ -175,6 +175,62 @@ class powerlaw_flux(Function):
             gp1 = index + 1
 
             return F * gp1 / (b**gp1 - a**gp1) * np.power(x, index)
+
+class broken_powerlaw(Function):
+    r"""
+    description :
+
+        A broken power law function
+
+    latex : $ f(x)= K~\begin{cases}\left( \frac{x}{x_{b}} \right)^{\alpha} & x < x_{b} \\ \left( \frac{x}{x_{b}} \right)^{\beta} & x \ge x_{b} \end{cases} $
+
+    parameters :
+
+        K :
+
+            desc : Normalization (differential flux at x_b)
+            initial value : 1.0
+
+        xb :
+
+            desc : Break point
+            initial value : 10
+            min : 1.0
+
+        alpha :
+
+            desc : Index before the break xb
+            initial value : -1.5
+            min : -10
+            max : 10
+
+        beta :
+
+            desc : Index after the break xb
+            initial value : -2.5
+            min : -10
+            max : 10
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        # The normalization has the same units as y
+        self.K.unit = y_unit
+
+        # The break point has always the same dimension as the x variable
+        self.xb.unit = x_unit
+
+        # alpha and beta are dimensionless
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, xb, alpha, beta):
+
+        return K * np.where((x < xb), np.power(x,alpha), np.power(x,beta))
 
 # noinspection PyPep8Naming
 class gaussian(Function):
@@ -372,7 +428,7 @@ class sin(Function):
 
         # The unit of phi is always the same (radians)
 
-        self.phi.unit = u.rad
+        self.phi.unit = astropy_units.rad
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, f, phi):
@@ -438,7 +494,7 @@ if has_naima:
             if hasattr(x_unit,"physical_type") and x_unit.physical_type == 'energy':
 
                 # Now check that y is a differential flux
-                current_units = units.get_units()
+                current_units = get_units()
                 should_be_unitless = y_unit * (current_units.photon_energy * current_units.time * current_units.area)
 
                 if not hasattr(should_be_unitless,'physical_type') or \
@@ -460,7 +516,7 @@ if has_naima:
 
             # Now set the units for the function
 
-            current_units = units.get_units()
+            current_units = get_units()
 
             self._particle_distribution._set_units(current_units.particle_energy, current_units.particle_energy**(-1))
 
@@ -480,10 +536,11 @@ if has_naima:
         # noinspection PyPep8Naming
         def evaluate(self, x, B, distance, emin, emax, need):
 
-            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B * u.Gauss,
-                                              Eemin = emin * u.GeV, Eemax = emax * u.GeV, nEed = need)
+            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B * astropy_units.Gauss,
+                                              Eemin = emin * astropy_units.GeV,
+                                              Eemax = emax * astropy_units.GeV, nEed = need)
 
-            return _synch.flux(x * units.get_units().photon_energy, distance=distance * u.kpc).value
+            return _synch.flux(x * get_units().photon_energy, distance=distance * astropy_units.kpc).value
 
         def to_dict(self, minimal=False):
 
@@ -655,8 +712,8 @@ class band(Function):
 
         # alpha and beta are always unitless
 
-        self.alpha.unit = u.dimensionless_unscaled
-        self.beta.unit = u.dimensionless_unscaled
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
 
         # xp has the same dimension as x
         self.xp.unit = x_unit
@@ -669,7 +726,7 @@ class band(Function):
         self.b.unit = x_unit
 
         # opt is just a flag, and has no units
-        self.opt.unit = u.dimensionless_unscaled
+        self.opt.unit = astropy_units.dimensionless_unscaled
 
     @staticmethod
     def ggrb_int_cpl( a, Ec, Emin, Emax):
@@ -808,8 +865,8 @@ class log_parabola(Function):
         self.piv.unit = x_unit
 
         # alpha and beta are dimensionless
-        self.alpha.unit = u.dimensionless_unscaled
-        self.beta.unit = u.dimensionless_unscaled
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
 
     def evaluate(self, x, K, piv, alpha, beta):
 
@@ -879,7 +936,7 @@ if has_gsl:
             self.K.unit = y_unit * x_unit
 
             # alpha is dimensionless
-            self.alpha.unit = u.dimensionless_unscaled
+            self.alpha.unit = astropy_units.dimensionless_unscaled
 
             # xc, a and b have the same dimension as x
             self.xc.unit = x_unit
