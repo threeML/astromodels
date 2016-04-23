@@ -793,7 +793,34 @@ class Function(Node):
         kwargs.update({parameter_name: parameter.value * parameter.unit for parameter_name, parameter
                        in self.children.iteritems()})
 
-        return self.evaluate(*args, **kwargs)
+        # Unfortunately astropy.units cannot handle certain operations with arrays with units (like power, logarithm
+        # and so on). It would fail saying: "*** ValueError: Quantities and Units may only be raised to a scalar power"
+        # Hence, we iterate over the input and produce one result at the time. This is very slow, but hey, you
+        # shouldn't use .get() if you are interested in speed
+
+        def mapper(*args, **kwargs):
+            return self.evaluate(*args, **kwargs)
+
+        try:
+
+            result_unnormalized = map(lambda x:mapper(*x, **kwargs), zip(*args))
+
+        except TypeError:
+
+            # Probably this is just a scalar
+            result = self.evaluate(*args, **kwargs)
+
+        else:
+
+            # Now every element of result will have its own unit
+
+            # Get the unit of the first element
+            final_unit = result_unnormalized[0].unit
+
+            # Transform them all to the same unit
+            result = np.array(map(lambda x:x.to(final_unit).value, result_unnormalized)) * final_unit
+
+        return result
 
 
     def __call__(self, *args, **kwargs):

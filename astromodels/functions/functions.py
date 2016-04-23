@@ -893,7 +893,7 @@ class log_parabola(Function):
         K :
 
             desc : Normalization
-            initial value : 0
+            initial value : 1.0
 
         piv :
             desc : Pivot (keep this fixed)
