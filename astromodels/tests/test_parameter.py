@@ -1,7 +1,5 @@
 __author__ = 'giacomov'
 
-import unittest
-
 from astromodels.parameter import Parameter, SettingOutOfBounds, IndependentVariable
 
 
@@ -15,6 +13,7 @@ def suite():
 
 
 class ParameterTestCase(unittest.TestCase):
+
     def test_minimal_constructor(self):
         p = Parameter("test", 1)
 
