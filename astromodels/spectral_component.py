@@ -33,7 +33,7 @@ class SpectralComponent(Node):
 
         Node.__init__(self, name)
 
-        self.add_children([self._spectral_shape, self._polarization])
+        self._add_children([self._spectral_shape, self._polarization])
 
     def _repr__base(self, rich_output):
 

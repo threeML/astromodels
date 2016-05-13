@@ -6,8 +6,8 @@ import warnings
 from scipy.special import gammaincc, gamma
 import exceptions
 
-from astromodels.functions.function import Function
-from astromodels.functions.function import FunctionMeta
+from astromodels.functions.function import Function, FunctionMeta, ModelAssertionViolation
+
 from astromodels.units import get_units
 import astropy.units as astropy_units
 
@@ -63,7 +63,7 @@ else:
     has_gsl = True
 
 # noinspection PyPep8Naming
-class powerlaw(Function):
+class Powerlaw(Function):
     r"""
     description :
 
@@ -114,10 +114,12 @@ class powerlaw(Function):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index):
 
-        return K * np.power(x / piv, index)
+        xx = np.divide(x, piv)
+
+        return K * np.power(xx, index)
 
 # noinspection PyPep8Naming
-class powerlaw_flux(Function):
+class Powerlaw_flux(Function):
         r"""
         description :
 
@@ -176,7 +178,7 @@ class powerlaw_flux(Function):
 
             return F * gp1 / (b**gp1 - a**gp1) * np.power(x, index)
 
-class cutoff_powerlaw(Function):
+class Cutoff_powerlaw(Function):
     r"""
     description :
 
@@ -235,7 +237,7 @@ class cutoff_powerlaw(Function):
         return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x,xc))
 
 
-class broken_powerlaw(Function):
+class Broken_powerlaw(Function):
     r"""
     description :
 
@@ -292,7 +294,7 @@ class broken_powerlaw(Function):
         return K * np.where((x < xb), np.power(x,alpha), np.power(x,beta))
 
 # noinspection PyPep8Naming
-class gaussian(Function):
+class Gaussian(Function):
     r"""
     description :
 
@@ -350,7 +352,7 @@ class gaussian(Function):
         return F * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
 
 
-class uniform_prior(Function):
+class Uniform_prior(Function):
     r"""
     description :
 
@@ -365,11 +367,15 @@ class uniform_prior(Function):
 
             desc : Lower bound for the interval
             initial value : 0
+            min : -np.inf
+            max : np.inf
 
         upper_bound :
 
             desc : Upper bound for the interval
             initial value : 1
+            min : -np.inf
+            max : np.inf
 
         value :
 
@@ -398,7 +404,7 @@ class uniform_prior(Function):
         return np.where( (x >= lower_bound) & (x <= upper_bound), value, 0.0)
 
 
-class log_uniform_prior(Function):
+class Log_uniform_prior(Function):
     r"""
     description :
 
@@ -412,17 +418,16 @@ class log_uniform_prior(Function):
         lower_bound :
 
             desc : Lower bound for the interval
-            initial value : 0
-            min : 0
+            initial value : 1e-20
+            min : 1e-30
+            max : np.inf
 
         upper_bound :
 
             desc : Upper bound for the interval
             initial value : 100
-
-    tests :
-        - { x : 50, function value: (1.0 / 50.0), tolerance: 1e-20}
-        - { x : 200, function value: 0, tolerance: 1e-20}
+            min : 1e-30
+            max : np.inf
 
     """
 
@@ -436,11 +441,24 @@ class log_uniform_prior(Function):
 
     def evaluate(self, x, lower_bound, upper_bound):
 
-        return np.where((x > lower_bound) & (x < upper_bound), 1.0/x, 0.0)
+        # This makes the prior proper because it is the integral between lower_bound and upper_bound
+        # Assume we are in the "fast" mode, where things have no units, and fall back to the slow mode
+        # if this isn't true
+        #try:
+
+        #    renorm = math.log(upper_bound) - math.log(lower_bound)
+
+        #except (astropy_units.UnitsError, TypeError):
+
+        #    renorm = math.log(upper_bound.value) - math.log(lower_bound.value)
+
+        renorm = 1
+
+        return 1.0 / renorm * np.where((x > lower_bound) & (x < upper_bound), 1.0/x, 0.0)
 
 
 # noinspection PyPep8Naming
-class sin(Function):
+class Sin(Function):
     r"""
     description :
 
@@ -460,6 +478,7 @@ class sin(Function):
             desc : frequency
             initial value : 1.0 / (2 * np.pi)
             min : 0
+            unit : rad
 
         phi :
 
@@ -497,7 +516,7 @@ class sin(Function):
 
 if has_naima:
 
-    class synchrotron(Function):
+    class Synchrotron(Function):
         r"""
         description :
 
@@ -554,7 +573,7 @@ if has_naima:
 
                 # Now check that y is a differential flux
                 current_units = get_units()
-                should_be_unitless = y_unit * (current_units.photon_energy * current_units.time * current_units.area)
+                should_be_unitless = y_unit * (current_units.energy * current_units.time * current_units.area)
 
                 if not hasattr(should_be_unitless,'physical_type') or \
                    should_be_unitless.decompose().physical_type != 'dimensionless':
@@ -577,13 +596,13 @@ if has_naima:
 
             current_units = get_units()
 
-            self._particle_distribution._set_units(current_units.particle_energy, current_units.particle_energy**(-1))
+            self._particle_distribution.set_units(current_units.energy, current_units.energy**(-1))
 
             # Naima wants a function which accepts a quantity as x (in units of eV) and returns an astropy quantity,
             # so we need to create a wrapper which will remove the unit from x and add the unit to the return
             # value
 
-            self._particle_distribution_wrapper = lambda x: function(x.value) / current_units.particle_energy
+            self._particle_distribution_wrapper = lambda x: function(x.value) / current_units.energy
 
         def get_particle_distribution(self):
 
@@ -599,7 +618,7 @@ if has_naima:
                                               Eemin = emin * astropy_units.GeV,
                                               Eemax = emax * astropy_units.GeV, nEed = need)
 
-            return _synch.flux(x * get_units().photon_energy, distance=distance * astropy_units.kpc).value
+            return _synch.flux(x * get_units().energy, distance=distance * astropy_units.kpc).value
 
         def to_dict(self, minimal=False):
 
@@ -612,7 +631,7 @@ if has_naima:
             return data
 
 
-class line(Function):
+class Line(Function):
     r"""
     description :
 
@@ -648,7 +667,7 @@ class line(Function):
 
         return a * x + b
 
-class identity(Function):
+class Identity(Function):
     r"""
     description :
 
@@ -671,7 +690,7 @@ class identity(Function):
         return x
 
 
-class bias(Function):
+class Bias(Function):
     r"""
     description :
 
@@ -704,8 +723,79 @@ class bias(Function):
 
         return x + k
 
+class Band(Function):
+    r"""
+    description :
 
-class band(Function):
+        Band model from Band et al., 1993, parametrized with the peak energy
+
+    latex : $  $
+
+    parameters :
+
+        K :
+
+            desc : Differential flux at the pivot energy
+            initial value : 1e-4
+
+        alpha :
+
+            desc : low-energy photon index
+            initial value : -1.0
+            min : -1.5
+            max : 0
+
+        xp :
+
+            desc : peak in the x * x * N (nuFnu if x is a energy)
+            initial value : 350
+            min : 10
+
+        beta :
+
+            desc : high-energy photon index
+            initial value : -2.0
+            min : -3.0
+            max : -1.5
+
+        piv :
+
+            desc : pivot energy
+            initial value : 100.0
+            fix : yes
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        # The normalization has the same units as y
+        self.K.unit = y_unit
+
+        # The break point has always the same dimension as the x variable
+        self.xp.unit = x_unit
+
+        self.piv.unit = x_unit
+
+        # alpha and beta are dimensionless
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
+
+    def evaluate(self, x, K, alpha, xp, beta, piv):
+
+        E0 = xp / (2 + alpha)
+
+        if (alpha < beta):
+            raise ModelAssertionViolation("Alpha cannot be less than beta")
+
+        out = np.where(x < (alpha - beta) * E0,
+                       K * np.power(x / piv, alpha) * np.exp(-x / E0),
+                       K * np.power((alpha - beta) * E0 / piv, alpha - beta) * np.exp(beta - alpha) *
+                       np.power(x / piv, beta))
+
+        return out
+
+class Band_Calderone(Function):
     r"""
     description :
 
@@ -790,6 +880,7 @@ class band(Function):
     @staticmethod
     def ggrb_int_cpl( a, Ec, Emin, Emax):
 
+        # Gammaincc does not support quantities
         i1 = gammaincc(2 + a, Emin / Ec) * gamma(2+a)
         i2 = gammaincc(2 + a, Emax / Ec) * gamma(2+a)
 
@@ -812,6 +903,14 @@ class band(Function):
 
         assert opt == 0 or opt == 1, "Opt must be either 0 or 1"
 
+        if alpha < beta:
+
+            raise ModelAssertionViolation("Alpha cannot be smaller than beta")
+
+        if alpha < -2:
+
+            raise ModelAssertionViolation("Alpha cannot be smaller than -2")
+
         # Cutoff energy
 
         if alpha == -2:
@@ -828,11 +927,28 @@ class band(Function):
 
         # Evaluate model integrated flux and normalization
 
+        if isinstance(alpha, astropy_units.Quantity):
+
+            # The following functions do not allow the use of units
+            alpha_ = alpha.value
+            Ec_ = Ec.value
+            a_ = a.value
+            b_ = b.value
+            Esplit_ = Esplit.value
+            beta_ = beta.value
+
+            unit_ = self.x_unit
+
+        else:
+
+            alpha_, Ec_, a_, b_, Esplit_, beta_ = alpha, Ec, a, b, Esplit, beta
+            unit_ = 1.0
+
         if opt==0:
 
             # Cutoff power law
 
-            intflux = self.ggrb_int_cpl(alpha, Ec, a, b)
+            intflux = self.ggrb_int_cpl(alpha_, Ec_, a_, b_)
 
         else:
 
@@ -840,14 +956,14 @@ class band(Function):
 
             if a <= Esplit and Esplit <= b:
 
-                intflux = (self.ggrb_int_cpl(alpha, Ec, a, Esplit) +
-                           self.ggrb_int_pl (alpha, beta, Ec, Esplit, b))
+                intflux = (self.ggrb_int_cpl(alpha_, Ec_, a_, Esplit_) +
+                           self.ggrb_int_pl (alpha_, beta_, Ec_, Esplit_, b_))
 
             else:
 
                 if Esplit < a:
 
-                    intflux = self.ggrb_int_pl(alpha, beta, Ec, a, b)
+                    intflux = self.ggrb_int_pl(alpha_, beta_, Ec_, a_, b_)
 
                 else:
 
@@ -855,7 +971,7 @@ class band(Function):
 
         erg2keV = 6.24151e8
 
-        norm = F * erg2keV / intflux
+        norm = F * erg2keV / (intflux * unit_)
 
         if opt==0:
 
@@ -865,22 +981,15 @@ class band(Function):
 
         else:
 
-            idx = (x < Esplit)
-
-            flux = np.zeros_like( x )
-
-            flux[idx] = ( norm * np.power(x[idx] / Ec, alpha) *
-                          np.exp(-x[idx] / Ec) )
-
-            nidx = ~idx
-
-            flux[nidx] = ( norm * pow(alpha-beta, alpha-beta) * math.exp(beta-alpha) *
-                           np.power(x[nidx] / Ec, beta) )
+            flux = norm * np.where(x < Esplit,
+                                   (norm * np.power(x / Ec, alpha) * np.exp(-x / Ec) ),
+                                   (norm * pow(alpha - beta, alpha - beta) * math.exp(beta - alpha) *
+                                    np.power(x / Ec, beta) ))
 
         return flux
 
 
-class log_parabola(Function):
+class Log_parabola(Function):
     r"""
     description :
 
@@ -948,7 +1057,7 @@ class log_parabola(Function):
 
 if has_gsl:
 
-    class cutoff_powerlaw_flux(Function):
+    class Cutoff_powerlaw_flux(Function):
         r"""
             description :
 
@@ -1016,3 +1125,40 @@ if has_gsl:
             this_integral = self._integral(a, b, index, xc)
 
             return F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
+
+
+class Exponential_cutoff(Function):
+    r"""
+        description :
+
+            An exponential cutoff
+
+        latex : $ K \exp{(-x/xc)} $
+
+        parameters :
+
+            K :
+
+                desc : Normalization
+                initial value : 1.0
+                fix : yes
+
+            xc :
+                desc : cutoff
+                initial value : 100
+                min : 1
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # K has units of y
+
+        self.K.unit = y_unit
+
+        # piv has the same dimension as x
+        self.xc.unit = x_unit
+
+    def evaluate(self, x, K, xc):
+
+        return K * np.exp(np.divide(x, -xc))

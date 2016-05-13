@@ -35,14 +35,14 @@ class Source(object):
 
             # Components in this case have energy as x and differential flux as y
 
-            x_unit = current_units.photon_energy
-            y_unit = (current_units.photon_energy * current_units.area * current_units.time) ** (-1)
+            x_unit = current_units.energy
+            y_unit = (current_units.energy * current_units.area * current_units.time) ** (-1)
 
         elif self._src_type == PARTICLE_SOURCE:
 
             # energy as x and particle flux as y
-            x_unit = current_units.particle_energy
-            y_unit = 1 / current_units.particle_energy
+            x_unit = current_units.energy
+            y_unit = 1 / current_units.energy
 
         elif self._src_type == EXTENDED_SOURCE:
 
@@ -55,7 +55,7 @@ class Source(object):
         # Now set the units of the components
         for component in self._components.values():
 
-            component.shape._set_units(x_unit, y_unit)
+            component.shape.set_units(x_unit, y_unit)
 
     @property
     def components(self):

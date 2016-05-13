@@ -51,18 +51,18 @@ class SkyDirection(Node):
             # with either Parameter instances or just floats
 
             if isinstance(ra, float):
-                ra = Parameter('ra', ra, min_value=0.0, max_value=360.0, unit='deg')
+                ra = Parameter('ra', ra, desc='Right Ascension', min_value=0.0, max_value=360.0, unit='deg')
 
             if isinstance(dec, float):
-                dec = Parameter('dec', dec, min_value=-90.0, max_value=90.0, unit='deg')
+                dec = Parameter('dec', dec, desc='Declination', min_value=-90.0, max_value=90.0, unit='deg')
 
             assert 0 <= ra.value <= 360, "R.A. cannot have a value of %s, it must be 0 <= ra <= 360" % ra
             assert -90 <= dec.value <= 90, "dec cannot have a value of %s, it must be -90 <= dec <= 90" % dec
 
             self._coord_type = 'equatorial'
 
-            self.add_child(ra)
-            self.add_child(dec)
+            self._add_child(ra)
+            self._add_child(dec)
 
         elif l is not None and b is not None:
 
@@ -70,17 +70,17 @@ class SkyDirection(Node):
             # with either Parameter instances or just floats
 
             if isinstance(l, float):
-                l = Parameter('l', l, min_value=0.0, max_value=360.0, unit='deg')
+                l = Parameter('l', l, desc='Galactic longitude',min_value=0.0, max_value=360.0, unit='deg')
 
             if isinstance(b, float):
-                b = Parameter('b', b, min_value=-90.0, max_value=90.0, unit='deg')
+                b = Parameter('b', b, desc='Galactic latitude', min_value=-90.0, max_value=90.0, unit='deg')
 
             assert 0 <= l.value <= 360, "L cannot have a value of %s, it must be 0 <= L <= 360" % l
             assert -90 <= b.value <= 90, "B cannot have a value of %s, it must be -90 <= B <= 90" % b
 
             self._coord_type = 'galactic'
-            self.add_child(l)
-            self.add_child(b)
+            self._add_child(l)
+            self._add_child(b)
 
         else:
 
@@ -95,13 +95,13 @@ class SkyDirection(Node):
 
         try:
 
-            return self.children['ra'].value
+            return self._children['ra'].value
 
         except KeyError:
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('icrs').ra.deg
+            return self.sky_coord.transform_to('icrs').ra
 
     def get_dec(self):
         """
@@ -112,13 +112,13 @@ class SkyDirection(Node):
 
         try:
 
-            return self.children['dec'].value
+            return self._children['dec'].value
 
         except KeyError:
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('icrs').dec.deg
+            return self.sky_coord.transform_to('icrs').dec
 
     def get_l(self):
         """
@@ -129,13 +129,13 @@ class SkyDirection(Node):
 
         try:
 
-            return self.children['l'].value
+            return self._children['l'].value
 
         except KeyError:
 
             # Transform from L,B to R.A., Dec
 
-            return float(self.sky_coord.transform_to('galactic').l.deg)
+            return self.sky_coord.transform_to('galactic').l
 
     def get_b(self):
         """
@@ -146,31 +146,31 @@ class SkyDirection(Node):
 
         try:
 
-            return self.children['b'].value
+            return self._children['b'].value
 
         except KeyError:
 
             # Transform from L,B to R.A., Dec
 
-            return float(self.sky_coord.transform_to('galactic').b.deg)
+            return self.sky_coord.transform_to('galactic').b
 
     def _get_sky_coord(self):
 
         if self._coord_type == 'galactic':
 
-            l = self.children['l'].value
-            b = self.children['b'].value
+            l = self._children['l'].value
+            b = self._children['b'].value
 
-            return coordinates.SkyCoord(l=l * u.deg, b=b * u.deg,
+            return coordinates.SkyCoord(l=l, b=b,
                                         frame='galactic', equinox=self._equinox,
                                         unit="deg")
 
         else:
 
-            ra = self.children['ra'].value
-            dec = self.children['dec'].value
+            ra = self._children['ra'].value
+            dec = self._children['dec'].value
 
-            return coordinates.SkyCoord(ra=ra * u.deg, dec=dec * u.deg,
+            return coordinates.SkyCoord(ra=ra, dec=dec,
                                         frame='icrs', equinox=self._equinox,
                                         unit="deg")
 
@@ -192,7 +192,7 @@ class SkyDirection(Node):
         :return: dictionary of parameters
         """
 
-        return self.children
+        return self._children
 
     @property
     def equinox(self):
@@ -209,14 +209,14 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            data['ra'] = self.children['ra'].to_dict(minimal)
-            data['dec'] = self.children['dec'].to_dict(minimal)
+            data['ra'] = self._children['ra'].to_dict(minimal)
+            data['dec'] = self._children['dec'].to_dict(minimal)
             data['equinox'] = self._equinox
 
         else:
 
-            data['l'] = self.children['l'].to_dict(minimal)
-            data['b'] = self.children['b'].to_dict(minimal)
+            data['l'] = self._children['l'].to_dict(minimal)
+            data['b'] = self._children['b'].to_dict(minimal)
             data['equinox'] = self._equinox
 
         return data
@@ -230,13 +230,13 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            self.children['ra'].fix = True
-            self.children['dec'].fix = True
+            self._children['ra'].fix = True
+            self._children['dec'].fix = True
 
         else:
 
-            self.children['l'].fix = True
-            self.children['b'].fix = True
+            self._children['l'].fix = True
+            self._children['b'].fix = True
 
     def free(self):
         """
@@ -247,13 +247,13 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            self.children['ra'].fix = False
-            self.children['dec'].fix = False
+            self._children['ra'].fix = False
+            self._children['dec'].fix = False
 
         else:
 
-            self.children['l'].fix = False
-            self.children['b'].fix = False
+            self._children['l'].fix = False
+            self._children['b'].fix = False
 
     @classmethod
     def from_dict(cls, data):
@@ -264,14 +264,14 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            representation = 'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)' % (self.children['ra'].value,
-                                                                                 self.children['dec'].value,
+            representation = 'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)' % (self._children['ra'].value,
+                                                                                 self._children['dec'].value,
                                                                                  self.equinox)
 
         else:
 
-            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (self.children['l'].value,
-                                                                           self.children['b'].value,
+            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (self._children['l'].value,
+                                                                           self._children['b'].value,
                                                                            self.equinox)
 
         return representation

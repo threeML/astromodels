@@ -48,6 +48,10 @@ class DesignViolation(Exception):
     pass
 
 
+class ModelAssertionViolation(Exception):
+    pass
+
+
 class WrongDimensionality(Exception):
     pass
 
@@ -131,21 +135,21 @@ def input_as_array(method):
     np_array = np.array
     np_squeeze = np.squeeze
 
-    def wrapper(input_value, *args, **kwargs):
+    def wrapper(self, input_value, *args, **kwargs):
 
         # Transform the input in a numpy array, if needed.
         # If the input was a single float, this will become an array with shape
         # (1,), otherwise it will keep the shape of the input.
 
-        if isinstance(input_value, np.ndarray):
+        if isinstance(input_value, np.ndarray) or isinstance(input_value, u.Quantity):
 
-            return method(input_value, *args, **kwargs)
+            return method(self, input_value, *args, **kwargs)
 
         else:
 
             new_input = np_array(input_value, ndmin=1, copy=False)
 
-            result = method(new_input, *args, **kwargs)
+            result = method(self, new_input, *args, **kwargs)
 
             # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
 
@@ -246,6 +250,11 @@ class FunctionMeta(type):
 
         variables, parameters_in_calling_sequence = FunctionMeta.check_calling_sequence(name, 'evaluate',
                                                                                         cls.evaluate, ['x', 'y', 'z'])
+
+        # We also need the method _set_units
+        if '_set_units' not in dct:
+
+            raise AttributeError("You have to implement the '_set_units' method in %s" % name)
 
         #print("Function %s: \n variables: %s\n parameters: %s\n" % (cls.__name__, ",".join(variables),
         #                                                            ",".join(parameters_in_calling_sequence)))
@@ -464,22 +473,45 @@ class FunctionMeta(type):
 
         # Fetch attributes
 
-        value = definition['initial value']
+        # Use unitless parameters when building the function, if no unit is specified, otherwise
+        # use that unit
+        if 'unit' not in definition or definition['unit'] is None or definition['unit'] == '':
+
+            du = u.dimensionless_unscaled
+
+        else:
+
+            du = u.Unit(definition['unit'])
+
+        def _parse_value(val):
+
+            if isinstance(val, str):
+
+                return eval(val)
+
+            else:
+
+                return float(val)
+
+        value = _parse_value(definition['initial value']) * du
         desc = definition['desc']
 
         # Optional attributes are either None if not specified, or the value specified
 
-        min_value = (None if 'min' not in definition else definition['min'])
-        max_value = (None if 'max' not in definition else definition['max'])
-        delta = (None if 'delta' not in definition else definition['delta'])
-        unit = ('' if 'unit' not in definition else definition['unit'])
+        min_value = (None if 'min' not in definition else _parse_value(definition['min']) * du)
+        max_value = (None if 'max' not in definition else _parse_value(definition['max']) * du)
+        delta = (None if 'delta' not in definition else _parse_value(definition['delta']) * du)
+        unit = du
 
         # A parameter can be fixed by using fix=yes, otherwise it is free by default
 
         free = (True if 'fix' not in definition else not bool(definition['fix']))
 
-        return Parameter(par_name, value, min_value=min_value, max_value=max_value,
-                         delta=delta, desc=desc, free=free, unit=unit)
+
+        new_parameter = Parameter(par_name, value, min_value=min_value, max_value=max_value,
+                                  delta=delta, desc=desc, free=free, unit=unit)
+
+        return new_parameter
 
     @staticmethod
     def test_simple_function(name, test_specification, new_class_instance):
@@ -503,33 +535,33 @@ class FunctionMeta(type):
         # Run the test
         # Build the point dictionary with the right number of variables
 
-        point = {}
+        point = []
 
         for var_name in var_names[:new_class_instance.n_dim]:
 
-            point[var_name] = float(test_specification[var_name])
+            point.append(float(test_specification[var_name]))
 
         # Make a string representing the point, to be used in warnings or exceptions
 
-        point_repr = ', '.join("{!s}={!r}".format(k, v) for (k, v) in point.iteritems())
+        point_repr = ",".join(map(lambda x:str(x),point))
 
         # Test that the value of the function is what is expected within the tolerance
+
         try:
 
-            value = new_class_instance(**point)
+            value = new_class_instance(*point)
 
         except TypeError:
 
-            raise TestFailed("Cannot call function %s at point %s. Did you remember to use .value "
-                             "to access the value of a parameter in the 'evaluate' method?" % (name, point_repr))
+            raise TestFailed("Cannot call function %s at point %s." % (name, point_repr))
 
         except:
 
-            exc_type, value, traceback = sys.exc_info()
+            exc_type, ex_value, traceback = sys.exc_info()
 
             raise TestFailed("Error in 'evaluate' for %s at point %s. Exception %s: '%s'" % (name, point_repr,
                                                                                              exc_type,
-                                                                                             value))
+                                                                                             ex_value))
 
         # The eval(str()) bit is needed so that a function value can be specified as np.inf or np.pi
 
@@ -591,6 +623,10 @@ class FunctionMeta(type):
                           copy_of_parameters,
                           type(instance)._n_dim)
 
+        # Last, if the class provides a setup method, call it
+        if hasattr(instance, "_setup"):
+
+            instance._setup()
 
 
 class Function(Node):
@@ -624,7 +660,7 @@ class Function(Node):
 
         for child_name, child in parameters.iteritems():
 
-            self.add_child(child, child_name)
+            self._add_child(child, child_name)
 
         # Now generate a unique identifier (UUID) in a thread safe, multi-processing safe
         # way. This is used for example in the CompositeFunction class to keep track of the different
@@ -633,6 +669,11 @@ class Function(Node):
 
         # This will contain the units for the independent variables x(,y,z)
         self._independent_variables_unit = [None] * self.n_dim
+
+        # This will store the unit of the input (x) and the output (y) when the function
+        # gets assigned a role
+        self._x_unit = None
+        self._y_unit = None
 
     def set_independent_variables_unit(self, *units):
         """
@@ -684,7 +725,9 @@ class Function(Node):
 
         def set_parameters(*args):
 
-            [self.get_child(free_parameters[i]).set_value(args[i]) for i in range(len(args))]
+            for i in range(len(args)):
+
+                self._get_child(free_parameters[i]).value = args[i]
 
         # Prepare the variable description
 
@@ -753,7 +796,7 @@ class Function(Node):
         """
         Returns a dictionary of parameters
         """
-        return self.children
+        return self._children
 
     @property
     def n_dim(self):
@@ -773,63 +816,124 @@ class Function(Node):
 
         raise NotImplementedError("You have to re-implement this")
 
-    def get(self, *args, **kwargs):
-        """
-        Evaluate the function with units
-
-        :return:
-        """
-
-        # Check that the inputs have units
-
-        for i in range(len(args)):
-
-            if not isinstance(args[i],u.Quantity):
-
-                raise TypeError("If you use .get() you have to provide astropy quantities (with units)")
-
-        # Gather the current parameters' values
-
-        kwargs.update({parameter_name: parameter.value * parameter.unit for parameter_name, parameter
-                       in self.children.iteritems()})
-
-        # Unfortunately astropy.units cannot handle certain operations with arrays with units (like power, logarithm
-        # and so on). It would fail saying: "*** ValueError: Quantities and Units may only be raised to a scalar power"
-        # Hence, we iterate over the input and produce one result at the time. This is very slow, but hey, you
-        # shouldn't use .get() if you are interested in speed
-
-        def mapper(*args, **kwargs):
-            return self.evaluate(*args, **kwargs)
+    def set_units(self, in_x_unit, in_y_unit):
 
         try:
 
-            result_unnormalized = map(lambda x:mapper(*x, **kwargs), zip(*args))
+            in_x_unit = u.Unit(in_x_unit)
+            in_y_unit = u.Unit(in_y_unit)
 
-        except TypeError:
+        except:
 
-            # Probably this is just a scalar
-            result = self.evaluate(*args, **kwargs)
+            raise TypeError("Could not get a Unit instance from provided units when setting units "
+                            "for function %s" % self.name)
+
+        self._x_unit = in_x_unit
+        self._y_unit = in_y_unit
+
+        # Now call the underlying method to set units, which is defined by each function
+        self._set_units(self._x_unit, self._y_unit)
+
+    def _set_units(self, x_unit, y_unit):
+
+        # This will be overridden by derived classes
+
+        raise NotImplementedError("You have to implement the method _set_units for function %s" % self.name)
+
+    @property
+    def x_unit(self):
+        return self._x_unit
+
+    @property
+    def y_unit(self):
+        return self._y_unit
+
+    def __call__(self, x, *args, **kwargs):
+
+        # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
+        # significant overload on any computation. For this reason we treat differently the case with units from
+        # the case without units, so that the latter case remains fast. Also, transforming an input
+        # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
+        # this transformation only when strictly required
+
+        if isinstance(x, np.ndarray):
+
+            # We have an array as input
+
+            if not isinstance(x, u.Quantity):
+
+                # This is a normal array, let's use the fast call (without units)
+
+                return self._call_without_units(x, *args, **kwargs)
+
+            else:
+
+                # This is an array with units, let's use the slow call which preserves units
+
+                return self._call_with_units(x, *args, **kwargs)
 
         else:
 
-            # Now every element of result will have its own unit
+            # This is either a single number or a list
+            if not isinstance(x, u.Quantity):
 
-            # Get the unit of the first element
-            final_unit = result_unnormalized[0].unit
+                # Transform the input to an array of floats
 
-            # Transform them all to the same unit
-            result = np.array(map(lambda x:x.to(final_unit).value, result_unnormalized)) * final_unit
+                new_input = np.array(x, dtype=float, ndmin=1, copy=False)
 
-        return result
+                # Compute the function
 
+                result = self._call_without_units(new_input, *args, **kwargs)
 
-    def __call__(self, *args, **kwargs):
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
 
-        # Gather the current parameters' values
+                return np.squeeze(result)
 
-        kwargs.update({parameter_name: parameter.value for parameter_name, parameter in self.children.iteritems()})
+            else:
 
-        return self.evaluate(*args, **kwargs)
+                # This is a single number with units, let's transform it to an array with units
+
+                new_input = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
+
+                # Compute the function with units
+
+                result = self._call_with_units(new_input, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+
+                return np.squeeze(result)
+
+    def _call_with_units(self, x, *args, **kwargs):
+
+        # Gather the current parameters' values with units
+
+        for parameter_name, parameter in self._children.iteritems():
+
+            kwargs[parameter_name] = parameter.value * parameter.unit
+
+        try:
+
+            results = self.evaluate(x, *args, **kwargs)
+
+        except u.UnitsError:
+
+            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                               "calling function %s" % self.name)
+
+        else:
+
+            return results
+
+    def _call_without_units(self, x, *args, **kwargs):
+
+        # Gather the current parameters' values without units, which means that the whole computation
+        # will be without units, with a big speed gain (~10x)
+
+        for parameter_name, parameter in self._children.iteritems():
+
+            kwargs[parameter_name] = parameter.value
+
+        return self.evaluate(x, *args, **kwargs)
 
     # Define now all the operators which allow to combine functions. Each operator will return a new
     # instance of a CompositeFunction, which can then be used as a function on its own
@@ -931,9 +1035,9 @@ class Function(Node):
         # Add the description of each parameter and their current value
         repr_dict['parameters'] = collections.OrderedDict()
 
-        for parameter_name in self.children.keys():
+        for parameter_name in self._children.keys():
 
-            repr_dict['parameters'][parameter_name] = self.children[parameter_name].to_dict()
+            repr_dict['parameters'][parameter_name] = self._children[parameter_name].to_dict()
 
         return dict_to_list(repr_dict, rich_output)
 
@@ -1082,7 +1186,7 @@ class CompositeFunction(Function):
                 # parameter, not a copy, as always in python)
 
                 parameters[new_name] = parameter
-                parameter.change_name(new_name)
+                parameter._change_name(new_name)
 
         # Now build a meaningful description
 
@@ -1092,13 +1196,13 @@ class CompositeFunction(Function):
 
         self._uuid = self._uuid_expression
 
-    def _set_units(self, x_unit, y_unit):
+    def set_units(self, x_unit, y_unit):
 
         # Just rely on the single functions to adjust themselves.
 
         for function in self.functions:
 
-            function._set_units(x_unit, y_unit)
+            function.set_units(x_unit, y_unit)
 
     @property
     def expression(self):
@@ -1299,7 +1403,7 @@ def _parse_function_expression(function_specification):
     # Use regular expressions to extract the set of functions like function_name{number},
     # then build the set of unique functions by using the constructor set()
 
-    unique_functions = set(re.findall(r'\b([a-zA-Z0-9]+)\{([0-9]?)\}',function_specification))
+    unique_functions = set(re.findall(r'\b([a-zA-Z0-9_]+)\{([0-9]?)\}',function_specification))
 
     # NB: unique functions is a set like:
     # {('powerlaw', '1'), ('sin', '2')}
@@ -1395,7 +1499,7 @@ def _parse_function_expression(function_specification):
 
     string_for_literal_eval = ",".join(string_for_literal_eval.split())
 
-    print(string_for_literal_eval)
+    #print(string_for_literal_eval)
 
     # At this point the string should be just a comma separated list of numbers
 

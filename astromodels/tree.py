@@ -4,7 +4,7 @@ import collections
 
 from astromodels.utils.io import display
 from astromodels.dual_access_class import DualAccessClass
-import re
+
 
 class DuplicatedNode(Exception):
     pass
@@ -37,15 +37,15 @@ class Node(DualAccessClass):
 
     def __init__(self, name):
 
-        self._children = collections.OrderedDict()
-        self._parent = None
+        self.__children = collections.OrderedDict()
+        self.__parent = None
 
         assert name_is_legal(name),"Illegal characters in name %s. You can only use letters and numbers, " \
                                    "and + and - (but the name cannot start with -)" % name
 
         self._name = name
 
-        super(Node, self).__init__('node', self._children)
+        super(Node, self).__init__('node', self.__children)
 
     @property
     def name(self):
@@ -57,65 +57,61 @@ class Node(DualAccessClass):
         return self._name
 
     @property
-    def children(self):
-        return self._children
+    def _children(self):
+        return self.__children
 
     @property
     def path(self):
 
-        return ".".join(self.get_path())
+        return ".".join(self._get_path())
 
-    def reset(self):
+    def _reset_node(self):
 
-        self._children = collections.OrderedDict()
-        self._parent = None
+        self.__children = collections.OrderedDict()
+        self.__parent = None
 
-    def add_children(self, children):
+    def _add_children(self, children):
 
         for child in children:
 
-            self.add_child(child)
+            self._add_child(child)
 
-    def add_child(self, new_child, name=None):
+    def _add_child(self, new_child, name=None):
 
-        new_child.set_parent(self)
+        new_child._set_parent(self)
 
         if name is None:
 
             name = new_child.name
 
-        if name in self._children:
+        if name in self.__children:
 
             raise DuplicatedNode("You cannot use the same name (%s) for different nodes" % name)
 
-        self._children[name] = new_child
+        self.__children[name] = new_child
 
         # Add also an attribute with the name of the new child, to allow access with a syntax like
         # node.child
 
-        self.add_attribute(name, new_child)
+        self._add_attribute(name, new_child)
 
-    def get_child(self, child_name):
+    def _get_child(self, child_name):
 
-        return self._children[child_name]
+        return self.__children[child_name]
 
-    def remove_child(self, child_name):
+    def _remove_child(self, child_name):
 
-        return self.del_attribute(child_name)
+        return self._del_attribute(child_name)
 
-    def get_children(self):
+    def _set_parent(self, parent):
 
-        return self._children
+        self.__parent = parent
 
-    def set_parent(self, parent):
+    def _get_parent(self):
 
-        self._parent = parent
+        return self.__parent
 
-    def get_parent(self):
-
-        return self._parent
-
-    def get_child_from_path(self, path):
+    def _get_child_from_path(self, path):
         """
         Return a children below this level, starting from a path of the kind "this_level.something.something.name"
 
@@ -139,7 +135,7 @@ class Node(DualAccessClass):
 
         return this_child
 
-    def get_path(self):
+    def _get_path(self):
 
         parent_names = []
 
@@ -165,7 +161,7 @@ class Node(DualAccessClass):
 
         this_dict = collections.OrderedDict()
 
-        for key, val in self._children.iteritems():
+        for key, val in self.__children.iteritems():
 
             this_dict[key] = val.to_dict(minimal)
 
@@ -204,7 +200,7 @@ class Node(DualAccessClass):
 
         display(self)
 
-    def find_instances(self, cls):
+    def _find_instances(self, cls):
         """
         Find all the instances of cls below this node.
 
@@ -213,11 +209,11 @@ class Node(DualAccessClass):
 
         instances = collections.OrderedDict()
 
-        for child_name, child in self.get_children().iteritems():
+        for child_name, child in self._children.iteritems():
 
             if isinstance(child, cls):
 
-                key_name = ".".join(child.get_path())
+                key_name = ".".join(child._get_path())
 
                 instances[key_name] = child
 
@@ -226,12 +222,12 @@ class Node(DualAccessClass):
 
                 # NOTE: an empty dictionary evaluate as False
 
-                if child.get_children():
+                if child._children:
 
-                    instances.update(child.find_instances(cls))
+                    instances.update(child._find_instances(cls))
 
             else:
 
-                instances.update(child.find_instances(cls))
+                instances.update(child._find_instances(cls))
 
         return instances

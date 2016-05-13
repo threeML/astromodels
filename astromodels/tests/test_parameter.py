@@ -1,202 +1,325 @@
+import pytest
+
+import astropy.units as u
+import numpy as np
+
 __author__ = 'giacomov'
 
 from astromodels.parameter import Parameter, SettingOutOfBounds, IndependentVariable
+from astromodels.functions.functions import Line
 
 
-def suite():
-    # This will automatically add all methods in the ParameterTestCase class starting with
-    # test* to the test suite
+def test_default_constructor():
 
-    suite = unittest.TestLoader().loadTestsFromTestCase(ParameterTestCase)
+    p = Parameter('test_parameter', 1.0, desc='Description')
 
-    return suite
+    assert p.min_value is None
+    assert p.max_value is None
+    assert p.value == 1.0
+    assert isinstance(p.delta, float)
+    assert p.name == 'test_parameter'
+    assert p.description == 'Description'
+    assert p.fix == False
+    assert p.free == True
+    assert p.has_prior() == False
 
+    with pytest.raises(RuntimeError):
 
-class ParameterTestCase(unittest.TestCase):
+        _ = p.prior
 
-    def test_minimal_constructor(self):
-        p = Parameter("test", 1)
+    assert p.unit == u.dimensionless_unscaled
 
-        self.assertEqual(p.value, 1)
-        self.assertEqual(p.name, "test")
-        self.assertIsNone(p.min_value)
-        self.assertIsNone(p.max_value)
-        self.assertIsNone(p._prior)
-        self.assertEqual(p.delta, 0.1 * p.value)
-        self.assertEqual(p.free, True)
+    # Test that we cannot call a parameter with a name with spaces in it
+    with pytest.raises(AssertionError):
 
-    def test_constructor_with_min(self):
-        p = Parameter("test", 1, min_value=0)
+        _ = Parameter('test parameter 2', 1.0)
 
-        self.assertEqual(p.value, 1)
-        self.assertEqual(p.name, "test")
-        self.assertEqual(p.min_value, 0)
-        self.assertIsNone(p.max_value)
-        self.assertIsNone(p._prior)
-        self.assertEqual(p.delta, 0.1 * p.value)
-        self.assertEqual(p.free, True)
 
-    def test_constructor_with_max(self):
-        p = Parameter("test", 1, max_value=10)
+def test_default_constructor_units():
 
-        self.assertEqual(p.value, 1)
-        self.assertEqual(p.name, "test")
-        self.assertIsNone(p.min_value)
-        self.assertEqual(p.max_value, 10)
-        self.assertIsNone(p._prior)
-        self.assertEqual(p.delta, 0.1 * p.value)
-        self.assertEqual(p.free, True)
+    p = Parameter('test_parameter', 1.0 * u.keV, desc='Description')
 
-    def test_constructor_with_delta(self):
-        p = Parameter("test", 1, delta=0.43)
+    assert p.min_value is None
+    assert p.max_value is None
+    assert p.value == 1.0
+    assert isinstance(p.delta, float)
+    assert p.name == 'test_parameter'
+    assert p.description == 'Description'
+    assert p.fix == False
+    assert p.free == True
+    assert p.has_prior() == False
 
-        self.assertEqual(p.value, 1)
-        self.assertEqual(p.name, "test")
-        self.assertIsNone(p.min_value)
-        self.assertIsNone(p.max_value)
-        self.assertIsNone(p._prior)
-        self.assertEqual(p.delta, 0.43)
-        self.assertEqual(p.free, True)
+    with pytest.raises(RuntimeError):
 
-    def test_constructor_with_desc(self):
-        description = "Just a fake parameter"
+        _ = p.prior
 
-        p = Parameter("test", 1, desc=description)
+    assert p.unit == u.keV
 
-        self.assertEqual(p.value, 1)
-        self.assertEqual(p.name, "test")
-        self.assertIsNone(p.min_value)
-        self.assertIsNone(p.max_value)
-        self.assertIsNone(p._prior)
-        self.assertEqual(p.delta, 0.43)
-        self.assertEqual(p.description, description)
-        self.assertEqual(p.__doc__, description)
-        self.assertEqual(p.free, True)
 
-    def test_constructor_with_free(self):
-        free = False
+def test_constructor_complete():
 
-        p = Parameter("test", 1, free=free)
+    p = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit=u.MeV)
 
-        self.assertEqual(p.value, 1)
-        self.assertEqual(p.name, "test")
-        self.assertIsNone(p.min_value)
-        self.assertIsNone(p.max_value)
-        self.assertIsNone(p._prior)
-        self.assertEqual(p.delta, 0.43)
-        self.assertEqual(p.free, free)
+    assert p.min_value == -5.0
+    assert p.max_value == 5.0
+    assert p.value == 1.0
+    assert p.delta == 0.2
+    assert p.name == 'test_parameter'
+    assert p.description == 'test'
+    assert p.fix == True
+    assert p.free == False
+    assert p.has_prior() == False
 
-    def test_set_get_value(self):
-        p = Parameter("test", 1)
+    with pytest.raises(RuntimeError):
+        _ = p.prior
 
-        self.assertEqual(p.value, 1)
+    assert p.unit == u.MeV
 
-        p.value = 2.0
 
-        self.assertEqual(p.value, 2.0)
+def test_conflicting_units_in_initial_value_and_unit_keyword():
 
-    def test_set_value_outside_bounds(self):
-        p = Parameter("test", 1, min_value=0, max_value=2)
+    p = Parameter('test_parameter', 1.0 * u.keV, desc='Description', unit=u.MeV)
 
-        with self.assertRaises(SettingOutOfBounds):
-            p.value = 100
+    assert p.min_value is None
+    assert p.max_value is None
+    assert p.value == 1.0e-3
+    assert isinstance(p.delta, float)
+    assert p.name == 'test_parameter'
+    assert p.description == 'Description'
+    assert p.fix == False
+    assert p.free == True
+    assert p.has_prior() == False
 
-        with self.assertRaises(SettingOutOfBounds):
-            p.value = -100
+    with pytest.raises(RuntimeError):
+        _ = p.prior
 
-    def test_set_get_delta(self):
-        p = Parameter("test", 1, delta=0.2)
+    assert p.unit == u.MeV
 
-        self.assertEqual(p.delta, 0.2)
 
-        p.delta = 0.312
+def test_constructor_with_boundaries():
 
-        self.assertEqual(p.delta, 0.312)
+    p = Parameter('test_parameter', 1.0, min_value=-5, max_value=5)
 
-    def test_set_get_min_value(self):
-        p = Parameter("test", 1, min_value=0)
+    assert p.min_value == -5
+    assert p.max_value == 5
 
-        self.assertEqual(p.min_value, 0)
 
-        p.min_value = -10
+def test_constructor_with_delta():
 
-        self.assertEqual(p.min_value, -10)
+    p = Parameter('test_parameter', 1.0, delta=0.3)
 
-    def test_set_get_max_value(self):
-        p = Parameter("test", 1, max_value=10)
+    assert p.delta == 0.3
 
-        self.assertEqual(p.max_value, 10)
 
-        p.max_value = 1000.12
+def test_constructor_with_units():
 
-        self.assertEqual(p.max_value, 1000.12)
+    p = Parameter('test_parameter', 1.0, unit=u.keV)
 
-    def test_set_get_free(self):
-        p = Parameter("test", 1, free=True)
+    assert p.unit == u.keV
 
-        self.assertEqual(p.free, True)
 
-        p.free = False
+def test_set_no_units():
 
-        self.assertEqual(p.free, False)
+    p = Parameter('test_parameter',1.0)
 
-        p.free = True
+    p.value = 25.4
 
-        self.assertEqual(p.free, True)
+    assert p.value == 25.4
 
-    def test_set_bounds(self):
-        p = Parameter("test", 1)
 
-        p.set_bounds(-1.23, 1.23)
+def test_set_within_bounds_no_units():
 
-        self.assertEqual(p.min_value, -1.23)
-        self.assertEqual(p.max_value, 1.23)
+    p = Parameter('test_parameter',1.0, min_value = -2.0, max_value = 2.0)
 
-    def test_get_bounds(self):
-        p = Parameter("test", 1, min_value=-10, max_value=10)
+    p.value = 1.5
 
-        min_val, max_val = p.get_bounds()
+    assert p.value == 1.5
 
-        self.assertEqual(min_val, -10)
-        self.assertEqual(max_val, 10)
 
-    def test_set_get_prior(self):
-        p = Parameter("test", 1)
+def test_set_outside_bounds_no_units():
 
-        # Define a fake prior
+    p = Parameter('test_parameter',1.0, min_value = -2.0, max_value = 2.0)
 
-        # noinspection PyUnusedLocal
-        def fake_prior(value):
-            return 0.1
+    with pytest.raises(SettingOutOfBounds):
 
-        p.prior = fake_prior
+        p.value = -10.0
 
-        self.assertEqual(p.prior(2.0), 0.1)
 
-    # noinspection PyPropertyAccess
-    def test_name_is_readonly(self):
-        p = Parameter("test", 1)
+def test_set_units():
 
-        # Check that the name of the parameter is read-only
-        with self.assertRaises(AttributeError):
-            p.name = "new name"
+    p = Parameter('test_parameter',1.0, unit=u.keV)
 
-    def test_auxiliary_variable(self):
-        p = Parameter("test", 1.0)
+    p.value = 3.0 * u.MeV
 
-        t = IndependentVariable("time", 0.0)
+    assert p.value == 3000.0
 
-        law = lambda x: 3.2 * x + 5.6
 
-        p.add_auxiliary_variable(t, law)
+def test_set_within_bounds_units():
 
-        self.assertEqual(p._aux_variable['law'], law)
-        self.assertEqual(p._aux_variable['variable'], t)
+    p = Parameter('test_parameter',1.0 * u.keV, min_value = -2.0 * u.MeV, max_value = 2.0 * u.MeV, unit=u.keV)
 
-        # Test the values
-        self.assertEqual(p.value, 5.6)
+    p.value = 1.2 * u.MeV
 
-        # Test link
-        t.value = 10.0
+    assert p.value == 1200.0
 
-        self.assertEqual(p.value, law(t.value))
+
+def test_set_outside_bounds_units():
+
+    p = Parameter('test_parameter', 1.0 * u.keV, min_value = -2.0 * u.MeV, max_value = 2.0 * u.MeV, unit=u.keV)
+
+    with pytest.raises(SettingOutOfBounds):
+
+        p.value = -10.0 * u.MeV
+
+
+def test_set_bounds_nounits():
+
+    p = Parameter('test_parameter', 1.0)
+
+    p.bounds = (-2.0 ,2.0)
+
+    assert p.min_value == -2.0
+    assert p.max_value == 2.0
+
+
+def test_set_bounds_units():
+
+    p = Parameter('test_parameter', 1.0 * u.keV)
+
+    p.bounds = (-2.0 * u.MeV, 2.0 * u.eV)
+
+    assert p.min_value == -2000
+    assert p.max_value == 2e-3
+
+
+def test_set_delta_nounits():
+
+    p = Parameter('test_parameter', 1.0)
+
+    p.delta = 0.5
+
+    assert p.delta == 0.5
+
+
+def test_set_delta_units():
+
+    p = Parameter('test_parameter', 1.0, unit='GeV')
+
+    p.delta = 500 * u.MeV
+
+    assert p.delta == 0.5
+
+
+def test_duplicate():
+
+    p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit='MeV')
+
+    p2 = p1.duplicate()
+
+    assert p1.to_dict() == p2.to_dict()
+
+
+def test_get_randomized_value():
+
+    # Test randomization no boundaries (normal distribution)
+    p1 = Parameter('test_parameter', 1.0)
+
+    val2 = p1.get_randomized_value(0.1)
+
+    assert isinstance(val2, float)
+
+    # Test the randomized value with truncated normal, i.e., with boundaries
+
+    p2 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit='MeV')
+
+    val1 = p2.get_randomized_value(0.1)
+
+    assert p2.min_value <= val1 <= p2.max_value
+
+    # Test the same but with a large variance
+
+    val1 = p2.get_randomized_value(10.0)
+
+    assert p2.min_value <= val1 <= p2.max_value
+
+
+def test_set_remove_minimum():
+    p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit='MeV')
+
+    p1.remove_minimum()
+
+    assert p1.min_value == None
+
+    p1.value = -1000.0
+
+    assert p1.value == -1000.0
+
+
+def test_set_remove_maximum():
+
+    p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit='MeV')
+
+    p1.remove_maximum()
+
+    assert p1.max_value == None
+
+    p1.value = 1000.0
+
+    assert p1.value == 1000.0
+
+
+def test_set_auxiliary_variable():
+
+    p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit='MeV')
+
+    x = Parameter('aux_variable', 1.0)
+
+    # ax + b
+
+    law = Line()
+    law.a = 1.0
+    law.b = 2.0
+
+    p1.add_auxiliary_variable(x, law)
+
+    assert p1.has_auxiliary_variable() == True
+
+    assert p1.value == 3.0
+
+    x.value = 4.0
+
+    assert p1.value == 6.0
+
+    # Check that assigning to the parameter doesn't produce any effect
+    p1.value = -1.0
+
+    assert p1.value == 6.0
+
+
+def test_remove_auxiliary_variable():
+
+    p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test', free=False, unit='MeV')
+
+    x = Parameter('aux_variable', 1.0)
+
+    # ax + b
+
+    law = Line()
+    law.a = 1.0
+    law.b = 2.0
+
+    p1.add_auxiliary_variable(x, law)
+
+    assert p1.value == 3.0
+
+    x.value = 4.0
+
+    assert p1.value == 6.0
+
+    p1.remove_auxiliary_variable()
+
+    assert p1.has_auxiliary_variable() == False
+
+    p1.value = -1.0
+
+    assert p1.value == -1.0

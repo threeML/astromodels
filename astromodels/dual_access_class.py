@@ -1,5 +1,6 @@
 __author__ = 'giacomov'
 
+from astropy.units import Quantity
 
 class ProtectedAttribute(RuntimeError):
     pass
@@ -27,7 +28,7 @@ class DualAccessClass(object):
 
             item = self._lookup_dictionary[key]
 
-            if hasattr(item, 'value'):
+            if hasattr(item, 'value') and not isinstance(item, Quantity):
 
                 item.value = value
 
@@ -39,13 +40,13 @@ class DualAccessClass(object):
 
             super(DualAccessClass, self).__setattr__(key, value)
 
-    def add_attribute(self, name, value):
+    def _add_attribute(self, name, value):
 
         self._lookup_dictionary[name] = value
 
         super(DualAccessClass, self).__setattr__(name, value)
 
-    def del_attribute(self, name):
+    def _del_attribute(self, name):
 
         super(DualAccessClass, self).__delattr__(name)
 

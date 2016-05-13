@@ -58,7 +58,7 @@ class Model(Node):
 
         for source in sources:
 
-            self.add_child(source)
+            self._add_child(source)
 
             # Now see if this is a point or extended source, and add them to the
             # appropriate dictionary
@@ -91,7 +91,7 @@ class Model(Node):
 
     def _update_parameters(self):
 
-        self._parameters = self.find_instances(Parameter)
+        self._parameters = self._find_instances(Parameter)
 
     @property
     def parameters(self):
@@ -163,7 +163,30 @@ class Model(Node):
         :return: the parameter
         """
 
-        return self.get_child_from_path(path)
+        return self._get_child_from_path(path)
+
+    def __contains__(self, path):
+        """
+        This allows the model to be used with the "in" operator, like;
+
+        > if 'myparameter' in model:
+        >    print("Myparameter is contained in the model")
+
+        :param path: the parameter to look for
+        :return:
+        """
+
+        try:
+
+            _ = self._get_child_from_path(path)
+
+        except (AttributeError, KeyError):
+
+            return False
+
+        else:
+
+            return True
 
     @property
     def point_sources(self):
@@ -187,11 +210,11 @@ class Model(Node):
 
         assert isinstance(variable, IndependentVariable),"Variable must be an instance of IndependentVariable"
 
-        if variable.name in self.get_children():
+        if variable.name in self._children:
 
-            self.remove_child(variable.name)
+            self._remove_child(variable.name)
 
-        self.add_child(variable)
+        self._add_child(variable)
 
     def link(self, parameter_1, parameter_2, link_function=None):
         """
@@ -213,7 +236,7 @@ class Model(Node):
         parameter_1.add_auxiliary_variable(parameter_2, link_function)
 
         # Now set the units of the link function
-        link_function._set_units(parameter_2.unit, parameter_1.unit)
+        link_function.set_units(parameter_2.unit, parameter_1.unit)
 
     def unlink(self, parameter):
         """
@@ -319,7 +342,7 @@ class Model(Node):
 
                 this_dict['linked to'] = variable.path
                 this_dict['function'] = law.name
-                this_dict['current value'] = parameter.value
+                this_dict['current value'] = parameter.value.value
                 this_dict['unit'] = parameter.unit
 
                 parameters_dict[parameter_name] = this_dict
@@ -359,7 +382,7 @@ class Model(Node):
 
                 try:
 
-                    element = self.children[key]
+                    element = self._children[key]
 
                 except KeyError:
 
@@ -433,7 +456,7 @@ class Model(Node):
         :return: fluxes
         """
 
-        return self._point_sources_list[id].get_flux(energies)
+        return self._point_sources_list[id](energies)
 
     def get_point_source_name(self, id):
 
@@ -498,7 +521,7 @@ class Model(Node):
         :return: fluxes
         """
 
-        return self._particle_sources_list[id].get_flux(energies)
+        return self._particle_sources_list[id]._get_flux(energies)
 
     def get_particle_source_name(self, id):
 

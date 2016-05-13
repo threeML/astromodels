@@ -9,5 +9,6 @@ from model import Model
 from spectral_component import SpectralComponent
 from model_parser import load_model
 from units import get_units
+import astropy.units as u
 
 astromodels_units = get_units()

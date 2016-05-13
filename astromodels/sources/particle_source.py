@@ -37,9 +37,9 @@ class ParticleSource(Source, Node):
         # Add a node called 'spectrum'
 
         spectrum_node = Node('spectrum')
-        spectrum_node.add_children(self._components.values())
+        spectrum_node._add_children(self._components.values())
 
-        self.add_child(spectrum_node)
+        self._add_child(spectrum_node)
 
         self.__call__ = self.get_flux
 

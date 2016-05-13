@@ -3,6 +3,8 @@ __author__ = 'giacomov'
 import collections
 import numpy
 
+import astropy.units as u
+
 from astromodels.sources.source import Source, POINT_SOURCE
 from astromodels.sky_direction import SkyDirection
 from astromodels.spectral_component import SpectralComponent
@@ -116,26 +118,52 @@ class PointSource(Source, Node):
 
         # Add the position as a child node, with an explicit name
 
-        self.add_child(self._sky_position)
+        self._add_child(self._sky_position)
 
         # Add a node called 'spectrum'
 
         spectrum_node = Node('spectrum')
-        spectrum_node.add_children(self._components.values())
+        spectrum_node._add_children(self._components.values())
 
-        self.add_child(spectrum_node)
+        self._add_child(spectrum_node)
 
     # Link the __call__ method to get_flux, so they are equivalent
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, x):
 
-        return self.get_flux(*args, **kwargs)
+        if isinstance(x, u.Quantity):
 
-    def get_flux(self, energies):
+            # Slow version with units
 
-        """Get the total flux of this point source at the given energies (summed over the components)"""
+            return self._get_flux(x)
+
+        else:
+
+            # Fast version without units, where x is supposed to be in the same units as currently defined in
+            # units.get_units()
+
+            return self._get_flux_fast(x)
+
+    def _get_flux(self, energies):
+
+        """Get the total flux of this point source at the given energies (summed over the components), with units"""
 
         results = [component.shape(energies) for component in self.components.values()]
+
+        # We need to sum like this (slower) because using np.sum will not preserve the units
+        # (thanks astropy.units)
+
+        return sum(results)
+
+    def _get_flux_fast(self, energies):
+
+        """Get the total flux of this point source at the given energies (summed over the components), without
+        using units (much faster than get_flux)"""
+
+        results = [component.shape(energies) for component in self.components.values()]
+
+        # We need to sum like this (slower) because using np.sum will not preserve the units
+        # (thanks astropy.units)
 
         return numpy.sum(results, 0)
 

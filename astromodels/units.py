@@ -11,8 +11,7 @@ from astromodels.tree import Node
 
 # Pre-defined values
 
-_PHOTON_ENERGY = u.keV
-_PARTICLE_ENERGY = u.eV
+_ENERGY = u.keV
 _TIME = u.s
 _ANGLE = u.deg
 _AREA = u.cm**2
@@ -54,21 +53,18 @@ class _AstromodelsUnits(Node):
     """
     Store the fundamental units of time, energy, angle and area to be used in astromodels.
     """
-    def __init__(self, photon_energy_unit=None, time_unit=None, angle_unit=None, area_unit=None,
-                 particle_energy_unit=None):
+    def __init__(self, energy_unit=None, time_unit=None, angle_unit=None, area_unit=None):
 
         super(_AstromodelsUnits, self).__init__("units")
 
-        if photon_energy_unit is None: photon_energy_unit = _PHOTON_ENERGY
-        if particle_energy_unit is None: particle_energy_unit = _PARTICLE_ENERGY
+        if energy_unit is None: energy_unit = _ENERGY
         if time_unit is None: time_unit = _TIME
         if angle_unit is None: angle_unit = _ANGLE
         if area_unit is None: area_unit = _AREA
 
         self._units = collections.OrderedDict()
 
-        self._units['photon_energy'] = photon_energy_unit
-        self._units['particle_energy'] = particle_energy_unit
+        self._units['energy'] = energy_unit
         self._units['time'] = time_unit
         self._units['angle'] = angle_unit
         self._units['area'] = area_unit
@@ -79,8 +75,7 @@ class _AstromodelsUnits(Node):
 
     def __new__(cls, *args, **kwargs):
 
-        cls.photon_energy = property(*(cls._create_property('photon_energy')))
-        cls.particle_energy = property(*(cls._create_property('particle_energy')))
+        cls.energy = property(*(cls._create_property('energy')))
         cls.time = property(*(cls._create_property('time')))
         cls.angle = property(*(cls._create_property('angle')))
         cls.area = property(*(cls._create_property('area')))
@@ -88,6 +83,10 @@ class _AstromodelsUnits(Node):
         obj = super(_AstromodelsUnits, cls).__new__(cls)
 
         return obj
+
+    def get(self, what):
+
+        return self._get_unit(what)
 
     def _set_unit(self, what, new_unit):
 
