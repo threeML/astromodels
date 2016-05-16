@@ -737,7 +737,7 @@ class Parameter(ParameterBase):
                                                                                           self.unit,
                                                                                           self.min_value,
                                                                                           self.max_value,
-                                                                                          self.delta.value,
+                                                                                          self.delta,
                                                                                           self.free)
 
             if self._prior is not None:

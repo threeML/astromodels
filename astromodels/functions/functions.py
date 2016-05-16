@@ -6,7 +6,7 @@ import warnings
 from scipy.special import gammaincc, gamma
 import exceptions
 
-from astromodels.functions.function import Function, FunctionMeta, ModelAssertionViolation
+from astromodels.functions.function import Function1D, Function2D, FunctionMeta, ModelAssertionViolation
 
 from astromodels.units import get_units
 import astropy.units as astropy_units
@@ -63,7 +63,7 @@ else:
     has_gsl = True
 
 # noinspection PyPep8Naming
-class Powerlaw(Function):
+class Powerlaw(Function1D):
     r"""
     description :
 
@@ -119,7 +119,7 @@ class Powerlaw(Function):
         return K * np.power(xx, index)
 
 # noinspection PyPep8Naming
-class Powerlaw_flux(Function):
+class Powerlaw_flux(Function1D):
         r"""
         description :
 
@@ -178,7 +178,7 @@ class Powerlaw_flux(Function):
 
             return F * gp1 / (b**gp1 - a**gp1) * np.power(x, index)
 
-class Cutoff_powerlaw(Function):
+class Cutoff_powerlaw(Function1D):
     r"""
     description :
 
@@ -237,7 +237,7 @@ class Cutoff_powerlaw(Function):
         return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x,xc))
 
 
-class Broken_powerlaw(Function):
+class Broken_powerlaw(Function1D):
     r"""
     description :
 
@@ -294,7 +294,7 @@ class Broken_powerlaw(Function):
         return K * np.where((x < xb), np.power(x,alpha), np.power(x,beta))
 
 # noinspection PyPep8Naming
-class Gaussian(Function):
+class Gaussian(Function1D):
     r"""
     description :
 
@@ -352,7 +352,7 @@ class Gaussian(Function):
         return F * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
 
 
-class Uniform_prior(Function):
+class Uniform_prior(Function1D):
     r"""
     description :
 
@@ -404,7 +404,7 @@ class Uniform_prior(Function):
         return np.where( (x >= lower_bound) & (x <= upper_bound), value, 0.0)
 
 
-class Log_uniform_prior(Function):
+class Log_uniform_prior(Function1D):
     r"""
     description :
 
@@ -458,7 +458,7 @@ class Log_uniform_prior(Function):
 
 
 # noinspection PyPep8Naming
-class Sin(Function):
+class Sin(Function1D):
     r"""
     description :
 
@@ -516,7 +516,7 @@ class Sin(Function):
 
 if has_naima:
 
-    class Synchrotron(Function):
+    class Synchrotron(Function1D):
         r"""
         description :
 
@@ -622,7 +622,7 @@ if has_naima:
 
         def to_dict(self, minimal=False):
 
-            data = super(Function, self).to_dict(minimal)
+            data = super(Function1D, self).to_dict(minimal)
 
             if not minimal:
 
@@ -631,7 +631,7 @@ if has_naima:
             return data
 
 
-class Line(Function):
+class Line(Function1D):
     r"""
     description :
 
@@ -667,7 +667,7 @@ class Line(Function):
 
         return a * x + b
 
-class Identity(Function):
+class Identity(Function1D):
     r"""
     description :
 
@@ -690,7 +690,7 @@ class Identity(Function):
         return x
 
 
-class Bias(Function):
+class Bias(Function1D):
     r"""
     description :
 
@@ -723,7 +723,7 @@ class Bias(Function):
 
         return x + k
 
-class Band(Function):
+class Band(Function1D):
     r"""
     description :
 
@@ -795,7 +795,7 @@ class Band(Function):
 
         return out
 
-class Band_Calderone(Function):
+class Band_Calderone(Function1D):
     r"""
     description :
 
@@ -989,7 +989,7 @@ class Band_Calderone(Function):
         return flux
 
 
-class Log_parabola(Function):
+class Log_parabola(Function1D):
     r"""
     description :
 
@@ -1057,7 +1057,7 @@ class Log_parabola(Function):
 
 if has_gsl:
 
-    class Cutoff_powerlaw_flux(Function):
+    class Cutoff_powerlaw_flux(Function1D):
         r"""
             description :
 
@@ -1127,7 +1127,7 @@ if has_gsl:
             return F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
 
 
-class Exponential_cutoff(Function):
+class Exponential_cutoff(Function1D):
     r"""
         description :
 

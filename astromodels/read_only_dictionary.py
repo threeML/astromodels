@@ -8,7 +8,7 @@ the parameter class with the float. """
 import collections
 
 
-class ParameterDictionary(collections.OrderedDict()):
+class ParameterDictionary(collections.OrderedDict):
 
     __is_readonly = False
 

@@ -50,14 +50,30 @@ class SkyDirection(Node):
             # This goes against duck typing, but it is needed to provide a means of initiating this class
             # with either Parameter instances or just floats
 
-            if isinstance(ra, float):
+            # Try to transform it to float, if it works than we transform it to a parameter
+
+            try:
+
+                ra = float(ra)
+
                 ra = Parameter('ra', ra, desc='Right Ascension', min_value=0.0, max_value=360.0, unit='deg')
 
-            if isinstance(dec, float):
+            except TypeError:
+
+                assert isinstance(ra, Parameter), "RA must be either a number or a parameter instance"
+
+            try:
+
+                dec = float(dec)
+
                 dec = Parameter('dec', dec, desc='Declination', min_value=-90.0, max_value=90.0, unit='deg')
 
-            assert 0 <= ra.value <= 360, "R.A. cannot have a value of %s, it must be 0 <= ra <= 360" % ra
-            assert -90 <= dec.value <= 90, "dec cannot have a value of %s, it must be -90 <= dec <= 90" % dec
+            except TypeError:
+
+                assert isinstance(dec, Parameter), "Dec must be either a number or a parameter instance"
+
+            assert 0 <= ra.value <= 360, "R.A. cannot have a value of %s, it must be 0 <= ra <= 360" % ra.value
+            assert -90 <= dec.value <= 90, "dec cannot have a value of %s, it must be -90 <= dec <= 90" % dec.value
 
             self._coord_type = 'equatorial'
 
@@ -69,14 +85,30 @@ class SkyDirection(Node):
             # This goes against duck typing, but it is needed to provide a means of initiating this class
             # with either Parameter instances or just floats
 
-            if isinstance(l, float):
-                l = Parameter('l', l, desc='Galactic longitude',min_value=0.0, max_value=360.0, unit='deg')
+            # Try to transform it to float, if it works than we transform it to a parameter
 
-            if isinstance(b, float):
+            try:
+
+                l = float(l)
+
+                l = Parameter('l', l, desc='Galactic longitude', min_value=0.0, max_value=360.0, unit='deg')
+
+            except TypeError:
+
+                assert isinstance(l, Parameter),"L must be either a number or a parameter instance"
+
+            try:
+
+                b = float(b)
+
                 b = Parameter('b', b, desc='Galactic latitude', min_value=-90.0, max_value=90.0, unit='deg')
 
-            assert 0 <= l.value <= 360, "L cannot have a value of %s, it must be 0 <= L <= 360" % l
-            assert -90 <= b.value <= 90, "B cannot have a value of %s, it must be -90 <= B <= 90" % b
+            except TypeError:
+
+                assert isinstance(b, Parameter), "B must be either a number or a parameter instance"
+
+            assert 0 <= l.value <= 360, "L cannot have a value of %s, it must be 0 <= L <= 360" % l.value
+            assert -90 <= b.value <= 90, "B cannot have a value of %s, it must be -90 <= B <= 90" % b.value
 
             self._coord_type = 'galactic'
             self._add_child(l)
@@ -101,7 +133,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('icrs').ra
+            return self.sky_coord.transform_to('icrs').ra.value
 
     def get_dec(self):
         """
@@ -118,7 +150,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('icrs').dec
+            return self.sky_coord.transform_to('icrs').dec.value
 
     def get_l(self):
         """
@@ -135,7 +167,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('galactic').l
+            return self.sky_coord.transform_to('galactic').l.value
 
     def get_b(self):
         """
@@ -152,7 +184,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('galactic').b
+            return self.sky_coord.transform_to('galactic').b.value
 
     def _get_sky_coord(self):
 

@@ -1,7 +1,6 @@
 import pytest
 
 import astropy.units as u
-import numpy as np
 
 __author__ = 'giacomov'
 
@@ -152,6 +151,10 @@ def test_set_units():
     p.value = 3.0 * u.MeV
 
     assert p.value == 3000.0
+
+    with pytest.raises(u.UnitConversionError):
+
+        p.value = 3.0 * u.cm
 
 
 def test_set_within_bounds_units():

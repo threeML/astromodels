@@ -89,131 +89,6 @@ _operations = {'+': np.add,
                'of': 'compose'}
 
 
-def input_as_array(method):
-    """
-    Decorator which allows the decorated functions to be coded as having always a np.array as input. However, the
-    decorated function will work with any input among a list, a single float or a np.array. For example::
-
-      > def myfunc(x):
-          idx = x < 1.0
-          out = np.zeros_like(x)
-          out[idx] = 0.0
-          out[~idx] = 1.0
-          return out
-
-    This defines a function which returns 0 for all elements below 1 and 1 above that. As it is written it only works
-    with a np.array as input. Indeed::
-
-      > print( myfunc( np.array([0,2]) ) )
-      [0,1]
-      > print( myfunc(1.0) )
-      IndexError: too many indices for array
-      > print( myfunc([0,1,2,3]) )
-      array([0, 0, 0, 1])
-
-    Calling the function with a single float as input fails, while calling it with a list does not fail but returns the
-    wrong result. If we decorate the function instead:
-
-      > dec_func = input_always_array(myfunc)
-      > print( dec_func(1.0) )
-      1.0
-      > print( dec_func([0,1,2,3]) )
-      [0 1 1 1]
-      > dec_func(np.array([0,2]))
-      [0,1]
-
-    :param method: method to decorate
-    :return: same as the original method, but with the dimensions squeezed to the minimum. For example, an array with
-    only one element will become a single number.
-    """
-
-    # Lookup in local scope is always much faster than in module scope. Hence, to decrease the performance hit of the
-    # decorator, we store the functions we are going to use in the wrapper as local variables. Note that this part
-    # of the code will be executed only once during the loading of the module using the decorator, while the wrapper
-    # will be executed every time the method is called
-
-    np_array = np.array
-    np_squeeze = np.squeeze
-
-    def wrapper(self, input_value, *args, **kwargs):
-
-        # Transform the input in a numpy array, if needed.
-        # If the input was a single float, this will become an array with shape
-        # (1,), otherwise it will keep the shape of the input.
-
-        if isinstance(input_value, np.ndarray) or isinstance(input_value, u.Quantity):
-
-            return method(self, input_value, *args, **kwargs)
-
-        else:
-
-            new_input = np_array(input_value, ndmin=1, copy=False)
-
-            result = method(self, new_input, *args, **kwargs)
-
-            # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-
-            return np_squeeze(result)
-
-    return wrapper
-
-
-def clip(**myargs):
-    """
-    Force the output of the method to be always between min_value and max_value. For example, to constrain a function
-    to be positive (i.e. all negative results will be substituted with 0):
-
-      @clip(min_value=0)
-      def myfun(in_value):
-        return -1
-
-    To constrain a function to be between 1e-20 and 1e20:
-      @clip( min_value=1e-20, max_value=1e20 )
-      def function(in):
-        return -20 #will return 1e-20
-
-    :param **myargs
-    :keyword min_value: minimum allowed value (default: no boundary)
-    :keyword max_value: maximum allowed value (default: no boundary)
-    :return: same as the input method, but the array is clipped to min_value and max_value
-    """
-
-    min_value = None if 'min_value' not in myargs.keys() else myargs['min_value']
-    max_value = None if 'max_value' not in myargs.keys() else myargs['max_value']
-
-    def clip_generator(method):
-        def wrapper(*args, **kwargs):
-            result = method(*args, **kwargs)
-
-            # This will clip the result array in-place
-
-            result.clip(min_value, max_value, out=result)
-
-            return result
-
-        return wrapper
-
-    return clip_generator
-
-
-def output_always_finite(method):
-    """
-    This calls numpy.nan_to_num on the output of method, i.e., substitute nan with 0 and inf with a large number.
-
-    :param method: method to decorate
-    :return: same as the original method, but with nan transformed to 0 and inf to a large number.
-    """
-
-    np_nan_to_num = np.nan_to_num
-
-    def wrapper(*args, **kwargs):
-        result = method(*args, **kwargs)
-
-        return np_nan_to_num(result)
-
-    return wrapper
-
-
 # This dictionary will contain the known function by name, so that the model_parser can instance
 # them by looking into this dictionary. It will be filled by the FunctionMeta meta-class.
 
@@ -387,28 +262,6 @@ class FunctionMeta(type):
 
         cls.info = staticmethod(info)
 
-        # We now proceed with the testing
-
-        if 'tests' not in function_definition:
-
-            warnings.warn("The function class %s contains no tests." % name, WarningNoTests)
-
-        else:
-
-            # Let's instance and test the class
-
-            test_instance = cls()
-
-            # First add the default parameters which will be used during the test
-
-            #test_instance._parameters = cls.__parameters
-
-            # Gather the test specifications and execute them
-
-            for test in function_definition['tests']:
-
-                FunctionMeta.test_simple_function(name, test, test_instance)
-
         # All went well, add this as a known function
 
         _known_functions[name] = cls
@@ -514,74 +367,6 @@ class FunctionMeta(type):
         return new_parameter
 
     @staticmethod
-    def test_simple_function(name, test_specification, new_class_instance):
-
-        # Check that all required variables are in the test
-
-        var_names = ['x', 'y', 'z']
-
-        for var_name in var_names[:new_class_instance.n_dim]:
-
-            if var_name not in test_specification:
-                raise TestSpecificationError("Variable %s not specified in one of the tests for %s" % (var_name, name))
-
-        # Check that we have the minimum amount of specifications
-
-        if 'function value' not in test_specification or 'tolerance' not in test_specification:
-
-            raise TestSpecificationError("Test specification for %s lacks 'function value' or 'tolerance' attribute" %
-                                         name)
-
-        # Run the test
-        # Build the point dictionary with the right number of variables
-
-        point = []
-
-        for var_name in var_names[:new_class_instance.n_dim]:
-
-            point.append(float(test_specification[var_name]))
-
-        # Make a string representing the point, to be used in warnings or exceptions
-
-        point_repr = ",".join(map(lambda x:str(x),point))
-
-        # Test that the value of the function is what is expected within the tolerance
-
-        try:
-
-            value = new_class_instance(*point)
-
-        except TypeError:
-
-            raise TestFailed("Cannot call function %s at point %s." % (name, point_repr))
-
-        except:
-
-            exc_type, ex_value, traceback = sys.exc_info()
-
-            raise TestFailed("Error in 'evaluate' for %s at point %s. Exception %s: '%s'" % (name, point_repr,
-                                                                                             exc_type,
-                                                                                             ex_value))
-
-        # The eval(str()) bit is needed so that a function value can be specified as np.inf or np.pi
-
-        distance = value - eval(str(test_specification['function value']))
-
-        if abs(distance) > float(test_specification['tolerance']):
-
-            raise TestFailed("The function %s has value of %s instead of %s in point %s, and the difference "
-                             "%s is larger than the tolerance %g" % (name, value,
-                                                                     test_specification['function value'],
-                                                                     point_repr,
-                                                                     abs(distance),
-                                                                     float(test_specification['tolerance'])))
-
-        else:
-
-            # Do nothing, test is ok
-            pass
-
-    @staticmethod
     def class_init(instance, **kwargs):
 
         # Create a copy of the parameters dictionary which is in the type,
@@ -616,12 +401,21 @@ class FunctionMeta(type):
                                        "parameter of function %s" % (key, type(instance)._name))
 
         # Now call the parent class
+        n_dim = type(instance)._n_dim
 
-        Function.__init__(instance,
-                          type(instance)._name,
-                          type(instance)._function_definition,
-                          copy_of_parameters,
-                          type(instance)._n_dim)
+        if n_dim == 1:
+
+            Function1D.__init__(instance,
+                              type(instance)._name,
+                              type(instance)._function_definition,
+                              copy_of_parameters)
+
+        elif n_dim == 2:
+
+            Function2D.__init__(instance,
+                                type(instance)._name,
+                                type(instance)._function_definition,
+                                copy_of_parameters)
 
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
@@ -631,16 +425,11 @@ class FunctionMeta(type):
 
 class Function(Node):
 
-    def __init__(self, name, function_definition, parameters, n_dim):
+    def __init__(self, name, function_definition, parameters):
 
         # (this is called by the constructor defined in the metaclass)
 
         # Store name, number of dimensions and the latex formula
-
-        # Note; in a normal situation these are stored in the type already. Thus, this is a small waste of memory.
-        # However, doing this will allow to subclass the Function class without using the FunctionMeta meta-class.
-
-        self._n_dim = n_dim
 
         # Store also the function definition
 
@@ -667,36 +456,6 @@ class Function(Node):
         # instances of the same function
         self._uuid = "{" + str(self._generate_uuid()) + "}"
 
-        # This will contain the units for the independent variables x(,y,z)
-        self._independent_variables_unit = [None] * self.n_dim
-
-        # This will store the unit of the input (x) and the output (y) when the function
-        # gets assigned a role
-        self._x_unit = None
-        self._y_unit = None
-
-    def set_independent_variables_unit(self, *units):
-        """
-        Set the independent variables for this function
-
-        :param units: as many strings (like 'keV') or astropy.units.Unit instances as needed depending on the number
-        of dimensions of this function.
-        :return: none
-        """
-
-        assert len(units) == self.n_dim, "Wrong number of variables for function with %s dimension(s)" % self.n_dim
-
-        self._independent_variables_unit = map(lambda x:u.Unit(x), units)
-
-    @property
-    def independent_variables_unit(self):
-        """
-        Returns a list with the units of the independent variables for this function
-
-        :return: a list
-        """
-        return self._independent_variables_unit
-
     @property
     def free_parameters(self):
         """
@@ -709,66 +468,6 @@ class Function(Node):
 
         return free_parameters
 
-    def get_wrapper(self):
-        """
-        Returns a python function which can be used to call this function with the parameters in the calling sequence.
-        In other words, if you can call this function with f(x), with the returned wrapper you can call it with
-        f(x, parameter1, parameter2...), where parameter1, parameter2... are the *free* parameters.
-
-        :return: a python function
-        """
-
-        # Build a list of free parameters
-        free_parameters = [k for k,v in self.parameters.iteritems() if v.free]
-
-        # Prepare the method to set the parameters to their current value
-
-        def set_parameters(*args):
-
-            for i in range(len(args)):
-
-                self._get_child(free_parameters[i]).value = args[i]
-
-        # Prepare the variable description
-
-        variables = None
-
-        if self.n_dim == 1:
-
-            variables = 'x'
-
-        elif self.n_dim == 2:
-
-            variables = 'x,y'
-
-        elif self.n_dim == 3:
-
-            variables = 'x,y,z'
-
-        # Prepare the free parameters string
-
-        free_parameters_string = ",".join(free_parameters)
-
-        # Build some code to generate a wrapper which takes care of updating the value of the parameters
-        # and return the value of the function
-
-        wrapper_code = '''
-
-        def wrapper(%s, %s):
-
-            set_parameters(%s)
-
-            return self(%s)
-
-        ''' % (variables, free_parameters_string, free_parameters_string, variables)
-
-        #print(wrapper_code)
-
-        exec(wrapper_code.replace("        ","")) in locals()
-
-        return wrapper
-
-
     @staticmethod
     def _generate_uuid():
         """
@@ -777,10 +476,6 @@ class Function(Node):
         :return: the UUID
         """
         return uuid.UUID(bytes=os.urandom(16), version=4)
-
-    def numerical_integrator(self, e1, e2):
-
-        return scipy.integrate.quad(self.__call__, e1, e2)[0]
 
     @property
     def description(self):
@@ -799,141 +494,11 @@ class Function(Node):
         return self._children
 
     @property
-    def n_dim(self):
-        """
-        Returns the number of dimensions for this function (1, 2 or 3)
-        """
-        return self._n_dim
-
-    @property
     def latex(self):
         """
         Returns the LaTEX formula for this function
         """
         return self._function_definition['latex']
-
-    def evaluate(self, *args, **kwargs):
-
-        raise NotImplementedError("You have to re-implement this")
-
-    def set_units(self, in_x_unit, in_y_unit):
-
-        try:
-
-            in_x_unit = u.Unit(in_x_unit)
-            in_y_unit = u.Unit(in_y_unit)
-
-        except:
-
-            raise TypeError("Could not get a Unit instance from provided units when setting units "
-                            "for function %s" % self.name)
-
-        self._x_unit = in_x_unit
-        self._y_unit = in_y_unit
-
-        # Now call the underlying method to set units, which is defined by each function
-        self._set_units(self._x_unit, self._y_unit)
-
-    def _set_units(self, x_unit, y_unit):
-
-        # This will be overridden by derived classes
-
-        raise NotImplementedError("You have to implement the method _set_units for function %s" % self.name)
-
-    @property
-    def x_unit(self):
-        return self._x_unit
-
-    @property
-    def y_unit(self):
-        return self._y_unit
-
-    def __call__(self, x, *args, **kwargs):
-
-        # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
-        # significant overload on any computation. For this reason we treat differently the case with units from
-        # the case without units, so that the latter case remains fast. Also, transforming an input
-        # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
-        # this transformation only when strictly required
-
-        if isinstance(x, np.ndarray):
-
-            # We have an array as input
-
-            if not isinstance(x, u.Quantity):
-
-                # This is a normal array, let's use the fast call (without units)
-
-                return self._call_without_units(x, *args, **kwargs)
-
-            else:
-
-                # This is an array with units, let's use the slow call which preserves units
-
-                return self._call_with_units(x, *args, **kwargs)
-
-        else:
-
-            # This is either a single number or a list
-            if not isinstance(x, u.Quantity):
-
-                # Transform the input to an array of floats
-
-                new_input = np.array(x, dtype=float, ndmin=1, copy=False)
-
-                # Compute the function
-
-                result = self._call_without_units(new_input, *args, **kwargs)
-
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-
-                return np.squeeze(result)
-
-            else:
-
-                # This is a single number with units, let's transform it to an array with units
-
-                new_input = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
-
-                # Compute the function with units
-
-                result = self._call_with_units(new_input, *args, **kwargs)
-
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-
-                return np.squeeze(result)
-
-    def _call_with_units(self, x, *args, **kwargs):
-
-        # Gather the current parameters' values with units
-
-        for parameter_name, parameter in self._children.iteritems():
-
-            kwargs[parameter_name] = parameter.value * parameter.unit
-
-        try:
-
-            results = self.evaluate(x, *args, **kwargs)
-
-        except u.UnitsError:
-
-            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
-                               "calling function %s" % self.name)
-
-        else:
-
-            return results
-
-    def _call_without_units(self, x, *args, **kwargs):
-
-        # Gather the current parameters' values without units, which means that the whole computation
-        # will be without units, with a big speed gain (~10x)
-
-        for parameter_name, parameter in self._children.iteritems():
-
-            kwargs[parameter_name] = parameter.value
-
-        return self.evaluate(x, *args, **kwargs)
 
     # Define now all the operators which allow to combine functions. Each operator will return a new
     # instance of a CompositeFunction, which can then be used as a function on its own
@@ -1065,6 +630,349 @@ class Function(Node):
         return function_copy
 
 
+class Function1D(Function):
+
+    def __init__(self, name, function_definition, parameters):
+
+        Function.__init__(self, name, function_definition, parameters)
+
+        self._x_unit = None
+        self._y_unit = None
+
+    def numerical_integrator(self, x1, x2):
+
+        return scipy.integrate.quad(self.__call__, x1, x2)[0]
+
+    def get_wrapper(self):
+        """
+        Returns a python function which can be used to call this function with the parameters in the calling sequence.
+        In other words, if you can call this function with f(x), with the returned wrapper you can call it with
+        f(x, parameter1, parameter2...), where parameter1, parameter2... are the *free* parameters.
+
+        :return: a python function
+        """
+
+        # Build a list of free parameters
+        free_parameters = [k for k, v in self.parameters.iteritems() if v.free]
+
+        # Prepare the method to set the parameters to their current value
+
+        def set_parameters(*args):
+
+            for i in range(len(args)):
+                self._get_child(free_parameters[i]).value = args[i]
+
+        # Prepare the variable description
+
+        variables = None
+
+        if self.n_dim == 1:
+
+            variables = 'x'
+
+        elif self.n_dim == 2:
+
+            variables = 'x,y'
+
+        elif self.n_dim == 3:
+
+            variables = 'x,y,z'
+
+        # Prepare the free parameters string
+
+        free_parameters_string = ",".join(free_parameters)
+
+        # Build some code to generate a wrapper which takes care of updating the value of the parameters
+        # and return the value of the function
+
+        wrapper_code = '''
+
+        def wrapper(%s, %s):
+
+            set_parameters(%s)
+
+            return self(%s)
+
+        ''' % (variables, free_parameters_string, free_parameters_string, variables)
+
+        # print(wrapper_code)
+
+        exec (wrapper_code.replace("        ", "")) in locals()
+
+        return wrapper
+
+    def evaluate(self, x, *args, **kwargs):
+
+        raise NotImplementedError("You have to re-implement this")
+
+    def set_units(self, in_x_unit, in_y_unit):
+
+        try:
+
+            in_x_unit = u.Unit(in_x_unit)
+            in_y_unit = u.Unit(in_y_unit)
+
+        except:
+
+            raise TypeError("Could not get a Unit instance from provided units when setting units "
+                            "for function %s" % self.name)
+
+        self._x_unit = in_x_unit
+        self._y_unit = in_y_unit
+
+        # Now call the underlying method to set units, which is defined by each function
+        self._set_units(self._x_unit, self._y_unit)
+
+    def _set_units(self, x_unit, y_unit):
+
+        # This will be overridden by derived classes
+
+        raise NotImplementedError("You have to implement the method _set_units for function %s" % self.name)
+
+    @property
+    def x_unit(self):
+        return self._x_unit
+
+    @property
+    def y_unit(self):
+        return self._y_unit
+
+    def __call__(self, x, *args, **kwargs):
+
+        # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
+        # significant overload on any computation. For this reason we treat differently the case with units from
+        # the case without units, so that the latter case remains fast. Also, transforming an input
+        # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
+        # this transformation only when strictly required
+
+        if isinstance(x, np.ndarray):
+
+            # We have an array as input
+
+            if not isinstance(x, u.Quantity):
+
+                # This is a normal array, let's use the fast call (without units)
+
+                return self._call_without_units(x, *args, **kwargs)
+
+            else:
+
+                # This is an array with units, let's use the slow call which preserves units
+
+                results = self._call_with_units(x, *args, **kwargs)
+
+                # Now convert to the expected y unit
+                return results.to(self.y_unit)
+
+        else:
+
+            # This is either a single number or a list
+            if not isinstance(x, u.Quantity):
+
+                # Transform the input to an array of floats
+
+                new_input = np.array(x, dtype=float, ndmin=1, copy=False)
+
+                # Compute the function
+
+                result = self._call_without_units(new_input, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+
+                return np.squeeze(result)
+
+            else:
+
+                # This is a single number with units, let's transform it to an array with units
+
+                new_input = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
+
+                # Compute the function with units
+
+                result = self._call_with_units(new_input, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+                # Let's also convert the result to the expected units
+
+                return np.squeeze(result).to(self.y_unit)
+
+    def _call_with_units(self, x, *args, **kwargs):
+
+        # Gather the current parameters' values with units
+
+        for parameter_name, parameter in self._children.iteritems():
+            kwargs[parameter_name] = parameter.value * parameter.unit
+
+        try:
+
+            results = self.evaluate(x, *args, **kwargs)
+
+        except u.UnitsError:
+
+            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                               "calling function %s" % self.name)
+
+        else:
+
+            return results
+
+    def _call_without_units(self, x, *args, **kwargs):
+
+        # Gather the current parameters' values without units, which means that the whole computation
+        # will be without units, with a big speed gain (~10x)
+
+        for parameter_name, parameter in self._children.iteritems():
+            kwargs[parameter_name] = parameter.value
+
+        return self.evaluate(x, *args, **kwargs)
+
+
+class Function2D(Function):
+
+    def __init__(self, name, function_definition, parameters):
+
+        Function.__init__(self, name, function_definition, parameters)
+
+        self._x_unit = None
+        self._y_unit = None
+        self._z_unit = None
+
+    def evaluate(self, x, y, *args, **kwargs):
+
+        raise NotImplementedError("You have to re-implement this")
+
+    def set_units(self, in_x_unit, in_y_unit, in_z_unit):
+
+        try:
+
+            in_x_unit = u.Unit(in_x_unit)
+            in_y_unit = u.Unit(in_y_unit)
+            in_z_unit = u.Unit(in_z_unit)
+
+        except:
+
+            raise TypeError("Could not get a Unit instance from provided units when setting units "
+                            "for function %s" % self.name)
+
+        self._x_unit = in_x_unit
+        self._y_unit = in_y_unit
+        self._z_unit = in_z_unit
+
+        # Now call the underlying method to set units, which is defined by each function
+        self._set_units(self._x_unit, self._y_unit, self._z_unit)
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # This will be overridden by derived classes
+
+        raise NotImplementedError("You have to implement the method _set_units for function %s" % self.name)
+
+    @property
+    def x_unit(self):
+        return self._x_unit
+
+    @property
+    def y_unit(self):
+        return self._y_unit
+
+    @property
+    def z_unit(self):
+        return self._z_unit
+
+    def __call__(self, x, y, *args, **kwargs):
+
+        # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
+        # significant overload on any computation. For this reason we treat differently the case with units from
+        # the case without units, so that the latter case remains fast. Also, transforming an input
+        # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
+        # this transformation only when strictly required
+
+        assert type(x) == type(y), "You have to use the same type for x and y"
+
+        if isinstance(x, np.ndarray):
+
+            # We have an array as input
+
+            if not isinstance(x, u.Quantity):
+
+                # This is a normal array, let's use the fast call (without units)
+
+                return self._call_without_units(x, y, *args, **kwargs)
+
+            else:
+
+                # This is an array with units, let's use the slow call which preserves units
+
+                results = self._call_with_units(x, y, *args, **kwargs)
+
+                # Now convert to the expected y unit
+                return results.to(self.z_unit)
+
+        else:
+
+            # This is either a single number or a list
+            if not isinstance(x, u.Quantity):
+
+                # Transform the input to an array of floats
+
+                new_x = np.array(x, dtype=float, ndmin=1, copy=False)
+                new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+
+                # Compute the function
+
+                result = self._call_without_units(new_x, new_y, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+
+                return np.squeeze(result)
+
+            else:
+
+                # This is a single number with units, let's transform it to an array with units
+
+                new_x = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
+                new_y = np.array(y, dtype=float, ndmin=1, copy=False) * y.unit
+
+                # Compute the function with units
+
+                result = self._call_with_units(new_x, new_y, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+                # Let's also convert the result to the expected units
+
+                return np.squeeze(result).to(self.z_unit)
+
+    def _call_with_units(self, x, y, *args, **kwargs):
+
+        # Gather the current parameters' values with units
+
+        for parameter_name, parameter in self._children.iteritems():
+            kwargs[parameter_name] = parameter.value * parameter.unit
+
+        try:
+
+            results = self.evaluate(x, y, *args, **kwargs)
+
+        except u.UnitsError:
+
+            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                               "calling function %s" % self.name)
+
+        else:
+
+            return results
+
+    def _call_without_units(self, x, y, *args, **kwargs):
+
+        # Gather the current parameters' values without units, which means that the whole computation
+        # will be without units, with a big speed gain (~10x)
+
+        for parameter_name, parameter in self._children.iteritems():
+            kwargs[parameter_name] = parameter.value
+
+        return self.evaluate(x, y, *args, **kwargs)
+
+
 class CompositeFunction(Function):
 
     def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
@@ -1143,16 +1051,6 @@ class CompositeFunction(Function):
 
                 pass
 
-        # Check that the functions have all the same dimensionality
-
-        n_dim = self._functions[0].n_dim
-
-        for function in self._functions[1:]:
-
-            if function.n_dim != n_dim:
-
-                raise WrongDimensionality("Dimensionality mismatch when composing functions.")
-
         # Now assign a unique name to all the functions, to make clear which is which in the definition
         # and give an easy way for the user to understand which parameter belongs to which function
 
@@ -1192,7 +1090,7 @@ class CompositeFunction(Function):
 
         _function_definition = {'description': self.expression, 'latex': NO_LATEX_FORMULA}
 
-        Function.__init__(self, 'composite', _function_definition, parameters, n_dim)
+        Function.__init__(self, 'composite', _function_definition, parameters)
 
         self._uuid = self._uuid_expression
 

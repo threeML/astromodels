@@ -1,5 +1,3 @@
-__author__ = 'giacomov'
-
 import collections
 import numpy
 
@@ -12,32 +10,31 @@ from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
 
 
+__author__ = 'giacomov'
+
+
 class PointSource(Source, Node):
     """
     A point source. You can instance this class in many ways.
 
     - with Equatorial position and a function as spectrum (the component will be automatically called 'main')::
 
-        point_source = PointSource('my_source', 125.6, -75.3, f1d.powerlaw())
+        >>> from astromodels import *
+        >>> point_source = PointSource('my_source', 125.6, -75.3, Powerlaw())
 
     - with Galactic position and a function as spectrum (the component will be automatically called 'main')::
 
-        point_source = PointSource('my_source', l=15.67, b=80.75, spectral_shape=f1d.powerlaw())
+        >>> point_source = PointSource('my_source', l=15.67, b=80.75, spectral_shape=Powerlaw())
 
     - with Equatorial position or Galactic position and a list of spectral components::
 
-        c1 = SpectralComponent("component1", f1d.powerlaw())
-        c2 = SpectralComponent("component2", f1d.powerlaw())
-        point_source = PointSource("test_source",125.6, -75.3,components=[c1,c2])
-        # Or with Galactic position:
-        point_source = PointSource("test_source",l=15.67, b=80.75,components=[c1,c2])
+        >>> c1 = SpectralComponent("component1", Powerlaw())
+        >>> c2 = SpectralComponent("component2", Powerlaw())
+        >>> point_source = PointSource("test_source",125.6, -75.3,components=[c1,c2])
 
-    - with a SkyDirection instance and either a single or a list of components::
+        Or with Galactic position:
 
-        c1 = SpectralComponent("component1", f1d.powerlaw())
-        c2 = SpectralComponent("component2", f1d.powerlaw())
-        sky_dir = SkyDirection(RA=125.6, Dec=-75.3)
-        point_source = PointSource("test_source",sky_direction=sky_dir,components=[c1,c2])
+        >>> point_source = PointSource("test_source",l=15.67, b=80.75,components=[c1,c2])
     
     NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)
     
