@@ -143,7 +143,7 @@ class Node(DualAccessClass):
 
         while True:
 
-            this_parent = current_node.get_parent()
+            this_parent = current_node._get_parent()
 
             if this_parent is None:
 

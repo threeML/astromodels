@@ -1,8 +1,14 @@
 __author__ = 'giacomov'
 
 from astropy.units import Quantity
+import warnings
+
 
 class ProtectedAttribute(RuntimeError):
+    pass
+
+
+class NonExistingAttribute(RuntimeWarning):
     pass
 
 
@@ -37,6 +43,12 @@ class DualAccessClass(object):
                 raise ProtectedAttribute("You cannot assign to a %s" % self._dictionary_label)
 
         else:
+
+            # Attributes which start with "_" are created by children classes
+
+            if not key[0] == '_' and not hasattr(self, key):
+
+                warnings.warn("Attribute %s does not exist. Check for typos." % key, NonExistingAttribute)
 
             super(DualAccessClass, self).__setattr__(key, value)
 
