@@ -587,24 +587,25 @@ class Parameter(ParameterBase):
         :return: (none)
         """
 
-        self.prior = prior_class
+        prior_instance = prior_class()
 
         if self.min_value is None:
 
-            self._prior.lower_bound = self._prior.lower_bound.min_value
+            prior_instance.lower_bound = prior_instance.lower_bound.min_value
 
         else:
 
-            self._prior.lower_bound = self.min_value
+            prior_instance.lower_bound = self.min_value
 
         if self.max_value is None:
 
-            self._prior.upper_bound = self._prior.upper_bound.max_value
+            prior_instance.upper_bound = prior_instance.upper_bound.max_value
 
         else:
 
-            self._prior.upper_bound = self.max_value
+            prior_instance.upper_bound = self.max_value
 
+        self._set_prior(prior_instance)
 
     # Define property "free"
 
