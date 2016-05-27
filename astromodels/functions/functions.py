@@ -690,6 +690,35 @@ class Identity(Function1D):
         return x
 
 
+class Constant(Function1D):
+    r"""
+        description :
+
+            Return k
+
+        latex : $ k $
+
+        parameters :
+
+            k :
+
+                desc : Constant value
+                initial value : 0
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.k.unit = y_unit
+
+
+    def evaluate(self, x, k):
+
+        return k
+
+
 class Bias(Function1D):
     r"""
     description :

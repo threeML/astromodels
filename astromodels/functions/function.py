@@ -417,6 +417,13 @@ class FunctionMeta(type):
                                 type(instance)._function_definition,
                                 copy_of_parameters)
 
+        elif n_dim == 3:
+
+            Function3D.__init__(instance,
+                                type(instance)._name,
+                                type(instance)._function_definition,
+                                copy_of_parameters)
+
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
 
@@ -455,6 +462,11 @@ class Function(Node):
         # way. This is used for example in the CompositeFunction class to keep track of the different
         # instances of the same function
         self._uuid = "{" + str(self._generate_uuid()) + "}"
+
+    @property
+    def n_dim(self):
+
+        return type(self)._n_dim
 
     @property
     def free_parameters(self):
@@ -628,6 +640,16 @@ class Function(Node):
         function_copy = copy.deepcopy(self)
 
         return function_copy
+
+    def get_boundaries(self):
+        """
+        Returns the boundaries of this function. By default there is no boundary, but subclasses can
+        override this.
+
+        :return: a tuple of tuples containing the boundaries for each coordinate, or None if there are no boundaries
+        """
+
+        return None
 
 
 class Function1D(Function):
@@ -971,6 +993,163 @@ class Function2D(Function):
             kwargs[parameter_name] = parameter.value
 
         return self.evaluate(x, y, *args, **kwargs)
+
+
+class Function3D(Function):
+
+    def __init__(self, name, function_definition, parameters):
+
+        Function.__init__(self, name, function_definition, parameters)
+
+        self._x_unit = None
+        self._y_unit = None
+        self._z_unit = None
+        self._w_unit = None
+
+    def evaluate(self, x, y, z, *args, **kwargs):
+
+        raise NotImplementedError("You have to re-implement this")
+
+    def set_units(self, in_x_unit, in_y_unit, in_z_unit, in_w_unit):
+
+        try:
+
+            in_x_unit = u.Unit(in_x_unit)
+            in_y_unit = u.Unit(in_y_unit)
+            in_z_unit = u.Unit(in_z_unit)
+            in_w_unit = u.Unit(in_w_unit)
+
+        except:
+
+            raise TypeError("Could not get a Unit instance from provided units when setting units "
+                            "for function %s" % self.name)
+
+        self._x_unit = in_x_unit
+        self._y_unit = in_y_unit
+        self._z_unit = in_z_unit
+        self._w_unit = in_w_unit
+
+        # Now call the underlying method to set units, which is defined by each function
+        self._set_units(self._x_unit, self._y_unit, self._z_unit, self._w_unit)
+
+    def _set_units(self, x_unit, y_unit, z_unit, w_unit):
+
+        # This will be overridden by derived classes
+
+        raise NotImplementedError("You have to implement the method _set_units for function %s" % self.name)
+
+    @property
+    def x_unit(self):
+        return self._x_unit
+
+    @property
+    def y_unit(self):
+        return self._y_unit
+
+    @property
+    def z_unit(self):
+        return self._z_unit
+
+    @property
+    def w_unit(self):
+        return self._w_unit
+
+    def __call__(self, x, y, z, *args, **kwargs):
+
+        # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
+        # significant overload on any computation. For this reason we treat differently the case with units from
+        # the case without units, so that the latter case remains fast. Also, transforming an input
+        # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
+        # this transformation only when strictly required
+
+        assert type(x) == type(y) and type(y) == type(z), "You have to use the same type for x, y and z"
+
+        if isinstance(x, np.ndarray) and x.shape != ():
+
+            # We have an array as input
+
+            if not isinstance(x, u.Quantity):
+
+                # This is a normal array, let's use the fast call (without units)
+
+                return self._call_without_units(x, y, z, *args, **kwargs)
+
+            else:
+
+                # This is an array with units, let's use the slow call which preserves units
+
+                results = self._call_with_units(x, y, z, *args, **kwargs)
+
+                # Now convert to the expected y unit
+                return results.to(self.w_unit)
+
+        else:
+
+            # This is either a single number or a list
+            if not isinstance(x, u.Quantity):
+
+                # Transform the input to an array of floats
+
+                new_x = np.array(x, dtype=float, ndmin=1, copy=False)
+                new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+                new_z = np.array(z, dtype=float, ndmin=1, copy=False)
+
+                # Compute the function
+
+                result = self._call_without_units(new_x, new_y, new_z, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+
+                return np.squeeze(result)
+
+            else:
+
+                # This is a single number with units, let's transform it to an array with units
+
+                new_x = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
+                new_y = np.array(y, dtype=float, ndmin=1, copy=False) * y.unit
+                new_z = np.array(z, dtype=float, ndmin=1, copy=False) * z.unit
+
+                # Compute the function with units
+
+                result = self._call_with_units(new_x, new_y, new_z, *args, **kwargs)
+
+                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+                # Let's also convert the result to the expected units
+
+                return np.squeeze(result).to(self.w_unit)
+
+    def _call_with_units(self, x, y, z, *args, **kwargs):
+
+        # Gather the current parameters' values with units
+
+        for parameter_name, parameter in self._children.iteritems():
+
+            kwargs[parameter_name] = parameter.value * parameter.unit
+
+        try:
+
+            results = self.evaluate(x, y, z, *args, **kwargs)
+
+        except u.UnitsError:
+
+            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                               "calling function %s" % self.name)
+
+        else:
+
+            return results
+
+    def _call_without_units(self, x, y, z, *args, **kwargs):
+
+        # Gather the current parameters' values without units, which means that the whole computation
+        # will be without units, with a big speed gain (~10x)
+
+        for parameter_name, parameter in self._children.iteritems():
+
+            kwargs[parameter_name] = parameter.value
+
+        return self.evaluate(x, y, z, *args, **kwargs)
 
 
 class CompositeFunction(Function):

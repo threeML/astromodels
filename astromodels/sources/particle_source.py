@@ -7,6 +7,8 @@ from astromodels.sources.source import Source, PARTICLE_SOURCE
 from astromodels.spectral_component import SpectralComponent
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.tree import Node
+from astromodels.units import get_units
+
 
 class ParticleSource(Source, Node):
     """
@@ -42,6 +44,19 @@ class ParticleSource(Source, Node):
         self._add_child(spectrum_node)
 
         self.__call__ = self.get_flux
+
+        # Set the units
+        # Now sets the units of the parameters for the energy domain
+
+        current_units = get_units()
+
+        # energy as x and particle flux as y
+        x_unit = current_units.energy
+        y_unit = 1 / current_units.energy
+
+        # Now set the units of the components
+        for component in self._components.values():
+            component.shape.set_units(x_unit, y_unit)
 
     def get_flux(self, energies):
 
