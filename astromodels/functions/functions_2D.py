@@ -120,7 +120,7 @@ class SimpleGaussian(Function2D):
 
         # Truncate the gaussian at 2 times the max of sigma allowed
 
-        max_sigma = self.sigma.maxValue
+        max_sigma = self.sigma.max_value
 
         min_lat = max(-90., self.lat0.value - 2 * max_sigma)
         max_lat = min(90., self.lat0.value + 2 * max_sigma)
