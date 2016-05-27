@@ -481,7 +481,7 @@ class Model(Node):
         :return: flux array
         """
 
-        return self._extended_sources_list[id].get_brightness(j2000_ra, j2000_dec, energies)
+        return self._extended_sources_list[id](j2000_ra, j2000_dec, energies)
 
     def get_extended_source_name(self, id):
         """
