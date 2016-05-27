@@ -495,7 +495,7 @@ class Model(Node):
 
     def get_extended_source_boundaries(self, id):
 
-        ra_min, ra_max, dec_min, dec_max = self._extended_sources_list[id].get_boundaries()
+        (ra_min, ra_max), (dec_min, dec_max) = self._extended_sources_list[id].get_boundaries()
 
         return ra_min, ra_max, dec_min, dec_max
 
