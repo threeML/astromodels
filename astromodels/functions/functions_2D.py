@@ -5,7 +5,7 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 
 
-class Simple_galactic_diffuse(Function2D):
+class Latitude_galactic_diffuse(Function2D):
     r"""
         description :
 
@@ -62,7 +62,7 @@ class Simple_galactic_diffuse(Function2D):
         return K * np.exp(-b ** 2 / (2 * sigma_b ** 2))
 
 
-class SimpleGaussian(Function2D):
+class Sphere_gaussian(Function2D):
     r"""
         description :
 
@@ -107,11 +107,11 @@ class SimpleGaussian(Function2D):
         self.lat0.unit = y_unit
         self.sigma.unit = x_unit
 
-    def evaluate(self, x, y, lat0, lon0, sigma):
+    def evaluate(self, x, y, lon0, lat0, sigma):
 
         lon, lat = x,y
 
-        angsep = angular_distance(lat0, lon0, lon, lat)
+        angsep = angular_distance(lon0, lat0, lon, lat)
 
         return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * sigma ** 2) * np.exp(
             -0.5 * np.power(angsep, 2) / sigma ** 2)
