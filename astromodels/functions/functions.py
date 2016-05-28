@@ -1069,7 +1069,17 @@ class Log_parabola(Function1D):
 
         xx = np.divide(x, piv)
 
-        return K * xx**(alpha + beta * np.log10(xx))
+        try:
+
+            return K * xx**(alpha + beta * np.log10(xx))
+
+        except ValueError:
+
+            # The current version of astropy (1.1.x) has a bug for which quantities that have become
+            # dimensionless because of a division (like xx here) are not recognized as such by the power
+            # operator, which throws an exception: ValueError: Quantities and Units may only be raised to a scalar power
+            # This is a quick fix, waiting for astropy 1.2 which will fix this
+            return K * xx**((alpha + beta * np.log10(xx)).to(''))
 
     @property
     def peak_energy(self):
