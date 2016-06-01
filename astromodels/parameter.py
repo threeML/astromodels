@@ -542,9 +542,6 @@ class Parameter(ParameterBase):
 
     def _get_prior(self):
 
-        if self._prior is None:
-            raise RuntimeError("There is no defined prior for parameter %s" % self.name)
-
         return self._prior
 
     def _set_prior(self, prior):
