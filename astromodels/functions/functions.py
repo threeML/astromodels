@@ -3,7 +3,7 @@ __author__ = 'giacomov'
 import math
 import numpy as np
 import warnings
-from scipy.special import gammaincc, gamma
+from scipy.special import gammaincc, gamma, erfcinv
 import exceptions
 
 from astromodels.functions.function import Function1D, Function2D, FunctionMeta, ModelAssertionViolation
@@ -351,6 +351,30 @@ class Gaussian(Function1D):
 
         return F * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
 
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        mu = self.mu.value
+        sigma = self.sigma.value
+
+        sqrt_two = 1.414213562
+
+        if x < 1e-16 or (1-x) < 1e-16:
+
+            res = -1e32
+
+        else:
+
+            res = mu + sigma * sqrt_two * erfcinv(2 * (1-x))
+
+        return res
 
 class Uniform_prior(Function1D):
     r"""
@@ -402,6 +426,26 @@ class Uniform_prior(Function1D):
     def evaluate(self, x, lower_bound, upper_bound, value):
 
         return np.where( (x >= lower_bound) & (x <= upper_bound), value, 0.0)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        lower_bound = self.lower_bound.value
+        upper_bound = self.upper_bound.value
+
+        low = lower_bound
+        spread = float(upper_bound - lower_bound)
+
+        par = x * spread + low
+
+        return par
 
 
 class Log_uniform_prior(Function1D):
@@ -455,6 +499,24 @@ class Log_uniform_prior(Function1D):
         renorm = 1
 
         return 1.0 / renorm * np.where((x > lower_bound) & (x < upper_bound), 1.0/x, 0.0)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        low = math.log10(self.lower_bound.value)
+        up = math.log10(self.upper_bound.value)
+
+        spread = up - low
+        par = 10**(x * spread + low)
+
+        return par
 
 
 # noinspection PyPep8Naming
