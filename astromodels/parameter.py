@@ -562,6 +562,10 @@ class Parameter(ParameterBase):
 
         self._prior = prior
 
+        # Make sure that the prior value at the minimum and maximum is finite
+        assert np.isfinite(self._prior(self.min_value)), "Prior infinite at minimum value for parameter %s" % self.name
+        assert np.isfinite(self._prior(self.max_value)), "Prior infinite at maximum value for parameter %s" % self.name
+
     prior = property(_get_prior, _set_prior,
                      doc='Gets or sets the current prior for this parameter. The prior must be a callable function '
                          "accepting the current value of the parameter as input and returning the probability "
@@ -601,6 +605,9 @@ class Parameter(ParameterBase):
         else:
 
             prior_instance.upper_bound = self.max_value
+
+        assert np.isfinite(prior_instance.upper_bound.value),"The parameter %s must have a finite maximum" % self.name
+        assert np.isfinite(prior_instance.lower_bound.value),"The parameter %s must have a finite minimum" % self.name
 
         self._set_prior(prior_instance)
 
