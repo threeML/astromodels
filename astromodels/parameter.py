@@ -139,28 +139,8 @@ class ParameterBase(Node):
 
         # Let's store the init value
 
-        if isinstance(value, u.Quantity):
-
-            try:
-
-                self._value = value.to(self._unit).value
-
-            except u.UnitConversionError:
-
-                if self._unit == u.dimensionless_unscaled:
-
-                    # Fine, the user has specified the unit through the quantity, instead of the unit keyword
-                    self._unit = value.unit
-                    self._value = value.value
-
-                else:
-
-                    raise u.UnitConversionError('The value and the unit keyword have incompatible units.')
-
-        else:
-
-            # Assume that the unit is the same as the one provided in unit
-            self._value = value
+        # Assume that the unit is the same as the one provided in unit
+        self._value = value
 
         # Set minimum if provided, otherwise use default
         # (use the property so the checks that are there are performed also on construction)
@@ -313,9 +293,11 @@ class ParameterBase(Node):
 
         if self._min_value is not None and self.value < self._min_value:
 
-            warnings.warn("The current value of the parameter %s is below the new minimum %s." % (self.name,
+            warnings.warn("The current value of the parameter %s was below the new minimum %s." % (self.name,
                                                                                                   self._min_value),
                           exceptions.RuntimeWarning)
+
+            self._value = self._min_value
 
     min_value = property(_get_min_value, _set_min_value,
                          doc='Gets or sets the minimum allowed value for the parameter')
@@ -343,9 +325,10 @@ class ParameterBase(Node):
         # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
         if self._max_value is not None and self.value > self._max_value:
-            warnings.warn("The current value of the parameter %s is above the new maximum %s." % (self.name,
-                                                                                                  self._max_value),
+            warnings.warn("The current value of the parameter %s was above the new maximum %s." % (self.name,
+                                                                                                   self._max_value),
                           exceptions.RuntimeWarning)
+            self._value = self._max_value
 
     max_value = property(_get_max_value, _set_max_value,
                          doc='Gets or sets the maximum allowed value for the parameter')
@@ -561,10 +544,6 @@ class Parameter(ParameterBase):
         prior.set_units(self.unit, u.dimensionless_unscaled)
 
         self._prior = prior
-
-        # Make sure that the prior value at the minimum and maximum is finite
-        assert np.isfinite(self._prior(self.min_value)), "Prior infinite at minimum value for parameter %s" % self.name
-        assert np.isfinite(self._prior(self.max_value)), "Prior infinite at maximum value for parameter %s" % self.name
 
     prior = property(_get_prior, _set_prior,
                      doc='Gets or sets the current prior for this parameter. The prior must be a callable function '
