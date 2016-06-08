@@ -1,0 +1,128 @@
+electrons (particle source):
+
+  spectrum:
+
+    main:
+
+      log_parabola:
+
+        K: {value: 1.0000000000000002e+38, desc: Normalization, min_value: null, max_value: null,
+
+          unit: 1 / keV, delta: 0.3, free: true}
+
+        piv: {value: 1.0, desc: Pivot (keep this fixed), min_value: null, max_value: null,
+
+          unit: keV, delta: 0.3, free: false}
+
+        alpha: {value: -0.75, desc: index, min_value: null, max_value: null, unit: '',
+
+          delta: 0.6, free: true}
+
+        beta:
+
+          value: f(time)
+
+          desc: curvature (negative is concave, positive is convex)
+
+          min_value: null
+
+          max_value: null
+
+          unit: ''
+
+          law:
+
+            line:
+
+              a: {value: -0.0032, desc: linear coefficient, min_value: null, max_value: null,
+
+                unit: 1 / s, delta: 0.3, free: true}
+
+              b: {value: 0.0, desc: intercept, min_value: null, max_value: null, unit: '',
+
+                delta: 0.1, free: true}
+
+          delta: 0.3
+
+          free: false
+
+      polarization: {}
+
+synch_source (point source):
+
+  position:
+
+    ra: {value: 12.6, desc: Right Ascension, min_value: 0.0, max_value: 360.0, unit: deg,
+
+      delta: 3.78, free: false}
+
+    dec: {value: -13.5, desc: Declination, min_value: -90.0, max_value: 90.0, unit: deg,
+
+      delta: 4.05, free: false}
+
+    equinox: J2000
+
+  spectrum:
+
+    main:
+
+      synchrotron:
+
+        B:
+
+          value: f(time)
+
+          desc: magnetic field
+
+          min_value: null
+
+          max_value: null
+
+          unit: G
+
+          law:
+
+            powerlaw:
+
+              K: {value: 0.000125, desc: Normalization (differential flux at the pivot
+
+                  value), min_value: null, max_value: null, unit: G, delta: 0.3, free: true}
+
+              piv: {value: 1.0, desc: Pivot value, min_value: null, max_value: null,
+
+                unit: s, delta: 0.3, free: false}
+
+              index: {value: -1.0, desc: Photon index, min_value: -10.0, max_value: 10.0,
+
+                unit: '', delta: 0.6, free: true}
+
+          delta: 9.72e-07
+
+          free: false
+
+        distance: {value: 1.0, desc: distance of the source, min_value: null, max_value: null,
+
+          unit: kpc, delta: 0.3, free: true}
+
+        emin: {value: 1.0, desc: minimum energy for the particle distribution, min_value: null,
+
+          max_value: null, unit: GeV, delta: 0.3, free: false}
+
+        emax: {value: 510000.0, desc: maximum energy for the particle distribution,
+
+          min_value: null, max_value: null, unit: GeV, delta: 153000.0, free: false}
+
+        need: {value: 10.0, desc: number of points per decade in which to evaluate
+
+            the function, min_value: 2.0, max_value: 100.0, unit: '', delta: 3.0,
+
+          free: false}
+
+        extra_setup: {particle_distribution: electrons.spectrum.main.log_parabola}
+
+      polarization: {}
+
+time (IndependentVariable): {value: 100.0, desc: None, min_value: null, max_value: null,
+
+  unit: s}
+
