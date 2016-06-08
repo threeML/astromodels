@@ -104,6 +104,11 @@ def memoize(method):
     :return: the decorated method
     """
 
+    # Need more testing for this
+    # TODO: test memoization
+
+    #return method
+
     cache = method.cache = collections.OrderedDict()
 
     @functools.wraps(method)

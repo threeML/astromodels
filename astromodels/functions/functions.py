@@ -834,20 +834,20 @@ class Band(Function1D):
             desc : low-energy photon index
             initial value : -1.0
             min : -1.5
-            max : 0
+            max : 3
 
         xp :
 
             desc : peak in the x * x * N (nuFnu if x is a energy)
-            initial value : 350
+            initial value : 500
             min : 10
 
         beta :
 
             desc : high-energy photon index
             initial value : -2.0
-            min : -3.0
-            max : -1.5
+            min : -5.0
+            max : -1.6
 
         piv :
 

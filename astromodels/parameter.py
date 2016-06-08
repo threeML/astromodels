@@ -470,7 +470,7 @@ class Parameter(ParameterBase):
 
         else:
 
-            # Default is 30% of the value, unless the value is zero, in which case the delta is 0.1
+            # Default is 10% of the value, unless the value is zero, in which case the delta is 0.1
 
             if self._value == 0:
 
@@ -478,7 +478,7 @@ class Parameter(ParameterBase):
 
             else:
 
-                self._delta = abs(0.3 * self._value)
+                self._delta = abs(0.1 * self._value)
 
         # pre-defined prior is no prior
         self._prior = None
