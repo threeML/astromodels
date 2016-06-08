@@ -5,6 +5,7 @@ from astromodels.tree import Node
 from astromodels.utils.table import dict_to_table
 from astromodels.units import get_units
 import astropy.units as u
+import functools
 
 
 import collections
@@ -95,16 +96,60 @@ _operations = {'+': np.add,
 _known_functions = {}
 
 
+def memoize(method):
+    """
+    A decorator for the 1d functions which memoize the results
+
+    :param method: method to be memoized
+    :return: the decorated method
+    """
+
+    cache = method.cache = collections.OrderedDict()
+
+    @functools.wraps(method)
+    def memoizer(instance, x, *args, **kwargs):
+
+        # Create a tuple because a tuple is hashable
+
+        unique_id = tuple(x.value for x in instance.parameters.values()) + (x.shape[0],x.min(),x.max())
+
+        # Create a unique identifier for this combination of inputs
+
+        key = hash(unique_id)
+
+        # Let's do it this way so we only look into the dictionary once
+
+        result = cache.get(key)
+
+        if result is not None:
+
+            return result
+
+        else:
+
+            result = method(instance, x, *args, **kwargs)
+
+            cache[key] = result
+
+            if len(cache) > 100:
+
+                # Remove the 10 elements that were put in first
+
+                [cache.popitem(False) for i in range(10)]
+
+            return result
+
+    # Add the function as a "attribute" so we can access it
+    memoizer.input_object = method
+
+    return memoizer
+
+
 # The following is a metaclass for all the functions
 class FunctionMeta(type):
     """
     A metaclass for the models, which takes care of setting up the parameters and the other attributes
     according to the definition given in the documentation of the function class.
-
-    The rationale for using this solution, instead of a more usual class-inheritance mechanism, is to avoid
-    re-reading and re-testing every time a new instance is created. Using a meta-class ensure that this is
-    executed only once during import.
-
     """
 
     def __init__(cls, name, bases, dct):
@@ -286,7 +331,17 @@ class FunctionMeta(type):
 
         # Get calling sequence
 
-        calling_sequence = inspect.getargspec(function).args
+        # If the function has been memoized, it will have a "input_object" member
+
+        try:
+
+            calling_sequence = inspect.getargspec(function.input_object).args
+
+        except AttributeError:
+
+            # This might happen if the function is with memoization
+
+            calling_sequence = inspect.getargspec(function).args
 
         assert calling_sequence[0] == 'self', "Wrong syntax for 'evaluate' in %s. The first argument " \
                                               "should be called 'self'." % name
@@ -299,7 +354,7 @@ class FunctionMeta(type):
         # as specified in possible_variables
 
         assert len(variables) > 0, "The name of the variables for 'evaluate' in %s must be one or more " \
-                                   "among %s" % (name, ','.join(possible_variables))
+                                   "among %s, instead of %s" % (name, ','.join(possible_variables), ",".join(variables))
 
         if variables != possible_variables[:len(variables)]:
             raise AssertionError("The variables %s are out of order in '%s' of %s. Should be %s."
@@ -338,6 +393,10 @@ class FunctionMeta(type):
 
         def _parse_value(val):
 
+            if val is None:
+
+                return None
+
             if isinstance(val, str):
 
                 return eval(val)
@@ -346,20 +405,19 @@ class FunctionMeta(type):
 
                 return float(val)
 
-        value = _parse_value(definition['initial value']) * du
+        value = _parse_value(definition['initial value'])
         desc = definition['desc']
 
         # Optional attributes are either None if not specified, or the value specified
 
-        min_value = (None if 'min' not in definition else _parse_value(definition['min']) * du)
-        max_value = (None if 'max' not in definition else _parse_value(definition['max']) * du)
-        delta = (None if 'delta' not in definition else _parse_value(definition['delta']) * du)
+        min_value = (None if 'min' not in definition else _parse_value(definition['min']))
+        max_value = (None if 'max' not in definition else _parse_value(definition['max']))
+        delta = (None if 'delta' not in definition else _parse_value(definition['delta']))
         unit = du
 
         # A parameter can be fixed by using fix=yes, otherwise it is free by default
 
         free = (True if 'fix' not in definition else not bool(definition['fix']))
-
 
         new_parameter = Parameter(par_name, value, min_value=min_value, max_value=max_value,
                                   delta=delta, desc=desc, free=free, unit=unit)
@@ -442,7 +500,9 @@ class Function(Node):
 
         assert 'description' in function_definition,"Function definition must contain a description"
 
-        assert 'latex' in function_definition, "Function definition must contain a latex formula"
+        if 'latex' not in function_definition:
+
+            function_definition['latex'] = '$n.a.$'
 
         self._function_definition = function_definition
 
@@ -661,10 +721,6 @@ class Function1D(Function):
         self._x_unit = None
         self._y_unit = None
 
-    def numerical_integrator(self, x1, x2):
-
-        return scipy.integrate.quad(self.__call__, x1, x2)[0]
-
     def get_wrapper(self):
         """
         Returns a python function which can be used to call this function with the parameters in the calling sequence.
@@ -838,6 +894,7 @@ class Function1D(Function):
 
             return results
 
+    @memoize
     def _call_without_units(self, x, *args, **kwargs):
 
         # Gather the current parameters' values without units, which means that the whole computation
@@ -1403,14 +1460,12 @@ class CompositeFunction(Function):
 
 def get_function(function_name, composite_function_expression=None):
     """
-    Returns the function class "name", which must be among the known functions.
+    Returns the function "name", which must be among the known functions or a composite function.
 
     :param function_name: the name of the function (use 'composite' if the function is a composite function)
     :param composite_function_expression: composite function specification such as
     ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
-    :return: the class (note: this is not the instance!). You have to build it yourself, like::
-
-      my_powerlaw = get_function('powerlaw')()
+    :return: the an instance of the requested class
 
     """
 
@@ -1431,6 +1486,23 @@ def get_function(function_name, composite_function_expression=None):
 
             raise UnknownFunction("Function %s is not known. Known functions are: %s" %
                                   (function_name, ",".join(_known_functions.keys())))
+
+def get_function_class(function_name):
+    """
+    Return the type for the requested function
+
+    :param function_name: the function to return
+    :return: the type for that function (i.e., this is a class, not an instance)
+    """
+
+    if function_name in _known_functions:
+
+        return _known_functions[function_name]
+
+    else:
+
+        raise UnknownFunction("Function %s is not known. Known functions are: %s" %
+                              (function_name, ",".join(_known_functions.keys())))
 
 
 def list_functions():
