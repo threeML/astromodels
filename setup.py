@@ -44,8 +44,15 @@ def setup_xspec():
 
             if not os.path.exists(os.path.join(library_dirs[0], library_name)):
 
-                print("\nERROR: the library %s does not exist in %s while setting up Xspec!" %
-                      (library, library_dirs[0]))
+                # If on OS X look for dylib
+                
+                library_name = 'lib%s.dylib' % library
+
+                if not os.path.exists(os.path.join(library_dirs[0], library_name)):
+
+
+                    print("\nERROR: the library %s does not exist in %s while setting up Xspec!" %
+                          (library, library_dirs[0]))
 
     # Now find versions for required libraries
 
@@ -60,8 +67,13 @@ def setup_xspec():
         versions = glob.glob(search_path)
 
         if len(versions) == 0:
-            print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
-            sys.exit(-1)
+            search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % library_to_probe)
+            print search_path
+
+            versions = glob.glob(search_path)
+            if len(versions) == 0:
+                print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
+                sys.exit(-1)
 
         # Up to there versions[0] is a fully-qualified path
         # we need instead just the name of the library, without
@@ -74,7 +86,7 @@ def setup_xspec():
 
     # We also need gfortran
     libraries.append('gfortran')
-
+#    library_dirs.append("/usr/local/lib/gcc/6")
     # Configure the variables to build the external module with the C/C++ wrapper
 
     ext_modules_configuration = [
