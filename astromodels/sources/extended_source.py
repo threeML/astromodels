@@ -114,7 +114,6 @@ class ExtendedSource(Source, Node):
 
         self._add_child(spectrum_node)
 
-
     def __call__(self, lat, lon, energies):
         """
         Returns brightness of source at the given position and energy
@@ -125,7 +124,7 @@ class ExtendedSource(Source, Node):
         :return: differential flux at given position and energy
         """
 
-        #assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
+        assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
 
         # Get the differential flux from the spectral components
 
@@ -153,11 +152,20 @@ class ExtendedSource(Source, Node):
 
             brightness = self._shape(lat, lon)
 
+            # In this case the spectrum is the same everywhere
+            n_points = lat.shape[0]
+            n_energies = differential_flux.shape[0]
+
+            # The following is a little obscure, but it is 6x faster than doing a for loop
+
+            cube = np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T
+            result = (cube.T * brightness).T
+
         else:
 
-            brightness = self._shape(lat, lon, energies)
+            result = self._shape(lat, lon, energies) * differential_flux
 
-        return brightness * differential_flux
+        return result
 
     def _repr__base(self, rich_output=False):
         """
