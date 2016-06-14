@@ -125,13 +125,13 @@ class ExtendedSource(Source, Node):
         :return: differential flux at given position and energy
         """
 
-        assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
+        #assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
 
         # Get the differential flux from the spectral components
 
         results = [component.shape(energies) for component in self.components.values()]
 
-        if isinstance(lat, u.Quantity):
+        if isinstance(energies, u.Quantity):
 
             # Slow version with units
 
