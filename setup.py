@@ -110,15 +110,12 @@ packages = ['astromodels',
             'astromodels/functions',
             'astromodels/tests',
             'astromodels/sources',
-            'astromodels/utils'
+            'astromodels/utils',
+            'astromodels/xspec'
             ]
 
 # Check whether we can compile Xspec support
 ext_modules_configuration = setup_xspec()
-
-if ext_modules_configuration is not None:
-
-    packages.append('astromodels/xspec')
 
 setup(
     name="astromodels",
