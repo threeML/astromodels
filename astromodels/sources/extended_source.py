@@ -114,12 +114,12 @@ class ExtendedSource(Source, Node):
 
         self._add_child(spectrum_node)
 
-    def __call__(self, lat, lon, energies):
+    def __call__(self, lon, lat, energies):
         """
         Returns brightness of source at the given position and energy
 
-        :param lat: latitude (array or float)
         :param lon: longitude (array or float)
+        :param lat: latitude (array or float)
         :param energies: energies (array or float)
         :return: differential flux at given position and energy
         """
@@ -150,7 +150,10 @@ class ExtendedSource(Source, Node):
 
         if self._shape.n_dim == 2:
 
-            brightness = self._shape(lat, lon)
+            # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
+            # small numbers down the line
+
+            brightness = np.maximum(self._shape(lon, lat), 1e-30)
 
             # In this case the spectrum is the same everywhere
             n_points = lat.shape[0]
@@ -163,7 +166,7 @@ class ExtendedSource(Source, Node):
 
         else:
 
-            result = self._shape(lat, lon, energies) * differential_flux
+            result = self._shape(lon, lat, energies) * differential_flux
 
         return result
 
