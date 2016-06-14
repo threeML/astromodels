@@ -150,10 +150,7 @@ class ExtendedSource(Source, Node):
 
         if self._shape.n_dim == 2:
 
-            # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
-            # small numbers down the line
-
-            brightness = np.maximum(self._shape(lon, lat), 1e-30)
+            brightness = self._shape(lon, lat)
 
             # In this case the spectrum is the same everywhere
             n_points = lat.shape[0]
@@ -168,7 +165,10 @@ class ExtendedSource(Source, Node):
 
             result = self._shape(lon, lat, energies) * differential_flux
 
-        return result
+        # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
+        # small numbers down the line
+
+        return np.maximum(result, 1e-30)
 
     def _repr__base(self, rich_output=False):
         """
