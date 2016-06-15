@@ -165,6 +165,8 @@ class ExtendedSource(Source, Node):
 
             result = self._shape(lon, lat, energies) * differential_flux
 
+            raise NotImplementedError("3d functions are not yet supported")
+
         # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
         # small numbers down the line
 
