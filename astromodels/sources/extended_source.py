@@ -168,7 +168,7 @@ class ExtendedSource(Source, Node):
         # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
         # small numbers down the line
 
-        return np.maximum(result, 1e-30)
+        return np.maximum(result, 1e-60)
 
     def _repr__base(self, rich_output=False):
         """
