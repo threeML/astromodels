@@ -6,7 +6,7 @@ import warnings
 import astropy.units as u
 
 from astromodels.my_yaml import my_yaml
-from astromodels.functions.function import FunctionMeta, Function1D
+from astromodels.functions.function import FunctionMeta, Function1D, get_function_class
 
 try:
 
@@ -492,6 +492,8 @@ def setup_xspec_models():
 
             classes.append(this_class_name)
 
+
+
         sys.stdout.write("done\n")
 
     else:
@@ -500,4 +502,17 @@ def setup_xspec_models():
 
     return classes
 
+# This will either work or issue a warning if XSpec is not available
 
+new_functions = setup_xspec_models()
+
+# Now import the new classes in the local namespace (if any)
+# This is needed to make the classes pickeable
+
+__all__ = []
+
+for function_name in new_functions:
+
+    __all__.append(function_name)
+
+    locals()[function_name] = get_function_class(function_name)
