@@ -145,9 +145,7 @@ setup(
         'PyYAML',
         'astropy >= 1.0',
         'scipy>=0.13',
-        # The new version of numdifftools require a bunch of
-        # new versions (for example a new numpy)
-        'numdifftools==0.7.7'],
+        'numdifftools'],
 
     ext_modules=ext_modules_configuration
 
