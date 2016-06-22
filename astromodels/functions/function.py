@@ -98,7 +98,8 @@ _known_functions = {}
 
 def memoize(method):
     """
-    A decorator for the 1d functions which memoize the results
+    A decorator for the 2d functions which memoize the results of 1 call (useful when the minimizer is taking partial
+    derivatives and calls the 2d function several times with the same arguments)
 
     :param method: method to be memoized
     :return: the decorated method
@@ -107,7 +108,7 @@ def memoize(method):
     # Need more testing for this
     # TODO: test memoization
 
-    #return method
+    # return method
 
     cache = method.cache = collections.OrderedDict()
 
@@ -136,11 +137,11 @@ def memoize(method):
 
             cache[key] = result
 
-            if len(cache) > 100:
+            if len(cache) > 10:
 
                 # Remove the 10 elements that were put in first
 
-                [cache.popitem(False) for i in range(10)]
+                [cache.popitem(False) for i in range(5)]
 
             return result
 
@@ -899,7 +900,6 @@ class Function1D(Function):
 
             return results
 
-    @memoize
     def _call_without_units(self, x, *args, **kwargs):
 
         # Gather the current parameters' values without units, which means that the whole computation
@@ -1046,6 +1046,7 @@ class Function2D(Function):
 
             return results
 
+    @memoize
     def _call_without_units(self, x, y, *args, **kwargs):
 
         # Gather the current parameters' values without units, which means that the whole computation
