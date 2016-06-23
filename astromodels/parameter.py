@@ -273,6 +273,37 @@ class ParameterBase(Node):
 
         self._value = value
 
+    @property
+    def as_quantity(self):
+        """
+        Return the current value with its units (as an astropy.Quantity instance)
+
+        :return: an instance of astropy.Quantity)
+        """
+        return self._value * self._unit
+
+    def in_unit_of(self, unit, as_quantity=True):
+        """
+        Return the current value transformed to the new units
+
+        :param unit: either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
+        instance, like "1 / (erg cm**2 s)"
+        :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number
+        :return: either a floating point or a astropy.Quantity depending on the value of "as_quantity"
+        """
+
+        new_unit = u.Unit(unit)
+
+        new_quantity = self.as_quantity.to(new_unit)
+
+        if as_quantity:
+
+            return new_quantity
+
+        else:
+
+            return new_quantity.value
+
     # Define the property "min_value"
 
     def _get_min_value(self):

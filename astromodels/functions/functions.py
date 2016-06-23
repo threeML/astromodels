@@ -729,6 +729,7 @@ class Line(Function1D):
 
         return a * x + b
 
+
 class Identity(Function1D):
     r"""
     description :
