@@ -33,7 +33,9 @@ def setup_xspec():
 
     # Check that the libraries exist
     for library in libraries:
-
+        
+        # Check for Linux/UNIX
+        
         library_name = 'lib%s.so' % library
 
         if not os.path.exists(os.path.join(library_dirs[0], library_name)):
@@ -54,39 +56,57 @@ def setup_xspec():
                     print("\nERROR: the library %s does not exist in %s while setting up Xspec!" %
                           (library, library_dirs[0]))
 
-    # Now find versions for required libraries
+    # Now find versions for required "external" libraries (part of HEASOFT but not Xspec by itself)
 
     required_libraries = ['cfitsio_', 'CCfits_', 'wcs-']
+    
 
     for library_to_probe in required_libraries:
-
+        
+        # Linux/UNIX
+        
         search_path = os.path.join(library_dirs[0], 'lib%s*.so' % library_to_probe)
-
-        print search_path
-
+        
         versions = glob.glob(search_path)
 
         if len(versions) == 0:
-            search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % library_to_probe)
-            print search_path
-
+            
+            search_path = os.path.join(library_dirs[0], 'lib%s*.so' % (library_to_probe[:-1]+'.'))
+            
             versions = glob.glob(search_path)
+
             if len(versions) == 0:
-                print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
-                sys.exit(-1)
+                
+                # Mac
+                
+                search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % library_to_probe)
+                
+                versions = glob.glob(search_path)
+
+                if len(versions) == 0:
+
+                    search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % (library_to_probe[:-1]+'.'))
+                    
+                    versions = glob.glob(search_path)
+
+                    if len(versions) == 0:
+
+                        print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
+                        sys.exit(-1)
 
         # Up to there versions[0] is a fully-qualified path
         # we need instead just the name of the library, without
-        # the lib prefix nor the .so or .a extension
+        # the lib prefix nor the .so nor .a nor .dylib extension
 
         name = os.path.basename(versions[0])
         sanitized_name = re.match('lib(.+)\.', name).groups()[0]
 
         libraries.append(sanitized_name)
 
-    # We also need gfortran
+    # We also need gfortran, which must be installed on his own. If there is Xspec installed,
+    # then there is also gfortran somewhere because it is a dependence
     libraries.append('gfortran')
-#    library_dirs.append("/usr/local/lib/gcc/6")
+
     # Configure the variables to build the external module with the C/C++ wrapper
 
     ext_modules_configuration = [
