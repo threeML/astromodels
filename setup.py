@@ -57,6 +57,7 @@ def setup_xspec():
     # Now find versions for required libraries
 
     required_libraries = ['cfitsio_', 'CCfits_', 'wcs-']
+    
 
     for library_to_probe in required_libraries:
 
@@ -67,13 +68,34 @@ def setup_xspec():
         versions = glob.glob(search_path)
 
         if len(versions) == 0:
-            search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % library_to_probe)
+
+            search_path = os.path.join(library_dirs[0], 'lib%s*.so' % (library_to_probe[:-1]+'.'))
+
             print search_path
 
             versions = glob.glob(search_path)
+
             if len(versions) == 0:
-                print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
-                sys.exit(-1)
+
+            
+                search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % library_to_probe)
+
+                print search_path
+
+                versions = glob.glob(search_path)
+
+                if len(versions) == 0:
+
+                    search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % (library_to_probe[:-1]+'.'))
+
+                    print search_path
+
+                    versions = glob.glob(search_path)
+
+                    if len(versions) == 0:
+
+                        print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
+                        sys.exit(-1)
 
         # Up to there versions[0] is a fully-qualified path
         # we need instead just the name of the library, without
