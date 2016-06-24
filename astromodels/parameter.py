@@ -139,8 +139,24 @@ class ParameterBase(Node):
 
         # Let's store the init value
 
-        # Assume that the unit is the same as the one provided in unit
-        self._value = value
+        # If the value is a Quantity, deal with that
+
+        if isinstance(value, u.Quantity):
+
+            # If the user did not specify an ad-hoc unit, use the unit
+            # of the Quantity
+
+            if self._unit == u.dimensionless_unscaled:
+
+                self._unit = value.unit
+
+            # Convert the value to the provided unit (if necessary)
+
+            self._value = value.to(self._unit).value
+
+        else:
+
+            self._value = value
 
         # Set minimum if provided, otherwise use default
         # (use the property so the checks that are there are performed also on construction)
@@ -165,6 +181,7 @@ class ParameterBase(Node):
         # (i.e., they are numbers)
 
         if not _behaves_like_a_number(self._value):
+
             raise TypeError("The provided initial value is not a number")
 
         if self._min_value is not None:
@@ -282,13 +299,14 @@ class ParameterBase(Node):
         """
         return self._value * self._unit
 
-    def in_unit_of(self, unit, as_quantity=True):
+    def in_unit_of(self, unit, as_quantity=False):
         """
         Return the current value transformed to the new units
 
         :param unit: either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
         instance, like "1 / (erg cm**2 s)"
-        :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number
+        :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number.
+        Default is False
         :return: either a floating point or a astropy.Quantity depending on the value of "as_quantity"
         """
 
