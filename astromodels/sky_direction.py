@@ -52,28 +52,9 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a parameter
 
-            try:
+            ra = self._get_parameter_from_input(ra, 0, 360, 'ra','Right Ascension')
 
-                ra = float(ra)
-
-                ra = Parameter('ra', ra, desc='Right Ascension', min_value=0.0, max_value=360.0, unit='deg')
-
-            except TypeError:
-
-                assert isinstance(ra, Parameter), "RA must be either a number or a parameter instance"
-
-            try:
-
-                dec = float(dec)
-
-                dec = Parameter('dec', dec, desc='Declination', min_value=-90.0, max_value=90.0, unit='deg')
-
-            except TypeError:
-
-                assert isinstance(dec, Parameter), "Dec must be either a number or a parameter instance"
-
-            assert 0 <= ra.value <= 360, "R.A. cannot have a value of %s, it must be 0 <= ra <= 360" % ra.value
-            assert -90 <= dec.value <= 90, "dec cannot have a value of %s, it must be -90 <= dec <= 90" % dec.value
+            dec = self._get_parameter_from_input(dec, -90, 90, 'dec','Declination')
 
             self._coord_type = 'equatorial'
 
@@ -87,28 +68,9 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a parameter
 
-            try:
+            l = self._get_parameter_from_input(l, 0, 360, 'l','Galactic longitude')
 
-                l = float(l)
-
-                l = Parameter('l', l, desc='Galactic longitude', min_value=0.0, max_value=360.0, unit='deg')
-
-            except TypeError:
-
-                assert isinstance(l, Parameter),"L must be either a number or a parameter instance"
-
-            try:
-
-                b = float(b)
-
-                b = Parameter('b', b, desc='Galactic latitude', min_value=-90.0, max_value=90.0, unit='deg')
-
-            except TypeError:
-
-                assert isinstance(b, Parameter), "B must be either a number or a parameter instance"
-
-            assert 0 <= l.value <= 360, "L cannot have a value of %s, it must be 0 <= L <= 360" % l.value
-            assert -90 <= b.value <= 90, "B cannot have a value of %s, it must be -90 <= B <= 90" % b.value
+            b = self._get_parameter_from_input(b, -90, 90, 'b','Galactic latitude')
 
             self._coord_type = 'galactic'
             self._add_child(l)
@@ -117,6 +79,40 @@ class SkyDirection(Node):
         else:
 
             raise WrongCoordinatePair("You have to specify either (ra, dec) or (l, b).")
+
+    @staticmethod
+    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc):
+
+        # Try to transform it to float, if it works than we transform it to a parameter
+
+        try:
+
+            number_or_parameter = float(number_or_parameter)
+
+        except TypeError:
+
+            assert isinstance(number_or_parameter, Parameter), "%s must be either a number or a " \
+                                                               "parameter instance" % what
+
+            # So this is a Parameter instance already. Enforce that it has the right maximum and minimum
+
+            parameter = number_or_parameter
+
+            assert parameter.min_value == minimum, "%s must have a minimum of %s" % (what, minimum)
+            assert parameter.max_value == maximum, "%s must have a maximum of %s" % (what, maximum)
+
+        else:
+
+            # This was a float. Enforce that it has a legal value
+
+            assert minimum <= number_or_parameter <= maximum, "%s cannot have a value of %s, " \
+                                                              "it must be %s <= %s <= %s" % (what, number_or_parameter,
+                                                                                             minimum, what, maximum)
+
+            parameter = Parameter(what, number_or_parameter,
+                                  desc=desc, min_value=minimum, max_value=maximum, unit='deg')
+
+        return parameter
 
     def get_ra(self):
         """
