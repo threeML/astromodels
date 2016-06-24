@@ -272,6 +272,12 @@ class Broken_powerlaw(Function1D):
             min : -10
             max : 10
 
+        piv :
+
+            desc : Pivot energy
+            initial value : 1.0
+            fix : yes
+
     """
 
     __metaclass__ = FunctionMeta
@@ -288,10 +294,22 @@ class Broken_powerlaw(Function1D):
         self.alpha.unit = astropy_units.dimensionless_unscaled
         self.beta.unit = astropy_units.dimensionless_unscaled
 
-    # noinspection PyPep8Naming
-    def evaluate(self, x, K, xb, alpha, beta):
+        self.piv.unit = x_unit
 
-        return K * np.where((x < xb), np.power(x,alpha), np.power(x,beta))
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, xb, alpha, beta, piv):
+
+        # The K * 0 is to keep the units right. If the input has unit, this will make a result
+        # array with the same units as K. If the input has no units, this will have no
+        # effect whatsoever
+
+        result = np.zeros(x.shape) * K * 0
+
+        idx = (x < xb)
+        result[idx] = K * np.power(x[idx] / piv,alpha)
+        result[~idx] = K * np.power(x[~idx] / piv,beta)
+
+        return result
 
 # noinspection PyPep8Naming
 class Gaussian(Function1D):
@@ -425,7 +443,14 @@ class Uniform_prior(Function1D):
 
     def evaluate(self, x, lower_bound, upper_bound, value):
 
-        return np.where( (x >= lower_bound) & (x <= upper_bound), value, 0.0)
+        # The value * 0 is to keep the units right
+
+        result = np.zeros(x.shape) * value * 0
+
+        idx = (x >= lower_bound) & (x <= upper_bound)
+        result[idx] = value
+
+        return result
 
     def from_unit_cube(self, x):
         """
@@ -498,7 +523,13 @@ class Log_uniform_prior(Function1D):
 
         renorm = 1
 
-        return 1.0 / renorm * np.where((x > lower_bound) & (x < upper_bound), 1.0/x, 0.0)
+        result = np.zeros_liks(x)
+
+        idx = (x > lower_bound) & (x < upper_bound)
+        result[idx] = 1.0/x
+        result[~idx] = 0.0
+
+        return 1.0 / renorm * result
 
     def from_unit_cube(self, x):
         """
@@ -540,7 +571,6 @@ class Sin(Function1D):
             desc : frequency
             initial value : 1.0 / (2 * np.pi)
             min : 0
-            unit : rad
 
         phi :
 
@@ -563,8 +593,9 @@ class Sin(Function1D):
         # The normalization has the same unit of y
         self.K.unit = y_unit
 
-        # The unit of f is 1 / [x] because fx must be a pure number
-        self.f.unit = x_unit**(-1)
+        # The unit of f is 1 / [x] because fx must be a pure number. However,
+        # np.pi of course doesn't have units, so we add a rad
+        self.f.unit = x_unit**(-1) * astropy_units.rad
 
         # The unit of phi is always the same (radians)
 
@@ -730,29 +761,6 @@ class Line(Function1D):
         return a * x + b
 
 
-class Identity(Function1D):
-    r"""
-    description :
-
-        Return x
-
-    latex : $ x $
-
-    parameters : {}
-
-    """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-
-        pass
-
-    def evaluate(self, x):
-
-        return x
-
-
 class Constant(Function1D):
     r"""
         description :
@@ -880,12 +888,19 @@ class Band(Function1D):
         if (alpha < beta):
             raise ModelAssertionViolation("Alpha cannot be less than beta")
 
-        out = np.where(x < (alpha - beta) * E0,
-                       K * np.power(x / piv, alpha) * np.exp(-x / E0),
-                       K * np.power((alpha - beta) * E0 / piv, alpha - beta) * np.exp(beta - alpha) *
-                       np.power(x / piv, beta))
+        idx = x < (alpha - beta) * E0
+
+        # The K * 0 part is a trick so that out will have the right units (if the input
+        # has units)
+
+        out = np.zeros(x.shape) * K * 0
+
+        out[idx] = K * np.power(x[idx] / piv, alpha) * np.exp(-x[idx] / E0)
+        out[~idx] = K * np.power((alpha - beta) * E0 / piv, alpha - beta) * np.exp(beta - alpha) * \
+                    np.power(x[~idx] / piv, beta)
 
         return out
+
 
 class Band_Calderone(Function1D):
     r"""
@@ -1069,14 +1084,18 @@ class Band_Calderone(Function1D):
 
             # Cutoff power law
 
-            flux = norm * np.power(x / Ec, alpha) * np.exp( - x / Ec)
+            flux = np.power(x / Ec, alpha) * np.exp( - x / Ec)
 
         else:
 
-            flux = norm * np.where(x < Esplit,
-                                   (norm * np.power(x / Ec, alpha) * np.exp(-x / Ec) ),
-                                   (norm * pow(alpha - beta, alpha - beta) * math.exp(beta - alpha) *
-                                    np.power(x / Ec, beta) ))
+            # The norm * 0 is to keep the units right
+
+            flux = np.zeros(x.shape) * norm * 0
+
+            idx = x < Esplit
+
+            flux[idx] = norm *  np.power(x[idx] / Ec, alpha) * np.exp(-x[idx] / Ec)
+            flux[~idx] = norm * pow(alpha - beta, alpha - beta) * math.exp(beta - alpha) * np.power(x[~idx] / Ec, beta)
 
         return flux
 

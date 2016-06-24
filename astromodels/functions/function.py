@@ -843,6 +843,10 @@ class Function1D(Function):
 
                 # This is an array with units, let's use the slow call which preserves units
 
+                assert self.y_unit is not None, "In order to use units you need to use the function as a spectrum or " \
+                                                "as something else," \
+                                                "or you need to explicitly set the units."
+
                 results = self._call_with_units(x, *args, **kwargs)
 
                 # Now convert to the expected y unit
@@ -885,6 +889,7 @@ class Function1D(Function):
         # Gather the current parameters' values with units
 
         for parameter_name, parameter in self._children.iteritems():
+
             kwargs[parameter_name] = parameter.value * parameter.unit
 
         try:
@@ -892,6 +897,8 @@ class Function1D(Function):
             results = self.evaluate(x, *args, **kwargs)
 
         except u.UnitsError:
+
+            raise
 
             raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                "calling function %s" % self.name)
