@@ -21,10 +21,7 @@ def test_default_constructor():
     assert p.fix == False
     assert p.free == True
     assert p.has_prior() == False
-
-    with pytest.raises(RuntimeError):
-
-        _ = p.prior
+    assert p.prior is None
 
     assert p.unit == u.dimensionless_unscaled
 
@@ -47,10 +44,7 @@ def test_default_constructor_units():
     assert p.fix == False
     assert p.free == True
     assert p.has_prior() == False
-
-    with pytest.raises(RuntimeError):
-
-        _ = p.prior
+    assert p.prior is None
 
     assert p.unit == u.keV
 
@@ -68,9 +62,7 @@ def test_constructor_complete():
     assert p.fix == True
     assert p.free == False
     assert p.has_prior() == False
-
-    with pytest.raises(RuntimeError):
-        _ = p.prior
+    assert p.prior is None
 
     assert p.unit == u.MeV
 
@@ -88,9 +80,7 @@ def test_conflicting_units_in_initial_value_and_unit_keyword():
     assert p.fix == False
     assert p.free == True
     assert p.has_prior() == False
-
-    with pytest.raises(RuntimeError):
-        _ = p.prior
+    assert p.prior is None
 
     assert p.unit == u.MeV
 
