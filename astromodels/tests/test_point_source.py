@@ -5,8 +5,8 @@ import numpy as np
 
 from astromodels.sources.point_source import PointSource
 from astromodels.spectral_component import SpectralComponent
-from astromodels.sky_direction import SkyDirection
 from astromodels.functions.functions import Powerlaw
+from astromodels.functions.function import _known_functions
 
 __author__ = 'giacomov'
 
@@ -98,3 +98,54 @@ def test_call():
     two = point_source.spectrum.component2([1, 2, 3])
 
     assert np.all( np.abs(one + two - point_source([1,2,3])) == 0 )
+
+def test_call_with_units():
+
+    po = Powerlaw()
+
+    result = po(1.0)
+
+    assert result.ndim == 0
+
+    with pytest.raises(AssertionError):
+
+        # This raises because the units of the function have not been set up
+
+        _ = po(1.0 * u.keV)
+
+    # Use the function as a spectrum
+    ps = PointSource("test",0,0,po)
+
+    result = po(1.0 * u.keV)
+
+    assert isinstance(result, u.Quantity)
+
+    result = po(np.array([1,2,3])* u.keV)
+
+    assert isinstance(result, u.Quantity)
+
+    # Now test all the functions
+    def test_one(class_type):
+
+        instance = class_type()
+
+        # Use the function as a spectrum
+        ps = PointSource("test", 0, 0, instance)
+
+        result = instance(1.0 * u.keV)
+
+        assert isinstance(result, u.Quantity)
+
+        result = instance(np.array([1, 2, 3]) * u.keV)
+
+        assert isinstance(result, u.Quantity)
+
+    for key in _known_functions:
+
+        this_function = _known_functions[key]
+
+        if this_function.n_dim == 1:
+
+            print("testing %s ..." % key)
+
+            test_one(_known_functions[key])
