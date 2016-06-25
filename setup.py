@@ -128,7 +128,6 @@ def setup_xspec():
 
 packages = ['astromodels',
             'astromodels/functions',
-            'astromodels/tests',
             'astromodels/sources',
             'astromodels/utils',
             'astromodels/xspec'
