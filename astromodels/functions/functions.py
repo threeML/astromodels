@@ -502,6 +502,10 @@ class Log_uniform_prior(Function1D):
 
     __metaclass__ = FunctionMeta
 
+    def _setup(self):
+
+        self._handle_units = False
+
     def _set_units(self, x_unit, y_unit):
 
         # Lower and upper bound has the same unit as x
@@ -513,23 +517,15 @@ class Log_uniform_prior(Function1D):
         # This makes the prior proper because it is the integral between lower_bound and upper_bound
         # Assume we are in the "fast" mode, where things have no units, and fall back to the slow mode
         # if this isn't true
-        #try:
 
-        #    renorm = math.log(upper_bound) - math.log(lower_bound)
+        #renorm = math.log(upper_bound) - math.log(lower_bound)
 
-        #except (astropy_units.UnitsError, TypeError):
-
-        #    renorm = math.log(upper_bound.value) - math.log(lower_bound.value)
-
-        renorm = 1
-
-        result = np.zeros_liks(x)
+        result = np.zeros(x.shape)
 
         idx = (x > lower_bound) & (x < upper_bound)
-        result[idx] = 1.0/x
-        result[~idx] = 0.0
+        result[idx] = 1.0 / x
 
-        return 1.0 / renorm * result
+        return result
 
     def from_unit_cube(self, x):
         """
@@ -809,15 +805,20 @@ class Bias(Function1D):
 
     __metaclass__ = FunctionMeta
 
+    def _setup(self):
+
+        self._handle_units = False
+
     def _set_units(self, x_unit, y_unit):
 
         # k has units of x
 
-        self.k.unit = x_unit
+        #self.k.unit = x_unit
 
-        if x_unit != y_unit:
+        #if x_unit != y_unit:
 
-            raise InvalidUsageForFunction("Function bias cannot be given different units for x and y")
+        #    raise InvalidUsageForFunction("Function bias cannot be given different units for x and y")
+        pass
 
     def evaluate(self, x, k):
 

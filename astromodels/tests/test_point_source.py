@@ -99,6 +99,7 @@ def test_call():
 
     assert np.all( np.abs(one + two - point_source([1,2,3])) == 0 )
 
+
 def test_call_with_units():
 
     po = Powerlaw()
@@ -144,7 +145,15 @@ def test_call_with_units():
 
         this_function = _known_functions[key]
 
-        if this_function.n_dim == 1:
+        # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
+
+        if key.find("XS")==0 and key != "XS_powerlaw":
+
+            # An XSpec model. Do not test it
+
+            continue
+
+        if this_function._n_dim == 1:
 
             print("testing %s ..." % key)
 

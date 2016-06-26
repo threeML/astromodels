@@ -529,6 +529,9 @@ class Function(Node):
         # instances of the same function
         self._uuid = "{" + str(self._generate_uuid()) + "}"
 
+        # Normal functions are able to handle units
+        self._handle_units = True
+
     @property
     def n_dim(self):
 
@@ -823,6 +826,8 @@ class Function1D(Function):
 
     def __call__(self, x, *args, **kwargs):
 
+        #TODO args and kwargs are most probably useless here (check that!)
+
         # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
         # significant overload on any computation. For this reason we treat differently the case with units from
         # the case without units, so that the latter case remains fast. Also, transforming an input
@@ -847,10 +852,22 @@ class Function1D(Function):
                                                 "as something else," \
                                                 "or you need to explicitly set the units."
 
-                results = self._call_with_units(x, *args, **kwargs)
+                if self._handle_units:
 
-                # Now convert to the expected y unit
-                return results.to(self.y_unit)
+                    results = self._call_with_units(x, *args, **kwargs)
+
+                    # Now convert to the expected y unit
+                    return results.to(self.y_unit)
+
+                else:
+
+                    # No support for units, add it artificially
+
+                    new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
+
+                    results = self._call_without_units(new_input, *args, **kwargs)
+
+                    return np.squeeze(results) * self.y_unit
 
         else:
 
@@ -871,18 +888,33 @@ class Function1D(Function):
 
             else:
 
-                # This is a single number with units, let's transform it to an array with units
+                if self._handle_units:
 
-                new_input = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
+                    # This is a single number with units, let's transform it to an array with units
 
-                # Compute the function with units
+                    new_input = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
 
-                result = self._call_with_units(new_input, *args, **kwargs)
+                    # Compute the function with units
 
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-                # Let's also convert the result to the expected units
+                    result = self._call_with_units(new_input, *args, **kwargs)
 
-                return np.squeeze(result).to(self.y_unit)
+                    # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+                    # Let's also convert the result to the expected units
+
+                    return np.squeeze(result).to(self.y_unit)
+
+                else:
+
+                    new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
+
+                    # Compute the function without units
+
+                    result = self._call_without_units(new_input, *args, **kwargs)
+
+                    # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+                    # Let's also convert the result to the expected units
+
+                    return np.squeeze(result) * self.y_unit
 
     def _call_with_units(self, x, *args, **kwargs):
 

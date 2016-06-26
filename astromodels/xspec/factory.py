@@ -360,6 +360,8 @@ $DOCSTRING$
 
             self._scale = 10
 
+        self._handle_units = False
+
     def evaluate(self, x, $PARAMETERS_NAMES$):
 
         # Create a tuple of the current values of the parameters
@@ -480,6 +482,12 @@ def setup_xspec_models():
             if model_type == 'con':
 
                 # convolution models are not supported
+                continue
+
+            if not hasattr(_xspec, xspec_function):
+
+                # Some function do not exist in the wrapper. Let's ignore them
+
                 continue
 
             this_model = all_models[(model_name, xspec_function, model_type)]
