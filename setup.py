@@ -8,6 +8,9 @@ import re
 
 from setuptools import setup, Extension
 
+# Get the version number
+execfile('astromodels/version.py')
+
 
 def setup_xspec():
 
@@ -143,7 +146,9 @@ setup(
 
     data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
 
-    version='0.1',
+    # The __version__ comes from the exec at the top
+
+    version=__version__,
 
     description="Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy",
 

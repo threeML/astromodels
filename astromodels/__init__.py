@@ -1,3 +1,6 @@
+# Import the version
+from version import __version__
+
 from .sources.point_source import PointSource
 from .sources.extended_source import ExtendedSource
 from .sources.particle_source import ParticleSource
