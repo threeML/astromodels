@@ -307,7 +307,7 @@ class Broken_powerlaw(Function1D):
 
         idx = (x < xb)
         result[idx] = K * np.power(x[idx] / piv,alpha)
-        result[~idx] = K * np.power(x[~idx] / piv,beta)
+        result[~idx] = K * np.power(xb/ piv,alpha-beta) * np.power(x[~idx] / piv,beta)
 
         return result
 
