@@ -235,6 +235,107 @@ class Cutoff_powerlaw(Function1D):
         return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x, xc))
 
 
+class SmoothlyBrokenPowerLaw(Function1D):
+    r"""
+    description :
+
+        A Smoothly Broken Power Law
+
+    latex : $  $
+
+    parameters :
+
+        K :
+
+            desc : normalization
+            initial value : 1
+
+
+        low_index :
+
+            desc : power law index below the break
+            initial value : -1
+            min : -1.5
+            max : 2
+
+        break_energy:
+
+            desc: location of the peak
+            initial value : 300
+            fix : no
+            min : 10
+
+        break_scale :
+
+            desc: smoothness of the break
+            initial value : 0.5
+            min : 0.
+            max : 10.
+            fix : yes
+
+        high_index:
+
+            desc : power law index above the break
+            initial value : -2.
+            min : -5.0
+            max : -1.6
+
+        pivot:
+
+            desc: where the spectrum is normalized
+            initial value : 100.
+            fix: yes
+
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        # norm has same unit as energy
+        self.K.unit = y_unit
+
+        self.break_energy.unit = x_unit
+
+        self.pivot.unit = x_unit
+
+        self.low_index.unit = astropy_units.dimensionless_unscaled
+        self.high_index.unit = astropy_units.dimensionless_unscaled
+        self.break_scale.unit = astropy_units.dimensionless_unscaled
+
+    def evaluate(self, x, K, low_index, break_energy, break_scale, high_index, pivot):
+
+        B = (low_index + high_index) / 2.0
+        M = (high_index - low_index) / 2.0
+
+        arg_piv = np.log10(pivot / break_energy) / break_scale
+
+        if arg_piv < -6.0:
+            pcosh_piv = M * break_scale * (-arg_piv - np.log(2.0))
+        elif arg_piv > 4.0:
+
+            pcosh_piv = M * break_scale * (arg_piv - np.log(2.0))
+        else:
+            pcosh_piv = M * break_scale * (np.log((np.exp(arg_piv) + np.exp(-arg_piv)) / 2.0))
+
+        arg = np.log10(x / break_energy) / break_scale
+        idx1 = arg < -6.0
+        idx2 = arg > 4.0
+        idx3 = ~np.logical_or(idx1, idx2)
+
+        # The K * 0 part is a trick so that out will have the right units (if the input
+        # has units)
+
+        pcosh = np.zeros(x.shape)
+
+        pcosh[idx1] = M * break_scale * (-arg[idx1] - np.log(2.0))
+        pcosh[idx2] = M * break_scale * (arg[idx2] - np.log(2.0))
+        pcosh[idx3] = M * break_scale * (np.log((np.exp(arg[idx3]) + np.exp(-arg[idx3])) / 2.0))
+
+        return K * (x / pivot) ** B * 10. ** (pcosh - pcosh_piv)
+
+
 class Broken_powerlaw(Function1D):
     r"""
     description :
