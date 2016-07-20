@@ -48,13 +48,13 @@ class Continuous_injection_diffusion(Function3D):
 
             piv :
 
-                desc : Pivot
+                desc : Pivot for the diffusion radius
                 initial value : 2e10
                 min : 0
                 fix : yes
 
             piv2 :
-                desc : Pivot for the diffusion radius
+                desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
                 initial value : 1e9
                 min : 0
                 fix : yes
@@ -108,8 +108,10 @@ class Continuous_injection_diffusion(Function3D):
 
         pi = np.pi
 
-        return np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiff * (angsep + 0.06 * rdiff)) * \
-               np.exp(-np.power(angsep, 2) / rdiff ** 2)
+        rdiffs, angseps = np.meshgrid(rdiff, angsep)
+
+        return np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
+               np.exp(-np.power(angseps, 2) / rdiffs ** 2)
 
 
     def get_boundaries(self):
@@ -141,4 +143,4 @@ class Continuous_injection_diffusion(Function3D):
 
                 max_longitude -= 360.
 
-        return (min_longitude, max_longitude), (min_latitude, max_latitude), (0, np.inf)
+        return (min_longitude, max_longitude), (min_latitude, max_latitude)
