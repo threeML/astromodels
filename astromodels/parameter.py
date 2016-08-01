@@ -192,6 +192,7 @@ class ParameterBase(Node):
         if self._max_value is not None:
 
             if not _behaves_like_a_number(self._max_value):
+
                 raise TypeError("The provided maximum value is not a number")
 
     def _repr__base(self, rich_output):

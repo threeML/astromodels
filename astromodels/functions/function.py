@@ -282,8 +282,17 @@ class FunctionMeta(type):
 
             raise FunctionDefinitionError(msg)
 
-        # Now add the constructor to the class
-        cls.__init__ = FunctionMeta.class_init
+        # Now add the constructor to the class, if it does not provide one
+        # You shouldn't usually provide a constructor, that's only for advance uses
+        # like the TemplateModel
+
+        if hasattr(cls, '_custom_init_'):
+
+            cls.__init__ = cls._custom_init_
+
+        else:
+
+            cls.__init__ = FunctionMeta.class_init
 
         # Finally, add the info() method to the type so that it can be called even without instancing the class
 
@@ -496,7 +505,13 @@ class FunctionMeta(type):
 
 class Function(Node):
 
-    def __init__(self, name, function_definition, parameters):
+    def __init__(self, name=None, function_definition=None, parameters=None):
+
+        # I use default values only to avoid warnings from pycharm and other software about the
+        # calling sequence of this contructor. We actually need to enforce its proper use,
+        # with this assert
+
+        assert name is not None and function_definition is not None and parameters is not None
 
         # (this is called by the constructor defined in the metaclass)
 
@@ -723,7 +738,7 @@ class Function(Node):
 
 class Function1D(Function):
 
-    def __init__(self, name, function_definition, parameters):
+    def __init__(self, name=None, function_definition=None, parameters=None):
 
         Function.__init__(self, name, function_definition, parameters)
 
@@ -952,7 +967,7 @@ class Function1D(Function):
 
 class Function2D(Function):
 
-    def __init__(self, name, function_definition, parameters):
+    def __init__(self, name=None, function_definition=None, parameters=None):
 
         Function.__init__(self, name, function_definition, parameters)
 
@@ -1099,7 +1114,7 @@ class Function2D(Function):
 
 class Function3D(Function):
 
-    def __init__(self, name, function_definition, parameters):
+    def __init__(self, name=None, function_definition=None, parameters=None):
 
         Function.__init__(self, name, function_definition, parameters)
 
