@@ -133,13 +133,17 @@ def test_call_with_units():
         # Use the function as a spectrum
         ps = PointSource("test", 0, 0, instance)
 
-        result = instance(1.0 * u.keV)
+        result = ps(1.0 * u.keV)
 
         assert isinstance(result, u.Quantity)
 
-        result = instance(np.array([1, 2, 3]) * u.keV)
+        result = ps(np.array([1, 2, 3]) * u.keV)
 
         assert isinstance(result, u.Quantity)
+
+        result = ps(1.0)
+
+        assert isinstance(result, float)
 
     for key in _known_functions:
 
@@ -149,7 +153,14 @@ def test_call_with_units():
 
         if key.find("XS")==0 and key != "XS_powerlaw":
 
-            # An XSpec model. Do not test it
+            # An XSpec model. Test it only if it's a power law (the others might need other parameters during
+            # initialization)
+
+            continue
+
+        if key.find("TemplateModel")==0:
+
+            # The TemplateModel function has its own test
 
             continue
 
