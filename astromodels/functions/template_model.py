@@ -26,7 +26,10 @@ class MissingDataFile(RuntimeError):
 
 class TemplateModelFactory(object):
 
-    def __init__(self, name, description, energies, names_of_parameters, interpolation_degree=1, flux_log=True):
+    def __init__(self, name, description, energies, names_of_parameters,
+                 interpolation_degree=1, flux_log=True,
+                 spline_smoothing_factor=1,
+                 nuFnu=True):
 
         # Store model name
 
@@ -47,6 +50,9 @@ class TemplateModelFactory(object):
 
         self._energies = np.array(energies)
 
+        # Enforce that they are ordered
+        self._energies.sort()
+
         # We create a dictionary which will contain the grid for each parameter
 
         self._parameters_grids = collections.OrderedDict()
@@ -62,6 +68,11 @@ class TemplateModelFactory(object):
         self._interpolation_degree = interpolation_degree
 
         self._flux_log = bool(flux_log)
+
+        self._spline_smoothing_factor = int(spline_smoothing_factor)
+
+        # This indicate that the data which will be given contains the nuFnu spectrum
+        self._nuFnu = bool(nuFnu)
 
     def define_parameter_grid(self, parameter_name, grid):
 
@@ -158,6 +169,12 @@ class TemplateModelFactory(object):
 
     def save_data(self, overwrite=False):
 
+        # First make sure that the whole data matrix has been filled
+
+        assert not self._data_frame.isnull().values.any(), "You have NaNs in the data matrix. Usually this means " \
+                                                           "that you didn't fill it up completely, or that some of " \
+                                                           "your data contains nans. Cannot save the file."
+
         # Get the data directory
 
         data_dir_path = get_user_data_path()
@@ -197,7 +214,9 @@ class TemplateModelFactory(object):
             store.get_storer('data_frame').attrs.metadata = {'description': self._description,
                                                              'name': self._name,
                                                              'interpolation_degree': int(self._interpolation_degree),
-                                                             'flux_log': self._flux_log}
+                                                             'flux_log': self._flux_log,
+                                                             'spline_smoothing_factor': self._spline_smoothing_factor,
+                                                             'nuFnu': self._nuFnu}
 
             for i, parameter_name in enumerate(self._parameters_grids.keys()):
 
@@ -216,6 +235,26 @@ def add_method(self, method, name=None):
     setattr(self.__class__, name, method)
 
 
+class RectBivariateSplineWrapper(object):
+    """
+    Wrapper around RectBivariateSpline, which supplies a __call__ method which accept the same
+    syntax as the other interpolation methods
+
+    """
+
+    def __init__(self, *args, **kwargs):
+
+        # We can use interp2, which features spline interpolation instead of linear interpolation
+
+        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
+
+    def __call__(self, x):
+
+        res = self._interpolator(*x)
+
+        return res[0][0]
+
+
 class TemplateModel(Function1D):
 
     r"""
@@ -231,6 +270,16 @@ class TemplateModel(Function1D):
 
                 desc : Normalization (freeze this to 1 if the template provides the normalization by itself)
                 initial value : 1.0
+
+            scale :
+
+                desc : Scale for the independent variable. The templates are handled as if they contains the fluxes
+                       at x / scale. This is useful for example when the template describe energies in the rest frame,
+                       at which point the scale describe the transformation between rest frame energy and observer frame
+                       energy. Fix this to 1 to neutralize its effect.
+
+                initial value : 1.0
+                min : 1e-5
 
         """
 
@@ -296,6 +345,10 @@ class TemplateModel(Function1D):
 
             self._interpolation_degree = metadata['interpolation_degree']
 
+            self._spline_smoothing_factor = metadata['spline_smoothing_factor']
+
+            self._nuFnu = metadata['nuFnu']
+
         # Make the dictionary of parameters
 
         function_definition = collections.OrderedDict()
@@ -309,6 +362,7 @@ class TemplateModel(Function1D):
         parameters = collections.OrderedDict()
 
         parameters['K'] = Parameter('K', 1.0)
+        parameters['scale'] = Parameter('scale', 1.0)
 
         for parameter_name in self._parameters_grids.keys():
 
@@ -324,12 +378,12 @@ class TemplateModel(Function1D):
 
         # Now susbsitute the evaluate function with a version with all the required parameters
 
-        # Get the parameters' names (except for K)
-        par_names_no_K = parameters.keys()[1:]
+        # Get the parameters' names (except for K and scale)
+        par_names_no_K_no_scale = parameters.keys()[2:]
 
         function_code = 'def new_evaluate(self, x, %s): ' \
-                        'return K * self._interpolate(x, [%s])' % (",".join(parameters.keys()),
-                                                                   ",".join(par_names_no_K))
+                        'return K * self._interpolate(x, scale, [%s])' % (",".join(parameters.keys()),
+                                                                          ",".join(par_names_no_K_no_scale))
 
         exec(function_code)
 
@@ -349,8 +403,37 @@ class TemplateModel(Function1D):
             # Make interpolator for this energy
             this_data = np.array(self._data_frame[energy].values.reshape(*data_shape),dtype=float)
 
-            this_interpolator = scipy.interpolate.RegularGridInterpolator(self._parameters_grids.values(),
-                                                                          this_data)
+            if len(self._parameters_grids.values()) == 2:
+
+                x, y = self._parameters_grids.values()
+
+                # Make sure that the requested polynomial degree is less than the number of data sets in
+                # both directions
+
+                msg = "You cannot use an interpolation degree of %s if you don't provide at least %s points " \
+                      "in the %s direction. Increase the number of templates or decrease the interpolation " \
+                      "degree."
+
+                if len(x) <= self._interpolation_degree:
+
+                    raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree+1, 'x'))
+
+                if len(y) <= self._interpolation_degree:
+
+                    raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree + 1, 'y'))
+
+
+                this_interpolator = RectBivariateSplineWrapper(x, y, this_data,
+                                                               kx=self._interpolation_degree,
+                                                               ky=self._interpolation_degree,
+                                                               s=self._spline_smoothing_factor)
+
+            else:
+
+                # In more than 2d we can only use linear interpolation
+
+                this_interpolator = scipy.interpolate.RegularGridInterpolator(self._parameters_grids.values(),
+                                                                              this_data)
 
             self._interpolators.append(this_interpolator)
 
@@ -361,29 +444,50 @@ class TemplateModel(Function1D):
     # This function will be substituted during construction by another version with
     # all the parameters of this template
 
-    def evaluate(self, x, K):
+    def evaluate(self, x, K, scale):
 
-        return K
+        raise NotImplementedError("Should not get here!")
 
-    def _interpolate(self, energies, parameters_values):
+    def _interpolate(self, energies, scale, parameters_values):
+
+        log_energies = np.log10(energies)
+
+        e_tilde = self._energies * scale
 
         # Gather all interpolations for these parameters' values at all defined energies
 
-        interpolations = map(lambda i:self._interpolators[i](parameters_values), range(self._energies.shape[0]))
+        interpolations = np.array(map(lambda i:self._interpolators[i](parameters_values),
+                                      range(self._energies.shape[0])))
 
         # Now interpolate the interpolations to get the flux at the requested energies
 
-        interpolator = scipy.interpolate.InterpolatedUnivariateSpline(self._energies,
-                                                                      interpolations,
-                                                                      k=self._interpolation_degree)
-
         if self._flux_log:
 
-            return np.power(10, interpolator(energies))
+            # NOTE: the variable "interpolations" contains already the log10 of the values,
+            # if _flux_log is True
+
+            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(np.log10(e_tilde),
+                                                                          interpolations,
+                                                                          k=self._interpolation_degree,
+                                                                          ext=0)
+
+            values = np.power(10, interpolator(log_energies))
 
         else:
 
-            return interpolator(energies)
+            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(e_tilde,
+                                                                          interpolations,
+                                                                          k=self._interpolation_degree)
+
+            values = interpolator(energies)
+
+        if self._nuFnu:
+
+            return values / energies**2
+
+        else:
+
+            return values
 
     def to_dict(self, minimal=False):
 
