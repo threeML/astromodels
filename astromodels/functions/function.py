@@ -1275,6 +1275,13 @@ class CompositeFunction(Function):
 
         assert operation in _operations,"Do not know operation %s" % operation
 
+        # Save this to make the class pickeable (see the __setstate__ and __getstate__ methods)
+
+        self._calling_sequence = (operation, function_or_scalar_1, function_or_scalar_2)
+
+        self._requested_x_unit = None
+        self._requested_y_unit = None
+
         # Set the new evaluate
 
         if function_or_scalar_2 is None:
@@ -1390,7 +1397,42 @@ class CompositeFunction(Function):
 
         self._uuid = self._uuid_expression
 
+    def __getstate__(self):
+
+        # This method is used by pickle before attempting to pickle the class
+
+        # It is needed because for some reason pickle will look for the 'multiply' ufunc
+        # in ROOT instead of numpy when trying to re-create the class on the remote side
+
+        d = {}
+
+        d['calling_sequence'] = self._calling_sequence
+        d['x_unit'] = self._requested_x_unit
+        d['y_unit'] = self._requested_y_unit
+
+        return d
+
+    def __setstate__(self, state):
+
+        # This is used by pickle to recreate the class on the remote
+        # side
+
+        # Get the state
+
+        operation, function_or_scalar_1, function_or_scalar_2 = state['calling_sequence']
+
+        # Build the class
+
+        self.__init__(operation, function_or_scalar_1, function_or_scalar_2)
+
+        # Now set the units
+        self.set_units(state['x_unit'],state['y_unit'])
+
+
     def set_units(self, x_unit, y_unit):
+
+        self._requested_x_unit = x_unit
+        self._requested_y_unit = y_unit
 
         # Just rely on the single functions to adjust themselves.
 
