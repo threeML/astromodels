@@ -127,7 +127,7 @@ class Node(DualAccessClass):
 
             try:
 
-                this_child = this_child.get_child(key)
+                this_child = this_child._get_child(key)
 
             except KeyError:
 
