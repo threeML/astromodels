@@ -251,7 +251,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
             initial value : 1
 
 
-        low_index :
+        alpha :
 
             desc : power law index below the break
             initial value : -1
@@ -273,7 +273,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
             max : 10.
             fix : yes
 
-        high_index:
+        beta:
 
             desc : power law index above the break
             initial value : -2.
@@ -300,14 +300,14 @@ class SmoothlyBrokenPowerLaw(Function1D):
 
         self.pivot.unit = x_unit
 
-        self.low_index.unit = astropy_units.dimensionless_unscaled
-        self.high_index.unit = astropy_units.dimensionless_unscaled
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
         self.break_scale.unit = astropy_units.dimensionless_unscaled
 
-    def evaluate(self, x, K, low_index, break_energy, break_scale, high_index, pivot):
+    def evaluate(self, x, K, alpha, break_energy, break_scale, beta, pivot):
 
-        B = (low_index + high_index) / 2.0
-        M = (high_index - low_index) / 2.0
+        B = (alpha + beta) / 2.0
+        M = (beta - alpha) / 2.0
 
         arg_piv = np.log10(pivot / break_energy) / break_scale
 
@@ -1375,7 +1375,7 @@ class Exponential_cutoff(Function1D):
 
                 desc : Normalization
                 initial value : 1.0
-                fix : yes
+                fix : no
 
             xc :
                 desc : cutoff

@@ -105,12 +105,13 @@ def memoize(method):
     :return: the decorated method
     """
 
-    # Need more testing for this
-    # TODO: test memoization
-
     # return method
 
     cache = method.cache = collections.OrderedDict()
+
+    # Put these two methods in the local space (faster)
+    _get = cache.get
+    _popitem = cache.popitem
 
     @functools.wraps(method)
     def memoizer(instance, x, *args, **kwargs):
@@ -125,7 +126,7 @@ def memoize(method):
 
         # Let's do it this way so we only look into the dictionary once
 
-        result = cache.get(key)
+        result = _get(key)
 
         if result is not None:
 
@@ -137,11 +138,11 @@ def memoize(method):
 
             cache[key] = result
 
-            if len(cache) > 10:
+            if len(cache) > 1000:
 
-                # Remove the 10 elements that were put in first
+                # Remove the 100 elements that were put in first
 
-                [cache.popitem(False) for i in range(5)]
+                [_popitem(False) for i in range(100)]
 
             return result
 
@@ -253,6 +254,7 @@ class FunctionMeta(type):
         cls.__parameters = collections.OrderedDict()
 
         for parameter_name, parameter_definition in function_definition['parameters'].iteritems():
+
             this_parameter = FunctionMeta.parse_parameter_definition(name, parameter_name, parameter_definition)
 
             cls.__parameters[this_parameter.name] = this_parameter
@@ -809,6 +811,9 @@ class Function1D(Function):
 
     def set_units(self, in_x_unit, in_y_unit):
 
+        in_x_unit = in_x_unit if in_x_unit is not None else ''
+        in_y_unit = in_y_unit if in_y_unit is not None else ''
+
         try:
 
             in_x_unit = u.Unit(in_x_unit)
@@ -816,8 +821,8 @@ class Function1D(Function):
 
         except:
 
-            raise TypeError("Could not get a Unit instance from provided units when setting units "
-                            "for function %s" % self.name)
+            raise TypeError("Could not get a Unit instance from provided units %s when setting units "
+                            "for function %s" % ((in_x_unit, in_y_unit), self.name))
 
         self._x_unit = in_x_unit
         self._y_unit = in_y_unit
@@ -840,8 +845,6 @@ class Function1D(Function):
         return self._y_unit
 
     def __call__(self, x, *args, **kwargs):
-
-        #TODO args and kwargs are most probably useless here (check that!)
 
         # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
         # significant overload on any computation. For this reason we treat differently the case with units from
@@ -954,6 +957,7 @@ class Function1D(Function):
 
             return results
 
+    @memoize
     def _call_without_units(self, x, *args, **kwargs):
 
         # Gather the current parameters' values without units, which means that the whole computation
@@ -980,6 +984,10 @@ class Function2D(Function):
         raise NotImplementedError("You have to re-implement this")
 
     def set_units(self, in_x_unit, in_y_unit, in_z_unit):
+
+        in_x_unit = in_x_unit if in_x_unit is not None else ''
+        in_y_unit = in_y_unit if in_y_unit is not None else ''
+        in_z_unit = in_z_unit if in_z_unit is not None else ''
 
         try:
 
@@ -1128,6 +1136,11 @@ class Function3D(Function):
         raise NotImplementedError("You have to re-implement this")
 
     def set_units(self, in_x_unit, in_y_unit, in_z_unit, in_w_unit):
+
+        in_x_unit = in_x_unit if in_x_unit is not None else ''
+        in_y_unit = in_y_unit if in_y_unit is not None else ''
+        in_z_unit = in_z_unit if in_z_unit is not None else ''
+        in_w_unit = in_w_unit if in_w_unit is not None else ''
 
         try:
 
@@ -1381,7 +1394,17 @@ class CompositeFunction(Function):
 
                 # New name to avoid possible duplicates
 
-                new_name = "%s_%i" % (parameter.name, i+1)
+                match = re.match("(.+)_[0-9]+$", parameter_name)
+
+                if match is not None:
+
+                    original_name = match.groups()[0]
+
+                else:
+
+                    original_name = parameter_name
+
+                new_name = "%s_%i" % (original_name, i+1)
 
                 # Store the parameter under the new name (obviously this is a reference to the
                 # parameter, not a copy, as always in python)
@@ -1428,7 +1451,6 @@ class CompositeFunction(Function):
         # Now set the units
         self.set_units(state['x_unit'],state['y_unit'])
 
-
     def set_units(self, x_unit, y_unit):
 
         self._requested_x_unit = x_unit
@@ -1439,6 +1461,39 @@ class CompositeFunction(Function):
         for function in self.functions:
 
             function.set_units(x_unit, y_unit)
+
+        #If there are multiple free normalizations, freeze them to 1 and fix the unit of the corresponding
+        # function. This is needed for example for a case like Powerlaw() * Exponential_cutoff(), as both of them
+        # have differential flux units, so their multiplication implies that one of them is
+        # dimensionless
+
+        self.fix_multiple_normalizations()
+
+    def fix_multiple_normalizations(self):
+
+        free_parameters = self.parameters
+
+        parameter_names = free_parameters.keys()
+
+        original_names = map(lambda x: x.split("_")[0], parameter_names)
+
+        normalization_indices = [i for i, name in enumerate(original_names) if name == "K"]
+
+        # Loop backward so we keep the normalization of the first component
+
+        for index in normalization_indices[::-1][:-1]:
+
+            name = parameter_names[index]
+
+            duplicate = free_parameters[name]
+
+            function_id = int(duplicate.name.split("_")[-1]) - 1
+
+            function = self.functions[function_id]
+
+            print("Fixing units of component %s (%s) to dimensionless" % (function_id, function.name))
+
+            function.set_units(function.x_unit, u.dimensionless_unscaled)
 
     @property
     def expression(self):

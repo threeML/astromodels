@@ -16,6 +16,7 @@ import numpy as np
 
 from astromodels.tree import Node
 
+
 def _behaves_like_a_number(obj):
     """
 
@@ -58,6 +59,10 @@ class IndependentVariableCannotBeLinked(exceptions.Exception):
 
 
 class CannotUnderstandUnit(exceptions.Exception):
+    pass
+
+
+class CannotConvertValueToNewUnits(Warning):
     pass
 
 
@@ -226,7 +231,24 @@ class ParameterBase(Node):
 
             # This will fail if the new unit is not compatible with the old one
 
-            self._value = (self._value * self._unit).to(new_unit).value
+            try:
+
+                self._value = (self._value * self._unit).to(new_unit).value
+
+            except u.UnitConversionError:
+
+                if new_unit == u.dimensionless_unscaled:
+
+                    new_unit_name = '(dimensionless)'
+
+                else:
+
+                    new_unit_name = new_unit
+
+                warnings.warn("Cannot convert the value %s from %s to the new units %s" % (self._value,
+                                                                                           self._unit,
+                                                                                           new_unit_name),
+                              CannotConvertValueToNewUnits)
 
         else:
 
