@@ -249,7 +249,8 @@ class SmoothlyBrokenPowerLaw(Function1D):
 
             desc : normalization
             initial value : 1
-
+            min : 0
+    
 
         low_index :
 
@@ -653,7 +654,8 @@ class Blackbody(Function1D):
         K :
             desc :
             initial value : 1e-4
-
+            min : 0.
+    
         kT :
             desc : temperature of the blackbody
             initial value : 30.0
