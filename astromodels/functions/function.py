@@ -546,8 +546,10 @@ class Function(Node):
         # instances of the same function
         self._uuid = "{" + str(self._generate_uuid()) + "}"
 
-        # Normal functions are able to handle units
-        self._handle_units = True
+        # Normal functions are able to change units, while some specific ones (such as the one from XSpec) are not.
+        # In this second case, this variable will contain a tuple (x_unit, y_unit)
+
+        self._fixed_units = None
 
     @property
     def n_dim(self):
@@ -574,6 +576,26 @@ class Function(Node):
         :return: the UUID
         """
         return uuid.UUID(bytes=os.urandom(16), version=4)
+
+    def has_fixed_units(self):
+        """
+        Returns True if this function cannot change units, which is the case only for very specific functions (like
+        models from foreign libraries like Xspec)
+
+        :return: True or False
+        """
+
+        return not (self._fixed_units is None)
+
+    @property
+    def fixed_units(self):
+        """
+            Returns the fixed units if has_fixed_units is True (see has_fixed_units)
+
+            :return: None, or a tuple (x_unit, y_unit)
+        """
+
+        return self._fixed_units
 
     @property
     def description(self):
@@ -670,13 +692,72 @@ class Function(Node):
 
     def __mul__(self, other_instance):
 
-        return CompositeFunction('*', self, other_instance)
+        c = CompositeFunction('*', self, other_instance)
+
+        # If the other instance is a function (and not a number), flag it so its units will be made dimensionless
+        # in the set_units method of the composite function
+
+        if isinstance(other_instance, Function):
+
+            if self.has_fixed_units():
+
+                if not self.fixed_units[1] == u.dimensionless_unscaled:
+
+                    # This function has fixed dimension and is not dimensionless (likely an additive XSpec model).
+                    # We need to make the other function dimensionless so that the multiplication of them will keep
+                    # the right units
+
+                    other_instance._make_dimensionless = True
+
+                else:
+
+                    # This function has fixed dimension, but it is dimensionless (likely a multiplicative XSpec model)
+                    # The other function should keep its units, so we flag self instead
+
+                    self._make_dimensionless = True
+
+            else:
+
+                # We need to make the other instance dimensionless
+
+                other_instance._make_dimensionless = True
+
+        return c
 
     __rmul__ = __mul__
 
     def __div__(self, other_instance):
 
-        return CompositeFunction('/', self, other_instance)
+        c = CompositeFunction('/', self, other_instance)
+
+        # If the other instance is a function (and not a number), flag it so its units will be made dimensionless
+        # in the set_units method of the composite function
+
+        if isinstance(other_instance, Function):
+
+            if self.has_fixed_units():
+
+                if not self.fixed_units[0] == u.dimensionless_unscaled:
+
+                    # This function has fixed dimension and is not dimensionless (likely an additive XSpec model).
+                    # We need to make the other function dimensionless so that the multiplication of them will keep
+                    # the right units
+
+                    other_instance._make_dimensionless = True
+
+                else:
+
+                    # This function has fixed dimension, but it is dimensionless (likely a multiplicative XSpec model)
+                    # The other function should keep its units, so we do not flag it
+                    pass
+
+            else:
+
+                # We need to make the other instance dimensionless
+
+                other_instance._make_dimensionless = True
+
+        return c
 
     def __rdiv__(self, other_instance):
 
@@ -1308,6 +1389,8 @@ class CompositeFunction(Function):
         self._requested_x_unit = None
         self._requested_y_unit = None
 
+        self._operation = operation
+
         # Set the new evaluate
 
         if function_or_scalar_2 is None:
@@ -1473,40 +1556,46 @@ class CompositeFunction(Function):
 
         for function in self.functions:
 
-            function.set_units(x_unit, y_unit)
+            if hasattr(function, '_make_dimensionless'):
+
+                function.set_units(x_unit, u.dimensionless_unscaled)
+
+            else:
+
+                function.set_units(x_unit, y_unit)
 
         #If there are multiple free normalizations, freeze them to 1 and fix the unit of the corresponding
         # function. This is needed for example for a case like Powerlaw() * Exponential_cutoff(), as both of them
         # have differential flux units, so their multiplication implies that one of them is
         # dimensionless
 
-        self.fix_multiple_normalizations()
+        #self._fix_multiple_normalizations()
 
-    def fix_multiple_normalizations(self):
-
-        free_parameters = self.parameters
-
-        parameter_names = free_parameters.keys()
-
-        original_names = map(lambda x: x.split("_")[0], parameter_names)
-
-        normalization_indices = [i for i, name in enumerate(original_names) if name == "K"]
-
-        # Loop backward so we keep the normalization of the first component
-
-        for index in normalization_indices[::-1][:-1]:
-
-            name = parameter_names[index]
-
-            duplicate = free_parameters[name]
-
-            function_id = int(duplicate.name.split("_")[-1]) - 1
-
-            function = self.functions[function_id]
-
-            print("Fixing units of component %s (%s) to dimensionless" % (function_id, function.name))
-
-            function.set_units(function.x_unit, u.dimensionless_unscaled)
+    # def _fix_multiple_normalizations(self):
+    #
+    #     free_parameters = self.parameters
+    #
+    #     parameter_names = free_parameters.keys()
+    #
+    #     original_names = map(lambda x: x.split("_")[0], parameter_names)
+    #
+    #     normalization_indices = [i for i, name in enumerate(original_names) if name == "K"]
+    #
+    #     # Loop backward so we keep the normalization of the first component
+    #
+    #     for index in normalization_indices[::-1][:-1]:
+    #
+    #         name = parameter_names[index]
+    #
+    #         duplicate = free_parameters[name]
+    #
+    #         function_id = int(duplicate.name.split("_")[-1]) - 1
+    #
+    #         function = self.functions[function_id]
+    #
+    #         print("Fixing units of component %s (%s) to dimensionless" % (function_id, function.name))
+    #
+    #         function.set_units(function.x_unit, u.dimensionless_unscaled)
 
     @property
     def expression(self):

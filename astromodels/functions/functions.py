@@ -575,10 +575,10 @@ class Log_uniform_prior(Function1D):
     r"""
     description :
 
-        A function which is 1/x on the interval lower_bound - upper_bound and 0 outside the interval. The
+        A function which is K/x on the interval lower_bound - upper_bound and 0 outside the interval. The
         extremes of the interval are NOT counted as part of the interval. Lower_bound must be >= 0.
 
-    latex : $ f(x)=\begin{cases}0 & x \le \text{lower_bound} \\\frac{1}{x} & \text{lower_bound} < x < \text{upper_bound} \\ 0 & x \ge \text{upper_bound} \end{cases}$
+    latex : $ f(x)=K~\begin{cases}0 & x \le \text{lower_bound} \\\frac{1}{x} & \text{lower_bound} < x < \text{upper_bound} \\ 0 & x \ge \text{upper_bound} \end{cases}$
 
     parameters :
 
@@ -596,6 +596,12 @@ class Log_uniform_prior(Function1D):
             min : 1e-30
             max : np.inf
 
+        K :
+
+            desc : Normalization
+            initial value : 1
+            fix : yes
+
     """
 
     __metaclass__ = FunctionMeta
@@ -607,20 +613,20 @@ class Log_uniform_prior(Function1D):
         # Lower and upper bound has the same unit as x
         self.lower_bound.unit = x_unit
         self.upper_bound.unit = x_unit
+        self.K.unit = y_unit * x_unit
 
-    def evaluate(self, x, lower_bound, upper_bound):
+    def evaluate(self, x, lower_bound, upper_bound, K):
         # This makes the prior proper because it is the integral between lower_bound and upper_bound
-        # Assume we are in the "fast" mode, where things have no units, and fall back to the slow mode
-        # if this isn't true
 
-        # renorm = math.log(upper_bound) - math.log(lower_bound)
+        res = np.where((x > lower_bound) & (x < upper_bound), K / x, 0)
 
-        result = np.zeros(x.shape)
+        if isinstance(x, astropy_units.Quantity):
 
-        idx = (x > lower_bound) & (x < upper_bound)
-        result[idx] = 1.0 / x
+            return res * self.y_unit
 
-        return result
+        else:
+
+            return res
 
     def from_unit_cube(self, x):
         """
@@ -904,42 +910,6 @@ class Constant(Function1D):
 
     def evaluate(self, x, k):
         return k
-
-
-class Bias(Function1D):
-    r"""
-    description :
-
-        Return x plus a bias
-
-    latex : $ x + k$
-
-    parameters :
-
-        k :
-
-            desc : Constant value
-            initial value : 0
-
-    """
-
-    __metaclass__ = FunctionMeta
-
-    def _setup(self):
-        self._handle_units = False
-
-    def _set_units(self, x_unit, y_unit):
-        # k has units of x
-
-        # self.k.unit = x_unit
-
-        # if x_unit != y_unit:
-
-        #    raise InvalidUsageForFunction("Function bias cannot be given different units for x and y")
-        pass
-
-    def evaluate(self, x, k):
-        return x + k
 
 
 class Band(Function1D):

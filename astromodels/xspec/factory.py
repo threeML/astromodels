@@ -362,13 +362,15 @@ $DOCSTRING$
 
             self._scale = 1e6
 
+            self._fixed_units = (u.keV, 1 / (u.keV * u.cm**2 * u.s))
+
         else:
 
             # For multiplicative models, there is no differentiation to be made
 
             self._scale = 10
 
-        self._handle_units = False
+            self._fixed_units = (u.keV, u.dimensionless_unscaled)
 
     def evaluate(self, x, $PARAMETERS_NAMES$):
 
@@ -439,26 +441,27 @@ $DOCSTRING$
 
                 return final_value * u.dimensionless_unscaled
 
+        else:
+
+            return final_value
+
+    def has_fixed_units(self):
+
+        return True
 
     def _set_units(self, x_unit, y_unit):
 
         # Make sure this is an energy
         assert str(x_unit.physical_type) == 'energy', "Xspec models can only be used as spectra"
 
-        # Make sure the y_unit is a differential flux
+        # Make sure the y_unit is the correct one
         try:
 
-            y_unit.in_units(1 / (u.keV * u.cm**2 * u.s))
+            y_unit.in_units(self._fixed_units[1])
 
         except:
 
-            raise RuntimeError("Xspec models can only be used as spectra")
-
-        # Now, if this is a multiplicative model, set the units to dimensionless.
-
-        if self._model_type != 'add':
-
-            return x_unit, u.dimensionless_unscaled
+            raise RuntimeError("Xspec model %s cannot have units of %s" % (self.name, y_unit))
 
     def _integral(self, low_bounds, hi_bounds, $PARAMETERS_NAMES$):
 

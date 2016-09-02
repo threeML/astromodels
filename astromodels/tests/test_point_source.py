@@ -5,7 +5,15 @@ import numpy as np
 
 from astromodels.sources.point_source import PointSource
 from astromodels.spectral_component import SpectralComponent
-from astromodels.functions.functions import Powerlaw
+from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Blackbody, Band
+
+from astromodels import has_xspec
+
+if has_xspec:
+
+    from astromodels import XS_phabs, XS_powerlaw
+
+
 from astromodels.functions.function import _known_functions
 
 __author__ = 'giacomov'
@@ -169,3 +177,59 @@ def test_call_with_units():
             print("testing %s ..." % key)
 
             test_one(_known_functions[key])
+
+
+def test_call_with_composite_function_with_units():
+
+    def one_test(spectrum):
+
+        print("Testing %s" % spectrum.expression)
+
+        pts = PointSource("test", ra=0, dec=0, spectral_shape=spectrum)
+
+        res = pts([100, 200] * u.keV)
+
+        # This will fail if the units are wrong
+        res.to(1 / (u.keV * u.cm**2 * u.s))
+
+    # Test a simple composition
+
+    spectrum = Powerlaw() * Exponential_cutoff()
+
+    one_test(spectrum)
+
+    spectrum = Band() + Blackbody()
+
+    one_test(spectrum)
+
+    # Test a more complicate composition
+
+    spectrum = Powerlaw() * Exponential_cutoff() + Blackbody()
+
+    one_test(spectrum)
+
+    spectrum = Powerlaw() * Exponential_cutoff() * Exponential_cutoff() + Blackbody()
+
+    one_test(spectrum)
+
+    if has_xspec:
+
+        spectrum = XS_phabs() * Powerlaw()
+
+        one_test(spectrum)
+
+        spectrum = XS_phabs() * XS_powerlaw()
+
+        one_test(spectrum)
+
+        spectrum = XS_phabs() * XS_powerlaw() * XS_phabs()
+
+        one_test(spectrum)
+
+        spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + Blackbody()
+
+        one_test(spectrum)
+
+        spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + XS_powerlaw()
+
+        one_test(spectrum)
