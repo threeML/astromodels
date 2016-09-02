@@ -27,9 +27,7 @@ class MissingDataFile(RuntimeError):
 class TemplateModelFactory(object):
 
     def __init__(self, name, description, energies, names_of_parameters,
-                 interpolation_degree=1, flux_log=True,
-                 spline_smoothing_factor=1,
-                 nuFnu=True):
+                 interpolation_degree=1, spline_smoothing_factor=1):
 
         # Store model name
 
@@ -67,12 +65,7 @@ class TemplateModelFactory(object):
 
         self._interpolation_degree = interpolation_degree
 
-        self._flux_log = bool(flux_log)
-
         self._spline_smoothing_factor = int(spline_smoothing_factor)
-
-        # This indicate that the data which will be given contains the nuFnu spectrum
-        self._nuFnu = bool(nuFnu)
 
     def define_parameter_grid(self, parameter_name, grid):
 
@@ -88,7 +81,7 @@ class TemplateModelFactory(object):
 
         self._parameters_grids[parameter_name] = grid_
 
-    def add_interpolation_data(self, parameters_values, differential_fluxes):
+    def add_interpolation_data(self, differential_fluxes, **parameters_values_input):
 
         # Verify that the grid has been defined for all parameters
 
@@ -112,45 +105,36 @@ class TemplateModelFactory(object):
 
             self._data_frame = pd.DataFrame(index=self._multi_index, columns=self._energies)
 
+        # Make sure we have all parameters and order the values in the same way as the dictionary
+        parameters_values = np.zeros(len(self._parameters_grids)) * np.nan
+
+        for key in parameters_values_input:
+
+            assert key in self._parameters_grids, "Parameter %s is not known" % key
+
+            idx = self._parameters_grids.keys().index(key)
+
+            parameters_values[idx] = parameters_values_input[key]
+
+        # If the user did not specify one of the parameters, then the parameters_values array will contain nan
+        assert np.all(np.isfinite(parameters_values)), "You didn't specify all parameters' values."
+
         # Make sure we are dealing with arrays (list will be transformed)
 
-        parameters_values = np.array(parameters_values)
         differential_fluxes = np.array(differential_fluxes)
 
         n_parameters = parameters_values.shape[0]
-
-        assert n_parameters == len(self._parameters_grids), "Wrong number of parameters"
 
         assert self._energies.shape[0] == differential_fluxes.shape[0], "Differential fluxes and energies must have " \
                                                                         "the same number of elements"
 
         # Now set the corresponding values in the data frame
 
-        # Take the log of the flux, if requested
-
-        if self._flux_log:
-
-            values = np.log10(differential_fluxes)
-
-        else:
-
-            values = differential_fluxes
-
-        if self._flux_log:
-
-            msg = 'log10 of '
-
-        else:
-
-            msg = ''
-
-        assert np.all(np.isfinite(values)), "One or more inf. or nan in the %svalues" % msg
-
         # Now set the values in the data frame
 
         try:
 
-            self._data_frame.loc[tuple(parameters_values)] = pd.to_numeric(values)
+            self._data_frame.loc[tuple(parameters_values)] = pd.to_numeric(differential_fluxes)
 
         except KeyError:
 
@@ -214,9 +198,8 @@ class TemplateModelFactory(object):
             store.get_storer('data_frame').attrs.metadata = {'description': self._description,
                                                              'name': self._name,
                                                              'interpolation_degree': int(self._interpolation_degree),
-                                                             'flux_log': self._flux_log,
-                                                             'spline_smoothing_factor': self._spline_smoothing_factor,
-                                                             'nuFnu': self._nuFnu}
+                                                             'spline_smoothing_factor': self._spline_smoothing_factor
+                                                             }
 
             for i, parameter_name in enumerate(self._parameters_grids.keys()):
 
@@ -341,13 +324,10 @@ class TemplateModel(Function1D):
 
             description = metadata['description']
             name = metadata['name']
-            self._flux_log = metadata['flux_log']
 
             self._interpolation_degree = metadata['interpolation_degree']
 
             self._spline_smoothing_factor = metadata['spline_smoothing_factor']
-
-            self._nuFnu = metadata['nuFnu']
 
         # Make the dictionary of parameters
 
@@ -401,7 +381,9 @@ class TemplateModel(Function1D):
         for energy in self._energies:
 
             # Make interpolator for this energy
-            this_data = np.array(self._data_frame[energy].values.reshape(*data_shape),dtype=float)
+            # NOTE: we interpolate on the logarithm
+
+            this_data = np.array(np.log10(self._data_frame[energy].values).reshape(*data_shape), dtype=float)
 
             if len(self._parameters_grids.values()) == 2:
 
@@ -421,7 +403,6 @@ class TemplateModel(Function1D):
                 if len(y) <= self._interpolation_degree:
 
                     raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree + 1, 'y'))
-
 
                 this_interpolator = RectBivariateSplineWrapper(x, y, this_data,
                                                                kx=self._interpolation_degree,
@@ -455,39 +436,23 @@ class TemplateModel(Function1D):
         e_tilde = self._energies * scale
 
         # Gather all interpolations for these parameters' values at all defined energies
+        # (these are the logarithm of the values)
 
-        interpolations = np.array(map(lambda i:self._interpolators[i](parameters_values),
-                                      range(self._energies.shape[0])))
+        log_interpolations = np.array(map(lambda i:self._interpolators[i](parameters_values),
+                                          range(self._energies.shape[0])))
 
         # Now interpolate the interpolations to get the flux at the requested energies
 
-        if self._flux_log:
+        # NOTE: the variable "interpolations" contains already the log10 of the values,
 
-            # NOTE: the variable "interpolations" contains already the log10 of the values,
-            # if _flux_log is True
+        interpolator = scipy.interpolate.InterpolatedUnivariateSpline(np.log10(e_tilde),
+                                                                      log_interpolations,
+                                                                      k=self._interpolation_degree,
+                                                                      ext=0)
 
-            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(np.log10(e_tilde),
-                                                                          interpolations,
-                                                                          k=self._interpolation_degree,
-                                                                          ext=0)
+        values = np.power(10, interpolator(log_energies))
 
-            values = np.power(10, interpolator(log_energies))
-
-        else:
-
-            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(e_tilde,
-                                                                          interpolations,
-                                                                          k=self._interpolation_degree)
-
-            values = interpolator(energies)
-
-        if self._nuFnu:
-
-            return values / energies**2
-
-        else:
-
-            return values
+        return values
 
     def to_dict(self, minimal=False):
 
