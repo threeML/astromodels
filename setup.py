@@ -110,6 +110,62 @@ def setup_xspec():
     # then there is also gfortran somewhere because it is a dependence
     libraries.append('gfortran')
 
+    # OS X users who have installed libgfortran via homebrew will have gfortran installed in a non-standard
+    # directory (typically /usr/local/gfortran/lib) instead of /usr/local/lib. We need to check both
+
+    # Linux/UNIX
+
+    search_path = os.path.join(library_dirs[0], 'libgfortran.so')
+
+    valid_paths = glob.glob(search_path)
+
+
+    if len(valid_paths) == 0:
+
+        # Mac / OS X
+
+        search_path = os.path.join(library_dirs[0], 'libgfortran.dylib')
+
+        valid_paths = glob.glob(search_path)
+
+        if len(valid_paths) == 0:
+
+            # Ok now we need to check the common alternative directories
+
+            alt_gfortran_lib_dir = '/usr/local/gfortran/lib'
+
+
+            # Linux/Unix
+
+            search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.so')
+
+            valid_paths = glob.glob(search_path)
+
+            if len(valid_paths) == 0:
+
+
+                # Mac / OS X
+
+                search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.dylib')
+
+                valid_paths = glob.glob(search_path)
+
+                if len(valid_paths) == 0:
+
+                    print ('\nError: Could not find the libgfortran. XSPEC will cause a compile error.')
+
+                else:
+
+                    library_dirs.append(alt_gfortran_lib_dir)
+
+            else:
+
+                library_dirs.append(alt_gfortran_lib_dir)
+
+
+
+
+
     # Configure the variables to build the external module with the C/C++ wrapper
 
     ext_modules_configuration = [
