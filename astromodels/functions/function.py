@@ -824,11 +824,26 @@ class Function1D(Function):
             raise TypeError("Could not get a Unit instance from provided units %s when setting units "
                             "for function %s" % ((in_x_unit, in_y_unit), self.name))
 
-        self._x_unit = in_x_unit
-        self._y_unit = in_y_unit
-
         # Now call the underlying method to set units, which is defined by each function
-        self._set_units(self._x_unit, self._y_unit)
+        new_units = self._set_units(in_x_unit, in_y_unit)
+
+        # Store the units.
+        # NOTE: the previous call to _set_units might return new units in special cases
+        # (for example Xspec functions). So it is critical that we store them in the class' attributes
+        # after the call to _set_units
+
+        if new_units is not None:
+
+            new_x_unit, new_y_unit = new_units
+
+            self._x_unit = new_x_unit
+            self._y_unit = new_y_unit
+
+        else:
+
+            self._x_unit = in_x_unit
+            self._y_unit = in_y_unit
+
 
     def _set_units(self, x_unit, y_unit):
 
@@ -870,22 +885,22 @@ class Function1D(Function):
                                                 "as something else," \
                                                 "or you need to explicitly set the units."
 
-                if self._handle_units:
+                # if self._handle_units:
 
-                    results = self._call_with_units(x, *args, **kwargs)
+                results = self._call_with_units(x, *args, **kwargs)
 
-                    # Now convert to the expected y unit
-                    return results.to(self.y_unit)
+                # Now convert to the expected y unit
+                return np.squeeze(results.to(self.y_unit).value) * self.y_unit
 
-                else:
-
-                    # No support for units, add it artificially
-
-                    new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
-
-                    results = self._call_without_units(new_input, *args, **kwargs)
-
-                    return np.squeeze(results) * self.y_unit
+                # else:
+                #
+                #     # No support for units, add it artificially
+                #
+                #     new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
+                #
+                #     results = self._call_without_units(new_input, *args, **kwargs)
+                #
+                #     return np.squeeze(results) * self.y_unit
 
         else:
 
@@ -906,7 +921,7 @@ class Function1D(Function):
 
             else:
 
-                if self._handle_units:
+                # if self._handle_units:
 
                     # This is a single number with units, let's transform it to an array with units
 
@@ -920,19 +935,19 @@ class Function1D(Function):
                     # Let's also convert the result to the expected units
 
                     return np.squeeze(result).to(self.y_unit)
-
-                else:
-
-                    new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
-
-                    # Compute the function without units
-
-                    result = self._call_without_units(new_input, *args, **kwargs)
-
-                    # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-                    # Let's also convert the result to the expected units
-
-                    return np.squeeze(result) * self.y_unit
+                #
+                # else:
+                #
+                #     new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
+                #
+                #     # Compute the function without units
+                #
+                #     result = self._call_without_units(new_input, *args, **kwargs)
+                #
+                #     # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+                #     # Let's also convert the result to the expected units
+                #
+                #     return np.squeeze(result) * self.y_unit
 
     def _call_with_units(self, x, *args, **kwargs):
 
@@ -947,8 +962,6 @@ class Function1D(Function):
             results = self.evaluate(x, *args, **kwargs)
 
         except u.UnitsError:
-
-            raise
 
             raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                "calling function %s" % self.name)

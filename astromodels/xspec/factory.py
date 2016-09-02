@@ -4,9 +4,12 @@ import re
 import sys
 import warnings
 import astropy.units as u
+import numpy as np
 
 from astromodels.my_yaml import my_yaml
 from astromodels.functions.function import FunctionMeta, Function1D, get_function_class
+
+from astromodels.utils.configuration import get_user_data_path
 
 try:
 
@@ -336,6 +339,11 @@ def get_models(model_dat_path):
 
 class_definition_code = '''
 
+from astromodels.functions.function import FunctionMeta, Function1D
+import numpy as np
+import astropy.units as u
+from astromodels.xspec import _xspec
+
 class XS_$MODEL_NAME$(Function1D):
 
     """
@@ -364,8 +372,21 @@ $DOCSTRING$
 
     def evaluate(self, x, $PARAMETERS_NAMES$):
 
-        # Create a tuple of the current values of the parameters
-        parameters_tuple = ($PARAMETERS_NAMES$,)
+        quantity = False
+
+        if isinstance(x, u.Quantity):
+
+            x = np.array(x.to('keV').value, ndmin=1, copy=False, dtype=float)
+
+            quantity = True
+
+            parameters_tuple = tuple(map(lambda x:x.value, ($PARAMETERS_NAMES$,)))
+
+        else:
+
+            # Create a tuple of the current values of the parameters
+
+            parameters_tuple = ($PARAMETERS_NAMES$,)
 
         # Finite difference differentiation of the Xspec
         # function for additive model. Indeed, xspec function return the integral
@@ -399,19 +420,45 @@ $DOCSTRING$
 
             # In a additive model the function returns the integral over the bins
 
-            return val / (2 * epsilon)
+            final_value = val / (2 * epsilon)
 
         else:
 
             # In a multiplicative model the function returns the average factor over
             # the bins
 
-            return val
+            final_value = val
+
+        if quantity:
+
+            if self._model_type == 'add':
+
+                return final_value * u.Unit('1 / (keV cm^2 s)')
+
+            else:
+
+                return final_value * u.dimensionless_unscaled
+
 
     def _set_units(self, x_unit, y_unit):
 
-        # Parameters have units already
-        pass
+        # Make sure this is an energy
+        assert str(x_unit.physical_type) == 'energy', "Xspec models can only be used as spectra"
+
+        # Make sure the y_unit is a differential flux
+        try:
+
+            y_unit.in_units(1 / (u.keV * u.cm**2 * u.s))
+
+        except:
+
+            raise RuntimeError("Xspec models can only be used as spectra")
+
+        # Now, if this is a multiplicative model, set the units to dimensionless.
+
+        if self._model_type != 'add':
+
+            return x_unit, u.dimensionless_unscaled
 
     def _integral(self, low_bounds, hi_bounds, $PARAMETERS_NAMES$):
 
@@ -425,44 +472,71 @@ $DOCSTRING$
 
 def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
-    # If this is an additive model (model_type == 'add') we need to add
-    # one more parameter (normalization)
+    class_name = 'XS_%s' % model_name
 
-    if model_type == 'add':
-        
-        definition['parameters']['norm'] = {'initial value': 1.0,
-                                                  'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
-                                                          'XspecModels.html)',
-                                                  'min': 0,
-                                                  'max': None,
-                                                  'delta': 0.1,
-                                                  'unit': 'keV / (cm2 s)',
-                                                  'free': True}
+    # Get the path to the user data directory
+    user_data_path = get_user_data_path()
 
-    assert model_type != 'con', "Convolution models are not yet supported"
+    # Check if the code for this function already exists
 
-    # Get a list of the parameter names
-    parameters_names = ", ".join(definition['parameters'].keys())
+    code_file_name = os.path.join(user_data_path, '%s.py' % class_name)
 
-    # Create the docstring
-    docstring = my_yaml.dump(definition)
+    if os.path.exists(code_file_name):
 
-    # Create the class by substituting in the class_definition_code the
-    # relevant things for this model
+        # Code already exists
+        pass
 
-    code = class_definition_code.replace('$MODEL_NAME$', model_name)
-    code = code.replace('$DOCSTRING$', docstring)
-    code = code.replace('$PARAMETERS_NAMES$', parameters_names)
-    code = code.replace('$XSPEC_FUNCTION$', xspec_function)
-    code = code.replace('$MODEL_TYPE$', model_type)
+    else:
 
-    # Compile the code and create the class
+        print("Generating code for Xspec model %s..." % model_name)
 
-    exec(code)
+        # If this is an additive model (model_type == 'add') we need to add
+        # one more parameter (normalization)
+
+        if model_type == 'add':
+
+            definition['parameters']['norm'] = {'initial value': 1.0,
+                                                      'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
+                                                              'XspecModels.html)',
+                                                      'min': 0,
+                                                      'max': None,
+                                                      'delta': 0.1,
+                                                      'unit': 'keV / (cm2 s)',
+                                                      'free': True}
+
+        assert model_type != 'con', "Convolution models are not yet supported"
+
+        # Get a list of the parameter names
+        parameters_names = ", ".join(definition['parameters'].keys())
+
+        # Create the docstring
+        docstring = my_yaml.dump(definition)
+
+        # Create the class by substituting in the class_definition_code the
+        # relevant things for this model
+
+        code = class_definition_code.replace('$MODEL_NAME$', model_name)
+        code = code.replace('$DOCSTRING$', docstring)
+        code = code.replace('$PARAMETERS_NAMES$', parameters_names)
+        code = code.replace('$XSPEC_FUNCTION$', xspec_function)
+        code = code.replace('$MODEL_TYPE$', model_type)
+
+        # Write to the file
+
+        with open(code_file_name, 'w+') as f:
+
+            f.write("# This code has been automatically generated. Do not edit.\n")
+            f.write("\n\n%s\n" % code)
+
+    # Add the path to sys.path if it doesn't
+    if user_data_path not in sys.path:
+
+        sys.path.append(user_data_path)
+
+    # Import the class in the current namespace (locals)
+    exec('from %s import %s' % (class_name, class_name))
 
     # Return the class we just created
-
-    class_name = 'XS_%s' % model_name
 
     return class_name, locals()[class_name]
 
