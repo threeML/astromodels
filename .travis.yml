@@ -4,7 +4,7 @@ python:
   - "2.7"
 install:
   - sudo apt-get update
-  - sudo apt-get install libhdf5 libhdf5-dev
+  - sudo apt-get install libhdf5 libhdf5-serial-dev
   # We do this conditionally because it saves us some downloading if the
   # version is the same.
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
