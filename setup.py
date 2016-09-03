@@ -225,7 +225,9 @@ setup(
         'PyYAML',
         'astropy >= 1.0',
         'scipy>=0.13',
-        'numdifftools'],
+        'numdifftools',
+        'tables',
+        'pandas'],
 
     ext_modules=ext_modules_configuration
 
