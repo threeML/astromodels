@@ -105,8 +105,6 @@ def memoize(method):
     :return: the decorated method
     """
 
-    # return method
-
     cache = method.cache = collections.OrderedDict()
 
     # Put these two methods in the local space (faster)
@@ -118,7 +116,7 @@ def memoize(method):
 
         # Create a tuple because a tuple is hashable
 
-        unique_id = tuple(x.value for x in instance.parameters.values()) + (x.shape[0],x.min(),x.max())
+        unique_id = tuple(x.value for x in instance.parameters.values()) + (x.shape[0], x.min(), x.max())
 
         # Create a unique identifier for this combination of inputs
 
