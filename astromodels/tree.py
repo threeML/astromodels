@@ -4,33 +4,11 @@ import collections
 
 from astromodels.utils.io import display
 from astromodels.dual_access_class import DualAccessClass
+from astromodels.utils.valid_variable import is_valid_variable_name
 
 
 class DuplicatedNode(Exception):
     pass
-
-
-def name_is_legal(name):
-    """
-    Check that the name is legal, i.e., it does not contain special characters nor spaces
-
-    :param name: the name to check
-    :return: True or False
-    """
-
-    # Define the set of valid characters
-    valid_char_sequence = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890-+_'
-
-    valid = set(valid_char_sequence).issuperset(name)
-
-    if valid:
-
-        # Check that the name does not start with -
-        if name[0] == '-':
-
-            return False
-
-    return valid
 
 
 class Node(DualAccessClass):
@@ -40,8 +18,8 @@ class Node(DualAccessClass):
         self.__children = collections.OrderedDict()
         self.__parent = None
 
-        assert name_is_legal(name),"Illegal characters in name %s. You can only use letters and numbers, " \
-                                   "and + and - (but the name cannot start with -)" % name
+        assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
+                                             "and + and - (but the name cannot start with -)" % name
 
         self._name = name
 
