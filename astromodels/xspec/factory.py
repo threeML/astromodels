@@ -24,7 +24,7 @@ else:
     has_xspec = True
 
 
-class XSpecNotAvailable(UserWarning):
+class XSpecNotAvailable(ImportWarning):
     pass
 
 
