@@ -12,11 +12,11 @@ from astromodels.units import get_units
 import astropy.units as astropy_units
 
 
-class GSLNotAvailable(UserWarning):
+class GSLNotAvailable(ImportWarning):
     pass
 
 
-class NaimaNotAvailable(UserWarning):
+class NaimaNotAvailable(ImportWarning):
     pass
 
 
