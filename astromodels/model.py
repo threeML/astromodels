@@ -216,6 +216,42 @@ class Model(Node):
 
         self._add_child(variable)
 
+    def remove_independent_variable(self, variable_name):
+        """
+        Remove an independent variable which was added with add_independent_variable
+
+        :param variable_name: name of variable to remove
+        :return:
+        """
+
+        self._remove_child(variable_name)
+
+    def add_external_parameter(self, parameter):
+        """
+        Add a parameter that comes from something other than a function, to the model.
+
+        :param parameter: a Parameter instance
+        :return: none
+        """
+
+        assert isinstance(parameter, Parameter), "Variable must be an instance of IndependentVariable"
+
+        if parameter.name in self._children:
+
+            self._remove_child(parameter.name)
+
+        self._add_child(parameter)
+
+    def remove_external_parameter(self, parameter_name):
+        """
+        Remove an external parameter which was added with add_external_parameter
+
+        :param variable_name: name of parameter to remove
+        :return:
+        """
+
+        self._remove_child(parameter_name)
+
     def link(self, parameter_1, parameter_2, link_function=None):
         """
         Link the value of the provided parameters through the provided function (identity is the default, i.e.,
