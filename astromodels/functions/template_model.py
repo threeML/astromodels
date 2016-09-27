@@ -11,6 +11,8 @@ import os
 import re
 import warnings
 
+import astropy.units as u
+
 
 class IncompleteGrid(RuntimeError):
     pass
@@ -27,7 +29,7 @@ class MissingDataFile(RuntimeError):
 class TemplateModelFactory(object):
 
     def __init__(self, name, description, energies, names_of_parameters,
-                 interpolation_degree=1, spline_smoothing_factor=1):
+                 interpolation_degree=1, spline_smoothing_factor=0):
 
         # Store model name
 
@@ -46,7 +48,13 @@ class TemplateModelFactory(object):
 
         # Store energy grid
 
-        self._energies = np.array(energies)
+        if not isinstance(energies, u.Quantity):
+
+            warnings.warn("Energy unit is not a Quantity instance, so units has not been provided. Using keV.")
+
+            energies = energies * u.keV
+
+        self._energies = np.array(energies.to(u.keV).value)
 
         # Enforce that they are ordered
         self._energies.sort()
@@ -420,16 +428,32 @@ class TemplateModel(Function1D):
 
     def _set_units(self, x_unit, y_unit):
 
-        pass
+        self.K.unit = y_unit
+
+        self.scale.unit = 1 / x_unit
 
     # This function will be substituted during construction by another version with
     # all the parameters of this template
 
     def evaluate(self, x, K, scale):
 
+        # This is overridden in the constructor
+
         raise NotImplementedError("Should not get here!")
 
     def _interpolate(self, energies, scale, parameters_values):
+
+        if isinstance(energies, u.Quantity):
+
+            # Templates are always saved with energy in keV. We need to transform it to
+            # a dimensionless quantity (actually we take the .value property) because otherwise
+            # the logarithm below will fail.
+
+            energies = np.array(energies.to('keV').value, ndmin=1, copy=False, dtype=float)
+
+            # Same for the scale
+
+            scale = scale.to(1 / u.keV).value
 
         log_energies = np.log10(energies)
 
@@ -452,7 +476,14 @@ class TemplateModel(Function1D):
 
         values = np.power(10, interpolator(log_energies))
 
-        return values
+        # The division by scale results from the differential:
+        # E = e * scale
+        # de = dE / scale
+        # dN / dE = dN / de * de / dE = dN / de * (1 / scale)
+
+        # NOTE: the units are added back through the multiplication by K in the evaluate method
+
+        return values / scale
 
     def to_dict(self, minimal=False):
 
