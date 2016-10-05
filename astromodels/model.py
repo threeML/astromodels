@@ -188,6 +188,24 @@ class Model(Node):
 
             return True
 
+    def __iter__(self):
+        """
+        This allows the model to be iterated on, like in:
+
+        for parameter in model:
+            ...
+
+        NOTE: this will iterate over *all* parameters in the model, also those that are not free (and thus are not
+        normally displayed). If you need to operate only on free parameters, just check if they are free within
+        the loop
+
+        :return: iterator
+        """
+
+        for parameter in self.parameters:
+
+            yield self.parameters[parameter]
+
     @property
     def point_sources(self):
         return self._point_sources
@@ -238,7 +256,18 @@ class Model(Node):
 
         if parameter.name in self._children:
 
-            self._remove_child(parameter.name)
+            # Remove it from the children only if it is a Parameter instance, otherwise don't, which will
+            # make the _add_child call fail (which is the expected behaviour! You shouldn't call two children
+            # with the same name)
+
+            if isinstance(self._get_child(parameter.name), Parameter):
+
+                warnings.warn("External parameter %s already exist in the model. Overwriting it..." % parameter.name,
+                              RuntimeWarning)
+
+                self._remove_child(parameter.name)
+
+        # This will fail if another node with the same name is already in the model
 
         self._add_child(parameter)
 
