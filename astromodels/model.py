@@ -208,15 +208,49 @@ class Model(Node):
 
     @property
     def point_sources(self):
+        """
+        Returns the dictionary of all defined point sources
+
+        :return: collections.OrderedDict()
+        """
         return self._point_sources
 
     @property
     def extended_sources(self):
+        """
+        Returns the dictionary of all defined extended sources
+
+        :return: collections.OrderedDict()
+
+        """
         return self._extended_sources
 
     @property
     def particle_sources(self):
+        """
+        Returns the dictionary of all defined particle sources
+
+        :return: collections.OrderedDict()
+
+        """
         return self._particle_sources
+
+    @property
+    def sources(self):
+        """
+        Returns a dictionary containing all defined sources (of any kind)
+
+        :return: collections.OrderedDict()
+
+        """
+
+        sources = collections.OrderedDict()
+
+        for d in (self.point_sources, self.extended_sources, self.particle_sources):
+
+            sources.update(d)
+
+        return sources
 
     def add_independent_variable(self, variable):
         """
