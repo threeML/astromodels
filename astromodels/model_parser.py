@@ -38,6 +38,7 @@ def load_model(filename):
 
 
 class ModelParser(object):
+    
     def __init__(self, model_file):
 
         # Read model file and deserialize into a dictionary
@@ -88,8 +89,6 @@ class ModelParser(object):
                 self._links.extend(this_parser.links)
 
                 self._extra_setups.extend(this_parser.extra_setups)
-
-
 
     def get_model(self):
 
