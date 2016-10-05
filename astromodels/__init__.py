@@ -12,7 +12,7 @@ from .functions.template_model import *
 from .functions.function import list_functions, get_function_class
 from model import Model
 from spectral_component import SpectralComponent
-from model_parser import load_model
+from model_parser import load_model, clone_model
 from units import get_units
 from .xspec.factory import setup_xspec_models, has_xspec
 import astropy.units as u

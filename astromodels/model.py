@@ -34,6 +34,11 @@ class CannotWriteModel(IOError):
         super(CannotWriteModel, self).__init__(message)
 
 
+class ModelInternalError(ValueError):
+
+    pass
+
+
 class Model(Node):
 
     def __init__(self, *sources):
@@ -460,6 +465,49 @@ class Model(Node):
 
         return representation
 
+    def to_dict_with_types(self):
+
+        # Get the serialization dictionary
+
+        data = self.to_dict()
+
+        # Add the types to the sources
+
+        for key in data.keys():
+
+            try:
+
+                element = self._children[key]
+
+            except KeyError:
+
+                raise RuntimeError("Source %s is unknown" % key)
+
+            else:
+
+                # There are three possible cases. Either the element is a source, or it is an independent
+                # variable, or a parameter
+
+                if hasattr(element, 'source_type'):
+
+                    # Change the name of the key adding the source type
+
+                    data['%s (%s)' % (key, element.source_type)] = data.pop(key)
+
+                elif isinstance(element, IndependentVariable):
+
+                    data['%s (%s)' % (key, 'IndependentVariable')] = data.pop(key)
+
+                elif isinstance(element, Parameter):
+
+                    data['%s (%s)' % (key, 'Parameter')] = data.pop(key)
+
+                else:
+
+                    raise ModelInternalError("Found an unknown class at the top level")
+
+        return data
+
     def save(self, output_file, overwrite=False):
 
         """Save the model to disk"""
@@ -471,40 +519,7 @@ class Model(Node):
 
         else:
 
-            # Get the serialization dictionary
-
-            data = self.to_dict()
-
-            # Add the types to the sources
-
-            for key in data.keys():
-
-                try:
-
-                    element = self._children[key]
-
-                except KeyError:
-
-                    raise RuntimeError("Source %s is unknown" % key)
-
-                else:
-
-                    # There are two possible cases. Either the element is a source, or it is an independent
-                    # variable
-
-                    if hasattr(element, 'source_type'):
-
-                        # Change the name of the key adding the source type
-
-                        data['%s (%s)' % (key, element.source_type)] = data.pop(key)
-
-                    elif isinstance(element, IndependentVariable):
-
-                        data['%s (%s)' % (key, 'IndependentVariable')] = data.pop(key)
-
-                    else:
-
-                        raise CannotWriteModel("Found an unknown class at the top level")
+            data = self.to_dict_with_types()
 
             # Write it to disk
 

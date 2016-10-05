@@ -37,25 +37,50 @@ def load_model(filename):
     return parser.get_model()
 
 
+def clone_model(model_instance):
+    """
+    Returns a copy of the given model with all objects cloned. This is equivalent to saving the model to
+    a file and reload it, but it doesn't require writing or reading to/from disk. The original model is not touched.
+
+    :param model: model to be cloned
+    :return: a cloned copy of the given model
+    """
+
+    data = model_instance.to_dict_with_types()
+
+    parser = ModelParser(model_dict=data)
+
+    return parser.get_model()
+
+
 class ModelParser(object):
-    
-    def __init__(self, model_file):
 
-        # Read model file and deserialize into a dictionary
+    def __init__(self, model_file=None, model_dict=None):
 
-        try:
+        assert (model_file is not None) or (model_dict is not None), "You have to provide either a model file or a" \
+                                                                     "model dictionary"
 
-            with open(model_file) as f:
+        if model_file is not None:
 
-                self._model_dict = my_yaml.load(f)
+            # Read model file and deserialize into a dictionary
 
-        except IOError:
+            try:
 
-            raise ModelIOError("File %s cannot be read. Check path and permissions for current user." % model_file)
+                with open(model_file) as f:
 
-        except my_yaml.YAMLError:
+                    self._model_dict = my_yaml.load(f)
 
-            raise ModelYAMLError("Could not parse file %s. Check your syntax." % model_file)
+            except IOError:
+
+                raise ModelIOError("File %s cannot be read. Check path and permissions for current user." % model_file)
+
+            except my_yaml.YAMLError:
+
+                raise ModelYAMLError("Could not parse file %s. Check your syntax." % model_file)
+
+        else:
+
+            self._model_dict = model_dict
 
         self._parse()
 
@@ -67,6 +92,7 @@ class ModelParser(object):
 
         self._sources = []
         self._independent_variables = []
+        self._external_parameters = []
         self._links = []
         self._extra_setups = []
 
@@ -79,6 +105,14 @@ class ModelParser(object):
                 this_parser = IndependentVariableParser(var_name, source_or_var_definition)
 
                 self._independent_variables.append(this_parser.get_variable())
+
+            elif source_or_var_name.find("(Parameter)") > 0:
+
+                var_name = source_or_var_name.split("(")[0].replace(" ", "")
+
+                this_parser = ParameterParser(var_name, source_or_var_definition)
+
+                self._external_parameters.append(this_parser.get_variable())
 
             else:
 
@@ -101,6 +135,11 @@ class ModelParser(object):
         for independent_variable in self._independent_variables:
 
             new_model.add_independent_variable(independent_variable)
+
+        # Now set up external parameters (if any)
+        for parameter in self._external_parameters:
+
+            new_model.add_external_parameter(parameter)
 
         # Now set up the links
 
@@ -130,6 +169,17 @@ class IndependentVariableParser(object):
     def __init__(self, name, definition):
 
         self._variable = parameter.IndependentVariable(name, **definition)
+
+    def get_variable(self):
+
+        return self._variable
+
+
+class ParameterParser(object):
+
+    def __init__(self, name, definition):
+
+        self._variable = parameter.Parameter(name, **definition)
 
     def get_variable(self):
 
@@ -264,11 +314,11 @@ class SourceParser(object):
         if 'ra' in sky_direction_definition and 'dec' in sky_direction_definition:
 
             ra = parameter.Parameter('ra', sky_direction_definition['ra']['value'])
-            ra.set_bounds(0, 360)
+            ra.bounds = (0, 360)
             ra.fix = True
 
             dec = parameter.Parameter('dec', sky_direction_definition['dec']['value'])
-            dec.set_bounds(-90, 90)
+            dec.bounds = (-90, 90)
             dec.fix = True
 
             coordinates['ra'] = ra
@@ -277,11 +327,11 @@ class SourceParser(object):
         elif 'l' in sky_direction_definition and 'b' in sky_direction_definition:
 
             l = parameter.Parameter('l', sky_direction_definition['l']['value'])
-            l.set_bounds(0, 360)
+            l.bounds = (0, 360)
             l.fix = True
 
             b = parameter.Parameter('b', sky_direction_definition['b']['value'])
-            b.set_bounds(-90, 90)
+            b.bounds = (-90, 90)
             b.fix = True
 
             coordinates['l'] = l
