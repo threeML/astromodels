@@ -516,9 +516,13 @@ class Parameter(ParameterBase):
     :param max_value: maximum allowed value for the parameter (default: None)
     :param delta: initial step used by some fitting engines (default: 0.1 * value)
     :param desc: description of parameter (default: '')
+    :param free: whether the parameter is free or not (default: True)
+    :param unit: the parameter units (default: dimensionless)
+    :param prior: the parameter's prior (default: None)
     """
 
-    def __init__(self, name, value, min_value=None, max_value=None, delta=None, desc=None, free=True, unit=''):
+    def __init__(self, name, value, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',
+                 prior=None):
 
         # NOTE: we need to set up _aux_variable immediately because we are overriding the value getter which
         # needs this
@@ -555,6 +559,14 @@ class Parameter(ParameterBase):
         # pre-defined prior is no prior
         self._prior = None
 
+        # override the default if a prior has been given
+
+        if prior is not None:
+
+            # Use the property on purpose, so all checks and setups are applied
+
+            self.prior = prior
+
         # Now perform a very lazy check that we can perform math operations on the delta
 
         if not _behaves_like_a_number(self._delta):
@@ -563,6 +575,8 @@ class Parameter(ParameterBase):
         # Create a backup copy of the status of the parameter (useful when an auxiliary variable
         # is removed)
         self._old_free = self._free
+
+
 
     # Define the new get_value which accounts for the possibility of auxiliary variables
     @ParameterBase.value.getter
