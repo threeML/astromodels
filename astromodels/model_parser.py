@@ -179,6 +179,30 @@ class ParameterParser(object):
 
     def __init__(self, name, definition):
 
+        if 'prior' in definition:
+
+            # Need the create a function for the prior first
+
+            try:
+
+                function_name = definition['prior'].keys()[0]
+                parameters_definition = definition['prior'][function_name]
+
+            except KeyError:
+
+                raise ModelSyntaxError("The prior for parameter %s is malformed"
+                                       % name)
+
+            # parse the function
+
+            shape_parser = ShapeParser(name)
+
+            prior_instance = shape_parser.parse(name, function_name, parameters_definition)
+
+            # Substitute the definition with the instance, so that the following constructor will work
+            definition['prior'] = prior_instance
+
+
         self._variable = parameter.Parameter(name, **definition)
 
     def get_variable(self):
@@ -373,7 +397,16 @@ class SourceParser(object):
             raise ModelSyntaxError("The component %s of source %s is malformed"
                                    % (component_name, self._source_name))
 
-        shape = self._parse_shape_definition(component_name, function_name, parameters_definition)
+        # parse the function
+
+        shape_parser = ShapeParser(self._source_name)
+
+        shape = shape_parser.parse(component_name, function_name, parameters_definition)
+
+        # Get the links and extra setups, if any
+
+        self._links.extend(shape_parser.links)
+        self._extra_setups.extend(shape_parser.extra_setups)
 
         this_polarization = polarization.Polarization()
 
@@ -381,12 +414,39 @@ class SourceParser(object):
 
         return this_spectral_component
 
+    def _parse_extended_source(self, ext_source_definition):
+
+        return 0
+
+
+class ShapeParser(object):
+
+    def __init__(self, source_name):
+
+        self._source_name = source_name
+        self._links = []
+        self._extra_setups = []
+
+    @property
+    def links(self):
+
+        return self._links
+
+    @property
+    def extra_setups(self):
+
+        return self._extra_setups
+
+    def parse(self, component_name, function_name, parameters_definition):
+
+        return self._parse_shape_definition(component_name, function_name, parameters_definition)
+
     @staticmethod
     def _fix(value):
         # Remove new lines where it shouldn't be any
         # Sometimes YAML add new lines in the middle of definitions,
         # such as in units
-        return value.replace("\n","")
+        return value.replace("\n", "")
 
     def _parse_shape_definition(self, component_name, function_name, parameters_definition):
 
@@ -429,11 +489,11 @@ class SourceParser(object):
             # All these specifications are optional. If they are not present, then the default value
             # already contained in the instance of the function will be used
 
-            if 'min' in this_definition:
-                function_instance.parameters[parameter_name].min_value = this_definition['min']
+            if 'min_value' in this_definition:
+                function_instance.parameters[parameter_name].min_value = this_definition['min_value']
 
-            if 'max' in this_definition:
-                function_instance.parameters[parameter_name].max_value = this_definition['max']
+            if 'max_value' in this_definition:
+                function_instance.parameters[parameter_name].max_value = this_definition['max_value']
 
             if 'delta' in this_definition:
                 function_instance.parameters[parameter_name].delta = this_definition['delta']
@@ -450,7 +510,6 @@ class SourceParser(object):
             # Now set the value, which must be present
 
             if 'value' not in this_definition:
-
                 raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
                                        "of source %s, lacks a 'value' attribute"
                                        % (parameter_name, function_name, component_name, self._source_name))
@@ -470,7 +529,6 @@ class SourceParser(object):
                 # Now get the law
 
                 if 'law' not in this_definition:
-
                     raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
                                            "of source %s, is linked to %s but lacks a 'law' attribute"
                                            % (parameter_name, function_name, component_name,
@@ -483,9 +541,9 @@ class SourceParser(object):
 
                 path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
 
-                self._links.append( {'parameter_path': path,
-                                     'law': link_function_instance,
-                                     'variable': linked_variable} )
+                self._links.append({'parameter_path': path,
+                                    'law': link_function_instance,
+                                    'variable': linked_variable})
 
             else:
 
@@ -495,7 +553,6 @@ class SourceParser(object):
 
             # Setup the prior for this parameter, if it exists
             if 'prior' in this_definition:
-
                 # Get the function for this prior
 
                 # A name to display in case of errors
@@ -516,15 +573,9 @@ class SourceParser(object):
 
         # Now handle extra_setup if any
         if 'extra_setup' in parameters_definition:
-
             path = ".".join([self._source_name, 'spectrum', component_name, function_name])
 
             self._extra_setups.append({'function_path': path,
                                        'extra_setup': parameters_definition['extra_setup']})
 
-
         return function_instance
-
-    def _parse_extended_source(self, ext_source_definition):
-
-        return 0
