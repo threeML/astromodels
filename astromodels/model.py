@@ -4,7 +4,7 @@ import collections
 import os
 import warnings
 
-from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
+from astromodels.sources.source import Source, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
 
 from astromodels.my_yaml import my_yaml
 from astromodels.utils.disk_usage import disk_usage
@@ -72,8 +72,14 @@ class Model(Node):
 
             except AttributeError:
 
-                raise InvalidInput("The source name '%s' cannot be used, as it is a protected name. Please use a "
-                                   "different name." % source.name)
+                if isinstance(source, Source):
+
+                    raise InvalidInput("The source name '%s' cannot be used, as it is a protected name. Please use a "
+                                       "different name." % source.name)
+
+                else:
+
+                    raise
 
             except DuplicatedNode:
 
