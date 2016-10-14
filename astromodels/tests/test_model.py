@@ -1,4 +1,5 @@
 import pytest
+import os
 
 import astropy.units as u
 
@@ -11,6 +12,7 @@ from astromodels.sources.particle_source import ParticleSource
 from astromodels.functions.functions import Powerlaw
 from astromodels.functions.functions_2D import Gaussian_on_sphere
 from astromodels.parameter import Parameter
+from astromodels.model_parser import load_model
 
 
 def _get_point_source(name="test"):
@@ -270,6 +272,106 @@ def test_links():
 
     # Remove the link
     m.unlink(m.one.spectrum.main.Powerlaw.K)
+
+
+def test_external_parameters():
+
+    mg = ModelGetter()
+
+    m = mg.model
+
+    n_free_before_external = len(m.free_parameters)
+
+    # Create parameter
+    fake_parameter = Parameter("external_parameter",1.0, min_value=-1.0, max_value=1.0, free=True)
+
+    # Link as equal (default)
+    m.add_external_parameter(fake_parameter)
+
+    assert len(m.free_parameters) - 1 == n_free_before_external
+
+    # Try to display it just to make sure it works
+
+    m.display()
+
+    # Now test that we can remove it
+    m.remove_external_parameter("external_parameter")
+
+    assert len(m.free_parameters) == n_free_before_external
+
+
+def test_input_output_basic():
+
+    mg = ModelGetter()
+    m = mg.model
+
+    temp_file = "__test.yml"
+
+    m.save(temp_file, overwrite=True)
+
+    # Now reload it again
+    m_reloaded = load_model(temp_file)
+
+    os.remove(temp_file)
+
+    # Check that all sources have been recovered
+    assert m_reloaded.sources.keys() == m.sources.keys()
+
+
+def test_input_output_with_links():
+
+    mg = ModelGetter()
+    m = mg.model
+
+    # Make a link
+    m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K)
+
+    temp_file = "__test.yml"
+
+    m.save(temp_file, overwrite=True)
+
+    # Now reload it again
+    m_reloaded = load_model(temp_file)
+
+    os.remove(temp_file)
+
+    # Check that all sources have been recovered
+    assert m_reloaded.sources.keys() == m.sources.keys()
+
+    # Check that the link have been recovered
+    new_value = 0.987
+    m_reloaded.two.spectrum.main.Powerlaw.K.value = new_value
+
+    assert m_reloaded.one.spectrum.main.Powerlaw.K.value == new_value
+
+
+def test_input_output_with_external_parameters():
+
+    mg = ModelGetter()
+    m = mg.model
+
+    # Create an external parameter
+    fake_parameter = Parameter("external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True)
+
+    # Link as equal (default)
+    m.add_external_parameter(fake_parameter)
+
+    # Save model
+
+    temp_file = "__test.yml"
+
+    m.save(temp_file, overwrite=True)
+
+    # Now reload it again
+    m_reloaded = load_model(temp_file)
+
+    os.remove(temp_file)
+
+    # Check that all sources have been recovered
+    assert m_reloaded.sources.keys() == m.sources.keys()
+
+    # Check that the external parameter have been recovered
+    assert 'external_parameter' in m_reloaded
 
 
 def test_3ML_interface():
