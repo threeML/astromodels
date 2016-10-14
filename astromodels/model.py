@@ -10,7 +10,7 @@ from astromodels.my_yaml import my_yaml
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.table import dict_to_table
 from astromodels.parameter import Parameter, IndependentVariable
-from astromodels.tree import Node
+from astromodels.tree import Node, DuplicatedNode
 from astromodels.functions.function import get_function
 
 
@@ -43,6 +43,9 @@ class Model(Node):
 
     def __init__(self, *sources):
 
+        # There must be at least one source
+        assert len(sources) > 0, "You need to have at least one source in the model."
+
         # Setup the node
 
         super(Model, self).__init__("root")
@@ -63,7 +66,19 @@ class Model(Node):
 
         for source in sources:
 
-            self._add_child(source)
+            try:
+
+                self._add_child(source)
+
+            except AttributeError:
+
+                raise InvalidInput("The source name '%s' cannot be used, as it is a protected name. Please use a "
+                                   "different name." % source.name)
+
+            except DuplicatedNode:
+
+                raise InvalidInput("More than one source with the name '%s'. You cannot use the same name for multiple "
+                                   "sources" % source.name)
 
             # Now see if this is a point or extended source, and add them to the
             # appropriate dictionary
@@ -333,9 +348,15 @@ class Model(Node):
         """
 
         if link_function is None:
-            # Use the identity function by default
+            # Use the Line function by default, with both parameters fixed so that the two
+            # parameters to be linked will vary together
+            link_function = get_function('Line')
 
-            link_function = get_function('identity')
+            link_function.a.value = 1
+            link_function.a.fix = True
+
+            link_function.b.value = 0
+            link_function.b.fix = True
 
         parameter_1.add_auxiliary_variable(parameter_2, link_function)
 
@@ -356,7 +377,11 @@ class Model(Node):
 
         else:
 
-            warnings.warn("Parameter %s has no link to be removed." % parameter.path)
+            with warnings.catch_warnings():
+
+                warnings.simplefilter("always", RuntimeWarning)
+
+                warnings.warn("Parameter %s has no link to be removed." % parameter.path, RuntimeWarning)
 
     def _repr__base(self, rich_output=False):
 
@@ -446,7 +471,7 @@ class Model(Node):
 
                 this_dict['linked to'] = variable.path
                 this_dict['function'] = law.name
-                this_dict['current value'] = parameter.value.value
+                this_dict['current value'] = parameter.value
                 this_dict['unit'] = parameter.unit
 
                 parameters_dict[parameter_name] = this_dict
