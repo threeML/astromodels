@@ -15,7 +15,7 @@ def get_comparison_function():
 
     return mo
 
-
+@pytest.mark.slow
 def test_template_factory():
 
     mo = get_comparison_function()
@@ -49,7 +49,7 @@ def test_template_factory():
 
 
 # This will be run second, so the template will exist
-
+@pytest.mark.slow
 def test_template_function():
 
     tm = TemplateModel('__test')
