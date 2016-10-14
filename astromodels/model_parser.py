@@ -6,6 +6,7 @@ from astromodels import spectral_component
 from astromodels import polarization
 from astromodels.sources import point_source
 from astromodels.sources import particle_source
+from astromodels.sources import extended_source
 from astromodels import parameter
 from astromodels import model
 from astromodels.my_yaml import my_yaml
@@ -104,7 +105,11 @@ class ModelParser(object):
 
                 this_parser = IndependentVariableParser(var_name, source_or_var_definition)
 
-                self._independent_variables.append(this_parser.get_variable())
+                res = this_parser.get_variable()
+
+                assert isinstance(res, parameter.IndependentVariable)
+
+                self._independent_variables.append(res)
 
             elif source_or_var_name.find("(Parameter)") > 0:
 
@@ -112,13 +117,23 @@ class ModelParser(object):
 
                 this_parser = ParameterParser(var_name, source_or_var_definition)
 
-                self._external_parameters.append(this_parser.get_variable())
+                res = this_parser.get_variable()
+
+                assert isinstance(res, parameter.Parameter)
+
+                self._external_parameters.append(res)
 
             else:
 
                 this_parser = SourceParser(source_or_var_name, source_or_var_definition)
 
-                self._sources.append(this_parser.get_source())
+                res = this_parser.get_source()
+
+                assert isinstance(res, point_source.PointSource) or \
+                       isinstance(res, extended_source.ExtendedSource) or \
+                       isinstance(res, particle_source.ParticleSource)
+
+                self._sources.append(res)
 
                 self._links.extend(this_parser.links)
 
@@ -416,8 +431,33 @@ class SourceParser(object):
 
     def _parse_extended_source(self, ext_source_definition):
 
-        return 0
+        # The first item in the dictionary is the definition of the extended shape
+        name_of_spatial_shape = ext_source_definition.keys()[0]
 
+        spatial_shape_parser = ShapeParser(self._source_name)
+
+        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, ext_source_definition.values()[0])
+
+        # Parse the spectral information
+
+        try:
+
+            spectrum = ext_source_definition['spectrum']
+
+        except KeyError:
+
+            raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
+
+        components = []
+
+        for component_name, component_definition in ext_source_definition['spectrum'].iteritems():
+            this_component = self._parse_spectral_component(component_name, component_definition)
+
+            components.append(this_component)
+
+        this_ext_source = extended_source.ExtendedSource(self._source_name, spatial_shape, components=components)
+
+        return this_ext_source
 
 class ShapeParser(object):
 
