@@ -33,7 +33,15 @@ class SpectralComponent(Node):
 
         Node.__init__(self, name)
 
-        self._add_children([self._spectral_shape, self._polarization])
+        try:
+
+            self._add_children([self._spectral_shape, self._polarization])
+
+        except TypeError:
+
+            raise TypeError("Couldn't instance the spectral component. Please verify that you are using an "
+                            "*instance* of a function, and not a class. For example, you need to use "
+                            "'%s()', and not '%s'." % (shape.__name__, shape.__name__))
 
     def _repr__base(self, rich_output):
 
