@@ -102,13 +102,11 @@ class ExtendedSource(Source, Node):
         Node.__init__(self, source_name)
 
         # Add the spatial shape as a child node, with an explicit name
-
-        self._shape = spatial_shape
-
-        self._add_child(self._shape, "shape")
+        self._spatial_shape = spatial_shape
+        self._add_child(self._spatial_shape)
 
         # Add the same node also with the name of the function
-        self._add_child(self._shape, self._shape.name)
+        #self._add_child(self._shape, self._shape.__name__)
 
         # Add a node called 'spectrum'
 
@@ -116,6 +114,16 @@ class ExtendedSource(Source, Node):
         spectrum_node._add_children(self._components.values())
 
         self._add_child(spectrum_node)
+
+    @property
+    def spatial_shape(self):
+        """
+        A generic name for the spatial shape.
+
+        :return: the spatial shape instance
+        """
+
+        return self._spatial_shape
 
     def __call__(self, lon, lat, energies):
         """
@@ -151,9 +159,9 @@ class ExtendedSource(Source, Node):
 
         # Get brightness from spatial model
 
-        if self._shape.n_dim == 2:
+        if self._spatial_shape.n_dim == 2:
 
-            brightness = self._shape(lon, lat)
+            brightness = self._spatial_shape(lon, lat)
 
             # In this case the spectrum is the same everywhere
             n_points = lat.shape[0]
@@ -166,7 +174,7 @@ class ExtendedSource(Source, Node):
 
         else:
 
-            result = self._shape(lon, lat, energies) * differential_flux
+            result = self._spatial_shape(lon, lat, energies) * differential_flux
 
         # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
         # small numbers down the line
@@ -188,7 +196,7 @@ class ExtendedSource(Source, Node):
         key = '%s (extended source)' % self.name
 
         repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]['shape'] = self._shape.to_dict(minimal=True)
+        repr_dict[key]['shape'] = self._spatial_shape.to_dict(minimal=True)
         repr_dict[key]['spectrum'] = collections.OrderedDict()
 
         for component_name, component in self.components.iteritems():
