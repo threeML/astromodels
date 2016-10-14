@@ -107,6 +107,9 @@ class ExtendedSource(Source, Node):
 
         self._add_child(self._shape, "shape")
 
+        # Add the same node also with the name of the function
+        self._add_child(self._shape, self._shape.name)
+
         # Add a node called 'spectrum'
 
         spectrum_node = Node('spectrum')
