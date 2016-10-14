@@ -275,14 +275,19 @@ class ParameterBase(Node):
 
         return self._value
 
+    def has_auxiliary_variable(self):
+
+        # ParameterBase cannot have auxiliary variable (only Parameter has)
+
+        return False
+
     # I use the decorator here (instead of the usual style for getters and setters) because
     # children classes need to override the getter, and using decorators is the only way
     # to achieve that
     @value.setter
     @accept_quantity(float, allow_none=False)
     def value(self, value):
-        """Sets the current value of the parameter, ensuring that it is within the allowed range. Note that you have to
-        provide value as a quantity"""
+        """Sets the current value of the parameter, ensuring that it is within the allowed range."""
 
         if self._min_value is not None and value < self._min_value:
 
@@ -308,10 +313,22 @@ class ParameterBase(Node):
                 raise NotCallableOrErrorInCall(
                     "Could not use callback for parameter %s with value %s" % (self.name, value))
 
-        # Save the value as a pure floating point to avoid the overhead of the astropy.units machinery when
-        # not needed
+        # Issue a warning if there is an auxiliary variable, as the setting does not have any effect
+        if self.has_auxiliary_variable():
 
-        self._value = value
+            with warnings.catch_warnings():
+
+                warnings.simplefilter("always", RuntimeWarning)
+
+                warnings.warn("You are trying to assign to a parameter which is either linked or "
+                              "has auxiliary variables. The assignment has no effect.", RuntimeWarning)
+
+        else:
+
+            # Save the value as a pure floating point to avoid the overhead of the astropy.units machinery when
+            # not needed
+
+            self._value = value
 
     @property
     def as_quantity(self):
