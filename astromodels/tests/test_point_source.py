@@ -26,6 +26,11 @@ def test_constructor():
     ra, dec = (125.6, -75.3)
     l, b = (288.44190139183564, -20.717313145391525)
 
+    # This should throw as we are using Powerlaw instead of Powerlaw()
+    with pytest.raises(TypeError):
+
+        _ = PointSource("my_source", ra, dec, Powerlaw)
+
     # Init with RA, Dec
 
     point_source1 = PointSource('my_source',ra, dec, Powerlaw())
