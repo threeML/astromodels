@@ -716,7 +716,7 @@ class Function(Node):
 
                     # However, if also the other function has fixed dimension and it is dimensionless
                     # (likely another XSpec multiplicative model) we need to flag that as well
-                    if other_instance.fixed_units[1] == u.dimensionless_unscaled:
+                    if other_instance.has_fixed_units() and (other_instance.fixed_units[1] == u.dimensionless_unscaled):
 
                         other_instance._make_dimensionless = True
 
