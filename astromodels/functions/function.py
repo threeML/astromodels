@@ -714,6 +714,15 @@ class Function(Node):
 
                     self._make_dimensionless = True
 
+                    # However, if also the other function has fixed dimension and it is dimensionless
+                    # (likely another XSpec multiplicative model) we need to flag that as well
+                    if other_instance.fixed_units[1] == u.dimensionless_unscaled:
+
+                        other_instance._make_dimensionless = True
+
+                        # Now we need to flag the composite function as fixed units and dimensionless
+                        c._fixed_units = other_instance.fixed_units
+
             else:
 
                 # We need to make the other instance dimensionless
