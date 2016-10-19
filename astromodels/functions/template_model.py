@@ -129,7 +129,11 @@ class TemplateModelFactory(object):
 
         # Make sure we are dealing with arrays (list will be transformed)
 
-        differential_fluxes = np.array(differential_fluxes)
+        if not isinstance(differential_fluxes, u.Quantity):
+
+            differential_fluxes = differential_fluxes * 1/(u.keV*u.s*u.cm**2)
+
+        differential_fluxes = np.array(differential_fluxes.to(1/(u.keV*u.s*u.cm**2)).value)
 
         n_parameters = parameters_values.shape[0]
 
