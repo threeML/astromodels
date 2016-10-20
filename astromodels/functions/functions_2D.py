@@ -4,6 +4,7 @@ from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 
+from astropy.io import fits
 
 class Latitude_galactic_diffuse(Function2D):
     r"""
@@ -231,3 +232,99 @@ class Disk_on_sphere(Function2D):
                 max_lon = max_lon - 360.
 
         return (min_lon, max_lon), (min_lat, max_lat)
+
+class SpatialTemplate_2D(Function2D):
+    r"""
+        description :
+        
+            User input Spatial Template.  Expected to be normalized to 1/sr
+        
+        latex : $ hi $
+        
+        parameters :
+        
+            K :
+        
+                desc : normalization
+                initial value : 1
+                fix : yes
+        
+        """
+    
+    __metaclass__ = FunctionMeta
+    
+    def _set_units(self, x_unit, y_unit, z_unit):
+        
+        self.K.unit = z_unit
+    
+    # This is optional, and it is only needed if we need more setup after the
+    # constructor provided by the meta class
+    
+    def _setup(self):
+        
+        self._frame = ICRS()
+    
+    def set_file(self,fitsfile,ihdu=0):
+        
+        f = fits.open(fitsfile)
+        self.refXpix = f[ihdu].header['CRPIX1']
+        self.refYpix = f[ihdu].header['CRPIX2']
+        self.delXpix = f[ihdu].header['CDELT1']
+        self.delYpix = f[ihdu].header['CDELT2']
+        self.refX = f[ihdu].header['CRVAL1'] # assumed to be RA
+        self.refY = f[ihdu].header['CRVAL2'] # assumed to be DEC
+        self.map = f[ihdu].data
+        self.nX = f[ihdu].header['NAXIS1']
+        self.nY = f[ihdu].header['NAXIS2']
+    
+    def set_frame(self, new_frame):
+        """
+            Set a new frame for the coordinates (the default is ICRS J2000)
+            
+            :param new_frame: a coordinate frame from astropy
+            :return: (none)
+            """
+        assert isinstance(new_frame, BaseCoordinateFrame)
+        
+        self._frame = new_frame
+    
+    def evaluate(self, x, y, K):
+        
+        # We assume x and y are R.A. and Dec
+        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+        
+        Xpix = np.add(np.divide(np.subtract(x,self.refX),self.delXpix),self.refXpix)
+        Ypix = np.add(np.divide(np.subtract(y,self.refY),self.delYpix),self.refYpix)
+        
+        Xpix = Xpix.astype(int)
+        Ypix = Ypix.astype(int)
+
+        # find pixels that are in the template ROI, otherwise return zero
+        iz = np.where((Xpix<self.nX) & (Xpix>=0) & (Ypix<self.nY) & (Ypix>=0))[0]
+        out = np.zeros((len(x)))
+        out[iz] = self.map[Xpix[iz].astype(int),Ypix[iz]]
+        
+        #pdb.set_trace()
+        
+        return np.multiply(K,out)
+
+    def get_boundaries(self):
+    
+        min_ra = (0-np.int(self.refXpix))*self.delXpix + self.refX
+        max_ra = ((self.nX-1)-np.int(self.refXpix))*self.delXpix + self.refX
+
+        min_dec = (0-np.int(self.refYpix))*self.delYpix + self.refY
+        max_dec = ((self.nY-1)-np.int(self.refYpix))*self.delYpix + self.refY
+        
+        min_lon = min([min_ra,max_ra])
+        max_lon = max([min_ra,max_ra])
+        
+        min_lat = min([min_dec,max_dec])
+        max_lat = max([min_dec,max_dec])
+        
+
+        return (min_lon, max_lon), (min_lat, max_lat)
+
+
+
+
