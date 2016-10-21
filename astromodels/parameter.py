@@ -382,8 +382,8 @@ class ParameterBase(Node):
 
         if self._min_value is not None and self.value < self._min_value:
 
-            warnings.warn("The current value of the parameter %s was below the new minimum %s." % (self.name,
-                                                                                                  self._min_value),
+            warnings.warn("The current value of the parameter %s (%s) "
+                          "was below the new minimum %s." % (self.name, self.value, self._min_value),
                           exceptions.RuntimeWarning)
 
             self._value = self._min_value
@@ -414,8 +414,9 @@ class ParameterBase(Node):
         # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
         if self._max_value is not None and self.value > self._max_value:
-            warnings.warn("The current value of the parameter %s was above the new maximum %s." % (self.name,
-                                                                                                   self._max_value),
+
+            warnings.warn("The current value of the parameter %s (%s) "
+                          "was above the new maximum %s." % (self.name, self.value, self._max_value),
                           exceptions.RuntimeWarning)
             self._value = self._max_value
 
