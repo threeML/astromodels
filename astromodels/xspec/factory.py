@@ -79,6 +79,9 @@ def get_models(model_dat_path):
     :return: dictionary containing the definition of all XSpec models
     """
 
+    # Check first if we already have a model data file in the data directory
+
+
     with open(model_dat_path) as f:
 
         # model.dat is a text file, no size issues here (will fit in memory)
@@ -167,7 +170,7 @@ def get_models(model_dat_path):
 
                     par_unit = ""
 
-                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1, 1)
+                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1e9, 1e9)
 
                 elif len(tokens) == 3:
 
@@ -177,7 +180,7 @@ def get_models(model_dat_path):
 
                     par_unit = ""
 
-                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1, 1)
+                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1e9, 1e9)
 
                 else:
 
@@ -191,7 +194,7 @@ def get_models(model_dat_path):
 
                         default_value = tokens[0]
                         par_unit = ""
-                        hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1, 1)
+                        hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1e9, 1e9)
 
                     else:
 
@@ -537,7 +540,9 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         sys.path.append(user_data_path)
 
     # Import the class in the current namespace (locals)
-    exec('from %s import %s' % (class_name, class_name))
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        exec('from %s import %s' % (class_name, class_name))
 
     # Return the class we just created
 
@@ -576,8 +581,6 @@ def setup_xspec_models():
             this_class_name, this_class = xspec_model_factory(model_name, xspec_function, model_type, this_model)
 
             classes.append(this_class_name)
-
-
 
         sys.stdout.write("done\n")
 
