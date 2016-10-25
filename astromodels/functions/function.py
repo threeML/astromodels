@@ -1350,6 +1350,7 @@ class Function3D(Function):
 
                 return np.squeeze(result).to(self.w_unit)
 
+    @memoize
     def _call_with_units(self, x, y, z, *args, **kwargs):
 
         # Gather the current parameters' values with units
@@ -1370,7 +1371,7 @@ class Function3D(Function):
         else:
 
             return results
-
+    @memoize
     def _call_without_units(self, x, y, z, *args, **kwargs):
 
         # Gather the current parameters' values without units, which means that the whole computation
