@@ -210,4 +210,4 @@ class ExtendedSource(Source, Node):
 
         :return: a tuple of tuples ((min. lon, max. lon), (min lat, max lat))
         """
-        return self.shape.get_boundaries()
+        return self._spatial_shape.get_boundaries()
