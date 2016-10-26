@@ -237,17 +237,17 @@ class SpatialTemplate_2D(Function2D):
     r"""
         description :
         
-        User input Spatial Template.  Expected to be normalized to 1/sr
+            User input Spatial Template.  Expected to be normalized to 1/sr
         
         latex : $ hi $
         
         parameters :
         
-        K :
+            K :
         
-        desc : normalization
-        initial value : 1
-        fix : yes
+                desc : normalization
+                initial value : 1
+                fix : yes
         
         """
     
@@ -307,9 +307,9 @@ class SpatialTemplate_2D(Function2D):
         #pdb.set_trace()
         
         return np.multiply(K,out)
-    
+
     def get_boundaries(self):
-        
+    
         min_ra = (0-np.int(self._refXpix))*self._delXpix + self._refX
         max_ra = ((self._nX-1)-np.int(self._refXpix))*self._delXpix + self._refX
         
