@@ -1,6 +1,9 @@
+# code to show how to create an extended source via uploading a FITs image template
+# author: Andrea Albert (aalbert@slac.stanford.edu)
+# date: Oct 26, 2016
+
 from threeML import *
 
-# this shows how to create an extended source via uploading a FITs image template
 # the class SpatialTemplate_2D expects a FITs file that contains a header with the following info: reference pixels (e.g. 'CRPIX1'), pixels step in degrees (e.g. 'CDELT1'), RA and DEC values at reference pixel (e.g. 'CRVAL1')
 
 # initialize shape object
