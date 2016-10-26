@@ -266,7 +266,7 @@ class SpatialTemplate_2D(Function2D):
     
     def load_file(self,fitsfile,ihdu=0):
         
-        with fits.open(fitsfile):
+        with fits.open(fitsfile) as f:
             self._refXpix = f[ihdu].header['CRPIX1']
             self._refYpix = f[ihdu].header['CRPIX2']
             self._delXpix = f[ihdu].header['CDELT1']
