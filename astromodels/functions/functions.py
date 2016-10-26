@@ -1,5 +1,7 @@
 __author__ = 'giacomov'
 
+# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
+
 import math
 import numpy as np
 import warnings

@@ -6,6 +6,8 @@ from astromodels.utils.angular_distance import angular_distance
 
 from astropy.io import fits
 
+# SpatialTemplate_2D add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
+
 class Latitude_galactic_diffuse(Function2D):
     r"""
         description :
