@@ -7,7 +7,7 @@ from threeML import *
 shape    = SpatialTemplate_2D()
 # load in template file
 # by default the extension number is set to zero (ihdu = 0)
-shape.set_file("exampleDMtemplate.fits",ihdu=0)
+shape.load_file("exampleDMtemplate.fits",ihdu=0)
 
 # just for example let's assume a powerlaw spectrum
 spectrum = Powerlaw()
