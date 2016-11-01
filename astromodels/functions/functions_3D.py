@@ -46,6 +46,14 @@ class Continuous_injection_diffusion(Function3D):
                 max : 0.6
                 fix : yes
 
+            uratio :
+
+                desc : ratio between u_cmb and u_B
+                initial value : 0.5
+                min : 0.01
+                max : 100.
+                fix : yes
+
             piv :
 
                 desc : Pivot for the diffusion radius
@@ -76,13 +84,14 @@ class Continuous_injection_diffusion(Function3D):
         # Delta is of course unitless
 
         self.delta.unit = u.dimensionless_unscaled
+        self.uratio.unit = u.dimensionless_unscaled
 
         # Piv has the same unit as energy (which is z)
 
         self.piv.unit = z_unit
         self.piv2.unit = z_unit
 
-    def evaluate(self, x, y, z, lon0, lat0, rdiff0, delta, piv, piv2):
+    def evaluate(self, x, y, z, lon0, lat0, rdiff0, delta, uratio, piv, piv2):
 
         lon, lat = x, y
         energy = z
@@ -90,9 +99,15 @@ class Continuous_injection_diffusion(Function3D):
         # energy in kev -> TeV.
         # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
         # of a dimensionless quantity, so there must be a pivot there.
+
+        e_energy_piv2 = 17. * np.power(energy / piv2, 0.54 + 0.046 * np.log10(energy / piv2))
+        e_piv_piv2 = 17. * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
+
         try:
 
-            rdiff = rdiff0 * np.power(energy / piv, (delta - 1.) / 2. * (0.54 + 0.046 * np.log10(energy / piv2)))
+            rdiff = rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, (delta - 1.) / 2.) * \
+                    np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) / \
+                    np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_energy_piv2, -1.5))
 
         except ValueError:
 
@@ -101,8 +116,9 @@ class Continuous_injection_diffusion(Function3D):
 
             # Work around the problem with this loop, which is slow but using units is only for testing purposes or
             # single calls, so it shouldn't matter too much
-            rdiff = np.array( map(lambda x: (rdiff0 * np.power(energy/ piv, x)).value,
-                                  (delta - 1.) / 2. * (0.54 + 0.046 * np.log10(energy / piv2)))) * rdiff0.unit
+            rdiff = np.array( map(lambda x: (rdiff0 * np.power(e_energy_pivi2 / e_piv_piv2, x)).value,
+                                  (delta - 1.) / 2. * np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) /
+                                  np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_energy_piv2, -1.5)))) * rdiff0.unit
 
         angsep = angular_distance(lon, lat, lon0, lat0)
 
