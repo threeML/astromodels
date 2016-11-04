@@ -19,7 +19,7 @@ class Node(DualAccessClass):
         self.__parent = None
 
         assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
-                                             "and + and - (but the name cannot start with -)" % name
+                                             "and _" % name
 
         self._name = name
 
