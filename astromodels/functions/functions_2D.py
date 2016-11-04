@@ -264,18 +264,18 @@ class SpatialTemplate_2D(Function2D):
         
         self._frame = ICRS()
     
-    def set_file(self,fitsfile,ihdu=0):
+    def load_file(self,fitsfile,ihdu=0):
         
-        f = fits.open(fitsfile)
-        self.refXpix = f[ihdu].header['CRPIX1']
-        self.refYpix = f[ihdu].header['CRPIX2']
-        self.delXpix = f[ihdu].header['CDELT1']
-        self.delYpix = f[ihdu].header['CDELT2']
-        self.refX = f[ihdu].header['CRVAL1'] # assumed to be RA
-        self.refY = f[ihdu].header['CRVAL2'] # assumed to be DEC
-        self.map = f[ihdu].data
-        self.nX = f[ihdu].header['NAXIS1']
-        self.nY = f[ihdu].header['NAXIS2']
+        with fits.open(fitsfile) as f:
+            self._refXpix = f[ihdu].header['CRPIX1']
+            self._refYpix = f[ihdu].header['CRPIX2']
+            self._delXpix = f[ihdu].header['CDELT1']
+            self._delYpix = f[ihdu].header['CDELT2']
+            self._refX = f[ihdu].header['CRVAL1'] # assumed to be RA
+            self._refY = f[ihdu].header['CRVAL2'] # assumed to be DEC
+            self._map = f[ihdu].data
+            self._nX = f[ihdu].header['NAXIS1']
+            self._nY = f[ihdu].header['NAXIS2']
     
     def set_frame(self, new_frame):
         """
@@ -293,16 +293,16 @@ class SpatialTemplate_2D(Function2D):
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
         
-        Xpix = np.add(np.divide(np.subtract(x,self.refX),self.delXpix),self.refXpix)
-        Ypix = np.add(np.divide(np.subtract(y,self.refY),self.delYpix),self.refYpix)
+        Xpix = np.add(np.divide(np.subtract(x,self._refX),self._delXpix),self._refXpix)
+        Ypix = np.add(np.divide(np.subtract(y,self._refY),self._delYpix),self._refYpix)
         
         Xpix = Xpix.astype(int)
         Ypix = Ypix.astype(int)
-
+        
         # find pixels that are in the template ROI, otherwise return zero
-        iz = np.where((Xpix<self.nX) & (Xpix>=0) & (Ypix<self.nY) & (Ypix>=0))[0]
+        iz = np.where((Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0))[0]
         out = np.zeros((len(x)))
-        out[iz] = self.map[Xpix[iz].astype(int),Ypix[iz]]
+        out[iz] = self._map[Xpix[iz].astype(int),Ypix[iz]]
         
         #pdb.set_trace()
         
@@ -310,11 +310,11 @@ class SpatialTemplate_2D(Function2D):
 
     def get_boundaries(self):
     
-        min_ra = (0-np.int(self.refXpix))*self.delXpix + self.refX
-        max_ra = ((self.nX-1)-np.int(self.refXpix))*self.delXpix + self.refX
-
-        min_dec = (0-np.int(self.refYpix))*self.delYpix + self.refY
-        max_dec = ((self.nY-1)-np.int(self.refYpix))*self.delYpix + self.refY
+        min_ra = (0-np.int(self._refXpix))*self._delXpix + self._refX
+        max_ra = ((self._nX-1)-np.int(self._refXpix))*self._delXpix + self._refX
+        
+        min_dec = (0-np.int(self._refYpix))*self._delYpix + self._refY
+        max_dec = ((self._nY-1)-np.int(self._refYpix))*self._delYpix + self._refY
         
         min_lon = min([min_ra,max_ra])
         max_lon = max([min_ra,max_ra])
@@ -322,7 +322,7 @@ class SpatialTemplate_2D(Function2D):
         min_lat = min([min_dec,max_dec])
         max_lat = max([min_dec,max_dec])
         
-
+        
         return (min_lon, max_lon), (min_lat, max_lat)
 
 
