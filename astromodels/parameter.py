@@ -300,19 +300,6 @@ class ParameterBase(Node):
                 "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
                     self.name, value, self.max_value))
 
-        # Call the callbacks (if any)
-
-        for callback in self._callbacks:
-
-            try:
-
-                callback(value)
-
-            except:
-
-                raise NotCallableOrErrorInCall(
-                    "Could not use callback for parameter %s with value %s" % (self.name, value))
-
         # Issue a warning if there is an auxiliary variable, as the setting does not have any effect
         if self.has_auxiliary_variable():
 
@@ -329,6 +316,19 @@ class ParameterBase(Node):
             # not needed
 
             self._value = value
+
+        # Call the callbacks (if any)
+
+        for callback in self._callbacks:
+
+            try:
+
+                callback(self)
+
+            except:
+
+                raise NotCallableOrErrorInCall(
+                    "Could not use callback for parameter %s with value %s" % (self.name, value))
 
     @property
     def as_quantity(self):
@@ -457,10 +457,10 @@ class ParameterBase(Node):
         self._name = new_name
 
     def add_callback(self, callback):
-        """Add a callback to the list of functions which are called whenever the value of the parameter is changed.
-        The callback must be a function accepting the current value as input. The return value of the callback is
-        ignored. More than one callback can be specified. In that case, the callbacks will be called in the same order
-        they have been entered."""
+        """Add a callback to the list of functions which are called immediately after the value of the parameter
+        is changed. The callback must be a function accepting the current parameter as input. The return value of the
+        callback is ignored. More than one callback can be specified. In that case, the callbacks will be called in the
+        same order they have been entered."""
 
         self._callbacks.append(callback)
 
