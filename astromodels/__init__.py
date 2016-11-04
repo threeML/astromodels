@@ -9,6 +9,7 @@ from .functions.functions import *
 from .functions.functions_2D import *
 from .functions.functions_3D import *
 from .functions.template_model import *
+from .functions. dark_matter.dm_models import *
 from .functions.function import list_functions, get_function_class
 from model import Model
 from spectral_component import SpectralComponent
