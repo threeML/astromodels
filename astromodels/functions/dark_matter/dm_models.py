@@ -146,18 +146,18 @@ class DMFitFunction(Function1D):
 
         if isinstance(x, astropy_units.Quantity):
 
-            # We need to convert to MeV
-            xx = x.to(astropy_units.MeV)
+            # We need to convert to GeV
+            xx = x.to(astropy_units.GeV)
 
         else:
 
             # We can assume that the input is in keV
 
-            keVtoMeV = 1. / 1000.
+            keVtoGeV = 1e-6
 
-            xx = np.multiply(x, keVtoMeV)  # xm expects gamma ray energies in MeV
+            xx = np.multiply(x, keVtoGeV)  # xm expects gamma ray energies in MeV
 
-        xm = np.log10(np.divide(xx, mass)) - 3.0
+        xm = np.log10(np.divide(xx, mass))
         phip = 1. / (8. * np.pi) * np.power(mass, -2) * (sigmav * J)  # units of this should be 1 / cm**2 / s
         dn = self._dn_interp((mass, xm))
         dn[xm > 0] = 0
@@ -322,18 +322,19 @@ class DMSpectra(Function1D):
 
         if isinstance(x, astropy_units.Quantity):
 
-            # We need to convert to MeV
+            # We need to convert to GeV
             xx = x.to(astropy_units.MeV)
 
         else:
 
             # We can assume that the input is in keV
 
-            keVtoMeV = 1. / 1000.
+            keVtoGeV = 1E-6
 
-            xx = np.multiply(x, keVtoMeV)  # xm expects gamma ray energies in MeV
+            xx = np.multiply(x, keVtoGeV)  # xm expects gamma ray energies in MeV
 
-        xm = np.log10(np.divide(xx, mass)) - 3.0
+        xm = np.log10(np.divide(xx, mass))
+
         phip = 1. / (8. * np.pi) * np.power(mass, -2) * (sigmav * J)  # units of this should be 1 / cm**2
         dn = self._dn_interp((mass, xm))  # note this is unitless (dx = d(xm))
         dn[xm > 0] = 0
