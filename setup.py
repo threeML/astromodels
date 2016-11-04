@@ -187,6 +187,7 @@ def setup_xspec():
 
 packages = ['astromodels',
             'astromodels/functions',
+            'astromodels/functions/dark_matter',
             'astromodels/sources',
             'astromodels/utils',
             'astromodels/xspec'
@@ -229,6 +230,11 @@ setup(
         'tables',
         'pandas'],
 
-    ext_modules=ext_modules_configuration
+    ext_modules=ext_modules_configuration,
+
+    package_data={
+          'astromodels': ['data/dark_matter/*'],
+       },
+    include_package_data=True,
 
 )
