@@ -1369,3 +1369,35 @@ class Exponential_cutoff(Function1D):
     def evaluate(self, x, K, xc):
         return K * np.exp(np.divide(x, -xc))
 
+
+class Identity(Function1D):
+    r"""
+    description :
+
+        Identity function
+
+    latex : $ x $
+
+    parameters :
+    
+        scale :
+        
+            desc : scale
+            initial value : 1
+            fix : yes
+
+    tests :
+        - { x : 10., function value: 10., tolerance: 1e-20}
+        - { x : 100., function value: 100., tolerance: 1e-20}
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.scale.unit = astropy_units.dimensionless_unscaled
+
+    def evaluate(self, x, scale):
+
+        return scale * x
