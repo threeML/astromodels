@@ -233,6 +233,123 @@ class Disk_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+
+class Ellipse_on_sphere(Function2D):
+    r"""
+        description :
+
+            An ellipse function on a sphere (in spherical coordinates)
+
+        latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| > {\rm 2a}} \end{matrix}\right. $$
+
+        parameters :
+
+            lon0 :
+
+                desc : Longitude of the center of the source
+                initial value : 0.0
+                min : 0.0
+                max : 360.0
+
+            lat0 :
+
+                desc : Latitude of the center of the source
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+            a :
+
+                desc : semimajor axis of the disk
+                initial value : 0.5
+                min : 0
+                max : 20
+                
+            b :
+
+                desc : semiminor axis of the disk
+                initial value : 0.5
+                min : 0
+                max : 20
+                
+            theta :
+
+                desc : inclination of semimajoraxis to a line of constant latitude
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # lon0 and lat0 and rdiff have most probably all units of degrees.
+        # However, let's set them up here just to save for the possibility of
+        # using the formula with other units (although it is probably never
+        # going to happen)
+
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
+        self.a.unit = x_unit
+        self.b.unit = x_unit
+        self.theta.unit = x_unit
+
+    def evaluate(self, x, y, lon0, lat0, a, b, theta):
+
+        # lon/lat of point in question
+        lon, lat = x,y
+        
+        # focal distance
+        f = np.sqrt(a**2 - b**2)
+        
+        # focus 1 coordinate and distance from focus 1 to point
+        lon1 = lon0 - f*np.cos(theta)
+        lat1 = lat0 - f*np.sin(theta)
+        angsep1 = angular_distance(lon1, lat1, lon, lat)
+
+        # focus 2 coordinate and distance from focus 2 to point
+        lon2 = lon0 + f*np.cos(theta)
+        lat2 = lat0 + f*np.sin(theta)
+        angsep2 = angular_distance(lon2, lat2, lon, lat)
+
+        # sum of distances to focii (should be <= 2a to be in ellipse)
+        angsep = angsep1 + angsep2
+        
+        return np.power(180 / np.pi, 2) * 1. / (np.pi * a * b) * (angsep <= 2*a)
+
+    def get_boundaries(self):
+
+        # Truncate the ellipse at 2 times the max of semimajor axis allowed
+
+        max_radius = self.a.max_value
+
+        min_lat = max(-90., self.lat0.value - 2 * max_radius)
+        max_lat = min(90., self.lat0.value + 2 * max_radius)
+
+        max_abs_lat = max(np.absolute(min_lat), np.absolute(max_lat))
+
+        if max_abs_lat > 89. or 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+
+            min_lon = 0.
+            max_lon = 360.
+
+        else:
+
+            min_lon = self.lon0.value - 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.)
+            max_lon = self.lon0.value + 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.)
+
+            if min_lon < 0.:
+
+                min_lon = min_lon + 360.
+
+            elif max_lon > 360.:
+
+                max_lon = max_lon - 360.
+
+        return (min_lon, max_lon), (min_lat, max_lat)
+
+
 class SpatialTemplate_2D(Function2D):
     r"""
         description :
