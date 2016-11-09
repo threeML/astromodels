@@ -887,6 +887,9 @@ class Parameter(ParameterBase):
 
         if (self._min_value is not None) or (self._max_value is not None):
 
+            # If _value is zero, then std will be zero, which doesn't make sense
+            assert self._value != 0, "You cannot randomize parameter %s because its value is exactly zero" % self.path
+
             # Bounded parameter. Use a truncated normal so we are guaranteed
             # to have a random value within the boundaries
 
