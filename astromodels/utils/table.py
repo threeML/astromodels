@@ -11,35 +11,40 @@ def dict_to_table(dictionary, list_of_keys=None):
     :param list_of_keys: optionally, only the keys in this list will be inserted in the table
     :return: a Table instance
     """
-    assert len(dictionary.values()) > 0, "Dictionary cannot be empty"
+
+    # assert len(dictionary.values()) > 0, "Dictionary cannot be empty"
 
     # Create an empty table
 
     table = Table()
 
-    # Add the names as first column
+    # If the dictionary is not empty, fill the table
 
-    table['name'] = dictionary.keys()
+    if len(dictionary) > 0:
 
-    # Now add all other properties
+        # Add the names as first column
 
-    # Use the first parameter as prototype
+        table['name'] = dictionary.keys()
 
-    prototype = dictionary.values()[0]
+        # Now add all other properties
 
-    column_names = prototype.keys()
+        # Use the first parameter as prototype
 
-    # If we have a white list for the columns, use it
+        prototype = dictionary.values()[0]
 
-    if list_of_keys is not None:
+        column_names = prototype.keys()
 
-        column_names = filter(lambda key: key in list_of_keys, column_names)
+        # If we have a white list for the columns, use it
 
-    # Fill the table
+        if list_of_keys is not None:
 
-    for column_name in column_names:
+            column_names = filter(lambda key: key in list_of_keys, column_names)
 
-        table[column_name] = map(lambda x: x[column_name], dictionary.values())
+        # Fill the table
+
+        for column_name in column_names:
+
+            table[column_name] = map(lambda x: x[column_name], dictionary.values())
 
     return table
 
