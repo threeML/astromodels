@@ -176,10 +176,10 @@ class ExtendedSource(Source, Node):
 
             result = self._spatial_shape(lon, lat, energies) * differential_flux
 
-        # Clip the brightness to a lower boundary of 1e-30 to avoid problems with extremely
-        # small numbers down the line
+        # Do not clip the output, otherwise it will not be possible to use ext. sources
+        # with negative fluxes
 
-        return np.maximum(result, 1e-60)
+        return result
 
     def _repr__base(self, rich_output=False):
         """
