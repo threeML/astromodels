@@ -673,13 +673,27 @@ class Blackbody(Function1D):
 
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
-        self.K.unit = y_unit / x_unit ** 2
+        self.K.unit = y_unit / (x_unit ** 2)
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
 
     def evaluate(self, x, K, kT):
-        return K * x ** 2 / (np.exp(x / kT) - 1)
+
+        arg = np.divide(x,kT)
+
+        # get rid of overflow
+        idx = arg <= 700.
+
+        # The K * 0 part is a trick so that out will have the right units (if the input
+        # has units)
+
+        out = np.zeros(x.shape) * K * x * x  * 0
+
+        out[idx]  = np.divide(K * x[idx] * x[idx], np.expm1(arg[idx]))
+        #out[~idx] = 0. * K
+
+        return out
 
 
 # noinspection PyPep8Naming
