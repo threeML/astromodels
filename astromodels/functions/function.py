@@ -1553,24 +1553,32 @@ class CompositeFunction(Function):
         self.__init__(operation, function_or_scalar_1, function_or_scalar_2)
 
         # Now set the units
-        self.set_units(state['x_unit'],state['y_unit'])
+        self.set_units(state['x_unit'], state['y_unit'], relaxed=True)
 
-    def set_units(self, x_unit, y_unit):
+    def set_units(self, x_unit, y_unit, relaxed=False):
 
-        self._requested_x_unit = x_unit
-        self._requested_y_unit = y_unit
+        if relaxed and (x_unit is None) and (y_unit is None):
 
-        # Just rely on the single functions to adjust themselves.
+            # This can happen when rebuilding a composite function during unpickling, when
+            # there are more than two functions composed together. We do not need to to anything in that case
+            pass
 
-        for function in self.functions:
+        else:
 
-            if hasattr(function, '_make_dimensionless'):
+            self._requested_x_unit = x_unit
+            self._requested_y_unit = y_unit
 
-                function.set_units(x_unit, u.dimensionless_unscaled)
+            # Just rely on the single functions to adjust themselves.
 
-            else:
+            for function in self.functions:
 
-                function.set_units(x_unit, y_unit)
+                if hasattr(function, '_make_dimensionless'):
+
+                    function.set_units(x_unit, u.dimensionless_unscaled)
+
+                else:
+
+                    function.set_units(x_unit, y_unit)
 
         #If there are multiple free normalizations, freeze them to 1 and fix the unit of the corresponding
         # function. This is needed for example for a case like Powerlaw() * Exponential_cutoff(), as both of them

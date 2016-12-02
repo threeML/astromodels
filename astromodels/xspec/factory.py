@@ -455,7 +455,7 @@ $DOCSTRING$
     def _set_units(self, x_unit, y_unit):
 
         # Make sure this is an energy
-        assert str(x_unit.physical_type) == 'energy', "Xspec models can only be used as spectra"
+        assert str(x_unit.physical_type) == 'energy', "Trying to set x-unit with (%s), which is not energy" % (x_unit)
 
         # Make sure the y_unit is the correct one
         try:
