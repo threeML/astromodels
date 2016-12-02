@@ -115,8 +115,9 @@ def memoize(method):
     def memoizer(instance, x, *args, **kwargs):
 
         # Create a tuple because a tuple is hashable
+        # Explicity making values float to enable hashing. J. Michael Burgess
 
-        unique_id = tuple(x.value for x in instance.parameters.values()) + (x.shape[0], x.min(), x.max())
+        unique_id = tuple(float(x.value) for x in instance.parameters.values()) + (x.shape[0], x.min(), x.max())
 
         # Create a unique identifier for this combination of inputs
 
