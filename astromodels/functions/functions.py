@@ -926,6 +926,50 @@ class Constant(Function1D):
     def evaluate(self, x, k):
         return k
 
+class DiracDelta(Function1D):
+    r"""
+        description :
+
+            return k at value
+
+        latex : $ k $
+
+        parameters :
+
+            k :
+
+                desc : Constant value
+                initial value : 0
+
+            zero_point:
+
+                 desc: value at which function is non-zero
+                 initial value : 0
+
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        self.k.unit = y_unit
+        self.zero_point.unit = x_unit
+
+    def evaluate(self, x, k, zero_point):
+
+        out = np.zeros_like(x) * k
+
+        out[x==zero_point ] = k
+
+
+        return out
+
+
+
+
+
+
+
 
 class Band(Function1D):
     r"""
@@ -1278,6 +1322,9 @@ class Log_parabola(Function1D):
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
         return self.piv.value * pow(10, (2 + self.alpha.value) / (2 * self.beta.value))
+
+
+
 
 
 if has_gsl:
