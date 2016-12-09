@@ -935,13 +935,13 @@ class DiracDelta(Function1D):
     r"""
         description :
 
-            return k at value
+            return  at zero_point
 
-        latex : $ k $
+        latex : $ value $
 
         parameters :
 
-            k :
+            value :
 
                 desc : Constant value
                 initial value : 0
@@ -958,14 +958,15 @@ class DiracDelta(Function1D):
     __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
-        self.k.unit = y_unit
+
+        self.value.unit = y_unit
         self.zero_point.unit = x_unit
 
-    def evaluate(self, x, k, zero_point):
+    def evaluate(self, x, value, zero_point):
 
-        out = np.zeros_like(x) * k * 0
+        out = np.zeros(x.shape) * value * 0
 
-        out[x==zero_point ] = k
+        out[ x == zero_point ] = value
 
 
         return out
