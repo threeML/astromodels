@@ -870,51 +870,140 @@ class Sin(Function1D):
         return K * np.sin(2 * np.pi * f * x + phi)
 
 
+
+
+class Line(Function1D):
+    r"""
+    description :
+
+        A linear function
+
+    latex : $ a * x + b $
+
+    parameters :
+
+        a :
+
+            desc : linear coefficient
+            initial value : 1
+
+        b :
+
+            desc : intercept
+            initial value : 0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit / x_unit
+
+        # b has units of y
+        self.b.unit = y_unit
+
+    def evaluate(self, x, a, b):
+        return a * x + b
+
+class Constant(Function1D):
+    r"""
+        description :
+
+            Return k
+
+        latex : $ k $
+
+        parameters :
+
+            k :
+
+                desc : Constant value
+                initial value : 0
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        self.k.unit = y_unit
+
+    def evaluate(self, x, k):
+        return k
+
+class DiracDelta(Function1D):
+    r"""
+        description :
+
+            return k at value
+
+        latex : $ k $
+
+        parameters :
+
+            k :
+
+                desc : Constant value
+                initial value : 0
+
+            zero_point:
+
+                 desc: value at which function is non-zero
+                 initial value : 0
+                 fix : yes
+
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        self.k.unit = y_unit
+        self.zero_point.unit = x_unit
+
+    def evaluate(self, x, k, zero_point):
+
+        out = np.zeros_like(x) * k * 0
+
+        out[x==zero_point ] = k
+
+
+        return out
+
+
+
 if has_naima:
 
     class Synchrotron(Function1D):
         r"""
         description :
-
             Synchrotron spectrum from an input particle distribution, using Naima (naima.readthedocs.org)
-
         latex: not available
-
         parameters :
-
             B :
-
                 desc : magnetic field
                 initial value : 3.24e-6
                 unit: Gauss
-
             distance :
-
                 desc : distance of the source
                 initial value : 1.0
                 unit : kpc
-
             emin :
-
                 desc : minimum energy for the particle distribution
                 initial value : 1
                 fix : yes
                 unit: GeV
-
             emax :
                 desc : maximum energy for the particle distribution
                 initial value : 510e3
                 fix : yes
                 unit: GeV
-
             need:
-
                 desc: number of points per decade in which to evaluate the function
                 initial value : 10
                 min : 2
                 max : 100
                 fix : yes
-
         """
 
         __metaclass__ = FunctionMeta
@@ -983,109 +1072,6 @@ if has_naima:
                 data['extra_setup'] = {'particle_distribution': self.particle_distribution.path}
 
             return data
-
-
-class Line(Function1D):
-    r"""
-    description :
-
-        A linear function
-
-    latex : $ a * x + b $
-
-    parameters :
-
-        a :
-
-            desc : linear coefficient
-            initial value : 1
-
-        b :
-
-            desc : intercept
-            initial value : 0
-
-    """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-        # a has units of y_unit / x_unit, so that a*x has units of y_unit
-        self.a.unit = y_unit / x_unit
-
-        # b has units of y
-        self.b.unit = y_unit
-
-    def evaluate(self, x, a, b):
-        return a * x + b
-
-
-class Constant(Function1D):
-    r"""
-        description :
-
-            Return k
-
-        latex : $ k $
-
-        parameters :
-
-            k :
-
-                desc : Constant value
-                initial value : 0
-
-        """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-        self.k.unit = y_unit
-
-    def evaluate(self, x, k):
-        return k
-
-class DiracDelta(Function1D):
-    r"""
-        description :
-
-            return k at value
-
-        latex : $ k $
-
-        parameters :
-
-            k :
-
-                desc : Constant value
-                initial value : 0
-
-            zero_point:
-
-                 desc: value at which function is non-zero
-                 initial value : 0
-                 fix : yes
-
-
-        """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-        self.k.unit = y_unit
-        self.zero_point.unit = x_unit
-
-    def evaluate(self, x, k, zero_point):
-
-        out = np.zeros_like(x) * k * 0
-
-        out[x==zero_point ] = k
-
-
-        return out
-
-
-
 
 
 
