@@ -551,6 +551,7 @@ class Uniform_prior(Function1D):
 
         return result
 
+
     def from_unit_cube(self, x):
         """
         Used by multinest
@@ -570,6 +571,124 @@ class Uniform_prior(Function1D):
         par = x * spread + low
 
         return par
+
+
+
+class StepFunction(Function1D):
+    r"""
+        description :
+
+            A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
+            extremes of the interval are counted as part of the interval.
+
+        latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound} \end{cases}$
+
+        parameters :
+
+            lower_bound :
+
+                desc : Lower bound for the interval
+                initial value : 0
+                min : -np.inf
+                max : np.inf
+
+            upper_bound :
+
+                desc : Upper bound for the interval
+                initial value : 1
+                min : -np.inf
+                max : np.inf
+
+            value :
+
+                desc : Value in the interval
+                initial value : 1.0
+
+        tests :
+            - { x : 0.5, function value: 1.0, tolerance: 1e-20}
+            - { x : -0.5, function value: 0, tolerance: 1e-20}
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # Lower and upper bound has the same unit as x
+        self.lower_bound.unit = x_unit
+        self.upper_bound.unit = x_unit
+
+        # value has the same unit as y
+        self.value.unit = y_unit
+
+    def evaluate(self, x, lower_bound, upper_bound, value):
+        # The value * 0 is to keep the units right
+
+        result = np.zeros(x.shape) * value * 0
+
+        idx = (x >= lower_bound) & (x <= upper_bound)
+        result[idx] = value
+
+        return result
+
+
+
+class StepFunctionUpper(Function1D):
+    r"""
+        description :
+
+            A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
+            upper interval is open.
+
+        latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound} \end{cases}$
+
+        parameters :
+
+            lower_bound :
+
+                desc : Lower bound for the interval
+                initial value : 0
+                min : -np.inf
+                max : np.inf
+                fix : yes
+
+            upper_bound :
+
+                desc : Upper bound for the interval
+                initial value : 1
+                min : -np.inf
+                max : np.inf
+                fix : yes
+
+            value :
+
+                desc : Value in the interval
+                initial value : 1.0
+
+        tests :
+            - { x : 0.5, function value: 1.0, tolerance: 1e-20}
+            - { x : -0.5, function value: 0, tolerance: 1e-20}
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # Lower and upper bound has the same unit as x
+        self.lower_bound.unit = x_unit
+        self.upper_bound.unit = x_unit
+
+        # value has the same unit as y
+        self.value.unit = y_unit
+
+    def evaluate(self, x, lower_bound, upper_bound, value):
+        # The value * 0 is to keep the units right
+
+        result = np.zeros(x.shape) * value * 0
+
+        idx = (x >= lower_bound) & (x < upper_bound)
+        result[idx] = value
+
+        return result
 
 
 class Log_uniform_prior(Function1D):
@@ -751,51 +870,141 @@ class Sin(Function1D):
         return K * np.sin(2 * np.pi * f * x + phi)
 
 
+
+
+class Line(Function1D):
+    r"""
+    description :
+
+        A linear function
+
+    latex : $ a * x + b $
+
+    parameters :
+
+        a :
+
+            desc : linear coefficient
+            initial value : 1
+
+        b :
+
+            desc : intercept
+            initial value : 0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit / x_unit
+
+        # b has units of y
+        self.b.unit = y_unit
+
+    def evaluate(self, x, a, b):
+        return a * x + b
+
+class Constant(Function1D):
+    r"""
+        description :
+
+            Return k
+
+        latex : $ k $
+
+        parameters :
+
+            k :
+
+                desc : Constant value
+                initial value : 0
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        self.k.unit = y_unit
+
+    def evaluate(self, x, k):
+        return k
+
+class DiracDelta(Function1D):
+    r"""
+        description :
+
+            return  at zero_point
+
+        latex : $ value $
+
+        parameters :
+
+            value :
+
+                desc : Constant value
+                initial value : 0
+
+            zero_point:
+
+                 desc: value at which function is non-zero
+                 initial value : 0
+                 fix : yes
+
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.value.unit = y_unit
+        self.zero_point.unit = x_unit
+
+    def evaluate(self, x, value, zero_point):
+
+        out = np.zeros(x.shape) * value * 0
+
+        out[ x == zero_point ] = value
+
+
+        return out
+
+
+
 if has_naima:
 
     class Synchrotron(Function1D):
         r"""
         description :
-
             Synchrotron spectrum from an input particle distribution, using Naima (naima.readthedocs.org)
-
         latex: not available
-
         parameters :
-
             B :
-
                 desc : magnetic field
                 initial value : 3.24e-6
                 unit: Gauss
-
             distance :
-
                 desc : distance of the source
                 initial value : 1.0
                 unit : kpc
-
             emin :
-
                 desc : minimum energy for the particle distribution
                 initial value : 1
                 fix : yes
                 unit: GeV
-
             emax :
                 desc : maximum energy for the particle distribution
                 initial value : 510e3
                 fix : yes
                 unit: GeV
-
             need:
-
                 desc: number of points per decade in which to evaluate the function
                 initial value : 10
                 min : 2
                 max : 100
                 fix : yes
-
         """
 
         __metaclass__ = FunctionMeta
@@ -866,65 +1075,7 @@ if has_naima:
             return data
 
 
-class Line(Function1D):
-    r"""
-    description :
 
-        A linear function
-
-    latex : $ a * x + b $
-
-    parameters :
-
-        a :
-
-            desc : linear coefficient
-            initial value : 1
-
-        b :
-
-            desc : intercept
-            initial value : 0
-
-    """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-        # a has units of y_unit / x_unit, so that a*x has units of y_unit
-        self.a.unit = y_unit / x_unit
-
-        # b has units of y
-        self.b.unit = y_unit
-
-    def evaluate(self, x, a, b):
-        return a * x + b
-
-
-class Constant(Function1D):
-    r"""
-        description :
-
-            Return k
-
-        latex : $ k $
-
-        parameters :
-
-            k :
-
-                desc : Constant value
-                initial value : 0
-
-        """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-        self.k.unit = y_unit
-
-    def evaluate(self, x, k):
-        return k
 
 
 class Band(Function1D):
@@ -1278,6 +1429,9 @@ class Log_parabola(Function1D):
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
         return self.piv.value * pow(10, (2 + self.alpha.value) / (2 * self.beta.value))
+
+
+
 
 
 if has_gsl:
