@@ -269,9 +269,9 @@ class TemplateModel(Function1D):
             scale :
 
                 desc : Scale for the independent variable. The templates are handled as if they contains the fluxes
-                       at x / scale. This is useful for example when the template describe energies in the rest frame,
-                       at which point the scale describe the transformation between rest frame energy and observer frame
-                       energy. Fix this to 1 to neutralize its effect.
+                       at E = scale * x.This is useful for example when the template describe energies in the rest
+                       frame, at which point the scale describe the transformation between rest frame energy and
+                       observer frame energy. Fix this to 1 to neutralize its effect.
 
                 initial value : 1.0
                 min : 1e-5
