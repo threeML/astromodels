@@ -152,15 +152,39 @@ def setup_xspec():
 
                 if len(valid_paths) == 0:
 
-                    print ('\nError: Could not find the libgfortran. XSPEC will cause a compile error.')
+                    # Ok now we need to check the common alternative directories
 
-                else:
+                    alt_gfortran_lib_dir = '/opt/local/gfortran/lib'
 
-                    library_dirs.append(alt_gfortran_lib_dir)
+                    # Linux/Unix
 
-            else:
+                    search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.so')
 
-                library_dirs.append(alt_gfortran_lib_dir)
+                    valid_paths = glob.glob(search_path)
+
+                    if len(valid_paths) == 0:
+
+                        # Mac / OS X
+
+                        search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.dylib')
+
+                        valid_paths = glob.glob(search_path)
+
+
+
+
+
+                        if len(valid_paths) == 0:
+
+                            print ('\nError: Could not find the libgfortran. XSPEC will cause a compile error.')
+
+                        else:
+
+                            library_dirs.append(alt_gfortran_lib_dir)
+
+                    else:
+
+                        library_dirs.append(alt_gfortran_lib_dir)
 
 
 
