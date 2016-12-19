@@ -3,10 +3,21 @@
 import os
 import sys
 import glob
-import numpy as np
 import re
 
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext as _build_ext
+
+# This is needed to use numpy in this module
+
+class build_ext(_build_ext):
+    def finalize_options(self):
+        _build_ext.finalize_options(self)
+        # Prevent numpy from thinking it is still in its setup process:
+        __builtins__.__NUMPY_SETUP__ = False
+        import numpy
+        self.include_dirs.append(numpy.get_include())
+
 
 # Get the version number
 execfile('astromodels/version.py')
@@ -176,7 +187,7 @@ def setup_xspec():
 
                   libraries=libraries,
 
-                  include_dirs=['astromodels/xspec/include', np.get_include()],
+                  include_dirs=['astromodels/xspec/include'],
 
                   library_dirs=library_dirs,
                   extra_compile_args=[])]
