@@ -199,6 +199,8 @@ ext_modules_configuration = setup_xspec()
 setup(
     name="astromodels",
 
+    setup_requires=['numpy'],
+
     packages=packages,
 
     data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
