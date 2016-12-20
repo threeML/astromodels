@@ -163,15 +163,101 @@ def setup_xspec():
 
                 if len(valid_paths) == 0:
 
-                    print ('\nError: Could not find the libgfortran. XSPEC will cause a compile error.')
+                    # Ok now see if it is a macports install
+
+                    alt_gfortran_lib_dir = '/opt/local/gfortran/lib'
+
+                    # Linux/Unix
+
+                    search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.so')
+
+                    valid_paths = glob.glob(search_path)
+
+                    if len(valid_paths) == 0:
+
+                        # Mac / OS X
+
+                        search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.dylib')
+
+                        valid_paths = glob.glob(search_path)
+
+                        if len(valid_paths) == 0:
+
+                            # Ok now we need to check if there is an environment variable
+
+                            env_var_gfortran_lib = os.environ['GFORTRAN_LIB']
+
+                            # Linux/Unix
+
+                            search_path = os.path.join(env_var_gfortran_lib, 'libgfortran.so')
+
+                            valid_paths = glob.glob(search_path)
+
+                            if len(valid_paths) == 0:
+
+                                # Mac / OS X
+
+                                search_path = os.path.join(env_var_gfortran_lib, 'libgfortran.dylib')
+
+                                valid_paths = glob.glob(search_path)
+
+                                # Now we fail completely if there is nothing
+
+
+
+                                if len(valid_paths) == 0:
+
+                                    print ('\nError: Could not find the libgfortran. XSPEC will cause a compile error.')
+                                    print ('Try exporting GFORTRAN_LIB to the directory containing libgfortran.so/.dylib')
+
+                                else:
+
+                                    # Close the loop on the OS X env var lookup
+
+                                    library_dirs.append(env_var_gfortran_lib)
+
+                            else:
+
+                                # Close the loop on the Linux/UNIX env var lookup
+
+                                library_dirs.append(env_var_gfortran_lib)
+
+                        else:
+
+                            # Close the loop on the OS X /opt lookup
+
+                            library_dirs.append(alt_gfortran_lib_dir)
+
+                    else:
+
+                        # Close the loop on the Linux/UNIX /opt lookup
+
+                        library_dirs.append(alt_gfortran_lib_dir)
 
                 else:
 
-                    library_dirs.append(alt_gfortran_lib_dir)
+                    # Close the loop on the OS X /usr/local lookup
 
+                    library_dirs.append(alt_gfortran_lib_dir)
             else:
 
+                # Close the loop on the Linux/UNIX /usr/local lookup
+
                 library_dirs.append(alt_gfortran_lib_dir)
+
+        else:
+
+
+            # close the loop on the standard lookup for OS X
+
+            library_dirs.append(search_path)
+
+    else:
+
+        # Close the standard Linux/UNIC lookup
+
+        library_dirs.append(search_path)
+
 
 
 
