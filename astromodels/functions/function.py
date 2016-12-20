@@ -18,7 +18,6 @@ import re
 import ast
 from yaml.reader import ReaderError
 import numpy as np
-import scipy.integrate
 import inspect
 
 __author__ = 'giacomov'
