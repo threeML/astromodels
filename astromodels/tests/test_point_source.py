@@ -7,11 +7,12 @@ from astromodels.sources.point_source import PointSource
 from astromodels.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Blackbody, Band
 
-from astromodels import has_xspec
-
-if has_xspec:
-
-    from astromodels import XS_phabs, XS_powerlaw
+try:
+    from astromodels.xspec import XS_phabs, XS_powerlaw
+except:
+    has_xspec = False
+else:
+    has_xspec = True
 
 
 from astromodels.functions.function import _known_functions
