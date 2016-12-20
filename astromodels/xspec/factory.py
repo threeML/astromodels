@@ -549,40 +549,34 @@ def setup_xspec_models():
 
     classes = []
 
-    if has_xspec:
+    sys.stdout.write("Loading xspec models...")
 
-        sys.stdout.write("Loading xspec models...")
+    all_models = get_models(find_model_dat())
 
-        all_models = get_models(find_model_dat())
+    for (model_name, xspec_function, model_type) in all_models:
 
-        for (model_name, xspec_function, model_type) in all_models:
+        if model_type == 'con':
 
-            if model_type == 'con':
+            # convolution models are not supported
+            continue
 
-                # convolution models are not supported
-                continue
+        if not hasattr(_xspec, xspec_function):
 
-            if not hasattr(_xspec, xspec_function):
+            # Some function do not exist in the wrapper. Let's ignore them
 
-                # Some function do not exist in the wrapper. Let's ignore them
+            continue
 
-                continue
+        this_model = all_models[(model_name, xspec_function, model_type)]
 
-            this_model = all_models[(model_name, xspec_function, model_type)]
+        # When the class is created it is registered among the known functions in the function module
+        # (it happens in the metaclass), so we don't need to do anything special here after the
+        # class type is created
 
-            # When the class is created it is registered among the known functions in the function module
-            # (it happens in the metaclass), so we don't need to do anything special here after the
-            # class type is created
+        this_class_name, this_class = xspec_model_factory(model_name, xspec_function, model_type, this_model)
 
-            this_class_name, this_class = xspec_model_factory(model_name, xspec_function, model_type, this_model)
+        classes.append(this_class_name)
 
-            classes.append(this_class_name)
-
-        sys.stdout.write("done\n")
-
-    else:
-
-        warnings.warn("XSpec is not available.", XSpecNotAvailable)
+    sys.stdout.write("done\n")
 
     return classes
 
