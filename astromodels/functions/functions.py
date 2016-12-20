@@ -236,6 +236,72 @@ class Cutoff_powerlaw(Function1D):
         return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x, xc))
 
 
+class Super_cutoff_powerlaw(Function1D):
+    r"""
+    description :
+
+        A power law with a super-exponential cutoff
+
+    latex : $ K~\frac{x}{piv}^{index}~\exp{(-x/xc)^{\gamma}} $
+
+    parameters :
+
+        K :
+
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+
+        piv :
+
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+
+        index :
+
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+
+        xc :
+
+            desc : Photon index
+            initial value : 10.0
+            min : 1.0
+
+        gamma :
+
+            desc : Index of the super-exponential cutoff
+            initial value : 1.0
+            min : -10
+            max : 10.0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # The index is always dimensionless
+        self.index.unit = astropy_units.dimensionless_unscaled
+        self.gamma.unit = astropy_units.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        # The cutoff has the same dimensions as x
+        self.xc.unit = x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, piv, index, xc, gamma):
+        return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x, xc)**gamma)
+
+
+
 class SmoothlyBrokenPowerLaw(Function1D):
     r"""
     description :

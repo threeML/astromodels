@@ -15,12 +15,11 @@ from model import Model
 from spectral_component import SpectralComponent
 from model_parser import load_model, clone_model
 from units import get_units
-from .xspec.factory import setup_xspec_models, has_xspec
 import astropy.units as u
 
 astromodels_units = get_units()
 
-if has_xspec:
-
-    from .xspec.factory import *
-    from .xspec.xspec_settings import *
+# if has_xspec:
+#
+#     from .xspec.factory import *
+#     from .xspec.xspec_settings import *
