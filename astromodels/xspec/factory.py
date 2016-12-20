@@ -11,21 +11,17 @@ from astromodels.functions.function import FunctionMeta, Function1D, get_functio
 
 from astromodels.utils.configuration import get_user_data_path
 
+
+class XSpecNotAvailable(ImportWarning):
+    pass
+
 try:
 
     from astromodels.xspec import _xspec
 
 except ImportError:
 
-    has_xspec = False
-
-else:
-
-    has_xspec = True
-
-
-class XSpecNotAvailable(ImportWarning):
-    pass
+    raise XSpecNotAvailable("You need to have XSPEC installed and configured in order to use its models.")
 
 
 # This list defines all python protected names (names which variables or attributes should not have)
