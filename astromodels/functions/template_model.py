@@ -13,6 +13,9 @@ import warnings
 
 import astropy.units as u
 
+# A very small number which will be substituted to zero during the construction
+# of the templates
+_TINY_ = 1e-50
 
 class IncompleteGrid(RuntimeError):
     pass
@@ -125,20 +128,38 @@ class TemplateModelFactory(object):
             parameters_values[idx] = parameters_values_input[key]
 
         # If the user did not specify one of the parameters, then the parameters_values array will contain nan
+
         assert np.all(np.isfinite(parameters_values)), "You didn't specify all parameters' values."
 
-        # Make sure we are dealing with arrays (list will be transformed)
+        # Make sure we are dealing with pure numpy arrays (list and astropy.Quantity instances will be transformed)
+        # First we transform the input into a u.Quantity (if it's not already)
 
         if not isinstance(differential_fluxes, u.Quantity):
 
-            differential_fluxes = differential_fluxes * 1/(u.keV*u.s*u.cm**2)
+            differential_fluxes = np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm ** 2)  # type: u.Quantity
 
-        differential_fluxes = np.array(differential_fluxes.to(1/(u.keV*u.s*u.cm**2)).value)
+        # Then we transform it in the right units and we cast it back to a pure np.array
 
-        n_parameters = parameters_values.shape[0]
+        differential_fluxes = np.array(differential_fluxes.to(1 / (u.keV * u.s * u.cm ** 2)).value)
+
+        # Now let's check for valid inputs
 
         assert self._energies.shape[0] == differential_fluxes.shape[0], "Differential fluxes and energies must have " \
                                                                         "the same number of elements"
+
+        # Check that the provided value does not contains nan, inf nor zero (as the interpolation happens in the
+        # log space)
+        assert np.all(np.isfinite(differential_fluxes)), "You have invalid values in the differential flux (nan or inf)"
+        assert np.all(differential_fluxes >= 0), "You have negative values in the differential flux (which is of " \
+                                                 "course impossible)"
+
+        if not np.all(differential_fluxes > 0):
+
+            warnings.warn("You have zeros in the differential flux. Since the interpolation happens in the log space, "
+                          "this cannot be accepted. We will substitute zeros with %g" % _TINY_)
+
+            idx = (differential_fluxes == 0)  # type: np.ndarray
+            differential_fluxes[idx] = _TINY_
 
         # Now set the corresponding values in the data frame
 
