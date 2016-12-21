@@ -105,8 +105,7 @@ def find_library(library_root):
 
             if len(results) >= 1:
 
-                # This returns the name of the library without extension, so
-                # /usr/lib/libcfitsio_1.2.3.4.so becomes cfitsio_1.2.3.4
+                # This is the full path of the library, like /usr/lib/libcfitsio_1.2.3.4
 
                 library_name = results[0]
                 library_dir = search_path
@@ -118,6 +117,9 @@ def find_library(library_root):
             return None, None
 
         else:
+
+            # Sanitize the library name to get from the fully-qualified path to just the library name
+            # (/usr/lib/libgfortran.so.3.0 becomes gfortran)
 
             return sanitize_lib_name(library_name), library_dir
 
