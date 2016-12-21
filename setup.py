@@ -4,19 +4,122 @@ import os
 import sys
 import glob
 import re
+import ctypes.util
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 
-# This is needed to use numpy in this module
+# This is needed to use numpy in this module, and should work whether or not numpy is
+# already installed. If it's not, it will trigger an installation
 
 class build_ext(_build_ext):
+
     def finalize_options(self):
+
         _build_ext.finalize_options(self)
+
         # Prevent numpy from thinking it is still in its setup process:
+
         __builtins__.__NUMPY_SETUP__ = False
+
         import numpy
+
         self.include_dirs.append(numpy.get_include())
+
+
+def sanitize_lib_name(library_path):
+    """
+    Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0, and returns the lib name needed to be
+    passed to the linker in the -l option (for example gfortran)
+
+    :param library_path:
+    :return:
+    """
+
+    lib_name = os.path.basename(library_path)
+
+    # Some regexp magic needed to extract in a system-independent (mac/linux) way the library name
+
+    tokens = re.findall("lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
+
+    return tokens[0][0]
+
+def find_library(library_root):
+    """
+    Returns the name of the library without extension
+
+    :param library_root: root of the library to search, for example "cfitsio_" will match libcfitsio_1.2.3.4.so
+    :return: the name of the library found (NOTE: this is *not* the path), and a directory path if the library is not
+    in the system paths (and None otherwise). The name of libcfitsio_1.2.3.4.so will be cfitsio_1.2.3.4, in other words,
+    it will be what is needed to be passed to the linker during a c/c++ compilation, in the -l option
+    """
+
+    # find_library searches for all system paths in a system independent way (but NOT those defined in
+    # LD_LIBRARY_PATH or DYLD_LIBRARY_PATH)
+
+    first_guess = ctypes.util.find_library(library_root)
+
+    if first_guess is not None:
+
+        # Found in one of the system paths that the linker already knows
+
+        return sanitize_lib_name(first_guess), None
+
+    else:
+
+        # could not find it. Let's examine LD_LIBRARY_PATH or DYLD_LIBRARY_PATH
+        # (if they are not defined, possible_locations will become [""] which will
+        # be handled by the next loop)
+
+        if sys.platform.lower().find("linux") >=0:
+
+            # Unix / linux
+
+            possible_locations = os.environ.get("LD_LIBRARY_PATH", "").split(":")
+
+        elif sys.platform.lower().find("darwin") >=0:
+
+            # Mac
+
+            possible_locations = os.environ.get("DYLD_LIBRARY_PATH", "").split(":")
+
+        else:
+
+            raise NotImplementedError("Platform %s is not supported" % sys.platform)
+
+        # Now look into the search paths
+
+        library_name = None
+        library_dir = None
+
+        for search_path in possible_locations:
+
+            if search_path == "":
+
+                # This can happen if there are more than one :, or if nor LD_LIBRARY_PATH
+                # nor DYLD_LIBRARY_PATH are defined (because of the default use above for os.environ.get)
+
+                continue
+
+            results = glob.glob(os.path.join(search_path, "lib%s*" % library_root))
+
+            if len(results) >= 1:
+
+                # This returns the name of the library without extension, so
+                # /usr/lib/libcfitsio_1.2.3.4.so becomes cfitsio_1.2.3.4
+
+                library_name = results[0]
+                library_dir = search_path
+
+                break
+
+        if library_name is None:
+
+            return None, None
+
+        else:
+
+            return sanitize_lib_name(library_name), library_dir
 
 
 # Get the version number
@@ -33,149 +136,43 @@ def setup_xspec():
 
         return None
 
-    library_dirs = [os.path.join(headas_root, 'lib')]
+    else:
 
-    # Check that the library directories exist
+        print("\n Xspec is detected. Will compile the Xspec extension.\n")
 
-    if not os.path.exists(library_dirs[0]):
+    # Make sure these libraries exist and are linkable right now
+    # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
 
-        print("\nERROR: the library directory %s of HEADAS does not exist!" % library_dirs[0])
+    libraries_root = ['XSFunctions', 'XSModel', 'XSUtil', 'XS', 'cfitsio', 'CCfits', 'wcs', 'gfortran']
 
-        sys.exit(-1)
+    libraries = []
+    library_dirs = []
 
-    libraries = ['XSFunctions', 'XSModel', 'XSUtil', 'XS']
+    for lib_root in libraries_root:
 
-    # Check that the libraries exist
-    for library in libraries:
-        
-        # Check for Linux/UNIX
-        
-        library_name = 'lib%s.so' % library
+        this_library, this_library_path = find_library(lib_root)
 
-        if not os.path.exists(os.path.join(library_dirs[0], library_name)):
+        if this_library is None:
 
-            # See if it has been compiled static (usually libXS is)
+            raise IOError("Could not find library %s. Impossible to compile Xspec" % lib_root)
 
-            library_name = 'lib%s.a' % library
+        else:
 
-            if not os.path.exists(os.path.join(library_dirs[0], library_name)):
+            print("Found library %s in %s" % (this_library, this_library_path))
 
-                # If on OS X look for dylib
-                
-                library_name = 'lib%s.dylib' % library
+            libraries.append(this_library)
 
-                if not os.path.exists(os.path.join(library_dirs[0], library_name)):
+            if this_library_path is not None:
 
+                # This library is not in one of the system path library, we need to add
+                # it to the -L flag during linking. Let's put it in the library_dirs list
+                # which will be used in the Extension class
 
-                    print("\nERROR: the library %s does not exist in %s while setting up Xspec!" %
-                          (library, library_dirs[0]))
+                library_dirs.append(this_library_path)
 
-    # Now find versions for required "external" libraries (part of HEASOFT but not Xspec by itself)
+    # Remove duplicates from library_dirs
 
-    required_libraries = ['cfitsio_', 'CCfits_', 'wcs-']
-    
-
-    for library_to_probe in required_libraries:
-        
-        # Linux/UNIX
-        
-        search_path = os.path.join(library_dirs[0], 'lib%s*.so' % library_to_probe)
-        
-        versions = glob.glob(search_path)
-
-        if len(versions) == 0:
-            
-            search_path = os.path.join(library_dirs[0], 'lib%s*.so' % (library_to_probe[:-1]+'.'))
-            
-            versions = glob.glob(search_path)
-
-            if len(versions) == 0:
-                
-                # Mac
-                
-                search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % library_to_probe)
-                
-                versions = glob.glob(search_path)
-
-                if len(versions) == 0:
-
-                    search_path = os.path.join(library_dirs[0], 'lib%s*.dylib' % (library_to_probe[:-1]+'.'))
-                    
-                    versions = glob.glob(search_path)
-
-                    if len(versions) == 0:
-
-                        print("\nERROR: cannot find version for library %s while setting up Xspec" % (library_to_probe))
-                        sys.exit(-1)
-
-        # Up to there versions[0] is a fully-qualified path
-        # we need instead just the name of the library, without
-        # the lib prefix nor the .so nor .a nor .dylib extension
-
-        name = os.path.basename(versions[0])
-        sanitized_name = re.match('lib(.+)\.', name).groups()[0]
-
-        libraries.append(sanitized_name)
-
-    # We also need gfortran, which must be installed on his own. If there is Xspec installed,
-    # then there is also gfortran somewhere because it is a dependence
-    libraries.append('gfortran')
-
-    # OS X users who have installed libgfortran via homebrew will have gfortran installed in a non-standard
-    # directory (typically /usr/local/gfortran/lib) instead of /usr/local/lib. We need to check both
-
-    # Linux/UNIX
-
-    search_path = os.path.join(library_dirs[0], 'libgfortran.so')
-
-    valid_paths = glob.glob(search_path)
-
-
-    if len(valid_paths) == 0:
-
-        # Mac / OS X
-
-        search_path = os.path.join(library_dirs[0], 'libgfortran.dylib')
-
-        valid_paths = glob.glob(search_path)
-
-        if len(valid_paths) == 0:
-
-            # Ok now we need to check the common alternative directories
-
-            alt_gfortran_lib_dir = '/usr/local/gfortran/lib'
-
-
-            # Linux/Unix
-
-            search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.so')
-
-            valid_paths = glob.glob(search_path)
-
-            if len(valid_paths) == 0:
-
-
-                # Mac / OS X
-
-                search_path = os.path.join(alt_gfortran_lib_dir, 'libgfortran.dylib')
-
-                valid_paths = glob.glob(search_path)
-
-                if len(valid_paths) == 0:
-
-                    print ('\nError: Could not find the libgfortran. XSPEC will cause a compile error.')
-
-                else:
-
-                    library_dirs.append(alt_gfortran_lib_dir)
-
-            else:
-
-                library_dirs.append(alt_gfortran_lib_dir)
-
-
-
-
+    library_dirs = list(set(library_dirs))
 
     # Configure the variables to build the external module with the C/C++ wrapper
 
