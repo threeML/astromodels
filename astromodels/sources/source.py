@@ -32,6 +32,10 @@ class Source(object):
             # Store the type string
             self._src_type = str(src_type)
 
+    def has_free_parameters(self):
+
+        raise NotImplementedError("You need to override this")
+
     @property
     def components(self):
         """

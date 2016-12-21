@@ -160,6 +160,30 @@ class PointSource(Source, Node):
 
             return numpy.sum(results, 0)
 
+    def has_free_parameters(self):
+        """
+        Returns True or False whether there is any parameter in this source
+
+        :return:
+        """
+
+        for component in self._components.values():
+
+            for par in component.shape.parameters.values():
+
+                if par.free:
+
+                    return True
+
+        for par in self.position.parameters.values():
+
+            if par.free:
+
+                return True
+
+        return False
+
+
     def _repr__base(self, rich_output=False):
         """
         Representation of the object
