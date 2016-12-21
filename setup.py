@@ -125,7 +125,6 @@ def find_library(library_root):
 # Get the version number
 execfile('astromodels/version.py')
 
-
 def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
