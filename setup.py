@@ -105,10 +105,31 @@ def find_library(library_root):
 
             if len(results) >= 1:
 
-                # This is the full path of the library, like /usr/lib/libcfitsio_1.2.3.4
+                # Results contain things like libXS.so, libXSPlot.so, libXSpippo.so
+                # If we are looking for libXS.so, we need to make sure that we get the right one!
 
-                library_name = results[0]
-                library_dir = search_path
+                for result in results:
+
+                    if re.match("lib%s[\-_\.]" % library_root, os.path.basename(result)) is None:
+
+                        continue
+
+                    else:
+
+                        # FOUND IT
+
+                        # This is the full path of the library, like /usr/lib/libcfitsio_1.2.3.4
+
+                        library_name = result
+                        library_dir = search_path
+
+                        break
+
+            else:
+
+                continue
+
+            if library_name is not None:
 
                 break
 
