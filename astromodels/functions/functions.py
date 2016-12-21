@@ -274,7 +274,7 @@ class Super_cutoff_powerlaw(Function1D):
 
             desc : Index of the super-exponential cutoff
             initial value : 1.0
-            min : -10
+            min : 0.1
             max : 10.0
 
     """
