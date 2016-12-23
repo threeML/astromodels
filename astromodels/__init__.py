@@ -13,6 +13,7 @@ from .functions.template_model import *
 from .functions. dark_matter.dm_models import *
 from .functions.function import list_functions, get_function_class
 from .core.model import Model
+from .core.parameter import Parameter
 from .core.spectral_component import SpectralComponent
 from .core.model_parser import load_model, clone_model
 from .core.units import get_units
