@@ -2,8 +2,8 @@ __author__ = 'giacomov'
 
 import collections
 
+from astromodels.core.dual_access_class import DualAccessClass
 from astromodels.utils.io import display
-from astromodels.dual_access_class import DualAccessClass
 from astromodels.utils.valid_variable import is_valid_variable_name
 
 

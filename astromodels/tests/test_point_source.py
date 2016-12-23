@@ -1,11 +1,10 @@
-import pytest
-
 import astropy.units as u
 import numpy as np
+import pytest
 
-from astromodels.sources.point_source import PointSource
-from astromodels.spectral_component import SpectralComponent
+from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Blackbody, Band
+from astromodels.sources.point_source import PointSource
 
 try:
     from astromodels.xspec import XS_phabs, XS_powerlaw

@@ -1,10 +1,12 @@
 import numpy as np
+from scipy.integrate import quad
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
+from astropy.io import fits
+import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 
-from astropy.io import fits
 
 class Latitude_galactic_diffuse(Function2D):
     r"""
@@ -443,5 +445,73 @@ class SpatialTemplate_2D(Function2D):
         return (min_lon, max_lon), (min_lat, max_lat)
 
 
-
-
+# class FunctionIntegrator(Function2D):
+#     r"""
+#         description :
+#
+#             Returns the average of the integrand function (a 1-d function) over the interval x-y. The integrand is set
+#             using the .integrand property, like in:
+#
+#             > G = FunctionIntegrator()
+#             > G.integrand = Powerlaw()
+#
+#         latex : $$ G(x,y) = \frac{\int_{x}^{y}~f(x)~dx}{y-x}$$
+#
+#         parameters :
+#
+#             s :
+#
+#                 desc : if s=0, then the integral will *not* be normalized by (y-x), otherwise (default) it will.
+#                 initial value : 1
+#                 fix : yes
+#         """
+#
+#     __metaclass__ = FunctionMeta
+#
+#     def _set_units(self, x_unit, y_unit, z_unit):
+#
+#         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
+#         # let's set them up here just to save for the possibility of using the
+#         # formula with other units (although it is probably never going to happen)
+#
+#         self.s = u.dimensionless_unscaled
+#
+#     def evaluate(self, x, y, s):
+#
+#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is zero or negative!"
+#
+#         integral = self._integrand.integral(x, y)
+#
+#         if s==0:
+#
+#             return integral
+#
+#         else:
+#
+#             return integral / (y-x)
+#
+#
+#     def get_boundaries(self):
+#
+#         return (-np.inf, +np.inf), (-np.inf, +np.inf)
+#
+#     def _set_integrand(self, function):
+#
+#         self._integrand = function
+#
+#     def _get_integrand(self):
+#
+#         return self._integrand
+#
+#     integrand = property(_get_integrand, _set_integrand,
+#                          doc="""Get/set the integrand""")
+#
+#
+#     def to_dict(self, minimal=False):
+#
+#         data = super(Function2D, self).to_dict(minimal)
+#
+#         if not minimal:
+#             data['extra_setup'] = {'integrand': self.integrand.path}
+#
+#         return data

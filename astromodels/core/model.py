@@ -1,17 +1,18 @@
 __author__ = 'giacomov'
 
 import collections
+
 import os
+import pandas as pd
 import warnings
 
-from astromodels.sources.source import Source, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
-
-from astromodels.my_yaml import my_yaml
-from astromodels.utils.disk_usage import disk_usage
-from astromodels.utils.table import dict_to_table
-from astromodels.parameter import Parameter, IndependentVariable
-from astromodels.tree import Node, DuplicatedNode
+from astromodels.core.my_yaml import my_yaml
+from astromodels.core.parameter import Parameter, IndependentVariable
+from astromodels.core.tree import Node, DuplicatedNode
 from astromodels.functions.function import get_function
+from astromodels.sources.source import Source, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
+from astromodels.utils.disk_usage import disk_usage
+from astromodels.utils.long_path_formatter import long_path_formatter
 
 
 class ModelFileExists(IOError):
@@ -66,54 +67,85 @@ class Model(Node):
 
         for source in sources:
 
-            try:
-
-                self._add_child(source)
-
-            except AttributeError:
-
-                if isinstance(source, Source):
-
-                    raise InvalidInput("The source name '%s' cannot be used, as it is a protected name. Please use a "
-                                       "different name." % source.name)
-
-                else:
-
-                    raise
-
-            except DuplicatedNode:
-
-                raise InvalidInput("More than one source with the name '%s'. You cannot use the same name for multiple "
-                                   "sources" % source.name)
-
-            # Now see if this is a point or extended source, and add them to the
-            # appropriate dictionary
-
-            if source.source_type == POINT_SOURCE:
-
-                self._point_sources[source.name] = source
-
-            elif source.source_type == EXTENDED_SOURCE:
-
-                self._extended_sources[source.name] = source
-
-            elif source.source_type == PARTICLE_SOURCE:
-
-                self._particle_sources[source.name] = source
-
-            else:
-
-                raise InvalidInput("Input sources must be either a point source or an extended source")
-
-        # Also create the lists for the point and extended sources, for speed
-
-        self._point_sources_list = self._point_sources.values()
-        self._extended_sources_list = self._extended_sources.values()
-        self._particle_sources_list = self._particle_sources.values()
+            self._add_source(source)
 
         # Now make the list of all the existing parameters
 
         self._update_parameters()
+
+        # This controls the verbosity of the display
+        self._complete_display = False
+
+    def _add_source(self, source):
+        """
+        Remember to call _update_parameters after this!
+        :param source:
+        :return:
+        """
+
+        try:
+
+            self._add_child(source)
+
+        except AttributeError:
+
+            if isinstance(source, Source):
+
+                raise InvalidInput("The source name '%s' cannot be used, as it is a protected name. Please use a "
+                                   "different name." % source.name)
+
+            else:  # pragma: no cover
+
+                raise
+
+        except DuplicatedNode:
+
+            raise InvalidInput("More than one source with the name '%s'. You cannot use the same name for multiple "
+                               "sources" % source.name)
+
+        # Now see if this is a point or extended source, and add them to the
+        # appropriate dictionary
+
+        if source.source_type == POINT_SOURCE:
+
+            self._point_sources[source.name] = source
+
+        elif source.source_type == EXTENDED_SOURCE:
+
+            self._extended_sources[source.name] = source
+
+        elif source.source_type == PARTICLE_SOURCE:
+
+            self._particle_sources[source.name] = source
+
+        else:  # pragma: no cover
+
+            raise InvalidInput("Input sources must be either a point source or an extended source")
+
+    def _remove_source(self, source_name):
+        """
+        Remember to call _update_parameters after this
+        :param source_name:
+        :return:
+        """
+
+        assert source_name in self.sources, "Source %s is not part of the current model" % source_name
+
+        source = self.sources.pop(source_name)
+
+        if source.source_type == POINT_SOURCE:
+
+            self._point_sources.pop(source.name)
+
+        elif source.source_type == EXTENDED_SOURCE:
+
+            self._extended_sources.pop(source.name)
+
+        elif source.source_type == PARTICLE_SOURCE:
+
+            self._particle_sources.pop(source.name)
+
+        self._remove_child(source_name)
 
     def _update_parameters(self):
 
@@ -278,6 +310,30 @@ class Model(Node):
 
         return sources
 
+    def add_source(self, new_source):
+        """
+        Add the provided source to the model
+
+        :param new_source: the new source to be added (an instance of PointSource, ExtendedSource or ParticleSource)
+        :return: (none)
+        """
+
+        self._add_source(new_source)
+
+        self._update_parameters()
+
+    def remove_source(self, source_name):
+        """
+        Returns a new model with the provided source removed from the current model
+
+        :param source_name: the name of the source to be removed
+        :return: a new Model instance without the source
+        """
+
+        self._remove_source(source_name)
+
+        self._update_parameters()
+
     def add_independent_variable(self, variable):
         """
         Add a global independent variable to this model, such as time.
@@ -389,85 +445,127 @@ class Model(Node):
 
                 warnings.warn("Parameter %s has no link to be removed." % parameter.path, RuntimeWarning)
 
+    def display(self, complete=False):
+        """
+        Display information about the point source.
+
+        :param complete : if True, displays also information on fixed parameters
+        :return: (none)
+        """
+
+        # Switch on the complete display flag
+        self._complete_display = bool(complete)
+
+        # This will automatically choose the best representation among repr and repr_html
+
+        super(Model, self).display()
+
+        # Go back to default
+
+        self._complete_display = False
+
     def _repr__base(self, rich_output=False):
 
         if rich_output:
 
-            div = '<br>'
+            new_line = '<br>'
 
         else:
 
-            div = '\n'
+            new_line = '\n'
 
-        # Print the name of point sources if there are any
+        # Table with the summary of the various kind of sources
+        sources_summary = pd.DataFrame.from_items((('Point sources', [self.get_number_of_point_sources()]),
+                                                   ('Extended sources', [self.get_number_of_extended_sources()]),
+                                                   ('Particle sources', [self.get_number_of_particle_sources()])),
+                                                  columns=['N'], orient='index')
 
-        representation = "Point sources: "
-
-        if self._point_sources:
-
-            representation += ",".join(self._point_sources.keys())
-
-        else:
-
-            representation += "(none)"
-
-        # Print the name of extended sources if there are any
-
-        representation += "%s%sExtended sources: " % (div, div)
-
-        if self._extended_sources:
-
-            representation += ",".join(self._extended_sources.keys())
-
-        else:
-
-            representation += "(none)"
-
-        # Print the name of extended sources if there are any
-
-        representation += "%s%sParticle sources: " % (div, div)
-
-        if self._particle_sources:
-
-            representation += ",".join(self._particle_sources.keys())
-
-        else:
-
-            representation += "(none)"
-
-        representation += "%s%sFree parameters:%s" % (div, div, div)
-
-        parameters_dict = collections.OrderedDict()
-
-        for parameter_name, parameter in self.free_parameters.iteritems():
-
-            # Generate table with only a minimal set of info
-
-            parameters_dict[parameter_name] = parameter.to_dict()
-
-        table = dict_to_table(parameters_dict, ['value','unit','min_value','max_value','delta','free'])
-
-        if rich_output:
-
-            representation += table._repr_html_()
-
-        else:
-
-            representation += table.__repr__()
-
-            representation += div
-
-        # Print linked parameters
-
+        # These properties traverse the whole tree everytime, so let's cache their results here
+        parameters = self.parameters
+        free_parameters = self.free_parameters
         linked_parameters = self.linked_parameters
+
+        # Summary of free parameters
+        if len(free_parameters) > 0:
+
+            parameter_dict = collections.OrderedDict()
+
+            for parameter_name, parameter in free_parameters.iteritems():
+                # Generate table with only a minimal set of info
+
+                # Generate table with only a minimal set of info
+                if rich_output:
+
+                    this_name = long_path_formatter(parameter_name, 70)
+
+                else:
+
+                    # In a terminal we need to use less characters
+
+                    this_name = long_path_formatter(parameter_name, 40)
+
+                d = parameter.to_dict()
+                parameter_dict[this_name] = collections.OrderedDict()
+
+                for key in ['value','unit','min_value','max_value']:
+
+                    parameter_dict[this_name][key] = d[key]
+
+            free_parameters_summary = pd.DataFrame.from_dict(parameter_dict).T
+
+            # Re-order it
+            free_parameters_summary = free_parameters_summary[['value','min_value','max_value','unit']]
+
+        else:
+
+            free_parameters_summary = pd.DataFrame()
+
+        if len(parameters) - len(free_parameters) - len(linked_parameters) > 0:
+
+            fixed_parameter_dict = collections.OrderedDict()
+
+            for parameter_name, parameter in parameters.iteritems():
+
+                if parameter.free or parameter_name in linked_parameters:
+
+                    continue
+
+                # Generate table with only a minimal set of info
+                if rich_output:
+
+                    this_name = long_path_formatter(parameter_name, 70)
+
+                else:
+
+                    # In a terminal we need to use less characters
+
+                    this_name = long_path_formatter(parameter_name, 40)
+
+                d = parameter.to_dict()
+                fixed_parameter_dict[this_name] = collections.OrderedDict()
+
+                for key in ['value','unit','min_value','max_value']:
+
+                    fixed_parameter_dict[this_name][key] = d[key]
+
+            fixed_parameters_summary = pd.DataFrame.from_dict(fixed_parameter_dict).T
+
+            # Re-order it
+            fixed_parameters_summary = fixed_parameters_summary[['value','min_value','max_value','unit']]
+
+        else:
+
+            fixed_parameters_summary = pd.DataFrame()
+
+        # Summary of linked parameters
+
+        linked_frames = []
 
         if linked_parameters:
 
-            representation += "%s%sLinked parameters:%s" % (div, div, div)
-
-            parameters_dict = collections.OrderedDict()
-
             for parameter_name, parameter in linked_parameters.iteritems():
+
+                parameter_dict = collections.OrderedDict()
 
                 # Generate table with only a minimal set of info
 
@@ -480,19 +578,158 @@ class Model(Node):
                 this_dict['current value'] = parameter.value
                 this_dict['unit'] = parameter.unit
 
-                parameters_dict[parameter_name] = this_dict
+                parameter_dict[parameter_name] = this_dict
 
-            table = dict_to_table(parameters_dict)
+                this_parameter_frame = pd.DataFrame.from_dict(parameter_dict)
 
-            if rich_output:
+                linked_frames.append(this_parameter_frame)
 
-                representation += table._repr_html_()
+        else:
+
+            # No linked parameters
+
+            pass
+
+        empty_frame = "(none)%s" % new_line
+
+        if rich_output:
+
+            source_summary_representation = sources_summary._repr_html_()
+
+            if free_parameters_summary.empty:
+
+                free_parameters_representation = empty_frame
 
             else:
 
-                representation += table.__repr__()
+                free_parameters_representation = free_parameters_summary._repr_html_()
 
-                representation += div
+            if len(linked_frames) == 0:
+
+                linked_summary_representation = empty_frame
+
+            else:
+
+                linked_summary_representation = ""
+
+                for linked_frame in linked_frames:
+
+                    linked_summary_representation += linked_frame._repr_html_()
+                    linked_summary_representation += new_line
+
+            if fixed_parameters_summary.empty:
+
+                fixed_parameters_representation = empty_frame
+
+            else:
+
+                fixed_parameters_representation = fixed_parameters_summary._repr_html_()
+
+
+        else:
+
+            source_summary_representation = sources_summary.__repr__()
+
+            if free_parameters_summary.empty:
+
+                free_parameters_representation = empty_frame
+
+            else:
+
+                free_parameters_representation = free_parameters_summary.__repr__()
+
+            if len(linked_frames) == 0:
+
+                linked_summary_representation = empty_frame
+
+            else:
+
+                linked_summary_representation = ""
+
+                for linked_frame in linked_frames:
+
+                    linked_summary_representation += linked_frame.__repr__()
+                    linked_summary_representation += "%s%s" % (new_line, new_line)
+
+            if fixed_parameters_summary.empty:
+
+                fixed_parameters_representation = empty_frame
+
+            else:
+
+                fixed_parameters_representation = fixed_parameters_summary.__repr__()
+
+        # Build the representation
+
+        representation = "Model summary:%s" % (new_line)
+
+        if not rich_output:
+
+            representation += "==============%s%s" % (new_line, new_line)
+
+        else:
+
+            representation += new_line
+
+        # Summary on sources
+
+        representation += source_summary_representation
+
+        representation += new_line
+
+        # Free parameters
+
+        representation += "%sFree parameters (%i):%s" % (new_line, len(free_parameters), new_line)
+
+        if not rich_output:
+
+            representation += "--------------------%s%s" % (new_line, new_line)
+
+        else:
+
+            representation += new_line
+
+        representation += free_parameters_representation
+
+        representation += new_line
+
+        # Fixed parameters
+
+        n_fix = len(parameters) - len(free_parameters) - len(linked_parameters)
+
+        representation += "%sFixed parameters (%i):%s" % (new_line, n_fix, new_line)
+
+        if self._complete_display:
+
+            if not rich_output:
+
+                representation += "---------------------%s%s" % (new_line, new_line)
+
+            else:
+
+                representation += new_line
+
+            representation += fixed_parameters_representation
+
+        else:
+
+            representation += '(abridged. Use complete=True to see all fixed parameters)%s' % new_line
+
+        representation += new_line
+
+        # Linked parameters
+
+        representation += "%sLinked parameters (%i):%s" % (new_line, len(self.linked_parameters), new_line)
+
+        if not rich_output:
+
+            representation += "----------------------%s%s" % (new_line, new_line)
+
+        else:
+
+            representation += new_line
+
+        representation += linked_summary_representation
 
         return representation
 
@@ -510,7 +747,7 @@ class Model(Node):
 
                 element = self._children[key]
 
-            except KeyError:
+            except KeyError:  # pragma: no cover
 
                 raise RuntimeError("Source %s is unknown" % key)
 
@@ -533,7 +770,7 @@ class Model(Node):
 
                     data['%s (%s)' % (key, 'Parameter')] = data.pop(key)
 
-                else:
+                else: # pragma: no cover
 
                     raise ModelInternalError("Found an unknown class at the top level")
 
@@ -588,7 +825,7 @@ class Model(Node):
         :return: a tuple with R.A. and Dec.
         """
 
-        pts = self._point_sources_list[id]
+        pts = self._point_sources.values()[id]
 
         return pts.position.get_ra(), pts.position.get_dec()
 
@@ -601,11 +838,11 @@ class Model(Node):
         :return: fluxes
         """
 
-        return self._point_sources_list[id](energies)
+        return self._point_sources.values()[id](energies)
 
     def get_point_source_name(self, id):
 
-        return self._point_sources_list[id].name
+        return self._point_sources.values()[id].name
 
     def get_number_of_extended_sources(self):
         """
@@ -626,7 +863,7 @@ class Model(Node):
         :return: flux array
         """
 
-        return self._extended_sources_list[id](j2000_ra, j2000_dec, energies)
+        return self._extended_sources.values()[id](j2000_ra, j2000_dec, energies)
 
     def get_extended_source_name(self, id):
         """
@@ -636,17 +873,33 @@ class Model(Node):
         :return: the name of the id-th source
         """
 
-        return self._extended_sources_list[id]
+        return self._extended_sources.values()[id].name
 
     def get_extended_source_boundaries(self, id):
 
-        (ra_min, ra_max), (dec_min, dec_max) = self._extended_sources_list[id].get_boundaries()
+        (ra_min, ra_max), (dec_min, dec_max) = self._extended_sources.values()[id].get_boundaries()
 
         return ra_min, ra_max, dec_min, dec_max
 
     def is_inside_any_extended_source(self, j2000_ra, j2000_dec):
 
-        return True
+        for ext_source in self.extended_sources.values():
+
+            (ra_min, ra_max), (dec_min, dec_max) = ext_source.get_boundaries()
+
+            # Transform from the 0...360 convention to the -180..180 convention, so that
+            # the comparison is easier
+            if ra_min > 180:
+
+                ra_min = -(360-ra_min)
+
+            if ra_min <= j2000_ra <= ra_max and dec_min <= j2000_dec <= dec_max:
+
+                return True
+
+        # If we are here, it means that no extended source contains the provided coordinates
+
+        return False
 
     def get_number_of_particle_sources(self):
         """
@@ -666,8 +919,8 @@ class Model(Node):
         :return: fluxes
         """
 
-        return self._particle_sources_list[id]._get_flux(energies)
+        return self._particle_sources.values()[id](energies)
 
     def get_particle_source_name(self, id):
 
-        return self._particle_sources_list[id].name
+        return self._particle_sources.values()[id].name

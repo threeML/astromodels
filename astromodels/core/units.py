@@ -1,11 +1,12 @@
 __author__ = 'giacomov'
 
-import astropy.units as u
-import exceptions
 import collections
+import exceptions
 
+import astropy.units as u
+
+from astromodels.core.tree import Node
 from astromodels.utils.pretty_list import dict_to_list
-from astromodels.tree import Node
 
 # This module keeps the configuration of the units used in astromodels
 

@@ -1,11 +1,11 @@
 __author__ = 'giacomov'
 
-from astropy import coordinates
-from astropy import units as u
 import collections
 
-from astromodels.parameter import Parameter
-from astromodels.tree import Node
+from astropy import coordinates
+
+from astromodels.core.parameter import Parameter
+from astromodels.core.tree import Node
 
 
 class WrongCoordinatePair(ValueError):

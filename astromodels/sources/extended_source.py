@@ -1,14 +1,14 @@
-import astropy.units as u
-import numpy as np
 import collections
 
-from astromodels.sources.source import Source, EXTENDED_SOURCE
-from astromodels.spectral_component import SpectralComponent
-from astromodels.tree import Node
+import astropy.units as u
+import numpy as np
+
+from astromodels.core.spectral_component import SpectralComponent
+from astromodels.core.tree import Node
+from astromodels.core.units import get_units
 from astromodels.functions.functions import Constant
-from astromodels.functions.function import Function
+from astromodels.sources.source import Source, EXTENDED_SOURCE
 from astromodels.utils.pretty_list import dict_to_list
-from astromodels.units import get_units
 
 
 class ExtendedSource(Source, Node):
@@ -137,6 +137,12 @@ class ExtendedSource(Source, Node):
 
         assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
 
+        if not isinstance(lat, np.ndarray):
+
+            lat = np.array(lat, ndmin=1)
+            lon = np.array(lon, ndmin=1)
+            energies = np.array(energies, ndmin=1)
+
         # Get the differential flux from the spectral components
 
         results = [component.shape(energies) for component in self.components.values()]
@@ -179,7 +185,7 @@ class ExtendedSource(Source, Node):
         # Do not clip the output, otherwise it will not be possible to use ext. sources
         # with negative fluxes
 
-        return result
+        return np.squeeze(result)
 
     def has_free_parameters(self):
         """

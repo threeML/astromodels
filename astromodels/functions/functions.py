@@ -1,16 +1,16 @@
 __author__ = 'giacomov'
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
 
+import exceptions
 import math
+
+import astropy.units as astropy_units
 import numpy as np
 import warnings
 from scipy.special import gammaincc, gamma, erfcinv
-import exceptions
 
-from astromodels.functions.function import Function1D, Function2D, FunctionMeta, ModelAssertionViolation
-
-from astromodels.units import get_units
-import astropy.units as astropy_units
+from astromodels.core.units import get_units
+from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
 
 
 class GSLNotAvailable(ImportWarning):
@@ -997,6 +997,7 @@ class Constant(Function1D):
     def evaluate(self, x, k):
         return k
 
+
 class DiracDelta(Function1D):
     r"""
         description :
@@ -1141,7 +1142,62 @@ if has_naima:
             return data
 
 
+class _ComplexTestFunction(Function1D):
+    r"""
+    description :
+        A useless function to be used during automatic tests
 
+    latex: not available
+
+    parameters :
+        A :
+            desc : none
+            initial value : 3.24e-6
+            min : 1e-6
+            max : 1e-5
+
+        B :
+            desc : none
+            initial value : -10
+            min : -100
+            max : 100
+            delta : 0.1
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.A.unit = y_unit
+        self.B.unit = y_unit / x_unit
+
+    def set_particle_distribution(self, function):
+
+        self._particle_distribution = function
+
+    def get_particle_distribution(self):
+
+        return self._particle_distribution
+
+    particle_distribution = property(get_particle_distribution, set_particle_distribution,
+                                     doc="""Get/set particle distribution for electrons""")
+
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, A, B):
+
+        return A + B * x
+
+
+    def to_dict(self, minimal=False):
+
+        data = super(Function1D, self).to_dict(minimal)
+
+        if not minimal:
+
+            data['extra_setup'] = {'particle_distribution': self.particle_distribution.path}
+
+        return data
 
 
 class Band(Function1D):

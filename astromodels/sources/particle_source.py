@@ -1,13 +1,14 @@
 __author__ = 'giacomov'
 
 import collections
+
 import numpy
 
+from astromodels.core.spectral_component import SpectralComponent
+from astromodels.core.tree import Node
+from astromodels.core.units import get_units
 from astromodels.sources.source import Source, PARTICLE_SOURCE
-from astromodels.spectral_component import SpectralComponent
 from astromodels.utils.pretty_list import dict_to_list
-from astromodels.tree import Node
-from astromodels.units import get_units
 
 
 class ParticleSource(Source, Node):
@@ -43,7 +44,7 @@ class ParticleSource(Source, Node):
 
         self._add_child(spectrum_node)
 
-        self.__call__ = self.get_flux
+        type(self).__call__ = type(self).get_flux
 
         # Set the units
         # Now sets the units of the parameters for the energy domain

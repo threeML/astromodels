@@ -30,6 +30,9 @@ class DualAccessClass(object):
 
     def __setattr__(self, key, value):
 
+        # This hasattr is needed because during construction of the class __setattr__ need
+        # to work
+
         if hasattr(self, '_lookup_dictionary') and key in self._lookup_dictionary:
 
             item = self._lookup_dictionary[key]

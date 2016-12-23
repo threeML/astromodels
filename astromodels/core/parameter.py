@@ -5,16 +5,13 @@ __doc__ = """"""
 import collections
 import copy
 import exceptions
-import warnings
 
 import astropy.units as u
-import scipy.stats
-
-# The following import is necessary so that min_value and max_value can be specified as things like
-# '2 * np.pi'
 import numpy as np
+import scipy.stats
+import warnings
 
-from astromodels.tree import Node
+from astromodels.core.tree import Node
 
 
 def _behaves_like_a_number(obj):
@@ -41,12 +38,12 @@ def _behaves_like_a_number(obj):
 
 
 # Exception for when a parameter is out of its bounds
-class SettingOutOfBounds(exceptions.Exception):
+class SettingOutOfBounds(RuntimeError):
     pass
 
 
 # Exception for when an object should be callable but it isn't
-class NotCallableOrErrorInCall(exceptions.Exception):
+class NotCallableOrErrorInCall(RuntimeError):
     pass
 
 
@@ -54,15 +51,19 @@ class WarningUnitsAreSlow(Warning):
     pass
 
 
-class IndependentVariableCannotBeLinked(exceptions.Exception):
+class IndependentVariableCannotBeLinked(RuntimeError):
     pass
 
 
-class CannotUnderstandUnit(exceptions.Exception):
+class CannotUnderstandUnit(RuntimeError):
     pass
 
 
-class CannotConvertValueToNewUnits(Warning):
+class CannotConvertValueToNewUnits(RuntimeError):
+    pass
+
+
+class ParameterMustHaveBounds(RuntimeError):
     pass
 
 
@@ -108,12 +109,12 @@ def accept_quantity(input_type=float, allow_none=False):
 
                         return method(instance, None, *args, **kwargs)
 
-                    else:
+                    else: # pragma: no cover
 
                         raise TypeError("You cannot pass None as argument for "
                                         "method %s of %s" % (method.__name__, instance.name))
 
-                else:
+                else: # pragma: no cover
 
                     raise TypeError("You need to pass either a %s or a astropy.Quantity "
                                     "to method %s of %s" % (input_type.__name__, method.__name__, instance.name))
@@ -189,18 +190,7 @@ class ParameterBase(Node):
 
             raise TypeError("The provided initial value is not a number")
 
-        if self._min_value is not None:
-
-            if not _behaves_like_a_number(self._min_value):
-                raise TypeError("The provided minimum value is not a number")
-
-        if self._max_value is not None:
-
-            if not _behaves_like_a_number(self._max_value):
-
-                raise TypeError("The provided maximum value is not a number")
-
-    def _repr__base(self, rich_output):
+    def _repr__base(self, rich_output): # pragma: no cover
 
         raise NotImplementedError("You need to implement this for the actual Parameter class")
 
@@ -245,10 +235,8 @@ class ParameterBase(Node):
 
                     new_unit_name = new_unit
 
-                warnings.warn("Cannot convert the value %s from %s to the new units %s" % (self._value,
-                                                                                           self._unit,
-                                                                                           new_unit_name),
-                              CannotConvertValueToNewUnits)
+                raise CannotConvertValueToNewUnits("Cannot convert the value %s from %s to the "
+                                                   "new units %s" % (self._value, self._unit, new_unit_name))
 
         else:
 
@@ -645,7 +633,13 @@ class Parameter(ParameterBase):
             raise NotCallableOrErrorInCall("Could not call the provided prior. " +
                                            "Is it a function accepting the current value of the parameter?")
 
-        prior.set_units(self.unit, u.dimensionless_unscaled)
+        try:
+
+            prior.set_units(self.unit, u.dimensionless_unscaled)
+
+        except AttributeError:
+
+            raise NotCallableOrErrorInCall("It looks like the provided prior is not a astromodels function.")
 
         self._prior = prior
 
@@ -665,9 +659,13 @@ class Parameter(ParameterBase):
 
     def set_uninformative_prior(self, prior_class):
         """
-        Sets the prior for the parameter to a uniform prior between the current minimum and maximum
+        Sets the prior for the parameter to a uniform prior between the current minimum and maximum, or a
+        log-uniform prior between the current minimum and maximum.
 
-        :param prior_class : the class to be used as prior (either Log_uniform_prior or Uniform_prior)
+        NOTE: if the current minimum and maximum are not defined, the default bounds for the prior class will be used.
+
+        :param prior_class : the class to be used as prior (either Log_uniform_prior or Uniform_prior, or a class which
+        provide a lower_bound and an upper_bound properties)
         :return: (none)
         """
 
@@ -675,19 +673,35 @@ class Parameter(ParameterBase):
 
         if self.min_value is None:
 
-            prior_instance.lower_bound = prior_instance.lower_bound.min_value
+            raise ParameterMustHaveBounds("Parameter %s does not have a defined minimum. Set one first, then re-run "
+                                          "set_uninformative_prior" % self.path)
 
         else:
 
-            prior_instance.lower_bound = self.min_value
+            try:
+
+                prior_instance.lower_bound = self.min_value
+
+            except SettingOutOfBounds:
+
+                raise SettingOutOfBounds("Cannot use minimum of %s for prior %s" % (self.min_value,
+                                                                                    prior_instance.name))
 
         if self.max_value is None:
 
-            prior_instance.upper_bound = prior_instance.upper_bound.max_value
+            raise ParameterMustHaveBounds("Parameter %s does not have a defined maximum. Set one first, then re-run "
+                                          "set_uninformative_prior" % self.path)
 
-        else:
+        else: # pragma: no cover
 
-            prior_instance.upper_bound = self.max_value
+            try:
+
+                prior_instance.upper_bound = self.max_value
+
+            except SettingOutOfBounds:
+
+                raise SettingOutOfBounds("Cannot use maximum of %s for prior %s" % (self.max_value,
+                                                                                    prior_instance.name))
 
         assert np.isfinite(prior_instance.upper_bound.value),"The parameter %s must have a finite maximum" % self.name
         assert np.isfinite(prior_instance.lower_bound.value),"The parameter %s must have a finite minimum" % self.name
@@ -732,12 +746,7 @@ class Parameter(ParameterBase):
 
             _ = law(variable.value)
 
-        except AttributeError:
-
-            raise NotCallableOrErrorInCall("Cannot access the .value attribute of the aux. variable. "
-                                           "Is it of the proper class?")
-
-        except:
+        except: # pragma: no cover
 
             raise NotCallableOrErrorInCall("The provided law for the auxiliary variable failed on call")
 
@@ -776,7 +785,7 @@ class Parameter(ParameterBase):
 
             # do nothing, but print a warning
 
-            warnings.warn("Cannot remove a non-existing auxiliary variable")
+            warnings.warn("Cannot remove a non-existing auxiliary variable", RuntimeWarning)
 
         else:
 
@@ -814,8 +823,6 @@ class Parameter(ParameterBase):
         return self._aux_variable['variable'], self._aux_variable['law']
 
     def _repr__base(self, rich_output=False):
-
-        representation = ""
 
         if not self.has_auxiliary_variable():
 
@@ -914,7 +921,9 @@ class Parameter(ParameterBase):
             sample = scipy.stats.truncnorm.rvs( a, b, loc = self._value, scale = std, size = 1)
 
             if (self._min_value is not None and sample < self._min_value) or \
-               (self._max_value is not None and sample > self._max_value):
+               (self._max_value is not None and sample > self._max_value): # pragma: no cover
+
+                # This should never happen
 
                 raise AssertionError("Got a sample outside of the boundaries of the truncated normal distribution")
 
@@ -940,7 +949,6 @@ class IndependentVariable(ParameterBase):
                                                   min_value=min_value,
                                                   max_value=max_value,
                                                   desc=desc)
-
 
     def _repr__base(self, rich_output=False):
 

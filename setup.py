@@ -216,6 +216,7 @@ def setup_xspec():
 # Normal packages
 
 packages = ['astromodels',
+            'astromodels/core',
             'astromodels/functions',
             'astromodels/functions/dark_matter',
             'astromodels/sources',

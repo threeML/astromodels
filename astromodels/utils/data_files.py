@@ -2,7 +2,7 @@ import pkg_resources
 import os
 
 
-def get_data_file_path(data_file):
+def _get_data_file_path(data_file):
     """
     Returns the absolute path to the required data files.
 

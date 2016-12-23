@@ -3,7 +3,7 @@ from scipy.interpolate import RegularGridInterpolator
 import astropy.units as astropy_units
 
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.data_files import get_data_file_path
+from astromodels.utils.data_files import _get_data_file_path
 
 
 class DMFitFunction(Function1D):
@@ -47,7 +47,7 @@ class DMFitFunction(Function1D):
 
     def _setup(self):
 
-        tablepath = get_data_file_path("dark_matter/gammamc_dif.dat")
+        tablepath = _get_data_file_path("dark_matter/gammamc_dif.dat")
 
         self._data = np.loadtxt(tablepath)
 
@@ -210,10 +210,10 @@ class DMSpectra(Function1D):
 
         # Get and open the two data files
 
-        tablepath_h = get_data_file_path("dark_matter/dmSpecTab.npy")
+        tablepath_h = _get_data_file_path("dark_matter/dmSpecTab.npy")
         self._data_h = np.load(tablepath_h)
 
-        tablepath_f = get_data_file_path("dark_matter/gammamc_dif.dat")
+        tablepath_f = _get_data_file_path("dark_matter/gammamc_dif.dat")
         self._data_f = np.loadtxt(tablepath_f)
 
         """

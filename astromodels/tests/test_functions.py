@@ -3,8 +3,11 @@ import pytest
 import astropy.units as u
 import numpy as np
 
-from astromodels.functions.function import FunctionMeta, Function1D, FunctionDefinitionError
+from astromodels.functions.function import FunctionMeta, Function1D, Function2D, FunctionDefinitionError, \
+    UnknownParameter, Function3D
 from astromodels.functions.functions import Powerlaw
+from astromodels.functions.functions_3D import Continuous_injection_diffusion
+from astromodels.functions import function as function_module
 
 __author__ = 'giacomov'
 
@@ -399,6 +402,82 @@ def test_function_meta():
             def evaluate(self, x, a, b):
                 return a * x + b
 
+    with pytest.raises(FunctionDefinitionError):
+        # Parameter lacking description
+
+        class Wrong_test_function12(Function1D):
+            r"""
+
+            description: useless
+
+            latex : $ a * x + b $
+
+            parameters :
+
+                a :
+
+                    initial value : 1
+
+                b :
+
+                    desc : intercept
+                    initial value : 1
+
+                c :
+
+                    desc : dumb
+                    initial value : 1
+
+            """
+
+            __metaclass__ = FunctionMeta
+
+            def _set_units(self, x_unit, y_unit):
+                self.a.unit = y_unit / x_unit
+                self.b.unit = y_unit
+
+            def evaluate(self, x, a, b):
+                return a * x + b
+
+    with pytest.raises(AssertionError):
+        # Parameters out of order in evaluate
+
+        class Wrong_test_function13(Function2D):
+            r"""
+
+            description: useless
+
+            latex : $ a * x + b $
+
+            parameters :
+
+                a :
+
+                    desc : blah
+                    initial value : 1
+
+
+                b :
+
+                    desc : intercept
+                    initial value : 1
+
+                c :
+
+                    desc : dumb
+                    initial value : 1
+
+            """
+
+            __metaclass__ = FunctionMeta
+
+            def _set_units(self, x_unit, y_unit, z_unit):
+                self.a.unit = y_unit / x_unit
+                self.b.unit = y_unit
+
+            def evaluate(self, y, x, a, b, c):
+                return a * x + b
+
     # A function with no latex formula (which is optional)
 
     class NoLatex_test_function11(Function1D):
@@ -448,6 +527,32 @@ def test_function_constructor():
     assert my_function.a.value == -2.5
     assert my_function.b.value == 3.2
 
+    Test_function.info()
+
+    function_module.has_ipython = False
+
+    Test_function.info()
+
+    print(my_function.free_parameters)
+
+    with pytest.raises(UnknownParameter):
+
+        f = Test_function(d=3.5)
+
+    print(f.description)
+
+    print(f.latex)
+
+    assert f.fixed_units is None
+
+    assert f.has_fixed_units() == False
+
+
+def test_function3D():
+
+    c = Continuous_injection_diffusion()
+
+    _ = c(1, 1, 1)
 
 def test_function_values():
 

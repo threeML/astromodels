@@ -1,17 +1,16 @@
 __author__ = 'giacomov'
 
-from astromodels import sky_direction
-from astromodels.functions import function
-from astromodels import spectral_component
-from astromodels import polarization
-from astromodels.sources import point_source
-from astromodels.sources import particle_source
-from astromodels.sources import extended_source
-from astromodels import parameter
-from astromodels import model
-from astromodels.my_yaml import my_yaml
-from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
 import re
+
+
+from astromodels.core import parameter, sky_direction, model, polarization, spectral_component
+from astromodels.core.my_yaml import my_yaml
+from astromodels.functions import function
+from astromodels.sources import extended_source
+from astromodels.sources import particle_source
+from astromodels.sources import point_source
+from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
+
 
 class ModelIOError(IOError):
     pass
@@ -194,6 +193,8 @@ class ParameterParser(object):
 
     def __init__(self, name, definition):
 
+        # NOTE: this is triggered only for parameters outside of functions
+
         if 'prior' in definition:
 
             # Need the create a function for the prior first
@@ -203,7 +204,7 @@ class ParameterParser(object):
                 function_name = definition['prior'].keys()[0]
                 parameters_definition = definition['prior'][function_name]
 
-            except KeyError:
+            except KeyError:  # pragma: no cover
 
                 raise ModelSyntaxError("The prior for parameter %s is malformed"
                                        % name)
@@ -237,7 +238,7 @@ class SourceParser(object):
             source_type = re.findall('\((%s|%s|%s)\)' % (POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE),
                                      source_name)[-1]
 
-        except IndexError:
+        except IndexError: # pragma: no cover
 
             raise ModelSyntaxError("Don't recognize type for source '%s'. "
                                    "Valid types are '%s', '%s' or '%s'." %
@@ -292,7 +293,7 @@ class SourceParser(object):
 
             spectrum = particle_source_definition['spectrum']
 
-        except KeyError:
+        except KeyError: # pragma: no cover
 
             raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
 
@@ -316,7 +317,7 @@ class SourceParser(object):
 
             position_definition = pts_source_definition['position']
 
-        except KeyError:
+        except KeyError: # pragma: no cover
 
             raise ModelSyntaxError("Point source %s is missing the 'position' attribute" % self._source_name)
 
@@ -328,7 +329,7 @@ class SourceParser(object):
 
             spectrum = pts_source_definition['spectrum']
 
-        except KeyError:
+        except KeyError: # pragma: no cover
 
             raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
 
@@ -376,7 +377,7 @@ class SourceParser(object):
             coordinates['l'] = l
             coordinates['b'] = b
 
-        else:
+        else: # pragma: no cover
 
             raise ModelSyntaxError("Position specification for source %s has an invalid coordinate pair. "
                                    " You need to specify either 'ra' and 'dec', or 'l' and 'b'."
@@ -391,7 +392,7 @@ class SourceParser(object):
 
             this_sky_direction = sky_direction.SkyDirection(**coordinates)
 
-        except sky_direction.WrongCoordinatePair:
+        except sky_direction.WrongCoordinatePair: # pragma: no cover
 
             raise ModelSyntaxError("Position specification for source %s has an invalid coordinate pair"
                                    % self._source_name)
@@ -407,7 +408,7 @@ class SourceParser(object):
             function_name = component_definition.keys()[0]
             parameters_definition = component_definition[function_name]
 
-        except KeyError:
+        except KeyError: # pragma: no cover
 
             raise ModelSyntaxError("The component %s of source %s is malformed"
                                    % (component_name, self._source_name))
@@ -444,9 +445,9 @@ class SourceParser(object):
 
             spectrum = ext_source_definition['spectrum']
 
-        except KeyError:
+        except KeyError: # pragma: no cover
 
-            raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
+            raise ModelSyntaxError("Ext. source %s is missing the 'spectrum' attribute" % self._source_name)
 
         components = []
 
@@ -503,7 +504,7 @@ class ShapeParser(object):
 
                 function_instance = function.get_function(function_name)
 
-            except function.UnknownFunction:
+            except function.UnknownFunction: # pragma: no cover
 
                 raise ModelSyntaxError("Function %s, specified as shape for %s of source %s, is not a "
                                        "known function" % (function_name, component_name, self._source_name))
@@ -517,7 +518,7 @@ class ShapeParser(object):
 
                 this_definition = parameters_definition[parameter_name]
 
-            except KeyError:
+            except KeyError: # pragma: no cover
 
                 raise ModelSyntaxError("Function %s, specified as shape for %s of source %s, lacks "
                                        "the definition for parameter %s"
@@ -538,9 +539,6 @@ class ShapeParser(object):
             if 'delta' in this_definition:
                 function_instance.parameters[parameter_name].delta = this_definition['delta']
 
-            if 'fix' in this_definition:
-                function_instance.parameters[parameter_name].fix = this_definition['fix']
-
             if 'free' in this_definition:
                 function_instance.parameters[parameter_name].free = this_definition['free']
 
@@ -549,7 +547,7 @@ class ShapeParser(object):
 
             # Now set the value, which must be present
 
-            if 'value' not in this_definition:
+            if 'value' not in this_definition:  # pragma: no cover
                 raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
                                        "of source %s, lacks a 'value' attribute"
                                        % (parameter_name, function_name, component_name, self._source_name))
@@ -568,7 +566,7 @@ class ShapeParser(object):
 
                 # Now get the law
 
-                if 'law' not in this_definition:
+                if 'law' not in this_definition:  # pragma: no cover
                     raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
                                            "of source %s, is linked to %s but lacks a 'law' attribute"
                                            % (parameter_name, function_name, component_name,

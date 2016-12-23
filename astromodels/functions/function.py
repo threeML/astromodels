@@ -1,24 +1,21 @@
-from astromodels.parameter import Parameter
-from astromodels.my_yaml import my_yaml
-from astromodels.utils.pretty_list import dict_to_list
-from astromodels.tree import Node
-from astromodels.utils.table import dict_to_table
-from astromodels.units import get_units
-import astropy.units as u
-import functools
-
-
-import collections
-import warnings
-import sys
-import os
-import copy
-import uuid
-import re
 import ast
-from yaml.reader import ReaderError
-import numpy as np
+import collections
+import copy
+import functools
 import inspect
+import uuid
+
+import astropy.units as u
+import numpy as np
+import os
+import re
+from yaml.reader import ReaderError
+
+from astromodels.core.my_yaml import my_yaml
+from astromodels.core.parameter import Parameter
+from astromodels.core.tree import Node
+from astromodels.utils.pretty_list import dict_to_list
+from astromodels.utils.table import dict_to_table
 
 __author__ = 'giacomov'
 
@@ -202,7 +199,7 @@ class FunctionMeta(type):
 
             function_definition = my_yaml.load(cls.__doc__)
 
-        except ReaderError:
+        except ReaderError:  # pragma: no cover
 
             raise DocstringIsNotRaw("Docstring parsing has failed. "
                                     "Did you remember to specify the docstring of %s as raw? "
@@ -407,10 +404,6 @@ class FunctionMeta(type):
             du = u.Unit(definition['unit'])
 
         def _parse_value(val):
-
-            if val is None:
-
-                return None
 
             if isinstance(val, str):
 
@@ -820,10 +813,10 @@ class Function(Node):
         Returns the boundaries of this function. By default there is no boundary, but subclasses can
         override this.
 
-        :return: a tuple of tuples containing the boundaries for each coordinate, or None if there are no boundaries
+        :return: a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)
         """
 
-        return None
+        raise NotImplementedError("You have to implement this")
 
 
 class Function1D(Function):
@@ -1068,6 +1061,16 @@ class Function1D(Function):
             kwargs[parameter_name] = parameter.value
 
         return self.evaluate(x, *args, **kwargs)
+
+    def get_boundaries(self):
+        """
+        Returns the boundaries of this function. By default there is no boundary, but subclasses can
+        override this.
+
+        :return: a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)
+        """
+
+        raise DesignViolation("Cannot call get_boundaries() on a 1d function")
 
 
 class Function2D(Function):
