@@ -539,6 +539,8 @@ def test_function_constructor():
 
         f = Test_function(d=3.5)
 
+    f = Test_function()
+
     print(f.description)
 
     print(f.latex)
