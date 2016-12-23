@@ -22,7 +22,7 @@ install:
   # Replace dep1 dep2 ... with your dependencies
   - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION pytest numpy scipy matplotlib pandas astropy numexpr hdf5 pytables
   - source activate test-environment
-  - pip install -y pytest-cov coveralls codecov
+  - pip install pytest-cov coveralls codecov
   - python setup.py install
 
 script:
