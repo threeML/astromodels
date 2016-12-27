@@ -2,10 +2,12 @@ import pytest
 
 import astropy.units as u
 import numpy as np
+import pickle
 
 from astromodels.functions.function import FunctionMeta, Function1D, Function2D, FunctionDefinitionError, \
-    UnknownParameter, Function3D
-from astromodels.functions.functions import Powerlaw
+    UnknownParameter, DesignViolation, get_function, get_function_class, UnknownFunction, list_functions
+from astromodels.functions.functions import Powerlaw, Line
+from astromodels.functions.functions_2D import Gaussian_on_sphere
 from astromodels.functions.functions_3D import Continuous_injection_diffusion
 from astromodels.functions import function as function_module
 
@@ -549,12 +551,61 @@ def test_function_constructor():
 
     assert f.has_fixed_units() == False
 
+    with pytest.raises(DesignViolation):
+
+        _ = f.get_boundaries()
+
+
+def test_function2D():
+
+    c = Gaussian_on_sphere()
+
+    _ = c(1, 1)
+
+    a = np.array([1.0, 2.0])
+
+    _ = c(a, a)
+
+    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
+
+    _ = c(1 * u.deg, 1.0 * u.deg)
+
+    _ = c(a * u.deg, a * u.deg)
+
+    print c.x_unit
+    print c.y_unit
+    print c.z_unit
+
+    with pytest.raises(TypeError):
+
+        c.set_units("not existent", u.deg, u.keV)
+
 
 def test_function3D():
 
     c = Continuous_injection_diffusion()
 
     _ = c(1, 1, 1)
+
+    a = np.array([1.0, 2.0])
+
+    _ = c(a, a, a)
+
+    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
+
+    _ = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
+
+    _ = c(a * u.deg, a * u.deg, a * u.keV)
+
+    print c.x_unit
+    print c.y_unit
+    print c.z_unit
+    print c.w_unit
+
+    with pytest.raises(TypeError):
+
+        c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))
+
 
 def test_function_values():
 
@@ -627,6 +678,11 @@ def test_function_values_units():
 
     assert np.all(my_function(np.array([3, 4, 5]) * u.keV) == np.array([7.0, 9.0, 11.0]) * diff_flux)
 
+    # Now test that an error is raised if units are not intelligible
+    with pytest.raises(TypeError):
+
+        _ = my_function.set_units("non_existent","non_existent")
+
 
 def test_function_composition():
 
@@ -642,3 +698,141 @@ def test_function_composition():
     for x in ([1,2,3,4],[1,2,3,4] * u.keV, 1.0, np.array([1.0, 2.0, 3.0, 4.0])):
 
         assert np.all(composite(x) == line(x) + powerlaw(x))
+
+    # Test -
+    po = Powerlaw()
+    li = Line()
+    composite = po - li
+
+    assert composite(1.0) == (po(1.0) - li(1.0))
+
+    # test *
+    composite = po * li
+
+    assert composite(2.25) == po(2.25) * li(2.25)
+
+    # test /
+    composite = po / li
+
+    assert composite(2.25) == po(2.25) / li(2.25)
+
+    # test .of
+    composite = po.of(li)
+
+    assert composite(2.25) == po(li(2.25))
+
+    # test power
+    composite = po**li
+
+    assert composite(2.25)  == po(2.25)**li(2.25)
+
+    # test negation
+    neg_po = -po
+
+    assert neg_po(2.25) == -po(2.25)
+
+    # test abs
+    new_li = Line()
+    new_li.b = -10.0
+
+    abs_new_li = abs(new_li)
+
+    assert new_li(1.0) < 0
+    assert abs_new_li(1.0) == abs(new_li(1.0))
+
+    # test rpower
+    composite = 2.0**new_li
+
+    assert composite(2.25) == 2.0**(new_li(2.25))
+
+    # test multiplication by a number
+    composite = 2.0 * po
+
+    assert composite(2.25) == 2.0 * po(2.25)
+
+    # Number divided by
+    composite = 1.0 / li
+
+    assert composite(2.25) == 1.0 / li(2.25)
+
+    # Composite of composite
+    composite = po*li + po - li + 2*po / li
+
+    assert composite(2.25) == po(2.25) * li(2.25) + po(2.25) - li(2.25) + 2*po(2.25) / li(2.25)
+
+    print(composite)
+
+
+def test_duplicate():
+
+    instance = Powerlaw()
+    instance.index = -2.25
+    instance.K = 0.5
+
+    # Duplicate it
+
+    duplicate = instance.duplicate()
+
+    # Check that we have the same results
+
+    assert duplicate(2.25) == instance(2.25)
+
+    # Check that the parameters are not linked anymore
+    instance.index = -1.12
+
+    assert instance.index.value != duplicate.index.value
+
+    print(instance)
+    print(duplicate)
+
+
+def test_pickling_unpickling():
+
+    # 1d function
+    po = Powerlaw()
+
+    _ = pickle.loads(pickle.dumps(po))
+
+    # 2d function
+    gs = Gaussian_on_sphere()
+
+    _ = pickle.loads(pickle.dumps(gs))
+
+    # 3d function
+    c = Continuous_injection_diffusion()
+
+    _ = pickle.loads(pickle.dumps(c))
+
+    # composite function
+    po2 = Powerlaw()
+    li = Line()
+    composite = po2*li + po2 - li + 2*po2 / li
+
+    _ = pickle.loads(pickle.dumps(composite))
+
+
+def test_get_function():
+
+    po = get_function("Powerlaw")
+
+    _ = po(1.0)
+
+    with pytest.raises(UnknownFunction):
+
+        _ = get_function("not_existant")
+
+
+def test_get_function_class():
+
+    po_class = get_function_class("Powerlaw")
+
+    assert po_class == Powerlaw
+
+    with pytest.raises(UnknownFunction):
+
+        _ = get_function_class("not_existant")
+
+
+def test_list_functions():
+
+    print list_functions()

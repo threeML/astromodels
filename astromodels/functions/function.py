@@ -79,6 +79,7 @@ NO_LATEX_FORMULA = '(no latex formula available)'
 # Codes to indicate to Composite Function the operation between two functions
 _operations = {'+': np.add,
                '-': np.subtract,
+               '*-': np.negative,
                '*': np.multiply,
                '/': np.divide,
                '**': np.power,
@@ -111,9 +112,8 @@ def memoize(method):
     def memoizer(instance, x, *args, **kwargs):
 
         # Create a tuple because a tuple is hashable
-        # Explicity making values float to enable hashing. J. Michael Burgess
 
-        unique_id = tuple(float(x.value) for x in instance.parameters.values()) + (x.shape[0], x.min(), x.max())
+        unique_id = tuple(float(x.value) for x in instance.parameters.values()) + (x.size, x.min(), x.max())
 
         # Create a unique identifier for this combination of inputs
 
@@ -409,6 +409,10 @@ class FunctionMeta(type):
 
                 return eval(val)
 
+            elif val is None:
+
+                return None
+
             else:
 
                 return float(val)
@@ -648,7 +652,7 @@ class Function(Node):
 
     def __neg__(self):
 
-        return CompositeFunction('-', self)
+        return CompositeFunction('*-', self)
 
     def __abs__(self):
 
@@ -808,7 +812,7 @@ class Function(Node):
 
         return function_copy
 
-    def get_boundaries(self):
+    def get_boundaries(self): # pragma: no cover
         """
         Returns the boundaries of this function. By default there is no boundary, but subclasses can
         override this.
@@ -828,65 +832,7 @@ class Function1D(Function):
         self._x_unit = None
         self._y_unit = None
 
-    def get_wrapper(self):
-        """
-        Returns a python function which can be used to call this function with the parameters in the calling sequence.
-        In other words, if you can call this function with f(x), with the returned wrapper you can call it with
-        f(x, parameter1, parameter2...), where parameter1, parameter2... are the *free* parameters.
-
-        :return: a python function
-        """
-
-        # Build a list of free parameters
-        free_parameters = [k for k, v in self.parameters.iteritems() if v.free]
-
-        # Prepare the method to set the parameters to their current value
-
-        def set_parameters(*args):
-
-            for i in range(len(args)):
-                self._get_child(free_parameters[i]).value = args[i]
-
-        # Prepare the variable description
-
-        variables = None
-
-        if self.n_dim == 1:
-
-            variables = 'x'
-
-        elif self.n_dim == 2:
-
-            variables = 'x,y'
-
-        elif self.n_dim == 3:
-
-            variables = 'x,y,z'
-
-        # Prepare the free parameters string
-
-        free_parameters_string = ",".join(free_parameters)
-
-        # Build some code to generate a wrapper which takes care of updating the value of the parameters
-        # and return the value of the function
-
-        wrapper_code = '''
-
-        def wrapper(%s, %s):
-
-            set_parameters(%s)
-
-            return self(%s)
-
-        ''' % (variables, free_parameters_string, free_parameters_string, variables)
-
-        # print(wrapper_code)
-
-        exec (wrapper_code.replace("        ", "")) in locals()
-
-        return wrapper
-
-    def evaluate(self, x, *args, **kwargs):
+    def evaluate(self, x, *args, **kwargs):  # pragma: no cover
 
         raise NotImplementedError("You have to re-implement this")
 
@@ -925,8 +871,7 @@ class Function1D(Function):
             self._x_unit = in_x_unit
             self._y_unit = in_y_unit
 
-
-    def _set_units(self, x_unit, y_unit):
+    def _set_units(self, x_unit, y_unit):  # pragma: no cover
 
         # This will be overridden by derived classes
 
@@ -947,6 +892,8 @@ class Function1D(Function):
         # the case without units, so that the latter case remains fast. Also, transforming an input
         # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
         # this transformation only when strictly required
+
+        # NOTE: x is an array also when it is for example 1.0 * u.keV, because of the decorator
 
         if isinstance(x, np.ndarray):
 
@@ -973,16 +920,6 @@ class Function1D(Function):
                 # Now convert to the expected y unit
                 return np.squeeze(results.to(self.y_unit).value) * self.y_unit
 
-                # else:
-                #
-                #     # No support for units, add it artificially
-                #
-                #     new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
-                #
-                #     results = self._call_without_units(new_input, *args, **kwargs)
-                #
-                #     return np.squeeze(results) * self.y_unit
-
         else:
 
             # This is either a single number or a list
@@ -1000,35 +937,9 @@ class Function1D(Function):
 
                 return np.squeeze(result)
 
-            else:
+            else:  # pragma: no cover
 
-                # if self._handle_units:
-
-                    # This is a single number with units, let's transform it to an array with units
-
-                    new_input = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
-
-                    # Compute the function with units
-
-                    result = self._call_with_units(new_input, *args, **kwargs)
-
-                    # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-                    # Let's also convert the result to the expected units
-
-                    return np.squeeze(result).to(self.y_unit)
-                #
-                # else:
-                #
-                #     new_input = np.array(x.value, dtype=float, ndmin=1, copy=False)
-                #
-                #     # Compute the function without units
-                #
-                #     result = self._call_without_units(new_input, *args, **kwargs)
-                #
-                #     # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-                #     # Let's also convert the result to the expected units
-                #
-                #     return np.squeeze(result) * self.y_unit
+                raise NotImplementedError("Should never get here")
 
     def _call_with_units(self, x, *args, **kwargs):
 
@@ -1042,7 +953,7 @@ class Function1D(Function):
 
             results = self.evaluate(x, *args, **kwargs)
 
-        except u.UnitsError:
+        except u.UnitsError:  # pragma: no cover
 
             raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                "calling function %s" % self.name)
@@ -1083,7 +994,7 @@ class Function2D(Function):
         self._y_unit = None
         self._z_unit = None
 
-    def evaluate(self, x, y, *args, **kwargs):
+    def evaluate(self, x, y, *args, **kwargs):  # pragma: no cover
 
         raise NotImplementedError("You have to re-implement this")
 
@@ -1111,7 +1022,7 @@ class Function2D(Function):
         # Now call the underlying method to set units, which is defined by each function
         self._set_units(self._x_unit, self._y_unit, self._z_unit)
 
-    def _set_units(self, x_unit, y_unit, z_unit):
+    def _set_units(self, x_unit, y_unit, z_unit):  # pragma: no cover
 
         # This will be overridden by derived classes
 
@@ -1176,21 +1087,9 @@ class Function2D(Function):
 
                 return np.squeeze(result)
 
-            else:
+            else:  # pragma: no cover
 
-                # This is a single number with units, let's transform it to an array with units
-
-                new_x = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
-                new_y = np.array(y, dtype=float, ndmin=1, copy=False) * y.unit
-
-                # Compute the function with units
-
-                result = self._call_with_units(new_x, new_y, *args, **kwargs)
-
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-                # Let's also convert the result to the expected units
-
-                return np.squeeze(result).to(self.z_unit)
+                raise NotImplementedError("should never get here")
 
     def _call_with_units(self, x, y, *args, **kwargs):
 
@@ -1203,7 +1102,7 @@ class Function2D(Function):
 
             results = self.evaluate(x, y, *args, **kwargs)
 
-        except u.UnitsError:
+        except u.UnitsError:  # pragma: no cover
 
             raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                "calling function %s" % self.name)
@@ -1235,7 +1134,7 @@ class Function3D(Function):
         self._z_unit = None
         self._w_unit = None
 
-    def evaluate(self, x, y, z, *args, **kwargs):
+    def evaluate(self, x, y, z, *args, **kwargs):  # pragma: no cover
 
         raise NotImplementedError("You have to re-implement this")
 
@@ -1266,7 +1165,7 @@ class Function3D(Function):
         # Now call the underlying method to set units, which is defined by each function
         self._set_units(self._x_unit, self._y_unit, self._z_unit, self._w_unit)
 
-    def _set_units(self, x_unit, y_unit, z_unit, w_unit):
+    def _set_units(self, x_unit, y_unit, z_unit, w_unit):  # pragma: no cover
 
         # This will be overridden by derived classes
 
@@ -1298,7 +1197,7 @@ class Function3D(Function):
 
         assert type(x) == type(y) and type(y) == type(z), "You have to use the same type for x, y and z"
 
-        if isinstance(x, np.ndarray) and x.shape != ():
+        if isinstance(x, np.ndarray):
 
             # We have an array as input
 
@@ -1336,22 +1235,9 @@ class Function3D(Function):
 
                 return np.squeeze(result)
 
-            else:
+            else:  # pragma: no cover
 
-                # This is a single number with units, let's transform it to an array with units
-
-                new_x = np.array(x, dtype=float, ndmin=1, copy=False) * x.unit
-                new_y = np.array(y, dtype=float, ndmin=1, copy=False) * y.unit
-                new_z = np.array(z, dtype=float, ndmin=1, copy=False) * z.unit
-
-                # Compute the function with units
-
-                result = self._call_with_units(new_x, new_y, new_z, *args, **kwargs)
-
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
-                # Let's also convert the result to the expected units
-
-                return np.squeeze(result).to(self.w_unit)
+                raise NotImplementedError("Should never get here")
 
     @memoize
     def _call_with_units(self, x, y, z, *args, **kwargs):
@@ -1366,7 +1252,7 @@ class Function3D(Function):
 
             results = self.evaluate(x, y, z, *args, **kwargs)
 
-        except u.UnitsError:
+        except u.UnitsError:  # pragma: no cover
 
             raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                "calling function %s" % self.name)
@@ -1693,7 +1579,7 @@ class CompositeFunction(Function):
 
                 return new_evaluate
 
-            else:
+            else:  # pragma: no cover
 
                 # Should never get here!
 
@@ -1704,7 +1590,7 @@ class CompositeFunction(Function):
         "A list containing the function used to build this composite function"
         return self._functions
 
-    def evaluate(self):
+    def evaluate(self):  # pragma: no cover
 
         raise NotImplementedError("You cannot instance and use a composite function by itself. Use the factories.")
 
@@ -1764,6 +1650,7 @@ def get_function(function_name, composite_function_expression=None):
 
             raise UnknownFunction("Function %s is not known. Known functions are: %s" %
                                   (function_name, ",".join(_known_functions.keys())))
+
 
 def get_function_class(function_name):
     """

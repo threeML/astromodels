@@ -7,10 +7,15 @@ from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Blackb
 from astromodels.sources.point_source import PointSource
 
 try:
+
     from astromodels.xspec import XS_phabs, XS_powerlaw
+
 except:
+
     has_xspec = False
+
 else:
+
     has_xspec = True
 
 

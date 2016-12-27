@@ -1,6 +1,6 @@
 __author__ = 'giacomov'
 
-from astromodels.utils.html_to_text import html2text
+from html2text import html2text
 
 
 def _process_html(dictionary):
