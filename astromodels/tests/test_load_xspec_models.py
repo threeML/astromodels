@@ -4,7 +4,7 @@ try:
 
     from astromodels.xspec import *
 
-except ImportError:
+except:
 
     has_XSPEC = False
 
