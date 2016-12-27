@@ -12,7 +12,7 @@ from setuptools.command.build_ext import build_ext as _build_ext
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-class build_ext(_build_ext):
+class My_build_ext(_build_ext):
 
     def finalize_options(self):
 
@@ -230,6 +230,8 @@ setup(
     name="astromodels",
 
     setup_requires=['numpy'],
+
+    cmdclass={'build_ext': My_build_ext},
 
     packages=packages,
 
