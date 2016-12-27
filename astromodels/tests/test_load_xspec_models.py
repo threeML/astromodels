@@ -12,7 +12,6 @@ else:
 
     has_XSPEC = True
 
-from threeML.io.file_utils import sanitize_filename
 
 # This defines a decorator which can be applied to single tests to
 # skip them if the condition is not met
