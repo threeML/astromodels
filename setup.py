@@ -25,6 +25,7 @@ class build_ext(_build_ext):
         import numpy
 
         self.include_dirs.append(numpy.get_include())
+        self.include_dirs.append('astromodels/xspec/include')
 
 
 def sanitize_lib_name(library_path):
@@ -205,9 +206,6 @@ def setup_xspec():
                   ["astromodels/xspec/src/_xspec.cc", ],
 
                   libraries=libraries,
-
-                  include_dirs=['astromodels/xspec/include'],
-
                   library_dirs=library_dirs,
                   extra_compile_args=[])]
 
@@ -221,7 +219,8 @@ packages = ['astromodels',
             'astromodels/functions/dark_matter',
             'astromodels/sources',
             'astromodels/utils',
-            'astromodels/xspec'
+            'astromodels/xspec',
+            'astromodels/tests'
             ]
 
 # Check whether we can compile Xspec support
@@ -261,7 +260,8 @@ setup(
         'scipy>=0.13',
         'numdifftools',
         'tables',
-        'pandas'],
+        'pandas',
+        'html2text'],
 
     ext_modules=ext_modules_configuration,
 
