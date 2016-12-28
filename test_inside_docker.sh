@@ -55,15 +55,13 @@ echo "##########################################################"
 # (need to move away from root directory, otherwise xspec import will fail)
 cd astromodels
 python -m pytest -vv --cov=astromodels
-# Need to copy the results of coverage back to the package root
-cp .coverage /travis_build_dir
 
 echo "##########################################################"
 echo " Executing codecov"
 echo "##########################################################"
 
 # Execute the coverage analysis
-# codecov -t 493c9a2d-42fc-40d6-8e65-24e681efaa1e
+codecov -t 493c9a2d-42fc-40d6-8e65-24e681efaa1e
 
 ###################################################################################
 # end of script run as user "user"

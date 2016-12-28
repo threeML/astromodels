@@ -14,6 +14,3 @@ before_install:
 
 script:
  - docker run --rm -it -e user_id=`id -u` -v $TRAVIS_BUILD_DIR:/travis_build_dir giacomov/xspec-docker /bin/bash -c "source /travis_build_dir/test_inside_docker.sh"
-
-after_success:
- - codecov
