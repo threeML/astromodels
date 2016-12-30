@@ -63,8 +63,9 @@ def find_library(library_root):
     if first_guess is not None:
 
         # Found in one of the system paths that the linker already knows
-
-        return sanitize_lib_name(first_guess), None
+        # also return the path just incase the linker see environment variables
+        # we will not catch
+        return sanitize_lib_name(first_guess), '/'.join(first_guess.split('/')[:-1])
 
     else:
 
