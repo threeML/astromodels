@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 
-import os
-import sys
-import glob
-import re
 import ctypes.util
+import glob
+import sys
 
+import os
+import re
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
+
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
@@ -45,6 +46,7 @@ def sanitize_lib_name(library_path):
 
     return tokens[0][0]
 
+
 def find_library(library_root):
     """
     Returns the name of the library without extension
@@ -62,23 +64,41 @@ def find_library(library_root):
 
     if first_guess is not None:
 
-        # Found in one of the system paths that the linker already knows
+        # Found in one of the system paths
 
-        return sanitize_lib_name(first_guess), None
+        if sys.platform.lower().find("linux") >= 0:
+
+            # On linux the linker already knows about these paths, so we
+            # can return None as path
+
+            return sanitize_lib_name(first_guess), None
+
+        elif sys.platform.lower().find("darwin") >= 0:
+
+            # On Mac we still need to return the path, because the linker sometimes
+            # does not look into it
+
+            return sanitize_lib_name(first_guess), os.path.dirname(first_guess)
+
+        else:
+
+            # Windows is not supported
+
+            raise NotImplementedError("Platform %s is not supported" % sys.platform)
 
     else:
 
         # could not find it. Let's examine LD_LIBRARY_PATH or DYLD_LIBRARY_PATH
-        # (if they are not defined, possible_locations will become [""] which will
+        # (if they sanitize_lib_name(first_guess), are not defined, possible_locations will become [""] which will
         # be handled by the next loop)
 
-        if sys.platform.lower().find("linux") >=0:
+        if sys.platform.lower().find("linux") >= 0:
 
             # Unix / linux
 
             possible_locations = os.environ.get("LD_LIBRARY_PATH", "").split(":")
 
-        elif sys.platform.lower().find("darwin") >=0:
+        elif sys.platform.lower().find("darwin") >= 0:
 
             # Mac
 
@@ -96,7 +116,6 @@ def find_library(library_root):
         for search_path in possible_locations:
 
             if search_path == "":
-
                 # This can happen if there are more than one :, or if nor LD_LIBRARY_PATH
                 # nor DYLD_LIBRARY_PATH are defined (because of the default use above for os.environ.get)
 
@@ -131,7 +150,6 @@ def find_library(library_root):
                 continue
 
             if library_name is not None:
-
                 break
 
         if library_name is None:
@@ -149,8 +167,8 @@ def find_library(library_root):
 # Get the version number
 execfile('astromodels/version.py')
 
-def setup_xspec():
 
+def setup_xspec():
     headas_root = os.environ.get("HEADAS")
 
     if headas_root is None:
@@ -186,7 +204,6 @@ def setup_xspec():
             libraries.append(this_library)
 
             if this_library_path is not None:
-
                 # This library is not in one of the system path library, we need to add
                 # it to the -L flag during linking. Let's put it in the library_dirs list
                 # which will be used in the Extension class
@@ -198,7 +215,6 @@ def setup_xspec():
     library_dirs = list(set(library_dirs))
 
     # Configure the variables to build the external module with the C/C++ wrapper
-
     ext_modules_configuration = [
 
         Extension("astromodels.xspec._xspec",
@@ -210,6 +226,7 @@ def setup_xspec():
                   extra_compile_args=[])]
 
     return ext_modules_configuration
+
 
 # Normal packages
 
@@ -268,8 +285,8 @@ setup(
     ext_modules=ext_modules_configuration,
 
     package_data={
-          'astromodels': ['data/dark_matter/*'],
-       },
+        'astromodels': ['data/dark_matter/*'],
+    },
     include_package_data=True,
 
 )
