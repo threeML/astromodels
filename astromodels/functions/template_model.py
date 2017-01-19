@@ -514,6 +514,11 @@ class TemplateModel(Function1D):
 
         return values / scale
 
+    @property
+    def data_file(self):
+
+        return self._data_file
+
     def to_dict(self, minimal=False):
 
         data = super(Function1D, self).to_dict(minimal)

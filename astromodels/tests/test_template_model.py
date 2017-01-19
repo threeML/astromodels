@@ -4,6 +4,7 @@ import numpy as np
 
 from astromodels.functions.template_model import TemplateModel, TemplateModelFactory, MissingDataFile
 from astromodels.functions.functions import Band
+from astromodels import Model, PointSource, clone_model
 
 __author__ = 'giacomov'
 
@@ -94,3 +95,24 @@ def test_template_function():
                                          "with parameters %s!" % (new_energies[idx], deltas[idx], [a,b,xp]))
 
 
+def test_input_output():
+
+    tm = TemplateModel('__test')
+    tm.alpha = -0.95
+    tm.beta = -2.23
+
+    fake_source = PointSource("test", ra=0.0, dec=0.0, spectral_shape=tm)
+
+    fake_model = Model(fake_source)
+
+    clone = clone_model(fake_model)
+
+    assert clone.get_number_of_point_sources() == 1
+    assert tm.data_file == clone.test.spectrum.main.shape.data_file
+
+    assert clone.test.spectrum.main.shape.alpha.value == tm.alpha.value
+    assert clone.test.spectrum.main.shape.beta.value == tm.beta.value
+
+    xx = np.linspace(1, 10, 100)
+
+    assert np.allclose(clone.test.spectrum.main.shape(xx), fake_model.test.spectrum.main.shape(xx))
