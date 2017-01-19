@@ -1648,8 +1648,24 @@ def get_function(function_name, composite_function_expression=None):
 
         else:
 
-            raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                                  (function_name, ",".join(_known_functions.keys())))
+            # Maybe this is a template
+
+            # NOTE: import here to avoid circular import
+
+            from astromodels.functions.template_model import TemplateModel, MissingDataFile
+
+            try:
+
+                instance = TemplateModel(function_name)
+
+            except MissingDataFile:
+
+                raise UnknownFunction("Function %s is not known. Known functions are: %s" %
+                                      (function_name, ",".join(_known_functions.keys())))
+
+            else:
+
+                return instance
 
 
 def get_function_class(function_name):

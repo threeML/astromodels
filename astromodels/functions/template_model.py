@@ -518,9 +518,9 @@ class TemplateModel(Function1D):
 
         data = super(Function1D, self).to_dict(minimal)
 
-        if not minimal:
-
-            data['extra_setup'] = {'data_file': self._data_file}
+        # if not minimal:
+        #
+        #     data['extra_setup'] = {'data_file': self._data_file}
 
         return data
 
