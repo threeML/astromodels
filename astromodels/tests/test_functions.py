@@ -791,7 +791,11 @@ def test_pickling_unpickling():
     # 1d function
     po = Powerlaw()
 
-    _ = pickle.loads(pickle.dumps(po))
+    po.K = 5.35
+
+    new_po = pickle.loads(pickle.dumps(po))
+
+    assert new_po.K.value == po.K.value
 
     # 2d function
     gs = Gaussian_on_sphere()
@@ -806,9 +810,18 @@ def test_pickling_unpickling():
     # composite function
     po2 = Powerlaw()
     li = Line()
-    composite = po2*li + po2 - li + 2*po2 / li
+    composite = po2*li + po2 - li + 2*po2 / li  # type: Function1D
 
-    _ = pickle.loads(pickle.dumps(composite))
+    # Change some parameter
+    composite.K_1 = 3.2
+    composite.a_2 = 1.56
+
+    dump = pickle.dumps(composite)
+
+    new_composite = pickle.loads(dump)
+
+    assert new_composite.K_1.value == composite.K_1.value
+    assert new_composite.a_2.value == composite.a_2.value
 
 
 def test_get_function():

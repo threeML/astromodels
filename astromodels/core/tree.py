@@ -1,8 +1,7 @@
-__author__ = 'giacomov'
-
 import collections
+from astropy.units import Quantity
+import warnings
 
-from astromodels.core.dual_access_class import DualAccessClass
 from astromodels.utils.io import display
 from astromodels.utils.valid_variable import is_valid_variable_name
 
@@ -11,19 +10,53 @@ class DuplicatedNode(Exception):
     pass
 
 
-class Node(DualAccessClass):
+class ProtectedAttribute(RuntimeError):
+    pass
+
+
+class NonExistingAttribute(RuntimeWarning):
+    pass
+
+
+class Node(object):
 
     def __init__(self, name):
 
-        self.__children = collections.OrderedDict()
-        self.__parent = None
+        self._children = collections.OrderedDict()
+        self._parent = None
 
         assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
                                              "and _" % name
 
         self._name = name
 
-        super(Node, self).__init__('node', self.__children)
+    # def __setattr__(self, key, value):
+    #
+    #     print("%s -> %s" % (key,value))
+    #
+    #     if hasattr(self, "_children"):
+    #
+    #         # After construction, the object has always a _children attribute and a _parameters attribute
+    #
+    #         # Process parameters first (they are the most important ones)
+    #         if key in self._children:
+    #
+    #             raise ProtectedAttribute("You cannot assign to a node")
+    #
+    #         else:
+    #
+    #             # Attributes which start with "_" are created by children classes
+    #
+    #             if not key[0] == '_' and not hasattr(self, key):
+    #
+    #                 warnings.warn("Attribute %s does not exist. Check for typos." % key, NonExistingAttribute)
+    #
+    #             object.__setattr__(self, key, value)
+    #
+    #     else:
+    #
+    #         # We are here during construction
+    #         object.__setattr__(self, key, value)
 
     @property
     def name(self):
@@ -35,18 +68,19 @@ class Node(DualAccessClass):
         return self._name
 
     @property
-    def _children(self):
-        return self.__children
-
-    @property
     def path(self):
 
         return ".".join(self._get_path())
 
     def _reset_node(self):
 
-        self.__children = collections.OrderedDict()
-        self.__parent = None
+        # We need to use directly the __setattr__ method because the normal self._children = ... will trigger
+        # an exception, because of the __setattr__ method of the DualAccessClass which forbids changing
+        # nodes
+
+        object.__setattr__(self, "_children", collections.OrderedDict())
+
+        object.__setattr__(self, "_parent", None)
 
     def _add_children(self, children):
 
@@ -54,7 +88,7 @@ class Node(DualAccessClass):
 
             self._add_child(child)
 
-    def _add_child(self, new_child, name=None):
+    def _add_child(self, new_child, name=None, add_attribute=True):
 
         new_child._set_parent(self)
 
@@ -62,32 +96,40 @@ class Node(DualAccessClass):
 
             name = new_child.name
 
-        if name in self.__children:
+        if name in self._children:
 
             raise DuplicatedNode("You cannot use the same name (%s) for different nodes" % name)
 
-        self.__children[name] = new_child
+        self._children[name] = new_child
 
-        # Add also an attribute with the name of the new child, to allow access with a syntax like
-        # node.child
+        if add_attribute:
 
-        self._add_attribute(name, new_child)
+            # Add also an attribute with the name of the new child, to allow access with a syntax like
+            # node.child
+
+            object.__setattr__(self, name, new_child)
 
     def _get_child(self, child_name):
 
-        return self.__children[child_name]
+        return self._children[child_name]
 
     def _remove_child(self, child_name):
 
-        return self._del_attribute(child_name)
+        object.__delattr__(self, child_name)
+
+        return self._children.pop(child_name)
 
     def _set_parent(self, parent):
 
-        self.__parent = parent
+        # We need to use directly the __setattr__ method because the normal self._children = ... will trigger
+        # an exception, because of the __setattr__ method of the DualAccessClass which forbids changing
+        # nodes. However, this might reassign the parent to a class
+
+        object.__setattr__(self, "_parent", parent)
 
     def _get_parent(self):
 
-        return self.__parent
+        return self._parent
 
     def _get_child_from_path(self, path):
         """
@@ -139,7 +181,7 @@ class Node(DualAccessClass):
 
         this_dict = collections.OrderedDict()
 
-        for key, val in self.__children.iteritems():
+        for key, val in self._children.iteritems():
 
             this_dict[key] = val.to_dict(minimal)
 

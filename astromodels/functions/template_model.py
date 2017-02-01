@@ -12,6 +12,7 @@ from pandas import HDFStore
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
+from astromodels.core.my_yaml import my_yaml
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
@@ -31,6 +32,10 @@ class ValuesNotInGrid(ValueError):
 
 class MissingDataFile(RuntimeError):
     pass
+
+
+# This dictionary will keep track of the new classes already created in the current session
+_classes_cache = {}
 
 
 class TemplateModelFactory(object):
@@ -275,6 +280,166 @@ class RectBivariateSplineWrapper(object):
         return res[0][0]
 
 
+def template_model_class_factory(model_name):
+    """
+    This factory creates a new class (not a new instance) corresponding to the given template. The new class can
+    be used to instance a new model corresponding to the given template
+
+    :param model_name: the name of the template
+    :return: a new class called TemplateModel_[model_name]
+    """
+
+    # Create a new name for the new class
+    new_name = 'TemplateModel_%s' % model_name
+
+    # See if we already created this class
+    if new_name in _classes_cache:
+
+        return _classes_cache[new_name]
+
+    else:
+
+        # Create a new class for this template
+
+        # Create an empty dictionary which will contain all methods/attributes of the new class
+        new_class_dict = {}
+
+        # Fill it with the methods/attributes of the TemplateModel class
+        for item in TemplateModel.__dict__:
+
+            if item == "__new__":
+
+                # We don't want to copy the __new__ to avoid infinite recursion when creating the object
+
+                continue
+
+            new_class_dict[item] = TemplateModel.__dict__[item]
+
+        # Now overwrite the things that specialize the class to this particular template
+
+        # Read in template file
+        # Get the data directory
+
+        data_dir_path = get_user_data_path()
+
+        # Sanitize the data file
+
+        filename_sanitized = os.path.abspath(os.path.join(data_dir_path, '%s.h5' % model_name))
+
+        if not os.path.exists(filename_sanitized):
+            raise MissingDataFile("The data file %s does not exists. Did you use the "
+                                  "TemplateFactory?" % (filename_sanitized))
+
+        # Open the template definition and read from it
+
+        new_class_dict['_data_file'] = filename_sanitized
+
+        with HDFStore(filename_sanitized) as store:
+
+            new_class_dict['_data_frame'] = store['data_frame']
+
+            new_class_dict['_parameters_grids'] = collections.OrderedDict()
+
+            processed_parameters = 0
+
+            for key in store.keys():
+
+                match = re.search('p_([0-9]+)_(.+)', key)
+
+                if match is None:
+
+                    continue
+
+                else:
+
+                    tokens = match.groups()
+
+                    this_parameter_number = int(tokens[0])
+                    this_parameter_name = str(tokens[1])
+
+                    assert this_parameter_number == processed_parameters, "Parameters out of order!"
+
+                    new_class_dict['_parameters_grids'][this_parameter_name] = store[key]
+
+                    processed_parameters += 1
+
+            new_class_dict['_energies'] = store['energies']
+
+            # Now get the metadata
+
+            metadata = store.get_storer('data_frame').attrs.metadata
+
+            description = metadata['description']
+
+            # name = metadata['name']
+
+            new_class_dict['_interpolation_degree'] = metadata['interpolation_degree']
+
+            new_class_dict['_spline_smoothing_factor'] = metadata['spline_smoothing_factor']
+
+        # Make the dictionary of parameters
+
+        function_definition = collections.OrderedDict()
+
+        function_definition['description'] = description
+
+        function_definition['latex'] = 'n.a.'
+
+        # Now build the parameters according to the content of the parameter grid
+
+        parameters_definition = collections.OrderedDict()
+
+        parameters_definition['K'] = collections.OrderedDict((('desc', 'Normalization'), ('initial value', 1.0)))
+        parameters_definition['scale'] = collections.OrderedDict((('desc', 'Normalization'),
+                                                                ('initial value', 1.0),
+                                                                ('min', 1e-5)))
+
+        for parameter_name in new_class_dict['_parameters_grids'].keys():
+            grid = new_class_dict['_parameters_grids'][parameter_name]
+
+            parameters_definition[parameter_name] = collections.OrderedDict((('desc', 'none'),
+                                                                           ('initial value', float(grid.median())),
+                                                                           ('min_value', float(grid.min())),
+                                                                           ('max_value', float(grid.max()))))
+
+        function_definition['parameters'] = parameters_definition
+
+        # Update the doc string so that the FunctionMeta class will populate correctly the class
+
+        new_class_dict['__doc__'] = my_yaml.dump(function_definition)
+
+        # Now susbsitute the evaluate function with a version with all the required parameters
+
+        # Get the parameters' names (except for K and scale)
+        par_names_no_K_no_scale = parameters_definition.keys()[2:]
+
+        function_code = 'def new_evaluate(self, x, %s): ' \
+                        'return K * self._interpolate(x, scale, [%s])' % (",".join(parameters_definition.keys()),
+                                                                          ",".join(par_names_no_K_no_scale))
+
+        exec (function_code)
+
+        new_class_dict['_evaluate'] = new_evaluate
+
+        new_class_dict['evaluate'] = new_evaluate
+
+        new_class = FunctionMeta(new_name, (Function1D,), new_class_dict)
+
+        # Now prepare the interpolators
+        new_class._prepare_interpolators()
+
+        return new_class
+
+
+class TemplateModelUnplickler(object):
+
+    def __call__(self, model_name):
+
+        new_instance = TemplateModel(model_name)
+
+        return new_instance
+
+
 class TemplateModel(Function1D):
 
     r"""
@@ -303,128 +468,52 @@ class TemplateModel(Function1D):
 
         """
 
-    __metaclass__ = FunctionMeta
+    # Use __new__ instead of init so we can use the factory
+    def __new__(cls, model_name):
 
-    def _custom_init_(self, model_name):
+        new_class = template_model_class_factory(model_name)
 
-        # Get the data directory
+        new_instance = new_class()
 
-        data_dir_path = get_user_data_path()
+        # Add attributes from the type to the instance (for easier accessibility)
+        new_instance._data_file = new_class._data_file
 
-        # Sanitize the data file
+        new_instance._data_frame = new_class._data_frame
 
-        filename_sanitized = os.path.abspath(os.path.join(data_dir_path, '%s.h5' % model_name))
+        new_instance._parameters_grids = new_class._parameters_grids
 
-        if not os.path.exists(filename_sanitized):
+        new_instance._energies = new_class._energies
 
-            raise MissingDataFile("The data file %s does not exists. Did you use the "
-                                  "TemplateFactory?" % (filename_sanitized))
+        new_instance._interpolation_degree = new_class._interpolation_degree
 
-        # Open the template definition and read from it
+        new_instance._spline_smoothing_factor = new_class._spline_smoothing_factor
 
-        self._data_file = filename_sanitized
+        new_instance._interpolators = new_class._interpolators
 
-        with HDFStore(filename_sanitized) as store:
+        new_instance._model_name = model_name
 
-            self._data_frame = store['data_frame']
+        return new_instance
 
-            self._parameters_grids = collections.OrderedDict()
-
-            processed_parameters = 0
-
-            for key in store.keys():
-
-                match = re.search('p_([0-9]+)_(.+)', key)
-
-                if match is None:
-
-                    continue
-
-                else:
-
-                    tokens = match.groups()
-
-                    this_parameter_number = int(tokens[0])
-                    this_parameter_name = str(tokens[1])
-
-                    assert this_parameter_number == processed_parameters, "Parameters out of order!"
-
-                    self._parameters_grids[this_parameter_name] = store[key]
-
-                    processed_parameters += 1
-
-            self._energies = store['energies']
-
-            # Now get the metadata
-
-            metadata = store.get_storer('data_frame').attrs.metadata
-
-            description = metadata['description']
-            name = metadata['name']
-
-            self._interpolation_degree = metadata['interpolation_degree']
-
-            self._spline_smoothing_factor = metadata['spline_smoothing_factor']
-
-        # Make the dictionary of parameters
-
-        function_definition = collections.OrderedDict()
-
-        function_definition['description'] = description
-
-        function_definition['latex'] = 'n.a.'
-
-        # Now build the parameters according to the content of the parameter grid
-
-        parameters = collections.OrderedDict()
-
-        parameters['K'] = Parameter('K', 1.0)
-        parameters['scale'] = Parameter('scale', 1.0)
-
-        for parameter_name in self._parameters_grids.keys():
-
-            grid = self._parameters_grids[parameter_name]
-
-            parameters[parameter_name] = Parameter(parameter_name, grid.median(),
-                                                   min_value=grid.min(),
-                                                   max_value=grid.max())
-
-        super(TemplateModel, self).__init__(name, function_definition, parameters)
-
-        self._prepare_interpolators()
-
-        # Now susbsitute the evaluate function with a version with all the required parameters
-
-        # Get the parameters' names (except for K and scale)
-        par_names_no_K_no_scale = parameters.keys()[2:]
-
-        function_code = 'def new_evaluate(self, x, %s): ' \
-                        'return K * self._interpolate(x, scale, [%s])' % (",".join(parameters.keys()),
-                                                                          ",".join(par_names_no_K_no_scale))
-
-        exec(function_code)
-
-        add_method(self, new_evaluate,'_evaluate')
-
-        self.evaluate = self._evaluate
-
-    def _prepare_interpolators(self):
+    # This is a class method because we only need to make this once for a given template class
+    # (no need to repeat this for every instance)
+    @classmethod
+    def _prepare_interpolators(cls):
 
         # Figure out the shape of the data matrices
-        data_shape = map(lambda x: x.shape[0], self._parameters_grids.values())
+        data_shape = map(lambda x: x.shape[0], cls._parameters_grids.values())
 
-        self._interpolators = []
+        cls._interpolators = []
 
-        for energy in self._energies:
+        for energy in cls._energies:
 
             # Make interpolator for this energy
             # NOTE: we interpolate on the logarithm
 
-            this_data = np.array(np.log10(self._data_frame[energy].values).reshape(*data_shape), dtype=float)
+            this_data = np.array(np.log10(cls._data_frame[energy].values).reshape(*data_shape), dtype=float)
 
-            if len(self._parameters_grids.values()) == 2:
+            if len(cls._parameters_grids.values()) == 2:
 
-                x, y = self._parameters_grids.values()
+                x, y = cls._parameters_grids.values()
 
                 # Make sure that the requested polynomial degree is less than the number of data sets in
                 # both directions
@@ -433,33 +522,35 @@ class TemplateModel(Function1D):
                       "in the %s direction. Increase the number of templates or decrease the interpolation " \
                       "degree."
 
-                if len(x) <= self._interpolation_degree:
+                if len(x) <= cls._interpolation_degree:
 
-                    raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree+1, 'x'))
+                    raise RuntimeError(msg % (cls._interpolation_degree, cls._interpolation_degree + 1, 'x'))
 
-                if len(y) <= self._interpolation_degree:
+                if len(y) <= cls._interpolation_degree:
 
-                    raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree + 1, 'y'))
+                    raise RuntimeError(msg % (cls._interpolation_degree, cls._interpolation_degree + 1, 'y'))
 
                 this_interpolator = RectBivariateSplineWrapper(x, y, this_data,
-                                                               kx=self._interpolation_degree,
-                                                               ky=self._interpolation_degree,
-                                                               s=self._spline_smoothing_factor)
+                                                               kx=cls._interpolation_degree,
+                                                               ky=cls._interpolation_degree,
+                                                               s=cls._spline_smoothing_factor)
 
             else:
 
                 # In more than 2d we can only use linear interpolation
 
-                this_interpolator = scipy.interpolate.RegularGridInterpolator(self._parameters_grids.values(),
+                this_interpolator = scipy.interpolate.RegularGridInterpolator(cls._parameters_grids.values(),
                                                                               this_data)
 
-            self._interpolators.append(this_interpolator)
+            cls._interpolators.append(this_interpolator)
 
     def _set_units(self, x_unit, y_unit):
 
         self.K.unit = y_unit
 
         self.scale.unit = 1 / x_unit
+
+        # The other parameters must be scale free (the results of the interpolation must be unit free)
 
     # This function will be substituted during construction by another version with
     # all the parameters of this template
@@ -523,13 +614,18 @@ class TemplateModel(Function1D):
 
         data = super(Function1D, self).to_dict(minimal)
 
-        # if not minimal:
-        #
-        #     data['extra_setup'] = {'data_file': self._data_file}
-
         return data
 
+    # Now implement custom methods for pickling
+    def __reduce__(self):
 
+        model_name = self._name.replace("TemplateModel_","")
 
+        return TemplateModelUnplickler(), (model_name,), self.parameters
 
+    def __setstate__(self, state):
 
+        # Restore parameters
+        for parameter_name in state:
+
+            self.parameters[parameter_name] = state[parameter_name]

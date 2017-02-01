@@ -212,6 +212,22 @@ class Model(Node):
 
         return linked_parameter_dictionary
 
+    def set_free_parameters(self, values):
+        """
+        Set the free parameters in the model to the provided values.
+
+        NOTE: of course, order matters
+
+        :param values: a list of new values
+        :return: None
+        """
+
+        assert len(values) == len(self.free_parameters)
+
+        for parameter, this_value in zip(self.free_parameters.values(), values):
+
+            parameter.value = this_value
+
     def __getitem__(self, path):
         """
         Get a parameter from a path like "source_1.component.powerlaw.logK". This might be useful in certain
@@ -255,7 +271,7 @@ class Model(Node):
 
         NOTE: this will iterate over *all* parameters in the model, also those that are not free (and thus are not
         normally displayed). If you need to operate only on free parameters, just check if they are free within
-        the loop
+        the loop or use the .free_parameters dictionary directly
 
         :return: iterator
         """
