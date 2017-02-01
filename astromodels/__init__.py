@@ -17,6 +17,7 @@ from .core.parameter import Parameter
 from .core.spectral_component import SpectralComponent
 from .core.model_parser import load_model, clone_model
 from .core.units import get_units
+from .core.memoization import use_astromodels_memoization
 import astropy.units as u
 
 astromodels_units = get_units()
