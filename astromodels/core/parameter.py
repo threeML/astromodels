@@ -132,6 +132,9 @@ class ParameterBase(Node):
 
         Node.__init__(self, name)
 
+        # Make a static name which will never change (not even after a _change_name call)
+        self._static_name = str(name)
+
         # Callbacks are executed any time the value for the parameter changes (i.e., its value changes)
 
         # We start from a empty list of callbacks.
@@ -195,6 +198,18 @@ class ParameterBase(Node):
         raise NotImplementedError("You need to implement this for the actual Parameter class")
 
     # Define the property 'description' and make it read-only
+
+    @property
+    def static_name(self):
+        """
+        Returns a name which will never change, even if the name of the parameter does (for example in composite
+        functions)
+
+        :return : the static name
+        :type : str
+        """
+
+        return self._static_name
 
     @property
     def description(self):
