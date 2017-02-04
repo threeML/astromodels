@@ -399,8 +399,8 @@ def template_model_class_factory(model_name):
 
             parameters_definition[parameter_name] = collections.OrderedDict((('desc', 'none'),
                                                                            ('initial value', float(grid.median())),
-                                                                           ('min_value', float(grid.min())),
-                                                                           ('max_value', float(grid.max()))))
+                                                                           ('min', float(grid.min())),
+                                                                           ('max', float(grid.max()))))
 
         function_definition['parameters'] = parameters_definition
 
