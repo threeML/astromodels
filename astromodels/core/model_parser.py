@@ -1,7 +1,7 @@
 __author__ = 'giacomov'
 
 import re
-
+import warnings
 
 from astromodels.core import parameter, sky_direction, model, polarization, spectral_component
 from astromodels.core.my_yaml import my_yaml
@@ -530,11 +530,18 @@ class ShapeParser(object):
             # All these specifications are optional. If they are not present, then the default value
             # already contained in the instance of the function will be used
 
-            if 'min_value' in this_definition:
-                function_instance.parameters[parameter_name].min_value = this_definition['min_value']
+            # Ignore for a second the RuntimeWarning that is printed if the default value in the function definition
+            # is outside the bounds defined here
 
-            if 'max_value' in this_definition:
-                function_instance.parameters[parameter_name].max_value = this_definition['max_value']
+            with warnings.catch_warnings():
+
+                warnings.simplefilter("ignore", RuntimeWarning)
+
+                if 'min_value' in this_definition:
+                    function_instance.parameters[parameter_name].min_value = this_definition['min_value']
+
+                if 'max_value' in this_definition:
+                    function_instance.parameters[parameter_name].max_value = this_definition['max_value']
 
             if 'delta' in this_definition:
                 function_instance.parameters[parameter_name].delta = this_definition['delta']
