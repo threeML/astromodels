@@ -818,7 +818,7 @@ class Function(Node):
 
             self._children[par_name].value = parameter_specification[par_name]
 
-        return self.fast_call(*args)
+        return self.__call__(*args)
 
 
 class Function1D(Function):
