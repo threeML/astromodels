@@ -3,6 +3,7 @@ import collections
 import copy
 import inspect
 import uuid
+from operator import attrgetter
 
 import astropy.units as u
 import numpy as np
@@ -84,23 +85,6 @@ NO_LATEX_FORMULA = '(no latex formula available)'
 _known_functions = {}
 
 
-# These factories will be used by the MetaClass to build setters and getters for all parameters.
-# Use factories so we avoid the problem with late-binding, where the latest version of the function
-# will play the role for all the others
-def make_getter(this_parameter_name):
-    def this_getter(self):
-        return self._parameters[this_parameter_name]
-
-    return this_getter
-
-
-def make_setter(this_parameter_name):
-    def this_setter(self, value):
-        self._parameters[this_parameter_name].value = value
-
-    return this_setter
-
-
 # The following is a metaclass for all the functions
 class FunctionMeta(type):
     """
@@ -110,8 +94,8 @@ class FunctionMeta(type):
 
     def __new__(mcs, name, bases, dct):
 
-        # We do the parsing of the parameters in the __new__ instead of the __init__ because we need to add
-        # named properties to the class, depending on the content of the docstring
+        # We do the parsing of the parameters in the __new__ instead of the __init__ so this is the first thing
+        # that runs when importing astromodels
 
         # Enforce the presence of the evaluate method
 
@@ -173,12 +157,10 @@ class FunctionMeta(type):
 
         # Parse the parameters' dictionary
         assert isinstance(function_definition['parameters'], dict), "Wrong syntax in 'parameters' token. It must be " \
-                                                                    "a dictionary. Refers to the documentation."
+                                                                    "a dictionary. Refer to the documentation."
 
         # Add the parameters as attribute of the *type*. During the __call__ method below this dictionary will be used
-        # to create a copy of each parameter which will be made available as attribute of the instance.
-
-        # Also add the parameters as properties of the class
+        # to create a copy of each parameter which will be made available as child of the *instance*.
 
         dct['_parameters'] = collections.OrderedDict()
 
@@ -187,14 +169,6 @@ class FunctionMeta(type):
             this_parameter = FunctionMeta.parse_parameter_definition(name, parameter_name, parameter_definition)
 
             dct['_parameters'][this_parameter.name] = this_parameter
-
-            dct['_%s_getter' % parameter_name] = make_getter(parameter_name)
-
-            dct['_%s_setter' % parameter_name] = make_setter(parameter_name)
-
-            dct[this_parameter.name] = property(dct['_%s_getter' % parameter_name],
-                                                dct['_%s_setter' % parameter_name],
-                                                doc="Gets/sets value for parameter %s" % parameter_name)
 
         # Now perform a minimal check of the 'evaluate' function
 
@@ -275,7 +249,7 @@ class FunctionMeta(type):
 
         dct['info'] = staticmethod(info)
 
-        # Now call the __new__ of the object (which then will call the __init__ of this metaclass)
+        # Now call the __new__ of the "type" class (which then will call the __init__ of this metaclass)
 
         return super(FunctionMeta, mcs).__new__(mcs, name, bases, dct)
 
@@ -283,21 +257,21 @@ class FunctionMeta(type):
 
         # This is the MetaClass init, which is called after the __new__ is done
 
-        # Store the name in the type
+        # Store the name of the function in the type
         cls._name = cls.__name__
 
         # Add this as a known function
 
         _known_functions[name] = cls
 
-        # Finally call the type init
+        # Finally call the init of the type class
 
         super(FunctionMeta, cls).__init__(name, bases, dct)
 
     @staticmethod
     def class_init(instance, **kwargs):
 
-        # This is what is going to be called before the __init__ of the class, every time a new instance
+        # This is what is going to be called as the __init__ of the class, every time a new instance
         # is created
 
         # Create a copy of the parameters dictionary which is in the type,
@@ -331,7 +305,7 @@ class FunctionMeta(type):
                 raise UnknownParameter("You specified an init value for %s, which is not a "
                                        "parameter of function %s" % (key, type(instance)._name))
 
-        # Now call the parent class
+        # Now call the init of the corresponding class
         n_dim = type(instance)._n_dim
 
         if n_dim == 1:
@@ -357,6 +331,7 @@ class FunctionMeta(type):
 
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
+
             instance._setup()
 
     @staticmethod
@@ -470,7 +445,10 @@ class FunctionMeta(type):
 
 
 class Function(Node):
+    """
+    Generic Function class. Will be subclassed in Function1D, Function2D and Function3D.
 
+    """
     def __init__(self, name=None, function_definition=None, parameters=None):
 
         # I use default values only to avoid warnings from pycharm and other software about the
@@ -479,7 +457,9 @@ class Function(Node):
 
         assert name is not None and function_definition is not None and parameters is not None
 
-        # (this is called by the constructor defined in the metaclass)
+        # Set up the node
+
+        super(Function, self).__init__(name)
 
         # Store name, number of dimensions and the latex formula
 
@@ -493,10 +473,6 @@ class Function(Node):
 
         self._function_definition = function_definition
 
-        # Set up the node
-
-        Node.__init__(self, name)
-
         # Add the parameters as children. Since the name of the key in the dictionary might
         # be different than the actual name of the parameter, use the .add_child method instead
         # of the add_children method
@@ -507,10 +483,9 @@ class Function(Node):
 
             self._parameters[child_name] = child
 
-            # Since parameters are already properties (thanks to the metaclass), we do not add the
-            # corresponding attributes to the node
+            # Add the parameter as a child of the function
 
-            self._add_child(child, child_name, add_attribute=False)
+            self._add_child(child)
 
         # Now generate a unique identifier (UUID) in a thread safe, multi-processing safe
         # way. This is used for example in the CompositeFunction class to keep track of the different
@@ -518,13 +493,16 @@ class Function(Node):
         self._uuid = "{" + str(self._generate_uuid()) + "}"
 
         # Normal functions are able to change units, while some specific ones (such as the one from XSpec) are not.
-        # In this second case, this variable will contain a tuple (x_unit, y_unit)
+        # In this second case, this variable will contain a tuple (x_unit, y_unit), but by default it should be
+        # None
 
         self._fixed_units = None
 
     @property
     def n_dim(self):
-
+        """
+        :return: number of dimensions for this function (1, 2 or 3)
+        """
         return type(self)._n_dim
 
     @property
@@ -594,74 +572,45 @@ class Function(Node):
     # Define now all the operators which allow to combine functions. Each operator will return a new
     # instance of a CompositeFunction, which can then be used as a function on its own
 
-    @staticmethod
-    def __get_second_uuid(other_instance):
-        """
-        Return a name for the object. If the object is a function instance, return its name. Otherwise, return
-        the object itself.
-
-        :param other_instance:
-        :return:
-        """
-        if hasattr(other_instance,'uuid'):
-
-            # Another function
-
-            second_uuid = other_instance.uuid
-
-        else:
-
-            # A number
-
-            second_uuid = '%s' % other_instance
-
-        return second_uuid
-
     def of(self, another_function):
         """
         Compose this function with another as in this_function(another_function(x))
-
         :param another_function: another function to compose with the current one
         :return: a composite function instance
         """
-        return composite_function_factory('of', self, another_function)
+        return CompositeFunction('of', self, another_function)
 
     def __neg__(self):
 
-        return composite_function_factory('*-', self)
+        return CompositeFunction('*-', self)
 
     def __abs__(self):
 
-        return composite_function_factory('abs', self)
+        return CompositeFunction('abs', self)
 
     def __pow__(self, other_instance):
 
-        return composite_function_factory('**', self, other_instance)
+        return CompositeFunction('**', self, other_instance)
 
     def __rpow__(self, other_instance):
 
-        return composite_function_factory('**', other_instance, self)
+        return CompositeFunction('**', other_instance, self)
 
     def __add__(self, other_instance):
-        """
-        Return a composite function where the current instance is summed with the given instance
 
-        :param other_instance: the other instance. This can be either a number, or a Function instance.
-        """
-
-        return composite_function_factory('+', self, other_instance)
+        return CompositeFunction('+', self, other_instance)
 
     __radd__ = __add__
 
     def __sub__(self, other_instance):
 
-        return composite_function_factory('-', self, other_instance)
+        return CompositeFunction('-', self, other_instance)
 
     __rsub__ = __sub__
 
     def __mul__(self, other_instance):
 
-        c = composite_function_factory('*', self, other_instance)
+        c = CompositeFunction('*', self, other_instance)
 
         # If the other instance is a function (and not a number), flag it so its units will be made dimensionless
         # in the set_units method of the composite function
@@ -670,9 +619,13 @@ class Function(Node):
 
             if self.has_fixed_units():
 
+                # This is likely a XSpec model. The multiplication of two models with units will give the wrong
+                # units to the results. So, depending on the type of the first and second model, we need to adjust
+                # their units so that the result will keep the right units.
+
                 if not self.fixed_units[1] == u.dimensionless_unscaled:
 
-                    # This function has fixed dimension and is not dimensionless (likely an additive XSpec model).
+                    # This function has fixed unit and is not dimensionless (likely an additive XSpec model).
                     # We need to make the other function dimensionless so that the multiplication of them will keep
                     # the right units
 
@@ -680,7 +633,7 @@ class Function(Node):
 
                 else:
 
-                    # This function has fixed dimension, but it is dimensionless (likely a multiplicative XSpec model)
+                    # This function has fixed unit, but it is dimensionless (likely a multiplicative XSpec model)
                     # The other function should keep its units, so we flag self instead
 
                     self._make_dimensionless = True
@@ -688,7 +641,6 @@ class Function(Node):
                     # However, if also the other function has fixed dimension and it is dimensionless
                     # (likely another XSpec multiplicative model) we need to flag that as well
                     if other_instance.has_fixed_units() and (other_instance.fixed_units[1] == u.dimensionless_unscaled):
-
                         other_instance._make_dimensionless = True
 
                         # Now we need to flag the composite function as fixed units and dimensionless
@@ -696,7 +648,9 @@ class Function(Node):
 
             else:
 
-                # We need to make the other instance dimensionless
+                # We need to make the other instance dimensionless so that this function (which is not dimensionless)
+                # multiplied by the other function (which we will make dimensionless) will give the right units as
+                # the results
 
                 other_instance._make_dimensionless = True
 
@@ -706,7 +660,7 @@ class Function(Node):
 
     def __div__(self, other_instance):
 
-        c = composite_function_factory('/', self, other_instance)
+        c = CompositeFunction('/', self, other_instance)
 
         # If the other instance is a function (and not a number), flag it so its units will be made dimensionless
         # in the set_units method of the composite function
@@ -715,19 +669,9 @@ class Function(Node):
 
             if self.has_fixed_units():
 
-                if not self.fixed_units[0] == u.dimensionless_unscaled:
+                # This is likely a XSpec model. Division is not supported.
 
-                    # This function has fixed dimension and is not dimensionless (likely an additive XSpec model).
-                    # We need to make the other function dimensionless so that the multiplication of them will keep
-                    # the right units
-
-                    other_instance._make_dimensionless = True
-
-                else:
-
-                    # This function has fixed dimension, but it is dimensionless (likely a multiplicative XSpec model)
-                    # The other function should keep its units, so we do not flag it
-                    pass
+                raise NotImplementedError("Division for XSpec models is not supported")
 
             else:
 
@@ -739,7 +683,7 @@ class Function(Node):
 
     def __rdiv__(self, other_instance):
 
-        return composite_function_factory('/', other_instance, self)
+        return CompositeFunction('/', other_instance, self)
 
     __truediv__ = __div__
     __rtruediv__ = __rdiv__
@@ -757,9 +701,9 @@ class Function(Node):
         # Add the description of each parameter and their current value
         repr_dict['parameters'] = collections.OrderedDict()
 
-        for parameter_name in self._children.keys():
+        for parameter in self._get_children():
 
-            repr_dict['parameters'][parameter_name] = self._children[parameter_name].to_dict()
+            repr_dict['parameters'][parameter.name] = parameter.to_dict()
 
         return dict_to_list(repr_dict, rich_output)
 
@@ -786,7 +730,7 @@ class Function(Node):
 
         return function_copy
 
-    def get_boundaries(self): # pragma: no cover
+    def get_boundaries(self):  # pragma: no cover
         """
         Returns the boundaries of this function. By default there is no boundary, but subclasses can
         override this.
@@ -796,15 +740,15 @@ class Function(Node):
 
         raise NotImplementedError("You have to implement this")
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args):  # pragma: no cover
 
         raise NotImplementedError("You have to implement this")
 
-    def fast_call(self, *args, **kwargs):
+    def fast_call(self, *args):  # pragma: no cover
 
         raise NotImplementedError("You have to implement this")
 
-    def evaluate_at(self, *args, **parameter_specification):
+    def evaluate_at(self, *args, **parameter_specification):  # pragma: no cover
         """
         Evaluate the function at the given x(,y,z) for the provided parameters, explicitly provided as part of the
         parameter_specification keywords.
@@ -814,11 +758,12 @@ class Function(Node):
         :return:
         """
 
-        for par_name in self._children:
+        # Set the parameters to the provided values
+        for parameter in parameter_specification:
 
-            self._children[par_name].value = parameter_specification[par_name]
+            self._get_child(parameter).value = parameter_specification[parameter]
 
-        return self.__call__(*args)
+        return self(*args)
 
 
 class Function1D(Function):
@@ -836,8 +781,12 @@ class Function1D(Function):
 
     def set_units(self, in_x_unit, in_y_unit):
 
+        # Transform None in input to '', so that u.Unit() will generate a dimensionless unit
+
         in_x_unit = in_x_unit if in_x_unit is not None else ''
         in_y_unit = in_y_unit if in_y_unit is not None else ''
+
+        # Get a Unit instance from the inputs
 
         try:
 
@@ -877,13 +826,21 @@ class Function1D(Function):
 
     @property
     def x_unit(self):
+        """
+        The unit of the independent variable
+        :return: a astropy.Unit instance
+        """
         return self._x_unit
 
     @property
     def y_unit(self):
+        """
+        The unit of the dependent variable
+        :return: a astropy.Unit instance
+        """
         return self._y_unit
 
-    def __call__(self, x, *args, **kwargs):
+    def __call__(self, x):
 
         # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
         # significant overload on any computation. For this reason we treat differently the case with units from
@@ -891,65 +848,55 @@ class Function1D(Function):
         # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
         # this transformation only when strictly required
 
-        # NOTE: x is an array also when it is for example 1.0 * u.keV, because of the decorator
+        # NOTE: for a single quantity such as q = (1.0 * u.keV), isinstance(q, np.ndarray) returns True
 
         if isinstance(x, np.ndarray):
 
-            # We have an array as input
+            # We have an array as input (or a single quantity)
 
             if not isinstance(x, u.Quantity):
 
                 # This is a normal array, let's use the fast call (without units)
 
-                return self.fast_call(x, *args, **kwargs)
+                return self.fast_call(x)
 
             else:
 
-                # This is an array with units, let's use the slow call which preserves units
+                # This is an array with units or a single quantity, let's use the slow call which preserves units
 
                 assert self.y_unit is not None, "In order to use units you need to use the function as a spectrum or " \
-                                                "as something else," \
-                                                "or you need to explicitly set the units."
+                                                "as something else, or you need to explicitly set the units."
 
-                # if self._handle_units:
+                results = self._call_with_units(x)
 
-                results = self._call_with_units(x, *args, **kwargs)
-
-                # Now convert to the expected y unit
+                # Now convert to the expected y unit and return a astropy.Quantity by multiplying by the right unit
                 return np.squeeze(results.to(self.y_unit).value) * self.y_unit
 
         else:
 
             # This is either a single number or a list
-            if not isinstance(x, u.Quantity):
 
-                # Transform the input to an array of floats
+            # Transform the input to an array of floats. If x is a single number, this will be an array of size 1
 
-                new_input = np.array(x, dtype=float, ndmin=1, copy=False)
+            new_input = np.array(x, dtype=float, ndmin=1, copy=False)
 
-                # Compute the function
+            # Compute the function
 
-                result = self.fast_call(new_input, *args, **kwargs)
+            result = self.fast_call(new_input)
 
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+            # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number,
+            # so that if the input was a single number, also the output will be a single number
 
-                return np.squeeze(result)
+            return np.squeeze(result)
 
-            else:  # pragma: no cover
-
-                raise NotImplementedError("Should never get here")
-
-    def _call_with_units(self, x, *args, **kwargs):
+    def _call_with_units(self, x):
 
         # Gather the current parameters' values with units
-
-        for parameter_name, parameter in self._children.iteritems():
-
-            kwargs[parameter_name] = parameter.value * parameter.unit
+        values = map(attrgetter("as_quantity"), self._get_children())
 
         try:
 
-            results = self.evaluate(x, *args, **kwargs)
+            results = self.evaluate(x, *values)
 
         except u.UnitsError:  # pragma: no cover
 
@@ -961,16 +908,16 @@ class Function1D(Function):
             return results
 
     @memoize
-    def fast_call(self, x, *args, **kwargs):
+    def fast_call(self, x):
 
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        for parameter_name, parameter in self._children.iteritems():
+        # NOTE: it is important to use value, and not _value, to support linking
 
-            kwargs[parameter_name] = parameter._value
+        values = map(attrgetter("value"), self._get_children())
 
-        return self.evaluate(x, *args, **kwargs)
+        return self.evaluate(x, *values)
 
     def get_boundaries(self):
         """
@@ -993,11 +940,14 @@ class Function2D(Function):
         self._y_unit = None
         self._z_unit = None
 
-    def evaluate(self, x, y, *args, **kwargs):  # pragma: no cover
+    def evaluate(self, x, y, *args):  # pragma: no cover
 
         raise NotImplementedError("You have to re-implement this")
 
     def set_units(self, in_x_unit, in_y_unit, in_z_unit):
+
+        # Change None to '' for the inputs so that the following u.Unit construction will generate a dimensionless
+        # unit (it would fail with None)
 
         in_x_unit = in_x_unit if in_x_unit is not None else ''
         in_y_unit = in_y_unit if in_y_unit is not None else ''
@@ -1013,6 +963,8 @@ class Function2D(Function):
 
             raise TypeError("Could not get a Unit instance from provided units when setting units "
                             "for function %s" % self.name)
+
+        # Store the Unit instances
 
         self._x_unit = in_x_unit
         self._y_unit = in_y_unit
@@ -1051,55 +1003,49 @@ class Function2D(Function):
 
         if isinstance(x, np.ndarray):
 
-            # We have an array as input
+            # We have an array or a quantity as input
 
             if not isinstance(x, u.Quantity):
 
                 # This is a normal array, let's use the fast call (without units)
 
-                return self._call_without_units(x, y, *args, **kwargs)
+                return self._call_without_units(x, y)
 
             else:
 
-                # This is an array with units, let's use the slow call which preserves units
+                # This is an array with units or a single quantity, let's use the slow call which preserves units
 
-                results = self._call_with_units(x, y, *args, **kwargs)
+                results = self._call_with_units(x, y)
 
-                # Now convert to the expected y unit
-                return results.to(self.z_unit)
+                # Now convert to the expected z unit and remove useless dimensions
+                return np.squeeze(results.to(self.z_unit).value) * self.z_unit
 
         else:
 
             # This is either a single number or a list
-            if not isinstance(x, u.Quantity):
 
-                # Transform the input to an array of floats
+            # Transform the input to an array of floats
 
-                new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-                new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
+            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
 
-                # Compute the function
+            # Compute the function
 
-                result = self._call_without_units(new_x, new_y, *args, **kwargs)
+            result = self._call_without_units(new_x, new_y)
 
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+            # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
 
-                return np.squeeze(result)
+            return np.squeeze(result)
 
-            else:  # pragma: no cover
-
-                raise NotImplementedError("should never get here")
-
-    def _call_with_units(self, x, y, *args, **kwargs):
+    def _call_with_units(self, x, y):
 
         # Gather the current parameters' values with units
 
-        for parameter_name, parameter in self._children.iteritems():
-            kwargs[parameter_name] = parameter.value * parameter.unit
+        values = map(attrgetter("as_quantity"), self._get_children())
 
         try:
 
-            results = self.evaluate(x, y, *args, **kwargs)
+            results = self.evaluate(x, y, *values)
 
         except u.UnitsError:  # pragma: no cover
 
@@ -1111,15 +1057,14 @@ class Function2D(Function):
             return results
 
     @memoize
-    def _call_without_units(self, x, y, *args, **kwargs):
+    def _call_without_units(self, x, y):
 
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        for parameter_name, parameter in self._children.iteritems():
-            kwargs[parameter_name] = parameter.value
+        values = map(attrgetter("value"), self._get_children())
 
-        return self.evaluate(x, y, *args, **kwargs)
+        return self.evaluate(x, y, *values)
 
 
 class Function3D(Function):
@@ -1139,10 +1084,15 @@ class Function3D(Function):
 
     def set_units(self, in_x_unit, in_y_unit, in_z_unit, in_w_unit):
 
+        # Change None to '' for the inputs so that the following u.Unit construction will generate a dimensionless
+        # unit (it would fail with None)
+
         in_x_unit = in_x_unit if in_x_unit is not None else ''
         in_y_unit = in_y_unit if in_y_unit is not None else ''
         in_z_unit = in_z_unit if in_z_unit is not None else ''
         in_w_unit = in_w_unit if in_w_unit is not None else ''
+
+        # Get instances of Unit
 
         try:
 
@@ -1156,12 +1106,15 @@ class Function3D(Function):
             raise TypeError("Could not get a Unit instance from provided units when setting units "
                             "for function %s" % self.name)
 
+        # Store the Unit instances
+
         self._x_unit = in_x_unit
         self._y_unit = in_y_unit
         self._z_unit = in_z_unit
         self._w_unit = in_w_unit
 
         # Now call the underlying method to set units, which is defined by each function
+
         self._set_units(self._x_unit, self._y_unit, self._z_unit, self._w_unit)
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):  # pragma: no cover
@@ -1186,7 +1139,7 @@ class Function3D(Function):
     def w_unit(self):
         return self._w_unit
 
-    def __call__(self, x, y, z, *args, **kwargs):
+    def __call__(self, x, y, z):
 
         # This method's code violates explicitly duck typing. The reason is that astropy.units introduce a very
         # significant overload on any computation. For this reason we treat differently the case with units from
@@ -1204,52 +1157,44 @@ class Function3D(Function):
 
                 # This is a normal array, let's use the fast call (without units)
 
-                return self._call_without_units(x, y, z, *args, **kwargs)
+                return self._call_without_units(x, y, z)
 
             else:
 
-                # This is an array with units, let's use the slow call which preserves units
+                # This is an array with units or a single quantity, let's use the slow call which preserves units
 
-                results = self._call_with_units(x, y, z, *args, **kwargs)
+                results = self._call_with_units(x, y, z)
 
-                # Now convert to the expected y unit
-                return results.to(self.w_unit)
+                # Now convert to the expected w unit and remove useless dimensions
+
+                return np.squeeze(results.to(self.w_unit).value) * self.w_unit
 
         else:
 
             # This is either a single number or a list
-            if not isinstance(x, u.Quantity):
+            # Transform the input to an array of floats
 
-                # Transform the input to an array of floats
+            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
+            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+            new_z = np.array(z, dtype=float, ndmin=1, copy=False)
 
-                new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-                new_y = np.array(y, dtype=float, ndmin=1, copy=False)
-                new_z = np.array(z, dtype=float, ndmin=1, copy=False)
+            # Compute the function
 
-                # Compute the function
+            result = self._call_without_units(new_x, new_y, new_z)
 
-                result = self._call_without_units(new_x, new_y, new_z, *args, **kwargs)
+            # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
 
-                # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number.
+            return np.squeeze(result)
 
-                return np.squeeze(result)
-
-            else:  # pragma: no cover
-
-                raise NotImplementedError("Should never get here")
-
-    @memoize
-    def _call_with_units(self, x, y, z, *args, **kwargs):
+    def _call_with_units(self, x, y, z):
 
         # Gather the current parameters' values with units
 
-        for parameter_name, parameter in self._children.iteritems():
-
-            kwargs[parameter_name] = parameter.value * parameter.unit
+        values = map(attrgetter("as_quantity"), self._get_children())
 
         try:
 
-            results = self.evaluate(x, y, z, *args, **kwargs)
+            results = self.evaluate(x, y, z, *values)
 
         except u.UnitsError:  # pragma: no cover
 
@@ -1259,17 +1204,16 @@ class Function3D(Function):
         else:
 
             return results
+
     @memoize
-    def _call_without_units(self, x, y, z, *args, **kwargs):
+    def _call_without_units(self, x, y, z):
 
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        for parameter_name, parameter in self._children.iteritems():
+        values = map(attrgetter("value"), self._get_children())
 
-            kwargs[parameter_name] = parameter.value
-
-        return self.evaluate(x, y, z, *args, **kwargs)
+        return self.evaluate(x, y, z, *values)
 
 
 ##########################
@@ -1287,127 +1231,35 @@ _operations = {'+': np.add,
                'of': 'compose'}
 
 
+# These methods need to be here to overcome the limitation of pickle with methods of classes
 
-class _CustomGenerated(object):
+def _cf_evaluate_func_func(np_operator, f1, f2, *args):
+    # Evaluate for when both elements are functions
 
-    def __init__(self, *args, **kwargs):
-
-        pass
-
-
-def composite_function_type_factory(operation, function_or_scalar_1, function_or_scalar_2=None):
-
-    # Makes the list of unique _functions which compose this composite function.
-
-    _functions = []
-
-    for function in [function_or_scalar_1, function_or_scalar_2]:
-
-        # Check whether this is already a composite function. If it is, add the _functions contained
-        # in it
-
-        if isinstance(function, CompositeFunction):
-
-            for sub_function in function.functions:
-
-                if sub_function not in _functions:
-
-                    _functions.append(sub_function)
-
-        elif isinstance(function, Function):
-
-            # This is a simple function. Add it only if it is not there already (avoid duplicate)
-
-            if function not in _functions:
-
-                _functions.append(function)
-
-        else:
-
-            # This is a scalar, no need to add it among the _functions
-
-            pass
-
-    # Build the _parameters dictionary assigning a new name to each parameter to account for possible
-    # duplicates.
-
-    _parameters = collections.OrderedDict()
-
-    for i, function in enumerate(_functions):
-
-        for parameter_name, parameter in function.parameters.iteritems():
-
-            # New name to avoid possible duplicates
-
-            match = re.match("(.+)_[0-9]+$", parameter_name)
-
-            if match is not None:
-
-                original_name = match.groups()[0]
-
-            else:
-
-                original_name = parameter_name
-
-            new_name = "%s_%i" % (original_name, i + 1)
-
-            # Store the parameter under the new name (obviously this is a reference to the
-            # parameter, not a copy, as always in python)
-
-            _parameters[new_name] = parameter
-            parameter._change_name(new_name)
-
-    # Create a class
-    new_code = """
-
-class _CustomGenerated(CompositeFunction):
-
-    """
-
-    for parameter_name in _parameters:
-        new_code += """
-
-        def _get_%s(self):
-
-            return self._parameters['%s']
-
-        def _set_%s(self, value):
-
-            self._parameters['%s'].value = value
-
-        %s = property(_get_%s, _set_%s, doc="Sets/Gets parameter")
-
-    """ % (
-        parameter_name, parameter_name, parameter_name, parameter_name, parameter_name, parameter_name, parameter_name)
-
-    exec (new_code) in globals(), locals()
-
-    return _CustomGenerated, _functions, _parameters
+    return np_operator(f1(*args), f2(*args))
 
 
-def composite_function_factory(operation, function_or_scalar_1, function_or_scalar_2=None):
+def _cf_evaluate_func_number(np_operator, f1, f2, *args):
+    # Evaluate for when element 1 is a function and element 2 is a number
 
-    new_class, functions, parameters = composite_function_type_factory(operation,
-                                                                       function_or_scalar_1,
-                                                                       function_or_scalar_2)
-
-    obj = new_class(operation, function_or_scalar_1, function_or_scalar_2, functions, parameters)
-
-    return obj
+    return np_operator(f1(*args), f2)
 
 
-class CompositeFunctionUnplickler(object):
+def _cf_evaluate_number_func(np_operator, f1, f2, *args):
+    # Evaluate for when element 2 is a function and element 1 is a number
 
-    def __call__(self, function_expression):
+    return np_operator(f1, f2(*args))
 
-        new_instance = _parse_function_expression(function_expression)
 
-        return new_instance
+def _cf_evaluate_func_of_func(np_operator, f1, f2, *args):
+    value = f2(*args)
+
+    return f1(value, *(args[1:]))
 
 
 class CompositeFunction(Function):
 
-    def __init__(self, operation, function_or_scalar_1, function_or_scalar_2, functions, parameters):
+    def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
 
         assert operation in _operations, "Do not know operation %s" % operation
 
@@ -1420,41 +1272,8 @@ class CompositeFunction(Function):
 
         self._operation = operation
 
-        # Set the new evaluate
-
-        if function_or_scalar_2 is None:
-
-            # Unary operation
-
-            self.set_evaluate(self._composite_function_factory_unary(function_or_scalar_1, _operations[operation]))
-
-        else:
-
-            # Binary operation
-
-            # Check if this is a function composition with the .of method
-            if _operations[operation] == 'compose':
-
-                # Can only compose functions of 1 variable
-
-                assert hasattr(function_or_scalar_2, 'evaluate'), "Second member of .of cannot be a scalar"
-
-                assert function_or_scalar_1.n_dim == 1 and function_or_scalar_2.n_dim == 1, "Can only compose " \
-                                                                                            "with .of functions of " \
-                                                                                            "1 variable"
-
-                def new_evaluate(*args):
-
-                    value = function_or_scalar_2(*args)
-
-                    return function_or_scalar_1(value, *(args[1:]))
-
-                self.set_evaluate(new_evaluate)
-
-            else:
-
-                self.set_evaluate(self._composite_function_factory_binary(function_or_scalar_1, _operations[operation],
-                                                                          function_or_scalar_2))
+        # Set the new __call__ according to the type of the elements in the expression
+        self._decide_evaluate_type()
 
         # Save a description, but using the unique IDs of the functions involved, to keep track
         # of where they appear in the expression
@@ -1463,8 +1282,34 @@ class CompositeFunction(Function):
 
         # Makes the list of unique functions which compose this composite function.
 
-        self._functions = functions
+        self._functions = []
 
+        for function in [function_or_scalar_1, function_or_scalar_2]:
+
+            # Check whether this is already a composite function. If it is, add the functions contained
+            # in it
+
+            if isinstance(function, CompositeFunction):
+
+                for sub_function in function.functions:
+
+                    if sub_function not in self._functions:
+
+                        self._functions.append(sub_function)
+
+            elif isinstance(function, Function):
+
+                # This is a simple function. Add it only if it is not there already (avoid duplicate)
+
+                if function not in self._functions:
+
+                    self._functions.append(function)
+
+            else:
+
+                # This is a scalar, no need to add it among the functions
+
+                pass
 
         # Now assign a unique name to all the functions, to make clear which is which in the definition
         # and give an easy way for the user to understand which parameter belongs to which function
@@ -1482,6 +1327,35 @@ class CompositeFunction(Function):
         # Save the expression
         self._expression = expression
 
+        # Build the parameters dictionary assigning a new name to each parameter to account for possible
+        # duplicates.
+
+        parameters = collections.OrderedDict()
+
+        for i, function in enumerate(self._functions):
+
+            for parameter_name, parameter in function.parameters.iteritems():
+
+                # New name to avoid possible duplicates
+
+                match = re.match("(.+)_[0-9]+$", parameter_name)
+
+                if match is not None:
+
+                    original_name = match.groups()[0]
+
+                else:
+
+                    original_name = parameter_name
+
+                new_name = "%s_%i" % (original_name, i+1)
+
+                # Store the parameter under the new name (obviously this is a reference to the
+                # parameter, not a copy, as always in python)
+
+                parameters[new_name] = parameter
+                parameter._change_name(new_name)
+
         # Now build a meaningful description
 
         _function_definition = {'description': self.expression, 'latex': NO_LATEX_FORMULA}
@@ -1489,28 +1363,6 @@ class CompositeFunction(Function):
         Function.__init__(self, 'composite', _function_definition, parameters)
 
         self._uuid = self._uuid_expression
-
-    def __reduce__(self):
-
-        state = {}
-        state['x_unit'] = self._requested_x_unit
-        state['y_unit'] = self._requested_y_unit
-        state['parameters'] = self.parameters
-
-        return CompositeFunctionUnplickler(), (self.expression,), state
-
-    def __setstate__(self, state):
-
-        # This is used by pickle to recreate the class on the remote
-        # side
-
-        # Now set the units
-        self.set_units(state['x_unit'], state['y_unit'], relaxed=True)
-
-        # Now set the parameters to their previous state
-        for parameter in state['parameters'].values():
-
-            self.parameters[parameter.name] = parameter
 
     def set_units(self, x_unit, y_unit, relaxed=False):
 
@@ -1566,58 +1418,49 @@ class CompositeFunction(Function):
 
         return '(%s %s %s)' % (name_1_uuid, operation, name_2_uuid)
 
-    @staticmethod
-    def _composite_function_factory_unary(instance, numpy_operator):
+    def _decide_evaluate_type(self):
 
-        def new_evaluate(*args, **kwargs):
+        # Assign to __call__ the right evaluate according to the type of the elements in the expression
 
-            return numpy_operator(instance.__call__(*args, **kwargs))
+        operation, self._f1, self._f2 = self._calling_sequence
 
-        return new_evaluate
+        np_operator = _operations[operation]
 
-    @staticmethod
-    def _composite_function_factory_binary(first_instance, numpy_operator, second_instance):
+        self._np_operator = np_operator
 
-        # Check whether the second member is a function, or a number
+        if np_operator == "compose":
 
-        if hasattr(first_instance, 'evaluate'):
+            assert hasattr(self._f2, 'evaluate'), "Second member of .of cannot be a scalar"
 
-            if hasattr(second_instance, 'evaluate'):
+            assert self._f1.n_dim == 1 and self._f2.n_dim == 1, "Can only compose with .of functions of 1 variable"
 
-                # Get number of arguments for first function
-
-                def new_evaluate(*args):
-
-                    return numpy_operator(first_instance.__call__(*args),
-                                          second_instance.__call__(*args))
-
-                return new_evaluate
-
-            else:
-
-                def new_evaluate(*args):
-
-                    return numpy_operator(first_instance.__call__(*args),
-                                          second_instance)
-
-                return new_evaluate
+            self.evaluate = _cf_evaluate_func_of_func
 
         else:
 
-            if hasattr(second_instance, 'evaluate'):
+            # Check whether the second member is a function, or a number
 
-                def new_evaluate(*args):
+            if hasattr(self._f1, 'evaluate'):
 
-                    return numpy_operator(first_instance,
-                                          second_instance.__call__(*args))
+                if hasattr(self._f2, 'evaluate'):
 
-                return new_evaluate
+                    self.evaluate = _cf_evaluate_func_func
 
-            else:  # pragma: no cover
+                else:
 
-                # Should never get here!
+                    self.evaluate = _cf_evaluate_func_number
 
-                raise RuntimeError("Should never get here")
+            else:
+
+                if hasattr(self._f2, 'evaluate'):
+
+                    self.evaluate = _cf_evaluate_number_func
+
+                else:  # pragma: no cover
+
+                    # Should never get here!
+
+                    raise RuntimeError("Should never get here")
 
     @property
     def functions(self):
@@ -1628,24 +1471,16 @@ class CompositeFunction(Function):
 
         raise NotImplementedError("You cannot instance and use a composite function by itself. Use the factories.")
 
-    def set_evaluate(self, new_evaluate_method):
-        """
-        This is called by the factory which create the composite function, and set the evaluate method
-        to the new method which will collect the results from all the functions
-        """
+    # This dumb function must be here because it is not possible to override at runtime __call__ (nor any other
+    # special method)
+    def __call__(self, x):
 
-        self.evaluate = new_evaluate_method
+        return self.evaluate(self._np_operator, self._f1, self._f2, x)
 
-    # Override the __call__ method of the Function class because the single functions in _functions
-    # will handle their own collection of parameters
+    # For composite function, fast_call is the same as __call__ (because the call will be forwarded to the
+    # inner functions)
 
-    def __call__(self, *args, **kwargs):
-
-        return self.evaluate(*args, **kwargs)
-
-    def fast_call(self, *args, **kwargs):
-
-        return self.evaluate(*args, **kwargs)
+    fast_call = __call__
 
     # Override the to_dict method of the Node class to add the expression to re-build this
     # composite function
@@ -1814,7 +1649,27 @@ def _parse_function_expression(function_specification):
 
         else:
 
-            raise UnknownFunction("Function %s in expression %s is unknown" % (unique_function, function_specification))
+            # It might be a template
+
+            # This import is here to avoid circular dependency between this module and TemplateModel.py
+            import astromodels.functions.template_model
+
+            try:
+
+                instance = astromodels.functions.template_model.TemplateModel(unique_function)
+
+            except astromodels.functions.template_model.MissingDataFile:
+
+                # It's not a template
+
+                raise UnknownFunction("Function %s in expression %s is unknown. If this is a template model, you are "
+                                      "probably missing the data file" % (unique_function, function_specification))
+
+            else:
+
+                # It's a template
+
+                instances[complete_function_specification] = instance
 
     # Check that we have found at least one instance.
 

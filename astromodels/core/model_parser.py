@@ -460,6 +460,7 @@ class SourceParser(object):
 
         return this_ext_source
 
+
 class ShapeParser(object):
 
     def __init__(self, source_name):

@@ -501,6 +501,7 @@ def test_independent_variable_representation():
     print(p1._repr__base(False))
     print(p1._repr__base(True))
 
+
 def test_prior():
 
     p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0,
@@ -570,3 +571,96 @@ def test_in_unit_of():
 
     assert p.in_unit_of(u.keV) == 1000.0
     assert p.in_unit_of(u.keV, as_quantity=True).to("MeV").value == 1.0
+
+
+class Callback(object):
+
+    def __init__(self):
+
+        self._control_value = None
+
+    def __call__(self, p):
+
+        self._control_value = p.value
+
+
+def test_pickle():
+
+    import cPickle
+
+    p_orig = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
+                       free=False, unit=u.MeV, prior=Uniform_prior())
+
+    # Add a callback
+
+    working_callback = Callback()
+
+    p_orig.add_callback(working_callback)
+
+    # Now pickle and unpickle
+
+    d = cPickle.dumps(p_orig)
+
+    p = cPickle.loads(d)
+
+    # Check that everything is fine
+
+    assert p.min_value == -5.0
+    assert p.max_value == 5.0
+    assert p.value == 1.0
+    assert p.delta == 0.2
+    assert p.name == 'test_parameter'
+    assert p.description == 'test'
+    assert p.fix == True
+    assert p.free == False
+    assert p.has_prior() == True
+
+    assert p.unit == u.MeV
+
+    # Test the callback
+    p.value = 2.0
+
+    callback = p.get_callbacks()[0]
+
+    assert callback._control_value == p.value
+
+def test_links_and_pickle():
+
+    import cPickle
+
+    p_orig = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
+                       free=False, unit=u.MeV, prior=Uniform_prior())
+
+    # Test the linkinking and pickle
+
+    # Add a link
+    x = Parameter('aux_variable', 1.0)
+
+    # ax + b
+
+    law = Line()
+    law.a = 1.0
+    law.b = 2.0
+
+    p_orig.add_auxiliary_variable(x, law)
+
+    # Now pickle and unpickle
+
+    d = cPickle.dumps(p_orig)
+
+    p = cPickle.loads(d)
+
+    assert p.has_auxiliary_variable() == True
+
+    assert p.value == 3.0
+
+    assert p.free == False
+
+    p.auxiliary_variable[0].value = 4.0
+
+    assert p.value == 6.0
+
+    # Check that assigning to the parameter doesn't produce any effect
+    p.value = -1.0
+
+    assert p.value == 6.0

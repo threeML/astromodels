@@ -451,14 +451,6 @@ class ParameterBase(Node):
     bounds = property(_get_bounds, _set_bounds, doc="Gets or sets the boundaries (minimum and maximum) for this "
                                                     "parameter")
 
-    def _change_name(self, new_name):
-        """
-        Change the name of this parameter. Use with caution!
-
-        :return: none
-        """
-        self._name = new_name
-
     def add_callback(self, callback):
         """Add a callback to the list of functions which are called immediately after the value of the parameter
         is changed. The callback must be a function accepting the current parameter as input. The return value of the
@@ -466,6 +458,15 @@ class ParameterBase(Node):
         same order they have been entered."""
 
         self._callbacks.append(callback)
+
+    def get_callbacks(self):
+        """
+        Returns the list of callbacks currently defined
+
+        :return:
+
+        """
+        return self._callbacks
 
     def empty_callbacks(self):
         """Remove all callbacks for this parameter"""
@@ -775,7 +776,7 @@ class Parameter(ParameterBase):
 
         # Now add the nodes
 
-        if law.name in self._children:
+        if self._has_child(law.name):
 
             self._remove_child(law.name)
 
@@ -883,7 +884,7 @@ class Parameter(ParameterBase):
 
                 # Store the function and the auxiliary variable
 
-                data['value'] = 'f(%s)' % ".".join(self._aux_variable['variable']._get_path())
+                data['value'] = 'f(%s)' % self._aux_variable['variable']._get_path()
                 #data['function_of'] = {self._aux_variable['variable'].name: self._aux_variable['variable'].to_dict()}
 
                 aux_variable_law_data = collections.OrderedDict()

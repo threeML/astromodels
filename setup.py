@@ -243,6 +243,24 @@ packages = ['astromodels',
 # Check whether we can compile Xspec support
 ext_modules_configuration = setup_xspec()
 
+# Add the node_ctype module
+
+# This defines the external module
+node_ctype_ext = Extension('astromodels.core.node_ctype',
+                           sources = ['astromodels/core/node_ctype/node_ctype.cxx'],
+                           extra_compile_args=[]) # '-UNDEBUG' for debugging
+
+
+if ext_modules_configuration is None:
+
+    # No Xspec
+    ext_modules_configuration = [node_ctype_ext]
+
+else:
+
+    ext_modules_configuration.append(node_ctype_ext)
+
+
 setup(
     name="astromodels",
 

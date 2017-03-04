@@ -556,57 +556,6 @@ def test_function_constructor():
         _ = f.get_boundaries()
 
 
-def test_function2D():
-
-    c = Gaussian_on_sphere()
-
-    _ = c(1, 1)
-
-    a = np.array([1.0, 2.0])
-
-    _ = c(a, a)
-
-    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
-
-    _ = c(1 * u.deg, 1.0 * u.deg)
-
-    _ = c(a * u.deg, a * u.deg)
-
-    print c.x_unit
-    print c.y_unit
-    print c.z_unit
-
-    with pytest.raises(TypeError):
-
-        c.set_units("not existent", u.deg, u.keV)
-
-
-def test_function3D():
-
-    c = Continuous_injection_diffusion()
-
-    _ = c(1, 1, 1)
-
-    a = np.array([1.0, 2.0])
-
-    _ = c(a, a, a)
-
-    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
-
-    _ = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
-
-    _ = c(a * u.deg, a * u.deg, a * u.keV)
-
-    print c.x_unit
-    print c.y_unit
-    print c.z_unit
-    print c.w_unit
-
-    with pytest.raises(TypeError):
-
-        c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))
-
-
 def test_function_values():
 
     # Get a function class, and test the various exceptions
@@ -849,3 +798,54 @@ def test_get_function_class():
 def test_list_functions():
 
     print list_functions()
+
+
+def test_function2D():
+
+    c = Gaussian_on_sphere()
+
+    _ = c(1, 1)
+
+    a = np.array([1.0, 2.0])
+
+    _ = c(a, a)
+
+    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
+
+    _ = c(1 * u.deg, 1.0 * u.deg)
+
+    _ = c(a * u.deg, a * u.deg)
+
+    print c.x_unit
+    print c.y_unit
+    print c.z_unit
+
+    with pytest.raises(TypeError):
+
+        c.set_units("not existent", u.deg, u.keV)
+
+
+def test_function3D():
+
+    c = Continuous_injection_diffusion()
+
+    _ = c(1, 1, 1)
+
+    a = np.array([1.0, 2.0])
+
+    _ = c(a, a, a)
+
+    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
+
+    _ = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
+
+    _ = c(a * u.deg, a * u.deg, a * u.keV)
+
+    print c.x_unit
+    print c.y_unit
+    print c.z_unit
+    print c.w_unit
+
+    with pytest.raises(TypeError):
+
+        c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))

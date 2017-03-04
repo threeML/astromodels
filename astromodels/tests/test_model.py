@@ -127,12 +127,11 @@ def test_constructor_1source():
     m = Model(pts)
 
     # Test with a point source with an invalid name
-    pts = PointSource("name", 0, 0, Powerlaw())
+    with pytest.raises(AssertionError):
 
-    with pytest.raises(InvalidInput):
+        _ = PointSource("name", 0, 0, Powerlaw())
 
-        _ = Model(pts)
-
+    assert len(m.sources) == 1
 
 
 def test_constructor_duplicated_sources():
@@ -140,7 +139,7 @@ def test_constructor_duplicated_sources():
     # Test with one point source
     pts = _get_point_source()
 
-    with pytest.raises(InvalidInput):
+    with pytest.raises(AttributeError):
 
         m = Model(pts, pts)
 
@@ -381,10 +380,10 @@ def test_input_output_basic():
     # Now reload it again
     m_reloaded = load_model(temp_file)
 
-    os.remove(temp_file)
-
     # Check that all sources have been recovered
     assert m_reloaded.sources.keys() == m.sources.keys()
+
+    os.remove(temp_file)
 
     # Now check that saving twice with the same name issues an exception if overwrite is not True
     m.save(temp_file, overwrite=True)

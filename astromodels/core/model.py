@@ -47,9 +47,9 @@ class Model(Node):
         # There must be at least one source
         assert len(sources) > 0, "You need to have at least one source in the model."
 
-        # Setup the node
+        # Setup the node, using the special name '__root__' to indicate that this is the root of the tree
 
-        super(Model, self).__init__("root")
+        super(Model, self).__init__("__root__")
 
         # Dictionary to keep point sources
 
@@ -147,9 +147,31 @@ class Model(Node):
 
         self._remove_child(source_name)
 
+    def _find_parameters(self, node):
+
+        instances = collections.OrderedDict()
+
+        for child in node._get_children():
+
+            if isinstance(child, Parameter):
+
+                path = child._get_path()
+
+                instances[path] = child
+
+                for sub_child in child._get_children():
+
+                    instances.update(self._find_parameters(sub_child))
+
+            else:
+
+                instances.update(self._find_parameters(child))
+
+        return instances
+
     def _update_parameters(self):
 
-        self._parameters = self._find_instances(Parameter)
+        self._parameters = self._find_parameters(self)
 
     @property
     def parameters(self):
@@ -360,7 +382,7 @@ class Model(Node):
 
         assert isinstance(variable, IndependentVariable),"Variable must be an instance of IndependentVariable"
 
-        if variable.name in self._children:
+        if self._has_child(variable.name):
 
             self._remove_child(variable.name)
 
@@ -386,7 +408,7 @@ class Model(Node):
 
         assert isinstance(parameter, Parameter), "Variable must be an instance of IndependentVariable"
 
-        if parameter.name in self._children:
+        if self._has_child(parameter.name):
 
             # Remove it from the children only if it is a Parameter instance, otherwise don't, which will
             # make the _add_child call fail (which is the expected behaviour! You shouldn't call two children
@@ -761,7 +783,7 @@ class Model(Node):
 
             try:
 
-                element = self._children[key]
+                element = self._get_child(key)
 
             except KeyError:  # pragma: no cover
 

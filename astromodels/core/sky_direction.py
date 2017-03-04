@@ -123,9 +123,9 @@ class SkyDirection(Node):
 
         try:
 
-            return self._children['ra'].value
+            return self.ra.value
 
-        except KeyError:
+        except AttributeError:
 
             # Transform from L,B to R.A., Dec
 
@@ -140,9 +140,9 @@ class SkyDirection(Node):
 
         try:
 
-            return self._children['dec'].value
+            return self.dec.value
 
-        except KeyError:
+        except AttributeError:
 
             # Transform from L,B to R.A., Dec
 
@@ -157,9 +157,9 @@ class SkyDirection(Node):
 
         try:
 
-            return self._children['l'].value
+            return self.l.value
 
-        except KeyError:
+        except AttributeError:
 
             # Transform from L,B to R.A., Dec
 
@@ -174,9 +174,9 @@ class SkyDirection(Node):
 
         try:
 
-            return self._children['b'].value
+            return self.b.value
 
-        except KeyError:
+        except AttributeError:
 
             # Transform from L,B to R.A., Dec
 
@@ -186,8 +186,8 @@ class SkyDirection(Node):
 
         if self._coord_type == 'galactic':
 
-            l = self._children['l'].value
-            b = self._children['b'].value
+            l = self.l.value
+            b = self.b.value
 
             return coordinates.SkyCoord(l=l, b=b,
                                         frame='galactic', equinox=self._equinox,
@@ -195,8 +195,8 @@ class SkyDirection(Node):
 
         else:
 
-            ra = self._children['ra'].value
-            dec = self._children['dec'].value
+            ra = self.ra.value
+            dec = self.dec.value
 
             return coordinates.SkyCoord(ra=ra, dec=dec,
                                         frame='icrs', equinox=self._equinox,
@@ -220,7 +220,13 @@ class SkyDirection(Node):
         :return: dictionary of parameters
         """
 
-        return self._children
+        if self._coord_type == 'galactic':
+
+            return collections.OrderedDict(('l', self.l), ('b', self.b))
+
+        else:
+
+            return collections.OrderedDict(('ra', self.ra), ('dec', self.dec))
 
     @property
     def equinox(self):
@@ -237,14 +243,14 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            data['ra'] = self._children['ra'].to_dict(minimal)
-            data['dec'] = self._children['dec'].to_dict(minimal)
+            data['ra'] = self.ra.to_dict(minimal)
+            data['dec'] = self.dec.to_dict(minimal)
             data['equinox'] = self._equinox
 
         else:
 
-            data['l'] = self._children['l'].to_dict(minimal)
-            data['b'] = self._children['b'].to_dict(minimal)
+            data['l'] = self.l.to_dict(minimal)
+            data['b'] = self.b.to_dict(minimal)
             data['equinox'] = self._equinox
 
         return data
@@ -258,13 +264,13 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            self._children['ra'].fix = True
-            self._children['dec'].fix = True
+            self.ra.fix = True
+            self.dec.fix = True
 
         else:
 
-            self._children['l'].fix = True
-            self._children['b'].fix = True
+            self.l.fix = True
+            self.b.fix = True
 
     def free(self):
         """
@@ -275,13 +281,13 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            self._children['ra'].fix = False
-            self._children['dec'].fix = False
+            self.ra.fix = False
+            self.dec.fix = False
 
         else:
 
-            self._children['l'].fix = False
-            self._children['b'].fix = False
+            self.l.fix = False
+            self.b.fix = False
 
     @classmethod
     def from_dict(cls, data):
@@ -292,14 +298,14 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            representation = 'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)' % (self._children['ra'].value,
-                                                                                 self._children['dec'].value,
+            representation = 'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)' % (self.ra.value,
+                                                                                 self.dec.value,
                                                                                  self.equinox)
 
         else:
 
-            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (self._children['l'].value,
-                                                                           self._children['b'].value,
+            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (self.l.value,
+                                                                           self.b.value,
                                                                            self.equinox)
 
         return representation

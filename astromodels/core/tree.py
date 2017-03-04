@@ -1,8 +1,8 @@
 import collections
-from astropy.units import Quantity
-import warnings
+import cPickle
 
 from astromodels.utils.io import display
+from astromodels.core.node_ctype import _Node
 from astromodels.utils.valid_variable import is_valid_variable_name
 
 
@@ -18,7 +18,108 @@ class NonExistingAttribute(RuntimeWarning):
     pass
 
 
-class Node(object):
+# This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)
+# during unpickling
+class NewNodeUnpickler(object):
+
+    def __call__(self, cls):
+
+        instance = cls.__new__(cls)
+
+        return instance
+
+
+class Node(_Node):
+
+    # This apparently dumb constructor is needed otherwise pickle will fail
+
+    def __init__(self, name):
+
+        assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
+                                             "and _" % name
+
+        assert name != "name", "You cannot call a node 'name', it is reserved."
+
+        _Node.__init__(self, name)
+
+    # The next two methods are necessary for pickle to work
+
+    def __reduce__(self):
+
+        state = {}
+        state['children'] = self._get_children()
+        state['name'] = self.name
+        state['__dict__'] = self.__dict__
+
+        return NewNodeUnpickler(), (self.__class__,), state
+
+    def __setstate__(self, state):
+
+        # Set the children
+
+        self._add_children(state['children'])
+
+        # Set the name of this node
+
+        self._change_name(state['name'])
+
+        # Restore everything else
+
+        for k in state['__dict__']:
+
+            self.__dict__[k] = state['__dict__'][k]
+
+    # This is necessary for copy.deepcopy to work
+    def __deepcopy__(self, memodict={}):
+
+        return cPickle.loads(cPickle.dumps(self))
+
+
+    def to_dict(self, minimal=False):
+
+        this_dict = collections.OrderedDict()
+
+        for child in self._get_children():
+
+            this_dict[child.name] = child.to_dict(minimal)
+
+        return this_dict
+
+    def _repr__base(self, rich_output):
+
+        raise NotImplementedError("You should implement the __repr__base method for each class")
+
+    def __repr__(self):
+        """
+        Textual representation for console
+
+        :return: representation
+        """
+
+        return self._repr__base(rich_output=False)
+
+    def _repr_html_(self):
+        """
+        HTML representation for the IPython notebook
+
+        :return: HTML representation
+        """
+
+        return self._repr__base(rich_output=True)
+
+    def display(self):
+        """
+        Display information about the point source.
+
+        :return: (none)
+        """
+
+        # This will automatically choose the best representation among repr and repr_html
+
+        display(self)
+
+
+class OldNode(object):
 
     def __init__(self, name):
 
@@ -29,34 +130,6 @@ class Node(object):
                                              "and _" % name
 
         self._name = name
-
-    # def __setattr__(self, key, value):
-    #
-    #     print("%s -> %s" % (key,value))
-    #
-    #     if hasattr(self, "_children"):
-    #
-    #         # After construction, the object has always a _children attribute and a _parameters attribute
-    #
-    #         # Process parameters first (they are the most important ones)
-    #         if key in self._children:
-    #
-    #             raise ProtectedAttribute("You cannot assign to a node")
-    #
-    #         else:
-    #
-    #             # Attributes which start with "_" are created by children classes
-    #
-    #             if not key[0] == '_' and not hasattr(self, key):
-    #
-    #                 warnings.warn("Attribute %s does not exist. Check for typos." % key, NonExistingAttribute)
-    #
-    #             object.__setattr__(self, key, value)
-    #
-    #     else:
-    #
-    #         # We are here during construction
-    #         object.__setattr__(self, key, value)
 
     @property
     def name(self):
@@ -71,16 +144,6 @@ class Node(object):
     def path(self):
 
         return ".".join(self._get_path())
-
-    def _reset_node(self):
-
-        # We need to use directly the __setattr__ method because the normal self._children = ... will trigger
-        # an exception, because of the __setattr__ method of the DualAccessClass which forbids changing
-        # nodes
-
-        object.__setattr__(self, "_children", collections.OrderedDict())
-
-        object.__setattr__(self, "_parent", None)
 
     def _add_children(self, children):
 
