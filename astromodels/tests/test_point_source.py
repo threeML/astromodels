@@ -49,6 +49,10 @@ def test_constructor():
     assert point_source1.position.ra.value == ra
     assert point_source1.position.dec.value == dec
 
+    # Verify that the position is fixed by default
+    assert point_source1.position.ra.fix
+    assert point_source1.position.dec.fix
+
     # Init with l,b
 
     point_source2 = PointSource('my_source', l=l, b=b, spectral_shape=Powerlaw())
@@ -61,6 +65,10 @@ def test_constructor():
 
     assert point_source2.position.l.value == l
     assert point_source2.position.b.value == b
+
+    # Verify that the position is fixed by default
+    assert point_source2.position.l.fix
+    assert point_source2.position.b.fix
 
     # Multi-component
 

@@ -408,6 +408,19 @@ def test_input_output_basic():
 
     os.remove(temp_file)
 
+    # Free and fix parameters
+    m.one.position.ra.free = True
+    m.two.spectrum.main.shape.K.fix = True
+
+    m.save(temp_file, overwrite=True)
+
+    new_m = load_model(temp_file)
+
+    assert new_m.one.position.ra.free == True
+    assert new_m.two.spectrum.main.shape.K.fix == True
+
+    os.remove(temp_file)
+
 
 def test_input_output_with_links():
 

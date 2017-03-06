@@ -110,7 +110,7 @@ class SkyDirection(Node):
                                                                                              minimum, what, maximum)
 
             parameter = Parameter(what, number_or_parameter,
-                                  desc=desc, min_value=minimum, max_value=maximum, unit='deg')
+                                  desc=desc, min_value=minimum, max_value=maximum, unit='deg', free=False)
 
         return parameter
 

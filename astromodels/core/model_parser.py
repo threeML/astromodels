@@ -353,26 +353,34 @@ class SourceParser(object):
 
         if 'ra' in sky_direction_definition and 'dec' in sky_direction_definition:
 
-            ra = parameter.Parameter('ra', sky_direction_definition['ra']['value'])
-            ra.bounds = (0, 360)
-            ra.fix = True
+            definition = {'name': 'ra'}
+            definition.update(sky_direction_definition['ra'])
 
-            dec = parameter.Parameter('dec', sky_direction_definition['dec']['value'])
+            ra = parameter.Parameter(**definition)
+            ra.bounds = (0, 360)
+
+            definition = {'name': 'dec'}
+            definition.update(sky_direction_definition['dec'])
+
+            dec = parameter.Parameter(**definition)
             dec.bounds = (-90, 90)
-            dec.fix = True
 
             coordinates['ra'] = ra
             coordinates['dec'] = dec
 
         elif 'l' in sky_direction_definition and 'b' in sky_direction_definition:
 
-            l = parameter.Parameter('l', sky_direction_definition['l']['value'])
-            l.bounds = (0, 360)
-            l.fix = True
+            definition = {'name': 'l'}
+            definition.update(sky_direction_definition['l'])
 
-            b = parameter.Parameter('b', sky_direction_definition['b']['value'])
+            l = parameter.Parameter(**definition)
+            l.bounds = (0, 360)
+
+            definition = {'name': 'b'}
+            definition.update(sky_direction_definition['b'])
+
+            b = parameter.Parameter(**definition)
             b.bounds = (-90, 90)
-            b.fix = True
 
             coordinates['l'] = l
             coordinates['b'] = b

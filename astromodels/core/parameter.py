@@ -543,9 +543,8 @@ class Parameter(ParameterBase):
     :param prior: the parameter's prior (default: None)
     """
 
-    def __init__(self, name, value, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',
+    def __init__(self, name=None, value=None, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',
                  prior=None):
-
         # NOTE: we need to set up _aux_variable immediately because we are overriding the value getter which
         # needs this
 

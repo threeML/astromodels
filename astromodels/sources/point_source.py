@@ -91,10 +91,6 @@ class PointSource(Source, Node):
 
         self._sky_position = sky_position
 
-        # Fix the position by default
-
-        self._sky_position.fix()
-
         # Now gather the component(s)
 
         # We need either a single component, or a list of components, but not both
