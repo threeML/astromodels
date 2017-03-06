@@ -1,6 +1,7 @@
 import pytest
 
 from astromodels.core.tree import Node
+from astromodels.core import node_ctype
 
 
 class _SimpleInheritance(Node):
@@ -37,7 +38,6 @@ class _ComplexInheritance(Node):
         return self._max_value
 
 
-
 def test_constructor():
 
     n = Node(name='node1')
@@ -56,14 +56,23 @@ def test_inheritance():
 
 
 def test_add_child():
+
     t = _SimpleInheritance('test_add_child')
+
+
 
     with pytest.raises(ValueError):
         t._add_child("clara")
 
     clara = Node("clara")
 
+    clara_ref_count = node_ctype._get_reference_counts(clara)
+
     t._add_child(clara)
+
+    # We expect 2 more references: one for the map, one for the vector
+
+    assert node_ctype._get_reference_counts(clara) == clara_ref_count + 3
 
     assert t.clara == clara
 

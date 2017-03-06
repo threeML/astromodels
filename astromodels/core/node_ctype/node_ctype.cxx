@@ -106,12 +106,6 @@ static PyObject * Node_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
         self->parent = Py_None;
 
-        if (self->parent == NULL)
-        {
-          Py_DECREF(self);
-          return NULL;
-        }
-
         trace("parent is set");
 
         self->nodes.clear();
@@ -166,8 +160,6 @@ Node_init(Node *self, PyObject *args, PyObject *kwds)
   self->nodes.clear();
   self->order.clear();
 
-  Py_INCREF(self->dict);
-
   return 0;
 }
 
@@ -185,20 +177,33 @@ Node_dealloc(Node *self) {
     if (self->nodes.size() > 0)
     {
 
+      // Clean up map
+
       for (nodes_map::iterator it = self->nodes.begin(); it != self->nodes.end(); ++it) {
 
         Py_XDECREF(it->second);
 
       }
 
-      // Clean up map
       self->nodes.clear();
+
+      // Clean up the vector
+
+      for (nodes_order::iterator it = self->order.begin(); it != self->order.end(); ++it) {
+
+        Py_XDECREF(*it);
+
+      }
+
       self->order.clear();
 
     }
 
     // Clean up name
     Py_XDECREF(self->name);
+
+    // Clean up dictionary
+    Py_XDECREF(self->dict);
 
     // Free object
 
@@ -258,17 +263,16 @@ node_add_child(Node *self, PyObject *args)
   // Now get the name of the object
   std::string attribute_name = PyString_AsString(((Node *) child)->name);
 
-  // Increase reference count (we will store this object)
+  // Set it as attribute of the class. This also increase the reference count of child
 
-  Py_INCREF(child);
-
-  // Set it as attribute of the class
   PyObject_SetAttrString((PyObject*) self, attribute_name.c_str(), child);
 
   // Add to the map
+  Py_INCREF(child);
   self->nodes[attribute_name] = child;
 
   // Add to the vector
+  Py_INCREF(child);
   self->order.push_back(child);
 
   // Make the current node the parent of the child
@@ -382,9 +386,13 @@ node_remove_child(Node *self, PyObject *args)
 
   }
 
+  // Remove and decrease reference counts
+
   self->nodes.erase(it);
+  Py_XDECREF(it->second);
 
   self->order.erase(it_v);
+  Py_XDECREF(*it_v);
 
   // Remove also as attribute
 
@@ -506,8 +514,6 @@ node_get_path(Node *self, PyObject *args)
 
   PyObject *path_string_py = PyString_FromString(path_string.c_str());
 
-  Py_INCREF(path_string_py);
-
   return path_string_py;
 
 }
@@ -585,10 +591,6 @@ int
 node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 {
 
-  // Increment references of objects we are going to use
-  Py_INCREF(obj);
-  Py_INCREF(name);
-
   trace("setattro" );
 
   // Explicitly cast to right type
@@ -605,9 +607,6 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
     // Cannot change the name like this
 
     PyErr_SetString(PyExc_AttributeError, "You cannot change the name of the node");
-
-    Py_DECREF(obj);
-    Py_DECREF(name);
 
     return -1;
 
@@ -629,11 +628,6 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 
       PyErr_SetString(PyExc_AttributeError, "You cannot override a node.");
 
-      // Decrease references that we have increased at the beginning of the method
-
-      Py_DECREF(obj);
-      Py_DECREF(name);
-
       return -1;
     } else
     {
@@ -641,9 +635,11 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
       // The object has a value attribute
       trace("Found a value attribute" );
 
-      //Py_INCREF(value);  Commented out as GenericSetAttr should incremeant this already
+      // Decrease the reference count which was increased by PyObject_GetAttrString
+      Py_XDECREF(value_attr);
 
       // Set the .value attribute of the node to the provided value
+      // (this call will increase the reference count again)
 
       PyObject_SetAttrString(it->second, "value", value);
 
@@ -661,18 +657,11 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
     if (PyObject_GenericSetAttr(obj, name, value) == -1)
     {
 
-       Py_DECREF(obj);
-       Py_DECREF(name);
-
        // The exception is already set by GenericSetAttr
 
        return -1;
 
     }
-
-    // Decrease references that we have increased at the beginning of the method
-    Py_DECREF(obj);
-    Py_DECREF(name);
 
     return 0;
 
@@ -753,12 +742,6 @@ node_get_child_from_path(Node *self, PyObject *args)
 
   std::vector<std::string> nodes_names = split(path, '.');
 
-  for (std::vector<std::string>::iterator it=nodes_names.begin(); it != nodes_names.end(); ++it) {
-
-    trace(*it);
-
-  }
-
   // This will point to the current node and eventually to the last one
   Node *this_node = self;
 
@@ -795,21 +778,12 @@ node_get_child_from_path(Node *self, PyObject *args)
     }
   }
 
+  Py_INCREF(this_node);
+
   return (PyObject *) this_node;
 
 }
 
-
-//// This is needed to pickle the object
-//static PyObject *
-//node_reduce(Node *self, PyObject *args)
-//{
-//
-//  trace("****reduce");
-//
-//  return PyType_GenericNew, NodeType
-//
-//}
 
 static PyMemberDef Node_members[] = {
     {"__dict__", T_OBJECT_EX, offsetof(Node, dict), 0, "__dict__"},
@@ -881,7 +855,28 @@ static PyTypeObject NodeType = {
     Node_new,                  /* tp_new */
 };
 
+// This function is used to debug the extension
+
+static PyObject *get_reference_counts(PyObject *self, PyObject *args) {
+
+   /* Parse args and do something interesting here. */
+   PyObject *obj;
+
+   if (!PyArg_ParseTuple(args, "O", &obj))
+      return NULL;
+
+   int counts = (int) (((PyObject*)(obj))->ob_refcnt);
+
+   PyObject *c_py = Py_BuildValue("i", counts);
+
+   Py_INCREF(c_py);
+
+   return c_py;
+
+}
+
 static PyMethodDef module_methods[] = {
+    { "_get_reference_counts", get_reference_counts, METH_VARARGS, NULL},
     {NULL}  /* Sentinel */
 };
 
