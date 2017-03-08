@@ -50,13 +50,11 @@ def _check_unit(new_unit, old_unit):
                            % (new_unit.physical_type, old_unit.physical_type))
 
 
-class _AstromodelsUnits(Node):
+class _AstromodelsUnits(object):
     """
     Store the fundamental units of time, energy, angle and area to be used in astromodels.
     """
     def __init__(self, energy_unit=None, time_unit=None, angle_unit=None, area_unit=None):
-
-        super(_AstromodelsUnits, self).__init__("units")
 
         if energy_unit is None: energy_unit = _ENERGY
         if time_unit is None: time_unit = _TIME
