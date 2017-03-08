@@ -35,6 +35,10 @@ class Node(_Node):
 
     def __init__(self, name):
 
+        if name == "units":
+
+            import pdb;pdb.set_trace()
+
         assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
                                              "and _" % name
 
@@ -74,6 +78,16 @@ class Node(_Node):
 
         return cPickle.loads(cPickle.dumps(self))
 
+    # This is used by dir() and by the autocompletion in Ipython
+    def __dir__(self):
+
+        # Get the names of the attributes of the class
+        l = self.__class__.__dict__.keys()
+
+        # Get all the children
+        l.extend([child.name for child in self._get_children()])
+
+        return l
 
     def to_dict(self, minimal=False):
 
@@ -87,7 +101,7 @@ class Node(_Node):
 
     def _repr__base(self, rich_output):
 
-        raise NotImplementedError("You should implement the __repr__base method for each class")
+        return "Node with name %s" % self.name
 
     def __repr__(self):
         """
