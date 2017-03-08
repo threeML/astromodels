@@ -91,17 +91,12 @@ class Model(Node):
 
             if isinstance(source, Source):
 
-                raise InvalidInput("The source name '%s' cannot be used, as it is a protected name. Please use a "
-                                   "different name." % source.name)
+                raise DuplicatedNode("More than one source with the name '%s'. You cannot use the same name for multiple "
+                                     "sources" % source.name)
 
             else:  # pragma: no cover
 
                 raise
-
-        except DuplicatedNode:
-
-            raise InvalidInput("More than one source with the name '%s'. You cannot use the same name for multiple "
-                               "sources" % source.name)
 
         # Now see if this is a point or extended source, and add them to the
         # appropriate dictionary
