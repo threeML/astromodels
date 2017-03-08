@@ -3,7 +3,7 @@ import pytest
 
 __author__ = 'giacomov'
 
-from astromodels.core.model import Model, InvalidInput, ModelFileExists, CannotWriteModel
+from astromodels.core.model import Model, DuplicatedNode, ModelFileExists, CannotWriteModel
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
@@ -139,7 +139,7 @@ def test_constructor_duplicated_sources():
     # Test with one point source
     pts = _get_point_source()
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(DuplicatedNode):
 
         m = Model(pts, pts)
 
