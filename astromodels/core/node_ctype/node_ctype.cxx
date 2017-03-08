@@ -1,9 +1,7 @@
 /*
 Created by giacomov on 2/24/17.
-
  This class implements a new type. It is possible to add children at run time which are read-only, and can be
  accessed as members of the class. So for example:
-
  > root = Node("root")
  > node = Node("node")
  > root._add_child(node)
@@ -11,9 +9,7 @@ Created by giacomov on 2/24/17.
  True
  > root.node = 'this does not work'
  AttributeError: You cannot override a node.
-
  The child can be any Python object.
-
 */
 
 #pragma GCC diagnostic ignored "-Wwrite-strings"
@@ -38,12 +34,6 @@ bool is_a_node(PyObject *obj);
 typedef std::map<std::string, PyObject*> nodes_map;
 typedef std::vector<PyObject*> nodes_order;
 
-void trace(std::string msg)
-{
-#ifndef NDEBUG
-  std::cerr << msg << std::endl;
-#endif
-}
 
 // A generic utility to split strings
 
@@ -68,51 +58,57 @@ std::vector<std::string> split(const std::string &s, char delim) {
 typedef struct {
   PyObject_HEAD
 
-  // We save children in a map, and their insertion order in a vector, so there is fast
-  // access by key, but we also keep the insertion order
-  nodes_map nodes;
-  nodes_order order;
-
-  PyObject *parent;
-
-  PyObject *name;
-
   // This is so that this class behave like any other (it can be monkey-patched)
   PyObject* dict;
 
+  PyObject *parent;
+
+  // We save children in a map, and their insertion order in a vector, so there is fast
+  // access by key, but we also keep the insertion order
+
+  nodes_map nodes;
+  nodes_order order;
+
+  // Name of the node
+  std::string name;
+
 } Node;
+
+
+inline void trace(std::string msg, Node *node=NULL)
+{
+#ifndef NDEBUG
+  if (node)
+  {
+
+     std::cerr << node->name << ": " << msg << std::endl;
+
+  } else
+  {
+
+     std::cerr << msg << std::endl;
+
+  }
+
+#endif
+}
+
 
 // __new__ equivalent
 static PyObject * Node_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 {
 
-    trace("NEW");
-
     Node* self = (Node *)type->tp_alloc(type, 0);
 
     if (self != NULL) {
 
-        self->name = PyString_FromString("-- unset --");
+        self->name = "-- unset --";
 
-        if (self->name == NULL)
-        {
-          Py_DECREF(self);
-          return NULL;
-        }
-
-        trace("name is set");
-
-        Py_INCREF(Py_None);
-
-        self->parent = Py_None;
-
-        trace("parent is set");
+        self->parent = NULL;
 
         self->nodes.clear();
 
         self->order.clear();
-
-        trace("nodes are clear");
 
         self->dict = PyDict_New();
 
@@ -121,8 +117,6 @@ static PyObject * Node_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
           Py_DECREF(self);
           return NULL;
         }
-
-        trace("empty __dict__ is set");
 
     }
 
@@ -134,105 +128,158 @@ static int
 Node_init(Node *self, PyObject *args, PyObject *kwds)
 {
 
-  trace("init" );
-
-  PyObject *name=NULL, *tmp;
+  const char *name;
 
   static char *kwlist[] = {"name", NULL};
 
-  if (! PyArg_ParseTupleAndKeywords(args, kwds, "O", kwlist,
+  if (! PyArg_ParseTupleAndKeywords(args, kwds, "s", kwlist,
                                     &name))
   {
-    trace("error");
 
     PyErr_SetString(PyExc_SyntaxError, "You have to provide a name for the node");
 
     return -1;
   }
 
-  if (name) {
-    tmp = self->name;
-    Py_INCREF(name);
-    self->name = name;
-    Py_XDECREF(tmp);
-  }
-
-  self->nodes.clear();
-  self->order.clear();
+  self->name = name;
 
   return 0;
 }
 
-// Destructor
+// Destructor functions
+
+// The following two methods are needed to support the garbage collector
+static int
+node_traverse(Node *self, visitproc visit, void *arg)
+{
+
+    // Loop over all children
+    for (nodes_order::iterator it=self->order.begin(); it != self->order.end(); ++it)
+    {
+
+      Py_VISIT(*it);
+
+    }
+
+    // Visit also the parent
+
+    if(self->parent)
+    {
+      Py_VISIT(self->parent);
+    }
+
+    return 0;
+}
+
+static int
+node_clear(Node *self)
+{
+
+    for (nodes_order::iterator it=self->order.begin(); it != self->order.end(); ++it)
+    {
+        Py_XDECREF(*it);
+
+    }
+
+    self->nodes.clear();
+    self->order.clear();
+
+    if (self->parent)
+    {
+
+         Py_CLEAR(self->parent);
+
+    }
+
+    return 0;
+}
+
+// This deallocate the memory
 
 static void
 Node_dealloc(Node *self) {
 
-  trace("dealloc");
-
-  if (self) {
-
-    /* Loop over the map and decrease the reference for all objects*/
-
-    if (self->nodes.size() > 0)
+    if (self)
     {
 
-      // Clean up map
+        node_clear(self);
 
-      for (nodes_map::iterator it = self->nodes.begin(); it != self->nodes.end(); ++it) {
-
-        Py_XDECREF(it->second);
-
-      }
-
-      self->nodes.clear();
-
-      // Clean up the vector
-
-      for (nodes_order::iterator it = self->order.begin(); it != self->order.end(); ++it) {
-
-        Py_XDECREF(*it);
-
-      }
-
-      self->order.clear();
-
+        // Free object
+        Py_TYPE(self)->tp_free((PyObject *) self);
     }
-
-    // Clean up name
-    Py_XDECREF(self->name);
-
-    // Clean up dictionary
-    Py_XDECREF(self->dict);
-
-    // Free object
-
-    Py_TYPE(self)->tp_free((PyObject *) self);
-
-  }
 
 }
 
 // Set parent
-static PyObject *
-node_set_parent(Node *self, PyObject *args)
+
+
+static PyObject* node_set_parent(Node *self, Node *parent)
 {
 
-  trace("set_parent");
+  if (self->parent)
+  {
 
-  PyObject *parent;
+      Py_CLEAR(self->parent);
 
-  // Get the input as char array
-  if (!PyArg_ParseTuple(args, "O", &parent))
-    return NULL;
+  }
 
   // Increase reference count (we will store this object)
 
   Py_INCREF(parent);
 
-  self->parent = parent;
+  self->parent = (PyObject *) parent;
 
   Py_RETURN_NONE;
+
+}
+
+
+int _add_child(Node *self, PyObject *child)
+{
+
+  // Make sure the object is a node
+  if (not is_a_node(child))
+  {
+
+    PyErr_SetString(PyExc_TypeError, "You can only add a Node as a child of a Node");
+
+    return -1;
+
+  }
+
+  // Now get the name of the object
+  std::string attribute_name = ((Node *) child)->name;
+
+  // Verify that the child is not already contained in the node
+  nodes_map::iterator it = self->nodes.find(attribute_name);
+
+  if (it != self->nodes.end())
+  {
+
+      std::string msg = "A child named ";
+      msg += ((Node *)(it->second))->name;
+      msg += " already exists";
+
+      PyErr_SetString(PyExc_AttributeError, msg.c_str());
+
+      return -1;
+
+  }
+
+  // Increase the reference counts by one
+  Py_INCREF(child);
+
+  // Add to the map
+  self->nodes[attribute_name] = child;
+
+  // Add to the vector
+  self->order.push_back(child);
+
+  // Make the current node the parent of the child
+
+  node_set_parent((Node *) child, self);
+
+  return 0;
 
 }
 
@@ -241,43 +288,18 @@ static PyObject *
 node_add_child(Node *self, PyObject *args)
 {
 
-  trace("add_child" );
-
   PyObject *child;
 
   // Get the input as char array
   if (!PyArg_ParseTuple(args, "O", &child))
     return NULL;
 
-  // Make sure the object is a node
-
-  if (not is_a_node(child))
+  if (_add_child(self, child) < 0)
   {
-
-    PyErr_SetString(PyExc_ValueError, "You can only add a Node as a child of a Node");
 
     return NULL;
 
   }
-
-  // Now get the name of the object
-  std::string attribute_name = PyString_AsString(((Node *) child)->name);
-
-  // Set it as attribute of the class. This also increase the reference count of child
-
-  PyObject_SetAttrString((PyObject*) self, attribute_name.c_str(), child);
-
-  // Add to the map
-  Py_INCREF(child);
-  self->nodes[attribute_name] = child;
-
-  // Add to the vector
-  Py_INCREF(child);
-  self->order.push_back(child);
-
-  // Make the current node the parent of the child
-  PyObject *tuple = Py_BuildValue("(O)", self);
-  node_set_parent((Node *) child, tuple);
 
   Py_RETURN_NONE;
 }
@@ -295,16 +317,24 @@ node_add_children(Node *self, PyObject *args)
   if (!PyArg_ParseTuple(args, "O", &obj))
     return NULL;
 
-  seq = PySequence_Fast(obj, "expected a sequence");
+  seq = PySequence_Tuple(obj);
   len = PySequence_Size(obj);
 
   for (i = 0; i < len; i++) {
 
-    PyObject *item = PySequence_Fast_GET_ITEM(seq, i);
+    PyObject *child = PySequence_GetItem(seq, i);  // item +1
 
-    PyObject *tuple = Py_BuildValue("(O)", item);
+    if (_add_child(self, child) < 0)
+    {
 
-    node_add_child(self, tuple);
+      Py_XDECREF(child);
+      Py_XDECREF(seq);
+
+      return NULL;
+
+    }
+
+    Py_XDECREF(child);
 
   }
   Py_DECREF(seq);
@@ -386,32 +416,21 @@ node_remove_child(Node *self, PyObject *args)
 
   }
 
-  // Remove and decrease reference counts
+  PyObject *tmp = *it_v;
+
+  // Remove from map and vector
 
   self->nodes.erase(it);
-  Py_XDECREF(it->second);
 
   self->order.erase(it_v);
-  Py_XDECREF(*it_v);
 
-  // Remove also as attribute
+  // Remove reference to the parent
 
-  if (PyObject_DelAttrString((PyObject *) self, child_name) < 0)
-  {
+  Py_CLEAR(((Node *)tmp)->parent);
 
-      return NULL;
+  Py_DECREF(tmp);
 
-  }
-
-  // Make its parent None
-
-  Py_INCREF(Py_None);
-
-  ((Node *) it->second)->parent = Py_None;
-
-  Py_INCREF(it->second);
-
-  return it->second;
+  Py_RETURN_NONE;
 
 }
 
@@ -419,8 +438,6 @@ node_remove_child(Node *self, PyObject *args)
 static PyObject *
 node_get_parent(Node *self, PyObject *args)
 {
-
-  trace("get_parent");
 
   if (self->parent)
   {
@@ -448,8 +465,6 @@ static PyObject *
 node_get_path(Node *self, PyObject *args)
 {
 
-  trace("get_path");
-
   // We start navigating from the present node
   Node *navigator = self;
 
@@ -461,9 +476,7 @@ node_get_path(Node *self, PyObject *args)
   while (true)
   {
 
-    std::string this_name = PyString_AsString(navigator->name);
-
-    trace(this_name);
+    std::string this_name = navigator->name;
 
     // If we arrived at the root, stop
     if (this_name == "__root__")
@@ -477,7 +490,7 @@ node_get_path(Node *self, PyObject *args)
 
     path.push_front(this_name);
 
-    if (navigator->parent != Py_None)
+    if (navigator->parent)
     {
 
       navigator = (Node*) navigator->parent;
@@ -510,8 +523,6 @@ node_get_path(Node *self, PyObject *args)
 
   }
 
-  trace(path_string);
-
   PyObject *path_string_py = PyString_FromString(path_string.c_str());
 
   return path_string_py;
@@ -524,9 +535,11 @@ static PyObject *
 node_getname(Node *self, PyObject *args)
 {
 
-  Py_INCREF(self->name);
+  PyObject *name_str = PyString_FromString(self->name.c_str());
 
-  return self->name;
+  Py_INCREF(name_str);
+
+  return name_str;
 
 }
 
@@ -565,8 +578,6 @@ static PyObject *
 node_change_name(Node *self, PyObject *args)
 {
 
-  trace("change name");
-
   PyObject *value;
 
   // Get the input as char array
@@ -578,20 +589,48 @@ node_change_name(Node *self, PyObject *args)
                     "The name of a node must be a string");
     return NULL;
   }
-  Py_DECREF(self->name);
-  Py_INCREF(value);
-  self->name = value;
+
+  std::string new_name = PyString_AsString(value);
+
+  self->name = new_name;
 
   Py_RETURN_NONE;
 }
 
+// Attribute getter
+static PyObject *
+node_getattro(Node *self, PyObject *name)
+{
+
+  std::string name_string = PyString_AsString(name);
+
+  nodes_map::iterator it = self->nodes.find(name_string);
+
+  if (it != self->nodes.end())
+  {
+
+      // This is a node
+
+      Node *this_node = (Node *) (it->second);
+
+      Py_INCREF(this_node);
+
+      return (PyObject *) this_node;
+
+  } else
+  {
+      // This is not a node
+
+      return PyObject_GenericGetAttr((PyObject *) self, name);
+
+  }
+
+}
 
 // Attribute setter
 int
 node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 {
-
-  trace("setattro" );
 
   // Explicitly cast to right type
 
@@ -628,12 +667,13 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 
       PyErr_SetString(PyExc_AttributeError, "You cannot override a node.");
 
+      std::cerr << "HEY" << std::endl;
+
       return -1;
     } else
     {
 
       // The object has a value attribute
-      trace("Found a value attribute" );
 
       // Decrease the reference count which was increased by PyObject_GetAttrString
       Py_XDECREF(value_attr);
@@ -654,6 +694,7 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
     //Py_INCREF(value);  Commented out as GenericSetAttr should incremeant this already
 
     // call the normal setter
+    // NOTE: we cannot call PyObject_SetAttr because that would call into setattro again, giving infinite recursion
     if (PyObject_GenericSetAttr(obj, name, value) == -1)
     {
 
@@ -673,19 +714,12 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 bool has_child(Node *node, const std::string& child_name)
 {
 
-  trace("received");
-  trace(child_name);
-
   if (node->nodes.count(child_name) > 0)
   {
-
-    trace("has child");
 
     return true;
 
   } else {
-
-    trace("does not have child");
 
     return false;
 
@@ -697,8 +731,6 @@ bool has_child(Node *node, const std::string& child_name)
 static PyObject *
 node_has_child(Node *self, PyObject *args)
 {
-
-  trace("node_has_child");
 
   const char *child_name;
 
@@ -729,8 +761,6 @@ static PyObject *
 node_get_child_from_path(Node *self, PyObject *args)
 {
 
-  trace("get_child_from_path");
-
   const char *path;
 
   // Get the input as char array
@@ -749,12 +779,8 @@ node_get_child_from_path(Node *self, PyObject *args)
   for (std::vector<std::string>::iterator it=nodes_names.begin(); it != nodes_names.end(); ++it)
   {
 
-    trace((*it));
-
     if (has_child(this_node, *it))
     {
-
-      trace("yes");
 
       // Update the pointer
 
@@ -762,8 +788,6 @@ node_get_child_from_path(Node *self, PyObject *args)
 
     } else
     {
-
-      trace("no");
 
       // Path is wrong
 
@@ -815,44 +839,44 @@ static PyGetSetDef Node_getseters[] = {
 
 static PyTypeObject NodeType = {
     PyVarObject_HEAD_INIT(NULL, 0)
-    "node_ctype._Node",        /* tp_name */
-    sizeof(Node),              /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    (destructor)Node_dealloc,  /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_compare */
-    0,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash */
-    0,                         /* tp_call */
-    0,                         /* tp_str */
-    0,                         /* tp_getattro */
-    node_setattro,             /* tp_setattro */
-    0,                         /* tp_as_buffer */
+    "node_ctype._Node",             /* tp_name */
+    sizeof(Node),                   /* tp_basicsize */
+    0,                              /* tp_itemsize */
+    (destructor)Node_dealloc,       /* tp_dealloc */
+    0,                              /* tp_print */
+    0,                              /* tp_getattr */
+    0,                              /* tp_setattr */
+    0,                              /* tp_compare */
+    0,                              /* tp_repr */
+    0,                              /* tp_as_number */
+    0,                              /* tp_as_sequence */
+    0,                              /* tp_as_mapping */
+    0,                              /* tp_hash */
+    0,                              /* tp_call */
+    0,                              /* tp_str */
+    (getattrofunc) node_getattro,   /* tp_getattro */
+    (setattrofunc) node_setattro,   /* tp_setattro */
+    0,                              /* tp_as_buffer */
     Py_TPFLAGS_DEFAULT |
-        Py_TPFLAGS_BASETYPE,   /* tp_flags */
-    "Node objects",            /* tp_doc */
-    0,                         /* tp_traverse */
-    0,                         /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    Node_methods,              /* tp_methods */
-    Node_members,              /* tp_members */
-    Node_getseters,            /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    offsetof(Node, dict),      /* tp_dictoffset */
-    (initproc) Node_init,      /* tp_init */
-    0,       /* tp_alloc */
-    Node_new,                  /* tp_new */
+        Py_TPFLAGS_BASETYPE,        /* tp_flags */
+    "Node objects",                 /* tp_doc */
+    (traverseproc) node_traverse,   /* tp_traverse */
+    (inquiry) node_clear,           /* tp_clear */
+    0,                              /* tp_richcompare */
+    0,                              /* tp_weaklistoffset */
+    0,                              /* tp_iter */
+    0,                              /* tp_iternext */
+    Node_methods,                   /* tp_methods */
+    Node_members,                   /* tp_members */
+    Node_getseters,                 /* tp_getset */
+    0,                              /* tp_base */
+    0,                              /* tp_dict */
+    0,                              /* tp_descr_get */
+    0,                              /* tp_descr_set */
+    offsetof(Node, dict),           /* tp_dictoffset */
+    (initproc) Node_init,           /* tp_init */
+    0,                              /* tp_alloc */
+    Node_new,                       /* tp_new */
 };
 
 // This function is used to debug the extension
