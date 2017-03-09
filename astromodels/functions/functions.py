@@ -7,7 +7,7 @@ import math
 import astropy.units as astropy_units
 import numpy as np
 import warnings
-from scipy.special import gammaincc, gamma, erfcinv
+from scipy.special import gammaincc, gamma, erfcinv, erf
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
@@ -559,6 +559,120 @@ class Gaussian(Function1D):
             res = mu + sigma * sqrt_two * erfcinv(2 * (1 - x))
 
         return res
+
+# noinspection PyPep8Naming
+class TruncatedGaussian(Function1D):
+    r"""
+    description :
+
+        A  truncated Gaussian function defined on the interval between the lower_bound (a) and upper_bound (b)
+
+    latex : $\begin{split}f(x;\mu,\sigma,a,b)=\frac{\frac{1}{\sigma} \phi\left( \frac{x-\mu}{\sigma} \right)}{\Phi\left( \frac{b-\mu}{\sigma} \right) - \Phi\left( \frac{a-\mu}{\sigma} \right)}\\\phi\left(z\right)=\frac{1}{\sqrt{2 \pi}}\exp\left(-\frac{1}{2}z^2\right)\\\Phi\left(z\right)=\frac{1}{2}\left(1+erf\left(\frac{z}{\sqrt(2)}\right)\right)\end{split}$
+
+    parameters :
+
+        F :
+
+            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+            initial value : 1
+
+        mu :
+
+            desc : Central value
+            initial value : 0.0
+
+        sigma :
+
+            desc : standard deviation
+            initial value : 1.0
+            min : 1e-12
+
+        lower_bound :
+
+            desc: lower bound of gaussian, setting to -np.inf results in half normal distribution
+            initial value : -1.
+
+        upper_bound :
+
+            desc: upper bound of gaussian  setting to np.inf results in half normal distribution
+            initial value : 1.
+
+
+    tests :
+        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}
+        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    # Place this here to avoid recomputing it all the time
+
+    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+
+    def _set_units(self, x_unit, y_unit):
+
+        # The normalization is the integral from -inf to +inf, i.e., has dimensions of
+        # y_unit * x_unit
+        self.F.unit = y_unit * x_unit
+
+        # The mu has the same dimensions as the x
+        self.mu.unit = x_unit
+
+        # The lower_bound has the same dimensions as the x
+        self.lower_bound.unit = x_unit
+
+        # The upper_bound has the same dimensions as the x
+        self.upper_bound.unit = x_unit
+
+        # sigma has the same dimensions as x
+        self.sigma.unit = x_unit
+
+
+
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, F, mu, sigma, lower_bound, upper_bound):
+        phi = np.zeros(x.shape) * F * 0.
+
+        idx = (x >= lower_bound) & (x <= upper_bound)
+
+        sqrt_two = 1.414213562
+        lower_arg = (lower_bound - mu) / sigma
+        upper_arg = (upper_bound - mu) / sigma
+
+        norm = self.__norm_const / sigma
+
+        phi[idx] = np.exp(-np.power(x[idx] - mu, 2.) / (2 * np.power(sigma, 2.)))
+
+        theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
+
+        theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
+
+        return F * norm * phi / (theta_upper - theta_lower)
+
+    def from_unit_cube(self, x):
+
+        mu = self.mu.value
+        sigma = self.sigma.value
+        lower_bound = self.lower_bound.value
+        upper_bound = self.upper_bound.value
+
+        sqrt_two = 1.414213562
+
+        if x < 1e-16 or (1 - x) < 1e-16:
+            res = -1e32
+
+        lower_arg = (lower_bound - mu) / sigma
+        upper_arg = (upper_bound - mu) / sigma
+
+        theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
+
+        theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
+
+        arg = theta_lower + x * (theta_upper - theta_lower)
+
+        return mu + sigma * sqrt_two * erfcinv(2 * (1 - arg))
 
 
 class Uniform_prior(Function1D):
