@@ -633,17 +633,29 @@ class TruncatedGaussian(Function1D):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, F, mu, sigma, lower_bound, upper_bound):
-        phi = np.zeros(x.shape) * F * 0.
+
+
+        # phi is in units of x, so we need to do this trick
+        # to keep the units right
+
+        phi = np.zeros(x.shape) * sigma * 0.
 
         idx = (x >= lower_bound) & (x <= upper_bound)
 
         sqrt_two = 1.414213562
+
+        # precalculate the arguments to the CDF
+
         lower_arg = (lower_bound - mu) / sigma
         upper_arg = (upper_bound - mu) / sigma
 
         norm = self.__norm_const / sigma
 
+        # the typical gaussian functions
+
         phi[idx] = np.exp(-np.power(x[idx] - mu, 2.) / (2 * np.power(sigma, 2.)))
+
+        # the denominator is a function of the CDF
 
         theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
 
@@ -663,12 +675,16 @@ class TruncatedGaussian(Function1D):
         if x < 1e-16 or (1 - x) < 1e-16:
             res = -1e32
 
+        # precalculate the arguments to the  CDF
+
         lower_arg = (lower_bound - mu) / sigma
         upper_arg = (upper_bound - mu) / sigma
 
         theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
 
         theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
+
+        # now precalculate the argument to the Inv. CDF
 
         arg = theta_lower + x * (theta_upper - theta_lower)
 
