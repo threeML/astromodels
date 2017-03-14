@@ -388,35 +388,35 @@ $DOCSTRING$
 
             parameters_tuple = ($PARAMETERS_NAMES$,)
 
-        # Finite difference differentiation of the Xspec
-        # function for additive model. Indeed, xspec function return the integral
-        # of the function on energy ranges, while we need the
-        # differential flux. For multiplicative models instead Xspec returns just
-        # the value for the multiplicative factor at the average between emin and
-        # emax
-
-        # Adapt the epsilon to the value to reduce the error
-
-        epsilon = x / self._scale
-
-        # In the normal case, when x is an array of more than one
-        # element, the first call will succeed. If however there
-        # is only one element in the array xspec will complain,
-        # so handle that as a special case
-
-        try:
-
-            val = self._model(parameters_tuple, x - epsilon, x + epsilon)
-
-        except TypeError:
-
-            assert x.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
-            
-            val = self._model(parameters_tuple, ((x - epsilon)[0], (x + epsilon)[0]))[0]
-
-        # val is now F(x-epsilon,x+epsilon) ~ f(x) * ( 2 * epsilon )
-
         if self._model_type == 'add':
+
+            # Finite difference differentiation of the Xspec
+            # function for additive model. Indeed, xspec function return the integral
+            # of the function on energy ranges, while we need the
+            # differential flux. For multiplicative models instead Xspec returns just
+            # the value for the multiplicative factor at the average between emin and
+            # emax
+
+            # Adapt the epsilon to the value to reduce the error
+
+            epsilon = x / self._scale
+
+            # In the normal case, when x is an array of more than one
+            # element, the first call will succeed. If however there
+            # is only one element in the array xspec will complain,
+            # so handle that as a special case
+
+            try:
+
+                val = self._model(parameters_tuple, x - epsilon, x + epsilon)
+
+            except TypeError:
+
+                assert x.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
+
+                val = self._model(parameters_tuple, ((x - epsilon)[0], (x + epsilon)[0]))[0]
+
+            # val is now F(x-epsilon,x+epsilon) ~ f(x) * ( 2 * epsilon )
 
             # In a additive model the function returns the integral over the bins
 
@@ -427,7 +427,15 @@ $DOCSTRING$
             # In a multiplicative model the function returns the average factor over
             # the bins
 
-            final_value = val
+            try:
+
+                final_value = self._model(parameters_tuple, x, x)
+
+            except TypeError:
+
+                assert x.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
+
+                final_value = self._model(parameters_tuple, ((x)[0], (x)[0]))[0]
 
         if quantity:
 
