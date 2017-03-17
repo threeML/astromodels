@@ -896,7 +896,7 @@ class Function1D(Function):
 
         try:
 
-            results = self.evaluate(x, *values)
+            results = self.evaluate(x.to(self.x_unit, equivalencies=u.spectral()), *values)
 
         except u.UnitsError:  # pragma: no cover
 
