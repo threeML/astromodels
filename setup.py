@@ -47,7 +47,7 @@ def sanitize_lib_name(library_path):
     return tokens[0][0]
 
 
-def find_library(library_root):
+def find_library(library_root, additional_places=None):
     """
     Returns the name of the library without extension
 
@@ -107,6 +107,10 @@ def find_library(library_root):
         else:
 
             raise NotImplementedError("Platform %s is not supported" % sys.platform)
+
+        if additional_places is not None:
+
+            possible_locations.extend(additional_places)
 
         # Now look into the search paths
 
@@ -191,7 +195,7 @@ def setup_xspec():
 
     for lib_root in libraries_root:
 
-        this_library, this_library_path = find_library(lib_root)
+        this_library, this_library_path = find_library(lib_root, additional_places=[os.path.join(headas_root, 'lib')])
 
         if this_library is None:
 
@@ -293,7 +297,7 @@ setup(
     install_requires=[
         'numpy >= 1.6',
         'PyYAML',
-        'astropy >= 1.0',
+        'astropy >= 1.2',
         'scipy>=0.13',
         'numdifftools',
         'tables',
