@@ -446,7 +446,8 @@ $DOCSTRING$
 
                 assert xx.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
 
-                final_value = self._model(parameters_tuple, ((xx)[0], (xx)[0]))[0]
+                final_value = self._model(parameters_tuple, ((xx)[0], (xx)[0]))
+
 
         if quantity:
 
@@ -459,6 +460,8 @@ $DOCSTRING$
                 return final_value[rev_idx] * u.dimensionless_unscaled
 
         else:
+
+
 
             return final_value[rev_idx]
 
