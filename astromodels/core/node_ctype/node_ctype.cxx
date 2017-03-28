@@ -27,6 +27,9 @@ Created by giacomov on 2/24/17.
 #include <algorithm>
 
 
+#define NAME_MAXLENGTH 50
+
+
 // Forward declaration so that we will be able to use the NodeType in the function defined at the
 // end of the file
 bool is_a_node(PyObject *obj);
@@ -53,6 +56,7 @@ std::vector<std::string> split(const std::string &s, char delim) {
   split(s, delim, std::back_inserter(elems));
   return elems;
 }
+
 // Class definition
 
 typedef struct {
@@ -65,12 +69,18 @@ typedef struct {
 
   // We save children in a map, and their insertion order in a vector, so there is fast
   // access by key, but we also keep the insertion order
+  // NOTE: we can allocate these on the stack because they will always have the same size
+  // on the stack. Growing or shrinking these structures will allocate memory on the heap
 
   nodes_map nodes;
   nodes_order order;
 
   // Name of the node
-  std::string name;
+  // We would like to use std::string, but this will cause a segfault on gcc 4.4,
+  // because the implementation there use memory on the stack if the string is short enough,
+  // instead of using the heap. This struct instead should be a POD (Plain Old Data) structure
+  // for it to work well with python
+  char *name;
 
 } Node;
 
@@ -102,7 +112,10 @@ static PyObject * Node_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
 
     if (self != NULL) {
 
-        self->name = "-- unset --";
+        // Maximum length 50 characters
+        self->name = (char *) malloc (NAME_MAXLENGTH * sizeof(char));
+
+        strcpy(self->name, "-- unset --");
 
         self->parent = NULL;
 
@@ -141,7 +154,21 @@ Node_init(Node *self, PyObject *args, PyObject *kwds)
     return -1;
   }
 
-  self->name = name;
+  // Make sure the name is not longer than the allowed maximum
+  if (strlen(name) >= NAME_MAXLENGTH)
+  {
+
+    std::string msg = "The name for the node cannot be longer than ";
+    msg += NAME_MAXLENGTH;
+    msg += " characters";
+
+    PyErr_SetString(PyExc_SyntaxError, msg.c_str());
+
+    return -1;
+
+  }
+
+  strcpy(self->name, name);
 
   return 0;
 }
@@ -201,6 +228,8 @@ Node_dealloc(Node *self) {
 
     if (self)
     {
+
+        free(self->name);
 
         node_clear(self);
 
@@ -535,7 +564,7 @@ static PyObject *
 node_getname(Node *self, PyObject *args)
 {
 
-  PyObject *name_str = PyString_FromString(self->name.c_str());
+  PyObject *name_str = PyString_FromString(self->name);
 
   Py_INCREF(name_str);
 
@@ -592,7 +621,7 @@ node_change_name(Node *self, PyObject *args)
 
   std::string new_name = PyString_AsString(value);
 
-  self->name = new_name;
+  strcpy(self->name, new_name.c_str());
 
   Py_RETURN_NONE;
 }

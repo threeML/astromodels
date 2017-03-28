@@ -387,7 +387,18 @@ $DOCSTRING$
             # Create a tuple of the current values of the parameters
 
             parameters_tuple = ($PARAMETERS_NAMES$,)
-
+        
+        # We need to make sure that the energy array is sorted because otherwise some Xspec models will give
+        # incorrect values
+        idx = np.argsort(x)
+        
+        # This is needed to be able to "reverse" the sort operation
+        rev_idx = np.argsort(idx)
+        
+        # Ordered input vector
+        
+        xx = x[idx]
+        
         if self._model_type == 'add':
 
             # Finite difference differentiation of the Xspec
@@ -399,7 +410,7 @@ $DOCSTRING$
 
             # Adapt the epsilon to the value to reduce the error
 
-            epsilon = x / self._scale
+            epsilon = xx / self._scale
 
             # In the normal case, when x is an array of more than one
             # element, the first call will succeed. If however there
@@ -408,13 +419,13 @@ $DOCSTRING$
 
             try:
 
-                val = self._model(parameters_tuple, x - epsilon, x + epsilon)
+                val = self._model(parameters_tuple, xx - epsilon, xx + epsilon)
 
             except TypeError:
 
-                assert x.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
+                assert xx.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
 
-                val = self._model(parameters_tuple, ((x - epsilon)[0], (x + epsilon)[0]))[0]
+                val = self._model(parameters_tuple, ((xx - epsilon)[0], (xx + epsilon)[0]))[0]
 
             # val is now F(x-epsilon,x+epsilon) ~ f(x) * ( 2 * epsilon )
 
@@ -428,28 +439,31 @@ $DOCSTRING$
             # the bins
 
             try:
-
-                final_value = self._model(parameters_tuple, x, x)
+            
+                final_value = self._model(parameters_tuple, xx, xx)
 
             except TypeError:
 
-                assert x.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
+                assert xx.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
 
-                final_value = self._model(parameters_tuple, ((x)[0], (x)[0]))[0]
+                final_value = self._model(parameters_tuple, ((xx)[0], (xx)[0]))
+
 
         if quantity:
 
             if self._model_type == 'add':
 
-                return final_value * u.Unit('1 / (keV cm^2 s)')
+                return final_value[rev_idx] * u.Unit('1 / (keV cm^2 s)')
 
             else:
 
-                return final_value * u.dimensionless_unscaled
+                return final_value[rev_idx] * u.dimensionless_unscaled
 
         else:
 
-            return final_value
+
+
+            return final_value[rev_idx]
 
     def has_fixed_units(self):
 
