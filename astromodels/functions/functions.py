@@ -185,7 +185,7 @@ class Cutoff_powerlaw(Function1D):
 
         A power law multiplied by an exponential cutoff
 
-    latex : $ K~\frac{x}{piv}^{index}~\exp{(-x/xc)} $
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/xc} $
 
     parameters :
 
@@ -209,7 +209,7 @@ class Cutoff_powerlaw(Function1D):
 
         xc :
 
-            desc : Photon index
+            desc : Cutoff energy
             initial value : 10.0
             min : 1.0
 
@@ -224,7 +224,6 @@ class Cutoff_powerlaw(Function1D):
         # The pivot energy has always the same dimension as the x variable
         self.piv.unit = x_unit
 
-        # The cutoff has the same dimensions as x
         self.xc.unit = x_unit
 
         # The normalization has the same units as the y
@@ -233,7 +232,70 @@ class Cutoff_powerlaw(Function1D):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, xc):
-        return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x, xc))
+
+        # Compute it in logarithm to avoid roundoff errors, then raise it
+        log_v = index * np.log(x / piv) - x / xc
+
+        return K * np.exp(log_v)
+
+
+class Cutoff_powerlaw2(Function1D):
+    r"""
+    description :
+
+        A power law multiplied by an exponential cutoff
+
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/(xc * piv)} $
+
+    parameters :
+
+        K :
+
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+
+        piv :
+
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+
+        index :
+
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+
+        xc :
+
+            desc : Cutoff energy in multiple of piv
+            initial value : 10.0
+            min : 1.0
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # The index is always dimensionless
+        self.index.unit = astropy_units.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        self.xc.unit = astropy_units.dimensionless_unscaled
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, piv, index, xc):
+
+        xx = x / piv
+
+        return K * xx**index * np.exp(xx/xc)
 
 
 class Super_cutoff_powerlaw(Function1D):
