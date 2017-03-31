@@ -1,6 +1,7 @@
 import astropy.units as u
 import pytest
-from astromodels.functions.functions import Uniform_prior, Log_uniform_prior, Powerlaw
+from astromodels.functions.priors import Uniform_prior, Log_uniform_prior
+from astromodels.functions.functions import  Powerlaw
 
 __author__ = 'giacomov'
 
