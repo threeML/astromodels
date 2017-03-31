@@ -223,12 +223,88 @@ class TruncatedGaussian(Function1D):
         return mu + sigma * sqrt_two * erfcinv(2 * (1 - arg))
 
 
+class Cauchy(Function1D):
+    r"""
+    description :
+
+        The Cauchy distribution
+
+    latex : $ K \frac{1}{ \gamma \pi} \left[ \frac{\gamma^2}{(x-x_0)^2 + \gamma^2}  \right] $
+
+    parameters :
+
+        K :
+
+            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy distribution
+            initial value : 1
+
+        x0 :
+
+            desc : Central value
+            initial value : 0.0
+
+        gamma :
+
+            desc : standard deviation
+            initial value : 1.0
+            min : 1e-12
+
+    tests :
+        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}
+        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    # Place this here to avoid recomputing it all the time
+
+    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+
+    def _set_units(self, x_unit, y_unit):
+        # The normalization is the integral from -inf to +inf, i.e., has dimensions of
+        # y_unit * x_unit
+        self.F.unit = y_unit * x_unit
+
+        # The mu has the same dimensions as the x
+        self.x0.unit = x_unit
+
+        # sigma has the same dimensions as x
+        self.gamma.unit = x_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, x0, gamma):
+        norm = 1 / (gamma * np.pi)
+
+        gamma2 = gamma * gamma
+
+        return K * norm * gamma2 / ((x - x0) * (x - x0) + gamma2)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        x0 = self.x0.value
+        gamma = self.gamma.value
+
+        half_pi = 1.57079632679
+
+        res = np.tan(np.pi * x - half_pi) * gamma + x0
+
+        return res
+
 
 class LogNormal(Function1D):
     r"""
        description :
 
-           A Gaussian function
+           A log normal function
 
        latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x-\mu)^2}{2~(\sigma)^2}} $
 
@@ -236,7 +312,7 @@ class LogNormal(Function1D):
 
            F :
 
-               desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+               desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution
                initial value : 1
 
            mu :
@@ -263,7 +339,7 @@ class LogNormal(Function1D):
 
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
         # y_unit * x_unit
-        self.F.unit = y_unit * x_unit
+        self.F.unit = y_unit * x_unit * x_unit
 
         # The mu has the same dimensions as the x
         self.mu.unit = x_unit
@@ -274,9 +350,9 @@ class LogNormal(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, F, mu, sigma):
 
-        norm = self.__norm_const / sigma
+        norm = self.__norm_const / (sigma * x)
 
-        return F * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
+        return F * norm * np.exp(-np.power(np.log(x) - mu, 2.) / (2 * np.power(sigma, 2.)))
 
     def from_unit_cube(self, x):
         """
@@ -301,7 +377,8 @@ class LogNormal(Function1D):
 
             res = mu + sigma * sqrt_two * erfcinv(2 * (1 - x))
 
-        return res
+        return np.exp(res)
+
 
 class Uniform_prior(Function1D):
     r"""
