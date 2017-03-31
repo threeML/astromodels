@@ -93,7 +93,7 @@ class Gaussian(Function1D):
 
         return res
 
-class TruncatedGaussian(Function1D):
+class Truncated_gaussian(Function1D):
     r"""
     description :
 
@@ -311,7 +311,7 @@ class Cauchy(Function1D):
         return res
 
 
-class LogNormal(Function1D):
+class Log_normal(Function1D):
     r"""
        description :
 
@@ -344,6 +344,11 @@ class LogNormal(Function1D):
        """
 
     __metaclass__ = FunctionMeta
+
+
+    # Place this here to avoid recomputing it all the time
+
+    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
 
 
     def _set_units(self, x_unit, y_unit):
