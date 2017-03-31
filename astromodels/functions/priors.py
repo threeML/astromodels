@@ -167,11 +167,12 @@ class TruncatedGaussian(Function1D):
     def evaluate(self, x, F, mu, sigma, lower_bound, upper_bound):
 
 
-        # phi is in units of x, so we need to do this trick
+        # phi is in unitless, so we need to do this trick
         # to keep the units right
 
-        phi = np.zeros(x.shape) * sigma/sigma * 0.
+        norm = self.__norm_const / sigma
 
+        phi = np.zeros(x.shape) * F * norm * 0.
         idx = (x >= lower_bound) & (x <= upper_bound)
 
         sqrt_two = 1.414213562
@@ -181,11 +182,11 @@ class TruncatedGaussian(Function1D):
         lower_arg = (lower_bound - mu) / sigma
         upper_arg = (upper_bound - mu) / sigma
 
-        norm = self.__norm_const / sigma
+
 
         # the typical gaussian functions
 
-        phi[idx] = np.exp(-np.power(x[idx] - mu, 2.) / (2 * np.power(sigma, 2.)))
+        phi[idx] = np.exp(-np.power(x[idx] - mu, 2.) / (2 * np.power(sigma, 2.))) * F * norm
 
         # the denominator is a function of the CDF
 
@@ -193,7 +194,7 @@ class TruncatedGaussian(Function1D):
 
         theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
 
-        return F * norm * phi / (theta_upper - theta_lower)
+        return phi / (theta_upper - theta_lower)
 
     def from_unit_cube(self, x):
 
