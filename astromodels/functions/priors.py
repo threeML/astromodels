@@ -370,6 +370,10 @@ class Log_normal(Function1D):
 
             x_ = x.value
 
+        else:
+
+            x_ = x
+
         norm = self.__norm_const / (sigma * x_)
 
         return F * norm * np.exp(-np.power(np.log(x_) - mu, 2.) / (2 * np.power(sigma, 2.)))
