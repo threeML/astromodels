@@ -4,7 +4,7 @@ import math
 import astropy.units as astropy_units
 import numpy as np
 import warnings
-from scipy.special import  erfcinv
+from scipy.special import  erfcinv, erf
 
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
 
@@ -170,7 +170,7 @@ class TruncatedGaussian(Function1D):
         # phi is in units of x, so we need to do this trick
         # to keep the units right
 
-        phi = np.zeros(x.shape) * sigma * 0.
+        phi = np.zeros(x.shape)
 
         idx = (x >= lower_bound) & (x <= upper_bound)
 
