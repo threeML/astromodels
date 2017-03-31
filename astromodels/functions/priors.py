@@ -275,7 +275,7 @@ class Cauchy(Function1D):
     def _set_units(self, x_unit, y_unit):
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
         # y_unit * x_unit
-        self.F.unit = y_unit * x_unit
+        self.K.unit = y_unit * x_unit
 
         # The mu has the same dimensions as the x
         self.x0.unit = x_unit
