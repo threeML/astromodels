@@ -7,7 +7,8 @@ from astromodels.core.model import Model, DuplicatedNode, ModelFileExists, Canno
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
-from astromodels.functions.functions import Powerlaw, _ComplexTestFunction, Uniform_prior
+from astromodels.functions.functions import Powerlaw, _ComplexTestFunction
+from astromodels.functions.priors import Uniform_prior
 from astromodels.functions.functions_2D import Gaussian_on_sphere
 from astromodels.core.parameter import Parameter, IndependentVariable
 from astromodels.core.model_parser import *
