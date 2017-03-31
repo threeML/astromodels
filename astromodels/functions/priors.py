@@ -170,7 +170,7 @@ class TruncatedGaussian(Function1D):
         # phi is in units of x, so we need to do this trick
         # to keep the units right
 
-        phi = np.zeros(x.shape)
+        phi = np.zeros(x.shape) * sigma/sigma * 0.
 
         idx = (x >= lower_bound) & (x <= upper_bound)
 
