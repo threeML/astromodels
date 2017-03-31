@@ -12,6 +12,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .sources.particle_source import ParticleSource
     from .core.parameter import Parameter, IndependentVariable, SettingOutOfBounds
     from .functions.functions import *
+    from .functions.priors import *
     from .functions.functions_2D import *
     from .functions.functions_3D import *
     from .functions.template_model import *
