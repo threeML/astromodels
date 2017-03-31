@@ -355,20 +355,24 @@ class Log_normal(Function1D):
 
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
         # y_unit * x_unit
-        self.F.unit = y_unit * x_unit * x_unit
+        self.F.unit = y_unit
 
         # The mu has the same dimensions as the x
-        self.mu.unit = x_unit
+        self.mu.unit = astropy_units.dimensionless_unscaled
 
         # sigma has the same dimensions as x
-        self.sigma.unit = x_unit
+        self.sigma.unit = astropy_units.dimensionless_unscaled
 
     # noinspection PyPep8Naming
     def evaluate(self, x, F, mu, sigma):
 
-        norm = self.__norm_const / (sigma * x)
+        if isinstance(F, astropy_units.Quantity):
 
-        return F * norm * np.exp(-np.power(np.log(x) - mu, 2.) / (2 * np.power(sigma, 2.)))
+            x_ = x.value
+
+        norm = self.__norm_const / (sigma * x_)
+
+        return F * norm * np.exp(-np.power(np.log(x_) - mu, 2.) / (2 * np.power(sigma, 2.)))
 
     def from_unit_cube(self, x):
         """
