@@ -191,17 +191,16 @@ class TruncatedGaussian(Function1D):
         # the denominator is a function of the CDF
 
 
+        if isinstance(F, astropy_units.Quantity):
+            # erf cannot accept units
+
+            upper_arg = upper_arg.value
+            lower_arg = lower_arg.value
 
         theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
 
         theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
 
-        if isinstance(F, astropy_units.Quantity):
-
-            # erf cannot accept units
-
-            theta_lower = theta_lower.value
-            theta_upper = theta_upper.value
 
 
 
