@@ -18,7 +18,7 @@ else:
 
     has_xspec = True
 
-
+from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
 
 __author__ = 'giacomov'
