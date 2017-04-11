@@ -438,8 +438,10 @@ class FunctionMeta(type):
 
         free = (True if 'fix' not in definition else not bool(definition['fix']))
 
+        is_normalization = (False if 'is_normalization' not in definition else bool(definition['is_normalization']))
+
         new_parameter = Parameter(par_name, value, min_value=min_value, max_value=max_value,
-                                  delta=delta, desc=desc, free=free, unit=unit)
+                                  delta=delta, desc=desc, free=free, unit=unit, is_normalization=is_normalization)
 
         return new_parameter
 

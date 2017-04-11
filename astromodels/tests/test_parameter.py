@@ -73,7 +73,7 @@ def test_default_constructor_units():
 def test_constructor_complete():
 
     p = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
-                  free=False, unit=u.MeV, prior=Uniform_prior())
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True)
 
     assert p.min_value == -5.0
     assert p.max_value == 5.0
@@ -86,6 +86,8 @@ def test_constructor_complete():
     assert p.has_prior() == True
 
     assert p.unit == u.MeV
+
+    assert p.is_normalization
 
     p.display()
 

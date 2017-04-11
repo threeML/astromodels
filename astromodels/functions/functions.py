@@ -80,6 +80,7 @@ class Powerlaw(Function1D):
 
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
+            is_normalization : True
 
         piv :
 
@@ -136,6 +137,7 @@ class Powerlaw_flux(Function1D):
 
                 desc : Integral between a and b
                 initial value : 1
+                is_normalization : True
 
             index :
 
@@ -193,6 +195,7 @@ class Cutoff_powerlaw(Function1D):
 
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
+            is_normalization : True
 
         piv :
 
@@ -253,6 +256,7 @@ class Cutoff_powerlaw2(Function1D):
 
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
+            is_normalization : True
 
         piv :
 
@@ -312,6 +316,7 @@ class Super_cutoff_powerlaw(Function1D):
 
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
+            is_normalization : True
 
         piv :
 
@@ -379,6 +384,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
             desc : normalization
             initial value : 1
             min : 0
+            is_normalization : True
     
 
         alpha :
@@ -480,6 +486,7 @@ class Broken_powerlaw(Function1D):
 
             desc : Normalization (differential flux at x_b)
             initial value : 1.0
+            is_normalization : True
 
         xb :
 
@@ -554,6 +561,7 @@ class Gaussian(Function1D):
 
             desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
             initial value : 1
+            is_normalization : True
 
         mu :
 
@@ -909,6 +917,7 @@ class Blackbody(Function1D):
             desc :
             initial value : 1e-4
             min : 0.
+            is_normalization : True
     
         kT :
             desc : temperature of the blackbody
@@ -958,6 +967,7 @@ class Sin(Function1D):
 
             desc : Normalization
             initial value : 1
+            is_normalization : True
 
         f :
 
@@ -1276,6 +1286,7 @@ class Band(Function1D):
 
             desc : Differential flux at the pivot energy
             initial value : 1e-4
+            is_normalization : True
 
         alpha :
 
@@ -1374,6 +1385,7 @@ class Band_Calderone(Function1D):
 
             desc : integral in the band defined by a and b
             initial value : 1e-6
+            is_normalization : True
 
         a:
 
@@ -1549,6 +1561,7 @@ class Log_parabola(Function1D):
 
             desc : Normalization
             initial value : 1.0
+            is_normalization : True
 
         piv :
             desc : Pivot (keep this fixed)
@@ -1634,6 +1647,7 @@ if has_gsl:
 
                     desc : Integral between a and b
                     initial value : 1e-5
+                    is_normalization : True
 
                 index :
 
@@ -1701,6 +1715,7 @@ class Exponential_cutoff(Function1D):
                 desc : Normalization
                 initial value : 1.0
                 fix : no
+                is_normalization : True
 
             xc :
                 desc : cutoff

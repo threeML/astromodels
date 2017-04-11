@@ -541,10 +541,11 @@ class Parameter(ParameterBase):
     :param free: whether the parameter is free or not (default: True)
     :param unit: the parameter units (default: dimensionless)
     :param prior: the parameter's prior (default: None)
+    :param is_normalization: True or False, wether the parameter is a normalization or not (default: False)
     """
 
     def __init__(self, name=None, value=None, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',
-                 prior=None):
+                 prior=None, is_normalization=False):
         # NOTE: we need to set up _aux_variable immediately because we are overriding the value getter which
         # needs this
 
@@ -597,7 +598,12 @@ class Parameter(ParameterBase):
         # is removed)
         self._old_free = self._free
 
+        self._is_normalization = bool(is_normalization)
 
+    @property
+    def is_normalization(self):
+
+        return self._is_normalization
 
     # Define the new get_value which accounts for the possibility of auxiliary variables
     @ParameterBase.value.getter
@@ -869,6 +875,9 @@ class Parameter(ParameterBase):
         """Returns the representation for serialization"""
 
         data = super(Parameter, self).to_dict()
+
+        # Add wether is a normalization or not
+        data['is_normalization'] = self._is_normalization
 
         if minimal:
 
