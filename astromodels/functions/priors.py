@@ -1,13 +1,10 @@
-import exceptions
 import math
 
 import astropy.units as astropy_units
 import numpy as np
-import warnings
 from scipy.special import  erfcinv, erf
 
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
-
 
 
 # noinspection PyPep8Naming
