@@ -301,7 +301,16 @@ class TemplateModel(Function1D):
 
     __metaclass__ = FunctionMeta
 
-    def _custom_init_(self, model_name):
+    def _custom_init_(self, model_name, other_name=None):
+        """
+        Custom initialization for this model
+        
+        :param model_name: the name of the model, corresponding to the root of the .h5 file in the data directory
+        :param other_name: (optional) the name to be used as name of the model when used in astromodels. If None 
+        (default), use the same name as model_name
+        :return: none
+        """
+
 
         # Get the data directory
 
@@ -385,7 +394,13 @@ class TemplateModel(Function1D):
                                                    min_value=grid.min(),
                                                    max_value=grid.max())
 
-        super(TemplateModel, self).__init__(name, function_definition, parameters)
+        if other_name is None:
+
+            super(TemplateModel, self).__init__(name, function_definition, parameters)
+
+        else:
+
+            super(TemplateModel, self).__init__(other_name, function_definition, parameters)
 
         # Finally prepare the interpolators
 
