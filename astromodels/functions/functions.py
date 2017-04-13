@@ -1364,7 +1364,7 @@ class Log_parabola(Function1D):
 
         try:
 
-            return K * xx ** (alpha + beta * np.log10(xx))
+            return K * xx ** (alpha + beta * np.log(xx))
 
         except ValueError:
 
