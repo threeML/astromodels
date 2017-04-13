@@ -1312,7 +1312,9 @@ class Log_parabola(Function1D):
     r"""
     description :
 
-        A log-parabolic function
+        A log-parabolic function. NOTE: we use the high-energy convention of using the natural log in place of the
+        base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
+        using the other convention.
 
     latex : $ K \left( \frac{x}{piv} \right)^{\alpha +\beta \log{\left( \frac{x}{piv} \right)}} $
 
@@ -1373,7 +1375,7 @@ class Log_parabola(Function1D):
 
             xx = xx.to('')
 
-            return K * xx ** (alpha + beta * np.log10(xx))
+            return K * xx ** (alpha + beta * np.log(xx))
 
     @property
     def peak_energy(self):
