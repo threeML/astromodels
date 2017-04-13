@@ -1312,7 +1312,7 @@ class Log_parabola(Function1D):
     r"""
     description :
 
-        A log-parabolic function. NOTE: we use the high-energy convention of using the natural log in place of the
+        A log-parabolic function. NOTE that we use the high-energy convention of using the natural log in place of the
         base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
         using the other convention.
 
