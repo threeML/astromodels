@@ -54,8 +54,8 @@ def xspec_xsect(command_string=None):
 
     if command_string is None:
 
-        return _xspec.get_xsect()
+        return _xspec.get_xsxsect()
 
     else:
 
-        _xspec.set_xsect(command_string)
+        _xspec.set_xssect(command_string)
