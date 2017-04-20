@@ -44,6 +44,10 @@ def sanitize_lib_name(library_path):
 
     tokens = re.findall("lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
 
+    if not tokens:
+        raise RuntimeError('Attempting to find %s in directory %s but there are no libraries in this directory'%(lib_name,library_path))
+
+
     return tokens[0][0]
 
 
