@@ -177,13 +177,35 @@ execfile('astromodels/version.py')
 
 
 def setup_xspec():
+
     headas_root = os.environ.get("HEADAS")
 
     if headas_root is None:
 
-        print("No HEADAS env. variable set. Xspec support will not be installed ")
+        # See, maybe we are running in Conda
+        conda_prefix = os.environ.get("CONDA_PREFIX")
 
-        return None
+        if conda_prefix is not None:
+
+            # Yes, this is Conda
+            # Let's see if the package xspec-modelsonly has been installed by checking whether one of the Xspec
+            # libraries exists within conda
+            this_lib, this_lib_path = find_library('XSFunctions', additional_places=os.path.join(conda_prefix, 'lib'))
+
+            if this_lib is None:
+
+                # No, there is no library in Conda
+                print("No xspec-modelsonly package has been installed in Conda. Xspec support will not be installed")
+
+            else:
+
+                print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
+
+        else:
+
+            print("No HEADAS env. variable set. Xspec support will not be installed ")
+
+            return None
 
     else:
 
