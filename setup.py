@@ -198,7 +198,7 @@ def setup_xspec():
                 print("No xspec-modelsonly package has been installed in Conda. Xspec support will not be installed")
 
                 return None
-            
+
             else:
 
                 print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
