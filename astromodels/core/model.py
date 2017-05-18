@@ -4,6 +4,7 @@ import collections
 
 import os
 import pandas as pd
+import numpy as np
 import warnings
 
 from astromodels.core.my_yaml import my_yaml
@@ -38,6 +39,7 @@ class CannotWriteModel(IOError):
 class ModelInternalError(ValueError):
 
     pass
+
 
 
 class Model(Node):
@@ -75,6 +77,12 @@ class Model(Node):
 
         # This controls the verbosity of the display
         self._complete_display = False
+
+    def __reduce__(self):
+
+        from astromodels.core.model_parser import model_unpickler
+
+        return model_unpickler, (self.to_dict_with_types(),)
 
     def _add_source(self, source):
         """
@@ -957,3 +965,18 @@ class Model(Node):
     def get_particle_source_name(self, id):
 
         return self._particle_sources.values()[id].name
+
+    def get_total_flux(self, energies):
+        """
+        Returns the total differential flux at the provided energies from all *point* sources
+
+        :return:
+        """
+
+        fluxes = []
+
+        for src in self._point_sources:
+
+            fluxes.append(self._point_sources[src](energies))
+
+        return np.sum(fluxes, axis=0)

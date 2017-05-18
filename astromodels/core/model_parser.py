@@ -53,6 +53,11 @@ def clone_model(model_instance):
     return parser.get_model()
 
 
+def model_unpickler(state):
+
+    return ModelParser(model_dict=state).get_model()
+
+
 class ModelParser(object):
 
     def __init__(self, model_file=None, model_dict=None):
