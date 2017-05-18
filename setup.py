@@ -208,6 +208,7 @@ def setup_xspec():
 
                 # Set up the HEADAS variable so that the following will find the libraries
                 os.environ['HEADAS'] = os.path.join(conda_lib_path, 'Xspec', 'headas')
+                headas_root = os.environ['HEADAS']
 
         else:
 
