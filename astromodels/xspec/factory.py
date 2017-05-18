@@ -22,6 +22,16 @@ except ImportError:
 
     raise XSpecNotAvailable("You need to have XSPEC installed and configured in order to use its models.")
 
+# When running in a Anaconda environment, the package xspec-modelsonly
+# will install the models data in a specific place, so we set the HEADAS variable to point to the right place for
+# the models to find their data
+if os.environ.get("CONDA_PREFIX") is not None:
+
+    # NOTE: the 'headas' directory doesn't actually exists, but models are looked for (according to Xspec documentation)
+    # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
+    # the 'spectral' directory is
+
+    os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
 
 # This list defines all python protected names (names which variables or attributes should not have)
 illegal_variable_names_ = 'and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,' \
