@@ -168,7 +168,7 @@ class GalPropTemplate_3D(Function3D):
 
             User input Spatial Template.
 
-        latex : $ hi $
+        latex : $ K $
 
         parameters :
 
@@ -184,10 +184,9 @@ class GalPropTemplate_3D(Function3D):
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 
-        self.K.unit = w_unit
+        self.K.unit = (u.MeV * u.cm**2 * u.s * u.sr) ** (-1)
 
-
-    def _custom_init_(self,fitsfile,ihdu=0):
+    def load_file(self,fitsfile,ihdu=0):
 
         header = fits.getheader(fitsfile)
         self._w = wcs.WCS(header)
