@@ -1,12 +1,12 @@
 import numpy as np
-
-import astropy.units as u
-from astropy.io import fits
-from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.wcs import wcs
+from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
+from astropy.io import fits
+import astropy.units as u
 
 from astromodels.functions.function import Function3D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
+
 
 class Continuous_injection_diffusion(Function3D):
     r"""
@@ -163,30 +163,30 @@ class Continuous_injection_diffusion(Function3D):
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
 class GalPropTemplate_3D(Function3D):
-#
     r"""
-        description:
-            Function to use GalProp Template that extends from 100 MeV to 100 TeV.
+        description :
 
-        parameters:
+            User input Spatial Template.
+
+        latex : $ hi $
+
+        parameters :
 
             K :
 
-                desc : normalization (dummy, coordinates are in galactic and energy is in GeV right now.)
+                desc : normalization
                 initial value : 1
                 fix : yes
 
     """
-#
+
     __metaclass__ = FunctionMeta
-#
-    def _set_units(self, x_unit, y_unit, z_unit):
-#
-        self.K.unit = z_unit
-        #self.lat.unit = y_unit
-        #self.energy.unit = z_unit
-#
-#
+
+    def _set_units(self, x_unit, y_unit, z_unit, w_unit):
+
+        self.K.unit = w_unit
+
+
     def _custom_init_(self,fitsfile,ihdu=0):
 
         header = fits.getheader(fitsfile)
@@ -206,21 +206,8 @@ class GalPropTemplate_3D(Function3D):
             self._nl = f[ihdu].header['NAXIS1']#long
             self._nb = f[ihdu].header['NAXIS2']#lat
             self._ne = f[ihdu].header['NAXIS3']#energy
-#
-#
-#    def set_frame(self, new_frame):
-#        """
-#            #Set a new frame for the coordinates (the default is ICRS J2000)
-#
-#            #:param new_frame: a coordinate frame from astropy
-#            #:return: (none)
-#            """
-#        assert isinstance(new_frame, BaseCoordinateFrame)
-#
-#        self._frame = new_frame
-#
 
-    def __interpolate_method(self,i,j,k,l,b,e):
+    def _interpolate_method(self,i,j,k,l,b,e):
         #energy pixels
         k1 = int(np.floor(k))
         k2 = int(np.ceil(k))
@@ -228,7 +215,6 @@ class GalPropTemplate_3D(Function3D):
         #lon pixels
         i1 = int(np.floor(i))
         i2 = int(np.ceil(i))
-
 
         #lat pixels
         j1 = int(np.floor(j))
@@ -279,9 +265,6 @@ class GalPropTemplate_3D(Function3D):
                 Q12 = self._map[k2][j2][i1]
                 Q22 = self._map[k2][j2][i2]
                 f2 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
-
-
-
         return w1*f1 + w2*f2
 
     def evaluate(self, x,y,z,K):
@@ -290,23 +273,12 @@ class GalPropTemplate_3D(Function3D):
         energy = np.log10(z)
         il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
         #print il,ib,ie
-        f = self.__interpolate_method(il,ib,ie,lon,lat,energy)
-        return K*f
-#
-#
-#    def get_boundaries(self):
-#    #Check if it works :S
-#        min_ra = (0-np.int(self._refXpix))*self._delXpix + self._refX
-#        max_ra = ((self._nX-1)-np.int(self._refXpix))*self._delXpix + self._refX
-#
-#        min_dec = (0-np.int(self._refYpix))*self._delYpix + self._refY
-#        max_dec = ((self._nY-1)-np.int(self._refYpix))*self._delYpix + self._refY
-#
-#        min_lon = min([min_ra,max_ra])
-#        max_lon = max([min_ra,max_ra])
-#
-#        min_lat = min([min_dec,max_dec])
-#        max_lat = max([min_dec,max_dec])
-#
-#
-#        return (min_lon, max_lon), (min_lat, max_lat)
+        f = self._interpolate_method(il,ib,ie,lon,lat,energy)
+        return K * f
+
+    def get_boundaries(self):
+        min_lat = -90.
+        max_lat = 90.
+        min_lon = -180. #or 0. ?
+        max_lon = 180. #or 360.?
+        return (min_lon, max_lon), (min_lat, max_lat)
