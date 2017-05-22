@@ -296,9 +296,9 @@ class GalPropTemplate_3D(Function3D):
         f = self._interpolate_method(il,ib,ie,lon,lat,energy)
         return K * f
 
-    #def get_boundaries(self):
-        #min_lat = -90.
-        #max_lat = 90.
-        #min_lon = -180. #or 0. ?
-        #max_lon = 180. #or 360.?
-        #return (min_lon, max_lon), (min_lat, max_lat)
+    def get_boundaries(self):
+        min_lat = -25.
+        max_lat = 60.
+        min_lon = 0. #or 0. ?
+        max_lon = 360. #or 360.?
+        return (min_lon, max_lon), (min_lat, max_lat)
