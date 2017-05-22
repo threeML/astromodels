@@ -1316,7 +1316,7 @@ class Log_parabola(Function1D):
         base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
         using the other convention.
 
-    latex : $ K \left( \frac{x}{piv} \right)^{\alpha +\beta \log{\left( \frac{x}{piv} \right)}} $
+    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
 
     parameters :
 
@@ -1338,8 +1338,8 @@ class Log_parabola(Function1D):
 
         beta :
 
-            desc : curvature (negative is concave, positive is convex)
-            initial value : -1.0
+            desc : curvature (positive is concave, negative is convex)
+            initial value : 1.0
 
     """
 
@@ -1364,7 +1364,7 @@ class Log_parabola(Function1D):
 
         try:
 
-            return K * xx ** (alpha + beta * np.log(xx))
+            return K * xx ** (alpha - beta * np.log(xx))
 
         except ValueError:
 
@@ -1375,7 +1375,7 @@ class Log_parabola(Function1D):
 
             xx = xx.to('')
 
-            return K * xx ** (alpha + beta * np.log(xx))
+            return K * xx ** (alpha - beta * np.log(xx))
 
     @property
     def peak_energy(self):
