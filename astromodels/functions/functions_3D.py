@@ -186,6 +186,21 @@ class GalPropTemplate_3D(Function3D):
 
         self.K.unit = (u.MeV * u.cm**2 * u.s * u.sr) ** (-1)
 
+    def _setup(self):
+
+        self._frame = ICRS()
+
+    def set_frame(self, new_frame):
+        """
+        Set a new frame for the coordinates (the default is ICRS J2000)
+
+        :param new_frame: a coordinate frame from astropy
+        :return: (none)
+        """
+        assert isinstance(new_frame, BaseCoordinateFrame)
+
+        self._frame = new_frame
+
     def load_file(self,fitsfile,ihdu=0):
 
         header = fits.getheader(fitsfile)
@@ -267,8 +282,14 @@ class GalPropTemplate_3D(Function3D):
         return w1*f1 + w2*f2
 
     def evaluate(self, x,y,z,K):
-        lon=x
-        lat=y
+
+        # We assume x and y are R.A. and Dec
+        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+
+        b = _coord.transform_to('galactic').b.value
+        l = _coord.transform_to('galactic').l.value
+        lon=l
+        lat=b
         energy = np.log10(z)
         il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
         #print il,ib,ie
