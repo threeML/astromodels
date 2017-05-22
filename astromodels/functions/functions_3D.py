@@ -298,7 +298,7 @@ class GalPropTemplate_3D(Function3D):
 
     def get_boundaries(self):
         min_lat = -25.
-        max_lat = 60.
+        max_lat = 65.
         min_lon = 0. #or 0. ?
         max_lon = 359. #or 360.?
         return (min_lon, max_lon), (min_lat, max_lat)
