@@ -127,6 +127,7 @@ class Continuous_injection_diffusion(Function3D):
 
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
+        print rdiffs.shape
         return np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
                np.exp(-np.power(angseps, 2) / rdiffs ** 2)
 
@@ -291,11 +292,14 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         energy = np.log10(z)
-        print energy.size
-        il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
-        #print il,ib,ie
-        f = self._interpolate_method(il,ib,ie,lon,lat,energy)
-        return K * f
+        #print energy.size
+        f=np.zeros([lon.size,energy.size])
+        for i in xrange(energy.size):
+            for j in xrange(lat.size):
+                il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
+                #print il,ib,ie
+                f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+        return np.multiply(K * f)
 
     def get_boundaries(self):
         min_lat = -25.
