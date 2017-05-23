@@ -299,7 +299,8 @@ class GalPropTemplate_3D(Function3D):
                 if ie > self._ne:
                     f[j,i] = 0.
                 #print il,ib,ie
-                f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+                else:
+                    f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
         return np.multiply(K * f)
 
     def get_boundaries(self):
