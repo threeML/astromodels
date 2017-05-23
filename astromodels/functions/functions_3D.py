@@ -301,5 +301,5 @@ class GalPropTemplate_3D(Function3D):
         min_lat = -25.
         max_lat = 64.
         min_lon = 0. #or 0. ?
-        max_lon = 360. #or 360.?
+        max_lon = 359. #or 360.?
         return (min_lon, max_lon), (min_lat, max_lat)
