@@ -291,7 +291,7 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         energy = np.log10(z)
-        position = np.dstack([lon,lat])
+        position = np.dstack([lon,lat])[0]
         print energy.shape, position.shape
         il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
         #print il,ib,ie
