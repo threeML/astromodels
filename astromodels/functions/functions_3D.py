@@ -301,6 +301,7 @@ class GalPropTemplate_3D(Function3D):
                 #print il,ib,ie
                 else:
                     f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+        print max(f)
         return np.multiply(K,f)
 
     def get_boundaries(self):
