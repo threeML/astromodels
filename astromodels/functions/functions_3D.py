@@ -129,7 +129,6 @@ class Continuous_injection_diffusion(Function3D):
 
         A = np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
                np.exp(-np.power(angseps, 2) / rdiffs ** 2)
-        print A.shape
         return A
 
 
@@ -298,13 +297,11 @@ class GalPropTemplate_3D(Function3D):
         for i in xrange(energy.size):
             for j in xrange(lat.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
-                if ie > self._ne:
+                if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
                     f[j,i] = 0.
-                #print il,ib,ie
                 else:
                     f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
         A = np.multiply(K,f)
-        print A.shape
         return A
 
     def get_boundaries(self):
