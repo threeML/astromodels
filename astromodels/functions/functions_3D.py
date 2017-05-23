@@ -296,6 +296,8 @@ class GalPropTemplate_3D(Function3D):
         for i in xrange(energy.size):
             for j in xrange(lat.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
+                if ie > self._ne:
+                    f[j,i] = 0.
                 #print il,ib,ie
                 f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
         return np.multiply(K * f)
