@@ -291,8 +291,8 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         energy = np.log10(z)
-        print energy, lon, lat
-        #il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
+        print energy.shape, lon.shape, lat.shape
+        il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
         #print il,ib,ie
         f = self._interpolate_method(il,ib,ie,lon,lat,energy)
         return K * f
