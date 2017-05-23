@@ -288,11 +288,10 @@ class GalPropTemplate_3D(Function3D):
 
         b = _coord.transform_to('galactic').b.value
         l = _coord.transform_to('galactic').l.value
-        lon=l[0]
-        lat=b[0]
+        lon=l
+        lat=b
         energy = np.log10(z)
-        position = np.dstack([lon,lat])
-        print energy.shape, position.shape
+        print energy.size
         il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
         #print il,ib,ie
         f = self._interpolate_method(il,ib,ie,lon,lat,energy)
