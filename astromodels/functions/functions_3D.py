@@ -291,6 +291,7 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         energy = np.log10(z)
+        print energy.shape, lon.shape, lat.shape
         il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
         #print il,ib,ie
         f = self._interpolate_method(il,ib,ie,lon,lat,energy)
@@ -298,7 +299,7 @@ class GalPropTemplate_3D(Function3D):
 
     def get_boundaries(self):
         min_lat = -25.
-        max_lat = 65.
+        max_lat = 64.
         min_lon = 0. #or 0. ?
-        max_lon = 359. #or 360.?
+        max_lon = 360. #or 360.?
         return (min_lon, max_lon), (min_lat, max_lat)
