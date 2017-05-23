@@ -127,8 +127,10 @@ class Continuous_injection_diffusion(Function3D):
 
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
-        return np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
+        A = np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
                np.exp(-np.power(angseps, 2) / rdiffs ** 2)
+        print A.shape
+        return A
 
 
     def get_boundaries(self):
@@ -292,7 +294,6 @@ class GalPropTemplate_3D(Function3D):
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
         energy = np.log10(z/1000.)
-        print energy
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
             for j in xrange(lat.size):
@@ -302,8 +303,9 @@ class GalPropTemplate_3D(Function3D):
                 #print il,ib,ie
                 else:
                     f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-        print np.max(f)
-        return np.multiply(K,f)
+        A = np.multiply(K,f)
+        print A.shape
+        return A
 
     def get_boundaries(self):
         min_lat = -25.
