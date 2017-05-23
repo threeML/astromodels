@@ -290,7 +290,7 @@ class GalPropTemplate_3D(Function3D):
         l = _coord.transform_to('galactic').l.value
         lon=l
         lat=b
-        energy = np.log10(z)
+        energy = np.log10(z)[0]
         position = np.dstack([lon,lat])[0]
         print energy.shape, position.shape
         il,ib,ie = self._w.all_world2pix(lon,lat,energy,1)
