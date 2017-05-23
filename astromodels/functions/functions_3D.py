@@ -291,7 +291,7 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         energy = np.log10(z)
-        #print energy.size
+        print energy
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
             for j in xrange(lat.size):
