@@ -95,6 +95,7 @@ class Continuous_injection_diffusion(Function3D):
     def evaluate(self, x, y, z, lon0, lat0, rdiff0, delta, uratio, piv, piv2):
 
         print x
+        print x.size
         lon, lat = x, y
         energy = z
 
@@ -312,8 +313,8 @@ class GalPropTemplate_3D(Function3D):
         return A
 
     def get_boundaries(self):
-        min_lat = -25.
-        max_lat = 64.
-        min_lon = 0. #or 0. ?
-        max_lon = 359.9 #or 360.?
-        return (min_lon, max_lon), (min_lat, max_lat)
+        min_latitude = -25.
+        max_latitude = 64.
+        min_longitude = 0. #or 0. ?
+        max_longitude = 359. #or 360.?
+        return (min_longitude, max_longitude), (min_latitude, max_latitude)
