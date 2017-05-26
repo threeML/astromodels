@@ -292,13 +292,14 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        energy = np.log10(z/1000.)
+        energy = np.log10(z * u.MeV / u.keV)
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
             for j in xrange(lat.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
-                    f[j,i] = 0.
+                    #f[j,i] = 0.
+                    ie=ie-1.
                 else:
                     f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
         A = np.multiply(K,f)
@@ -308,5 +309,5 @@ class GalPropTemplate_3D(Function3D):
         min_lat = -25.
         max_lat = 64.
         min_lon = 0. #or 0. ?
-        max_lon = 359. #or 360.?
+        max_lon = 359.9 #or 360.?
         return (min_lon, max_lon), (min_lat, max_lat)
