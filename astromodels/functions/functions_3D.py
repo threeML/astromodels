@@ -304,12 +304,13 @@ class GalPropTemplate_3D(Function3D):
             for j in xrange(lon.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
-                    f[j,i] = 0.
+                    #f[j,i] = 0.
                     #ie=ie-1.
-                    #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+                    f[j,i] = self._interpolate_method(il,ib,self._ne-1,lon[j],lat[j],energy[i])
                 else:
                     f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
         A = np.multiply(K,f)
+        print A
         return A
 
     def get_boundaries(self):
