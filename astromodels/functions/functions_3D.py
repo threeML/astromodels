@@ -300,6 +300,7 @@ class GalPropTemplate_3D(Function3D):
                 if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
                     #f[j,i] = 0.
                     ie=ie-1.
+                    f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
                 else:
                     f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
         A = np.multiply(K,f)
