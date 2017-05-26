@@ -94,6 +94,7 @@ class Continuous_injection_diffusion(Function3D):
 
     def evaluate(self, x, y, z, lon0, lat0, rdiff0, delta, uratio, piv, piv2):
 
+        print x
         lon, lat = x, y
         energy = z
 
