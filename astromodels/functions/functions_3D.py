@@ -285,6 +285,7 @@ class GalPropTemplate_3D(Function3D):
     def evaluate(self, x,y,z,K):
 
         # We assume x and y are R.A. and Dec
+        print x
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
@@ -293,9 +294,11 @@ class GalPropTemplate_3D(Function3D):
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
         energy = np.log10(z * u.MeV / u.keV)
+        if lon.size != lat.size:
+            raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
-            for j in xrange(lat.size):
+            for j in xrange(lon.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
                     f[j,i] = 0.
