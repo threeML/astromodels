@@ -318,6 +318,8 @@ class GalPropTemplate_3D(Function3D):
         Ef = self._refEn + (self._ne-1)*self._delEn
         for i in xrange(energy.size):
             print i
+            if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
+                continue
             for j in xrange(lon.size):
                 #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 #if il > self._nl+1:
@@ -325,22 +327,22 @@ class GalPropTemplate_3D(Function3D):
                 #if ib > self._nb:
                     #ib = ib - self._nb
                 #if ie > self._ne or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
-                if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
+            #    if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                     #f[j,i] = 0.
                     #ie=ie-1.
                     #print energy[i]
                     #print "Looking at energies higher than 100 TeV"
-                    continue#f[j,i] = self._interpolate_method(il,ib,self._ne-1,lon[j],lat[j],energy[i])
+             #       continue#f[j,i] = self._interpolate_method(il,ib,self._ne-1,lon[j],lat[j],energy[i])
 
-                else:
+                #else:
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-                    if lon[j]>180.:
-                        lon[j]=180-lon[j]
-                    try:
-                        f[j,i] = self._F((energy[i],lat[j],lon[j]))
-                    except ValueError:
-                        continue
-                        #print lat[j],lon[j]
+                if lon[j]>180.:
+                    lon[j]=180-lon[j]
+                try:
+                    f[j,i] = self._F((energy[i],lat[j],lon[j]))
+                except ValueError:
+                    continue
+                    #print lat[j],lon[j]
         A = np.multiply(K,f)
         print np.max(A)
         return A
