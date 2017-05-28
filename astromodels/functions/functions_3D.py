@@ -95,7 +95,7 @@ class Continuous_injection_diffusion(Function3D):
     def evaluate(self, x, y, z, lon0, lat0, rdiff0, delta, uratio, piv, piv2):
 
         print x
-        print x.size
+        print y
         lon, lat = x, y
         energy = z
 
@@ -290,7 +290,8 @@ class GalPropTemplate_3D(Function3D):
 
         # We assume x and y are R.A. and Dec
         print x
-        print x.size
+        print y
+        print z.size
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
@@ -305,7 +306,6 @@ class GalPropTemplate_3D(Function3D):
         for i in xrange(energy.size):
             print i
             for j in xrange(lon.size):
-                print "   %d"%j
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 if il > self._nl+1:
                     continue#il = il - self._nl
