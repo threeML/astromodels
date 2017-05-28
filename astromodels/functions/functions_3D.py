@@ -303,6 +303,7 @@ class GalPropTemplate_3D(Function3D):
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
+            print i
             for j in xrange(lon.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 if il > self._nl:
