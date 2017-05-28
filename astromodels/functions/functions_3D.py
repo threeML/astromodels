@@ -308,13 +308,14 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        print np.log10(1.* u.MeV/u.keV)
-        energy = np.log10(z / 1.e6)
+        #print np.log10(1.* u.MeV/u.keV)
+        energy = np.log10(z * u.eV/ u.MeV)
         print energy
         if lon.size != lat.size:
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
+            print i
             for j in xrange(lon.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 #if il > self._nl+1:
