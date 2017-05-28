@@ -247,41 +247,43 @@ class GalPropTemplate_3D(Function3D):
             E2 = self._refEn + k2*self._delEn
             w1 = (e - E1)/self._delEn
             w2 = (E2 - e)/self._delEn
+        f1 = self._map[k1][j1][i1]
+        f2 = self._map[k2][j1][i1]
 
-        if j2 == self._nb or i2 == self._nl:
-            f1 = self._map[k1][j1][i1]
-            if k2 == self._ne:
-                f2 = 0.
-            else:
-                f2 = self._map[k2][j1][i1]
-        elif j1 == -1 or i1 == -1:
-            f1 = self._map[k1][j2][i2]
-            if k2 == self._ne:
-                f2 = 0
-            else:
-                f2 = self._map[k2][j2][i2]
-        else: #do full bilinear interpolation
-            y1 = self._refLat + self._delLat*j1
-            x1 = self._refLon + self._delLon*i1
-            y2 = self._refLat + self._delLat*j2
-            x2 = self._refLon + self._delLon*i2
-            ## Bilinear interpolation
-            ##Getting flux from k1
-            Q11 = self._map[k1][j1][i1]
-            Q21 = self._map[k1][j1][i2]
-            Q12 = self._map[k1][j2][i1]
-            Q22 = self._map[k1][j2][i2]
-            f1 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
+        #if j2 == self._nb or i2 == self._nl:
+        #    f1 = self._map[k1][j1][i1]
+        #    if k2 == self._ne:
+        #        f2 = 0.
+        #    else:
+        #        f2 = self._map[k2][j1][i1]
+        #elif j1 == -1 or i1 == -1:
+        #    f1 = self._map[k1][j2][i2]
+        #    if k2 == self._ne:
+        #        f2 = 0
+        #    else:
+        #        f2 = self._map[k2][j2][i2]
+        #else: #do full bilinear interpolation
+        #    y1 = self._refLat + self._delLat*j1
+        #    x1 = self._refLon + self._delLon*i1
+        #    y2 = self._refLat + self._delLat*j2
+        #    x2 = self._refLon + self._delLon*i2
+        #    ## Bilinear interpolation
+        #    ##Getting flux from k1
+        #    Q11 = self._map[k1][j1][i1]
+        #    Q21 = self._map[k1][j1][i2]
+        #    Q12 = self._map[k1][j2][i1]
+        #    Q22 = self._map[k1][j2][i2]
+        #    f1 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
 
-            ##Getting flux from k2
-            if k2 == self._ne:
-                f2 = 0.
-            else:
-                Q11 = self._map[k2][j1][i1]
-                Q21 = self._map[k2][j1][i2]
-                Q12 = self._map[k2][j2][i1]
-                Q22 = self._map[k2][j2][i2]
-                f2 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
+        #    ##Getting flux from k2
+        #    if k2 == self._ne:
+        #        f2 = 0.
+        #    else:
+        #        Q11 = self._map[k2][j1][i1]
+        #        Q21 = self._map[k2][j1][i2]
+        #        Q12 = self._map[k2][j2][i1]
+        #        Q22 = self._map[k2][j2][i2]
+        #        f2 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
         return w1*f1 + w2*f2
 
     def evaluate(self, x,y,z,K):
