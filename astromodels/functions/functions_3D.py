@@ -300,6 +300,7 @@ class GalPropTemplate_3D(Function3D):
         # We assume x and y are R.A. and Dec
         print x
         print y
+        print z
         print z.size
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
@@ -322,8 +323,8 @@ class GalPropTemplate_3D(Function3D):
                 if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
                     #f[j,i] = 0.
                     #ie=ie-1.
-                    print energy[i]
-                    print "Looking at energies higher than 100 TeV"
+                    #print energy[i]
+                    #print "Looking at energies higher than 100 TeV"
                     continue#f[j,i] = self._interpolate_method(il,ib,self._ne-1,lon[j],lat[j],energy[i])
 
                 else:
