@@ -1,4 +1,6 @@
 import numpy as np
+from scipy.interpolate import RegularGridInterpolator
+
 from astropy.wcs import wcs
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
@@ -224,6 +226,13 @@ class GalPropTemplate_3D(Function3D):
             self._nb = f[ihdu].header['NAXIS2']#lat
             self._ne = f[ihdu].header['NAXIS3']#energy
 
+            #Create the function for the interpolation
+            self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl)) 
+            self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)) 
+            self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)) 
+            self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map) 
+
+    #deprecated, delete after testing the other one
     def _interpolate_method(self,i,j,k,l,b,e):
         #energy pixels
         k1 = int(np.floor(k))
@@ -304,20 +313,21 @@ class GalPropTemplate_3D(Function3D):
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
         for i in xrange(energy.size):
-            print i
             for j in xrange(lon.size):
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
-                if il > self._nl+1:
-                    continue#il = il - self._nl
+                #if il > self._nl+1:
+                    #continue#il = il - self._nl
                 #if ib > self._nb:
                     #ib = ib - self._nb
                 if ie > self._ne:  #Maybe needed, it probably not necesary once the energy units are right?
                     #f[j,i] = 0.
                     #ie=ie-1.
+                    raise Warning("Looking at energies higher than 100 TeV")
                     continue#f[j,i] = self._interpolate_method(il,ib,self._ne-1,lon[j],lat[j],energy[i])
 
                 else:
-                    f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+                    #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+                    f[j,i] = self._F(energy[i],lat[j],lon[j]) 
         A = np.multiply(K,f)
         print np.max(A)
         return A
