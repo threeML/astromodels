@@ -317,7 +317,7 @@ class GalPropTemplate_3D(Function3D):
         E0 = self._refEn
         Ef = self._refEn + (self._ne-1)*self._delEn
         for i in xrange(energy.size):
-            #print i
+            print i
             for j in xrange(lon.size):
                 #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 #if il > self._nl+1:
