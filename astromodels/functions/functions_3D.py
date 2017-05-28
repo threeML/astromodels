@@ -314,15 +314,18 @@ class GalPropTemplate_3D(Function3D):
         if lon.size != lat.size:
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
+        E0 = self._refEn
+        Ef = self._refEn + (self._ne-1)*self._delEn
         for i in xrange(energy.size):
             print i
             for j in xrange(lon.size):
-                il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
+                #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 #if il > self._nl+1:
                     #continue#il = il - self._nl
                 #if ib > self._nb:
                     #ib = ib - self._nb
-                if ie > self._ne or energy[i]<self._refEn:  #Maybe needed, it probably not necesary once the energy units are right?
+                #if ie > self._ne or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
+                if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                     #f[j,i] = 0.
                     #ie=ie-1.
                     #print energy[i]
