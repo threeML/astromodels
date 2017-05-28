@@ -305,6 +305,7 @@ class GalPropTemplate_3D(Function3D):
         for i in xrange(energy.size):
             print i
             for j in xrange(lon.size):
+                print "   %d"%j
                 il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 if il > self._nl+1:
                     continue#il = il - self._nl
