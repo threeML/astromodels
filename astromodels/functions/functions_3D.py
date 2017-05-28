@@ -334,6 +334,8 @@ class GalPropTemplate_3D(Function3D):
 
                 else:
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
+                    if lon[j]>180.:
+                        lon[j]=180-lon[j]
                     try:
                         f[j,i] = self._F((energy[i],lat[j],lon[j]))
                     except ValueError:
