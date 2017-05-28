@@ -308,7 +308,7 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        energy = np.log10(z / u.MeV)
+        energy = np.log10(z / 1.e6)
         print energy
         if lon.size != lat.size:
             raise AttributeError("Lon and Lat should be the same size")
