@@ -334,7 +334,10 @@ class GalPropTemplate_3D(Function3D):
 
                 else:
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-                    f[j,i] = self._F((energy[i],lat[j],lon[j]))
+                    try:
+                        f[j,i] = self._F((energy[i],lat[j],lon[j]))
+                    except ValueError:
+                        print lat[j],lon[j]
         A = np.multiply(K,f)
         print np.max(A)
         return A
