@@ -308,7 +308,7 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        print np.log10(1.* u.keV/u.eV)
+        #print np.log10(1.* u.keV/u.eV)
         energy = np.log10(z * u.eV/ u.MeV)
         print energy
         if lon.size != lat.size:
@@ -339,7 +339,8 @@ class GalPropTemplate_3D(Function3D):
                     try:
                         f[j,i] = self._F((energy[i],lat[j],lon[j]))
                     except ValueError:
-                        print lat[j],lon[j]
+                        continue
+                        #print lat[j],lon[j]
         A = np.multiply(K,f)
         print np.max(A)
         return A
