@@ -330,9 +330,10 @@ class GalPropTemplate_3D(Function3D):
             print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                 continue
-            r = Parallel(n_jobs=1)(delayed(self._F)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
-            f[:][i] = r
-            #for j in xrange(lon.size):
+            #r = Parallel(n_jobs=1)(delayed(self._F)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
+            #f[:][i] = r
+
+            for j in xrange(lon.size):
                 #f[j,i] = r[j]
                 #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 #if il > self._nl+1:
@@ -349,10 +350,11 @@ class GalPropTemplate_3D(Function3D):
 
                 #else:
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-                #try:
-                    #f[j,i] = self._F((energy[i],lat[j],lon[j]))
-                #except ValueError:
-                    #continue
+
+                try:
+                    f[j,i] = self._F((energy[i],lat[j],lon[j]))
+                except ValueError:
+                    continue
 
         A = np.multiply(K,f)
         print A
