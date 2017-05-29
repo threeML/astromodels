@@ -233,31 +233,31 @@ class GalPropTemplate_3D(Function3D):
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map) 
 
     #deprecated, delete after testing the other one
-    def _interpolate_method(self,i,j,k,l,b,e):
+    #def _interpolate_method(self,i,j,k,l,b,e):
         #energy pixels
-        k1 = int(np.floor(k))
-        k2 = int(np.ceil(k))
+        #k1 = int(np.floor(k))
+        #k2 = int(np.ceil(k))
 
         #lon pixels
-        i1 = int(np.floor(i))
-        i2 = int(np.ceil(i))
+        #i1 = int(np.floor(i))
+        #i2 = int(np.ceil(i))
 
         #lat pixels
-        j1 = int(np.floor(j))
-        j2 = int(np.ceil(j))
+        #j1 = int(np.floor(j))
+        #j2 = int(np.ceil(j))
 
         #if in the edge of the map, use the value of the closest model pixel
-        if k2 == self._ne:
-            w1 = 1
-            w2 = 0
-        else:
+        #if k2 == self._ne:
+            #w1 = 1
+            #w2 = 0
+        #else:
             #Linear interoplation for energy
-            E1 = self._refEn + k1*self._delEn
-            E2 = self._refEn + k2*self._delEn
-            w1 = (e - E1)/self._delEn
-            w2 = (E2 - e)/self._delEn
-        f1 = self._map[k1][j1][i1]
-        f2 = self._map[k2][j1][i1]
+            #E1 = self._refEn + k1*self._delEn
+            #E2 = self._refEn + k2*self._delEn
+            #w1 = (e - E1)/self._delEn
+            #w2 = (E2 - e)/self._delEn
+        #f1 = self._map[k1][j1][i1]
+        #f2 = self._map[k2][j1][i1]
 
         #if j2 == self._nb or i2 == self._nl:
         #    f1 = self._map[k1][j1][i1]
@@ -293,7 +293,7 @@ class GalPropTemplate_3D(Function3D):
         #        Q12 = self._map[k2][j2][i1]
         #        Q22 = self._map[k2][j2][i2]
         #        f2 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
-        return w1*f1 + w2*f2
+        #return w1*f1 + w2*f2
 
     def evaluate(self, x,y,z,K):
 
@@ -342,7 +342,7 @@ class GalPropTemplate_3D(Function3D):
                     f[j,i] = self._F((energy[i],lat[j],lon[j]))
                 except ValueError:
                     continue
-                    #print lat[j],lon[j]
+
         A = np.multiply(K,f)
         print np.max(A)
         return A
