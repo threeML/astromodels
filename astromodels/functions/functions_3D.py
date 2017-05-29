@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
-#from joblib import Parallel, delayed
+from joblib import Parallel, delayed
 
 from astropy.wcs import wcs
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
@@ -330,7 +330,9 @@ class GalPropTemplate_3D(Function3D):
             print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                 continue
+            r = Parallel(n_jobs=1)(delayed(F_)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
             for j in xrange(lon.size):
+                f[j,i] = r[j]
                 #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
                 #if il > self._nl+1:
                     #continue#il = il - self._nl
@@ -346,10 +348,10 @@ class GalPropTemplate_3D(Function3D):
 
                 #else:
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-                try:
-                    f[j,i] = self._F((energy[i],lat[j],lon[j]))
-                except ValueError:
-                    continue
+                #try:
+                    #f[j,i] = self._F((energy[i],lat[j],lon[j]))
+                #except ValueError:
+                    #continue
 
         A = np.multiply(K,f)
         print A
