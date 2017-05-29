@@ -98,6 +98,7 @@ class Continuous_injection_diffusion(Function3D):
 
         print x
         print y
+        print z.size
         lon, lat = x, y
         energy = z
 
