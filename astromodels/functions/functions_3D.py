@@ -301,6 +301,7 @@ class GalPropTemplate_3D(Function3D):
         # We assume x and y are R.A. and Dec
         print x
         print y
+        print x.size
         print z.size
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
