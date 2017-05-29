@@ -134,6 +134,7 @@ class Continuous_injection_diffusion(Function3D):
 
         A = np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
                np.exp(-np.power(angseps, 2) / rdiffs ** 2)
+        print A
         return A
 
 
