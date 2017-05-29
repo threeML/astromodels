@@ -330,7 +330,7 @@ class GalPropTemplate_3D(Function3D):
             print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                 continue
-            r = Parallel(n_jobs=1)(delayed(F_)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
+            r = Parallel(n_jobs=1)(delayed(self._F)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
             for j in xrange(lon.size):
                 f[j,i] = r[j]
                 #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
