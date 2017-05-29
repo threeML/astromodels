@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
+#from joblib import Parallel, delayed
 
 from astropy.wcs import wcs
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
@@ -319,6 +320,12 @@ class GalPropTemplate_3D(Function3D):
         f=np.zeros([lon.size,energy.size])
         E0 = self._refEn
         Ef = self._refEn + (self._ne-1)*self._delEn
+
+        #fix longitude
+        for j in xrange(lon.size):
+            if lon[j]>180.:
+                lon[j]=180-lon[j]
+            
         for i in xrange(energy.size):
             print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
@@ -339,8 +346,6 @@ class GalPropTemplate_3D(Function3D):
 
                 #else:
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-                if lon[j]>180.:
-                    lon[j]=180-lon[j]
                 try:
                     f[j,i] = self._F((energy[i],lat[j],lon[j]))
                 except ValueError:
