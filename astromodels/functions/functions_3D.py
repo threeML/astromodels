@@ -327,7 +327,7 @@ class GalPropTemplate_3D(Function3D):
                 lon[j]=180-lon[j]
             
         for i in xrange(energy.size):
-            print i
+            #print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                 continue
             #r = Parallel(n_jobs=1)(delayed(self._F)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
@@ -361,8 +361,8 @@ class GalPropTemplate_3D(Function3D):
         return A
 
     def get_boundaries(self):
-        min_latitude = 3.# -25.
-        max_latitude = 31. #64.
-        min_longitude = 82. #or 0. ?
-        max_longitude = 117. #or 360.?
+        min_latitude = -25.#3.# -25.
+        max_latitude = 64.#31. #64.
+        min_longitude = 0.#82. #or 0. ?
+        max_longitude = 359.#117. #or 360.?
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
