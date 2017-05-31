@@ -1312,7 +1312,17 @@ class CompositeFunction(Function):
                 # This is a scalar, no need to add it among the functions
 
                 pass
-
+        
+        # Make sure all functions have the same dimension, and store it so that the property .n_dim of
+        # the Function class will work
+        self._n_dim = self._functions[0].n_dim
+        
+        for function in self._functions:
+            
+            if function.n_dim != self._n_dim:
+                
+                raise RuntimeError("You cannot compose functions of different dimensionality")
+        
         # Now assign a unique name to all the functions, to make clear which is which in the definition
         # and give an easy way for the user to understand which parameter belongs to which function
 

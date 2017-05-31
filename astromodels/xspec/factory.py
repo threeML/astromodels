@@ -352,6 +352,10 @@ import numpy as np
 import astropy.units as u
 from astromodels.xspec import _xspec
 
+# These are multiplicative functions which need numerical differentiation
+_force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
+                          'XS_spline', 'XS_swind1', 'XS_xion', 'XS_zxipcf']
+
 class XS_$MODEL_NAME$(Function1D):
 
     """
@@ -365,19 +369,32 @@ $DOCSTRING$
         # Link to the Xspec function
         self._model = _xspec.$XSPEC_FUNCTION$
         self._model_type = '$MODEL_TYPE$'
+        
+        # Decide whether we need numerical differentiation
+        
+        if self._model_type == 'add' or self._name in _force_differentiation:
 
-        if self._model_type == 'add':
-
-            self._scale = 1e6
-
-            self._fixed_units = (u.keV, 1 / (u.keV * u.cm**2 * u.s))
+            self._scale = 1e5
+            
+            self._differentiate = True
 
         else:
 
-            # For multiplicative models, there is no differentiation to be made
+            # For multiplicative models, usually there is no differentiation to be made
+            # (but there are exceptions, such as the gabs model)
 
-            self._scale = 10
-
+            self._scale = 1
+            
+            self._differentiate = False
+        
+        # Now set the units as appropriate
+        
+        if self._model_type == 'add':
+            
+            self._fixed_units = (u.keV, 1 / (u.keV * u.cm**2 * u.s))
+        
+        else:
+            
             self._fixed_units = (u.keV, u.dimensionless_unscaled)
 
     def evaluate(self, x, $PARAMETERS_NAMES$):
@@ -409,14 +426,12 @@ $DOCSTRING$
         
         xx = x[idx]
         
-        if self._model_type == 'add':
+        if self._differentiate:
 
             # Finite difference differentiation of the Xspec
-            # function for additive model. Indeed, xspec function return the integral
+            # function. Indeed, the xspec function return the integral
             # of the function on energy ranges, while we need the
-            # differential flux. For multiplicative models instead Xspec returns just
-            # the value for the multiplicative factor at the average between emin and
-            # emax
+            # differential flux.
 
             # Adapt the epsilon to the value to reduce the error
 
@@ -435,18 +450,24 @@ $DOCSTRING$
 
                 assert xx.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
 
-                val = self._model(parameters_tuple, ((xx - epsilon)[0], (xx + epsilon)[0]))[0]
-
-            # val is now F(x-epsilon,x+epsilon) ~ f(x) * ( 2 * epsilon )
-
-            # In a additive model the function returns the integral over the bins
-
-            final_value = val / (2 * epsilon)
+                val = np.array(self._model(parameters_tuple, ((xx - epsilon)[0], (xx + epsilon)[0]))[0], ndmin=1)
+            
+            if self._model_type == 'add':
+            
+                # val is now F(x-epsilon,x+epsilon) ~ f(x) * ( 2 * epsilon )
+                
+                # In a additive model the function returns the integral over the bins
+    
+                final_value = val / (2 * epsilon)
+            
+            else:
+            
+                final_value = val
 
         else:
 
-            # In a multiplicative model the function returns the average factor over
-            # the bins
+            # In a multiplicative model usually the function returns the average factor over
+            # the bins (but there are exceptions, handled through the list _force_differentiation)
 
             try:
             
@@ -470,8 +491,6 @@ $DOCSTRING$
                 return final_value[rev_idx] * u.dimensionless_unscaled
 
         else:
-
-
 
             return final_value[rev_idx]
 
