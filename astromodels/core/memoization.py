@@ -1,6 +1,7 @@
 import collections
 import functools
 import contextlib
+import astropy.units as u
 
 
 _WITH_MEMOIZATION = True
@@ -45,15 +46,20 @@ def memoize(method):
     @functools.wraps(method)
     def memoizer(instance, x, *args, **kwargs):
 
-        if not _WITH_MEMOIZATION:
+        if not _WITH_MEMOIZATION: #or isinstance(x, u.Quantity):
 
-            # Memoization is not active
+            # Memoization is not active or using units, do not use memoization
 
             return method(instance, x, *args, **kwargs)
 
         # Create a tuple because a tuple is hashable
 
-        unique_id = tuple(float(x.value) for x in instance.parameters.values()) + (x.size, x.min(), x.max())
+        unique_id = tuple(float(yy.value) for yy in instance.parameters.values()) + (x.size, x.min(), x.max())
+
+        # If the input has units, use the units as well
+        if isinstance(x, u.Quantity):
+
+            unique_id += str(x.unit)
 
         # Create a unique identifier for this combination of inputs
 
