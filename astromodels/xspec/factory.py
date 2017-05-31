@@ -370,11 +370,11 @@ $DOCSTRING$
         self._model = _xspec.$XSPEC_FUNCTION$
         self._model_type = '$MODEL_TYPE$'
         
+        # Decide whether we need numerical differentiation
+        
         if self._model_type == 'add' or self._name in _force_differentiation:
 
             self._scale = 1e5
-
-            self._fixed_units = (u.keV, 1 / (u.keV * u.cm**2 * u.s))
             
             self._differentiate = True
 
@@ -383,11 +383,19 @@ $DOCSTRING$
             # For multiplicative models, usually there is no differentiation to be made
             # (but there are exceptions, such as the gabs model)
 
-            self._scale = 1e6
-
-            self._fixed_units = (u.keV, u.dimensionless_unscaled)
+            self._scale = 1
             
             self._differentiate = False
+        
+        # Now set the units as appropriate
+        
+        if self._model_type == 'add':
+            
+            self._fixed_units = (u.keV, 1 / (u.keV * u.cm**2 * u.s))
+        
+        else:
+            
+            self._fixed_units = (u.keV, u.dimensionless_unscaled)
 
     def evaluate(self, x, $PARAMETERS_NAMES$):
 
