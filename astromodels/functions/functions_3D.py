@@ -236,7 +236,6 @@ class GalPropTemplate_3D(Function3D):
             self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb) 
             self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne) 
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False) 
-            pdb.set_trace()
 
     #deprecated, delete after testing the other one
     #def _interpolate_method(self,i,j,k,l,b,e):
@@ -362,6 +361,7 @@ class GalPropTemplate_3D(Function3D):
 
 
         assert np.all(np.isfinite(f))
+        pdb.set_trace()
         A = np.multiply(K,f)
         print A
         return A
