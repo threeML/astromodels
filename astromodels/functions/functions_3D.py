@@ -365,9 +365,35 @@ class GalPropTemplate_3D(Function3D):
         print A
         return A
 
+    def define_region(r,b0,l0):
+        self.r = r
+        self.lat0 = b0
+        self.lon0 = l0
+    
     def get_boundaries(self):
-        min_latitude = -25.
-        max_latitude = 64.
-        min_longitude = 1. 
-        max_longitude = 359.
+        maximum_rdiff = self.r
+
+        min_latitude = max(-90., self.lat0 - maximum_rdiff)
+        max_latitude = min(90., self.lat0 + maximum_rdiff)
+
+        max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
+
+        if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+
+            min_longitude = 0.
+            max_longitude = 360.
+
+        else:
+
+            min_longitude = self.lon0 - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+            max_longitude = self.lon0 + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+
+            if min_longitude < 0.:
+
+                min_longitude += 360.
+
+            elif max_longitude > 360.:
+
+                max_longitude -= 360.
+
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
