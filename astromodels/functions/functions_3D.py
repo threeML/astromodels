@@ -302,6 +302,7 @@ class GalPropTemplate_3D(Function3D):
 
         # We assume x and y are R.A. and Dec
         print np.min(x)
+        print x
         print y
         print x.size
         print z.size
@@ -361,8 +362,8 @@ class GalPropTemplate_3D(Function3D):
         return A
 
     def get_boundaries(self):
-        min_latitude = 3.# -25.
-        max_latitude = 31. #64.
-        min_longitude = 82. #or 0. ?
-        max_longitude = 117. #or 360.?
+        min_latitude = -25.
+        max_latitude = 64.
+        min_longitude = 0. 
+        max_longitude = 359.
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
