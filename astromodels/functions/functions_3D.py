@@ -359,41 +359,46 @@ class GalPropTemplate_3D(Function3D):
                 except ValueError:
                     continue
 
-        pdb.set_trace()
+        #pdb.set_trace()
         assert np.all(np.isfinite(f))
         A = np.multiply(K,f)
         print A
         return A
 
-    def define_region(self,r,b0,l0):
-        self.r = r
-        self.lat0 = b0
-        self.lon0 = l0
+    def define_region(self,a,b,c,d):
+        self.ramin = a
+        self.ramax = b
+        self.decmin = c
+        self.decmax = d
     
     def get_boundaries(self):
-        maximum_rdiff = self.r
+        #maximum_rdiff = self.r
 
-        min_latitude = max(-90., self.lat0 - maximum_rdiff)
-        max_latitude = min(90., self.lat0 + maximum_rdiff)
+        #min_latitude = max(-90., self.lat0 - maximum_rdiff)
+        #max_latitude = min(90., self.lat0 + maximum_rdiff)
 
-        max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
+        #max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
 
-        if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+        #if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
 
-            min_longitude = 0.
-            max_longitude = 360.
+           # min_longitude = 0.
+           # max_longitude = 360.
 
-        else:
+        #else:
 
-            min_longitude = self.lon0 - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
-            max_longitude = self.lon0 + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+            #min_longitude = self.lon0 - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+            #max_longitude = self.lon0 + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
 
-            if min_longitude < 0.:
+            #if min_longitude < 0.:
 
-                min_longitude += 360.
+                #min_longitude += 360.
 
-            elif max_longitude > 360.:
+            #elif max_longitude > 360.:
 
-                max_longitude -= 360.
+                #max_longitude -= 360.
 
+        min_longitude = self.ramin
+        max_longitude = self.ramax
+        min_latitude = self.decmin
+        max_latitude = self.decmax
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
