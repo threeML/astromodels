@@ -359,9 +359,8 @@ class GalPropTemplate_3D(Function3D):
                 except ValueError:
                     continue
 
-
-        assert np.all(np.isfinite(f))
         pdb.set_trace()
+        assert np.all(np.isfinite(f))
         A = np.multiply(K,f)
         print A
         return A
