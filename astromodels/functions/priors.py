@@ -308,6 +308,92 @@ class Cauchy(Function1D):
         return res
 
 
+class Cosine_Prior(Function1D):
+    r"""
+    description :
+
+        A function which is constant on the interval angular interval of cosine
+
+    latex : $\cos(x)$
+
+    parameters :
+
+        lower_bound :
+
+            desc : Lower bound for the interval
+            initial value : -90
+            min : -np.inf
+            max : np.inf
+
+        upper_bound :
+
+            desc : Upper bound for the interval
+            initial value : 90
+            min : -np.inf
+            max : np.inf
+
+
+        value :
+
+            desc : Value in the interval
+            initial value : 1.0
+
+
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # Lower and upper bound has the same unit as x
+        self.lower_bound.unit = x_unit
+        self.upper_bound.unit = x_unit
+
+        # value has the same unit as y
+        self.value.unit = y_unit
+
+    def evaluate(self, x, lower_bound, upper_bound,value):
+        # The value * 0 is to keep the units right
+
+        result = np.zeros(x.shape) * value * 0
+
+        idx = (x >= lower_bound) & (x <= upper_bound)
+
+        norm = (np.sin(np.deg2rad(upper_bound)) - np.sin(np.deg2rad(lower_bound))) * 57.29577795
+
+
+        result[idx] = value * np.cos(np.deg2rad( x[idx] )) / norm
+
+        return result
+
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+        cosdec_min = np.cos(np.deg2rad(90.0 + self.lower_bound.value))
+        cosdec_max = np.cos(np.deg2rad(90.0 + self.upper_bound.value))
+
+        v = x * (cosdec_max - cosdec_min)
+        v += cosdec_min
+
+        v = np.clip(v, -1.0, 1.0)
+        # Now this generates on [0,pi)
+        dec = np.arccos(v)
+
+        # convert to degrees
+        dec = np.rad2deg(dec)
+        # now in range [-90,90.0)
+        dec -= 90.0
+
+        return dec
+
+
 class Log_normal(Function1D):
     r"""
        description :
