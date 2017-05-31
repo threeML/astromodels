@@ -365,7 +365,7 @@ class GalPropTemplate_3D(Function3D):
         print A
         return A
 
-    def define_region(r,b0,l0):
+    def define_region(self,r,b0,l0):
         self.r = r
         self.lat0 = b0
         self.lon0 = l0
