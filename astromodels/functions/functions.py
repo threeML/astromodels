@@ -66,7 +66,7 @@ else:
 
 
 # noinspection PyPep8Naming
-class Powerlaw(Function1D):
+class Powerlaw_lognorm(Function1D):
     r"""
     description :
 
@@ -78,8 +78,8 @@ class Powerlaw(Function1D):
 
         K :
 
-            desc : Normalization (differential flux at the pivot value)
-            initial value : 1.0
+            desc : Normalization (log of differential flux at the pivot value)
+            initial value : -6.0
             is_normalization : True
 
         piv :
@@ -95,10 +95,6 @@ class Powerlaw(Function1D):
             min : -10
             max : 10
 
-    tests :
-        - { x : 10, function value: 0.01, tolerance: 1e-20}
-        - { x : 100, function value: 0.0001, tolerance: 1e-20}
-
     """
 
     __metaclass__ = FunctionMeta
@@ -112,13 +108,78 @@ class Powerlaw(Function1D):
 
         # The normalization has the same units as the y
 
-        self.K.unit = y_unit
+        self.K.unit = astropy_units.dex(y_unit)
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index):
+
         xx = np.divide(x, piv)
 
-        return K * np.power(xx, index)
+        try:
+
+            return 10**K * np.power(xx, index)
+
+        except AttributeError:
+
+            # If units are used, the former will fail because astropy does not support 10**K
+            # by using .physical we get the value in y_unit
+            return K.physical * np.power(xx, index)
+
+
+class Powerlaw(Function1D):
+        r"""
+        description :
+
+            A simple power-law
+
+        latex : $ K~\frac{x}{piv}^{index} $
+
+        parameters :
+
+            K :
+
+                desc : Normalization (differential flux at the pivot value)
+                initial value : 1.0
+                is_normalization : True
+
+            piv :
+
+                desc : Pivot value
+                initial value : 1
+                fix : yes
+
+            index :
+
+                desc : Photon index
+                initial value : -2
+                min : -10
+                max : 10
+
+        tests :
+            - { x : 10, function value: 0.01, tolerance: 1e-20}
+            - { x : 100, function value: 0.0001, tolerance: 1e-20}
+
+        """
+
+        __metaclass__ = FunctionMeta
+
+        def _set_units(self, x_unit, y_unit):
+            # The index is always dimensionless
+            self.index.unit = astropy_units.dimensionless_unscaled
+
+            # The pivot energy has always the same dimension as the x variable
+            self.piv.unit = x_unit
+
+            # The normalization has the same units as the y
+
+            self.K.unit = y_unit
+
+        # noinspection PyPep8Naming
+        def evaluate(self, x, K, piv, index):
+            xx = np.divide(x, piv)
+
+            return K * np.power(xx, index)
+
 
 
 # noinspection PyPep8Naming
