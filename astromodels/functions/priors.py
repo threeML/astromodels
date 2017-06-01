@@ -344,13 +344,28 @@ class Cosine_Prior(Function1D):
 
     __metaclass__ = FunctionMeta
 
+
+    def _setup(self):
+
+        self._fixed_units = (astropy_units.dimensionless_unscaled,astropy_units.dimensionless_unscaled)
+
     def _set_units(self, x_unit, y_unit):
         # Lower and upper bound has the same unit as x
+
+        x_unit.in_units(self._fixed_units[0])
+        y_unit.in_units(self._fixed_units[1])
+
+
+
         self.lower_bound.unit = x_unit
         self.upper_bound.unit = x_unit
 
         # value has the same unit as y
         self.value.unit = y_unit
+
+    def has_fixed_units(self):
+
+        return True
 
     def evaluate(self, x, lower_bound, upper_bound,value):
         # The value * 0 is to keep the units right
