@@ -156,14 +156,27 @@ def test_call_with_units():
 
         instance = class_type()
 
+        # if we have fixed x_units then we will use those
+        # in the test
+
+        if instance.has_fixed_units():
+
+            x_unit_to_use = instance.fixed_units[0]
+
+        else:
+
+            x_unit_to_use = u.keV
+
         # Use the function as a spectrum
         ps = PointSource("test", 0, 0, instance)
 
-        result = ps(1.0 * u.keV)
+
+
+        result = ps(1.0 * x_unit_to_use)
 
         assert isinstance(result, u.Quantity)
 
-        result = ps(np.array([1, 2, 3]) * u.keV)
+        result = ps(np.array([1, 2, 3]) * x_unit_to_use)
 
         assert isinstance(result, u.Quantity)
 
@@ -203,9 +216,20 @@ def test_call_with_composite_function_with_units():
 
         print("Testing %s" % spectrum.expression)
 
+        # # if we have fixed x_units then we will use those
+        # # in the test
+        #
+        # if spectrum.expression.has_fixed_units():
+        #
+        #     x_unit_to_use, y_unit_to_use = spectrum.expression.fixed_units[0]
+        #
+        # else:
+
+        x_unit_to_use = u.keV
+
         pts = PointSource("test", ra=0, dec=0, spectral_shape=spectrum)
 
-        res = pts([100, 200] * u.keV)
+        res = pts([100, 200] * x_unit_to_use)
 
         # This will fail if the units are wrong
         res.to(1 / (u.keV * u.cm**2 * u.s))
