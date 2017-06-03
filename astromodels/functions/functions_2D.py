@@ -6,7 +6,7 @@ import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
-
+from astromodels.utils.vincenty import vincenty
 
 class Latitude_galactic_diffuse(Function2D):
     r"""
@@ -283,6 +283,12 @@ class Ellipse_on_sphere(Function2D):
         """
 
     __metaclass__ = FunctionMeta
+    
+    lon1 = None
+    lat1 = None
+    lon2 = None
+    lat2 = None
+    focal_pts = False
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
@@ -297,26 +303,31 @@ class Ellipse_on_sphere(Function2D):
         self.b.unit = x_unit
         self.theta.unit = x_unit
 
+    def calc_focal_pts(self, lon0, lat0, a, b, theta):
+        # focal distance
+        f = np.sqrt(a**2 - b**2)
+
+        bearing = 90. - theta
+        # coordinates of focal points
+        lon1, lat1 = vincenty(lon0, lat0, bearing, f)
+        lon2, lat2 = vincenty(lon0, lat0, bearing + 180., f)
+
+        return lon1, lat1, lon2, lat2
+
     def evaluate(self, x, y, lon0, lat0, a, b, theta):
+
+        # Calculate focal points if this is first time doing so
+        if not self.focal_pts:
+            self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
+            self.focal_pts = True
 
         # lon/lat of point in question
         lon, lat = x,y
         
-        # focal distance
-        f = np.sqrt(a**2 - b**2)
-        
-        # focus 1 coordinate and distance from focus 1 to point
-        lon1 = lon0 - f*np.cos(theta)
-        lat1 = lat0 - f*np.sin(theta)
-        angsep1 = angular_distance(lon1, lat1, lon, lat)
-
-        # focus 2 coordinate and distance from focus 2 to point
-        lon2 = lon0 + f*np.cos(theta)
-        lat2 = lat0 + f*np.sin(theta)
-        angsep2 = angular_distance(lon2, lat2, lon, lat)
-
-        # sum of distances to focii (should be <= 2a to be in ellipse)
-        angsep = angsep1 + angsep2
+        # sum of geodesic distances to focii (should be <= 2a to be in ellipse)
+        angsep1 = angular_distance(self.lon1, self.lat1, lon, lat)
+        angsep2 = angular_distance(self.lon2, self.lat2, lon, lat)
+        angsep  = angsep1 + angsep2
         
         return np.power(180 / np.pi, 2) * 1. / (np.pi * a * b) * (angsep <= 2*a)
 
