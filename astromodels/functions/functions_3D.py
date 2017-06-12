@@ -215,6 +215,10 @@ class GalPropTemplate_3D(Function3D):
 
         header = fits.getheader(fitsfile)
         self._w = wcs.WCS(header)
+        self.ramin = 0.1
+        self.ramax = 359.9
+        self.decmin = -26.
+        self.decmax = 66.
         with fits.open(fitsfile) as f:
 
             #self._refXpix = f[ihdu].header['CRPIX1']
@@ -366,12 +370,27 @@ class GalPropTemplate_3D(Function3D):
         return A
 
     def define_region(self,a,b,c,d):
+        if c < -26.:
+            c = -26.
+            print "Value cannot be lower than dec=-26 due to HAWC's FOV"
+        if d > 66.:
+            d = 66.
+            print "Value cannot be lower than dec=66 due to HAWC's FOV"
         self.ramin = a
         self.ramax = b
         self.decmin = c
         self.decmax = d
     
     def get_boundaries(self):
+
+        if min_longitude < self.ramin:
+            min_longitude = self.ramin
+        if max_longitude > self.ramax:
+            max_longitude = self.ramax
+        if min_latitude < self.decmin:
+            min_latitude = self.decmin
+        if max_latitude > self.decmax:
+            max_latitude = self.decmax
         #maximum_rdiff = self.r
 
         #min_latitude = max(-90., self.lat0 - maximum_rdiff)
