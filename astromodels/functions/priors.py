@@ -158,8 +158,6 @@ class Truncated_gaussian(Function1D):
         self.sigma.unit = x_unit
 
 
-
-
     # noinspection PyPep8Naming
     def evaluate(self, x, F, mu, sigma, lower_bound, upper_bound):
 
