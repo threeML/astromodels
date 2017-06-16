@@ -7,6 +7,9 @@ from scipy.special import  erfcinv, erf
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
 
 
+deg2rad = np.pi/180.
+rad2deg = 180./np.pi
+
 # noinspection PyPep8Naming
 class Gaussian(Function1D):
     r"""
@@ -348,12 +351,16 @@ class Cosine_Prior(Function1D):
         self._fixed_units = (astropy_units.dimensionless_unscaled,astropy_units.dimensionless_unscaled)
 
     def _set_units(self, x_unit, y_unit):
+
+
+        # this prior needs to use the fixed units and
+        # they do not need to be converted as they have no
+        # dimension
+
+        x_unit = self._fixed_units[0]
+        y_unit = self._fixed_units[1]
+
         # Lower and upper bound has the same unit as x
-
-        x_unit.in_units(self._fixed_units[0])
-        y_unit.in_units(self._fixed_units[1])
-
-
 
         self.lower_bound.unit = x_unit
         self.upper_bound.unit = x_unit
@@ -372,10 +379,10 @@ class Cosine_Prior(Function1D):
 
         idx = (x >= lower_bound) & (x <= upper_bound)
 
-        norm = (np.sin(np.deg2rad(upper_bound)) - np.sin(np.deg2rad(lower_bound))) * 57.29577795
+        norm = (np.sin(deg2rad*(upper_bound)) - np.sin(deg2rad*(lower_bound))) * 57.29577795
 
 
-        result[idx] = value * np.cos(np.deg2rad( x[idx] )) / norm
+        result[idx] = value * np.cos(deg2rad*( x[idx] )) / norm
 
         return result
 
@@ -389,8 +396,8 @@ class Cosine_Prior(Function1D):
         :param upper_bound:
         :return:
         """
-        cosdec_min = np.cos(np.deg2rad(90.0 + self.lower_bound.value))
-        cosdec_max = np.cos(np.deg2rad(90.0 + self.upper_bound.value))
+        cosdec_min = np.cos(deg2rad*(90.0 + self.lower_bound.value))
+        cosdec_max = np.cos(deg2rad*(90.0 + self.upper_bound.value))
 
         v = x * (cosdec_max - cosdec_min)
         v += cosdec_min
@@ -400,7 +407,7 @@ class Cosine_Prior(Function1D):
         dec = np.arccos(v)
 
         # convert to degrees
-        dec = np.rad2deg(dec)
+        dec = rad2deg * dec
         # now in range [-90,90.0)
         dec -= 90.0
 

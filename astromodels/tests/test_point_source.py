@@ -167,12 +167,17 @@ def test_call_with_units():
 
             x_unit_to_use = u.keV
 
+
+        print x_unit_to_use
+
         # Use the function as a spectrum
         ps = PointSource("test", 0, 0, instance)
 
-
+        print 'here instead'
 
         result = ps(1.0 * x_unit_to_use)
+
+        print 'got it'
 
         assert isinstance(result, u.Quantity)
 

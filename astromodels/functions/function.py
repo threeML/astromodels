@@ -902,8 +902,29 @@ class Function1D(Function):
 
         except u.UnitsError:  # pragma: no cover
 
-            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
-                               "calling function %s" % self.name)
+            # see if this is a dimensionless function
+
+            if self.has_fixed_units():
+
+                print 'here'
+
+                try:
+
+                    print self.x_unit
+                    print x
+
+                    results = self.evaluate(x.to(self.x_unit), *values)
+
+                except u.UnitsError:
+
+                    raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                                   "calling function %s" % self.name)
+            else:
+
+                raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                                   "calling function %s" % self.name)
+
+
 
         else:
 
