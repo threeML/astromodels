@@ -562,7 +562,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         parameters_names = ", ".join(definition['parameters'].keys())
 
         # Create the docstring
-        docstring = my_yaml.dump(definition)
+        docstring = my_yaml.dump(definition, default_flow_style=False)
 
         # Create the class by substituting in the class_definition_code the
         # relevant things for this model
