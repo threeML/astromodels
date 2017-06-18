@@ -341,12 +341,29 @@ class SourceParser(object):
         components = []
 
         for component_name, component_definition in pts_source_definition['spectrum'].iteritems():
-            this_component = self._parse_spectral_component(component_name, component_definition)
 
-            components.append(this_component)
+            try:
 
-        this_point_source = point_source.PointSource(self._source_name, sky_position=this_sky_direction,
-                                                     components=components)
+                this_component = self._parse_spectral_component(component_name, component_definition)
+
+                components.append(this_component)
+
+            except:
+
+                raise
+
+                raise RuntimeError("Could not parse: %s" % my_yaml.dump(component_definition))
+
+        try:
+
+            this_point_source = point_source.PointSource(self._source_name, sky_position=this_sky_direction,
+                                                         components=components)
+
+        except:
+
+            raise
+
+            raise RuntimeError("Could not parse: %s" % my_yaml.dump(pts_source_definition))
 
         return this_point_source
 
@@ -498,7 +515,7 @@ class ShapeParser(object):
         # Remove new lines where it shouldn't be any
         # Sometimes YAML add new lines in the middle of definitions,
         # such as in units
-        return value.replace("\n", "")
+        return value.replace("\n", " ")
 
     def _parse_shape_definition(self, component_name, function_name, parameters_definition):
 
