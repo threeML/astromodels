@@ -24,6 +24,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .core.model_parser import load_model, clone_model
     from .core.units import get_units
     from .core.memoization import use_astromodels_memoization
+    from .core.serialization import *
 
     astromodels_units = get_units()
 
