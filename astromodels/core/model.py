@@ -41,8 +41,13 @@ class ModelInternalError(ValueError):
     pass
 
 
-
 class Model(Node):
+
+    # def __reduce__(self):
+    #
+    #     from astromodels.core.model_parser import model_unpickler
+    #
+    #     return model_unpickler, (self.to_dict_with_types(),)
 
     def __init__(self, *sources):
 
@@ -77,12 +82,6 @@ class Model(Node):
 
         # This controls the verbosity of the display
         self._complete_display = False
-
-    def __reduce__(self):
-
-        from astromodels.core.model_parser import model_unpickler
-
-        return model_unpickler, (self.to_dict_with_types(),)
 
     def _add_source(self, source):
         """
@@ -836,7 +835,7 @@ class Model(Node):
 
                 # Get the YAML representation of the data
 
-                representation = my_yaml.dump(data)
+                representation = my_yaml.dump(data, default_flow_style=False)
 
                 with open(output_file, "w+") as f:
 

@@ -11,6 +11,7 @@ from scipy.special import gammaincc, gamma, erfcinv
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
+import warnings
 
 
 class GSLNotAvailable(ImportWarning):
@@ -66,7 +67,7 @@ else:
 
 
 # noinspection PyPep8Naming
-class Powerlaw(Function1D):
+class Powerlaw_lognorm(Function1D):
     r"""
     description :
 
@@ -78,9 +79,10 @@ class Powerlaw(Function1D):
 
         K :
 
-            desc : Normalization (differential flux at the pivot value)
+            desc : Normalization (log of differential flux at the pivot value)
             initial value : 1.0
             is_normalization : True
+            transformation : log10
 
         piv :
 
@@ -95,15 +97,15 @@ class Powerlaw(Function1D):
             min : -10
             max : 10
 
-    tests :
-        - { x : 10, function value: 0.01, tolerance: 1e-20}
-        - { x : 100, function value: 0.0001, tolerance: 1e-20}
-
     """
 
     __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
+
+        warnings.warn("The Powerlaw_lognorm function is deprecated. Use the normal Powerlaw function which "
+                      "has the same functionality", DeprecationWarning)
+
         # The index is always dimensionless
         self.index.unit = astropy_units.dimensionless_unscaled
 
@@ -116,9 +118,70 @@ class Powerlaw(Function1D):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index):
+
         xx = np.divide(x, piv)
 
         return K * np.power(xx, index)
+
+
+class Powerlaw(Function1D):
+        r"""
+        description :
+
+            A simple power-law
+
+        latex : $ K~\frac{x}{piv}^{index} $
+
+        parameters :
+
+            K :
+
+                desc : Normalization (differential flux at the pivot value)
+                initial value : 1.0
+                is_normalization : True
+                transformation : log10
+                min : 1e-30
+                max : 1e3
+                delta : 0.1
+
+            piv :
+
+                desc : Pivot value
+                initial value : 1
+                fix : yes
+
+            index :
+
+                desc : Photon index
+                initial value : -2
+                min : -10
+                max : 10
+
+        tests :
+            - { x : 10, function value: 0.01, tolerance: 1e-20}
+            - { x : 100, function value: 0.0001, tolerance: 1e-20}
+
+        """
+
+        __metaclass__ = FunctionMeta
+
+        def _set_units(self, x_unit, y_unit):
+            # The index is always dimensionless
+            self.index.unit = astropy_units.dimensionless_unscaled
+
+            # The pivot energy has always the same dimension as the x variable
+            self.piv.unit = x_unit
+
+            # The normalization has the same units as the y
+
+            self.K.unit = y_unit
+
+        # noinspection PyPep8Naming
+        def evaluate(self, x, K, piv, index):
+
+            xx = np.divide(x, piv)
+
+            return K * np.power(xx, index)
 
 
 # noinspection PyPep8Naming
@@ -196,6 +259,10 @@ class Cutoff_powerlaw(Function1D):
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
             is_normalization : True
+            transformation : log10
+            min : 1e-30
+            max : 1e3
+            delta : 0.1
 
         piv :
 
@@ -214,7 +281,7 @@ class Cutoff_powerlaw(Function1D):
 
             desc : Cutoff energy
             initial value : 10.0
-            min : 1.0
+            transformation : log10
 
     """
 
@@ -240,66 +307,6 @@ class Cutoff_powerlaw(Function1D):
         log_v = index * np.log(x / piv) - x / xc
 
         return K * np.exp(log_v)
-
-
-class Cutoff_powerlaw2(Function1D):
-    r"""
-    description :
-
-        A power law multiplied by an exponential cutoff
-
-    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/(xc * piv)} $
-
-    parameters :
-
-        K :
-
-            desc : Normalization (differential flux at the pivot value)
-            initial value : 1.0
-            is_normalization : True
-
-        piv :
-
-            desc : Pivot value
-            initial value : 1
-            fix : yes
-
-        index :
-
-            desc : Photon index
-            initial value : -2
-            min : -10
-            max : 10
-
-        xc :
-
-            desc : Cutoff energy in multiple of piv
-            initial value : 10.0
-            min : 1.0
-
-    """
-
-    __metaclass__ = FunctionMeta
-
-    def _set_units(self, x_unit, y_unit):
-        # The index is always dimensionless
-        self.index.unit = astropy_units.dimensionless_unscaled
-
-        # The pivot energy has always the same dimension as the x variable
-        self.piv.unit = x_unit
-
-        self.xc.unit = astropy_units.dimensionless_unscaled
-
-        # The normalization has the same units as the y
-
-        self.K.unit = y_unit
-
-    # noinspection PyPep8Naming
-    def evaluate(self, x, K, piv, index, xc):
-
-        xx = x / piv
-
-        return K * xx**index * np.exp(xx/xc)
 
 
 class Super_cutoff_powerlaw(Function1D):
@@ -1316,7 +1323,7 @@ class Log_parabola(Function1D):
         base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
         using the other convention.
 
-    latex : $ K \left( \frac{x}{piv} \right)^{\alpha +\beta \log{\left( \frac{x}{piv} \right)}} $
+    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
 
     parameters :
 
@@ -1325,6 +1332,9 @@ class Log_parabola(Function1D):
             desc : Normalization
             initial value : 1.0
             is_normalization : True
+            transformation : log10
+            min : 1e-30
+            max : 1e5
 
         piv :
             desc : Pivot (keep this fixed)
@@ -1338,8 +1348,8 @@ class Log_parabola(Function1D):
 
         beta :
 
-            desc : curvature (negative is concave, positive is convex)
-            initial value : -1.0
+            desc : curvature (positive is concave, negative is convex)
+            initial value : 1.0
 
     """
 
@@ -1360,11 +1370,13 @@ class Log_parabola(Function1D):
 
     def evaluate(self, x, K, piv, alpha, beta):
 
+        #print("Receiving %s" % ([K, piv, alpha, beta]))
+
         xx = np.divide(x, piv)
 
         try:
 
-            return K * xx ** (alpha + beta * np.log(xx))
+            return K * xx ** (alpha - beta * np.log(xx))
 
         except ValueError:
 
@@ -1375,7 +1387,7 @@ class Log_parabola(Function1D):
 
             xx = xx.to('')
 
-            return K * xx ** (alpha + beta * np.log(xx))
+            return K * xx ** (alpha - beta * np.log(xx))
 
     @property
     def peak_energy(self):

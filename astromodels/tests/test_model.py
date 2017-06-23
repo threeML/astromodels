@@ -111,6 +111,18 @@ class ModelGetter(object):
         return (Gaussian_on_sphere.lon0.value, Gaussian_on_sphere.lat0.value)
 
 
+def test_pickling_unpickling():
+
+    import dill
+
+    mg = ModelGetter()
+    m1 = mg.model
+
+    pick = dill.dumps(m1)
+
+    m_reloaded = dill.loads(pick)
+
+
 def test_default_constructor():
 
     # Test that we cannot build a model with no sources
@@ -748,3 +760,5 @@ def test_model_parser():
         _ = ModelParser("__test.yml")
 
     os.remove("__test.yml")
+
+

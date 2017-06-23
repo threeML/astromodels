@@ -190,18 +190,24 @@ def setup_xspec():
             # Yes, this is Conda
             # Let's see if the package xspec-modelsonly has been installed by checking whether one of the Xspec
             # libraries exists within conda
-            this_lib, this_lib_path = find_library('XSFunctions', additional_places=os.path.join(conda_prefix, 'lib'))
+            conda_lib_path = os.path.join(conda_prefix, 'lib')
+            this_lib, this_lib_path = find_library('XSFunctions', additional_places=[conda_lib_path])
 
             if this_lib is None:
 
                 # No, there is no library in Conda
                 print("No xspec-modelsonly package has been installed in Conda. Xspec support will not be installed")
 
+                print("Was looking into %s" % conda_lib_path)
+
                 return None
-            
+
             else:
 
                 print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
+
+                # Set up the HEADAS variable so that the following will find the libraries
+                headas_root = os.environ['CONDA_PREFIX']
 
         else:
 
@@ -330,7 +336,8 @@ setup(
         'numdifftools',
         'tables',
         'pandas',
-        'html2text'],
+        'html2text',
+        'dill'],
 
     ext_modules=ext_modules_configuration,
 
