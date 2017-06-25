@@ -35,10 +35,6 @@ class Node(_Node):
 
     def __init__(self, name):
 
-        if name == "units":
-
-            import pdb;pdb.set_trace()
-
         assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
                                              "and _" % name
 
@@ -46,7 +42,8 @@ class Node(_Node):
 
         _Node.__init__(self, name)
 
-    # The next two methods are necessary for pickle to work
+    #########################################################################
+    # The next 3 methods are *really* necessary for anything to work
 
     def __reduce__(self):
 
@@ -77,6 +74,8 @@ class Node(_Node):
     def __deepcopy__(self, memodict={}):
 
         return cPickle.loads(cPickle.dumps(self))
+
+    #########################################################################
 
     # This is used by dir() and by the autocompletion in Ipython
     def __dir__(self):

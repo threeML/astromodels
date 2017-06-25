@@ -33,9 +33,9 @@ def test_default_constructor():
         _ = Parameter('test parameter 2', 1.0)
 
     # Test some failures cases
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
 
-        _ = Parameter('test', '1.0')
+        _ = Parameter('test', 'pippo')
 
     with pytest.raises(ValueError):
         _ = Parameter('test', 1.0, min_value='a')
