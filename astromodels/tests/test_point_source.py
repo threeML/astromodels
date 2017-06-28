@@ -156,38 +156,43 @@ def test_call_with_units():
 
         instance = class_type()
 
-        # if we have fixed x_units then we will use those
-        # in the test
+        if not instance.is_prior:
 
-        if instance.has_fixed_units():
+            # if we have fixed x_units then we will use those
+            # in the test
 
-            x_unit_to_use = instance.fixed_units[0]
+            if instance.has_fixed_units():
+
+                x_unit_to_use = instance.fixed_units[0]
+
+            else:
+
+                x_unit_to_use = u.keV
+
+
+
+            # Use the function as a spectrum
+            ps = PointSource("test", 0, 0, instance)
+
+
+            result = ps(1.0 * x_unit_to_use)
+
+
+            assert isinstance(result, u.Quantity)
+
+            result = ps(np.array([1, 2, 3]) * x_unit_to_use)
+
+            assert isinstance(result, u.Quantity)
+
+            result = ps(1.0)
+
+            assert isinstance(result, float)
 
         else:
 
-            x_unit_to_use = u.keV
+            print ('Skipping prior function')
 
 
-        print x_unit_to_use
-
-        # Use the function as a spectrum
-        ps = PointSource("test", 0, 0, instance)
-
-        print 'here instead'
-
-        result = ps(1.0 * x_unit_to_use)
-
-        print 'got it'
-
-        assert isinstance(result, u.Quantity)
-
-        result = ps(np.array([1, 2, 3]) * x_unit_to_use)
-
-        assert isinstance(result, u.Quantity)
-
-        result = ps(1.0)
-
-        assert isinstance(result, float)
 
     for key in _known_functions:
 

@@ -505,6 +505,8 @@ class Function(Node):
 
         self._fixed_units = None
 
+        self._is_prior = False
+
     @property
     def n_dim(self):
         """
@@ -542,6 +544,16 @@ class Function(Node):
         """
 
         return not (self._fixed_units is None)
+
+    @property
+    def is_prior(self):
+        """
+        Returns False by default and must be overrided in the prior functions.
+
+        :return: True or False
+        """
+
+        return self._is_prior
 
     @property
     def fixed_units(self):

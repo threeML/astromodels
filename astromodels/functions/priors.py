@@ -49,6 +49,10 @@ class Gaussian(Function1D):
 
     __norm_const = 1.0 / (math.sqrt(2 * np.pi))
 
+    def _setup(self):
+
+        self._is_prior = True
+
     def _set_units(self, x_unit, y_unit):
 
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
@@ -142,6 +146,10 @@ class Truncated_gaussian(Function1D):
 
     __norm_const = 1.0 / (math.sqrt(2 * np.pi))
 
+    def _setup(self):
+
+        self._is_prior = True
+
     def _set_units(self, x_unit, y_unit):
 
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
@@ -231,7 +239,6 @@ class Truncated_gaussian(Function1D):
 
         return mu + sigma * sqrt_two * erfcinv(2 * (1 - arg))
 
-
 class Cauchy(Function1D):
     r"""
     description :
@@ -269,6 +276,9 @@ class Cauchy(Function1D):
     # Place this here to avoid recomputing it all the time
 
     __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+
+    def _setup(self):
+        self._is_prior = True
 
     def _set_units(self, x_unit, y_unit):
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
@@ -349,6 +359,8 @@ class Cosine_Prior(Function1D):
     def _setup(self):
 
         self._fixed_units = (astropy_units.dimensionless_unscaled,astropy_units.dimensionless_unscaled)
+
+        self._is_prior = True
 
     def _set_units(self, x_unit, y_unit):
 
@@ -453,6 +465,10 @@ class Log_normal(Function1D):
 
     __norm_const = 1.0 / (math.sqrt(2 * np.pi))
 
+    def _setup(self):
+
+        self._is_prior = True
+
 
     def _set_units(self, x_unit, y_unit):
 
@@ -545,6 +561,9 @@ class Uniform_prior(Function1D):
 
     __metaclass__ = FunctionMeta
 
+    def _setup(self):
+        self._is_prior = True
+
     def _set_units(self, x_unit, y_unit):
         # Lower and upper bound has the same unit as x
         self.lower_bound.unit = x_unit
@@ -620,6 +639,8 @@ class Log_uniform_prior(Function1D):
     __metaclass__ = FunctionMeta
 
     def _setup(self):
+
+        self._is_prior = True
         self._handle_units = False
 
     def _set_units(self, x_unit, y_unit):
