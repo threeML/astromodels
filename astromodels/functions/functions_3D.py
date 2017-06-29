@@ -383,14 +383,14 @@ class GalPropTemplate_3D(Function3D):
     
     def get_boundaries(self):
 
-        if min_longitude < self.ramin:
-            min_longitude = self.ramin
-        if max_longitude > self.ramax:
-            max_longitude = self.ramax
-        if min_latitude < self.decmin:
-            min_latitude = self.decmin
-        if max_latitude > self.decmax:
-            max_latitude = self.decmax
+        #if min_longitude < self.ramin:
+        #    min_longitude = self.ramin
+        #if max_longitude > self.ramax:
+        #    max_longitude = self.ramax
+        #if min_latitude < self.decmin:
+        #    min_latitude = self.decmin
+        #if max_latitude > self.decmax:
+        #    max_latitude = self.decmax
         #maximum_rdiff = self.r
 
         #min_latitude = max(-90., self.lat0 - maximum_rdiff)
