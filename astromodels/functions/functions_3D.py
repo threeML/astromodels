@@ -194,7 +194,7 @@ class GalPropTemplate_3D(Function3D):
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 
-        self.K.unit = (u.MeV) * (u.cm**2 * u.s * u.sr) ** (-1)
+        self.K.unit = (u.MeV * u.cm**2 * u.s * u.sr) ** (-1)
 
     def _setup(self):
 
@@ -359,13 +359,13 @@ class GalPropTemplate_3D(Function3D):
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
 
                 try:
-                    f[j,i] = self._F((energy[i],lat[j],lon[j]))
+                    f[j,i] = self._F((energy[i],lat[j],lon[j]))/(energy[i]*energy[i])
                 except ValueError:
                     continue
 
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
-        A = f#np.multiply(K,f)
+        A = np.multiply(K,f)
         print "Flux: ", A
         return A
 
