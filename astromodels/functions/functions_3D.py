@@ -365,8 +365,8 @@ class GalPropTemplate_3D(Function3D):
 
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
-        A = np.multiply(K,f)
-        print A
+        A = f#np.multiply(K,f)
+        print "Flux: ", A
         return A
 
     def define_region(self,a,b,c,d):
