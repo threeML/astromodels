@@ -17,6 +17,35 @@ def get_comparison_function():
 
     return mo
 
+
+@pytest.mark.slow
+def test_template_factory_1D():
+
+    mo = get_comparison_function()
+
+    energies = np.logspace(1, 3, 50)
+
+    t = TemplateModelFactory('__test1D', 'A test template', energies, ['alpha'])
+
+    alpha_grid = np.linspace(-1.5, 1, 15)
+    #beta_grid = np.linspace(-3.5, -1.6, 15)
+    #xp_grid = np.logspace(1, 3, 20)
+
+    t.define_parameter_grid('alpha', alpha_grid)
+
+
+    for a in alpha_grid:
+        mo.alpha = a
+        mo.beta = -2.5
+        mo.xp = 300.
+
+
+        t.add_interpolation_data(mo(energies), alpha=a)
+
+    print("Data has been prepared")
+
+    t.save_data(overwrite=True)
+
 @pytest.mark.slow
 def test_template_factory():
 
@@ -48,6 +77,12 @@ def test_template_factory():
     print("Data has been prepared")
 
     t.save_data(overwrite=True)
+
+    tm = TemplateModel('__test1D')
+
+    tm(energies)
+
+
 
 
 # This will be run second, so the template will exist

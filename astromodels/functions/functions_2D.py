@@ -316,13 +316,14 @@ class Ellipse_on_sphere(Function2D):
         return lon1, lat1, lon2, lat2
 
     def evaluate(self, x, y, lon0, lat0, a, e, theta):
-        b = a * np.sqrt(1. - e**2)
-        # calculate focal points if this is first time doing so
-        if True: #not self.focal_pts:
-            self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
-            self.focal_pts = True
         
-
+        b = a * np.sqrt(1. - e**2)
+        
+        # calculate focal points
+        
+        self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
+        self.focal_pts = True
+        
         # lon/lat of point in question
         lon, lat = x, y
         

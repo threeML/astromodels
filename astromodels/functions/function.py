@@ -17,6 +17,7 @@ from astromodels.core.tree import Node
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
 from astromodels.core.memoization import memoize
+from astromodels.core.parameter_transformation import get_transformation
 
 __author__ = 'giacomov'
 
@@ -440,8 +441,12 @@ class FunctionMeta(type):
 
         is_normalization = (False if 'is_normalization' not in definition else bool(definition['is_normalization']))
 
+        transformation = (None if 'transformation' not in definition else
+                          get_transformation(definition['transformation']))
+
         new_parameter = Parameter(par_name, value, min_value=min_value, max_value=max_value,
-                                  delta=delta, desc=desc, free=free, unit=unit, is_normalization=is_normalization)
+                                  delta=delta, desc=desc, free=free, unit=unit, is_normalization=is_normalization,
+                                  transformation=transformation)
 
         return new_parameter
 
@@ -500,6 +505,8 @@ class Function(Node):
 
         self._fixed_units = None
 
+        self._is_prior = False
+
     @property
     def n_dim(self):
         """
@@ -537,6 +544,16 @@ class Function(Node):
         """
 
         return not (self._fixed_units is None)
+
+    @property
+    def is_prior(self):
+        """
+        Returns False by default and must be overrided in the prior functions.
+
+        :return: True or False
+        """
+
+        return self._is_prior
 
     @property
     def fixed_units(self):
@@ -902,8 +919,29 @@ class Function1D(Function):
 
         except u.UnitsError:  # pragma: no cover
 
-            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
-                               "calling function %s" % self.name)
+            # see if this is a dimensionless function
+
+            if self.has_fixed_units():
+
+                print 'here'
+
+                try:
+
+                    print self.x_unit
+                    print x
+
+                    results = self.evaluate(x.to(self.x_unit), *values)
+
+                except u.UnitsError:
+
+                    raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                                   "calling function %s" % self.name)
+            else:
+
+                raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                                   "calling function %s" % self.name)
+
+
 
         else:
 
