@@ -262,18 +262,18 @@ class Ellipse_on_sphere(Function2D):
 
             a :
 
-                desc : semimajor axis of the disk
+                desc : semimajor axis of the ellipse
                 initial value : 0.5
                 min : 0
                 max : 20
                 
-            b :
+            e :
 
-                desc : semiminor axis of the disk
+                desc : eccentricity of ellipse 
                 initial value : 0.5
                 min : 0
-                max : 20
-                
+                max : 1
+
             theta :
 
                 desc : inclination of semimajoraxis to a line of constant latitude
@@ -292,7 +292,7 @@ class Ellipse_on_sphere(Function2D):
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
-        # lon0 and lat0 and rdiff have most probably all units of degrees.
+        # lon0 and lat0 have most probably all units of degrees.
         # However, let's set them up here just to save for the possibility of
         # using the formula with other units (although it is probably never
         # going to happen)
@@ -300,9 +300,10 @@ class Ellipse_on_sphere(Function2D):
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
         self.a.unit = x_unit
-        self.b.unit = x_unit
+        # eccentricity is dimensionless
+        self.e.unit = u.dimensionless_unscaled 
         self.theta.unit = x_unit
-
+        
     def calc_focal_pts(self, lon0, lat0, a, b, theta):
         # focal distance
         f = np.sqrt(a**2 - b**2)
@@ -314,15 +315,17 @@ class Ellipse_on_sphere(Function2D):
 
         return lon1, lat1, lon2, lat2
 
-    def evaluate(self, x, y, lon0, lat0, a, b, theta):
-
-        # Calculate focal points if this is first time doing so
-        if not self.focal_pts:
-            self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
-            self.focal_pts = True
-
+    def evaluate(self, x, y, lon0, lat0, a, e, theta):
+        
+        b = a * np.sqrt(1. - e**2)
+        
+        # calculate focal points
+        
+        self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
+        self.focal_pts = True
+        
         # lon/lat of point in question
-        lon, lat = x,y
+        lon, lat = x, y
         
         # sum of geodesic distances to focii (should be <= 2a to be in ellipse)
         angsep1 = angular_distance(self.lon1, self.lat1, lon, lat)
