@@ -6,7 +6,7 @@ import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
-
+from astromodels.utils.vincenty import vincenty
 
 class Latitude_galactic_diffuse(Function2D):
     r"""
@@ -262,18 +262,18 @@ class Ellipse_on_sphere(Function2D):
 
             a :
 
-                desc : semimajor axis of the disk
+                desc : semimajor axis of the ellipse
                 initial value : 0.5
                 min : 0
                 max : 20
                 
-            b :
+            e :
 
-                desc : semiminor axis of the disk
+                desc : eccentricity of ellipse 
                 initial value : 0.5
                 min : 0
-                max : 20
-                
+                max : 1
+
             theta :
 
                 desc : inclination of semimajoraxis to a line of constant latitude
@@ -283,10 +283,16 @@ class Ellipse_on_sphere(Function2D):
         """
 
     __metaclass__ = FunctionMeta
+    
+    lon1 = None
+    lat1 = None
+    lon2 = None
+    lat2 = None
+    focal_pts = False
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
-        # lon0 and lat0 and rdiff have most probably all units of degrees.
+        # lon0 and lat0 have most probably all units of degrees.
         # However, let's set them up here just to save for the possibility of
         # using the formula with other units (although it is probably never
         # going to happen)
@@ -294,29 +300,36 @@ class Ellipse_on_sphere(Function2D):
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
         self.a.unit = x_unit
-        self.b.unit = x_unit
+        # eccentricity is dimensionless
+        self.e.unit = u.dimensionless_unscaled 
         self.theta.unit = x_unit
-
-    def evaluate(self, x, y, lon0, lat0, a, b, theta):
-
-        # lon/lat of point in question
-        lon, lat = x,y
         
+    def calc_focal_pts(self, lon0, lat0, a, b, theta):
         # focal distance
         f = np.sqrt(a**2 - b**2)
+
+        bearing = 90. - theta
+        # coordinates of focal points
+        lon1, lat1 = vincenty(lon0, lat0, bearing, f)
+        lon2, lat2 = vincenty(lon0, lat0, bearing + 180., f)
+
+        return lon1, lat1, lon2, lat2
+
+    def evaluate(self, x, y, lon0, lat0, a, e, theta):
+        b = a * np.sqrt(1. - e**2)
+        # calculate focal points if this is first time doing so
+        if True: #not self.focal_pts:
+            self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
+            self.focal_pts = True
         
-        # focus 1 coordinate and distance from focus 1 to point
-        lon1 = lon0 - f*np.cos(theta)
-        lat1 = lat0 - f*np.sin(theta)
-        angsep1 = angular_distance(lon1, lat1, lon, lat)
 
-        # focus 2 coordinate and distance from focus 2 to point
-        lon2 = lon0 + f*np.cos(theta)
-        lat2 = lat0 + f*np.sin(theta)
-        angsep2 = angular_distance(lon2, lat2, lon, lat)
-
-        # sum of distances to focii (should be <= 2a to be in ellipse)
-        angsep = angsep1 + angsep2
+        # lon/lat of point in question
+        lon, lat = x, y
+        
+        # sum of geodesic distances to focii (should be <= 2a to be in ellipse)
+        angsep1 = angular_distance(self.lon1, self.lat1, lon, lat)
+        angsep2 = angular_distance(self.lon2, self.lat2, lon, lat)
+        angsep  = angsep1 + angsep2
         
         return np.power(180 / np.pi, 2) * 1. / (np.pi * a * b) * (angsep <= 2*a)
 
