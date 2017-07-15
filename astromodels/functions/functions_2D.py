@@ -458,6 +458,63 @@ class SpatialTemplate_2D(Function2D):
         
         return (min_lon, max_lon), (min_lat, max_lat)
 
+class PowerLaw_on_sphere(Function2D):
+    r"""
+        description :
+
+            A power law function on a sphere (in spherical coordinates)
+
+        latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & |\vec{x}-\vec{x}_0| \le 0.05\\ |\vec{x}-\vec{x}_0|^{index} & {\rm if} & |\vec{x}-\vec{x}_0| > 0.05\end{matrix}\right. $$
+
+        parameters :
+
+            lon0 :
+
+                desc : Longitude of the center of the source
+                initial value : 0.0
+                min : 0.0
+                max : 360.0
+
+            lat0 :
+
+                desc : Latitude of the center of the source
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+            index :
+
+                desc : power law index
+                initial value : -2.0
+                min : -5.0
+                max : -1.0
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # lon0 and lat0 and rdiff have most probably all units of degrees. However,
+        # let's set them up here just to save for the possibility of using the
+        # formula with other units (although it is probably never going to happen)
+
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
+        self.index.unit = u.dimensionless_unscaled
+
+    def evaluate(self, x, y, lon0, lat0, index):
+
+        lon, lat = x,y
+
+        angsep = angular_distance(lon0, lat0, lon, lat)
+
+        return np.power(180 / np.pi, -1. * index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), np.multiply(0.05, np.less_equal(angsep, 0.05))), index)
+
+    def get_boundaries(self):
+
+        return ((self.lon0.value - 5), (self.lon0.value + 5)), ((self.lat0.value - 5), (self.lat0.value + 5))
+
 
 # class FunctionIntegrator(Function2D):
 #     r"""
