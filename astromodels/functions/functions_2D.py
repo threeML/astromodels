@@ -517,25 +517,18 @@ class Power_law_on_sphere(Function2D):
         angsep = angular_distance(lon0, lat0, lon, lat)
 
         if self.maxr.value <= 0.05:
-            norm = np.power(180 / np.pi, -2.-self.index.value) * np.pi
-                   * self.maxr.value**2 * 0.05**self.index.value
+            norm = np.power(180 / np.pi, -2.-self.index.value) * np.pi * self.maxr.value**2 * 0.05**self.index.value
         elif self.index.value == -2.:
-            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi
-                   + 2. * np.pi * np.log(self.maxr.value / 0.05)
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * np.log(self.maxr.value / 0.05)
         else:
-            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi
-                   * (np.power(self.maxr.value * np.pi / 180., self.index.value+2.)
-                      - np.power(0.05 * np.pi / 180., self.index.value+2.))
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * (np.power(self.maxr.value * np.pi / 180., self.index.value+2.) - np.power(0.05 * np.pi / 180., self.index.value+2.))
             
 
-        return np.less_equal(angsep,self.maxr.value) * np.power(180 / np.pi, -1. * index) 
-               * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), 
-                                 np.multiply(0.05, np.less_equal(angsep, 0.05))), index) / norm
+        return np.less_equal(angsep,self.maxr.value) * np.power(180 / np.pi, -1. * index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), np.multiply(0.05, np.less_equal(angsep, 0.05))), index) / norm
 
     def get_boundaries(self):
 
-        return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)),
-               ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
+        return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)), ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
 
 
 # class FunctionIntegrator(Function2D):
