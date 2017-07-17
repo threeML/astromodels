@@ -458,7 +458,7 @@ class SpatialTemplate_2D(Function2D):
         
         return (min_lon, max_lon), (min_lat, max_lat)
 
-class PowerLaw_on_sphere(Function2D):
+class Power_law_on_sphere(Function2D):
     r"""
         description :
 
@@ -489,6 +489,12 @@ class PowerLaw_on_sphere(Function2D):
                 min : -5.0
                 max : -1.0
 
+            maxr :
+
+                desc : max radius
+                initial value : 5.
+                fix : yes
+
         """
 
     __metaclass__ = FunctionMeta
@@ -502,6 +508,7 @@ class PowerLaw_on_sphere(Function2D):
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
         self.index.unit = u.dimensionless_unscaled
+        self.maxr.unit = x_unit
 
     def evaluate(self, x, y, lon0, lat0, index):
 
@@ -509,11 +516,26 @@ class PowerLaw_on_sphere(Function2D):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, -1. * index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), np.multiply(0.05, np.less_equal(angsep, 0.05))), index)
+        if self.maxr.value <= 0.05:
+            norm = np.power(180 / np.pi, -2.-self.index.value) * np.pi
+                   * self.maxr.value**2 * 0.05**self.index.value
+        elif self.index.value == -2.:
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi
+                   + 2. * np.pi * np.log(self.maxr.value / 0.05)
+        else:
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi
+                   * (np.power(self.maxr.value * np.pi / 180., self.index.value+2.)
+                      - np.power(0.05 * np.pi / 180., self.index.value+2.))
+            
+
+        return np.less_equal(angsep,self.maxr.value) * np.power(180 / np.pi, -1. * index) 
+               * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), 
+                                 np.multiply(0.05, np.less_equal(angsep, 0.05))), index) / norm
 
     def get_boundaries(self):
 
-        return ((self.lon0.value - 5), (self.lon0.value + 5)), ((self.lat0.value - 5), (self.lat0.value + 5))
+        return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)),
+               ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
 
 
 # class FunctionIntegrator(Function2D):
