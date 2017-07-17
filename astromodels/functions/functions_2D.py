@@ -510,7 +510,7 @@ class Power_law_on_sphere(Function2D):
         self.index.unit = u.dimensionless_unscaled
         self.maxr.unit = x_unit
 
-    def evaluate(self, x, y, lon0, lat0, index):
+    def evaluate(self, x, y, lon0, lat0, index, maxr):
 
         lon, lat = x,y
 
