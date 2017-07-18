@@ -464,7 +464,7 @@ class Power_law_on_sphere(Function2D):
 
             A power law function on a sphere (in spherical coordinates)
 
-        latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & |\vec{x}-\vec{x}_0| \le 0.05\\ |\vec{x}-\vec{x}_0|^{index} & {\rm if} & |\vec{x}-\vec{x}_0| > 0.05\end{matrix}\right. $$
+        latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & |\vec{x}-\vec{x}_0| \le 0.05\\ |\vec{x}-\vec{x}_0|^{index} & {\rm if} & 0.05 < |\vec{x}-\vec{x}_0| \le maxr \\ 0 & {\rm if} & |\vec{x}-\vec{x}_0|>maxr\end{matrix}\right. $$
 
         parameters :
 
