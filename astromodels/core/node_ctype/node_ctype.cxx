@@ -26,6 +26,10 @@ Created by giacomov on 2/24/17.
 #include <iterator>
 #include <algorithm>
 
+// These two macros needs to be used to use NAME_MAXLENGTH in a string
+
+#define STR_EXPAND(tok) #tok
+#define STR(tok) STR_EXPAND(tok)
 
 #define NAME_MAXLENGTH 50
 
@@ -159,7 +163,7 @@ Node_init(Node *self, PyObject *args, PyObject *kwds)
   {
 
     std::string msg = "The name for the node cannot be longer than ";
-    msg += NAME_MAXLENGTH;
+    msg += STR(NAME_MAXLENGTH);
     msg += " characters";
 
     PyErr_SetString(PyExc_SyntaxError, msg.c_str());
