@@ -76,8 +76,7 @@ class Latitude_galactic_diffuse(Function2D):
         b = _coord.transform_to('galactic').b.value
         l = _coord.transform_to('galactic').l.value
 
-        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_
-and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
+        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
 
     def get_boundaries(self):
 
@@ -85,8 +84,7 @@ and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
         l_min = self.l_min.value
         l_max = self.l_max.value
 
-        _coord = SkyCoord(l=[l_min, l_min, l_max, l_max], b=[max_b * -2., max_b * 2., max_b * 2., max_b * -2.], frame="g
-alactic", unit="deg")
+        _coord = SkyCoord(l=[l_min, l_min, l_max, l_max], b=[max_b * -2., max_b * 2., max_b * 2., max_b * -2.], frame="galactic", unit="deg")
 
         # no dealing with 0 360 overflow
         min_lat = min(_coord.transform_to("icrs").dec.value)
