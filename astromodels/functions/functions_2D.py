@@ -8,6 +8,7 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
 
+
 class Latitude_galactic_diffuse(Function2D):
     r"""
         description :
@@ -27,6 +28,16 @@ class Latitude_galactic_diffuse(Function2D):
 
                 desc : Sigma for
                 initial value : 1
+
+            l_min :
+
+                desc : min Longtitude
+                initial value : 10
+
+            l_max :
+
+                desc : max Longtitude
+                initial value : 30
 
         """
 
@@ -54,15 +65,36 @@ class Latitude_galactic_diffuse(Function2D):
 
         self.K.unit = z_unit
         self.sigma_b.unit = x_unit
+        self.l_min.unit = y_unit
+        self.l_max.unit = y_unit
 
-    def evaluate(self, x, y, K, sigma_b):
+    def evaluate(self, x, y, K, sigma_b, l_min, l_max):
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
+        l = _coord.transform_to('galactic').l.value
 
-        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2))
+        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_
+and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
+
+    def get_boundaries(self):
+
+        max_b = self.sigma_b.max_value
+        l_min = self.l_min.value
+        l_max = self.l_max.value
+
+        _coord = SkyCoord(l=[l_min, l_min, l_max, l_max], b=[max_b * -2., max_b * 2., max_b * 2., max_b * -2.], frame="g
+alactic", unit="deg")
+
+        # no dealing with 0 360 overflow
+        min_lat = min(_coord.transform_to("icrs").dec.value)
+        max_lat = max(_coord.transform_to("icrs").dec.value)
+        min_lon = min(_coord.transform_to("icrs").ra.value)
+        max_lon = max(_coord.transform_to("icrs").ra.value)
+
+        return (min_lon, max_lon), (min_lat, max_lat)
 
 
 class Gaussian_on_sphere(Function2D):
