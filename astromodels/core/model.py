@@ -773,11 +773,14 @@ class Model(Node):
 
         return representation
 
-    def to_dict_with_types(self):
+    def to_dict_with_types(self,root=None):
 
         # Get the serialization dictionary
 
-        data = self.to_dict()
+        if root is None:
+            root=self
+
+        data = root.to_dict()
 
         # Add the types to the sources
 
@@ -785,7 +788,7 @@ class Model(Node):
 
             try:
 
-                element = self._get_child(key)
+                element = root._get_child(key)
 
             except KeyError:  # pragma: no cover
 
@@ -812,7 +815,10 @@ class Model(Node):
 
                 else: # pragma: no cover
 
-                    raise ModelInternalError("Found an unknown class at the top level")
+                    data.pop(key)
+                    data['%s (%s)' % (key, 'Node')] = self.to_dict_with_types(root=element)
+
+                #    raise ModelInternalError("Found an unknown class at the top level")
 
         return data
 

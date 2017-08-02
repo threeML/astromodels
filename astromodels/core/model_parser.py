@@ -12,6 +12,8 @@ from astromodels.sources import point_source
 from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
 
 
+from astromodels.core.tree import Node
+
 class ModelIOError(IOError):
     pass
 
@@ -58,6 +60,52 @@ def model_unpickler(state):
     return ModelParser(model_dict=state).get_model()
 
 
+class NodeParser(object):
+    def __init__(self,name,definition):
+        branches=[]
+        for k,v in definition.items():
+            branches.append(parse(k,v))
+
+        self._data=dict(name=name, branches=branches)
+
+    def get_data(self):
+        return self._data
+
+
+def parse(name_string, definition):
+
+    r=re.search("(?P<name>.*?) \((?P<marker>.*?)\)",name_string)
+    if r is None:
+        raise Exception("unable to interpret type of name: "+name_string)
+    else:
+        name = r.group('name').strip()
+        type_marker = r.group('marker')
+
+    marker_parser_map={
+        'Node': (NodeParser,'get_data'),
+        'Parameter': (ParameterParser,'get_variable'),
+    }
+
+    parser,getter=marker_parser_map[type_marker]
+
+    return getattr(parser(name, definition),getter)()
+
+def attach_nodes(root, nodes):
+    for node in nodes:
+        if isinstance(node, dict):
+            new_node=Node(node['name'])
+            root._add_child(new_node)
+
+            attach_nodes(root=new_node,nodes=node['branches'])
+
+        elif isinstance(node,Node):
+            root._add_child(node)
+
+        else:
+            raise Exception("unable to interpret node:",repr(node))
+
+
+
 class ModelParser(object):
 
     def __init__(self, model_file=None, model_dict=None):
@@ -100,6 +148,8 @@ class ModelParser(object):
         self._external_parameters = []
         self._links = []
         self._extra_setups = []
+        self._extra_nodes = []
+
 
         for source_or_var_name, source_or_var_definition in self._model_dict.iteritems():
 
@@ -127,6 +177,13 @@ class ModelParser(object):
 
                 self._external_parameters.append(res)
 
+            elif source_or_var_name.find("(Node)") > 0:
+
+                # this can replace all of them really
+                node_dictionary = parse(source_or_var_name, source_or_var_definition)
+
+                self._extra_nodes.append(node_dictionary)
+
             else:
 
                 this_parser = SourceParser(source_or_var_name, source_or_var_definition)
@@ -142,6 +199,7 @@ class ModelParser(object):
                 self._links.extend(this_parser.links)
 
                 self._extra_setups.extend(this_parser.extra_setups)
+
 
     def get_model(self):
 
@@ -159,6 +217,9 @@ class ModelParser(object):
         for parameter in self._external_parameters:
 
             new_model.add_external_parameter(parameter)
+
+        attach_nodes(new_model, self._extra_nodes)
+
 
         # Now set up the links
 
