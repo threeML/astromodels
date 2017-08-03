@@ -625,7 +625,9 @@ class Function(Node):
 
         return CompositeFunction('-', self, other_instance)
 
-    __rsub__ = __sub__
+    def __rsub__(self, other_instance):
+
+        return CompositeFunction('-', other_instance, self)
 
     def __mul__(self, other_instance):
 
