@@ -394,7 +394,7 @@ def test_external_parameters_structured():
 
     # Link as equal (default)
     m._add_child(node)
-    m._add_child(fake_parameter)
+    node._add_child(fake_parameter)
     #m.add_external_parameter(fake_parameter)
 
     assert len(m.free_parameters) - 1 == n_free_before_external
@@ -406,6 +406,8 @@ def test_external_parameters_structured():
     # Now test that we can access it
 
     m['test_node.external_parameter']
+
+    cloned=clone_model(m)
 
 
 def test_input_output_basic():
