@@ -380,6 +380,33 @@ def test_external_parameters():
 
         m.add_external_parameter(fake_parameter)
 
+def test_external_parameters_structured():
+
+    mg = ModelGetter()
+
+    m = mg.model
+
+    n_free_before_external = len(m.free_parameters)
+
+    # Create parameter
+    node=Node("test_node")
+    fake_parameter = Parameter("external_parameter",1.0, min_value=-1.0, max_value=1.0, free=True)
+
+    # Link as equal (default)
+    m._add_child(node)
+    m._add_child(fake_parameter)
+    #m.add_external_parameter(fake_parameter)
+
+    assert len(m.free_parameters) - 1 == n_free_before_external
+
+    # Try to display it just to make sure it works
+
+    m.display()
+
+    # Now test that we can access it
+
+    m['test_node.external_parameter']
+
 
 def test_input_output_basic():
 
