@@ -5,7 +5,7 @@ from astropy.io import fits
 import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
-from astromodels.utils.angular_distance import angular_distance
+from astromodels.utils.angular_distance import angular_distance, spherical_angle
 from astromodels.utils.vincenty import vincenty
 
 class Latitude_galactic_diffuse(Function2D):
@@ -217,25 +217,13 @@ class Asymm_Gaussian_on_sphere(Function2D):
         lon, lat = x,y
 
         b = a * np.sqrt(1. - e**2)
-
-        print a, e, b, theta 
-
-        #radial coordinates. Phi is the angle between the great circles defined by the source center and the point in question, and by the source center and the north pole.
-        #R = angular_distance( lon0, lat0, lon, lat)
-        #phi=angle_between_three_points( lon0, lat0, lon, lat, 0, 90)
-
-
-        #convert radial coordinates to 'cartesian' coordinates in the tangent plane.
-        #dX = R*np.sin( np.deg2rad(phi) )
-        #dY = R*np.cos( np.deg2rad(phi) )
         
         dX = angular_distance( lon0, lat0, lon, lat0);
         dY = angular_distance( lon0, lat0, lon0, lat);
         
-        dX=np.where( np.logical_or( np.logical_and( lon-lon0 >0, lon-lon0<180), np.logical_and( lon-lon0<-180, lon-lon0 > -660) ), dX, -dX)
+        dX=np.where( np.logical_or( np.logical_and( lon-lon0 >0, lon-lon0<180), np.logical_and( lon-lon0<-180, lon-lon0 > -360) ), dX, -dX)
         dY=np.where( lat>lat0, dY, -dY)
 
-        
         cos2_theta = np.power( np.cos( theta * np.pi/180.), 2)
         sin2_theta = np.power( np.sin( theta * np.pi/180.), 2)
         
@@ -251,6 +239,129 @@ class Asymm_Gaussian_on_sphere(Function2D):
 
         #for t in zip(x, y, dX, dY):
         #  print "%.1f\t%.1f\t%.1f\t%.1f\t" % ( t ) 
+
+        return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
+        
+    def get_boundaries(self):
+
+        # Truncate the gaussian at 2 times the max of sigma allowed
+
+        min_lat = max(-90., self.lat0.value - 2 * self.a.max_value)
+        max_lat = min(90., self.lat0.value + 2 * self.a.max_value)
+
+        max_abs_lat = max(np.absolute(min_lat), np.absolute(max_lat))
+
+        if max_abs_lat > 89. or 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+
+            min_lon = 0.
+            max_lon = 360.
+
+        else:
+
+            min_lon = self.lon0.value - 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.)
+            max_lon = self.lon0.value + 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.)
+
+            if min_lon < 0.:
+
+                min_lon = min_lon + 360.
+
+            elif max_lon > 360.:
+
+                max_lon = max_lon - 360.
+
+        return (min_lon, max_lon), (min_lat, max_lat)
+
+
+
+class Asymm_Gaussian_on_sphere_alternate(Function2D):
+    r"""
+        description :
+
+            A bidimensional Gaussian function on a sphere (in spherical coordinates)
+
+            f(x,y) = A*exp( -r^2/2 * (cos^2(phi-theta)/sigma_x^2 + sin^2(phi-theta)/sigma_y^2 +  ) )
+            r = angular_distance( x,y, lon0, lat0)
+            phi = spherical_angle( lon0, lat0, x, y, 0, 90 )
+            sigma_x = a
+            sigma_y = a*(1-e^2)
+            A=
+            
+            
+        parameters :
+
+            lon0 :
+
+                desc : Longitude of the center of the source
+                initial value : 0.0
+                min : 0.0
+                max : 360.0
+
+            lat0 :
+
+                desc : Latitude of the center of the source
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+            a :
+
+                desc : Standard deviation of the Gaussian distribution (long axis)
+                initial value : 0.5
+                min : 0
+                max : 20
+
+            e :
+
+                desc : Excentricity of Gaussian ellipse
+                initial value : 0.5
+                min : 0
+                max : 1
+                
+            theta :
+
+                desc : inclination of semimajoraxis to a line of constant longitude
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # lon0 and lat0 and a have most probably all units of degrees. However,
+        # let's set them up here just to save for the possibility of using the
+        # formula with other units (although it is probably never going to happen)
+
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
+        self.a.unit = x_unit
+        self.e.unit = u.dimensionless_unscaled
+        self.theta.unit = x_unit
+
+    def evaluate(self, x, y, lon0, lat0, a, e, theta):
+
+        lon, lat = x,y
+
+        b = a * np.sqrt(1. - e**2)
+
+        print a, e, b, theta 
+
+        #radial coordinates. Phi is the angle between the great circles defined by the source center and the point in question, and by the source center and the north pole.
+        R = angular_distance( lon0, lat0, lon, lat)
+        phi=spherical_angle( lon0, lat0, lon, lat, 0, 90)
+
+        #adjust for 'rigth' or 'left' hemisphere (ugly).
+        phi = np.where( np.logical_or( np.logical_and( lon-lon0 >0, lon-lon0<180), np.logical_and( lon-lon0<-180, lon-lon0 > -360) ), phi, -phi)
+
+        cos2 = np.power( np.cos( np.deg2rad( phi - theta )), 2)
+        sin2 = np.power( np.sin( np.deg2rad( phi - theta )), 2)
+
+        E = -0.5 * R*R* (cos2/a**2 + sin2/b**2)
+
+        #for t in zip(x, y, R, phi, E):
+        #  print "%.1f\t%.1f\t%.1f\t%.1f\t%.2f" % ( t ) 
 
         return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
         

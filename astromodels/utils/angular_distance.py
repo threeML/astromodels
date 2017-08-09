@@ -31,3 +31,27 @@ def angular_distance(ra1, dec1, ra2, dec2):
     denominator = slat1 * slat2 + clat1 * clat2 * cdlon
 
     return np.rad2deg(np.arctan2(np.sqrt(num1 ** 2 + num2 ** 2), denominator))
+
+def spherical_angle( ra0, dec0, ra1, dec1, ra2, dec2 ):
+    """
+    Returns the spherical angle distance between two sets of great circles defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)
+
+    :param ra0: array or float, longitude of intersection point(s)
+    :param dec0: array or float, latitude of intersection point(s)
+    :param ra1: array or float, longitude of first point(s)
+    :param dec1: array or float, latitude of first point(s)
+    :param ra2: array or float, longitude of second point(s)
+    :param dec2: array or float, latitude of second point(s)
+    :return: spherical angle in degrees
+    """
+    
+    a = np.deg2rad( angular_distance(ra0, dec0, ra1, dec1))
+    b = np.deg2rad( angular_distance(ra0, dec0, ra2, dec2))
+    c = np.deg2rad( angular_distance(ra2, dec2, ra1, dec1))
+    
+    #use the spherical law of cosines: https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements
+    
+    numerator = np.cos(c) - np.cos(a) * np.cos(b)
+    denominator = np.sin(a)*np.sin(b)
+    
+    return np.where( denominator == 0 , np.zeros( len(denominator)), np.rad2deg( np.arccos( numerator/denominator)) )
