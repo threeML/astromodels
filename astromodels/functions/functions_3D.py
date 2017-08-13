@@ -239,70 +239,8 @@ class GalPropTemplate_3D(Function3D):
             self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl) 
             self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb) 
             self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne) 
+            self._map = self._map/(self._E*self._E) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False) 
-
-    #deprecated, delete after testing the other one
-    #def _interpolate_method(self,i,j,k,l,b,e):
-        #energy pixels
-        #k1 = int(np.floor(k))
-        #k2 = int(np.ceil(k))
-
-        #lon pixels
-        #i1 = int(np.floor(i))
-        #i2 = int(np.ceil(i))
-
-        #lat pixels
-        #j1 = int(np.floor(j))
-        #j2 = int(np.ceil(j))
-
-        #if in the edge of the map, use the value of the closest model pixel
-        #if k2 == self._ne:
-            #w1 = 1
-            #w2 = 0
-        #else:
-            #Linear interoplation for energy
-            #E1 = self._refEn + k1*self._delEn
-            #E2 = self._refEn + k2*self._delEn
-            #w1 = (e - E1)/self._delEn
-            #w2 = (E2 - e)/self._delEn
-        #f1 = self._map[k1][j1][i1]
-        #f2 = self._map[k2][j1][i1]
-
-        #if j2 == self._nb or i2 == self._nl:
-        #    f1 = self._map[k1][j1][i1]
-        #    if k2 == self._ne:
-        #        f2 = 0.
-        #    else:
-        #        f2 = self._map[k2][j1][i1]
-        #elif j1 == -1 or i1 == -1:
-        #    f1 = self._map[k1][j2][i2]
-        #    if k2 == self._ne:
-        #        f2 = 0
-        #    else:
-        #        f2 = self._map[k2][j2][i2]
-        #else: #do full bilinear interpolation
-        #    y1 = self._refLat + self._delLat*j1
-        #    x1 = self._refLon + self._delLon*i1
-        #    y2 = self._refLat + self._delLat*j2
-        #    x2 = self._refLon + self._delLon*i2
-        #    ## Bilinear interpolation
-        #    ##Getting flux from k1
-        #    Q11 = self._map[k1][j1][i1]
-        #    Q21 = self._map[k1][j1][i2]
-        #    Q12 = self._map[k1][j2][i1]
-        #    Q22 = self._map[k1][j2][i2]
-        #    f1 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
-
-        #    ##Getting flux from k2
-        #    if k2 == self._ne:
-        #        f2 = 0.
-        #    else:
-        #        Q11 = self._map[k2][j1][i1]
-        #        Q21 = self._map[k2][j1][i2]
-        #        Q12 = self._map[k2][j2][i1]
-        #        Q22 = self._map[k2][j2][i2]
-        #        f2 = (Q11*(x2-l)*(y2-b) + Q21*(l-x1)*(y2-b) + Q12*(x2-l)*(b-y1) + Q22*(l-x2)*(b-y2))/(self._delLon*self._delLat)
-        #return w1*f1 + w2*f2
 
     def evaluate(self, x,y,z,K):
 
@@ -359,13 +297,13 @@ class GalPropTemplate_3D(Function3D):
                     #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
 
                 try:
-                    f[j,i] = self._F((energy[i],lat[j],lon[j]))/(energy[i]*energy[i])
+                    f[j,i] = self._F((energy[i],lat[j],lon[j]))#/(energy[i]*energy[i])
                 except ValueError:
                     continue
 
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
-        A = np.multiply(K,f)/1000.
+        A = np.multiply(K,f)#/1000.
         print "Flux: ", A
         return A
 
