@@ -638,6 +638,11 @@ class ParameterBase(Node):
 
         min_value, max_value = bounds
 
+        # Remove old boundaries to avoid problems with the new one, if the current value was within the old boundaries
+        # but is not within the new ones (it will then be adjusted automatically later)
+        self.min_value = None
+        self.max_value = None
+
         self.min_value = min_value
 
         self.max_value = max_value
