@@ -2,6 +2,7 @@ import numpy as np
 from scipy.integrate import quad
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
+from astropy import wcs
 import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
@@ -262,18 +263,18 @@ class Ellipse_on_sphere(Function2D):
 
             a :
 
-                desc : semimajor axis of the disk
+                desc : semimajor axis of the ellipse
                 initial value : 0.5
                 min : 0
                 max : 20
                 
-            b :
+            e :
 
-                desc : semiminor axis of the disk
+                desc : eccentricity of ellipse 
                 initial value : 0.5
                 min : 0
-                max : 20
-                
+                max : 1
+
             theta :
 
                 desc : inclination of semimajoraxis to a line of constant latitude
@@ -292,7 +293,7 @@ class Ellipse_on_sphere(Function2D):
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
-        # lon0 and lat0 and rdiff have most probably all units of degrees.
+        # lon0 and lat0 have most probably all units of degrees.
         # However, let's set them up here just to save for the possibility of
         # using the formula with other units (although it is probably never
         # going to happen)
@@ -300,9 +301,10 @@ class Ellipse_on_sphere(Function2D):
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
         self.a.unit = x_unit
-        self.b.unit = x_unit
+        # eccentricity is dimensionless
+        self.e.unit = u.dimensionless_unscaled 
         self.theta.unit = x_unit
-
+        
     def calc_focal_pts(self, lon0, lat0, a, b, theta):
         # focal distance
         f = np.sqrt(a**2 - b**2)
@@ -314,15 +316,17 @@ class Ellipse_on_sphere(Function2D):
 
         return lon1, lat1, lon2, lat2
 
-    def evaluate(self, x, y, lon0, lat0, a, b, theta):
-
-        # Calculate focal points if this is first time doing so
-        if not self.focal_pts:
-            self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
-            self.focal_pts = True
-
+    def evaluate(self, x, y, lon0, lat0, a, e, theta):
+        
+        b = a * np.sqrt(1. - e**2)
+        
+        # calculate focal points
+        
+        self.lon1, self.lat1, self.lon2, self.lat2 = self.calc_focal_pts(lon0, lat0, a, b, theta)
+        self.focal_pts = True
+        
         # lon/lat of point in question
-        lon, lat = x,y
+        lon, lat = x, y
         
         # sum of geodesic distances to focii (should be <= 2a to be in ellipse)
         angsep1 = angular_distance(self.lon1, self.lat1, lon, lat)
@@ -397,15 +401,18 @@ class SpatialTemplate_2D(Function2D):
     def load_file(self,fitsfile,ihdu=0):
         
         with fits.open(fitsfile) as f:
-            self._refXpix = f[ihdu].header['CRPIX1']
-            self._refYpix = f[ihdu].header['CRPIX2']
-            self._delXpix = f[ihdu].header['CDELT1']
-            self._delYpix = f[ihdu].header['CDELT2']
-            self._refX = f[ihdu].header['CRVAL1'] # assumed to be RA
-            self._refY = f[ihdu].header['CRVAL2'] # assumed to be DEC
+    
+            self._wcs = wcs.WCS( header = f[ihdu].header )
             self._map = f[ihdu].data
+            
             self._nX = f[ihdu].header['NAXIS1']
             self._nY = f[ihdu].header['NAXIS2']
+            assert self._map.shape[1] == self._nX, "NAXIS1 = %d in fits header, but %d in map" % (self._nX, self._map.shape[1])
+            assert self._map.shape[0] == self._nY, "NAXIS2 = %d in fits header, but %d in map" % (self._nY, self._map.shape[0])
+            
+        #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
+        #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
+            
     
     def set_frame(self, new_frame):
         """
@@ -415,16 +422,17 @@ class SpatialTemplate_2D(Function2D):
             :return: (none)
             """
         assert isinstance(new_frame, BaseCoordinateFrame)
-        
+                
         self._frame = new_frame
     
     def evaluate(self, x, y, K):
         
         # We assume x and y are R.A. and Dec
-        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+        coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
         
-        Xpix = np.add(np.divide(np.subtract(x,self._refX),self._delXpix),self._refXpix)
-        Ypix = np.add(np.divide(np.subtract(y,self._refY),self._delYpix),self._refYpix)
+        #transform input coordinates to pixel coordinates; 
+        #SkyCoord takes care of necessary coordinate frame transformations.
+        Xpix, Ypix = coord.to_pixel(self._wcs)
         
         Xpix = Xpix.astype(int)
         Ypix = Ypix.astype(int)
@@ -432,26 +440,25 @@ class SpatialTemplate_2D(Function2D):
         # find pixels that are in the template ROI, otherwise return zero
         iz = np.where((Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0))[0]
         out = np.zeros((len(x)))
-        out[iz] = self._map[Xpix[iz].astype(int),Ypix[iz]]
-        
-        #pdb.set_trace()
+        out[iz] = self._map[Ypix[iz], Xpix[iz]]
         
         return np.multiply(K,out)
 
     def get_boundaries(self):
     
-        min_ra = (0-np.int(self._refXpix))*self._delXpix + self._refX
-        max_ra = ((self._nX-1)-np.int(self._refXpix))*self._delXpix + self._refX
+        #We use the max/min RA/Dec of the image corners to define the boundaries.
+        #Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
+    
+        Xcorners = np.array( [0, 0,        self._nX, self._nX] )
+        Ycorners = np.array( [0, self._nY, 0,        self._nY] )
         
-        min_dec = (0-np.int(self._refYpix))*self._delYpix + self._refY
-        max_dec = ((self._nY-1)-np.int(self._refYpix))*self._delYpix + self._refY
+        corners = SkyCoord.from_pixel( Xcorners, Ycorners, wcs=self._wcs, origin = 0).transform_to(self._frame)  
+     
+        min_lon = min(corners.ra.degree)
+        max_lon = max(corners.ra.degree)
         
-        min_lon = min([min_ra,max_ra])
-        max_lon = max([min_ra,max_ra])
-        
-        min_lat = min([min_dec,max_dec])
-        max_lat = max([min_dec,max_dec])
-        
+        min_lat = min(corners.dec.degree)
+        max_lat = max(corners.dec.degree)
         
         return (min_lon, max_lon), (min_lat, max_lat)
 

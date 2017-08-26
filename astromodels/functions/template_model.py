@@ -410,7 +410,7 @@ class TemplateModel(Function1D):
 
         # Figure out the shape of the data matrices
         data_shape = map(lambda x: x.shape[0], self._parameters_grids.values())
-
+        
         self._interpolators = []
 
         for energy in self._energies:
@@ -487,7 +487,7 @@ class TemplateModel(Function1D):
         # Gather all interpolations for these parameters' values at all defined energies
         # (these are the logarithm of the values)
 
-        log_interpolations = np.array(map(lambda i:self._interpolators[i](parameters_values),
+        log_interpolations = np.array(map(lambda i:self._interpolators[i](np.atleast_1d(parameters_values)),
                                           range(self._energies.shape[0])))
 
         # Now interpolate the interpolations to get the flux at the requested energies

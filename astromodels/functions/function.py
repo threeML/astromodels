@@ -505,6 +505,8 @@ class Function(Node):
 
         self._fixed_units = None
 
+        self._is_prior = False
+
     @property
     def n_dim(self):
         """
@@ -542,6 +544,16 @@ class Function(Node):
         """
 
         return not (self._fixed_units is None)
+
+    @property
+    def is_prior(self):
+        """
+        Returns False by default and must be overrided in the prior functions.
+
+        :return: True or False
+        """
+
+        return self._is_prior
 
     @property
     def fixed_units(self):
@@ -613,7 +625,9 @@ class Function(Node):
 
         return CompositeFunction('-', self, other_instance)
 
-    __rsub__ = __sub__
+    def __rsub__(self, other_instance):
+
+        return CompositeFunction('-', other_instance, self)
 
     def __mul__(self, other_instance):
 
@@ -907,8 +921,29 @@ class Function1D(Function):
 
         except u.UnitsError:  # pragma: no cover
 
-            raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
-                               "calling function %s" % self.name)
+            # see if this is a dimensionless function
+
+            if self.has_fixed_units():
+
+                print 'here'
+
+                try:
+
+                    print self.x_unit
+                    print x
+
+                    results = self.evaluate(x.to(self.x_unit), *values)
+
+                except u.UnitsError:
+
+                    raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                                   "calling function %s" % self.name)
+            else:
+
+                raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                                   "calling function %s" % self.name)
+
+
 
         else:
 
