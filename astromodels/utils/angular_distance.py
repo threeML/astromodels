@@ -51,7 +51,7 @@ def spherical_angle( ra0, dec0, ra1, dec1, ra2, dec2 ):
     
     #use the spherical law of cosines: https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements
     
-    numerator = np.cos(c) - np.cos(a) * np.cos(b)
-    denominator = np.sin(a)*np.sin(b)
+    numerator = np.atleast_1d( np.cos(c) - np.cos(a) * np.cos(b) )
+    denominator = np.atleast_1d( np.sin(a)*np.sin(b) )
     
     return np.where( denominator == 0 , np.zeros( len(denominator)), np.rad2deg( np.arccos( numerator/denominator)) )
