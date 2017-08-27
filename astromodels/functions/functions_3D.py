@@ -240,7 +240,7 @@ class GalPropTemplate_3D(Function3D):
             self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)
             self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)
             for i in xrange(len(self._E)):
-                self._map[i] = self._map[i]/(self._E[i]*self._E[i]) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
+                self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
 
     def evaluate(self, x,y,z,K):
