@@ -236,12 +236,12 @@ class GalPropTemplate_3D(Function3D):
             self._ne = f[ihdu].header['NAXIS3']#energy
 
             #Create the function for the interpolation
-            self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl) 
-            self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb) 
-            self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne) 
+            self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl)
+            self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)
+            self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)
             for i in xrange(len(self._E)):
                 self._map[i] = self._map[i]/(self._E[i]*self._E[i]) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
-            self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False) 
+            self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
 
     def evaluate(self, x,y,z,K):
 
@@ -271,7 +271,7 @@ class GalPropTemplate_3D(Function3D):
         for j in xrange(lon.size):
             if lon[j]>180.:
                 lon[j]=180-lon[j]
-            
+
         for i in xrange(energy.size):
             #print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
@@ -304,7 +304,7 @@ class GalPropTemplate_3D(Function3D):
 
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
-        A = np.multiply(K,f)#/1000.
+        A = np.multiply(self.K,f)#/1000.
         print "Flux: ", A
         return A
 
@@ -319,7 +319,7 @@ class GalPropTemplate_3D(Function3D):
         self.ramax = b
         self.decmin = c
         self.decmax = d
-    
+
     def get_boundaries(self):
 
         #if min_longitude < self.ramin:
