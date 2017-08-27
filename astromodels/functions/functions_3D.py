@@ -304,8 +304,8 @@ class GalPropTemplate_3D(Function3D):
 
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
-        A = np.multiply(self.K.value,f)#/1000.
-        print "Flux: ", np.mean(A)
+        A = np.multiply(K,f)#/1000.
+        print "Flux: ", A
         return A
 
     def define_region(self,a,b,c,d):
