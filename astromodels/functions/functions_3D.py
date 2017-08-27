@@ -304,7 +304,7 @@ class GalPropTemplate_3D(Function3D):
 
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
-        A = np.multiply(self.K,f)#/1000.
+        A = np.multiply(self.K.value,f)#/1000.
         print "Flux: ", A
         return A
 
