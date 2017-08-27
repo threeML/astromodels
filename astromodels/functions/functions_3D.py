@@ -260,7 +260,7 @@ class GalPropTemplate_3D(Function3D):
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
         #print np.log10(1.* u.keV/u.MeV)
         energy = np.log10(z * u.keV/ u.MeV)
-        print "Energies: ",energy
+        print "Energies: ",np.power(10,energy)
         if lon.size != lat.size:
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
@@ -305,7 +305,7 @@ class GalPropTemplate_3D(Function3D):
         #pdb.set_trace()
         assert np.all(np.isfinite(f))
         A = np.multiply(self.K.value,f)#/1000.
-        print "Flux: ", A
+        print "Flux: ", np.mean(A)
         return A
 
     def define_region(self,a,b,c,d):
