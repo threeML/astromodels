@@ -151,26 +151,11 @@ class Continuous_injection_diffusion_ellipse(Function3D):
         rdiffs_a, thetas = np.meshgrid(rdiff_a, theta)
         rdiffs_b, angseps = np.meshgrid(rdiff_b, angsep)
 
-        #print(rdiffs_a.shape)
-        #print(rdiffs_b.shape)
-        #print(thetas.shape)
-        #print(angseps.shape)
-
         rdiffs = np.sqrt(rdiffs_a ** 2 * np.cos(thetas) ** 2 + rdiffs_b ** 2 * np.sin(thetas) ** 2)
 
 
-        #print(lon)
-        #print(lat)
-        #print(thetas[:,0])
-
-        #print(angseps[:,0])
-
-        #print(rdiffs[:,0])
-
-        #results = np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) *  np.exp(-np.power(angseps, 2) / rdiffs ** 2)
         results = np.power(180.0 / pi, 2) * 1.22 / (pi * np.sqrt(pi) * rdiffs_a * np.sqrt(elongation) * (angseps + 0.06 * rdiffs)) *  np.exp(-np.power(angseps, 2) / rdiffs ** 2)
 
-        #print(results[:,0])
         return results
 
 
