@@ -7,7 +7,7 @@ from astromodels.core.model import Model, DuplicatedNode, ModelFileExists, Canno
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
-from astromodels.functions.functions import Powerlaw, _ComplexTestFunction
+from astromodels.functions.functions import Powerlaw, _ComplexTestFunction, Line
 from astromodels.functions.priors import Uniform_prior
 from astromodels.functions.functions_2D import Gaussian_on_sphere
 from astromodels.core.parameter import Parameter, IndependentVariable
@@ -49,7 +49,6 @@ def _get_particle_source(name="test_part"):
     part = ParticleSource(name, Powerlaw())
 
     return part
-
 
 
 class ModelGetter(object):
@@ -762,3 +761,71 @@ def test_model_parser():
     os.remove("__test.yml")
 
 
+def test_time_domain_integration():
+
+    po = Powerlaw()
+
+    default_powerlaw = Powerlaw()
+
+    src = PointSource("test", ra=0.0, dec=0.0, spectral_shape=po)
+
+    m = Model(src)  # type: model.Model
+
+    # Add time independent variable
+    time = IndependentVariable("time", 0.0, u.s)
+
+    m.add_independent_variable(time)
+
+    # Now link one of the parameters with a simple line law
+    line = Line()
+
+    line.a = 0.0
+
+    m.link(po.index, time, line)
+
+    # Test the display just to make sure it doesn't crash
+    m.display()
+
+    # Now test the average with the integral
+
+    energies = np.linspace(1, 10, 10)
+
+    results = m.get_point_source_fluxes(0, energies, tag=(time, 0, 10))  # type: np.ndarray
+
+    assert np.all(results == 1.0)
+
+    # Now test the linking of the normalization, first with a constant then with a line with a certain
+    # angular coefficient
+
+    m.unlink(po.index)
+
+    po.index.value = default_powerlaw.index.value
+
+    line2 = Line()
+
+    line2.a = 0.0
+    line2.b = 1.0
+
+    m.link(po.K, time, line2)
+
+    time.value = 1.0
+
+    results = m.get_point_source_fluxes(0, energies, tag=(time, 0, 10))
+
+    assert np.allclose(results, default_powerlaw(energies))
+
+    # Now make something actually happen
+    line2.a = 1.0
+    line2.b = 1.0
+
+    results = m.get_point_source_fluxes(0, energies, tag=(time, 0, 10))  # type: np.ndarray
+
+    # Compare with analytical result
+    def F(x):
+        return line2.a.value / 2.0 * x ** 2 + line2.b.value * x
+
+    effective_norm = (F(10) - F(0)) / 10.0
+
+    expected_results = default_powerlaw(energies) * effective_norm  # type: np.ndarray
+
+    assert np.allclose(expected_results, results)

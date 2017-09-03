@@ -2,6 +2,7 @@ import collections
 
 import astropy.units as u
 import numpy
+import scipy.integrate
 
 from astromodels.core.sky_direction import SkyDirection
 from astromodels.core.spectral_component import SpectralComponent
@@ -9,6 +10,7 @@ from astromodels.core.tree import Node
 from astromodels.core.units import get_units
 from astromodels.sources.source import Source, POINT_SOURCE
 from astromodels.utils.pretty_list import dict_to_list
+from astromodels.core.memoization import use_astromodels_memoization
 
 __author__ = 'giacomov'
 
@@ -138,25 +140,71 @@ class PointSource(Source, Node):
 
             component.shape.set_units(x_unit, y_unit)
 
-    def __call__(self, x):
+    def __call__(self, x, tag=None):
 
-        results = [component.shape(x) for component in self.components.values()]
+        if tag is None:
 
-        if isinstance(x, u.Quantity):
+            # No integration nor time-varying or whatever-varying
 
-            # Slow version with units
+            if isinstance(x, u.Quantity):
 
-            # We need to sum like this (slower) because using np.sum will not preserve the units
-            # (thanks astropy.units)
+                # Slow version with units
 
-            return sum(results)
+                results = [component.shape(x) for component in self.components.values()]
+
+                # We need to sum like this (slower) because using np.sum will not preserve the units
+                # (thanks astropy.units)
+
+                return sum(results)
+
+            else:
+
+                # Fast version without units, where x is supposed to be in the same units as currently defined in
+                # units.get_units()
+
+                results = [component.shape.fast_call(x) for component in self.components.values()]
+
+                return numpy.sum(results, 0)
 
         else:
 
-            # Fast version without units, where x is supposed to be in the same units as currently defined in
-            # units.get_units()
+            # Time-varying or energy-varying or whatever-varying
 
-            return numpy.sum(results, 0)
+            integration_variable, a, b = tag
+
+            if b is None:
+
+                # Evaluate in a, do not integrate
+
+                integration_variable.value = a
+
+                return self.__call__(x, tag=None)
+
+            else:
+
+                # Integrate between a and b
+
+                integrals = numpy.zeros(len(x))
+
+                # TODO: implement an integration scheme avoiding the for loop
+
+                # Suspend memoization because the memoization gets confused when integrating
+                with use_astromodels_memoization(False):
+
+                    reentrant_call = self.__call__
+
+                    for i, e in enumerate(x):
+
+                        def integral(y):
+
+                            integration_variable.value = y
+
+                            return reentrant_call(e, tag=None)
+
+                        # Now integrate
+                        integrals[i] = scipy.integrate.quad(integral, a, b, epsrel=1e-5)[0]
+
+                return integrals / (b - a)
 
     def has_free_parameters(self):
         """
