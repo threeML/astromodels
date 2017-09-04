@@ -162,7 +162,7 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same units as currently defined in
                 # units.get_units()
 
-                results = [component.shape.fast_call(x) for component in self.components.values()]
+                results = [component.shape(x) for component in self.components.values()]
 
                 return numpy.sum(results, 0)
 
