@@ -176,9 +176,14 @@ class PointSource(Source, Node):
 
                 # Evaluate in a, do not integrate
 
-                integration_variable.value = a
+                # Suspend memoization because the memoization gets confused when integrating
+                with use_astromodels_memoization(False):
 
-                return self.__call__(x, tag=None)
+                    integration_variable.value = a
+
+                    res = self.__call__(x, tag=None)
+
+                return res
 
             else:
 
