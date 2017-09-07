@@ -1564,9 +1564,13 @@ if has_ebltable:
         
         def _setup(self):
 
-            # Get and open the two data files
-            
+            # define EBL model, use dominguez as default
             self._tau =  ebltau.OptDepth.readmodel(model = 'dominguez')
+       
+        def set_model(self,modelname):
+            
+            #passing modelname to ebltable, which will check if defined
+            self._tau =  ebltau.OptDepth.readmodel(model = modelname)
             
         def _set_units(self, x_unit, y_unit):
 
