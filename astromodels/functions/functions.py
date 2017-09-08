@@ -1567,7 +1567,7 @@ if has_ebltable:
             # define EBL model, use dominguez as default
             self._tau =  ebltau.OptDepth.readmodel(model = 'dominguez')
        
-        def set_model(self,modelname):
+        def set_ebl_model(self,modelname):
             
             #passing modelname to ebltable, which will check if defined
             self._tau =  ebltau.OptDepth.readmodel(model = modelname)
