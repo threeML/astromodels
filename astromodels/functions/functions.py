@@ -1080,10 +1080,20 @@ class Band(Function1D):
             min : -5.0
             max : -1.6
 
+
+
         piv :
 
             desc : pivot energy
             initial value : 100.0
+            fix : yes
+
+        opt :
+
+            desc : selects between using Ep or Ec
+            initial value : 0
+            min : 0
+            max : 1
             fix : yes
     """
 
@@ -1102,8 +1112,24 @@ class Band(Function1D):
         self.alpha.unit = astropy_units.dimensionless_unscaled
         self.beta.unit = astropy_units.dimensionless_unscaled
 
-    def evaluate(self, x, K, alpha, xp, beta, piv):
-        E0 = xp / (2 + alpha)
+        # opt is just a flag, and has no units
+        self.opt.unit = astropy_units.dimensionless_unscaled
+
+    def evaluate(self, x, K, alpha, xp, beta, piv, opt):
+
+        assert opt == 0 or opt == 1, "Opt must be either 0 or 1"
+
+        if opt == 0:
+
+            # Ep parameterization
+
+            E0 = xp / (2 + alpha)
+
+        elif opt == 1:
+
+            # E cutoff parameterization
+
+            E0 = xp
 
         if (alpha < beta):
             raise ModelAssertionViolation("Alpha cannot be less than beta")
