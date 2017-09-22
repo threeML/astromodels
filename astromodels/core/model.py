@@ -5,6 +5,7 @@ import collections
 import os
 import pandas as pd
 import numpy as np
+import scipy.integrate
 import warnings
 
 from astromodels.core.my_yaml import my_yaml
@@ -14,6 +15,7 @@ from astromodels.functions.function import get_function
 from astromodels.sources.source import Source, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.long_path_formatter import long_path_formatter
+from astromodels.core.memoization import use_astromodels_memoization
 
 
 class ModelFileExists(IOError):
@@ -42,12 +44,6 @@ class ModelInternalError(ValueError):
 
 
 class Model(Node):
-
-    # def __reduce__(self):
-    #
-    #     from astromodels.core.model_parser import model_unpickler
-    #
-    #     return model_unpickler, (self.to_dict_with_types(),)
 
     def __init__(self, *sources):
 
@@ -82,6 +78,9 @@ class Model(Node):
 
         # This controls the verbosity of the display
         self._complete_display = False
+
+        # This will keep track of independent variables (if any)
+        self._independent_variables = {}
 
     def _add_source(self, source):
         """
@@ -382,13 +381,16 @@ class Model(Node):
         :return: none
         """
 
-        assert isinstance(variable, IndependentVariable),"Variable must be an instance of IndependentVariable"
+        assert isinstance(variable, IndependentVariable), "Variable must be an instance of IndependentVariable"
 
         if self._has_child(variable.name):
 
             self._remove_child(variable.name)
 
         self._add_child(variable)
+
+        # Add also to the list of independent variables
+        self._independent_variables[variable.name] = variable
 
     def remove_independent_variable(self, variable_name):
         """
@@ -399,6 +401,9 @@ class Model(Node):
         """
 
         self._remove_child(variable_name)
+
+        # Remove also from the list of independent variables
+        self._independent_variables.pop(variable_name)
 
     def add_external_parameter(self, parameter):
         """
@@ -448,6 +453,9 @@ class Model(Node):
         Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
         :return: (none)
         """
+
+        assert parameter_1.path in self, "Parameter %s is not contained in this model" % parameter_1.path
+        assert parameter_2.path in self, "Parameter %s is not contained in this model" % parameter_2.path
 
         if link_function is None:
             # Use the Line function by default, with both parameters fixed so that the two
@@ -632,6 +640,35 @@ class Model(Node):
 
         empty_frame = "(none)%s" % new_line
 
+        # Independent variables
+
+        independent_v_frames = []
+
+        if self._independent_variables:
+
+            for variable_name, variable_instance in self._independent_variables.iteritems():
+
+                v_dict = collections.OrderedDict()
+
+                # Generate table with only a minimal set of info
+
+                this_dict = collections.OrderedDict()
+
+                this_dict['current value'] = variable_instance.value
+                this_dict['unit'] = variable_instance.unit
+
+                v_dict[variable_name] = this_dict
+
+                this_v_frame = pd.DataFrame.from_dict(v_dict)
+
+                independent_v_frames.append(this_v_frame)
+
+        else:
+
+            # No independent variables
+
+            pass
+
         if rich_output:
 
             source_summary_representation = sources_summary._repr_html_()
@@ -656,6 +693,19 @@ class Model(Node):
 
                     linked_summary_representation += linked_frame._repr_html_()
                     linked_summary_representation += new_line
+
+            if len(independent_v_frames) == 0:
+
+                independent_v_representation = empty_frame
+
+            else:
+
+                independent_v_representation = ""
+
+                for v_frame in independent_v_frames:
+
+                    independent_v_representation += v_frame._repr_html_()
+                    independent_v_representation += new_line
 
             if fixed_parameters_summary.empty:
 
@@ -690,6 +740,19 @@ class Model(Node):
 
                     linked_summary_representation += linked_frame.__repr__()
                     linked_summary_representation += "%s%s" % (new_line, new_line)
+
+            if len(independent_v_frames) == 0:
+
+                independent_v_representation = empty_frame
+
+            else:
+
+                independent_v_representation = ""
+
+                for v_frame in independent_v_frames:
+
+                    independent_v_representation += v_frame.__repr__()
+                    independent_v_representation += "%s%s" % (new_line, new_line)
 
             if fixed_parameters_summary.empty:
 
@@ -770,6 +833,20 @@ class Model(Node):
             representation += new_line
 
         representation += linked_summary_representation
+
+        # Independent variables
+
+        representation += "%sIndependent variables:%s" % (new_line, new_line)
+
+        if not rich_output:
+
+            representation += "----------------------%s%s" % (new_line, new_line)
+
+        else:
+
+            representation += new_line
+
+        representation += independent_v_representation
 
         return representation
 
@@ -869,16 +946,21 @@ class Model(Node):
 
         return pts.position.get_ra(), pts.position.get_dec()
 
-    def get_point_source_fluxes(self, id, energies):
+    def get_point_source_fluxes(self, id, energies, tag=None):
         """
         Get the fluxes from the id-th point source
 
         :param id: id of the source
         :param energies: energies at which you need the flux
+        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this
+        parameter is specified then the returned value will be the average flux for the source computed as the integral
+        between a and b over the integration variable divided by (b-a). The integration variable must be an independent
+        variable contained in the model. If b is None, then instead of integrating the integration variable will be
+        set to a and the model evaluated in a.
         :return: fluxes
         """
 
-        return self._point_sources.values()[id](energies)
+        return self._point_sources.values()[id](energies, tag=tag)
 
     def get_point_source_name(self, id):
 

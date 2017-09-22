@@ -9,6 +9,7 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
 
+
 class Latitude_galactic_diffuse(Function2D):
     r"""
         description :
@@ -28,6 +29,16 @@ class Latitude_galactic_diffuse(Function2D):
 
                 desc : Sigma for
                 initial value : 1
+
+            l_min :
+
+                desc : min Longtitude
+                initial value : 10
+
+            l_max :
+
+                desc : max Longtitude
+                initial value : 30
 
         """
 
@@ -55,15 +66,34 @@ class Latitude_galactic_diffuse(Function2D):
 
         self.K.unit = z_unit
         self.sigma_b.unit = x_unit
+        self.l_min.unit = y_unit
+        self.l_max.unit = y_unit
 
-    def evaluate(self, x, y, K, sigma_b):
+    def evaluate(self, x, y, K, sigma_b, l_min, l_max):
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
+        l = _coord.transform_to('galactic').l.value
 
-        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2))
+        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
+
+    def get_boundaries(self):
+
+        max_b = self.sigma_b.max_value
+        l_min = self.l_min.value
+        l_max = self.l_max.value
+
+        _coord = SkyCoord(l=[l_min, l_min, l_max, l_max], b=[max_b * -2., max_b * 2., max_b * 2., max_b * -2.], frame="galactic", unit="deg")
+
+        # no dealing with 0 360 overflow
+        min_lat = min(_coord.transform_to("icrs").dec.value)
+        max_lat = max(_coord.transform_to("icrs").dec.value)
+        min_lon = min(_coord.transform_to("icrs").ra.value)
+        max_lon = max(_coord.transform_to("icrs").ra.value)
+
+        return (min_lon, max_lon), (min_lat, max_lat)
 
 
 class Gaussian_on_sphere(Function2D):
@@ -461,6 +491,78 @@ class SpatialTemplate_2D(Function2D):
         max_lat = max(corners.dec.degree)
         
         return (min_lon, max_lon), (min_lat, max_lat)
+
+class Power_law_on_sphere(Function2D):
+    r"""
+        description :
+
+            A power law function on a sphere (in spherical coordinates)
+
+        latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & |\vec{x}-\vec{x}_0| \le 0.05\\ |\vec{x}-\vec{x}_0|^{index} & {\rm if} & 0.05 < |\vec{x}-\vec{x}_0| \le maxr \\ 0 & {\rm if} & |\vec{x}-\vec{x}_0|>maxr\end{matrix}\right. $$
+
+        parameters :
+
+            lon0 :
+
+                desc : Longitude of the center of the source
+                initial value : 0.0
+                min : 0.0
+                max : 360.0
+
+            lat0 :
+
+                desc : Latitude of the center of the source
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+            index :
+
+                desc : power law index
+                initial value : -2.0
+                min : -5.0
+                max : -1.0
+
+            maxr :
+
+                desc : max radius
+                initial value : 5.
+                fix : yes
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # lon0 and lat0 and rdiff have most probably all units of degrees. However,
+        # let's set them up here just to save for the possibility of using the
+        # formula with other units (although it is probably never going to happen)
+
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
+        self.index.unit = u.dimensionless_unscaled
+        self.maxr.unit = x_unit
+
+    def evaluate(self, x, y, lon0, lat0, index, maxr):
+
+        lon, lat = x,y
+
+        angsep = angular_distance(lon0, lat0, lon, lat)
+
+        if self.maxr.value <= 0.05:
+            norm = np.power(180 / np.pi, -2.-self.index.value) * np.pi * self.maxr.value**2 * 0.05**self.index.value
+        elif self.index.value == -2.:
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * np.log(self.maxr.value / 0.05)
+        else:
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * (np.power(self.maxr.value * np.pi / 180., self.index.value+2.) - np.power(0.05 * np.pi / 180., self.index.value+2.))
+            
+
+        return np.less_equal(angsep,self.maxr.value) * np.power(180 / np.pi, -1. * index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), np.multiply(0.05, np.less_equal(angsep, 0.05))), index) / norm
+
+    def get_boundaries(self):
+
+        return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)), ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
 
 
 # class FunctionIntegrator(Function2D):

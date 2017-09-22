@@ -46,7 +46,7 @@ def memoize(method):
     @functools.wraps(method)
     def memoizer(instance, x, *args, **kwargs):
 
-        if not _WITH_MEMOIZATION: #or isinstance(x, u.Quantity):
+        if not _WITH_MEMOIZATION or isinstance(x, u.Quantity):
 
             # Memoization is not active or using units, do not use memoization
 

@@ -201,6 +201,10 @@ class Powerlaw_flux(Function1D):
                 desc : Integral between a and b
                 initial value : 1
                 is_normalization : True
+                transformation : log10
+                min : 1e-30
+                max : 1e3
+                delta : 0.1
 
             index :
 
