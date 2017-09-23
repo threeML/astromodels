@@ -1121,6 +1121,84 @@ class Band(Function1D):
 
         return out
 
+class Band_grbm(Function1D):
+    r"""
+    description :
+
+        Band model from Band et al., 1993, parametrized with the cutoff energy
+
+    latex : $  $
+
+    parameters :
+
+        K :
+
+            desc : Differential flux at the pivot energy
+            initial value : 1e-4
+            is_normalization : True
+
+        alpha :
+
+            desc : low-energy photon index
+            initial value : -1.0
+            min : -1.5
+            max : 3
+
+        xc :
+
+            desc : cutoff of exp
+            initial value : 500
+            min : 10
+
+        beta :
+
+            desc : high-energy photon index
+            initial value : -2.0
+            min : -5.0
+            max : -1.6
+
+        piv :
+
+            desc : pivot energy
+            initial value : 100.0
+            fix : yes
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # The normalization has the same units as y
+        self.K.unit = y_unit
+
+        # The break point has always the same dimension as the x variable
+        self.xc.unit = x_unit
+
+        self.piv.unit = x_unit
+
+        # alpha and beta are dimensionless
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
+
+    def evaluate(self, x, K, alpha, xc, beta, piv):
+
+
+        if (alpha < beta):
+            raise ModelAssertionViolation("Alpha cannot be less than beta")
+
+        idx = x < (alpha - beta) * xc
+
+        # The K * 0 part is a trick so that out will have the right units (if the input
+        # has units)
+
+        out = np.zeros(x.shape) * K * 0
+
+        out[idx] = K * np.power(x[idx] / piv, alpha) * np.exp(-x[idx] / xc)
+        out[~idx] = K * np.power((alpha - beta) * xc / piv, alpha - beta) * np.exp(beta - alpha) * \
+                    np.power(x[~idx] / piv, beta)
+
+        return out
+
+
 
 class Band_Calderone(Function1D):
     r"""
