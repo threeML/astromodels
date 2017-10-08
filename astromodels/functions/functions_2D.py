@@ -81,7 +81,7 @@ class Latitude_galactic_diffuse(Function2D):
 
     def get_boundaries(self):
 
-        max_b = self.sigma_b.max_value
+        max_b = self.sigma_b.value
         l_min = self.l_min.value
         l_max = self.l_max.value
 
