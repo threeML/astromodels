@@ -548,7 +548,7 @@ class GalPropTemplate_3D(Function3D):
             #elif max_longitude > 360.:
 
                 #max_longitude -= 360.
-
+        #
         min_longitude = self.ramin
         max_longitude = self.ramax
         min_latitude = self.decmin
