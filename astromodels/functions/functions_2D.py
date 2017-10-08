@@ -85,6 +85,7 @@ class Latitude_galactic_diffuse(Function2D):
         l_min = self.l_min.value
         l_max = self.l_max.value
 
+        print max_b, l_min, l_max
         _coord = SkyCoord(l=[l_min, l_min, l_max, l_max], b=[max_b * -2., max_b * 2., max_b * 2., max_b * -2.], frame="galactic", unit="deg")
 
         # no dealing with 0 360 overflow
