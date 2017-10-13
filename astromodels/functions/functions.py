@@ -22,6 +22,10 @@ class NaimaNotAvailable(ImportWarning):
     pass
 
 
+class EBLTableNotAvailable(ImportWarning):
+    pass
+
+
 class InvalidUsageForFunction(exceptions.Exception):
     pass
 
@@ -64,6 +68,27 @@ except ImportError:
 else:
 
     has_gsl = True
+
+
+try:
+
+    # ebltable is a Python packages to read in and interpolate tables for the photon density of 
+    # the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma 
+    # rays.
+
+    import ebltable.tau_from_model as ebltau
+
+
+except ImportError:
+
+    warnings.warn("The ebltable package is not available. Models that depend on it will not be available",
+                  EBLTableNotAvailable)
+
+    has_ebltable = False
+
+else:
+
+    has_ebltable = True
 
 
 # noinspection PyPep8Naming
@@ -1593,3 +1618,65 @@ class Exponential_cutoff(Function1D):
     def evaluate(self, x, K, xc):
         return K * np.exp(np.divide(x, -xc))
 
+
+if has_ebltable:
+
+    class EBLattenuation(Function1D):
+        r"""
+        description :
+            Attenuation factor for absorption in the extragalactic background light (EBL) ,
+            to be used for extragalactic source spectra. Based on package "ebltable" by
+            Manuel Meyer, https://github.com/me-manu/ebltable .
+        
+        latex: not available
+        
+        parameters :
+           
+          redshift :
+                desc : redshift of the source
+                initial value : 1.0
+                fix : yes
+        """
+
+        __metaclass__ = FunctionMeta
+        
+        def _setup(self):
+
+            # define EBL model, use dominguez as default
+            self._tau =  ebltau.OptDepth.readmodel(model = 'dominguez')
+       
+        def set_ebl_model(self,modelname):
+            
+            #passing modelname to ebltable, which will check if defined
+            self._tau =  ebltau.OptDepth.readmodel(model = modelname)
+            
+        def _set_units(self, x_unit, y_unit):
+
+            if not hasattr(x_unit, "physical_type") and x_unit.physical_type == 'energy':
+                
+                # x should be energy
+                raise InvalidUsageForFunction("Unit for x is not an energy. The function "
+                                  "EBLOptDepth calculates energy-dependent "
+                                  "absorption.")
+
+                # y should be dimensionless
+                if not hasattr(y_unit, 'physical_type') or \
+                                y_unit.physical_type != 'dimensionless':
+                    raise InvalidUsageForFunction("Unit for y is not dimensionless.")
+
+            self.redshift.unit = astropy_units.dimensionless_unscaled
+        
+        def evaluate(self, x, redshift):
+          
+            if isinstance(x, astropy_units.Quantity):
+                
+                # ebltable expects TeV
+                eTeV = x.to(astropy_units.TeV).value 
+                return np.exp(-self._tau.opt_depth( redshift.value, eTeV )) * astropy_units.dimensionless_unscaled 
+                
+            else:
+                
+                #otherwise it's in keV
+                eTeV = x / 1e9
+                return np.exp(-self._tau.opt_depth( redshift, eTeV ))
+ 
