@@ -58,6 +58,7 @@ class ExtendedSource(Source, Node):
 
                 # This is a template. Add a component which is just a renormalization
                 spectral_shape = Constant()
+                spectral_shape.K.value = 1.0
                 components = [SpectralComponent("main", spectral_shape)]
 
                 # set the units
