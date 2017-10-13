@@ -381,8 +381,6 @@ class GalPropTemplate_3D(Function3D):
                 desc : normalization
                 initial value : 1
                 fix : yes
-                max : 10.
-                min : 0.01
 
     """
 
