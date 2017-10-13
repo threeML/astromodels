@@ -474,29 +474,11 @@ class GalPropTemplate_3D(Function3D):
             #f[:][i] = r
 
             for j in xrange(lon.size):
-                #f[j,i] = r[j]
-                #il,ib,ie = self._w.all_world2pix(lon[j],lat[j],energy[i],1)
-                #if il > self._nl+1:
-                    #continue#il = il - self._nl
-                #if ib > self._nb:
-                    #ib = ib - self._nb
-                #if ie > self._ne or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
-            #    if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
-                    #f[j,i] = 0.
-                    #ie=ie-1.
-                    #print energy[i]
-                    #print "Looking at energies higher than 100 TeV"
-             #       continue#f[j,i] = self._interpolate_method(il,ib,self._ne-1,lon[j],lat[j],energy[i])
-
-                #else:
-                    #f[j,i] = self._interpolate_method(il,ib,ie,lon[j],lat[j],energy[i])
-
                 try:
                     f[j,i] = self._F((energy[i],lat[j],lon[j]))#/(energy[i]*energy[i])
                 except ValueError:
                     continue
 
-        #pdb.set_trace()
         assert np.all(np.isfinite(f))
         A = np.multiply(K,f)#/1000.
         #print "Flux: ", A

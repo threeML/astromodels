@@ -57,7 +57,6 @@ class ExtendedSource(Source, Node):
             if spectral_shape is None and components is None:
 
                 # This is a template. Add a component which is just a renormalization
-                print "Set spectral shape to Constant()"
                 spectral_shape = Constant()
                 components = [SpectralComponent("main", spectral_shape)]
 
