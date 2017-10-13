@@ -830,11 +830,9 @@ class Constant(Function1D):
 
                 desc : Constant value
                 initial value : 1
-                is_normalization : True
-                transformation : log10
-                min : 1e-4
-                max : 1e2
-                delta : 0.1
+                fix : True
+                min : 1e-2
+                max : 100.
 
         """
 
