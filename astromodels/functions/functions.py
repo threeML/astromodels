@@ -829,7 +829,12 @@ class Constant(Function1D):
             k :
 
                 desc : Constant value
-                initial value : 0
+                initial value : 1
+                is_normalization : True
+                transformation : log10
+                min : 1e-4
+                max : 1e2
+                delta : 0.1
 
         """
 
