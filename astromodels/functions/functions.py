@@ -831,8 +831,8 @@ class Constant(Function1D):
                 desc : Constant value
                 initial value : 1
                 fix : True
-                min : 1e-2
-                max : 100.
+                min : 1e-5
+                max : 1000.
 
         """
 
