@@ -487,6 +487,19 @@ class ParameterBase(Node):
 
         self._internal_value = new_internal_value
 
+        # Call callbacks if any
+
+        for callback in self._callbacks:
+
+            try:
+
+                callback(self)
+
+            except:
+
+                raise NotCallableOrErrorInCall(
+                    "Could not use callback for parameter %s with value %s" % (self.name, new_value))
+
     # Define the property "min_value"
     # NOTE: the min value is always in external representation
 
@@ -637,6 +650,11 @@ class ParameterBase(Node):
         # Use the properties so that the checks and the handling of units are made automatically
 
         min_value, max_value = bounds
+
+        # Remove old boundaries to avoid problems with the new one, if the current value was within the old boundaries
+        # but is not within the new ones (it will then be adjusted automatically later)
+        self.min_value = None
+        self.max_value = None
 
         self.min_value = min_value
 

@@ -542,19 +542,16 @@ node_get_path(Node *self, PyObject *args)
   // Now make the string like node1.node2.node3
   std::string path_string;
 
-  for (std::list<std::string>::iterator it = path.begin(); it != path.end(); ++it)
+  for (std::list<std::string>::iterator it = path.begin(); it != --path.end(); ++it)
   {
 
     path_string += *it;
 
-    if (*it != path.back())
-    {
-
-      path_string += ".";
-
-    }
+    path_string += ".";
 
   }
+
+  path_string += *(--path.end());
 
   PyObject *path_string_py = PyString_FromString(path_string.c_str());
 

@@ -2,11 +2,13 @@ import numpy as np
 from scipy.integrate import quad
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
+from astropy import wcs
 import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance, spherical_angle
 from astromodels.utils.vincenty import vincenty
+
 
 class Latitude_galactic_diffuse(Function2D):
     r"""
@@ -27,6 +29,16 @@ class Latitude_galactic_diffuse(Function2D):
 
                 desc : Sigma for
                 initial value : 1
+
+            l_min :
+
+                desc : min Longtitude
+                initial value : 10
+
+            l_max :
+
+                desc : max Longtitude
+                initial value : 30
 
         """
 
@@ -54,15 +66,34 @@ class Latitude_galactic_diffuse(Function2D):
 
         self.K.unit = z_unit
         self.sigma_b.unit = x_unit
+        self.l_min.unit = y_unit
+        self.l_max.unit = y_unit
 
-    def evaluate(self, x, y, K, sigma_b):
+    def evaluate(self, x, y, K, sigma_b, l_min, l_max):
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
+        l = _coord.transform_to('galactic').l.value
 
-        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2))
+        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
+
+    def get_boundaries(self):
+
+        max_b = self.sigma_b.max_value
+        l_min = self.l_min.value
+        l_max = self.l_max.value
+
+        _coord = SkyCoord(l=[l_min, l_min, l_max, l_max], b=[max_b * -2., max_b * 2., max_b * 2., max_b * -2.], frame="galactic", unit="deg")
+
+        # no dealing with 0 360 overflow
+        min_lat = min(_coord.transform_to("icrs").dec.value)
+        max_lat = max(_coord.transform_to("icrs").dec.value)
+        min_lon = min(_coord.transform_to("icrs").ra.value)
+        max_lon = max(_coord.transform_to("icrs").ra.value)
+
+        return (min_lon, max_lon), (min_lat, max_lat)
 
 
 class Gaussian_on_sphere(Function2D):
@@ -646,15 +677,18 @@ class SpatialTemplate_2D(Function2D):
     def load_file(self,fitsfile,ihdu=0):
         
         with fits.open(fitsfile) as f:
-            self._refXpix = f[ihdu].header['CRPIX1']
-            self._refYpix = f[ihdu].header['CRPIX2']
-            self._delXpix = f[ihdu].header['CDELT1']
-            self._delYpix = f[ihdu].header['CDELT2']
-            self._refX = f[ihdu].header['CRVAL1'] # assumed to be RA
-            self._refY = f[ihdu].header['CRVAL2'] # assumed to be DEC
+    
+            self._wcs = wcs.WCS( header = f[ihdu].header )
             self._map = f[ihdu].data
+            
             self._nX = f[ihdu].header['NAXIS1']
             self._nY = f[ihdu].header['NAXIS2']
+            assert self._map.shape[1] == self._nX, "NAXIS1 = %d in fits header, but %d in map" % (self._nX, self._map.shape[1])
+            assert self._map.shape[0] == self._nY, "NAXIS2 = %d in fits header, but %d in map" % (self._nY, self._map.shape[0])
+            
+        #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
+        #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
+            
     
     def set_frame(self, new_frame):
         """
@@ -664,16 +698,17 @@ class SpatialTemplate_2D(Function2D):
             :return: (none)
             """
         assert isinstance(new_frame, BaseCoordinateFrame)
-        
+                
         self._frame = new_frame
     
     def evaluate(self, x, y, K):
         
         # We assume x and y are R.A. and Dec
-        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+        coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
         
-        Xpix = np.add(np.divide(np.subtract(x,self._refX),self._delXpix),self._refXpix)
-        Ypix = np.add(np.divide(np.subtract(y,self._refY),self._delYpix),self._refYpix)
+        #transform input coordinates to pixel coordinates; 
+        #SkyCoord takes care of necessary coordinate frame transformations.
+        Xpix, Ypix = coord.to_pixel(self._wcs)
         
         Xpix = Xpix.astype(int)
         Ypix = Ypix.astype(int)
@@ -681,28 +716,99 @@ class SpatialTemplate_2D(Function2D):
         # find pixels that are in the template ROI, otherwise return zero
         iz = np.where((Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0))[0]
         out = np.zeros((len(x)))
-        out[iz] = self._map[Xpix[iz].astype(int),Ypix[iz]]
-        
-        #pdb.set_trace()
+        out[iz] = self._map[Ypix[iz], Xpix[iz]]
         
         return np.multiply(K,out)
 
     def get_boundaries(self):
     
-        min_ra = (0-np.int(self._refXpix))*self._delXpix + self._refX
-        max_ra = ((self._nX-1)-np.int(self._refXpix))*self._delXpix + self._refX
+        #We use the max/min RA/Dec of the image corners to define the boundaries.
+        #Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
+    
+        Xcorners = np.array( [0, 0,        self._nX, self._nX] )
+        Ycorners = np.array( [0, self._nY, 0,        self._nY] )
         
-        min_dec = (0-np.int(self._refYpix))*self._delYpix + self._refY
-        max_dec = ((self._nY-1)-np.int(self._refYpix))*self._delYpix + self._refY
+        corners = SkyCoord.from_pixel( Xcorners, Ycorners, wcs=self._wcs, origin = 0).transform_to(self._frame)  
+     
+        min_lon = min(corners.ra.degree)
+        max_lon = max(corners.ra.degree)
         
-        min_lon = min([min_ra,max_ra])
-        max_lon = max([min_ra,max_ra])
-        
-        min_lat = min([min_dec,max_dec])
-        max_lat = max([min_dec,max_dec])
-        
+        min_lat = min(corners.dec.degree)
+        max_lat = max(corners.dec.degree)
         
         return (min_lon, max_lon), (min_lat, max_lat)
+
+class Power_law_on_sphere(Function2D):
+    r"""
+        description :
+
+            A power law function on a sphere (in spherical coordinates)
+
+        latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & |\vec{x}-\vec{x}_0| \le 0.05\\ |\vec{x}-\vec{x}_0|^{index} & {\rm if} & 0.05 < |\vec{x}-\vec{x}_0| \le maxr \\ 0 & {\rm if} & |\vec{x}-\vec{x}_0|>maxr\end{matrix}\right. $$
+
+        parameters :
+
+            lon0 :
+
+                desc : Longitude of the center of the source
+                initial value : 0.0
+                min : 0.0
+                max : 360.0
+
+            lat0 :
+
+                desc : Latitude of the center of the source
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+            index :
+
+                desc : power law index
+                initial value : -2.0
+                min : -5.0
+                max : -1.0
+
+            maxr :
+
+                desc : max radius
+                initial value : 5.
+                fix : yes
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # lon0 and lat0 and rdiff have most probably all units of degrees. However,
+        # let's set them up here just to save for the possibility of using the
+        # formula with other units (although it is probably never going to happen)
+
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
+        self.index.unit = u.dimensionless_unscaled
+        self.maxr.unit = x_unit
+
+    def evaluate(self, x, y, lon0, lat0, index, maxr):
+
+        lon, lat = x,y
+
+        angsep = angular_distance(lon0, lat0, lon, lat)
+
+        if self.maxr.value <= 0.05:
+            norm = np.power(180 / np.pi, -2.-self.index.value) * np.pi * self.maxr.value**2 * 0.05**self.index.value
+        elif self.index.value == -2.:
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * np.log(self.maxr.value / 0.05)
+        else:
+            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * (np.power(self.maxr.value * np.pi / 180., self.index.value+2.) - np.power(0.05 * np.pi / 180., self.index.value+2.))
+            
+
+        return np.less_equal(angsep,self.maxr.value) * np.power(180 / np.pi, -1. * index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), np.multiply(0.05, np.less_equal(angsep, 0.05))), index) / norm
+
+    def get_boundaries(self):
+
+        return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)), ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
 
 
 # class FunctionIntegrator(Function2D):
