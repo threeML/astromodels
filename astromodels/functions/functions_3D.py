@@ -441,6 +441,7 @@ class GalPropTemplate_3D(Function3D):
 
         # We assume x and y are R.A. and Dec
         print z
+        print z * u.keV / u.MeV
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
