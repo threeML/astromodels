@@ -440,7 +440,6 @@ class GalPropTemplate_3D(Function3D):
     def evaluate(self, x,y,z,K):
 
         # We assume x and y are R.A. and Dec
-        print z
         print z/1000. 
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
@@ -451,7 +450,7 @@ class GalPropTemplate_3D(Function3D):
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
         #print np.log10(1.* u.keV/u.MeV)
         energy = np.log10(z * u.keV/ u.MeV)
-        #print "Energies: ",np.power(10,energy)
+        print "Energies: ",np.power(10,energy)
         if lon.size != lat.size:
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
