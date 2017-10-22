@@ -440,11 +440,7 @@ class GalPropTemplate_3D(Function3D):
     def evaluate(self, x,y,z,K):
 
         # We assume x and y are R.A. and Dec
-        #print np.min(x)
-        #print x
-        #print y
-        #print x.size
-        #print z.size
+        print z
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
         b = _coord.transform_to('galactic').b.value
