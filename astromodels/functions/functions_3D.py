@@ -447,7 +447,7 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        #print np.log10(1.* u.keV/u.MeV)
+        print z
         energy = np.log10(z * u.keV/ u.MeV)
         #print "Energies: ",np.power(10,energy)
         if lon.size != lat.size:
