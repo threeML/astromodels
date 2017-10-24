@@ -447,7 +447,6 @@ class GalPropTemplate_3D(Function3D):
         lon=l
         lat=b
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        print z
         energy = np.log10(z * u.keV/ u.MeV)
         #print "Energies: ",np.power(10,energy)
         if lon.size != lat.size:
@@ -475,7 +474,7 @@ class GalPropTemplate_3D(Function3D):
                     continue
 
         assert np.all(np.isfinite(f))
-        A = np.multiply(K,f)#/1000.
+        A = np.multiply(K,f/1000.) #divide by 1000 since LiFF will mutliply it back (change from MeV to KeV)
         #print "Flux: ", A
         return A
 
