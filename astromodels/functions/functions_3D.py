@@ -293,7 +293,6 @@ class Continuous_injection_diffusion(Function3D):
 
         lon, lat = x, y
         energy = z
-        print z
         # energy in kev -> TeV.
         # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
         # of a dimensionless quantity, so there must be a pivot there.
