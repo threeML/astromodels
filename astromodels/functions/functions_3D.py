@@ -444,7 +444,7 @@ class GalPropTemplate_3D(Function3D):
         b = _coord.transform_to('galactic').b.value
         l = _coord.transform_to('galactic').l.value
         lon=l
-        lat=b
+        lat=-b #Flippled?
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
         energy = np.log10(z * u.keV/ u.MeV)
         #print "Energies: ",np.power(10,energy)
