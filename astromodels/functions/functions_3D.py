@@ -429,8 +429,8 @@ class GalPropTemplate_3D(Function3D):
             self._ne = f[ihdu].header['NAXIS3']#energy
 
             #Create the function for the interpolation
-            self._L = np.linspace(-self._refLon,self._refLon-(self._nl-1)*self._delLon,self._nl)
-            self._B = np.linspace(-self._refLat,self._refLat-(self._nb-1)*self._delLat,self._nb)
+            self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl)
+            self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)
             self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)
             for i in xrange(len(self._E)):
                 self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
@@ -443,7 +443,7 @@ class GalPropTemplate_3D(Function3D):
 
         b = _coord.transform_to('galactic').b.value
         l = _coord.transform_to('galactic').l.value
-        lon=l 
+        lon=-l 
         lat=b 
         print lon
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
