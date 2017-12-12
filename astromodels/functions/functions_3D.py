@@ -478,53 +478,34 @@ class GalPropTemplate_3D(Function3D):
         #print "Flux: ", A
         return A
 
-    def define_region(self,a,b,c,d):
-        if c < -26.:
-            c = -26.
-            print "Value cannot be lower than dec=-26 due to HAWC's FOV"
-        if d > 66.:
-            d = 66.
-            print "Value cannot be lower than dec=66 due to HAWC's FOV"
-        self.ramin = a
-        self.ramax = b
-        self.decmin = c
-        self.decmax = d
+    def define_region(self,a,b,c,d,galactic=False):
+        if galactic:
+            lmin = a
+            lmax = b
+            bmin = c
+            bmax = d
+
+            _coord = SkyCoord(l=[lmin,lmin,lmax,lmax], b=[bmin, bmax, bmax, bmin], frame='galactic', unit='deg')
+            
+            self.ramin = min(_coord.transform_to('icrs').ra.value)
+            self.ramax = max(_coord.transform_to('icrs').ra.value)
+            self.decmin = min(_coord.transform_to('icrs').dec.value)
+            self.decmax = max(_coord.transform_to('icrs').dec.value)
+
+        else: 
+            if c < -26.:
+                c = -26.
+                print "Value cannot be lower than dec=-26 due to HAWC's FOV"
+            if d > 66.:
+                d = 66.
+                print "Value cannot be lower than dec=66 due to HAWC's FOV"
+            self.ramin = a
+            self.ramax = b
+            self.decmin = c
+            self.decmax = d
 
     def get_boundaries(self):
 
-        #if min_longitude < self.ramin:
-        #    min_longitude = self.ramin
-        #if max_longitude > self.ramax:
-        #    max_longitude = self.ramax
-        #if min_latitude < self.decmin:
-        #    min_latitude = self.decmin
-        #if max_latitude > self.decmax:
-        #    max_latitude = self.decmax
-        #maximum_rdiff = self.r
-
-        #min_latitude = max(-90., self.lat0 - maximum_rdiff)
-        #max_latitude = min(90., self.lat0 + maximum_rdiff)
-
-        #max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
-
-        #if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
-
-           # min_longitude = 0.
-           # max_longitude = 360.
-
-        #else:
-
-            #min_longitude = self.lon0 - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
-            #max_longitude = self.lon0 + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
-
-            #if min_longitude < 0.:
-
-                #min_longitude += 360.
-
-            #elif max_longitude > 360.:
-
-                #max_longitude -= 360.
-        #
         min_longitude = self.ramin
         max_longitude = self.ramax
         min_latitude = self.decmin
