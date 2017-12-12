@@ -1,6 +1,7 @@
 __author__ = 'giacomov'
 
-from html2text import html2text
+import yaml
+import re
 
 
 def _process_html(dictionary):
@@ -42,6 +43,19 @@ def _process_html(dictionary):
     return final_output
 
 
+def _process_text(dictionary):
+
+    # Obtain YAML representation
+
+    string_repr = yaml.dump(dictionary, default_flow_style=False)
+
+    # Add a '*' for each point in the list and indent appropriately
+
+    final_output = re.sub("(\s*)(.+)", "\\1  * \\2", string_repr)
+
+    return final_output
+
+
 def dict_to_list(dictionary, html=False):
     """
     Convert a dictionary into a unordered list.
@@ -51,12 +65,10 @@ def dict_to_list(dictionary, html=False):
     :return: the list
     """
 
-    html_repr = _process_html(dictionary)
+    if html:
 
-    if not html:
-
-        return html2text(html_repr)
+        return _process_html(dictionary)
 
     else:
 
-        return html_repr
+        return _process_text(dictionary)

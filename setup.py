@@ -337,7 +337,6 @@ setup(
         'numdifftools',
         'tables',
         'pandas',
-        'html2text',
         'dill'],
 
     ext_modules=ext_modules_configuration,
