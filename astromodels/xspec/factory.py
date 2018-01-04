@@ -345,6 +345,8 @@ def get_models(model_dat_path):
 
     return model_definitions
 
+# TODO: gabs is returning all 1.0
+
 class_definition_code = '''
 
 from astromodels.functions.function import FunctionMeta, Function1D
@@ -354,7 +356,9 @@ from astromodels.xspec import _xspec
 
 # These are multiplicative functions which need numerical differentiation
 _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
-                          'XS_spline', 'XS_swind1', 'XS_xion', 'XS_zxipcf']
+                          'XS_spline', 'XS_swind1', 'XS_xion', 'XS_zxipcf',
+                          'XS_cabs', 'XS_wabs', 'XS_zwabs'
+                          ]
 
 class XS_$MODEL_NAME$(Function1D):
 
