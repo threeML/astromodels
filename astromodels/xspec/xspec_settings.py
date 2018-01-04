@@ -58,4 +58,4 @@ def xspec_xsect(command_string=None):
 
     else:
 
-        _xspec.set_xssect(command_string)
+        _xspec.set_xsxsect(command_string)
