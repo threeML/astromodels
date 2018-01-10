@@ -6,7 +6,7 @@ from astropy import wcs
 import astropy.units as u
 
 from astromodels.functions.function import Function2D, FunctionMeta
-from astromodels.utils.angular_distance import angular_distance, spherical_angle
+from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
 
 
