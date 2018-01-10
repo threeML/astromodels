@@ -261,6 +261,7 @@ def setup_xspec():
 
                   libraries=libraries,
                   library_dirs=library_dirs,
+                  runtime_library_dirs=library_dirs,
                   extra_compile_args=[])]
 
     return ext_modules_configuration
@@ -327,7 +328,7 @@ setup(
     keywords=['Likelihood', 'Models', 'fit'],
 
     classifiers=[],
-
+    
     install_requires=[
         'numpy >= 1.6',
         'PyYAML',
@@ -336,7 +337,6 @@ setup(
         'numdifftools',
         'tables',
         'pandas',
-        'html2text',
         'dill'],
 
     ext_modules=ext_modules_configuration,
