@@ -406,8 +406,9 @@ class GalPropTemplate_3D(Function3D):
 
     def load_file(self,fitsfile,ihdu=0):
 
-        header = fits.getheader(fitsfile)
-        self._w = wcs.WCS(header)
+        #self._header = fits.getheader(fitsfile)
+        #self._w = wcs.WCS(self._header)
+        self.fname = fitsfile
         self.ramin = 0.1
         self.ramax = 359.9
         self.decmin = -26.
@@ -437,6 +438,9 @@ class GalPropTemplate_3D(Function3D):
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
 
+    def which_model_file():
+        return self.fname
+
     def evaluate(self, x,y,z,K):
 
         # We assume x and y are R.A. and Dec
@@ -448,7 +452,7 @@ class GalPropTemplate_3D(Function3D):
         lat=b 
         #transform energy from keV to MeV. Galprop Model starts at 100 MeV
         energy = np.log10(z * u.keV/ u.MeV)
-        #print "Energies: ",np.power(10,energy)
+
         if lon.size != lat.size:
             raise AttributeError("Lon and Lat should be the same size")
         f=np.zeros([lon.size,energy.size])
@@ -461,11 +465,8 @@ class GalPropTemplate_3D(Function3D):
                 lon[j]=180-lon[j]
 
         for i in xrange(energy.size):
-            #print i
             if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
                 continue
-            #r = Parallel(n_jobs=1)(delayed(self._F)((energy[i],lat[j],lon[j])) for j in xrange(lon.size))
-            #f[:][i] = r
 
             for j in xrange(lon.size):
                 try:
@@ -475,7 +476,6 @@ class GalPropTemplate_3D(Function3D):
 
         assert np.all(np.isfinite(f))
         A = np.multiply(K,f/1000.) #divide by 1000 since LiFF will mutliply it back (change from MeV to KeV)
-        #print "Flux: ", A
         return A
 
     def define_region(self,a,b,c,d,galactic=False):
