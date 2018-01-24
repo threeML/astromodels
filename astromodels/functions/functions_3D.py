@@ -438,7 +438,7 @@ class GalPropTemplate_3D(Function3D):
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
 
-    def which_model_file():
+    def which_model_file(self):
         return self.fname
 
     def evaluate(self, x,y,z,K):
