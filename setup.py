@@ -173,7 +173,9 @@ def find_library(library_root, additional_places=None):
 
 
 # Get the version number
-execfile('astromodels/version.py')
+vfilename = "astromodels/version.py"
+exec(compile(open(vfilename, "rb").read(), vfilename, 'exec'))
+#execfile('astromodels/version.py')
 
 
 def setup_xspec():
