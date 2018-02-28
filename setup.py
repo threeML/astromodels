@@ -186,6 +186,12 @@ def setup_xspec():
 
         # See, maybe we are running in Conda
         conda_prefix = os.environ.get("CONDA_PREFIX")
+        
+        if conda_prefix is None:
+            
+            # Maybe this is a Conda build
+            
+            conda_prefix = os.environ.get("PREFIX")
 
         if conda_prefix is not None:
 
