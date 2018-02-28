@@ -215,7 +215,7 @@ def setup_xspec():
                 print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
 
                 # Set up the HEADAS variable so that the following will find the libraries
-                headas_root = os.environ['CONDA_PREFIX']
+                headas_root = conda_prefix
 
         else:
 
