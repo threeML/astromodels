@@ -231,11 +231,7 @@ def setup_xspec():
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
     
     libraries_root = ['XSFunctions', 'XSModel', 'XSUtil', 'XS', 'cfitsio', 'CCfits', 'wcs', 'gfortran']
-    
-    if conda_prefix is not None:
-        # When building in conda we do not need to explicitly link against gfortran
-        libraries_root.pop(-1)
-        
+            
     libraries = []
     library_dirs = []
 
