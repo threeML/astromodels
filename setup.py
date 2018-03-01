@@ -186,6 +186,12 @@ def setup_xspec():
 
         # See, maybe we are running in Conda
         conda_prefix = os.environ.get("CONDA_PREFIX")
+        
+        if conda_prefix is None:
+            
+            # Maybe this is a Conda build
+            
+            conda_prefix = os.environ.get("PREFIX")
 
         if conda_prefix is not None:
 
@@ -209,7 +215,7 @@ def setup_xspec():
                 print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
 
                 # Set up the HEADAS variable so that the following will find the libraries
-                headas_root = os.environ['CONDA_PREFIX']
+                headas_root = conda_prefix
 
         else:
 
@@ -223,9 +229,9 @@ def setup_xspec():
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
-
+    
     libraries_root = ['XSFunctions', 'XSModel', 'XSUtil', 'XS', 'cfitsio', 'CCfits', 'wcs', 'gfortran']
-
+            
     libraries = []
     library_dirs = []
 
