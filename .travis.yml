@@ -26,8 +26,10 @@ before_install:
 
 # Install packages
 install:
-  # Install conda build, anaconda client, codecov and pytest
-  - conda create --name test_env python=$TRAVIS_PYTHON_VERSION pip requests conda-build jinja2 anaconda-client pytest codecov
+  # Install conda build and client in root environment
+  - conda install conda-build anaconda-client
+  # Create test environment with pytest and codecov
+  - conda create --name test_env python=$TRAVIS_PYTHON_VERSION pytest codecov
 
 # Run test
 script:
