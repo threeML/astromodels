@@ -11,6 +11,7 @@ before_install:
 script:
  - docker run -e TRAVIS_PYTHON_VERSION -e TRAVIS_BRANCH -e CONDA_UPLOAD_TOKEN -e TRAVIS_OS_NAME
               -v $TRAVIS_BUILD_DIR:/travis_build_dir
+              -it --rm
               condaforge/linux-anvil
               /bin/bash -c "source /travis_build_dir/ci/build_and_test.sh"
 
