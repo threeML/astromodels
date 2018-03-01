@@ -19,7 +19,7 @@ before_install:
   - ./miniconda.sh -b
   - export PATH=$HOME/miniconda2/bin:$PATH
   # Add conda-forge as first channel (that's why we use --add and not --append)
-  - conda config --add conda-forge
+  - conda config --add channels conda-forge
   - conda update --yes -q conda
   - conda config --set always_yes true
   - conda config --set anaconda_upload no
@@ -27,10 +27,11 @@ before_install:
 # Install packages
 install:
   # Install conda build, anaconda client, codecov and pytest
-  - conda install -q python=$TRAVIS_PYTHON_VERSION pip requests conda-build jinja2 anaconda-client pytest codecov
+  - conda create --name test_env python=$TRAVIS_PYTHON_VERSION pip requests conda-build jinja2 anaconda-client pytest codecov
 
 # Run test
 script:
+  - source activate test_env
   # Build package
   - conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
   # Install it
