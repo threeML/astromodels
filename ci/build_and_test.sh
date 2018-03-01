@@ -18,7 +18,7 @@ conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist
 conda install --use-local astromodels
 # Run tests
 cd ~
-python -m pytest -vv --cov=astromodels --pyargs  astromodels
+python -m pytest -vv --cov=astromodels --pyargs astromodels
 
 # Upload coverage measurements
 codecov -t 493c9a2d-42fc-40d6-8e65-24e681efaa1e
