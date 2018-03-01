@@ -1,55 +1,18 @@
+sudo: required
+
 language: python
-python:
-  - 2.7
 
-os:
-  - linux
-#  - osx
+services:
+  - docker
 
-# Setup anaconda
 before_install:
-  # Download appropriate version depending on OS
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
-    else
-      wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh;
-    fi
-  # Install
-  - chmod +x miniconda.sh
-  - ./miniconda.sh -b
-  - export PATH=$HOME/miniconda2/bin:$PATH
-  # Add conda-forge as first channel (that's why we use --add and not --append)
-  - conda config --add channels conda-forge
-  - conda update --yes -q conda
-  - conda config --set always_yes true
-  - conda config --set anaconda_upload no
+ - docker pull condaforge/linux-anvil
 
-# Install packages
-install:
-  # Install conda build and client in root environment
-  - conda install conda-build anaconda-client
-  # Create test environment with pytest and codecov
-  - conda create --name test_env python=$TRAVIS_PYTHON_VERSION pytest codecov
-
-# Run test
 script:
-  - source activate test_env
-  # Build package
-  - conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-  # Install it
-  - conda install --use-local astromodels
-  # Run tests
-  - python -m pytest -vv --cov=astromodels
-
-after_success:
-  # Upload coverage measurements
-  - codecov -t 493c9a2d-42fc-40d6-8e65-24e681efaa1e
-  # If we are on the master branch upload to the channel
-  - if [[ "$TRAVIS_BRANCH" == "linux" ]]; then
-        anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml $CONDA_BLD_PATH/$TRAVIS_OS_NAME-64/*.tar.bz2 --force
-    else
-        echo "On a branch, not uploading to Conda channel"
-    fi
+ - docker run -e TRAVIS_PYTHON_VERSION -e TRAVIS_BRANCH -e CONDA_UPLOAD_TOKEN -e TRAVIS_OS_NAME
+              -v $TRAVIS_BUILD_DIR:/travis_build_dir
+              condaforge/linux-anvil
+              /bin/bash -c "source /travis_build_dir/ci/build_and_test.sh"
 
 env:
   matrix:
