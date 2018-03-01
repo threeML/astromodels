@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 conda update --yes -q conda
 conda config --set always_yes true
 conda config --set anaconda_upload no
@@ -10,11 +12,13 @@ conda create --name test_env python=$TRAVIS_PYTHON_VERSION pytest codecov
 # Run test
 source activate test_env
 # Build package
+cd /travis_build_dir
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
 # Install it
 conda install --use-local astromodels
 # Run tests
-python -m pytest -vv --cov=astromodels
+cd ~
+python -m pytest -vv --cov=astromodels --pyargs  astromodels
 
 # Upload coverage measurements
 codecov -t 493c9a2d-42fc-40d6-8e65-24e681efaa1e
