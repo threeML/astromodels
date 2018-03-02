@@ -51,7 +51,7 @@ conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly
 
 # Run tests
 cd astromodels/tests
-python -m pytest -vv --cov=astromodels -k "not slow"
+python -m pytest -vv --cov=astromodels # -k "not slow"
 
 # Codecov needs to run in the main git repo
 
