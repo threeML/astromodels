@@ -1,6 +1,6 @@
 sudo: required
 
-language: python
+language: generic
 
 services:
   - docker
@@ -10,40 +10,41 @@ os:
   - osx
 
 before_install:
+  - |
+       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         docker pull condaforge/linux-anvil
 
-     docker pull condaforge/linux-anvil
+       else
 
-   else
+         # Install Miniconda
+         wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
+         bash miniconda.sh -b -p $HOME/miniconda
+         export PATH="$HOME/miniconda/bin:$PATH"
 
-     # Install Miniconda
-     wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
-     bash miniconda.sh -b -p $HOME/miniconda
-     export PATH="$HOME/miniconda/bin:$PATH"
-
-   fi
+       fi
 
 script:
 
- - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+ - |
+       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
-     docker run -e TRAVIS_PYTHON_VERSION \
-                -e TRAVIS_BRANCH \
-                -e CONDA_UPLOAD_TOKEN \
-                -e TRAVIS_OS_NAME \
-                -e TRAVIS_BUILD_NUMBER \
-                -e TRAVIS_BUILD_DIR \
-                -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                -it --rm -e user_id=`id -u` \
-                condaforge/linux-anvil \
-                /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
-   else
+         docker run -e TRAVIS_PYTHON_VERSION \
+                    -e TRAVIS_BRANCH \
+                    -e CONDA_UPLOAD_TOKEN \
+                    -e TRAVIS_OS_NAME \
+                    -e TRAVIS_BUILD_NUMBER \
+                    -e TRAVIS_BUILD_DIR \
+                    -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
+                    -it --rm -e user_id=`id -u` \
+                    condaforge/linux-anvil \
+                    /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
+       else
 
-      chmod u+x ci/build_and_test.sh
-      ./ci/build_and_test.sh
-   
-   fi
+          chmod u+x ci/build_and_test.sh
+          ./ci/build_and_test.sh
+
+       fi
 
 env:
   matrix:
