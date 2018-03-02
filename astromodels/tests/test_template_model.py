@@ -130,7 +130,7 @@ def test_template_function():
                                          "worse than 10 percent, "
                                          "with parameters %s!" % (new_energies[idx], deltas[idx], [a,b,xp]))
 
-
+@pytest.mark.slow
 def test_input_output():
 
     tm = TemplateModel('__test')

@@ -1,9 +1,8 @@
 {% set name = "astromodels" %}
-{% set data = load_setup_py_data() %}
 
 package:
   name: {{ name }}
-  version: {{ data.get('version') }}
+  version: {{ os.environ.get('PKG_VERSION') }}
 
 source:
 #  git_url: https://github.com/giacomov/{{ name }}.git
@@ -25,11 +24,11 @@ requirements:
     - hdf5
     - pytables
     - pandas
-    - xspec-modelsonly
+    - xspec-modelsonly-lite
 
   run:
     - python
-    - dill
+    - libgfortran
     - numpy
     - pyyaml
     - astropy
@@ -38,8 +37,7 @@ requirements:
     - hdf5
     - pytables
     - pandas
-    - libgcc  # [linux]
-    - libgfortran
+    - dill
 
 build:
   script: python -m pip install --no-deps --ignore-installed .
@@ -64,7 +62,7 @@ test:
   # at test time.
 
   requires:
-    - xspec-modelsonly
+    - xspec-modelsonly-lite
 
 
 about:
