@@ -93,9 +93,9 @@ def test_template_function():
 
     mo = get_comparison_function()
 
-    new_alpha_grid = np.linspace(-1.5, 1, 20)
-    new_beta_grid = np.linspace(-3.5, -1.6, 20)
-    new_xp_grid = np.logspace(1, 3, 30)
+    new_alpha_grid = np.linspace(-1.5, 1, 15)
+    new_beta_grid = np.linspace(-3.5, -1.6, 15)
+    new_xp_grid = np.logspace(1, 3, 15)
 
     new_energies = np.logspace(1, 3, 40)
 
