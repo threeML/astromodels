@@ -21,6 +21,8 @@ before_install:
          wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
          bash miniconda.sh -b -p $HOME/miniconda
          export PATH="$HOME/miniconda/bin:$PATH"
+         conda config --add channels conda-forge
+         conda install -y conda-build
 
        fi
 
@@ -29,7 +31,7 @@ script:
  - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
-         docker run -e TRAVIS_PYTHON_VERSION \
+         docker run -e TRAVIS_PYTHON_VERSION=2.7 \
                     -e TRAVIS_BRANCH \
                     -e CONDA_UPLOAD_TOKEN \
                     -e TRAVIS_OS_NAME \
@@ -42,6 +44,7 @@ script:
        else
 
           chmod u+x ci/build_and_test.sh
+          export TRAVIS_PYTHON_VERSION=2.7
           ./ci/build_and_test.sh
 
        fi
