@@ -14,7 +14,7 @@ from astromodels.core.parameter import Parameter, IndependentVariable
 from astromodels.core.model_parser import *
 from astromodels import u
 import numpy as np
-
+import copy
 
 def _get_point_source(name="test"):
 
@@ -829,3 +829,12 @@ def test_time_domain_integration():
     expected_results = default_powerlaw(energies) * effective_norm  # type: np.ndarray
 
     assert np.allclose(expected_results, results)
+
+
+def test_deepcopy():
+
+    mg = ModelGetter()
+
+    m1 = mg.model
+
+    clone = copy.deepcopy(m1)

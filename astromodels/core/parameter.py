@@ -11,7 +11,8 @@ import numpy as np
 import scipy.stats
 import warnings
 
-from astromodels.core.tree import Node
+from tree import Node
+from thread_safe_unit_format import ThreadSafe
 
 
 def _behaves_like_a_number(obj):
@@ -156,7 +157,7 @@ class ParameterBase(Node):
 
         # Store the units as an astropy.units.Unit instance
 
-        self._unit = u.Unit(unit)
+        self._unit = self._safe_assign_unit(unit)
 
         # A ParameterBase instance cannot have auxiliary variables
         self._aux_variable = {}
@@ -244,25 +245,28 @@ class ParameterBase(Node):
         """
         return self._desc
 
+    @staticmethod
+    def _safe_assign_unit(input_unit):
+
+        # We first try to use our own, thread-safe format, if we fail then we try the astropy one
+
+        try:
+
+            new_unit = u.Unit(input_unit, format='threadsafe')
+
+        except ValueError:
+
+            # Try with the default format of astropy
+            new_unit = u.Unit(input_unit)
+
+        return new_unit
+
     # Define the property 'unit'
     def _set_unit(self, input_unit):
 
         # This will fail if the input is not valid
 
-        try:
-
-            new_unit = u.Unit(input_unit)
-
-        except ValueError:
-
-            # This for some obscure reason fails to parse when running in parallel, so we fix it manually
-            if input_unit == '1 / (cm2 keV s)':
-
-                new_unit = 1 / (u.cm**2 * u.keV * u.s)
-
-            else:
-
-                raise
+        new_unit = self._safe_assign_unit(input_unit)
 
 
         # Now transform the current _value in the new unit, unless the current unit is dimensionless, in which
@@ -720,7 +724,8 @@ class ParameterBase(Node):
             data['desc'] = str(self.description)
             data['min_value'] = self._to_python_type(self.min_value)
             data['max_value'] = self._to_python_type(self.max_value)
-            data['unit'] = str(self.unit.to_string(format='fits'))
+            # We use our own thread-safe format for the unit
+            data['unit'] = self.unit.to_string(format='threadsafe')
 
         return data
 

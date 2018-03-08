@@ -7,6 +7,8 @@ os.environ["ASTROMODELS_DEBUG"] = "debug"
 from astromodels.core.tree import Node
 from astromodels.core import node_ctype
 
+import astropy.units as u
+
 import gc
 
 def clean():
@@ -33,8 +35,8 @@ class _ComplexInheritance(Node):
 
         super(_ComplexInheritance, self).__init__(name)
 
-        self._min_value = min_value
-        self._max_value = max_value
+        self._min_value = min_value * u.Unit("1 / (keV * cm**2 * s)")
+        self._max_value = max_value * u.Unit("1 / (keV * cm**2 * s)")
 
     @property
     def min_value(self):
