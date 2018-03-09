@@ -913,30 +913,38 @@ class Parameter(ParameterBase):
         """Set prior for this parameter. The prior must be a function accepting the current value of the parameter
         as input and giving the probability density as output."""
 
-        # Try and call the prior with the current value of the parameter
-        try:
+        if prior is None:
 
-            _ = prior(self.value)
+            # Removing prior
 
-        except:
+            self._prior = None
 
-            raise NotCallableOrErrorInCall("Could not call the provided prior. " +
-                                           "Is it a function accepting the current value of the parameter?")
+        else:
 
-        try:
+            # Try and call the prior with the current value of the parameter
+            try:
 
-            prior.set_units(self.unit, u.dimensionless_unscaled)
+                _ = prior(self.value)
 
-        except AttributeError:
+            except:
 
-            raise NotCallableOrErrorInCall("It looks like the provided prior is not a astromodels function.")
+                raise NotCallableOrErrorInCall("Could not call the provided prior. " +
+                                               "Is it a function accepting the current value of the parameter?")
 
-        self._prior = prior
+            try:
+
+                prior.set_units(self.unit, u.dimensionless_unscaled)
+
+            except AttributeError:
+
+                raise NotCallableOrErrorInCall("It looks like the provided prior is not a astromodels function.")
+
+            self._prior = prior
 
     prior = property(_get_prior, _set_prior,
                      doc='Gets or sets the current prior for this parameter. The prior must be a callable function '
                          "accepting the current value of the parameter as input and returning the probability "
-                         "density as output")
+                         "density as output. Set to None to remove prior.")
 
     def has_prior(self):
         """

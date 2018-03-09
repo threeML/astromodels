@@ -558,6 +558,23 @@ def test_prior():
     p1.set_uninformative_prior(Log_uniform_prior)
 
 
+def test_remove_prior():
+
+    p1 = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0,
+                   delta=0.2, desc='test', free=False, unit='MeV')
+
+    my_prior = Uniform_prior()
+
+    p1.prior = my_prior
+
+    assert p1.has_prior()==True
+
+    # Now remove it
+    p1.prior = None
+
+    assert p1.has_prior()==False
+
+
 def test_as_quantity():
 
     p = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0,
