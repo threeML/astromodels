@@ -1507,10 +1507,7 @@ class Log_parabola(Function1D):
         # Eq. 6 in Massaro et al. 2004
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
-        return self.piv.value * pow(10, (2 + self.alpha.value) / (2 * self.beta.value))
-
-
-
+        return self.piv.value * pow(10, ((2 + self.alpha.value) * np.log(10)) / (2 * self.beta.value))
 
 
 if has_gsl:
