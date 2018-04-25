@@ -124,11 +124,13 @@ def test_pickling_unpickling():
 
 def test_default_constructor():
 
-    # Test that we cannot build a model with no sources
+    # Test that we can build a model with no sources
 
-    with pytest.raises(AssertionError):
+    m = Model()
 
-        _ = Model()
+    assert len(m.sources) == 0
+    assert len(m.point_sources) == 0
+    assert len(m.extended_sources) == 0
 
 
 def test_constructor_1source():

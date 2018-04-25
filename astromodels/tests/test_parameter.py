@@ -460,9 +460,14 @@ def test_callback():
 
     p1.add_callback(not_working_callback)
 
+    # This should work because we do not change the parameter, so the callback
+    # does not get called
+    p1.value = 2.0
+
+    # This should instead raise because we do change the value
     with pytest.raises(NotCallableOrErrorInCall):
 
-        p1.value = 2.0
+        p1.value = 3.0
 
     p1.empty_callbacks()
 
