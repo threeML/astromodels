@@ -47,9 +47,6 @@ class Model(Node):
 
     def __init__(self, *sources):
 
-        # There must be at least one source
-        assert len(sources) > 0, "You need to have at least one source in the model."
-
         # Setup the node, using the special name '__root__' to indicate that this is the root of the tree
 
         super(Model, self).__init__("__root__")
