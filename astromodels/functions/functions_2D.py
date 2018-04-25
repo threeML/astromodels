@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.integrate import quad
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
 from astropy import wcs
@@ -147,8 +146,9 @@ class Gaussian_on_sphere(Function2D):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * sigma ** 2) * np.exp(
-            -0.5 * np.power(angsep, 2) / sigma ** 2)
+        s2 = sigma**2
+
+        return (180 / np.pi)**2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2/s2)
 
     def get_boundaries(self):
 
