@@ -210,6 +210,52 @@ class ExtendedSource(Source, Node):
 
         return False
 
+    @property
+    def free_parameters(self):
+        """
+        Returns a dictionary of free parameters for this source
+
+        :return:
+        """
+        free_parameters = collections.OrderedDict()
+
+        for component in self._components.values():
+
+            for par in component.shape.parameters.values():
+
+                if par.free:
+
+                    free_parameters[par.name] = par
+
+        for par in self.spatial_shape.parameters.values():
+
+            if par.free:
+
+                free_parameters[par.name] = par
+
+        return free_parameters
+
+    @property
+    def parameters(self):
+        """
+        Returns a dictionary of all parameters for this source
+
+        :return:
+        """
+        all_parameters = collections.OrderedDict()
+
+        for component in self._components.values():
+
+            for par in component.shape.parameters.values():
+
+                all_parameters[par.name] = par
+
+        for par in self.spatial_shape.parameters.values():
+
+            all_parameters[par.name] = par
+
+        return all_parameters
+
     def _repr__base(self, rich_output=False):
         """
         Representation of the object
