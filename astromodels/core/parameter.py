@@ -172,7 +172,9 @@ class ParameterBase(Node):
         self._transformation = transformation
 
         # Let's store the init value
-
+        
+        # NOTE: this will be updated immediately by the _set_value method of the "value" property
+        self._internal_value = None
         # If the value is a Quantity, deal with that
 
         if isinstance(value, u.Quantity):
@@ -444,24 +446,29 @@ class ParameterBase(Node):
 
         if self._transformation is None:
 
-            self._internal_value = new_value
+            new_internal_value = new_value
 
         else:
 
-            self._internal_value = self._transformation.forward(new_value)
+            new_internal_value = self._transformation.forward(new_value)
 
-        # Call the callbacks (if any)
+        # If the parameter has changed, update its value and call the callbacks if needed
 
-        for callback in self._callbacks:
+        if new_internal_value != self._internal_value:
 
-            try:
+            # Update
+            self._internal_value = new_internal_value
 
-                callback(self)
+            # Call the callbacks (if any)
+            for callback in self._callbacks:
 
-            except:
+                try:
 
-                raise NotCallableOrErrorInCall(
-                    "Could not use callback for parameter %s with value %s" % (self.name, new_value))
+                    callback(self)
+
+                except:
+
+                    raise NotCallableOrErrorInCall("Could not call callback for parameter %s" % self.name)
 
     value = property(_get_value, _set_value,
                      doc="Get and sets the current value for the parameter, with or without units")
@@ -489,20 +496,15 @@ class ParameterBase(Node):
         :return: none
         """
 
-        self._internal_value = new_internal_value
+        if new_internal_value != self._internal_value:
 
-        # Call callbacks if any
+            self._internal_value = new_internal_value
 
-        for callback in self._callbacks:
+            # Call callbacks if any
 
-            try:
+            for callback in self._callbacks:
 
                 callback(self)
-
-            except:
-
-                raise NotCallableOrErrorInCall(
-                    "Could not use callback for parameter %s with value %s" % (self.name, new_value))
 
     # Define the property "min_value"
     # NOTE: the min value is always in external representation
