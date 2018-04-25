@@ -4,6 +4,7 @@ import astropy.units as u
 import numpy as np
 import os
 import pandas as pd
+from pandas.api.types import infer_dtype
 import re
 import scipy.interpolate
 import warnings
@@ -12,7 +13,6 @@ from pandas import HDFStore
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
-from astromodels.core.my_yaml import my_yaml
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
@@ -185,7 +185,7 @@ class TemplateModelFactory(object):
     @staticmethod
     def _clean_cols_for_hdf(data):
 
-        types = data.apply(lambda x: pd.lib.infer_dtype(x.values))
+        types = data.apply(lambda x: infer_dtype(x.values))
 
         for col in types.index:
 
