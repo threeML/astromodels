@@ -432,12 +432,11 @@ class Log_normal(Function1D):
 
            A log normal function
 
-       latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x-\mu)^2}{2~(\sigma)^2}} $
+       latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x/piv - \mu/piv)^2}{2~(\sigma)^2}} $
 
        parameters :
 
            F :
-
                desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution
                initial value : 1
 
@@ -452,6 +451,11 @@ class Log_normal(Function1D):
                initial value : 1.0
                min : 1e-12
 
+           piv :
+               desc : pivot. Leave this to 1 for a proper log normal distribution
+               initial value : 1.0
+               fix : yes
+
        tests :
            - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}
            - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}
@@ -459,7 +463,6 @@ class Log_normal(Function1D):
        """
 
     __metaclass__ = FunctionMeta
-
 
     # Place this here to avoid recomputing it all the time
 
@@ -469,7 +472,6 @@ class Log_normal(Function1D):
 
         self._is_prior = True
 
-
     def _set_units(self, x_unit, y_unit):
 
         # The normalization is the integral from -inf to +inf, i.e., has dimensions of
@@ -477,25 +479,29 @@ class Log_normal(Function1D):
         self.F.unit = y_unit
 
         # The mu has the same dimensions as the x
-        self.mu.unit = astropy_units.dimensionless_unscaled
+        self.mu.unit = x_unit
+
+        # The pivot has the same units as x
+        self.piv.unit = x_unit
 
         # sigma has the same dimensions as x
-        self.sigma.unit = astropy_units.dimensionless_unscaled
+        self.sigma.unit = x_unit
 
     # noinspection PyPep8Naming
-    def evaluate(self, x, F, mu, sigma):
+    def evaluate(self, x, F, mu, sigma, piv):
 
-        if isinstance(F, astropy_units.Quantity):
+        # The value * 0 is to keep the units right
 
-            x_ = x.value
+        result = np.zeros(x.shape) * F * 0
 
-        else:
+        # The log normal is not defined if x < 0. The "0 * x" part is to conserve the units if
+        # x has them, because 0 * x will be a Quantity with the same units as x
+        idx = (x > 0 * x)
 
-            x_ = x
+        result[idx] = F * self.__norm_const / (sigma / piv * x / piv) * np.exp(
+            -np.power(np.log(x / piv) - mu / piv, 2.) / (2 * np.power(sigma / piv, 2.)))
 
-        norm = self.__norm_const / (sigma * x_)
-
-        return F * norm * np.exp(-np.power(np.log(x_) - mu, 2.) / (2 * np.power(sigma, 2.)))
+        return result
 
     def from_unit_cube(self, x):
         """
