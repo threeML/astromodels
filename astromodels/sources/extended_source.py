@@ -125,16 +125,25 @@ class ExtendedSource(Source, Node):
 
         return self._spatial_shape
 
-    def __call__(self, lon, lat, energies):
-        """
-        Returns brightness of source at the given position and energy
+    def __call__(self, *args):
+      """
+      Returns brightness of source at the given position and energy
+      (or the total  flux at a given energy)
 
-        :param lon: longitude (array or float)
-        :param lat: latitude (array or float)
-        :param energies: energies (array or float)
-        :return: differential flux at given position and energy
-        """
-
+      :param lon: longitude (array or float)
+      :param lat: latitude (array or float)
+      :param energies: energies (array or float)
+      :return: differential flux at given position and energy
+      """
+        
+      assert len(args)==1 or len(args)==3
+  
+      if len(args) == 3:
+        
+        lat=args[0]
+        lon=args[1]
+        energies=args[2]
+        
         assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
 
         if not isinstance(lat, np.ndarray):
@@ -186,15 +195,10 @@ class ExtendedSource(Source, Node):
         # with negative fluxes
 
         return np.squeeze(result)
-
-    def __call__(self, energies):
-        """
-        Returns total  brightness of source at the given energy
-
-        :param energies: energies (array or float)
-        :return: differential flux at given position and energy
-        """
-
+      
+      else:
+        energies=args[0]
+        
         if not isinstance(energies, np.ndarray):
             energies = np.array(energies, ndmin=1)
 
@@ -219,7 +223,7 @@ class ExtendedSource(Source, Node):
             differential_flux = np.sum(results, 0)
 
         return differential_flux
-
+        
     def has_free_parameters(self):
         """
         Returns True or False whether there is any parameter in this source
