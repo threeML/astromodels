@@ -187,6 +187,39 @@ class ExtendedSource(Source, Node):
 
         return np.squeeze(result)
 
+    def __call__(self, energies):
+        """
+        Returns total  brightness of source at the given energy
+
+        :param energies: energies (array or float)
+        :return: differential flux at given position and energy
+        """
+
+        if not isinstance(energies, np.ndarray):
+            energies = np.array(energies, ndmin=1)
+
+        # Get the differential flux from the spectral components
+
+        results = [component.shape(energies) for component in self.components.values()]
+
+        if isinstance(energies, u.Quantity):
+
+            # Slow version with units
+
+            # We need to sum like this (slower) because using np.sum will not preserve the units
+            # (thanks astropy.units)
+
+            differential_flux = sum(results)
+
+        else:
+
+            # Fast version without units, where x is supposed to be in the same units as currently defined in
+            # units.get_units()
+
+            differential_flux = np.sum(results, 0)
+
+        return differential_flux
+
     def has_free_parameters(self):
         """
         Returns True or False whether there is any parameter in this source
