@@ -1,3 +1,3 @@
 .. toctree::
-    :glob:
+   :maxdepth: 3
     api/*
