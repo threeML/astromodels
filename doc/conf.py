@@ -14,7 +14,7 @@
 
 import sys
 import os
-import glob
+import astromodels
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -23,13 +23,11 @@ sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(1, os.path.abspath('../astromodels'))
 
 # Add the path to the C extension
-p1 = glob.glob("../build/lib*")
-lib_path = os.path.abspath('%s/astromodels/core' % p1)
+lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
 
 assert os.path.exists("%s/node_ctype.so" % lib_path)
 
 sys.path.insert(2, lib_path)
-
 
 # This must work now
 import node_ctype
