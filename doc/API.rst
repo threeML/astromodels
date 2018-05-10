@@ -1,0 +1,3 @@
+.. toctree::
+    :glob:
+    api/*
