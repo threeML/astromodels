@@ -347,6 +347,15 @@ setup(
         'pandas',
         'dill'],
 
+    extras_require={
+        'tests': [
+            'pytest', ],
+        'docs': [
+            'sphinx >= 1.4',
+            'sphinx_rtd_theme',
+            'nbsphinx',
+            'sphinx-autoapi']},
+
     ext_modules=ext_modules_configuration,
 
     package_data={
