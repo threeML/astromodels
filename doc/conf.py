@@ -26,7 +26,7 @@ sys.path.insert(1, os.path.abspath('../astromodels'))
 p1 = glob.glob("../build/lib*")
 lib_path = os.path.abspath('%s/astromodels/core' % p1)
 
-assert os.path.exists("%s/node_ctype.so" % p1)
+assert os.path.exists("%s/node_ctype.so" % lib_path)
 
 sys.path.insert(2, lib_path)
 
