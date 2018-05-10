@@ -30,6 +30,7 @@ assert os.path.exists("%s/node_ctype.so" % p1)
 
 sys.path.insert(2, lib_path)
 
+
 # This must work now
 import node_ctype
 
