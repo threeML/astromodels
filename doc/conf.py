@@ -14,16 +14,24 @@
 
 import sys
 import os
+import glob
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(1, os.path.abspath('../astromodels'))
+
 # Add the path to the C extension
-from distutils.util import get_platform
-platform_name = get_platform()
-sys.path.insert(2, os.path.abspath('../build/lib.%s/astromodels/core' % platform_name))
+p1 = glob.glob("../build/lib*")
+lib_path = os.path.abspath('%s/astromodels/core' % p1)
+
+assert os.path.exists("%s/node_ctype.so" % p1)
+
+sys.path.insert(2, lib_path)
+
+# This must work now
+import node_ctype
 
 # -- General configuration ------------------------------------------------
 
