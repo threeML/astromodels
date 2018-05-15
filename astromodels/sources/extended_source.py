@@ -127,7 +127,7 @@ class ExtendedSource(Source, Node):
 
     def get_total_flux( self, energies):
     
-         """
+        """
         Returns total flux of source at the given energy
         :param energies: energies (array or float)
         :return: differential flux at given energy
