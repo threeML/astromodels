@@ -125,25 +125,49 @@ class ExtendedSource(Source, Node):
 
         return self._spatial_shape
 
-    def __call__(self, *args):
-      """
-      Returns brightness of source at the given position and energy
-      (or the total  flux at a given energy)
+    def get_total_flux( self, energies):
+    
+         """
+        Returns total flux of source at the given energy
+        :param energies: energies (array or float)
+        :return: differential flux at given energy
+        """
+       
+        if not isinstance(energies, np.ndarray):
+            energies = np.array(energies, ndmin=1)
 
-      :param lon: longitude (array or float)
-      :param lat: latitude (array or float)
-      :param energies: energies (array or float)
-      :return: differential flux at given position and energy
-      """
-        
-      assert len(args)==1 or len(args)==3
-  
-      if len(args) == 3:
-        
-        lat=args[0]
-        lon=args[1]
-        energies=args[2]
-        
+        # Get the differential flux from the spectral components
+
+        results = [component.shape(energies) for component in self.components.values()]
+
+        if isinstance(energies, u.Quantity):
+
+            # Slow version with units
+
+            # We need to sum like this (slower) because using np.sum will not preserve the units
+            # (thanks astropy.units)
+
+            differential_flux = sum(results)
+
+        else:
+
+            # Fast version without units, where x is supposed to be in the same units as currently defined in
+            # units.get_units()
+
+            differential_flux = np.sum(results, 0)
+
+        return differential_flux
+
+
+    def __call__(self, lon, lat, energies):
+        """
+        Returns brightness of source at the given position and energy
+        :param lon: longitude (array or float)
+        :param lat: latitude (array or float)
+        :param energies: energies (array or float)
+        :return: differential flux at given position and energy
+        """
+
         assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
 
         if not isinstance(lat, np.ndarray):
@@ -195,35 +219,7 @@ class ExtendedSource(Source, Node):
         # with negative fluxes
 
         return np.squeeze(result)
-      
-      else:
-        energies=args[0]
-        
-        if not isinstance(energies, np.ndarray):
-            energies = np.array(energies, ndmin=1)
-
-        # Get the differential flux from the spectral components
-
-        results = [component.shape(energies) for component in self.components.values()]
-
-        if isinstance(energies, u.Quantity):
-
-            # Slow version with units
-
-            # We need to sum like this (slower) because using np.sum will not preserve the units
-            # (thanks astropy.units)
-
-            differential_flux = sum(results)
-
-        else:
-
-            # Fast version without units, where x is supposed to be in the same units as currently defined in
-            # units.get_units()
-
-            differential_flux = np.sum(results, 0)
-
-        return differential_flux
-        
+              
     def has_free_parameters(self):
         """
         Returns True or False whether there is any parameter in this source
