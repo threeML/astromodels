@@ -35,7 +35,7 @@ Contents:
 
 .. toctree::
    :maxdepth: 3
-   
+
    Quick_start
    Functions_tutorials
    Point_source_tutorial
@@ -43,5 +43,4 @@ Contents:
    Model_tutorial
    Priors_for_Bayesian_analysis
    Additional_features_for_scripts_and_applications
-   api_doc/astromodels.rst
-
+   API
