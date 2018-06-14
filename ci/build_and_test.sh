@@ -72,6 +72,8 @@ else
 
         if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
 
+            echo "This is a push, uploading to Conda channel"
+
             conda install -c conda-forge anaconda-client
 
             anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml ${CONDA_BUILD_PATH}/*.tar.bz2 --force
