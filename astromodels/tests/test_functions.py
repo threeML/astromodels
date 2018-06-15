@@ -1,4 +1,5 @@
 import pytest
+import os
 
 import astropy.units as u
 import numpy as np
@@ -7,9 +8,11 @@ import pickle
 from astromodels.functions.function import FunctionMeta, Function1D, Function2D, FunctionDefinitionError, \
     UnknownParameter, DesignViolation, get_function, get_function_class, UnknownFunction, list_functions
 from astromodels.functions.functions import Powerlaw, Line
-from astromodels.functions.functions_2D import Gaussian_on_sphere
+from astromodels.functions.functions_2D import Gaussian_on_sphere, SpatialTemplate_2D
 from astromodels.functions.functions_3D import Continuous_injection_diffusion
 from astromodels.functions import function as function_module
+
+from astropy.io import fits
 
 __author__ = 'giacomov'
 
@@ -849,3 +852,67 @@ def test_function3D():
     with pytest.raises(TypeError):
 
         c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))
+
+def test_spatial_template_2D():
+
+    #make the fits files with templates to test.
+    cards = {
+      "SIMPLE": "T",                     
+      "BITPIX": -32,
+      "NAXIS" : 2,
+      "NAXIS1": 360,
+      "NAXIS2": 360,
+      "DATE": '2018-06-15',  
+      "CUNIT1": 'deg', 
+      "CRVAL1":  83,
+      "CRPIX1": 0,
+      "CDELT1": -0.0166667, 
+      "CUNIT2": 'deg',
+      "CRVAL2": -2.0,
+      "CRPIX2": 0,
+      "CDELT2": 0.0166667,
+      "CTYPE1": 'GLON-CAR',
+      "CTYPE2": 'GLAT-CAR' }
+
+    data = np.zeros([400,400])
+    data[0:100,0:100] = 1
+    hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
+    hdu.writeto("test1.fits", overwrite=True)
+
+    data[:,:]=0
+    data[200:300,200:300] = 1
+    hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
+    hdu.writeto("test2.fits", overwrite=True)
+
+
+    #Now load template files and test their evaluation
+    shape1=SpatialTemplate_2D()
+    shape1.load_file("test1.fits")
+    shape1.K = 1
+
+    shape2=SpatialTemplate_2D()
+    shape2.load_file("test2.fits")
+    shape2.K = 1
+
+    assert shape1.hash != shape2.hash
+        
+    assert np.all ( shape1.evaluate( [312, 306], [41, 41], [1,1], [40, 2]) == [1., 0.] ) 
+    assert np.all ( shape2.evaluate( [312, 306], [41, 41], [1,1], [40, 2]) ==  [0., 1.] ) 
+    assert np.all ( shape1.evaluate( [312, 306], [41, 41], [1,10], [40, 2]) == [1., 0.] ) 
+    assert np.all ( shape2.evaluate( [312, 306], [41, 41], [1,10], [40, 2]) ==  [0., 10.] ) 
+
+
+    shape1.K = 1
+    shape2.K = 1
+    assert np.all ( shape1( [312, 306], [41, 41]) == [1., 0.] )
+    assert np.all ( shape2( [312, 306], [41, 41]) == [0., 1.] )
+
+    shape1.K = 1
+    shape2.K = 10
+    assert np.all ( shape1( [312, 306], [41, 41]) == [1., 0.] )
+    assert np.all ( shape2( [312, 306], [41, 41]) == [0., 10.] )
+
+    os.remove("test1.fits")
+    os.remove("test2.fits")
+
+
