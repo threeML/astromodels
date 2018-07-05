@@ -8,6 +8,8 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
 
+import hashlib
+
 
 class Latitude_galactic_diffuse(Function2D):
     r"""
@@ -534,6 +536,12 @@ class SpatialTemplate_2D(Function2D):
                 desc : normalization
                 initial value : 1
                 fix : yes
+            
+            hash :
+                
+                desc: hash of model map [needed for memoization]
+                initial value: 1
+                fix: yes
         
         """
     
@@ -556,14 +564,21 @@ class SpatialTemplate_2D(Function2D):
     
             self._wcs = wcs.WCS( header = f[ihdu].header )
             self._map = f[ihdu].data
-            
+              
             self._nX = f[ihdu].header['NAXIS1']
             self._nY = f[ihdu].header['NAXIS2']
+
+            #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
+            #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
             assert self._map.shape[1] == self._nX, "NAXIS1 = %d in fits header, but %d in map" % (self._nX, self._map.shape[1])
             assert self._map.shape[0] == self._nY, "NAXIS2 = %d in fits header, but %d in map" % (self._nY, self._map.shape[0])
             
-        #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
-        #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
+            #hash sum uniquely identifying the template function (defined by its 2D map array and coordinate system)
+            #this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
+            h = hashlib.sha224()
+            h.update( self._map)
+            h.update( repr(self._wcs) )
+            self.hash = int(h.hexdigest(), 16)
             
     
     def set_frame(self, new_frame):
@@ -577,7 +592,7 @@ class SpatialTemplate_2D(Function2D):
                 
         self._frame = new_frame
     
-    def evaluate(self, x, y, K):
+    def evaluate(self, x, y, K, hash):
         
         # We assume x and y are R.A. and Dec
         coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
