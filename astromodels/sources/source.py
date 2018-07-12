@@ -37,6 +37,16 @@ class Source(object):
         raise NotImplementedError("You need to override this")
 
     @property
+    def free_parameters(self):
+        """
+        Returns a dictionary of free parameters for this source
+
+        :return:
+        """
+
+        raise NotImplementedError("You need to override this")
+
+    @property
     def components(self):
         """
         Return the dictionary of components
