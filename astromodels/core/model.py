@@ -444,21 +444,22 @@ class Model(Node):
         Link the value of the provided parameters through the provided function (identity is the default, i.e.,
         parameter_1 = parameter_2).
 
-        :param parameter_1: the first parameter
-        :param parameter_2: the second parameter; can be either a single parameter or a list of prarameters
+        :param parameter_1: the first parameter;can be either a single parameter or a list of prarameters
+        :param parameter_2: the second parameter
         :param link_function: a function instance. If not provided, the identity function will be used by default.
         Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
         :return: (none)
         """
-
-        assert parameter_1.path in self, "Parameter %s is not contained in this model" % parameter_1.path
         
-        if isinstance(parameter_2,list):
-            for par2 in parameter_2:
-                assert par2.path in self, "Parameter %s is not contained in this model" % par2.path
+        
+        
+        if isinstance(parameter_1,list):
+            for par1 in parameter_1:
+                assert par1.path in self, "Parameter %s is not contained in this model" % par1.path
         else:
-            assert parameter_2.path in self, "Parameter %s is not contained in this model" % parameter_2.path
+            assert parameter_1.path in self, "Parameter %s is not contained in this model" % parameter_1.path
 
+        assert parameter_2.path in self, "Parameter %s is not contained in this model" % parameter_2.path
         if link_function is None:
             # Use the Line function by default, with both parameters fixed so that the two
             # parameters to be linked will vary together
@@ -471,11 +472,11 @@ class Model(Node):
             link_function.b.fix = True
         
         
-       if isinstance(parameter_2,list):
-            for param_2 in parameter_2: 
-                parameter_1.add_auxiliary_variable(param_2, link_function)
+        if isinstance(parameter_1,list):
+            for param_1 in parameter_1: 
+                param_1.add_auxiliary_variable(parameter_2, link_function)
                 # Now set the units of the link function
-                link_function.set_units(param_2.unit, parameter_1.unit)
+                link_function.set_units(parameter_2.unit, param_1.unit)
         else:
             parameter_1.add_auxiliary_variable(parameter_2, link_function)
             # Now set the units of the link function
