@@ -3,7 +3,7 @@ import numpy as np
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Blackbody, Band
+from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
 from astromodels.sources.point_source import PointSource
 
 try:
@@ -285,3 +285,21 @@ def test_call_with_composite_function_with_units():
         spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + XS_powerlaw()
 
         one_test(spectrum)
+
+
+def test_free_param():
+
+    spectrum = Log_parabola()
+    source = PointSource("test_source", ra=123.4, dec=56.7, spectral_shape=spectrum)
+
+    parameters = [spectrum.alpha, spectrum.beta, spectrum.piv, spectrum.K, source.position.ra, source.position.dec]
+
+    for param in parameters:
+        param.free = False
+
+    assert len(source.free_parameters) == 0
+
+    for i, param in enumerate(parameters):
+        param.free = True
+        assert len(source.free_parameters) == i+1
+
