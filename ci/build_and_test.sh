@@ -64,10 +64,18 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 fi
 
 # If we are on the master branch upload to the channel
-if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-        conda install -c conda-forge anaconda-client
+if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
 
-        anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml ${CONDA_BUILD_PATH}/*.tar.bz2 --force
+        echo "This is a pull request, not uploading to Conda channel"
+
 else
-        echo "On a branch, not uploading to Conda channel"
+
+        if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
+
+            echo "This is a push, uploading to Conda channel"
+
+            conda install -c conda-forge anaconda-client
+
+            anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml ${CONDA_BUILD_PATH}/*.tar.bz2 --force
+        fi
 fi
