@@ -347,6 +347,24 @@ def test_links():
     # Remove the link
     m.unlink(m.one.spectrum.main.Powerlaw.K)
 
+    
+    # Redo the same, but with a list of 2 parameters
+    n_free_before_link = len(m.free_parameters)
+    
+    m.link([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K],m.two.spectrum.main.Powerlaw.K)
+    assert len(m.free_parameters) == n_free_before_link -2
+    
+    # Now test the link
+    
+    new_value = 1.23456
+    m.two.spectrum.main.Powerlaw.K.value = new_value
+
+    assert m.one.spectrum.main.Powerlaw.K.value == new_value
+    assert m.ext_one.spectrum.main.Powerlaw.K.value == new_value
+    # Remove the links at once
+    
+    m.unlink([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K])
+  
 
 def test_external_parameters():
 
