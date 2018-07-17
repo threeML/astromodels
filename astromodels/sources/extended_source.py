@@ -138,7 +138,7 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        results = [component.shape(energies) for component in self.components.values()]
+        results = [spatial_shape.get_total_spatial_integral(energies) * component.shape(energies) for component in self.components.values()]
 
         if isinstance(energies, u.Quantity):
 

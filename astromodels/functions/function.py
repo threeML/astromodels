@@ -786,6 +786,16 @@ class Function(Node):
 
         return self(*args)
 
+    def get_total_spatial_integral(self, z):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        raise NotImplementedError("You have to implement this")
+
 
 class Function1D(Function):
 

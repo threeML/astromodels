@@ -95,7 +95,23 @@ class Latitude_galactic_diffuse(Function2D):
         max_lon = max(_coord.transform_to("icrs").ra.value)
 
         return (min_lon, max_lon), (min_lat, max_lat)
+        
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
 
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        dL= l_max-l_min if l_max > l_min else 360 + l_max - l_max
+
+        #integral -inf to inf exp(-b**2 / 2*sigma_b**2 ) db = sqrt(2pi)*sigma_b 
+        #Note that K refers to the peak diffuse flux (at b = 0) per square degree.
+        integral = np.sqrt( 2*np.pi ) * sigma_b * K * dL 
+
+        return integral * np.power( 180. / pi, -2 )
+        
 
 class Gaussian_on_sphere(Function2D):
     r"""
@@ -182,6 +198,17 @@ class Gaussian_on_sphere(Function2D):
                 max_lon = max_lon - 360.
 
         return (min_lon, max_lon), (min_lat, max_lat)
+
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        return 1.0
+        
 
 
 class Asymm_Gaussian_on_sphere(Function2D):
@@ -303,6 +330,15 @@ class Asymm_Gaussian_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        return 1.0
 
 
 
@@ -390,6 +426,15 @@ class Disk_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        return 1.0
 
 class Ellipse_on_sphere(Function2D):
     r"""
@@ -520,6 +565,15 @@ class Ellipse_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        return 1.0
 
 class SpatialTemplate_2D(Function2D):
     r"""
@@ -629,6 +683,17 @@ class SpatialTemplate_2D(Function2D):
         
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        return K
+        
+        
 class Power_law_on_sphere(Function2D):
     r"""
         description :
@@ -701,6 +766,15 @@ class Power_law_on_sphere(Function2D):
 
         return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)), ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        return 1.0
 
 # class FunctionIntegrator(Function2D):
 #     r"""
