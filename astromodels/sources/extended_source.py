@@ -125,7 +125,7 @@ class ExtendedSource(Source, Node):
 
         return self._spatial_shape
 
-    def get_total_flux( self, energies):
+    def get_spatially_integrated_flux( self, energies):
     
         """
         Returns total flux of source at the given energy
@@ -138,7 +138,7 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        results = [spatial_shape.get_total_spatial_integral(energies) * component.shape(energies) for component in self.components.values()]
+        results = [self.spatial_shape.get_total_spatial_integral(energies) * component.shape(energies) for component in self.components.values()]
 
         if isinstance(energies, u.Quantity):
 
