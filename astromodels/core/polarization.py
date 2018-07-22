@@ -17,7 +17,7 @@ class Polarization(Node):
 
 
     @staticmethod
-    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc):
+    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc, unit):
 
         # Try to transform it to float, if it works than we transform it to a parameter
 
@@ -46,10 +46,12 @@ class Polarization(Node):
                                                                                              minimum, what, maximum)
 
             parameter = Parameter(what, number_or_parameter,
-                                  desc=desc, min_value=minimum, max_value=maximum, unit='deg', free=False)
+                                  desc=desc, min_value=minimum, max_value=maximum, unit=unit, free=True)
 
         return parameter
 
+
+# TODO: add transform between polarizations
 
 class LinearPolarization(Polarization):
 
@@ -62,9 +64,9 @@ class LinearPolarization(Polarization):
         """
         super(LinearPolarization, self).__init__(type='linear')
 
-        degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree')
+        degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
 
-        angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle')
+        angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
 
         self._add_child(degree)
         self._add_child(angle)
