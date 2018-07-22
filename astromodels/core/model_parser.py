@@ -426,7 +426,70 @@ class SourceParser(object):
 
         return this_sky_direction
 
+
+    def _parse_polarization(self, polarization_definititon ):
+
+        polarization_params = {}
+
+
+        if 'degree' in polarization_definititon and 'angle' in polarization_definititon:
+
+            par_parser = ParameterParser('degree', polarization_definititon['degree'])
+
+            degree = par_parser.get_variable()
+
+            degree.bounds = (0, 100)
+
+            par_parser = ParameterParser('angle', polarization_definititon['angle'])
+
+            angle = par_parser.get_variable()
+
+            angle.bounds = (0, 180)
+
+            this_polarization = polarization.LinearPolarization(angle=angle, degree=degree)
+
+        elif 'I' in polarization_definititon and 'U' in polarization_definititon and 'Q' in polarization_definititon and 'V' in polarization_definititon:
+
+            par_parser = ParameterParser('I', polarization_definititon['I'])
+
+            I = par_parser.get_variable()
+
+            I.bounds = (0, 1)
+
+            par_parser = ParameterParser('U', polarization_definititon['U'])
+
+            U = par_parser.get_variable()
+
+            U.bounds = (0, 1)
+
+            par_parser = ParameterParser('Q', polarization_definititon['Q'])
+
+            Q = par_parser.get_variable()
+
+            Q.bounds = (0, 1)
+
+            par_parser = ParameterParser('V', polarization_definititon['V'])
+
+            V = par_parser.get_variable()
+
+            V.bounds = (0, 1)
+
+
+            this_polarization = polarization.StokesPolarization(I=I, Q=Q, U=U, V=V)
+
+        else:
+
+            raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
+                                   " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
+                                   % self._source_name)
+
+
+        return this_polarization
+
+
     def _parse_spectral_component(self, component_name, component_definition):
+
+
 
         # Parse the shape definition, which is the first to occur
 
@@ -451,7 +514,18 @@ class SourceParser(object):
         self._links.extend(shape_parser.links)
         self._extra_setups.extend(shape_parser.extra_setups)
 
-        this_polarization = polarization.Polarization()
+        if 'polarization' in component_definition:
+
+            # get the polarization
+
+            polarization_definition = component_definition['polarization']
+
+            this_polarization = self._parse_polarization(polarization_definition)
+
+
+        else:
+
+            this_polarization = polarization.Polarization()
 
         this_spectral_component = spectral_component.SpectralComponent(component_name, shape, this_polarization)
 
@@ -652,3 +726,4 @@ class ShapeParser(object):
                                        'extra_setup': parameters_definition['extra_setup']})
 
         return function_instance
+
