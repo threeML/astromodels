@@ -479,9 +479,12 @@ class SourceParser(object):
 
         else:
 
-            raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
-                                   " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
-                                   % self._source_name)
+            # just make a default polarization
+            
+            this_polarization = polarization.Polarization()
+            # raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
+            #                        " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
+            #                        % self._source_name)
 
 
         return this_polarization
