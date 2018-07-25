@@ -347,6 +347,24 @@ def test_links():
     # Remove the link
     m.unlink(m.one.spectrum.main.Powerlaw.K)
 
+    
+    # Redo the same, but with a list of 2 parameters
+    n_free_before_link = len(m.free_parameters)
+    
+    m.link([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K],m.two.spectrum.main.Powerlaw.K)
+    assert len(m.free_parameters) == n_free_before_link -2
+    
+    # Now test the link
+    
+    new_value = 1.23456
+    m.two.spectrum.main.Powerlaw.K.value = new_value
+
+    assert m.one.spectrum.main.Powerlaw.K.value == new_value
+    assert m.ext_one.spectrum.main.Powerlaw.K.value == new_value
+    # Remove the links at once
+    
+    m.unlink([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K])
+  
 
 def test_external_parameters():
 
@@ -380,6 +398,10 @@ def test_external_parameters():
     with pytest.warns(RuntimeWarning):
 
         m.add_external_parameter(fake_parameter)
+
+
+
+
 
 
 def test_input_output_basic():
@@ -736,6 +758,36 @@ def test_clone_model():
     m2.free_parameters.values()[0].value = m2.free_parameters.values()[0].value / 2.0
 
     assert m2.free_parameters.values()[0].value != m1.free_parameters.values()[0].value
+
+    # test cloning model with linked external parameters
+
+    mg = ModelGetter()
+    m1 = mg.model
+
+    # Create parameter
+    fake_parameter = Parameter("external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True)
+
+    # Link as equal (default)
+    m1.add_external_parameter(fake_parameter)
+
+    m1.link(m1.one.spectrum.main.Powerlaw.K,fake_parameter)
+
+    _ = clone_model(m1)
+
+    mg = ModelGetter()
+    m1 = mg.model
+
+
+
+    # Link as equal (default)
+    m1.add_external_parameter(fake_parameter)
+
+    m1.link(fake_parameter, m1.one.spectrum.main.Powerlaw.K)
+
+    _ = clone_model(m1)
+
+
+
 
 
 def test_model_parser():
