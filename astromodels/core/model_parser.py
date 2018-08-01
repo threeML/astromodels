@@ -99,6 +99,7 @@ class ModelParser(object):
         self._independent_variables = []
         self._external_parameters = []
         self._links = []
+        self._external_parameter_links = []
         self._extra_setups = []
 
         for source_or_var_name, source_or_var_definition in self._model_dict.iteritems():
@@ -126,6 +127,9 @@ class ModelParser(object):
                 assert isinstance(res, parameter.Parameter)
 
                 self._external_parameters.append(res)
+
+                self._links.extend(this_parser.links)
+#                self._external_parameter_links.extend(this_parser.links)
 
             else:
 
@@ -170,6 +174,7 @@ class ModelParser(object):
 
             new_model[path].add_auxiliary_variable(new_model[variable],law)
 
+
         # Finally the extra_setups (if any)
 
         for extra_setup in self._extra_setups:
@@ -198,6 +203,8 @@ class ParameterParser(object):
 
     def __init__(self, name, definition):
 
+        self._links = []
+
         # NOTE: this is triggered only for parameters outside of functions
 
         if 'prior' in definition:
@@ -224,11 +231,61 @@ class ParameterParser(object):
             definition['prior'] = prior_instance
 
 
+        # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
+
+        matches = re.findall('''f\((.+)\)''', str(definition['value']))
+
+        if matches:
+
+            # This is an expression which marks a parameter
+            # with a link to another parameter (or an IndependentVariable such as time)
+
+            # Get the variable
+            linked_variable = matches[0]
+
+            # Now get the law
+
+            if 'law' not in definition:  # pragma: no cover
+                raise ModelSyntaxError("The parameter %s in function %s "
+                                       " is linked to %s but lacks a 'law' attribute"
+                                       % (name, function_name,  linked_variable))
+
+
+            link_function_name = definition['law'].keys()[0]
+
+
+
+            # ok, now we parse the linked parameter
+
+            function_parser = ShapeParser(name)
+
+
+            link_function_instance = function_parser.parse(name, link_function_name, definition['law'][link_function_name] )
+
+            self._links.append({'parameter_path': name,
+                                'law': link_function_instance,
+                                'variable': linked_variable})
+
+            # get rid of the 'law' entry
+
+            definition.pop('law', None)
+
+            # this parameter's value will be replaced later.
+            # for now we just need to get rid of the f(param) entry
+
+            definition['value'] = 1.
+
+
         self._variable = parameter.Parameter(name, **definition)
 
     def get_variable(self):
 
         return self._variable
+
+    @property
+    def links(self):
+
+        return self._links
 
 
 class SourceParser(object):
@@ -486,6 +543,8 @@ class SourceParser(object):
         this_ext_source = extended_source.ExtendedSource(self._source_name, spatial_shape, components=components)
 
         return this_ext_source
+
+
 
 
 class ShapeParser(object):
