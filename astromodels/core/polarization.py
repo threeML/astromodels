@@ -6,11 +6,11 @@ from astromodels.core.parameter import Parameter
 
 class Polarization(Node):
 
-    def __init__(self, type='linear'):
+    def __init__(self, polarization_type='linear'):
 
-        assert type in ['linear', 'stokes'], 'polarization must be linear or stokes'
+        assert polarization_type in ['linear', 'stokes'], 'polarization must be linear or stokes'
 
-        self._polarization_type = type
+        self._polarization_type = polarization_type
 
 
         Node.__init__(self, 'polarization')
@@ -62,7 +62,7 @@ class LinearPolarization(Polarization):
         :param degree: The polarization degree
         :param angle: The polarization angle
         """
-        super(LinearPolarization, self).__init__(type='linear')
+        super(LinearPolarization, self).__init__(polarization_type='linear')
 
         degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
 
@@ -83,7 +83,7 @@ class StokesPolarization(Polarization):
         :param U:
         :param V:
         """
-        super(StokesPolarization, self).__init__(type='stokes')
+        super(StokesPolarization, self).__init__(polarization_type='stokes')
 
         # get the parameters set up
 
@@ -98,5 +98,17 @@ class StokesPolarization(Polarization):
         self._add_child(Q)
         self._add_child(U)
         self._add_child(V)
+
+
+    def to_linear_polarization(self):
+        # polarization angle
+#        psi = 0.5 * np.arctan2(U_bin, Q_bin)
+
+        # polarization fraction
+#        frac = np.sqrt(Q_bin ** 2 + U_bin ** 2) / I_bin
+
+        pass
+
+        #angle = 0.5 * np.arctan2(se)
 
 
