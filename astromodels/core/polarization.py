@@ -100,15 +100,15 @@ class StokesPolarization(Polarization):
         self._add_child(V)
 
 
-    def to_linear_polarization(self):
-        # polarization angle
-#        psi = 0.5 * np.arctan2(U_bin, Q_bin)
-
-        # polarization fraction
-#        frac = np.sqrt(Q_bin ** 2 + U_bin ** 2) / I_bin
-
-        pass
-
-        #angle = 0.5 * np.arctan2(se)
-
-
+#     def to_linear_polarization(self):
+#         # polarization angle
+# #        psi = 0.5 * np.arctan2(U_bin, Q_bin)
+#
+#         # polarization fraction
+# #        frac = np.sqrt(Q_bin ** 2 + U_bin ** 2) / I_bin
+#
+#         pass
+#
+#         #angle = 0.5 * np.arctan2(se)
+#
+#
