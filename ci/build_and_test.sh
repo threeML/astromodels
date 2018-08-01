@@ -43,22 +43,12 @@ source activate test_env
 
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
 
-# Figure out where is the package
-
-echo "##############################"
-
-conda build conda-dist/recipe --output -c conda-forge -c threeml --python=2.7
-
-echo "##############################"
-
-CONDA_BUILD_PATH=$(conda build conda-dist/recipe --output -c conda-forge -c threeml --python=2.7 | rev | cut -f2- -d"/" | rev)
-
 # Install it
 conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
 
 # Run tests
 cd astromodels/tests
-#python -m pytest -vv --cov=astromodels # -k "not slow"
+python -m pytest -vv --cov=astromodels # -k "not slow"
 
 # Codecov needs to run in the main git repo
 
@@ -85,6 +75,6 @@ else
 
             echo "Uploading ${CONDA_BUILD_PATH}"
 
-            anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml ${CONDA_BUILD_PATH}/*.tar.bz2 --force
+            anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
         fi
 fi
