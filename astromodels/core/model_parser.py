@@ -580,7 +580,9 @@ class SourceParser(object):
 
             polarization_definition = component_definition['polarization']
 
+
             this_polarization = self._parse_polarization(polarization_definition)
+
 
 
         else:
