@@ -409,8 +409,6 @@ class SourceParser(object):
 
                 raise
 
-                raise RuntimeError("Could not parse: %s" % my_yaml.dump(component_definition))
-
         try:
 
             this_point_source = point_source.PointSource(self._source_name, sky_position=this_sky_direction,
@@ -419,8 +417,6 @@ class SourceParser(object):
         except:
 
             raise
-
-            raise RuntimeError("Could not parse: %s" % my_yaml.dump(pts_source_definition))
 
         return this_point_source
 
