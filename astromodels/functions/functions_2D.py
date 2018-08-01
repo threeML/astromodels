@@ -104,11 +104,11 @@ class Latitude_galactic_diffuse(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        dL= l_max-l_min if l_max > l_min else 360 + l_max - l_max
+        dL= self.l_max-self.l_min if self.l_max > self.l_min else 360 + self.l_max - self.l_max
 
         #integral -inf to inf exp(-b**2 / 2*sigma_b**2 ) db = sqrt(2pi)*sigma_b 
         #Note that K refers to the peak diffuse flux (at b = 0) per square degree.
-        integral = np.sqrt( 2*np.pi ) * sigma_b * K * dL 
+        integral = np.sqrt( 2*np.pi ) * self.sigma_b * self.K * dL 
 
         return integral * np.power( 180. / pi, -2 )
         
@@ -691,7 +691,7 @@ class SpatialTemplate_2D(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return K
+        return self.K
         
         
 class Power_law_on_sphere(Function2D):
