@@ -76,6 +76,8 @@ else
 
             conda install -c conda-forge anaconda-client
 
+            echo "Uploading ${CONDA_BUILD_PATH}"
+
             anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml ${CONDA_BUILD_PATH}/*.tar.bz2 --force
         fi
 fi
