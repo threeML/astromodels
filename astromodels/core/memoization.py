@@ -3,7 +3,7 @@ import functools
 import contextlib
 import astropy.units as u
 
-_WITH_MEMOIZATION = True
+_WITH_MEMOIZATION = False
 _CACHE_SIZE = 20
 
 
