@@ -22,6 +22,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .core.model import Model
     from .core.parameter import Parameter
     from .core.spectral_component import SpectralComponent
+    from .core.polarization import LinearPolarization, StokesPolarization
     from .core.model_parser import load_model, clone_model
     from .core.units import get_units
     from .core.memoization import use_astromodels_memoization
