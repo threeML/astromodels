@@ -1,3 +1,4 @@
+from builtins import range
 import collections
 import functools
 import contextlib
@@ -58,7 +59,7 @@ def memoize(method):
 
         # Create a tuple because a tuple is hashable
 
-        unique_id = tuple(float(yy.value) for yy in instance.parameters.values()) + (x.size, x.min(), x.max())
+        unique_id = tuple(float(yy.value) for yy in list(instance.parameters.values())) + (x.size, x.min(), x.max())
 
         # Create a unique identifier for this combination of inputs
 

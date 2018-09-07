@@ -11,7 +11,7 @@ _mapping_tag = my_yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG
 
 
 def dict_representer(dumper, data):
-    return dumper.represent_dict(data.iteritems())
+    return dumper.represent_dict(list(data.items()))
 
 
 def dict_constructor(loader, node):

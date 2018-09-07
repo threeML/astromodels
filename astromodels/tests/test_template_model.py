@@ -1,3 +1,6 @@
+from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 import pytest
 import os
 import numpy as np
@@ -120,7 +123,7 @@ def test_template_function():
                 res1 = mo(new_energies)
                 res2 = tm(new_energies)
 
-                deltas = np.abs((res2 - res1) / res1)
+                deltas = np.abs(old_div((res2 - res1), res1))
 
                 idx = deltas > 0.1
 

@@ -27,7 +27,7 @@ elif os.name == 'nt':  # Windows
 
     def disk_usage(path):
         _, total, free = ctypes.c_ulonglong(), ctypes.c_ulonglong(), ctypes.c_ulonglong()
-        if sys.version_info >= (3,) or isinstance(path, unicode):
+        if sys.version_info >= (3,) or isinstance(path, str):
             fun = ctypes.windll.kernel32.GetDiskFreeSpaceExW
         else:
             fun = ctypes.windll.kernel32.GetDiskFreeSpaceExA

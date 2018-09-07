@@ -104,8 +104,8 @@ class DMFitFunction(Function1D):
 
         if self.mass.value > 10000:
 
-            print "Warning: DMFitFunction only appropriate for masses <= 10 TeV"
-            print "To model DM from 2 GeV < mass < 1 PeV use DMSpectra"
+            print("Warning: DMFitFunction only appropriate for masses <= 10 TeV")
+            print("To model DM from 2 GeV < mass < 1 PeV use DMSpectra")
 
     def _set_units(self, x_unit, y_unit):
 
@@ -137,7 +137,7 @@ class DMFitFunction(Function1D):
             12: 'ss',
         }
 
-        print channel_mapping
+        print(channel_mapping)
 
         return channel_mapping
 
@@ -287,8 +287,8 @@ class DMSpectra(Function1D):
                                                   fill_value=None)
 
         if self.channel.value in [1, 6, 7] and self.mass.value > 10000.:
-            print "ERROR: currently spectra for selected channel and mass not implemented."
-            print "Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV"
+            print("ERROR: currently spectra for selected channel and mass not implemented.")
+            print("Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV")
 
     def _set_units(self, x_unit, y_unit):
 
@@ -313,7 +313,7 @@ class DMSpectra(Function1D):
             12: 'ss',
         }
 
-        print channel_mapping
+        print(channel_mapping)
 
         return channel_mapping
 

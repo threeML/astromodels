@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import collections
 
 import astropy.units as u
@@ -121,7 +123,7 @@ class PointSource(Source, Node):
         # Add a node called 'spectrum'
 
         spectrum_node = Node('spectrum')
-        spectrum_node._add_children(self._components.values())
+        spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
 
@@ -136,7 +138,7 @@ class PointSource(Source, Node):
         y_unit = (current_units.energy * current_units.area * current_units.time) ** (-1)
 
         # Now set the units of the components
-        for component in self._components.values():
+        for component in list(self._components.values()):
 
             component.shape.set_units(x_unit, y_unit)
 
@@ -150,7 +152,7 @@ class PointSource(Source, Node):
 
                 # Slow version with units
 
-                results = [component.shape(x) for component in self.components.values()]
+                results = [component.shape(x) for component in list(self.components.values())]
 
                 # We need to sum like this (slower) because using np.sum will not preserve the units
                 # (thanks astropy.units)
@@ -162,7 +164,7 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same units as currently defined in
                 # units.get_units()
 
-                results = [component.shape(x) for component in self.components.values()]
+                results = [component.shape(x) for component in list(self.components.values())]
 
                 return numpy.sum(results, 0)
 
@@ -209,7 +211,7 @@ class PointSource(Source, Node):
                         # Now integrate
                         integrals[i] = scipy.integrate.quad(integral, a, b, epsrel=1e-5)[0]
 
-                return integrals / (b - a)
+                return old_div(integrals, (b - a))
 
     def has_free_parameters(self):
         """
@@ -218,15 +220,15 @@ class PointSource(Source, Node):
         :return:
         """
 
-        for component in self._components.values():
+        for component in list(self._components.values()):
 
-            for par in component.shape.parameters.values():
+            for par in list(component.shape.parameters.values()):
 
                 if par.free:
 
                     return True
 
-        for par in self.position.parameters.values():
+        for par in list(self.position.parameters.values()):
 
             if par.free:
 
@@ -243,15 +245,15 @@ class PointSource(Source, Node):
         """
         free_parameters = collections.OrderedDict()
 
-        for component in self._components.values():
+        for component in list(self._components.values()):
 
-            for par in component.shape.parameters.values():
+            for par in list(component.shape.parameters.values()):
 
                 if par.free:
 
                     free_parameters[par.name] = par
 
-        for par in self.position.parameters.values():
+        for par in list(self.position.parameters.values()):
 
             if par.free:
 
@@ -277,7 +279,7 @@ class PointSource(Source, Node):
         repr_dict[key]['position'] = self._sky_position.to_dict(minimal=True)
         repr_dict[key]['spectrum'] = collections.OrderedDict()
 
-        for component_name, component in self.components.iteritems():
+        for component_name, component in list(self.components.items()):
 
             repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
 

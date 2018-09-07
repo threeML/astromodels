@@ -1,3 +1,7 @@
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import astropy.units as u
 import pytest
 from astromodels.functions.priors import Uniform_prior, Log_uniform_prior
@@ -480,11 +484,11 @@ def test_to_dict():
 
     repr = p1.to_dict(minimal=False)
 
-    assert len(repr.keys()) == 5
+    assert len(list(repr.keys())) == 5
 
     repr2 = p1.to_dict(minimal=True)
 
-    assert len(repr2.keys()) == 1
+    assert len(list(repr2.keys())) == 1
     assert 'value' in repr2
 
     assert repr2['value'] == p1.value
@@ -554,7 +558,6 @@ def test_prior():
     p1.set_uninformative_prior(Uniform_prior)
 
     # Log-uniform cannot be used if minimum is 0.0
-
     with pytest.raises(SettingOutOfBounds):
 
         p1.set_uninformative_prior(Log_uniform_prior)
@@ -611,7 +614,7 @@ class Callback(object):
 
 def test_pickle():
 
-    import cPickle
+    from astromodels.core.cpickle_compatibility_layer import cPickle
 
     p_orig = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
                        free=False, unit=u.MeV, prior=Uniform_prior())
@@ -651,7 +654,7 @@ def test_pickle():
 
 def test_links_and_pickle():
 
-    import cPickle
+    import pickle
 
     p_orig = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
                        free=False, unit=u.MeV, prior=Uniform_prior())
@@ -671,9 +674,9 @@ def test_links_and_pickle():
 
     # Now pickle and unpickle
 
-    d = cPickle.dumps(p_orig)
+    d = pickle.dumps(p_orig)
 
-    p = cPickle.loads(d)
+    p = pickle.loads(d)
 
     assert p.has_auxiliary_variable() == True
 

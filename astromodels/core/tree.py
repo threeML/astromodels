@@ -1,5 +1,9 @@
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import collections
-import cPickle
+
+from .cpickle_compatibility_layer import cPickle
 
 from astromodels.utils.io import display
 from astromodels.core.node_ctype import _Node
@@ -81,7 +85,7 @@ class Node(_Node):
     def __dir__(self):
 
         # Get the names of the attributes of the class
-        l = self.__class__.__dict__.keys()
+        l = list(self.__class__.__dict__.keys())
 
         # Get all the children
         l.extend([child.name for child in self._get_children()])
@@ -257,7 +261,7 @@ class OldNode(object):
 
         this_dict = collections.OrderedDict()
 
-        for key, val in self._children.iteritems():
+        for key, val in list(self._children.items()):
 
             this_dict[key] = val.to_dict(minimal)
 
@@ -305,7 +309,7 @@ class OldNode(object):
 
         instances = collections.OrderedDict()
 
-        for child_name, child in self._children.iteritems():
+        for child_name, child in list(self._children.items()):
 
             if isinstance(child, cls):
 

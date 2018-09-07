@@ -78,3 +78,6 @@ else
             anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
         fi
 fi
+
+# Finally remove environment (so that if we test for another python version we can do so)
+conda uninstall --name test_env --all -y

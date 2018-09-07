@@ -1296,12 +1296,26 @@ static PyMethodDef XSpecMethods[] = {
 };
 
 
-PyMODINIT_FUNC
-init_xspec(void)
-{
+#if PY_MAJOR_VERSION >= 3
 
+static struct PyModuleDef xspec_module = {
+        PyModuleDef_HEAD_INIT,
+        "_xspec",
+        NULL,
+        -1,
+        XSpecMethods,
+};
+
+PyMODINIT_FUNC PyInit__xspec(void) {
   import_array();
-  Py_InitModule( (char*)"_xspec", XSpecMethods );
-
+  return PyModule_Create(&xspec_module);
 }
 
+#else
+
+PyMODINIT_FUNC
+init_xspec(void) {
+  import_array();
+  Py_InitModule( (char*)"_xspec", XSpecMethods );
+}
+#endif

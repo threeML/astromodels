@@ -18,7 +18,7 @@ before_install:
        else
 
          # Install Miniconda
-         wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
+         wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
          bash miniconda.sh -b -p $HOME/miniconda
          export PATH="$HOME/miniconda/bin:$PATH"
          conda install -y conda-build
@@ -32,19 +32,35 @@ script:
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
          docker run -e TRAVIS_PYTHON_VERSION=2.7 \
-                    -e TRAVIS_BRANCH \
-                    -e CONDA_UPLOAD_TOKEN \
-                    -e TRAVIS_OS_NAME \
-                    -e TRAVIS_BUILD_NUMBER \
-                    -e TRAVIS_BUILD_DIR \
-                    -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                    -it --rm -e user_id=`id -u` \
-                    condaforge/linux-anvil \
-                    /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
+                     -e TRAVIS_BRANCH \
+                     -e CONDA_UPLOAD_TOKEN \
+                     -e TRAVIS_OS_NAME \
+                     -e TRAVIS_BUILD_NUMBER \
+                     -e TRAVIS_BUILD_DIR \
+                     -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
+                     -it --rm -e user_id=`id -u` \
+                     condaforge/linux-anvil \
+                     /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
+
+          docker run -e TRAVIS_PYTHON_VERSION=3.7 \
+                     -e TRAVIS_BRANCH \
+                     -e CONDA_UPLOAD_TOKEN \
+                     -e TRAVIS_OS_NAME \
+                     -e TRAVIS_BUILD_NUMBER \
+                     -e TRAVIS_BUILD_DIR \
+                     -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
+                     -it --rm -e user_id=`id -u` \
+                     condaforge/linux-anvil \
+                     /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
+
        else
 
           chmod u+x ci/build_and_test.sh
+
           export TRAVIS_PYTHON_VERSION=2.7
+          ./ci/build_and_test.sh
+
+          export TRAVIS_PYTHON_VERSION=3.7
           ./ci/build_and_test.sh
 
        fi

@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import numpy as np
 
 
@@ -21,7 +23,7 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
     dlon = lon2 - lon1
     dlat = lat2 - lat1
 
-    a = np.sin(dlat/2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon /2.0)**2
+    a = np.sin(old_div(dlat,2.0))**2 + np.cos(lat1) * np.cos(lat2) * np.sin(old_div(dlon,2.0))**2
     c = 2 * np.arcsin(np.sqrt(a))
     return np.rad2deg(c)
 
@@ -80,4 +82,4 @@ def spherical_angle( ra0, dec0, ra1, dec1, ra2, dec2 ):
     numerator = np.atleast_1d( np.cos(c) - np.cos(a) * np.cos(b) )
     denominator = np.atleast_1d( np.sin(a)*np.sin(b) )
     
-    return np.where( denominator == 0 , np.zeros( len(denominator)), np.rad2deg( np.arccos( numerator/denominator)) )
+    return np.where( denominator == 0 , np.zeros( len(denominator)), np.rad2deg( np.arccos( old_div(numerator,denominator))) )

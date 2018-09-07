@@ -345,7 +345,9 @@ setup(
         'numdifftools',
         'tables',
         'pandas',
-        'dill'],
+        'dill',
+        'future'  #py2to3 compatibility layer
+    ],
 
     extras_require={
         'tests': [

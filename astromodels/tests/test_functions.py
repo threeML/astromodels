@@ -1,3 +1,7 @@
+from __future__ import print_function
+from __future__ import division
+from builtins import object
+from past.utils import old_div
 import pytest
 import os
 
@@ -13,6 +17,7 @@ from astromodels.functions.functions_3D import Continuous_injection_diffusion
 from astromodels.functions import function as function_module
 
 from astropy.io import fits
+from future.utils import with_metaclass
 
 __author__ = 'giacomov'
 
@@ -20,7 +25,7 @@ __author__ = 'giacomov'
 def get_a_function_class():
 
     # Try to create a function inheriting from Function with meta FunctionMeta
-    class Test_function(Function1D):
+    class Test_function(with_metaclass(FunctionMeta, Function1D)):
         r"""
         description :
 
@@ -42,12 +47,10 @@ def get_a_function_class():
 
         """
 
-        __metaclass__ = FunctionMeta
-
         def _set_units(self, x_unit, y_unit):
 
             # a has units of y_unit / x_unit, so that a*x has units of y_unit
-            self.a.unit = y_unit / x_unit
+            self.a.unit = old_div(y_unit, x_unit)
 
             # b has units of y
             self.b.unit = y_unit
@@ -65,14 +68,14 @@ def test_function_meta():
 
         # .evaluate is lacking, ._set_units is lacking, docstring is lacking
 
-        class Wrong_test_function1():
-            __metaclass__ = FunctionMeta
+        class Wrong_test_function1(with_metaclass(FunctionMeta, object)):
+            pass
 
     with pytest.raises(AttributeError):
 
         # .evaluate is lacking, ._set_units is lacking
 
-        class Wrong_test_function2(Function1D):
+        class Wrong_test_function2(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -93,13 +96,11 @@ def test_function_meta():
                     initial value : 1
 
             """
-
-            __metaclass__ = FunctionMeta
 
     with pytest.raises(AttributeError):
         # _set_units is lacking
 
-        class Wrong_test_function3(Function1D):
+        class Wrong_test_function3(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -120,8 +121,6 @@ def test_function_meta():
                     initial value : 1
 
             """
-
-            __metaclass__ = FunctionMeta
 
             def evaluate(self, x, a, b):
 
@@ -130,7 +129,7 @@ def test_function_meta():
     with pytest.raises(AssertionError):
         # Signature of evaluate is wrong
 
-        class Wrong_test_function4(Function1D):
+        class Wrong_test_function4(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -152,11 +151,9 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
 
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self):
@@ -166,7 +163,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
-        class Wrong_test_function5(Function1D):
+        class Wrong_test_function5(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -188,10 +185,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x):
@@ -200,7 +195,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
-        class Wrong_test_function6(Function1D):
+        class Wrong_test_function6(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -222,10 +217,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a):
@@ -234,7 +227,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate does not match docstring
 
-        class Wrong_test_function7(Function1D):
+        class Wrong_test_function7(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -256,10 +249,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -268,7 +259,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Definition of parameter b is not legal
 
-        class Wrong_test_function8(Function1D):
+        class Wrong_test_function8(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -289,10 +280,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -301,7 +290,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Parameter c declared but not used
 
-        class Wrong_test_function9(Function1D):
+        class Wrong_test_function9(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -328,10 +317,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -340,7 +327,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Parameter c used but not declared
 
-        class Wrong_test_function10(Function1D):
+        class Wrong_test_function10(with_metaclass(FunctionMeta, Function1D)):
             r"""
             description :
 
@@ -362,10 +349,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b, c):
@@ -375,7 +360,7 @@ def test_function_meta():
     with pytest.raises(AssertionError):
         # Docstring lacking description
 
-        class Wrong_test_function11(Function1D):
+        class Wrong_test_function11(with_metaclass(FunctionMeta, Function1D)):
             r"""
             latex : $ a * x + b $
 
@@ -398,10 +383,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -410,7 +393,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Parameter lacking description
 
-        class Wrong_test_function12(Function1D):
+        class Wrong_test_function12(with_metaclass(FunctionMeta, Function1D)):
             r"""
 
             description: useless
@@ -435,10 +418,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -447,7 +428,7 @@ def test_function_meta():
     with pytest.raises(AssertionError):
         # Parameters out of order in evaluate
 
-        class Wrong_test_function13(Function2D):
+        class Wrong_test_function13(with_metaclass(FunctionMeta, Function2D)):
             r"""
 
             description: useless
@@ -474,10 +455,8 @@ def test_function_meta():
 
             """
 
-            __metaclass__ = FunctionMeta
-
             def _set_units(self, x_unit, y_unit, z_unit):
-                self.a.unit = y_unit / x_unit
+                self.a.unit = old_div(y_unit, x_unit)
                 self.b.unit = y_unit
 
             def evaluate(self, y, x, a, b, c):
@@ -485,7 +464,7 @@ def test_function_meta():
 
     # A function with no latex formula (which is optional)
 
-    class NoLatex_test_function11(Function1D):
+    class NoLatex_test_function11(with_metaclass(FunctionMeta, Function1D)):
         r"""
 
         description:
@@ -506,10 +485,8 @@ def test_function_meta():
 
         """
 
-        __metaclass__ = FunctionMeta
-
         def _set_units(self, x_unit, y_unit):
-            self.a.unit = y_unit / x_unit
+            self.a.unit = old_div(y_unit, x_unit)
             self.b.unit = y_unit
 
         def evaluate(self, x, a, b):
@@ -599,7 +576,7 @@ def test_function_values_units():
     # Try to instance it
     my_function = Test_function()
 
-    diff_flux = 1.0 / (u.keV * u.cm**2 * u.s)
+    diff_flux = old_div(1.0, (u.keV * u.cm**2 * u.s))
 
     my_function.set_units(u.keV, diff_flux)
 
@@ -646,7 +623,7 @@ def test_function_composition():
 
     composite = powerlaw + line
 
-    composite.set_units(u.keV, 1.0 / (u.keV * u.cm**2 * u.s))
+    composite.set_units(u.keV, old_div(1.0, (u.keV * u.cm**2 * u.s)))
 
     for x in ([1,2,3,4],[1,2,3,4] * u.keV, 1.0, np.array([1.0, 2.0, 3.0, 4.0])):
 
@@ -665,9 +642,9 @@ def test_function_composition():
     assert composite(2.25) == po(2.25) * li(2.25)
 
     # test /
-    composite = po / li
+    composite = old_div(po, li)
 
-    assert composite(2.25) == po(2.25) / li(2.25)
+    assert composite(2.25) == old_div(po(2.25), li(2.25))
 
     # test .of
     composite = po.of(li)
@@ -704,9 +681,9 @@ def test_function_composition():
     assert composite(2.25) == 2.0 * po(2.25)
 
     # Number divided by
-    composite = 1.0 / li
+    composite = old_div(1.0, li)
 
-    assert composite(2.25) == 1.0 / li(2.25)
+    assert composite(2.25) == old_div(1.0, li(2.25))
 
     # Composite of composite
     composite = po*li + po - li + 2*po / li
@@ -801,7 +778,7 @@ def test_get_function_class():
 
 def test_list_functions():
 
-    print list_functions()
+    print(list_functions())
 
 
 def test_function2D():
@@ -814,15 +791,15 @@ def test_function2D():
 
     _ = c(a, a)
 
-    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
+    c.set_units(u.deg, u.deg, old_div(1.0, u.deg**2))
 
     _ = c(1 * u.deg, 1.0 * u.deg)
 
     _ = c(a * u.deg, a * u.deg)
 
-    print c.x_unit
-    print c.y_unit
-    print c.z_unit
+    print(c.x_unit)
+    print(c.y_unit)
+    print(c.z_unit)
 
     with pytest.raises(TypeError):
 
@@ -839,20 +816,20 @@ def test_function3D():
 
     _ = c(a, a, a)
 
-    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
+    c.set_units(u.deg, u.deg, u.keV, old_div(1.0, u.deg**2))
 
     _ = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
 
     _ = c(a * u.deg, a * u.deg, a * u.keV)
 
-    print c.x_unit
-    print c.y_unit
-    print c.z_unit
-    print c.w_unit
+    print(c.x_unit)
+    print(c.y_unit)
+    print(c.z_unit)
+    print(c.w_unit)
 
     with pytest.raises(TypeError):
 
-        c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))
+        c.set_units("not existent", u.deg, u.keV, old_div(1.0, (u.keV * u.s * u.deg**2 * u.cm**2)))
 
 def test_spatial_template_2D():
 
