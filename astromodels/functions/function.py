@@ -1367,6 +1367,10 @@ class CompositeFunction(Function):
         # the Function class will work
         self._n_dim = self._functions[0].n_dim
         
+        if self._n_dim > 1:
+            
+            raise NotImplementedError("CompositeFunction class can only handle 1-dimensional functions at the moment.")
+        
         for function in self._functions:
             
             if function.n_dim != self._n_dim:

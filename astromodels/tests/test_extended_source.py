@@ -3,8 +3,8 @@ import numpy as np
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions.functions import Powerlaw
-from astromodels.functions.functions_2d import Gaussian_on_sphere
+from astromodels.functions.functions import Powerlaw, Log_parabola
+from astromodels.functions.functions_2D import Gaussian_on_sphere, Disk_on_sphere
 from astromodels.sources.extended_source import ExtendedSource
 
 
@@ -21,10 +21,15 @@ def test_constructor():
     ra, dec = (125.6, -75.3)
     l, b = (288.44190139183564, -20.717313145391525)
 
-    # This should throw as we are using Powerlaw instead of Powerlaw()
-    with pytest.raises(TypeError):
+    # This should throw an error as we are using Powerlaw instead of Powerlaw()
+    with pytest.raises(RuntimeError):
 
         _ = ExtendedSource("my_source", Gaussian_on_sphere, Powerlaw)
+
+    # This should throw an error because we should use a 2D function for the spatial shape
+    with pytest.raises(RuntimeError):
+
+        _ = ExtendedSource("my_source", Powerlaw(), Powerlaw())
 
     # Init with RA, Dec
 
@@ -33,14 +38,13 @@ def test_constructor():
     shape.lon0=ra*u.degree
     shape.lat0=dec*u.degree
 
-    assert source1.shape.lon0 == ra
-    assert source1.shape.lat0 == dec
+    assert source1.spatial_shape.lon0.value == ra
+    assert source1.spatial_shape.lat0.value == dec
 
-    # Verify that the position is fixed by default
-    assert source1.shape.lon0.fix
-    assert source1.shape.lon0.fix
+    # Verify that the position is free by default
+    assert source1.spatial_shape.lon0.free
+    assert source1.spatial_shape.lon0.free
 
-test_constructor()
 
 
 def test_call():
@@ -53,39 +57,58 @@ def test_call():
     c1 = SpectralComponent("component1", po1)
     c2 = SpectralComponent("component2", po2)
 
-    point_source = PointSource("test_source", 125.4, -22.3, components=[c1, c2])
+    ra, dec = (125.6, -75.3)
 
-    assert np.all(point_source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
-    assert np.all(point_source.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
+    shape = Gaussian_on_sphere()
+    source = ExtendedSource('test_source', shape, components=[c1, c2])
+    shape.lon0=ra*u.degree
+    shape.lat0=dec*u.degree
 
-    one = point_source.spectrum.component1([1, 2, 3])
-    two = point_source.spectrum.component2([1, 2, 3])
+    assert np.all(source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
+    assert np.all(source.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
 
-    assert np.all( np.abs(one + two - point_source([1,2,3])) == 0 )
+    one = source.spectrum.component1([1, 2, 3])
+    two = source.spectrum.component2([1, 2, 3])
+
+    #check spectral components
+    assert np.all( np.abs(one + two - source.get_spatially_integrated_flux([1,2,3])) == 0 )
+    
+    #check spectral and spatial components
+    total = source( [ra, ra, ra], [dec, dec, dec], [1,2,3])
+    spectrum = one + two
+    spatial = source.spatial_shape( [ra, ra, ra], [dec, dec, dec] )
+    assert np.all( np.abs( total - spectrum*spatial ) == 0 )
+    
+    total = source( [ra*1.01, ra*1.01, ra*1.01], [dec*1.01, dec*1.01, dec*1.01], [1,2,3])
+    spectrum = one + two
+    spatial = source.spatial_shape( [ra*1.01, ra*1.01, ra*1.01], [dec*1.01, dec*1.01, dec*1.01] )
+    assert np.all( np.abs( total - spectrum*spatial ) == 0 )
+    
 
 
 def test_call_with_units():
 
     po = Powerlaw()
+    ga = Gaussian_on_sphere()
 
-    result = po(1.0)
-
+    result = ga(1.0, 1.0)
+    
     assert result.ndim == 0
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(u.UnitsError):
 
         # This raises because the units of the function have not been set up
 
-        _ = po(1.0 * u.keV)
+        _ = ga(1.0 * u.deg, 1.0*u.deg)
 
     # Use the function as a spectrum
-    ps = PointSource("test",0,0,po)
+    source = ExtendedSource("test",ga,po)
 
-    result = po(1.0 * u.keV)
+    result = ga(1.0 * u.deg, 1.0*u.deg)
 
     assert isinstance(result, u.Quantity)
 
-    result = po(np.array([1,2,3])* u.keV)
+    result = ga(np.array([1,2,3]) * u.deg, np.array([1,2,3]) * u.deg) 
 
     assert isinstance(result, u.Quantity)
 
@@ -102,135 +125,55 @@ def test_call_with_units():
             if instance.has_fixed_units():
 
                 x_unit_to_use = instance.fixed_units[0]
+                y_unit_to_use = instance.fixed_units[1]
+                z_unit_to_use = instance.fixed_units[2]
 
             else:
 
-                x_unit_to_use = u.keV
+                x_unit_to_use = u.deg
+                y_unit_to_use = u.deg
+                z_unit_to_use = u.keV
 
 
 
             # Use the function as a spectrum
-            ps = PointSource("test", 0, 0, instance)
+            source = ExtendedSource("test",ga,po)
 
 
-            result = ps(1.0 * x_unit_to_use)
+            #result = source(np.atleast_1d([1.0]) * x_unit_to_use,  np.atleast_1d([1.0]) * y_unit_to_use, np.atleast_1d([1.0])*z_unit_to_use)
 
+            #assert isinstance(result, u.Quantity)
+
+            result = source(np.array([1, 2, 3]) * x_unit_to_use, np.array([1, 2, 3]) * y_unit_to_use, np.array([1, 2, 3]) * z_unit_to_use)
 
             assert isinstance(result, u.Quantity)
 
-            result = ps(np.array([1, 2, 3]) * x_unit_to_use)
-
-            assert isinstance(result, u.Quantity)
-
-            result = ps(1.0)
-
-            assert isinstance(result, float)
+            result = source(1.0, 1.0, 1.0)
+            
+            assert result.dtype == np.dtype('float64' )
 
         else:
 
             print ('Skipping prior function')
 
 
-
     for key in _known_functions:
 
         this_function = _known_functions[key]
 
-        # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
-
-        if key.find("XS")==0 and key != "XS_powerlaw":
-
-            # An XSpec model. Test it only if it's a power law (the others might need other parameters during
-            # initialization)
-
-            continue
-
-        if key.find("TemplateModel")==0:
-
-            # The TemplateModel function has its own test
-
-            continue
-
-        if this_function._n_dim == 1:
+        if this_function._n_dim in [2,3]:
 
             print("testing %s ..." % key)
 
             test_one(_known_functions[key])
 
 
-def test_call_with_composite_function_with_units():
-
-    def one_test(spectrum):
-
-        print("Testing %s" % spectrum.expression)
-
-        # # if we have fixed x_units then we will use those
-        # # in the test
-        #
-        # if spectrum.expression.has_fixed_units():
-        #
-        #     x_unit_to_use, y_unit_to_use = spectrum.expression.fixed_units[0]
-        #
-        # else:
-
-        x_unit_to_use = u.keV
-
-        pts = PointSource("test", ra=0, dec=0, spectral_shape=spectrum)
-
-        res = pts([100, 200] * x_unit_to_use)
-
-        # This will fail if the units are wrong
-        res.to(1 / (u.keV * u.cm**2 * u.s))
-
-    # Test a simple composition
-
-    spectrum = Powerlaw() * Exponential_cutoff()
-
-    one_test(spectrum)
-
-    spectrum = Band() + Blackbody()
-
-    one_test(spectrum)
-
-    # Test a more complicate composition
-
-    spectrum = Powerlaw() * Exponential_cutoff() + Blackbody()
-
-    one_test(spectrum)
-
-    spectrum = Powerlaw() * Exponential_cutoff() * Exponential_cutoff() + Blackbody()
-
-    one_test(spectrum)
-
-    if has_xspec:
-
-        spectrum = XS_phabs() * Powerlaw()
-
-        one_test(spectrum)
-
-        spectrum = XS_phabs() * XS_powerlaw()
-
-        one_test(spectrum)
-
-        spectrum = XS_phabs() * XS_powerlaw() * XS_phabs()
-
-        one_test(spectrum)
-
-        spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + Blackbody()
-
-        one_test(spectrum)
-
-        spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + XS_powerlaw()
-
-        one_test(spectrum)
-
-
 def test_free_param():
 
     spectrum = Log_parabola()
-    source = PointSource("test_source", ra=123.4, dec=56.7, spectral_shape=spectrum)
+    source = ExtendedSource("test_source", spatial_shape=Gaussian_on_sphere(), spectral_shape=spectrum)
 
-    parameters = [spectrum.alpha, spectrum.beta, spectrum.piv, spectrum.K, source.position.ra, source.position.dec]
+    parameters = [spectrum.alpha, spectrum.beta, spectrum.piv, spectrum.K, source.spatial_shape.lat0, source.spatial_shape.lon0, source.spatial_shape.sigma]
 
     for param in parameters:
         param.free = False
@@ -240,4 +183,5 @@ def test_free_param():
     for i, param in enumerate(parameters):
         param.free = True
         assert len(source.free_parameters) == i+1
+
 
