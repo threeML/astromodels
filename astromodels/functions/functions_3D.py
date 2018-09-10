@@ -197,7 +197,7 @@ class Continuous_injection_diffusion_ellipse(Function3D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
+        return np.ones_like( z )
 
 
 class Continuous_injection_diffusion(Function3D):
@@ -362,7 +362,7 @@ class Continuous_injection_diffusion(Function3D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
+        return np.ones_like( z )
 
 
 class Continuous_injection_diffusion_legacy(Function3D):
@@ -527,4 +527,5 @@ class Continuous_injection_diffusion_legacy(Function3D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
+        return np.ones_like( z )
+

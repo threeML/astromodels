@@ -110,7 +110,7 @@ class Latitude_galactic_diffuse(Function2D):
         #Note that K refers to the peak diffuse flux (at b = 0) per square degree.
         integral = np.sqrt( 2*np.pi ) * self.sigma_b * self.K * dL 
 
-        return integral * np.power( 180. / pi, -2 )
+        return integral * np.power( 180. / pi, -2 ) * np.ones_like( z )
         
 
 class Gaussian_on_sphere(Function2D):
@@ -207,7 +207,7 @@ class Gaussian_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
+        return np.ones_like( z )
         
 
 
@@ -338,8 +338,7 @@ class Asymm_Gaussian_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
-
+        return np.ones_like( z )
 
 
 class Disk_on_sphere(Function2D):
@@ -434,7 +433,8 @@ class Disk_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
+        return np.ones_like( z )
+
 
 class Ellipse_on_sphere(Function2D):
     r"""
@@ -573,7 +573,8 @@ class Ellipse_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return 1.0
+        return np.ones_like( z )
+
 
 class SpatialTemplate_2D(Function2D):
     r"""
@@ -691,7 +692,7 @@ class SpatialTemplate_2D(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return self.K
+        return self.K * np.ones_like( z )
         
         
 class Power_law_on_sphere(Function2D):
@@ -772,8 +773,9 @@ class Power_law_on_sphere(Function2D):
 
         :return: an array of values of the integral (same dimension as z).
         """
-
-        return 1.0
+        
+        return np.ones_like( z )
+ 
 
 # class FunctionIntegrator(Function2D):
 #     r"""
