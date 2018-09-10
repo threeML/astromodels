@@ -624,7 +624,8 @@ def test_function_values_units():
 
     # Using one unit for each element will fail
 
-    with pytest.raises(TypeError):
+    # (depending on the version of astropy, it might raise ValueError or TypeError)
+    with pytest.raises((ValueError, TypeError)):
 
         _ = my_function([1 * u.keV, 2 * u.keV, 3 * u.keV])
 
