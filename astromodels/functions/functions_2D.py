@@ -104,13 +104,15 @@ class Latitude_galactic_diffuse(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        dL= self.l_max-self.l_min if self.l_max > self.l_min else 360 + self.l_max - self.l_max
+        dL= self.l_max.value-self.l_min.value if self.l_max.value > self.l_min.value else 360 + self.l_max.value - self.l_max.value
 
         #integral -inf to inf exp(-b**2 / 2*sigma_b**2 ) db = sqrt(2pi)*sigma_b 
         #Note that K refers to the peak diffuse flux (at b = 0) per square degree.
-        integral = np.sqrt( 2*np.pi ) * self.sigma_b * self.K * dL 
+        integral = np.sqrt( 2*np.pi ) * self.sigma_b.value * self.K.value * dL 
 
-        return integral * np.power( 180. / pi, -2 ) * np.ones_like( z )
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return integral * np.power( 180. / np.pi, -2 ) * np.ones_like( z )
         
 
 class Gaussian_on_sphere(Function2D):
@@ -206,7 +208,9 @@ class Gaussian_on_sphere(Function2D):
 
         :return: an array of values of the integral (same dimension as z).
         """
-
+        
+        if isinstance( z, u.Quantity):
+            z = z.value
         return np.ones_like( z )
         
 
@@ -338,6 +342,8 @@ class Asymm_Gaussian_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
+        if isinstance( z, u.Quantity):
+            z = z.value
         return np.ones_like( z )
 
 
@@ -433,6 +439,8 @@ class Disk_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
+        if isinstance( z, u.Quantity):
+            z = z.value
         return np.ones_like( z )
 
 
@@ -573,6 +581,8 @@ class Ellipse_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
+        if isinstance( z, u.Quantity):
+            z = z.value
         return np.ones_like( z )
 
 
@@ -692,7 +702,9 @@ class SpatialTemplate_2D(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
 
-        return self.K * np.ones_like( z )
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.multiply(self.K.value,np.ones_like( z ) )
         
         
 class Power_law_on_sphere(Function2D):
@@ -774,6 +786,8 @@ class Power_law_on_sphere(Function2D):
         :return: an array of values of the integral (same dimension as z).
         """
         
+        if isinstance( z, u.Quantity):
+            z = z.value
         return np.ones_like( z )
  
 
