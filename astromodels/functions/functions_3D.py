@@ -189,6 +189,18 @@ class Continuous_injection_diffusion_ellipse(Function3D):
 
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+
 
 class Continuous_injection_diffusion(Function3D):
     r"""
@@ -344,6 +356,18 @@ class Continuous_injection_diffusion(Function3D):
 
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+
 
 class Continuous_injection_diffusion_legacy(Function3D):
     r"""
@@ -498,3 +522,16 @@ class Continuous_injection_diffusion_legacy(Function3D):
                 max_longitude -= 360.
 
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
+
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+

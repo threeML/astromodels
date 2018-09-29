@@ -808,51 +808,66 @@ def test_function2D():
 
     c = Gaussian_on_sphere()
 
-    _ = c(1, 1)
+    f1 = c(1, 1)
+    assert np.isclose( f1, 38.285617800653434, rtol=1e-10)
+    
 
     a = np.array([1.0, 2.0])
 
-    _ = c(a, a)
+    fa = c(a, a)
+    assert np.isclose( fa, [3.82856178e+01, 2.35952748e-04], rtol=1e-10).all()
 
     c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
-    _ = c(1 * u.deg, 1.0 * u.deg)
+    f1d = c(1 * u.deg, 1.0 * u.deg)
+    assert np.isclose( f1d.value, 38.285617800653434, rtol=1e-10)
+    assert f1d.unit == u.deg**-2
 
-    _ = c(a * u.deg, a * u.deg)
+    assert c.x_unit == u.deg
+    assert c.y_unit == u.deg
+    assert c.z_unit == u.deg**-2
 
-    print c.x_unit
-    print c.y_unit
-    print c.z_unit
+    assert c.get_total_spatial_integral( 1 ) == 1
+    assert np.isclose( c.get_total_spatial_integral( [1,1] ) ,  [1,1], rtol=1e-10).all()
+    
 
     with pytest.raises(TypeError):
 
         c.set_units("not existent", u.deg, u.keV)
 
 
+
 def test_function3D():
 
     c = Continuous_injection_diffusion()
 
-    _ = c(1, 1, 1)
-
+    f1 = c(1, 1, 1)
+    assert np.isclose(f1, 134.95394313247866, rtol = 1e-10)
+    
     a = np.array([1.0, 2.0])
 
-    _ = c(a, a, a)
+    fa = c(a, a, a)
+    assert np.isclose( fa,  [[134.95394313, 132.19796573], [ 25.40751507, 27.321443  ]], rtol=1e-10).all()
 
     c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
 
-    _ = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
+    f1d = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
+    assert np.isclose(f1d.value, 134.95394313247866, rtol = 1e-10)
+    assert f1d.unit == u.deg**-2
+   
 
-    _ = c(a * u.deg, a * u.deg, a * u.keV)
+    assert c.x_unit == u.deg
+    assert c.y_unit == u.deg
+    assert c.z_unit == u.keV
+    assert c.w_unit == u.deg**-2
 
-    print c.x_unit
-    print c.y_unit
-    print c.z_unit
-    print c.w_unit
+    assert c.get_total_spatial_integral( 1 ) == 1
+    assert np.isclose( c.get_total_spatial_integral( [1,1] ) ,  [1,1], rtol=1e-10).all()
 
     with pytest.raises(TypeError):
 
         c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))
+
 
 def test_spatial_template_2D():
 
