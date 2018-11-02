@@ -74,9 +74,7 @@ else
             conda install -c conda-forge anaconda-client
 
             echo "Uploading ${CONDA_BUILD_PATH}"
-            
-            /opt/conda/conda-bld/linux-64/
-            
+                        
             if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
