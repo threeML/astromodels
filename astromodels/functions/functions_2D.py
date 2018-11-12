@@ -621,11 +621,20 @@ class SpatialTemplate_2D(Function2D):
     
     def _setup(self):
         
-        self._frame = ICRS()
+        self._frame = "icrs"
+        self._fitsfile = None
+        self._map = None
     
-    def load_file(self,fitsfile,ihdu=0):
+    
+    def load_file(self,fitsfile, ihdu=0):
         
-        with fits.open(fitsfile) as f:
+        if fitsfile is None:
+            
+            raise RuntimeError( "Need to specify a fits file with a template map." )
+        
+        self._fitsfile=fitsfile
+        
+        with fits.open(self._fitsfile) as f:
     
             self._wcs = wcs.WCS( header = f[ihdu].header )
             self._map = f[ihdu].data
@@ -645,6 +654,17 @@ class SpatialTemplate_2D(Function2D):
             h.update( repr(self._wcs) )
             self.hash = int(h.hexdigest(), 16)
             
+
+    def to_dict(self, minimal=False):
+
+         data = super(Function2D, self).to_dict(minimal)
+
+         if not minimal:
+         
+            data['extra_setup'] = {"_fitsfile": self._fitsfile, "_frame": self._frame }
+  
+         return data
+        
     
     def set_frame(self, new_frame):
         """
@@ -653,12 +673,16 @@ class SpatialTemplate_2D(Function2D):
             :param new_frame: a coordinate frame from astropy
             :return: (none)
             """
-        assert isinstance(new_frame, BaseCoordinateFrame)
+        assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]
                 
         self._frame = new_frame
     
     def evaluate(self, x, y, K, hash):
         
+        if self._map is None:
+            
+            self.load_file(self._fitsfile)
+          
         # We assume x and y are R.A. and Dec
         coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
         
@@ -678,6 +702,10 @@ class SpatialTemplate_2D(Function2D):
 
     def get_boundaries(self):
     
+        if self._map is None:
+            
+            self.load_file(self._fitsfile)
+          
         #We use the max/min RA/Dec of the image corners to define the boundaries.
         #Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
     
