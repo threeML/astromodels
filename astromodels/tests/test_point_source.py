@@ -5,6 +5,7 @@ import pytest
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
 from astromodels.sources.point_source import PointSource
+from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
 
@@ -176,8 +177,9 @@ def test_call_with_units():
             # Use the function as a spectrum
             ps = PointSource("test", 0, 0, instance)
 
-            if instance.name == "Synchrotron":
-                instance.set_particle_distribution(Powerlaw())
+            if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
+                particleSource = ParticleSource("particles", Powerlaw())
+                instance.set_particle_distribution(particleSource.spectrum.main.shape)
 
 
             result = ps(1.0)
@@ -192,7 +194,10 @@ def test_call_with_units():
 
             assert isinstance(result, u.Quantity)
             
-            model = Model( ps )
+            if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
+              model = Model( particleSource, ps)
+            else:
+              model = Model( ps )
             
             new_model = clone_model( model )
             
