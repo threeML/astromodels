@@ -7,6 +7,8 @@ from astromodels.functions.functions import Powerlaw, Log_parabola
 from astromodels.functions.functions_2D import *
 from astromodels.functions.functions_3D import *
 from astromodels.sources.extended_source import ExtendedSource
+from astromodels.core.model import Model
+from astromodels.core.model_parser import clone_model
 
 
 from astromodels.functions.priors import *
@@ -14,6 +16,37 @@ from astromodels.functions.function import _known_functions
 
 __author__ = 'henrikef'
 
+def make_test_template( ra, dec, fitsfile):
+
+#Test template function: 40 pixel (0.8 deg) wide square centered approximately around a given ra, dec.
+
+  cards = {
+    "SIMPLE": "T",                     
+    "BITPIX": -32,
+    "NAXIS" : 2,
+    "NAXIS1": 200,
+    "NAXIS2": 200,
+    "DATE": '2018-11-13',  
+    "CUNIT1": 'deg', 
+    "CRVAL1":  ra,
+    "CRPIX1": 100,
+    "CDELT1": -0.02, 
+    "CUNIT2": 'deg',
+    "CRVAL2": dec,
+    "CRPIX2": 100,
+    "CDELT2": 0.02,
+    "CTYPE1": 'RA---TAN',
+    "CTYPE2": 'DEC--TAN' }
+
+  data = np.zeros([200,200])
+  data[80:120,80:120] = 1
+  
+  total = np.sum(data)
+  dOmega = (abs( cards["CDELT1"] * cards["CDELT2"])*u.degree*u.degree).to(u.steradian).value
+  data=data/ total / dOmega
+
+  hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
+  hdu.writeto(fitsfile, overwrite=True)
 
 def test_constructor():
 
@@ -66,8 +99,15 @@ def test_call():
 
       shape = class_type()
       source = ExtendedSource('test_source_%s' % name, shape, components=[c1, c2])
-      shape.lon0=ra*u.degree
-      shape.lat0=dec*u.degree
+      
+      if name != "SpatialTemplate_2D":
+        shape.lon0=ra*u.degree
+        shape.lat0=dec*u.degree
+        
+      else:
+        make_test_template(ra, dec, "__test.fits")
+        shape.load_file( "__test.fits" )
+        shape.K = 1.0
 
       assert np.all(source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
       assert np.all(source.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
@@ -91,8 +131,8 @@ def test_call():
     
     for key in _known_functions:
 
-        if key in [ "SpatialTemplate_2D", "Latitude_galactic_diffuse"]:
-        #not testing spatial template  as we don't have a file to read in right now.
+        if key in [ "Latitude_galactic_diffuse"]:
+        #not testing latitude galactic diffuse for now.
             continue
         
         this_function = _known_functions[key]
@@ -105,7 +145,7 @@ def test_call():
         #this will fail because the Latitude_galactic_diffuse function isn't normalized.
         test_one(_known_functions["Latitude_galactic_diffuse"], "Latitude_galactic_diffuse")
    
-@pytest.mark.xfail #fails for some functions.
+ 
 def test_call_with_units():
 
     # Multi-component
@@ -126,8 +166,14 @@ def test_call_with_units():
       shape = class_type()
       source = ExtendedSource('test_source_%s' % name, spatial_shape = shape, components=[c1, c2])
 
-      shape.lon0=ra*u.degree
-      shape.lat0=dec*u.degree
+      if name != "SpatialTemplate_2D":
+        shape.lon0=ra*u.degree
+        shape.lat0=dec*u.degree
+        
+      else:
+        make_test_template(ra, dec, "__test.fits")
+        shape.load_file( "__test.fits" )
+        shape.K = 1.0
 
       assert np.all(source.spectrum.component1([1, 2, 3]*u.keV) == po1([1, 2, 3]*u.keV))
       assert np.all(source.spectrum.component2([1, 2, 3]*u.keV) == po2([1, 2, 3]*u.keV))
@@ -150,11 +196,18 @@ def test_call_with_units():
       spectrum = one + two
       spatial = source.spatial_shape( [ra*1.01]*3*u.deg, [dec*1.01]*3*u.deg )
       assert np.all( np.abs( total - spectrum*spatial ) == 0 )
+      
+      model = Model( source )
+      new_model = clone_model( model )
+      
+      new_total = new_model['test_source_%s' % name]( [ra*1.01]*3*u.deg, [dec*1.01]*3*u.deg, [1,2,3]*u.keV)
+      assert np.all( np.abs( total - new_total ) == 0 )
+     
     
     for key in _known_functions:
 
-        if key in [ "SpatialTemplate_2D", "Latitude_galactic_diffuse"]:
-        #not testing spatial template  as we don't have a file to read in right now.
+        if key in ["Latitude_galactic_diffuse" ]:
+        #not testing latitude galactic diffuse for now.
             continue
         
         this_function = _known_functions[key]

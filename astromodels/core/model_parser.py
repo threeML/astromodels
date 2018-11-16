@@ -183,8 +183,12 @@ class ModelParser(object):
 
             for property, value in extra_setup['extra_setup'].iteritems():
 
-                #new_model[path].__setattr__(property, new_model[value])
-                new_model[path].__setattr__(property, value)
+                #First, check to see if the we have a valid path in the new model.
+                #If we aren't given a path, interpret it as being given a value.
+                if value in new_model:
+                  new_model[path].__setattr__(property, new_model[value])
+                else:
+                  new_model[path].__setattr__(property, value)
 
         return new_model
 

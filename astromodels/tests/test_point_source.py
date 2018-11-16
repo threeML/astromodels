@@ -5,6 +5,8 @@ import pytest
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
 from astromodels.sources.point_source import PointSource
+from astromodels.core.model import Model
+from astromodels.core.model_parser import clone_model, load_model
 
 try:
 
@@ -155,7 +157,7 @@ def test_call_with_units():
     def test_one(class_type):
 
         instance = class_type()
-
+        
         if not instance.is_prior:
 
             # if we have fixed x_units then we will use those
@@ -174,19 +176,37 @@ def test_call_with_units():
             # Use the function as a spectrum
             ps = PointSource("test", 0, 0, instance)
 
+            if instance.name == "Synchrotron":
+                instance.set_particle_distribution(Powerlaw())
+
+
+            result = ps(1.0)
+
+            assert isinstance(result, float)
 
             result = ps(1.0 * x_unit_to_use)
-
 
             assert isinstance(result, u.Quantity)
 
             result = ps(np.array([1, 2, 3]) * x_unit_to_use)
 
             assert isinstance(result, u.Quantity)
+            
+            model = Model( ps )
+            
+            new_model = clone_model( model )
+            
+            new_result =  new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
+            
+            assert np.all(new_result==result)
 
-            result = ps(1.0)
+            model.save("__test.yml", overwrite=True)
+            
+            new_model = load_model("__test.yml")
 
-            assert isinstance(result, float)
+            new_result =  new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
+            
+            assert np.all(new_result==result)
 
         else:
 
@@ -212,6 +232,12 @@ def test_call_with_units():
             # The TemplateModel function has its own test
 
             continue
+
+#        if key.find("Synchrotron")==0:
+
+            # Naima Synchtron function should have its own test
+
+#            continue
 
         if this_function._n_dim == 1:
 

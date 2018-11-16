@@ -992,21 +992,33 @@ if has_naima:
         particle_distribution = property(get_particle_distribution, set_particle_distribution,
                                          doc="""Get/set particle distribution for electrons""")
 
+        def fix_units( self, x, B, distance, emin, emax ):
+        
+            if isinstance( x, u.Quantity):
+                return True, x.to(get_units().energy), B.to(u.Gauss), distance.to(u.kpc), emin.to(u.GeV), emax.to(u.GeV)
+            else:
+                return False, x*(get_units().energy), B*(u.Gauss), distance*(u.kpc), emin*(u.GeV), emax*(u.GeV)
+
+
         # noinspection PyPep8Naming
         def evaluate(self, x, B, distance, emin, emax, need):
 
-            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B * astropy_units.Gauss,
-                                              Eemin=emin * astropy_units.GeV,
-                                              Eemax=emax * astropy_units.GeV, nEed=need)
+            has_units, x, B, distance, emin, emax = self.fix_units( x, B, distance, emin, emax )
 
-            return _synch.flux(x * get_units().energy, distance=distance * astropy_units.kpc).value
+            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B,
+                                              Eemin=emin, Eemax=emax, nEed=need)
+
+            if has_units:
+              return _synch.flux(x , distance=distance)
+            else:
+              return _synch.flux(x , distance=distance).value
 
         def to_dict(self, minimal=False):
 
             data = super(Function1D, self).to_dict(minimal)
 
             if not minimal:
-                data['extra_setup'] = {'particle_distribution': self.particle_distribution.path}
+                data['extra_setup'] = {'particle_distribution': self.particle_distribution.path }
 
             return data
 
