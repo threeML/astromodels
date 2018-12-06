@@ -756,7 +756,10 @@ class ShapeParser(object):
                 link_function_instance = self._parse_shape_definition(component_name, link_function_name,
                                                                       this_definition['law'][link_function_name])
 
-                path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
+                if is_spatial:
+                    path = ".".join([self._source_name, function_name, parameter_name])
+                else:
+                    path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
 
                 self._links.append({'parameter_path': path,
                                     'law': link_function_instance,
