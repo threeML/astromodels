@@ -1,6 +1,5 @@
 from __future__ import print_function
 from __future__ import division
-from past.utils import old_div
 import pytest
 import astropy.units as u
 
@@ -29,5 +28,5 @@ def test_xspec_load():
     # no need to do anything really
     s = XS_phabs() * XS_powerlaw() + XS_bbody()
     print(s(1.0))
-    s.set_units(u.keV, old_div(1, (u.keV * u.cm**2 * u.s)))
+    s.set_units(u.keV, 1 / (u.keV * u.cm**2 * u.s))
     print(s(1.0 * u.keV)) 

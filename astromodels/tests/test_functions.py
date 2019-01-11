@@ -1,7 +1,6 @@
 from __future__ import print_function
 from __future__ import division
 from builtins import object
-from past.utils import old_div
 import pytest
 import os
 
@@ -50,7 +49,7 @@ def get_a_function_class():
         def _set_units(self, x_unit, y_unit):
 
             # a has units of y_unit / x_unit, so that a*x has units of y_unit
-            self.a.unit = old_div(y_unit, x_unit)
+            self.a.unit = y_unit / x_unit
 
             # b has units of y
             self.b.unit = y_unit
@@ -153,7 +152,7 @@ def test_function_meta():
 
             def _set_units(self, x_unit, y_unit):
 
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self):
@@ -186,7 +185,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x):
@@ -218,7 +217,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a):
@@ -250,7 +249,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -281,7 +280,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -318,7 +317,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -350,7 +349,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b, c):
@@ -384,7 +383,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -419,7 +418,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, x, a, b):
@@ -456,7 +455,7 @@ def test_function_meta():
             """
 
             def _set_units(self, x_unit, y_unit, z_unit):
-                self.a.unit = old_div(y_unit, x_unit)
+                self.a.unit = y_unit / x_unit
                 self.b.unit = y_unit
 
             def evaluate(self, y, x, a, b, c):
@@ -486,7 +485,7 @@ def test_function_meta():
         """
 
         def _set_units(self, x_unit, y_unit):
-            self.a.unit = old_div(y_unit, x_unit)
+            self.a.unit = y_unit / x_unit
             self.b.unit = y_unit
 
         def evaluate(self, x, a, b):
@@ -576,7 +575,7 @@ def test_function_values_units():
     # Try to instance it
     my_function = Test_function()
 
-    diff_flux = old_div(1.0, (u.keV * u.cm**2 * u.s))
+    diff_flux = 1.0 / (u.keV * u.cm**2 * u.s)
 
     my_function.set_units(u.keV, diff_flux)
 
@@ -623,7 +622,7 @@ def test_function_composition():
 
     composite = powerlaw + line
 
-    composite.set_units(u.keV, old_div(1.0, (u.keV * u.cm**2 * u.s)))
+    composite.set_units(u.keV, 1.0 / (u.keV * u.cm**2 * u.s))
 
     for x in ([1,2,3,4],[1,2,3,4] * u.keV, 1.0, np.array([1.0, 2.0, 3.0, 4.0])):
 
@@ -642,9 +641,9 @@ def test_function_composition():
     assert composite(2.25) == po(2.25) * li(2.25)
 
     # test /
-    composite = old_div(po, li)
+    composite = po / li
 
-    assert composite(2.25) == old_div(po(2.25), li(2.25))
+    assert composite(2.25) == po(2.25) / li(2.25)
 
     # test .of
     composite = po.of(li)
@@ -681,9 +680,9 @@ def test_function_composition():
     assert composite(2.25) == 2.0 * po(2.25)
 
     # Number divided by
-    composite = old_div(1.0, li)
+    composite = 1.0 / li
 
-    assert composite(2.25) == old_div(1.0, li(2.25))
+    assert composite(2.25) == 1.0 / li(2.25)
 
     # Composite of composite
     composite = po*li + po - li + 2*po / li
@@ -791,7 +790,7 @@ def test_function2D():
 
     _ = c(a, a)
 
-    c.set_units(u.deg, u.deg, old_div(1.0, u.deg**2))
+    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
     _ = c(1 * u.deg, 1.0 * u.deg)
 
@@ -816,7 +815,7 @@ def test_function3D():
 
     _ = c(a, a, a)
 
-    c.set_units(u.deg, u.deg, u.keV, old_div(1.0, u.deg**2))
+    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
 
     _ = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
 
@@ -829,7 +828,7 @@ def test_function3D():
 
     with pytest.raises(TypeError):
 
-        c.set_units("not existent", u.deg, u.keV, old_div(1.0, (u.keV * u.s * u.deg**2 * u.cm**2)))
+        c.set_units("not existent", u.deg, u.keV, 1.0 / (u.keV * u.s * u.deg**2 * u.cm**2))
 
 def test_spatial_template_2D():
 
