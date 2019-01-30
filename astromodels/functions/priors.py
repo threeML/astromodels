@@ -237,7 +237,9 @@ class Truncated_gaussian(Function1D):
 
         arg = theta_lower + x * (theta_upper - theta_lower)
 
-        return mu + sigma * sqrt_two * erfcinv(2 * (1 - arg))
+        out = mu + sigma * sqrt_two * erfcinv(2 * (1 - arg))
+        
+        return np.clip(out, lower_bound, upper_bound)
 
 class Cauchy(Function1D):
     r"""

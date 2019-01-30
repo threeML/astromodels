@@ -16,6 +16,7 @@ Created by giacomov on 2/24/17.
 
 #include <Python.h>
 #include "structmember.h"
+#include "bytesobject.h"
 
 #include <map>
 #include <list>
@@ -26,6 +27,7 @@ Created by giacomov on 2/24/17.
 #include <iterator>
 #include <algorithm>
 
+
 // These two macros needs to be used to use NAME_MAXLENGTH in a string
 
 #define STR_EXPAND(tok) #tok
@@ -33,6 +35,44 @@ Created by giacomov on 2/24/17.
 
 #define NAME_MAXLENGTH 50
 
+// Utility function to help python2 <-> python3
+#if PY_MAJOR_VERSION >= 3
+
+const char *strobj_to_string(PyObject *obj)
+{
+
+  return PyUnicode_AsUTF8(obj);
+
+}
+
+PyObject *strobj_from_string(const char *str)
+{
+
+  return PyUnicode_FromString(str);
+
+}
+
+int check_string(PyObject *obj) {  return PyUnicode_Check(obj); }
+
+#else
+
+char *strobj_to_string(PyObject *obj)
+{
+
+  return PyString_AsString(obj);
+
+}
+
+PyObject *strobj_from_string(const char *str)
+{
+
+  return PyString_FromString(str);
+
+}
+
+int check_string(PyObject *obj) {  return PyString_Check(obj); }
+
+#endif
 
 // Forward declaration so that we will be able to use the NodeType in the function defined at the
 // end of the file
@@ -553,7 +593,7 @@ node_get_path(Node *self, PyObject *args)
 
   path_string += *(--path.end());
 
-  PyObject *path_string_py = PyString_FromString(path_string.c_str());
+  PyObject *path_string_py = strobj_from_string(path_string.c_str());
 
   return path_string_py;
 
@@ -565,7 +605,7 @@ static PyObject *
 node_getname(Node *self, PyObject *args)
 {
 
-  PyObject *name_str = PyString_FromString(self->name);
+  PyObject *name_str = strobj_from_string(self->name);
 
   Py_INCREF(name_str);
 
@@ -614,13 +654,13 @@ node_change_name(Node *self, PyObject *args)
   if (!PyArg_ParseTuple(args, "O", &value))
     return NULL;
 
-  if (! PyString_Check(value)) {
+  if (! check_string(value)) {
     PyErr_SetString(PyExc_TypeError,
                     "The name of a node must be a string");
     return NULL;
   }
 
-  std::string new_name = PyString_AsString(value);
+  std::string new_name = strobj_to_string(value);
 
   strcpy(self->name, new_name.c_str());
 
@@ -632,7 +672,7 @@ static PyObject *
 node_getattro(Node *self, PyObject *name)
 {
 
-  std::string name_string = PyString_AsString(name);
+  std::string name_string = strobj_to_string(name);
 
   nodes_map::iterator it = self->nodes.find(name_string);
 
@@ -668,7 +708,7 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 
   // Lookup for attribute in the map of the nodes, to see if it's a node
 
-  std::string name_string = PyString_AsString(name);
+  std::string name_string = strobj_to_string(name);
 
   if (name_string == "name")
   {
@@ -934,25 +974,92 @@ static PyMethodDef module_methods[] = {
     {NULL}  /* Sentinel */
 };
 
+
+// NEW compatibility layer python2 to python3
+
+struct module_state {
+    PyObject *error;
+};
+
+#if PY_MAJOR_VERSION >= 3
+#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+#else
+#define GETSTATE(m) (&_state)
+static struct module_state _state;
+#endif
+
+
+#if PY_MAJOR_VERSION >= 3
+
+static int node_ctype_traverse(PyObject *m, visitproc visit, void *arg) {
+    Py_VISIT(GETSTATE(m)->error);
+    return 0;
+}
+
+static int node_ctype_clear(PyObject *m) {
+    Py_CLEAR(GETSTATE(m)->error);
+    return 0;
+}
+
+
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "node_ctype",
+        NULL,
+        sizeof(struct module_state),
+        module_methods,
+        NULL,
+        node_ctype_traverse,
+        node_ctype_clear,
+        NULL
+};
+
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+#define INITERROR return NULL
+#else
+#define INITERROR return
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+PyMODINIT_FUNC
+PyInit_node_ctype(void)
+#else
 #ifndef PyMODINIT_FUNC	/* declarations for DLL import/export */
 #define PyMODINIT_FUNC void
 #endif
 PyMODINIT_FUNC
 initnode_ctype(void)
+#endif
 {
-  PyObject* m;
+    PyObject *module;
 
-  if (PyType_Ready(&NodeType) < 0)
-    return;
+    if (PyType_Ready(&NodeType) < 0)
+       INITERROR;
 
-  m = Py_InitModule3("node_ctype", module_methods,
-                     "Example module that creates an extension type.");
+#if PY_MAJOR_VERSION >= 3
+    module = PyModule_Create(&moduledef);
+#else
+    module = Py_InitModule3("node_ctype", module_methods, "Extension type node_ctype");
+#endif
 
-  if (m == NULL)
-    return;
+    if (module == NULL)
+        INITERROR;
+    struct module_state *st = GETSTATE(module);
 
-  Py_INCREF(&NodeType);
-  PyModule_AddObject(m, "_Node", (PyObject *)&NodeType);
+    st->error = PyErr_NewException("node_ctype.Error", NULL, NULL);
+    if (st->error == NULL) {
+        Py_DECREF(module);
+        INITERROR;
+    }
+
+    Py_INCREF(&NodeType);
+    PyModule_AddObject(module, "_Node", (PyObject *)&NodeType);
+
+#if PY_MAJOR_VERSION >= 3
+    return module;
+#endif
 }
 
 bool is_a_node(PyObject *obj)

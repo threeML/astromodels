@@ -786,6 +786,16 @@ class Function(Node):
 
         return self(*args)
 
+    def get_total_spatial_integral(self, z):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        raise NotImplementedError("You have to implement this")
+
 
 class Function1D(Function):
 
@@ -1356,6 +1366,10 @@ class CompositeFunction(Function):
         # Make sure all functions have the same dimension, and store it so that the property .n_dim of
         # the Function class will work
         self._n_dim = self._functions[0].n_dim
+        
+        if self._n_dim > 1:
+            
+            raise NotImplementedError("CompositeFunction class can only handle 1-dimensional functions at the moment.")
         
         for function in self._functions:
             

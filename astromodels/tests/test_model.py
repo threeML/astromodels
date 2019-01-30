@@ -400,6 +400,10 @@ def test_external_parameters():
         m.add_external_parameter(fake_parameter)
 
 
+
+
+
+
 def test_input_output_basic():
 
     mg = ModelGetter()
@@ -754,6 +758,36 @@ def test_clone_model():
     m2.free_parameters.values()[0].value = m2.free_parameters.values()[0].value / 2.0
 
     assert m2.free_parameters.values()[0].value != m1.free_parameters.values()[0].value
+
+    # test cloning model with linked external parameters
+
+    mg = ModelGetter()
+    m1 = mg.model
+
+    # Create parameter
+    fake_parameter = Parameter("external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True)
+
+    # Link as equal (default)
+    m1.add_external_parameter(fake_parameter)
+
+    m1.link(m1.one.spectrum.main.Powerlaw.K,fake_parameter)
+
+    _ = clone_model(m1)
+
+    mg = ModelGetter()
+    m1 = mg.model
+
+
+
+    # Link as equal (default)
+    m1.add_external_parameter(fake_parameter)
+
+    m1.link(fake_parameter, m1.one.spectrum.main.Powerlaw.K)
+
+    _ = clone_model(m1)
+
+
+
 
 
 def test_model_parser():

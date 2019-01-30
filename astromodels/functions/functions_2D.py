@@ -96,7 +96,25 @@ class Latitude_galactic_diffuse(Function2D):
         max_lon = max(_coord.transform_to("icrs").ra.value)
 
         return (min_lon, max_lon), (min_lat, max_lat)
+        
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
 
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        dL= self.l_max.value-self.l_min.value if self.l_max.value > self.l_min.value else 360 + self.l_max.value - self.l_max.value
+
+        #integral -inf to inf exp(-b**2 / 2*sigma_b**2 ) db = sqrt(2pi)*sigma_b 
+        #Note that K refers to the peak diffuse flux (at b = 0) per square degree.
+        integral = np.sqrt( 2*np.pi ) * self.sigma_b.value * self.K.value * dL 
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return integral * np.power( 180. / np.pi, -2 ) * np.ones_like( z )
+        
 
 class Gaussian_on_sphere(Function2D):
     r"""
@@ -184,6 +202,19 @@ class Gaussian_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+        
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+        
+
 
 class Asymm_Gaussian_on_sphere(Function2D):
     r"""
@@ -244,7 +275,7 @@ class Asymm_Gaussian_on_sphere(Function2D):
         self.lat0.unit = y_unit
         self.a.unit = x_unit
         self.e.unit = u.dimensionless_unscaled
-        self.theta.unit = x_unit
+        self.theta.unit = u.degree
 
     def evaluate(self, x, y, lon0, lat0, a, e, theta):
 
@@ -252,13 +283,23 @@ class Asymm_Gaussian_on_sphere(Function2D):
 
         b = a * np.sqrt(1. - e**2)
         
-        dX = angular_distance( lon0, lat0, lon, lat0);
-        dY = angular_distance( lon0, lat0, lon0, lat);
-        
-        dX=np.where( np.logical_or( np.logical_and( lon-lon0 >0, lon-lon0<180), np.logical_and( lon-lon0<-180, lon-lon0 > -360) ), dX, -dX)
-        dY=np.where( lat>lat0, dY, -dY)
+        dX = np.atleast_1d( angular_distance( lon0, lat0, lon, lat0) )
+        dY = np.atleast_1d( angular_distance( lon0, lat0, lon0, lat) )
 
-        phi = theta + 90.
+        dlon = lon - lon0
+        if isinstance( dlon, u.Quantity):
+            dlon = (dlon.to(u.degree)).value
+        
+        idx=np.logical_and( np.logical_or( dlon < 0, dlon > 180), np.logical_or( dlon>-180, dlon < -360) )
+        dX[idx] = -dX[idx]
+        
+        idx = lat < lat0 
+        dY[idx]=-dY[idx]
+
+        if isinstance( theta, u.Quantity ):
+            phi = (theta.to(u.degree)).value + 90.0
+        else:
+            phi = theta + 90.
 
         cos2_phi = np.power( np.cos( phi * np.pi/180.), 2)
         sin2_phi = np.power( np.sin( phi * np.pi/180.), 2)
@@ -273,7 +314,7 @@ class Asymm_Gaussian_on_sphere(Function2D):
 
         E = -A*np.power(dX, 2) + 2.*B*dX*dY - C*np.power(dY, 2)
 
-        return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
+        return np.power(180. / np.pi, 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
         
     def get_boundaries(self):
 
@@ -304,7 +345,17 @@ class Asymm_Gaussian_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
 
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
 
 
 class Disk_on_sphere(Function2D):
@@ -391,6 +442,18 @@ class Disk_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+
 
 class Ellipse_on_sphere(Function2D):
     r"""
@@ -458,13 +521,17 @@ class Ellipse_on_sphere(Function2D):
         self.a.unit = x_unit
         # eccentricity is dimensionless
         self.e.unit = u.dimensionless_unscaled 
-        self.theta.unit = x_unit
+        self.theta.unit = u.degree
         
     def calc_focal_pts(self, lon0, lat0, a, b, theta):
         # focal distance
         f = np.sqrt(a**2 - b**2)
 
-        bearing = 90. - theta
+        if isinstance( theta, u.Quantity):
+          bearing = 90. - (theta.to(u.degree)).value
+        else:
+          bearing = 90. - theta
+          
         # coordinates of focal points
         lon1, lat1 = vincenty(lon0, lat0, bearing, f)
         lon2, lat2 = vincenty(lon0, lat0, bearing + 180., f)
@@ -521,6 +588,18 @@ class Ellipse_on_sphere(Function2D):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+
 
 class SpatialTemplate_2D(Function2D):
     r"""
@@ -557,11 +636,20 @@ class SpatialTemplate_2D(Function2D):
     
     def _setup(self):
         
-        self._frame = ICRS()
+        self._frame = "icrs"
+        self._fitsfile = None
+        self._map = None
     
-    def load_file(self,fitsfile,ihdu=0):
+    
+    def load_file(self,fitsfile, ihdu=0):
         
-        with fits.open(fitsfile) as f:
+        if fitsfile is None:
+            
+            raise RuntimeError( "Need to specify a fits file with a template map." )
+        
+        self._fitsfile=fitsfile
+        
+        with fits.open(self._fitsfile) as f:
     
             self._wcs = wcs.WCS( header = f[ihdu].header )
             self._map = f[ihdu].data
@@ -581,6 +669,17 @@ class SpatialTemplate_2D(Function2D):
             h.update( repr(self._wcs) )
             self.hash = int(h.hexdigest(), 16)
             
+
+    def to_dict(self, minimal=False):
+
+         data = super(Function2D, self).to_dict(minimal)
+
+         if not minimal:
+         
+            data['extra_setup'] = {"_fitsfile": self._fitsfile, "_frame": self._frame }
+  
+         return data
+        
     
     def set_frame(self, new_frame):
         """
@@ -589,12 +688,16 @@ class SpatialTemplate_2D(Function2D):
             :param new_frame: a coordinate frame from astropy
             :return: (none)
             """
-        assert isinstance(new_frame, BaseCoordinateFrame)
+        assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]
                 
         self._frame = new_frame
     
     def evaluate(self, x, y, K, hash):
         
+        if self._map is None:
+            
+            self.load_file(self._fitsfile)
+          
         # We assume x and y are R.A. and Dec
         coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
         
@@ -602,18 +705,23 @@ class SpatialTemplate_2D(Function2D):
         #SkyCoord takes care of necessary coordinate frame transformations.
         Xpix, Ypix = coord.to_pixel(self._wcs)
         
-        Xpix = Xpix.astype(int)
-        Ypix = Ypix.astype(int)
+        Xpix = np.atleast_1d(Xpix.astype(int))
+        Ypix = np.atleast_1d(Ypix.astype(int))
         
         # find pixels that are in the template ROI, otherwise return zero
-        iz = np.where((Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0))[0]
-        out = np.zeros((len(x)))
+        #iz = np.where((Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0))[0]
+        iz = (Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0)
+        out = np.zeros_like(Xpix)
         out[iz] = self._map[Ypix[iz], Xpix[iz]]
         
         return np.multiply(K,out)
 
     def get_boundaries(self):
     
+        if self._map is None:
+            
+            self.load_file(self._fitsfile)
+          
         #We use the max/min RA/Dec of the image corners to define the boundaries.
         #Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
     
@@ -630,6 +738,19 @@ class SpatialTemplate_2D(Function2D):
         
         return (min_lon, max_lon), (min_lat, max_lat)
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.multiply(self.K.value,np.ones_like( z ) )
+        
+        
 class Power_law_on_sphere(Function2D):
     r"""
         description :
@@ -667,6 +788,12 @@ class Power_law_on_sphere(Function2D):
                 initial value : 5.
                 fix : yes
 
+            minr :
+
+                desc : radius below which the PL is approximated as a constant
+                initial value : 0.05
+                fix : yes
+
         """
 
     __metaclass__ = FunctionMeta
@@ -681,27 +808,41 @@ class Power_law_on_sphere(Function2D):
         self.lat0.unit = y_unit
         self.index.unit = u.dimensionless_unscaled
         self.maxr.unit = x_unit
+        self.minr.unit = x_unit
 
-    def evaluate(self, x, y, lon0, lat0, index, maxr):
+    def evaluate(self, x, y, lon0, lat0, index, maxr, minr):
 
         lon, lat = x,y
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        if self.maxr.value <= 0.05:
-            norm = np.power(180 / np.pi, -2.-self.index.value) * np.pi * self.maxr.value**2 * 0.05**self.index.value
+        if maxr <= minr:
+            norm = np.power(np.pi / 180., 2.+index) * np.pi * maxr**2 * minr**index
         elif self.index.value == -2.:
-            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * np.log(self.maxr.value / 0.05)
+            norm = np.pi * (1.0 + 2. * np.log(maxr / minr) )
         else:
-            norm = np.power(0.05 * np.pi / 180., 2.+self.index.value) * np.pi + 2. * np.pi * (np.power(self.maxr.value * np.pi / 180., self.index.value+2.) - np.power(0.05 * np.pi / 180., self.index.value+2.))
-            
+            norm = np.power(minr * np.pi / 180., 2.+index) * np.pi + 2. * np.pi / (2.+index) * (np.power(maxr * np.pi / 180., index+2.) - np.power(minr * np.pi / 180., index+2.))
 
-        return np.less_equal(angsep,self.maxr.value) * np.power(180 / np.pi, -1. * index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, 0.05)), np.multiply(0.05, np.less_equal(angsep, 0.05))), index) / norm
+        value = np.less_equal(angsep,maxr) * np.power(np.pi / 180., index) * np.power(np.add(np.multiply(angsep, np.greater(angsep, minr)), np.multiply(minr, np.less_equal(angsep, minr))), index)
+
+        return value / norm
 
     def get_boundaries(self):
 
         return ((self.lon0.value - self.maxr.value), (self.lon0.value + self.maxr.value)), ((self.lat0.value - self.maxr.value), (self.lat0.value + self.maxr.value))
 
+    def get_total_spatial_integral(self, z=None):  
+        """
+        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+        needs to be implemented in subclasses.
+
+        :return: an array of values of the integral (same dimension as z).
+        """
+        
+        if isinstance( z, u.Quantity):
+            z = z.value
+        return np.ones_like( z )
+ 
 
 # class FunctionIntegrator(Function2D):
 #     r"""

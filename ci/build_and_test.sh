@@ -43,9 +43,6 @@ source activate test_env
 
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
 
-# Figure out where is the package
-CONDA_BUILD_PATH=$(conda build conda-dist/recipe --output -c conda-forge -c threeml --python=2.7 | rev | cut -f2- -d"/" | rev)
-
 # Install it
 conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
 
@@ -76,6 +73,16 @@ else
 
             conda install -c conda-forge anaconda-client
 
-            anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml ${CONDA_BUILD_PATH}/*.tar.bz2 --force
+            echo "Uploading ${CONDA_BUILD_PATH}"
+                        
+            if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+                
+                anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
+            
+            else
+            
+                anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
+            
+            fi
         fi
 fi

@@ -99,6 +99,7 @@ class ModelParser(object):
         self._independent_variables = []
         self._external_parameters = []
         self._links = []
+        self._external_parameter_links = []
         self._extra_setups = []
 
         for source_or_var_name, source_or_var_definition in self._model_dict.iteritems():
@@ -126,6 +127,9 @@ class ModelParser(object):
                 assert isinstance(res, parameter.Parameter)
 
                 self._external_parameters.append(res)
+
+                self._links.extend(this_parser.links)
+#                self._external_parameter_links.extend(this_parser.links)
 
             else:
 
@@ -170,6 +174,7 @@ class ModelParser(object):
 
             new_model[path].add_auxiliary_variable(new_model[variable],law)
 
+
         # Finally the extra_setups (if any)
 
         for extra_setup in self._extra_setups:
@@ -178,7 +183,12 @@ class ModelParser(object):
 
             for property, value in extra_setup['extra_setup'].iteritems():
 
-                new_model[path].__setattr__(property, new_model[value])
+                #First, check to see if the we have a valid path in the new model.
+                #If we aren't given a path, interpret it as being given a value.
+                if value in new_model:
+                  new_model[path].__setattr__(property, new_model[value])
+                else:
+                  new_model[path].__setattr__(property, value)
 
         return new_model
 
@@ -197,6 +207,8 @@ class IndependentVariableParser(object):
 class ParameterParser(object):
 
     def __init__(self, name, definition):
+
+        self._links = []
 
         # NOTE: this is triggered only for parameters outside of functions
 
@@ -224,11 +236,61 @@ class ParameterParser(object):
             definition['prior'] = prior_instance
 
 
+        # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
+
+        matches = re.findall('''f\((.+)\)''', str(definition['value']))
+
+        if matches:
+
+            # This is an expression which marks a parameter
+            # with a link to another parameter (or an IndependentVariable such as time)
+
+            # Get the variable
+            linked_variable = matches[0]
+
+            # Now get the law
+
+            if 'law' not in definition:  # pragma: no cover
+                raise ModelSyntaxError("The parameter %s in function %s "
+                                       " is linked to %s but lacks a 'law' attribute"
+                                       % (name, function_name,  linked_variable))
+
+
+            link_function_name = definition['law'].keys()[0]
+
+
+
+            # ok, now we parse the linked parameter
+
+            function_parser = ShapeParser(name)
+
+
+            link_function_instance = function_parser.parse(name, link_function_name, definition['law'][link_function_name] )
+
+            self._links.append({'parameter_path': name,
+                                'law': link_function_instance,
+                                'variable': linked_variable})
+
+            # get rid of the 'law' entry
+
+            definition.pop('law', None)
+
+            # this parameter's value will be replaced later.
+            # for now we just need to get rid of the f(param) entry
+
+            definition['value'] = 1.
+
+
         self._variable = parameter.Parameter(name, **definition)
 
     def get_variable(self):
 
         return self._variable
+
+    @property
+    def links(self):
+
+        return self._links
 
 
 class SourceParser(object):
@@ -352,8 +414,6 @@ class SourceParser(object):
 
                 raise
 
-                raise RuntimeError("Could not parse: %s" % my_yaml.dump(component_definition))
-
         try:
 
             this_point_source = point_source.PointSource(self._source_name, sky_position=this_sky_direction,
@@ -362,8 +422,6 @@ class SourceParser(object):
         except:
 
             raise
-
-            raise RuntimeError("Could not parse: %s" % my_yaml.dump(pts_source_definition))
 
         return this_point_source
 
@@ -426,7 +484,73 @@ class SourceParser(object):
 
         return this_sky_direction
 
+
+    def _parse_polarization(self, polarization_definititon ):
+
+        polarization_params = {}
+
+
+        if 'degree' in polarization_definititon and 'angle' in polarization_definititon:
+
+            par_parser = ParameterParser('degree', polarization_definititon['degree'])
+
+            degree = par_parser.get_variable()
+
+            degree.bounds = (0, 100)
+
+            par_parser = ParameterParser('angle', polarization_definititon['angle'])
+
+            angle = par_parser.get_variable()
+
+            angle.bounds = (0, 180)
+
+            this_polarization = polarization.LinearPolarization(angle=angle, degree=degree)
+
+        elif 'I' in polarization_definititon and 'U' in polarization_definititon and 'Q' in polarization_definititon and 'V' in polarization_definititon:
+
+            par_parser = ParameterParser('I', polarization_definititon['I'])
+
+            I = par_parser.get_variable()
+
+            I.bounds = (0, 1)
+
+            par_parser = ParameterParser('U', polarization_definititon['U'])
+
+            U = par_parser.get_variable()
+
+            U.bounds = (0, 1)
+
+            par_parser = ParameterParser('Q', polarization_definititon['Q'])
+
+            Q = par_parser.get_variable()
+
+            Q.bounds = (0, 1)
+
+            par_parser = ParameterParser('V', polarization_definititon['V'])
+
+            V = par_parser.get_variable()
+
+            V.bounds = (0, 1)
+
+
+            this_polarization = polarization.StokesPolarization(I=I, Q=Q, U=U, V=V)
+
+        else:
+
+            # just make a default polarization
+            
+            this_polarization = polarization.Polarization()
+            # raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
+            #                        " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
+            #                        % self._source_name)
+
+
+        return this_polarization
+
+
     def _parse_spectral_component(self, component_name, component_definition):
+
+
 
         # Parse the shape definition, which is the first to occur
 
@@ -444,14 +568,27 @@ class SourceParser(object):
 
         shape_parser = ShapeParser(self._source_name)
 
-        shape = shape_parser.parse(component_name, function_name, parameters_definition)
+        shape = shape_parser.parse(component_name, function_name, parameters_definition, is_spatial=False)
 
         # Get the links and extra setups, if any
 
         self._links.extend(shape_parser.links)
         self._extra_setups.extend(shape_parser.extra_setups)
 
-        this_polarization = polarization.Polarization()
+        if 'polarization' in component_definition:
+
+            # get the polarization
+
+            polarization_definition = component_definition['polarization']
+
+
+            this_polarization = self._parse_polarization(polarization_definition)
+
+
+
+        else:
+
+            this_polarization = polarization.Polarization()
 
         this_spectral_component = spectral_component.SpectralComponent(component_name, shape, this_polarization)
 
@@ -464,7 +601,12 @@ class SourceParser(object):
 
         spatial_shape_parser = ShapeParser(self._source_name)
 
-        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, ext_source_definition.values()[0])
+        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, ext_source_definition.values()[0], is_spatial=True)
+
+        # Get the links and extra setups, if any
+
+        self._links.extend(spatial_shape_parser.links)
+        self._extra_setups.extend(spatial_shape_parser.extra_setups)
 
         # Parse the spectral information
 
@@ -488,6 +630,8 @@ class SourceParser(object):
         return this_ext_source
 
 
+
+
 class ShapeParser(object):
 
     def __init__(self, source_name):
@@ -506,9 +650,9 @@ class ShapeParser(object):
 
         return self._extra_setups
 
-    def parse(self, component_name, function_name, parameters_definition):
+    def parse(self, component_name, function_name, parameters_definition, is_spatial = False):
 
-        return self._parse_shape_definition(component_name, function_name, parameters_definition)
+        return self._parse_shape_definition(component_name, function_name, parameters_definition, is_spatial)
 
     @staticmethod
     def _fix(value):
@@ -517,7 +661,7 @@ class ShapeParser(object):
         # such as in units
         return value.replace("\n", " ")
 
-    def _parse_shape_definition(self, component_name, function_name, parameters_definition):
+    def _parse_shape_definition(self, component_name, function_name, parameters_definition, is_spatial=False):
 
         # Get the function
 
@@ -612,7 +756,10 @@ class ShapeParser(object):
                 link_function_instance = self._parse_shape_definition(component_name, link_function_name,
                                                                       this_definition['law'][link_function_name])
 
-                path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
+                if is_spatial:
+                    path = ".".join([self._source_name, function_name, parameter_name])
+                else:
+                    path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
 
                 self._links.append({'parameter_path': path,
                                     'law': link_function_instance,
@@ -646,9 +793,14 @@ class ShapeParser(object):
 
         # Now handle extra_setup if any
         if 'extra_setup' in parameters_definition:
-            path = ".".join([self._source_name, 'spectrum', component_name, function_name])
-
+        
+            if is_spatial:
+                path = ".".join([self._source_name, function_name])
+            else:
+                path = ".".join([self._source_name, 'spectrum', component_name, function_name])
+                
             self._extra_setups.append({'function_path': path,
                                        'extra_setup': parameters_definition['extra_setup']})
 
         return function_instance
+
