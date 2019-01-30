@@ -1,17 +1,16 @@
-import numpy as np
-import time
-import pdb
-
-from scipy.interpolate import RegularGridInterpolator
-from joblib import Parallel, delayed
-
+import astropy.units as u
 from astropy.wcs import wcs
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
-import astropy.units as u
 
 from astromodels.functions.function import Function3D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
+
+import numpy as np
+
+from scipy.interpolate import RegularGridInterpolator
+
+
 
 
 
@@ -583,7 +582,6 @@ class GalPropTemplate_3D(Function3D):
 
     def load_file(self,fitsfile,ihdu=0):
 
-        tstart = time.time()
         #self._header = fits.getheader(fitsfile)
         #self._w = wcs.WCS(self._header)
         self.fname = fitsfile
@@ -615,8 +613,6 @@ class GalPropTemplate_3D(Function3D):
                 self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
-            tfinal = time.time()
-            print "Loading and interpolating time: ",tfinal-tstart," sec."
 
     def which_model_file(self):
         return self.fname
