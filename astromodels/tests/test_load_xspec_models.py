@@ -1,4 +1,5 @@
 import pytest
+import astropy.units as u
 
 try:
 
@@ -23,4 +24,7 @@ skip_if_xspec_is_not_available = pytest.mark.skipif(not has_XSPEC,
 def test_xspec_load():
 
     # no need to do anything really
-    pass
+    s = XS_phabs() * XS_powerlaw() + XS_bbody()
+    print(s(1.0))
+    s.set_units(u.keV, 1 / (u.keV * u.cm**2 * u.s))
+    print(s(1.0 * u.keV)) 

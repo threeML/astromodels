@@ -213,6 +213,7 @@ class ExtendedSource(Source, Node):
     def free_parameters(self):
         """
         Returns a dictionary of free parameters for this source
+
         :return:
         """
         free_parameters = collections.OrderedDict()
@@ -237,6 +238,7 @@ class ExtendedSource(Source, Node):
     def parameters(self):
         """
         Returns a dictionary of all parameters for this source
+
         :return:
         """
         all_parameters = collections.OrderedDict()

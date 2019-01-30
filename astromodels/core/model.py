@@ -47,9 +47,6 @@ class Model(Node):
 
     def __init__(self, *sources):
 
-        # There must be at least one source
-        assert len(sources) > 0, "You need to have at least one source in the model."
-
         # Setup the node, using the special name '__root__' to indicate that this is the root of the tree
 
         super(Model, self).__init__("__root__")
@@ -447,16 +444,25 @@ class Model(Node):
         Link the value of the provided parameters through the provided function (identity is the default, i.e.,
         parameter_1 = parameter_2).
 
-        :param parameter_1: the first parameter
+        :param parameter_1: the first parameter;can be either a single parameter or a list of prarameters
         :param parameter_2: the second parameter
         :param link_function: a function instance. If not provided, the identity function will be used by default.
         Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
         :return: (none)
         """
+        if not isinstance(parameter_1,list):
+        # Make a list of one element
+            parameter_1_list  = [parameter_1]
+        else:
+        # Make a copy to avoid tampering with the input
+            parameter_1_list = list(parameter_1)
+        
+        
+        for param_1 in parameter_1_list:
+            assert param_1.path in self, "Parameter %s is not contained in this model" % param_1.path
 
-        assert parameter_1.path in self, "Parameter %s is not contained in this model" % parameter_1.path
         assert parameter_2.path in self, "Parameter %s is not contained in this model" % parameter_2.path
-
+        
         if link_function is None:
             # Use the Line function by default, with both parameters fixed so that the two
             # parameters to be linked will vary together
@@ -467,31 +473,44 @@ class Model(Node):
 
             link_function.b.value = 0
             link_function.b.fix = True
-
-        parameter_1.add_auxiliary_variable(parameter_2, link_function)
-
-        # Now set the units of the link function
-        link_function.set_units(parameter_2.unit, parameter_1.unit)
-
+        
+        
+        
+        for param_1 in parameter_1_list: 
+            param_1.add_auxiliary_variable(parameter_2, link_function)
+            # Now set the units of the link function
+            link_function.set_units(parameter_2.unit, param_1.unit)
+        
+        
+        
+        
+        
     def unlink(self, parameter):
         """
-        Sets free a parameter which has been linked previously
+        Sets free one or more parameters which have been linked previously
 
-        :param parameter: the parameter to be set free
+        :param parameter: the parameter to be set free, can also be a list of parameters
         :return: (none)
         """
 
-        if parameter.has_auxiliary_variable():
-
-            parameter.remove_auxiliary_variable()
-
+        if not isinstance(parameter,list):
+        # Make a list of one element
+            parameter_list  = [parameter]
         else:
+        # Make a copy to avoid tampering with the input
+            parameter_list = list(parameter)
+            
+        for param in parameter_list:    
+            if param.has_auxiliary_variable():
+                param.remove_auxiliary_variable()
 
-            with warnings.catch_warnings():
+            else:
 
-                warnings.simplefilter("always", RuntimeWarning)
+                with warnings.catch_warnings():
 
-                warnings.warn("Parameter %s has no link to be removed." % parameter.path, RuntimeWarning)
+                    warnings.simplefilter("always", RuntimeWarning)
+
+                    warnings.warn("Parameter %s has no link to be removed." % param.path, RuntimeWarning)
 
     def display(self, complete=False):
         """

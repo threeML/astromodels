@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.integrate import quad
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
 from astropy import wcs
@@ -8,6 +7,8 @@ import astropy.units as u
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
+
+import hashlib
 
 
 class Latitude_galactic_diffuse(Function2D):
@@ -148,8 +149,9 @@ class Gaussian_on_sphere(Function2D):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * sigma ** 2) * np.exp(
-            -0.5 * np.power(angsep, 2) / sigma ** 2)
+        s2 = sigma**2
+
+        return (180 / np.pi)**2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2/s2)
 
     def get_boundaries(self):
 
@@ -181,6 +183,128 @@ class Gaussian_on_sphere(Function2D):
                 max_lon = max_lon - 360.
 
         return (min_lon, max_lon), (min_lat, max_lat)
+
+
+class Asymm_Gaussian_on_sphere(Function2D):
+    r"""
+        description :
+
+            A bidimensional Gaussian function on a sphere (in spherical coordinates)
+
+            see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function
+            
+        parameters :
+
+            lon0 :
+
+                desc : Longitude of the center of the source
+                initial value : 0.0
+                min : 0.0
+                max : 360.0
+
+            lat0 :
+
+                desc : Latitude of the center of the source
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+            a :
+
+                desc : Standard deviation of the Gaussian distribution (major axis)
+                initial value : 0.5
+                min : 0
+                max : 20
+
+            e :
+
+                desc : Excentricity of Gaussian ellipse
+                initial value : 0.5
+                min : 0
+                max : 1
+                
+            theta :
+
+                desc : inclination of major axis to a line of constant latitude
+                initial value : 0.0
+                min : -90.0
+                max : 90.0
+
+        """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        # lon0 and lat0 and a have most probably all units of degrees. However,
+        # let's set them up here just to save for the possibility of using the
+        # formula with other units (although it is probably never going to happen)
+
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
+        self.a.unit = x_unit
+        self.e.unit = u.dimensionless_unscaled
+        self.theta.unit = x_unit
+
+    def evaluate(self, x, y, lon0, lat0, a, e, theta):
+
+        lon, lat = x,y
+
+        b = a * np.sqrt(1. - e**2)
+        
+        dX = angular_distance( lon0, lat0, lon, lat0);
+        dY = angular_distance( lon0, lat0, lon0, lat);
+        
+        dX=np.where( np.logical_or( np.logical_and( lon-lon0 >0, lon-lon0<180), np.logical_and( lon-lon0<-180, lon-lon0 > -360) ), dX, -dX)
+        dY=np.where( lat>lat0, dY, -dY)
+
+        phi = theta + 90.
+
+        cos2_phi = np.power( np.cos( phi * np.pi/180.), 2)
+        sin2_phi = np.power( np.sin( phi * np.pi/180.), 2)
+        
+        sin_2phi = np.sin( 2. * phi * np.pi/180.)
+        
+        A = cos2_phi / (2.*b**2) + sin2_phi / (2.*a**2)
+
+        B = - sin_2phi / (4.*b**2) + sin_2phi / (4.*a**2)
+
+        C = sin2_phi / (2.*b**2) + cos2_phi / (2.*a**2)
+
+        E = -A*np.power(dX, 2) + 2.*B*dX*dY - C*np.power(dY, 2)
+
+        return np.power(180 / np.pi, 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
+        
+    def get_boundaries(self):
+
+        # Truncate the gaussian at 2 times the max of sigma allowed
+
+        min_lat = max(-90., self.lat0.value - 2 * self.a.max_value)
+        max_lat = min(90., self.lat0.value + 2 * self.a.max_value)
+
+        max_abs_lat = max(np.absolute(min_lat), np.absolute(max_lat))
+
+        if max_abs_lat > 89. or 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+
+            min_lon = 0.
+            max_lon = 360.
+
+        else:
+
+            min_lon = self.lon0.value - 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.)
+            max_lon = self.lon0.value + 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.)
+
+            if min_lon < 0.:
+
+                min_lon = min_lon + 360.
+
+            elif max_lon > 360.:
+
+                max_lon = max_lon - 360.
+
+        return (min_lon, max_lon), (min_lat, max_lat)
+
+
 
 
 class Disk_on_sphere(Function2D):
@@ -413,6 +537,12 @@ class SpatialTemplate_2D(Function2D):
                 desc : normalization
                 initial value : 1
                 fix : yes
+            
+            hash :
+                
+                desc: hash of model map [needed for memoization]
+                initial value: 1
+                fix: yes
         
         """
     
@@ -435,14 +565,21 @@ class SpatialTemplate_2D(Function2D):
     
             self._wcs = wcs.WCS( header = f[ihdu].header )
             self._map = f[ihdu].data
-            
+              
             self._nX = f[ihdu].header['NAXIS1']
             self._nY = f[ihdu].header['NAXIS2']
+
+            #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
+            #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
             assert self._map.shape[1] == self._nX, "NAXIS1 = %d in fits header, but %d in map" % (self._nX, self._map.shape[1])
             assert self._map.shape[0] == self._nY, "NAXIS2 = %d in fits header, but %d in map" % (self._nY, self._map.shape[0])
             
-        #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
-        #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
+            #hash sum uniquely identifying the template function (defined by its 2D map array and coordinate system)
+            #this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
+            h = hashlib.sha224()
+            h.update( self._map)
+            h.update( repr(self._wcs) )
+            self.hash = int(h.hexdigest(), 16)
             
     
     def set_frame(self, new_frame):
@@ -456,7 +593,7 @@ class SpatialTemplate_2D(Function2D):
                 
         self._frame = new_frame
     
-    def evaluate(self, x, y, K):
+    def evaluate(self, x, y, K, hash):
         
         # We assume x and y are R.A. and Dec
         coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")

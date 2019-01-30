@@ -1,5 +1,5 @@
 # Import the version
-# from version import __version__
+from version import __version__
 #
 #
 
@@ -11,6 +11,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .sources.extended_source import ExtendedSource
     from .sources.particle_source import ParticleSource
     from .core.parameter import Parameter, IndependentVariable, SettingOutOfBounds
+
     from .functions.functions import *
     from .functions.priors import *
     from .functions.functions_2D import *
@@ -30,8 +31,3 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
 
 import astropy.units as u
-
-# if has_xspec:
-#
-#     from .xspec.factory import *
-#     from .xspec.xspec_settings import *

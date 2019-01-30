@@ -3,35 +3,39 @@ import functools
 import contextlib
 import astropy.units as u
 
-
 _WITH_MEMOIZATION = True
+_CACHE_SIZE = 20
 
 
 @contextlib.contextmanager
-def use_astromodels_memoization(switch):
+def use_astromodels_memoization(switch, cache_size=_CACHE_SIZE):
     """
     Activate/deactivate memoization temporarily
 
     :param switch: True (memoization on) or False (memoization off)
+    :param cache_size: number of previous evaluation of functions to keep in memory. Default: 100
     :return:
     """
 
     global _WITH_MEMOIZATION
+    global _CACHE_SIZE
 
     old_status = bool(_WITH_MEMOIZATION)
+    old_cache_size = int(_CACHE_SIZE)
 
     _WITH_MEMOIZATION = bool(switch)
+    _CACHE_SIZE = int(cache_size)
 
     yield
 
     _WITH_MEMOIZATION = old_status
+    _CACHE_SIZE = old_cache_size
 
 
 
 def memoize(method):
     """
-    A decorator for the 2d functions which memoize the results of 1 call (useful when the minimizer is taking partial
-    derivatives and calls the 2d function several times with the same arguments)
+    A decorator for functions of sources which memoize the results of the last _CACHE_SIZE calls,
 
     :param method: method to be memoized
     :return: the decorated method
@@ -56,11 +60,6 @@ def memoize(method):
 
         unique_id = tuple(float(yy.value) for yy in instance.parameters.values()) + (x.size, x.min(), x.max())
 
-        # If the input has units, use the units as well
-        if isinstance(x, u.Quantity):
-
-            unique_id += str(x.unit)
-
         # Create a unique identifier for this combination of inputs
 
         key = hash(unique_id)
@@ -79,10 +78,9 @@ def memoize(method):
 
             cache[key] = result
 
-            if len(cache) > 1000:
-                # Remove the 100 elements that were put in first
-
-                [_popitem(False) for i in range(100)]
+            if len(cache) > _CACHE_SIZE:
+                # Remove half of the element (but at least 1, even if _CACHE_SIZE=1, which would be pretty idiotic ;-) )
+                [_popitem(False) for i in range(max(_CACHE_SIZE // 2, 1))]
 
             return result
 

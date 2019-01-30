@@ -11,7 +11,8 @@ import numpy as np
 import scipy.stats
 import warnings
 
-from astromodels.core.tree import Node
+from tree import Node
+from thread_safe_unit_format import ThreadSafe
 
 
 def _behaves_like_a_number(obj):
@@ -156,7 +157,7 @@ class ParameterBase(Node):
 
         # Store the units as an astropy.units.Unit instance
 
-        self._unit = u.Unit(unit)
+        self._unit = self._safe_assign_unit(unit)
 
         # A ParameterBase instance cannot have auxiliary variables
         self._aux_variable = {}
@@ -171,7 +172,9 @@ class ParameterBase(Node):
         self._transformation = transformation
 
         # Let's store the init value
-
+        
+        # NOTE: this will be updated immediately by the _set_value method of the "value" property
+        self._internal_value = None
         # If the value is a Quantity, deal with that
 
         if isinstance(value, u.Quantity):
@@ -244,25 +247,28 @@ class ParameterBase(Node):
         """
         return self._desc
 
+    @staticmethod
+    def _safe_assign_unit(input_unit):
+
+        # We first try to use our own, thread-safe format, if we fail then we try the astropy one
+
+        try:
+
+            new_unit = u.Unit(input_unit, format='threadsafe')
+
+        except ValueError:
+
+            # Try with the default format of astropy
+            new_unit = u.Unit(input_unit)
+
+        return new_unit
+
     # Define the property 'unit'
     def _set_unit(self, input_unit):
 
         # This will fail if the input is not valid
 
-        try:
-
-            new_unit = u.Unit(input_unit)
-
-        except ValueError:
-
-            # This for some obscure reason fails to parse when running in parallel, so we fix it manually
-            if input_unit == '1 / (cm2 keV s)':
-
-                new_unit = 1 / (u.cm**2 * u.keV * u.s)
-
-            else:
-
-                raise
+        new_unit = self._safe_assign_unit(input_unit)
 
 
         # Now transform the current _value in the new unit, unless the current unit is dimensionless, in which
@@ -440,24 +446,29 @@ class ParameterBase(Node):
 
         if self._transformation is None:
 
-            self._internal_value = new_value
+            new_internal_value = new_value
 
         else:
 
-            self._internal_value = self._transformation.forward(new_value)
+            new_internal_value = self._transformation.forward(new_value)
 
-        # Call the callbacks (if any)
+        # If the parameter has changed, update its value and call the callbacks if needed
 
-        for callback in self._callbacks:
+        if new_internal_value != self._internal_value:
 
-            try:
+            # Update
+            self._internal_value = new_internal_value
 
-                callback(self)
+            # Call the callbacks (if any)
+            for callback in self._callbacks:
 
-            except:
+                try:
 
-                raise NotCallableOrErrorInCall(
-                    "Could not use callback for parameter %s with value %s" % (self.name, new_value))
+                    callback(self)
+
+                except:
+
+                    raise NotCallableOrErrorInCall("Could not call callback for parameter %s" % self.name)
 
     value = property(_get_value, _set_value,
                      doc="Get and sets the current value for the parameter, with or without units")
@@ -485,20 +496,15 @@ class ParameterBase(Node):
         :return: none
         """
 
-        self._internal_value = new_internal_value
+        if new_internal_value != self._internal_value:
 
-        # Call callbacks if any
+            self._internal_value = new_internal_value
 
-        for callback in self._callbacks:
+            # Call callbacks if any
 
-            try:
+            for callback in self._callbacks:
 
                 callback(self)
-
-            except:
-
-                raise NotCallableOrErrorInCall(
-                    "Could not use callback for parameter %s with value %s" % (self.name, new_value))
 
     # Define the property "min_value"
     # NOTE: the min value is always in external representation
@@ -720,7 +726,8 @@ class ParameterBase(Node):
             data['desc'] = str(self.description)
             data['min_value'] = self._to_python_type(self.min_value)
             data['max_value'] = self._to_python_type(self.max_value)
-            data['unit'] = str(self.unit.to_string(format='fits'))
+            # We use our own thread-safe format for the unit
+            data['unit'] = self.unit.to_string(format='threadsafe')
 
         return data
 
@@ -908,30 +915,38 @@ class Parameter(ParameterBase):
         """Set prior for this parameter. The prior must be a function accepting the current value of the parameter
         as input and giving the probability density as output."""
 
-        # Try and call the prior with the current value of the parameter
-        try:
+        if prior is None:
 
-            _ = prior(self.value)
+            # Removing prior
 
-        except:
+            self._prior = None
 
-            raise NotCallableOrErrorInCall("Could not call the provided prior. " +
-                                           "Is it a function accepting the current value of the parameter?")
+        else:
 
-        try:
+            # Try and call the prior with the current value of the parameter
+            try:
 
-            prior.set_units(self.unit, u.dimensionless_unscaled)
+                _ = prior(self.value)
 
-        except AttributeError:
+            except:
 
-            raise NotCallableOrErrorInCall("It looks like the provided prior is not a astromodels function.")
+                raise NotCallableOrErrorInCall("Could not call the provided prior. " +
+                                               "Is it a function accepting the current value of the parameter?")
 
-        self._prior = prior
+            try:
+
+                prior.set_units(self.unit, u.dimensionless_unscaled)
+
+            except AttributeError:
+
+                raise NotCallableOrErrorInCall("It looks like the provided prior is not a astromodels function.")
+
+            self._prior = prior
 
     prior = property(_get_prior, _set_prior,
                      doc='Gets or sets the current prior for this parameter. The prior must be a callable function '
                          "accepting the current value of the parameter as input and returning the probability "
-                         "density as output")
+                         "density as output. Set to None to remove prior.")
 
     def has_prior(self):
         """

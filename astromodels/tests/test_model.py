@@ -14,7 +14,7 @@ from astromodels.core.parameter import Parameter, IndependentVariable
 from astromodels.core.model_parser import *
 from astromodels import u
 import numpy as np
-
+import copy
 
 def _get_point_source(name="test"):
 
@@ -124,11 +124,13 @@ def test_pickling_unpickling():
 
 def test_default_constructor():
 
-    # Test that we cannot build a model with no sources
+    # Test that we can build a model with no sources
 
-    with pytest.raises(AssertionError):
+    m = Model()
 
-        _ = Model()
+    assert len(m.sources) == 0
+    assert len(m.point_sources) == 0
+    assert len(m.extended_sources) == 0
 
 
 def test_constructor_1source():
@@ -345,6 +347,24 @@ def test_links():
     # Remove the link
     m.unlink(m.one.spectrum.main.Powerlaw.K)
 
+    
+    # Redo the same, but with a list of 2 parameters
+    n_free_before_link = len(m.free_parameters)
+    
+    m.link([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K],m.two.spectrum.main.Powerlaw.K)
+    assert len(m.free_parameters) == n_free_before_link -2
+    
+    # Now test the link
+    
+    new_value = 1.23456
+    m.two.spectrum.main.Powerlaw.K.value = new_value
+
+    assert m.one.spectrum.main.Powerlaw.K.value == new_value
+    assert m.ext_one.spectrum.main.Powerlaw.K.value == new_value
+    # Remove the links at once
+    
+    m.unlink([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K])
+  
 
 def test_external_parameters():
 
@@ -829,3 +849,12 @@ def test_time_domain_integration():
     expected_results = default_powerlaw(energies) * effective_norm  # type: np.ndarray
 
     assert np.allclose(expected_results, results)
+
+
+def test_deepcopy():
+
+    mg = ModelGetter()
+
+    m1 = mg.model
+
+    clone = copy.deepcopy(m1)

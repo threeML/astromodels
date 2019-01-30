@@ -173,7 +173,9 @@ def find_library(library_root, additional_places=None):
 
 
 # Get the version number
-execfile('astromodels/version.py')
+vfilename = "astromodels/version.py"
+exec(compile(open(vfilename, "rb").read(), vfilename, 'exec'))
+#execfile('astromodels/version.py')
 
 
 def setup_xspec():
@@ -184,6 +186,12 @@ def setup_xspec():
 
         # See, maybe we are running in Conda
         conda_prefix = os.environ.get("CONDA_PREFIX")
+        
+        if conda_prefix is None:
+            
+            # Maybe this is a Conda build
+            
+            conda_prefix = os.environ.get("PREFIX")
 
         if conda_prefix is not None:
 
@@ -207,7 +215,7 @@ def setup_xspec():
                 print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
 
                 # Set up the HEADAS variable so that the following will find the libraries
-                headas_root = os.environ['CONDA_PREFIX']
+                headas_root = conda_prefix
 
         else:
 
@@ -221,9 +229,9 @@ def setup_xspec():
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
-
+    
     libraries_root = ['XSFunctions', 'XSModel', 'XSUtil', 'XS', 'cfitsio', 'CCfits', 'wcs', 'gfortran']
-
+            
     libraries = []
     library_dirs = []
 
@@ -261,6 +269,7 @@ def setup_xspec():
 
                   libraries=libraries,
                   library_dirs=library_dirs,
+                  runtime_library_dirs=library_dirs,
                   extra_compile_args=[])]
 
     return ext_modules_configuration
@@ -327,7 +336,7 @@ setup(
     keywords=['Likelihood', 'Models', 'fit'],
 
     classifiers=[],
-
+    
     install_requires=[
         'numpy >= 1.6',
         'PyYAML',
@@ -336,8 +345,16 @@ setup(
         'numdifftools',
         'tables',
         'pandas',
-        'html2text',
         'dill'],
+
+    extras_require={
+        'tests': [
+            'pytest', ],
+        'docs': [
+            'sphinx >= 1.4',
+            'sphinx_rtd_theme',
+            'nbsphinx',
+            'sphinx-autoapi']},
 
     ext_modules=ext_modules_configuration,
 

@@ -4,6 +4,7 @@ import astropy.units as u
 import numpy as np
 import os
 import pandas as pd
+from pandas.api.types import infer_dtype
 import re
 import scipy.interpolate
 import warnings
@@ -12,7 +13,6 @@ from pandas import HDFStore
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
-from astromodels.core.my_yaml import my_yaml
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
@@ -185,7 +185,7 @@ class TemplateModelFactory(object):
     @staticmethod
     def _clean_cols_for_hdf(data):
 
-        types = data.apply(lambda x: pd.lib.infer_dtype(x.values))
+        types = data.apply(lambda x: infer_dtype(x.values))
 
         for col in types.index:
 
@@ -301,7 +301,7 @@ class TemplateModel(Function1D):
 
     __metaclass__ = FunctionMeta
 
-    def _custom_init_(self, model_name, other_name=None):
+    def _custom_init_(self, model_name, other_name=None,log_interp = True):
         """
         Custom initialization for this model
         
@@ -404,9 +404,9 @@ class TemplateModel(Function1D):
 
         # Finally prepare the interpolators
 
-        self._prepare_interpolators()
+        self._prepare_interpolators(log_interp)
 
-    def _prepare_interpolators(self):
+    def _prepare_interpolators(self, log_interp):
 
         # Figure out the shape of the data matrices
         data_shape = map(lambda x: x.shape[0], self._parameters_grids.values())
@@ -417,8 +417,21 @@ class TemplateModel(Function1D):
 
             # Make interpolator for this energy
             # NOTE: we interpolate on the logarithm
+            # unless specified
 
-            this_data = np.array(np.log10(self._data_frame[energy].values).reshape(*data_shape), dtype=float)
+            if log_interp:
+
+                this_data = np.array(np.log10(self._data_frame[energy].values).reshape(*data_shape), dtype=float)
+
+                self._is_log10 = True
+
+            else:
+
+                # work in linear space
+                this_data = np.array(self._data_frame[energy].values.reshape(*data_shape), dtype=float)
+
+
+                self._is_log10 = False
 
             if len(self._parameters_grids.values()) == 2:
 
@@ -480,12 +493,19 @@ class TemplateModel(Function1D):
 
             scale = scale.to(1 / u.keV).value
 
-        log_energies = np.log10(energies)
+        if self._is_log10:
+
+            log_energies = np.log10(energies)
+
+        else:
+
+            log_energies = energies
 
         e_tilde = self._energies * scale
 
         # Gather all interpolations for these parameters' values at all defined energies
         # (these are the logarithm of the values)
+        # note that if these are not logged, then the name is superflous
 
         log_interpolations = np.array(map(lambda i:self._interpolators[i](np.atleast_1d(parameters_values)),
                                           range(self._energies.shape[0])))
@@ -494,12 +514,23 @@ class TemplateModel(Function1D):
 
         # NOTE: the variable "interpolations" contains already the log10 of the values,
 
-        interpolator = scipy.interpolate.InterpolatedUnivariateSpline(np.log10(e_tilde),
-                                                                      log_interpolations,
-                                                                      k=self._interpolation_degree,
-                                                                      ext=0)
+        if self._is_log10:
 
-        values = np.power(10, interpolator(log_energies))
+            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(np.log10(e_tilde),
+                                                                          log_interpolations,
+                                                                          k=self._interpolation_degree,
+                                                                          ext=0)
+
+            values = np.power(10, interpolator(log_energies))
+
+        else:
+
+            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(e_tilde,
+                                                                          log_interpolations,
+                                                                          k=self._interpolation_degree,
+                                                                          ext=0)
+
+            values = interpolator(log_energies)
 
         # The division by scale results from the differential:
         # E = e * scale
