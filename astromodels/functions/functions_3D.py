@@ -546,7 +546,7 @@ class GalPropTemplate_3D(Function3D):
     r"""
         description :
 
-            User input Spatial Template.
+            Use a 3D template that has morphology and flux information as in a GalProp model. DRAGON model should also work if in the same format as GalProp. Only parameter is a normalization factor. 
 
         latex : $ K $
 
