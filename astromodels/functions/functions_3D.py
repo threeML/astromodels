@@ -582,13 +582,11 @@ class GalPropTemplate_3D(Function3D):
 
     def load_file(self,fitsfile,ihdu=0):
 
-        #self._header = fits.getheader(fitsfile)
-        #self._w = wcs.WCS(self._header)
         self.fname = fitsfile
-        self.ramin = 0.1
-        self.ramax = 359.9
-        self.decmin = -26.
-        self.decmax = 66.
+        #self.ramin = 0.1
+        #self.ramax = 359.9
+        #self.decmin = -26.
+        #self.decmax = 66.
         with fits.open(fitsfile) as f:
 
             #self._refXpix = f[ihdu].header['CRPIX1']
@@ -669,12 +667,12 @@ class GalPropTemplate_3D(Function3D):
             self.decmax = max(_coord.transform_to('icrs').dec.value)
 
         else: 
-            if c < -26.:
-                c = -26.
-                print "Value cannot be lower than dec=-26 due to HAWC's FOV"
-            if d > 66.:
-                d = 66.
-                print "Value cannot be lower than dec=66 due to HAWC's FOV"
+            #if c < -26.:
+            #    c = -26.
+            #    print "Value cannot be lower than dec=-26 due to HAWC's FOV"
+            #if d > 66.:
+            #    d = 66.
+            #    print "Value cannot be lower than dec=66 due to HAWC's FOV"
             self.ramin = a
             self.ramax = b
             self.decmin = c
