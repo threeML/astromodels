@@ -597,18 +597,18 @@ class GalPropTemplate_3D(Function3D):
             self._delEn = f[ihdu].header['CDELT3']
             self._refLon = f[ihdu].header['CRVAL1']
             self._refLat = f[ihdu].header['CRVAL2']
-            self._refEn = f[ihdu].header['CRVAL3'] #in log10
+            self._refEn = f[ihdu].header['CRVAL3'] # values in log10
             self._map = f[ihdu].data
-            self._nl = f[ihdu].header['NAXIS1']#long
-            self._nb = f[ihdu].header['NAXIS2']#lat
-            self._ne = f[ihdu].header['NAXIS3']#energy
+            self._nl = f[ihdu].header['NAXIS1'] #longitude
+            self._nb = f[ihdu].header['NAXIS2'] #latitude
+            self._ne = f[ihdu].header['NAXIS3'] #energy
 
             #Create the function for the interpolation
             self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl)
             self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)
             self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)
             for i in xrange(len(self._E)):
-                self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # map is in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
+                self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # Galprop map units in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
 
@@ -644,12 +644,12 @@ class GalPropTemplate_3D(Function3D):
 
             for j in xrange(lon.size):
                 try:
-                    f[j,i] = self._F((energy[i],lat[j],lon[j]))#/(energy[i]*energy[i])
+                    f[j,i] = self._F((energy[i],lat[j],lon[j]))
                 except ValueError:
                     continue
 
         assert np.all(np.isfinite(f))
-        A = np.multiply(K,f/1000.) #divide by 1000 since LiFF will mutliply it back (change from MeV to KeV)
+        A = np.multiply(K,f/1000.) #(change from MeV to KeV)
         return A
 
     def define_region(self,a,b,c,d,galactic=False):
@@ -667,12 +667,6 @@ class GalPropTemplate_3D(Function3D):
             self.decmax = max(_coord.transform_to('icrs').dec.value)
 
         else: 
-            #if c < -26.:
-            #    c = -26.
-            #    print "Value cannot be lower than dec=-26 due to HAWC's FOV"
-            #if d > 66.:
-            #    d = 66.
-            #    print "Value cannot be lower than dec=66 due to HAWC's FOV"
             self.ramin = a
             self.ramax = b
             self.decmin = c
