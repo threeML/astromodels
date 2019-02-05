@@ -583,8 +583,11 @@ class GalPropTemplate_3D(Function3D):
     def load_file(self,fitsfile,phi1,phi2,theta1,theta2,galactic=False,ihdu=0):
 
         self.fname = fitsfile
-        self.define_region(phi1,phi2,theta1,theta2,galactic)
-        print self.ramin
+        p1,p2,t1,t2 = self.define_region(phi1,phi2,theta1,theta2,galactic)
+        self.ramin = p1
+        self.ramax = p2
+        self.decmin = t1
+        self.decmax = t2
         
         with fits.open(fitsfile) as f:
 
@@ -666,16 +669,17 @@ class GalPropTemplate_3D(Function3D):
 
             _coord = SkyCoord(l=[lmin,lmin,lmax,lmax], b=[bmin, bmax, bmax, bmin], frame='galactic', unit='deg')
             
-            self.ramin = min(_coord.transform_to('icrs').ra.value)
-            self.ramax = max(_coord.transform_to('icrs').ra.value)
-            self.decmin = min(_coord.transform_to('icrs').dec.value)
-            self.decmax = max(_coord.transform_to('icrs').dec.value)
+            ramin = min(_coord.transform_to('icrs').ra.value)
+            ramax = max(_coord.transform_to('icrs').ra.value)
+            decmin = min(_coord.transform_to('icrs').dec.value)
+            decmax = max(_coord.transform_to('icrs').dec.value)
 
         else: 
-            self.ramin = a
-            self.ramax = b
-            self.decmin = c
-            self.decmax = d
+            ramin = a
+            ramax = b
+            decmin = c
+            decmax = d
+        return ramin,ramax,decmin,decmax
 
     def get_boundaries(self):
 
