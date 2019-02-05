@@ -649,7 +649,7 @@ class GalPropTemplate_3D(Function3D):
         try:
             f = self._F(zip(energy,lat,lon))
         except ValueError:
-            continue
+            pass 
 
         assert np.all(np.isfinite(f))
         A = np.multiply(K,f/1000.) #(change from MeV to KeV)
