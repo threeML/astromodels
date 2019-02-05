@@ -584,6 +584,7 @@ class GalPropTemplate_3D(Function3D):
 
         self.fname = fitsfile
         self.define_region(phi1,phi2,theta1,theta2,galactic)
+        print self.ramin
         
         with fits.open(fitsfile) as f:
 
