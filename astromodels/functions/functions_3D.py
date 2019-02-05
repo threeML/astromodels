@@ -647,7 +647,7 @@ class GalPropTemplate_3D(Function3D):
         #        except ValueError:
         #            continue
         try:
-            f = self._F(energy,lat,lon)
+            f = self._F(zip(energy,lat,lon))
         except ValueError:
             continue
 
