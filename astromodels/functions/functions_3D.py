@@ -580,13 +580,11 @@ class GalPropTemplate_3D(Function3D):
 
         self._frame = new_frame
 
-    def load_file(self,fitsfile,ihdu=0):
+    def load_file(self,fitsfile,phi1,phi2,theta1,theta2,galactic=False,ihdu=0):
 
         self.fname = fitsfile
-        #self.ramin = 0.1
-        #self.ramax = 359.9
-        #self.decmin = -26.
-        #self.decmax = 66.
+        define_region(phi1,phi2,theta1,theta2,galactic)
+        
         with fits.open(fitsfile) as f:
 
             #self._refXpix = f[ihdu].header['CRPIX1']
