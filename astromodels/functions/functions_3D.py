@@ -646,16 +646,15 @@ class GalPropTemplate_3D(Function3D):
         #            f[j,i] = self._F((energy[i],lat[j],lon[j]))
         #        except ValueError:
         #            continue
-        print "\n"
-        print E0,Ef
-        print energy
-        print np.log10(z)
         try:
             f = self._F(zip(energy,lat,lon))
         except ValueError:
             pass 
-
-        #assert np.all(np.isfinite(f)),"some interpolated values are wrong"
+        bad_idx = np.isnan(f)
+        f[bad_idx]=0
+        bad_idx = np.isinf(f)
+        f[bad_idx]=0
+        assert np.all(np.isfinite(f)),"some interpolated values are wrong"
         A = np.multiply(K,f/1000.) #(change from MeV to KeV)
         return A
 
