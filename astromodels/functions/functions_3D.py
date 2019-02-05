@@ -583,7 +583,7 @@ class GalPropTemplate_3D(Function3D):
     def load_file(self,fitsfile,phi1,phi2,theta1,theta2,galactic=False,ihdu=0):
 
         self.fname = fitsfile
-        define_region(phi1,phi2,theta1,theta2,galactic)
+        self.define_region(phi1,phi2,theta1,theta2,galactic)
         
         with fits.open(fitsfile) as f:
 
