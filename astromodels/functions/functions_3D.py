@@ -682,6 +682,7 @@ class GalPropTemplate_3D(Function3D):
         return ramin,ramax,decmin,decmax
 
     def get_boundaries(self):
+        print self.ramin, self.ramax
 
         min_longitude = self.ramin
         max_longitude = self.ramax
