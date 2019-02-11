@@ -568,6 +568,7 @@ class GalPropTemplate_3D(Function3D):
     def _setup(self):
 
         self._frame = ICRS()
+        self._map = None
 
     def set_frame(self, new_frame):
         """
@@ -581,6 +582,9 @@ class GalPropTemplate_3D(Function3D):
         self._frame = new_frame
 
     def load_file(self,fitsfile,phi1,phi2,theta1,theta2,galactic=False,ihdu=0):
+        
+        if fitsfile is None:
+            raise RuntimeError( "Need to specify a fits file with a template map." )
 
         self.fname = fitsfile
         p1,p2,t1,t2 = self.define_region(phi1,phi2,theta1,theta2,galactic)
@@ -591,9 +595,6 @@ class GalPropTemplate_3D(Function3D):
         
         with fits.open(fitsfile) as f:
 
-            #self._refXpix = f[ihdu].header['CRPIX1']
-            #self._refYpix = f[ihdu].header['CRPIX2']
-            #self._refZpix = f[ihdu].header['CRPIX3']
             self._delLon = f[ihdu].header['CDELT1']
             self._delLat = f[ihdu].header['CDELT2']
             self._delEn = f[ihdu].header['CDELT3']
@@ -682,8 +683,6 @@ class GalPropTemplate_3D(Function3D):
         return ramin,ramax,decmin,decmax
 
     def get_boundaries(self):
-        print self.ramin, self.ramax
-
         min_longitude = self.ramin
         max_longitude = self.ramax
         min_latitude = self.decmin
