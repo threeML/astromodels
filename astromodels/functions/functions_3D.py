@@ -10,7 +10,7 @@ import numpy as np
 
 from scipy.interpolate import RegularGridInterpolator
 
-
+import hashlib
 
 
 
@@ -557,6 +557,12 @@ class GalPropTemplate_3D(Function3D):
                 initial value : 1
                 fix : yes
 
+            hash :
+                
+                desc : hash of model map [needed for memoization]
+                initial value : 1
+                fix : yes         
+
     """
 
     __metaclass__ = FunctionMeta
@@ -569,6 +575,7 @@ class GalPropTemplate_3D(Function3D):
 
         self._frame = ICRS()
         self._map = None
+        self._fitsfile = None
 
     def set_frame(self, new_frame):
         """
@@ -586,14 +593,14 @@ class GalPropTemplate_3D(Function3D):
         if fitsfile is None:
             raise RuntimeError( "Need to specify a fits file with a template map." )
 
-        self.fname = fitsfile
+        self._fitsfile = fitsfile
         p1,p2,t1,t2 = self.define_region(phi1,phi2,theta1,theta2,galactic)
         self.ramin = p1
         self.ramax = p2
         self.decmin = t1
         self.decmax = t2
         
-        with fits.open(fitsfile) as f:
+        with fits.open(self._fitsfile) as f:
 
             self._delLon = f[ihdu].header['CDELT1']
             self._delLat = f[ihdu].header['CDELT2']
@@ -614,9 +621,23 @@ class GalPropTemplate_3D(Function3D):
                 self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # Galprop map units in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
+            
+            h = hashlib.sha224()
+            h.update( self._map )
+            self.hash = int(h.hexigest(), 16)
+
+    def to_dict(self, minimal=False):
+        
+        data = super(Function3D, self).to_dict(minimal)
+
+        if not minimal:
+        
+            data['extra_setup'] = {"_fitsfile":self._fitsfile, "_frame": self._frame, "ramin": self.ramin, "ramax": self.ramax, "decmin": self.decmin, "decmax":self.decmax}
+
+        return data
 
     def which_model_file(self):
-        return self.fname
+        return self._fitsfile
 
     def evaluate(self, x,y,z,K):
 
