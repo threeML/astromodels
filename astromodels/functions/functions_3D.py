@@ -641,6 +641,10 @@ class GalPropTemplate_3D(Function3D):
 
     def evaluate(self, x,y,z,K,hash):
 
+        if self._map is None:
+    
+            self.load_file(fitsfile,self.ramin,self.ramax,self.decmin,self.decmax,False,ihdu=0)
+
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
