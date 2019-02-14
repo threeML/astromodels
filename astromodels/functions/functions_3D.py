@@ -639,7 +639,7 @@ class GalPropTemplate_3D(Function3D):
     def which_model_file(self):
         return self._fitsfile
 
-    def evaluate(self, x,y,z,K):
+    def evaluate(self, x,y,z,K,hash):
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
