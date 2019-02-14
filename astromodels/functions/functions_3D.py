@@ -665,15 +665,6 @@ class GalPropTemplate_3D(Function3D):
         shift = np.where(lon>180.)
         lon[shift] = 180 - lon[shift]
 
-        #for i in xrange(energy.size):
-        #    if energy[i]<E0 or energy[i]>Ef:  #Maybe needed, it probably not necesary once the energy units are right?
-        #        continue
-
-        #    for j in xrange(lon.size):
-        #        try:
-        #            f[j,i] = self._F((energy[i],lat[j],lon[j]))
-        #        except ValueError:
-        #            continue
         try:
             f = self._F(zip(energy,lat,lon))
         except ValueError:
