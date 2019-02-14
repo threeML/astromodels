@@ -624,7 +624,7 @@ class GalPropTemplate_3D(Function3D):
             
             h = hashlib.sha224()
             h.update( self._map )
-            self.hash = int(h.hexigest(), 16)
+            self.hash = int(h.hexdigest(), 16)
 
     def to_dict(self, minimal=False):
         
