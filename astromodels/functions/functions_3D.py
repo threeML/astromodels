@@ -576,6 +576,7 @@ class GalPropTemplate_3D(Function3D):
         self._frame = ICRS()
         self._map = None
         self._fitsfile = None
+        self._interpmap = None
 
     def set_frame(self, new_frame):
         """
@@ -645,39 +646,41 @@ class GalPropTemplate_3D(Function3D):
     
             self.load_file(self._fitsfile,self.ramin,self.ramax,self.decmin,self.decmax,False,ihdu=0)
 
-        # We assume x and y are R.A. and Dec
-        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+        if self._interpmap is None:
+            # We assume x and y are R.A. and Dec
+            _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
-        b = _coord.transform_to('galactic').b.value
-        l = _coord.transform_to('galactic').l.value
-        lon=l 
-        lat=b 
-        #transform energy from keV to MeV. Galprop Model starts at 100 MeV
-        energy = np.log10(z)-np.log10((u.MeV.to('keV')/u.keV).value)
+            b = _coord.transform_to('galactic').b.value
+            l = _coord.transform_to('galactic').l.value
+            lon=l 
+            lat=b 
+            #transform energy from keV to MeV. Galprop Model starts at 100 MeV
+            energy = np.log10(z)-np.log10((u.MeV.to('keV')/u.keV).value)
 
-        if lon.size != lat.size:
-            raise AttributeError("Lon and Lat should be the same size")
-        f=np.zeros([lon.size,energy.size])
-        E0 = self._refEn
-        Ef = self._refEn + (self._ne-1)*self._delEn
+            if lon.size != lat.size:
+                raise AttributeError("Lon and Lat should be the same size")
+            f=np.zeros([lon.size,energy.size])
+            E0 = self._refEn
+            Ef = self._refEn + (self._ne-1)*self._delEn
 
-        #fix longitude
-        shift = np.where(lon>180.)
-        lon[shift] = 180 - lon[shift]
+            #fix longitude
+            shift = np.where(lon>180.)
+            lon[shift] = 180 - lon[shift]
 
-        energy = np.repeat(energy,len(lon))
-        print zip(energy,lat,lon)
+            for i in xrange(energy.size):
+                e=np.repeate(energy[i],len(lon))    
+                try:
+                    f[:,i] = self._F(zip(e,lat,lon))
+                except ValueError:
+                    pass 
+            bad_idx = np.isnan(f)
+            f[bad_idx]=0
+            bad_idx = np.isinf(f)
+            f[bad_idx]=0
+            assert np.all(np.isfinite(f)),"some interpolated values are wrong"
+            self._interpmap=f
 
-        try:
-            f = self._F(zip(energy,lat,lon))
-        except ValueError:
-            pass 
-        bad_idx = np.isnan(f)
-        f[bad_idx]=0
-        bad_idx = np.isinf(f)
-        f[bad_idx]=0
-        assert np.all(np.isfinite(f)),"some interpolated values are wrong"
-        A = np.multiply(K,f/1000.) #(change from MeV to KeV)
+        A = np.multiply(K,self._interpmap/1000.) #(change from MeV to KeV)
         return A
 
     def define_region(self,a,b,c,d,galactic=False):
