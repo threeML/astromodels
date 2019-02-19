@@ -665,6 +665,7 @@ class GalPropTemplate_3D(Function3D):
         shift = np.where(lon>180.)
         lon[shift] = 180 - lon[shift]
 
+        energy = np.repeat(energy,len(lon))
         print zip(energy,lat,lon)
 
         try:
