@@ -668,7 +668,7 @@ class GalPropTemplate_3D(Function3D):
             lon[shift] = 180 - lon[shift]
 
             for i in xrange(energy.size):
-                e=np.repeate(energy[i],len(lon))    
+                e=np.repeat(energy[i],len(lon))    
                 try:
                     f[:,i] = self._F(zip(e,lat,lon))
                 except ValueError:
