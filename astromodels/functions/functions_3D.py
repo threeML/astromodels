@@ -1,17 +1,16 @@
 import astropy.units as u
-from astropy.wcs import wcs
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
 
 from astromodels.functions.function import Function3D, FunctionMeta
-from astromodels.utils.angular_distance import angular_distance
 
 import numpy as np
+
+from astromodels.utils.angular_distance import angular_distance_fast
 
 from scipy.interpolate import RegularGridInterpolator
 
 import hashlib
-
 
 
 class Continuous_injection_diffusion_ellipse(Function3D):
@@ -306,6 +305,7 @@ class Continuous_injection_diffusion(Function3D):
 
         lon, lat = x, y
         energy = z
+
         # energy in kev -> TeV.
         # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
         # of a dimensionless quantity, so there must be a pivot there.
@@ -528,7 +528,7 @@ class Continuous_injection_diffusion_legacy(Function3D):
                 max_longitude -= 360.
 
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
-    
+
     def get_total_spatial_integral(self, z=None):
         """
         Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
@@ -646,6 +646,7 @@ class GalPropTemplate_3D(Function3D):
     
             self.load_file(self._fitsfile,self.ramin,self.ramax,self.decmin,self.decmax,False,ihdu=0)
 
+        # Interpolated values can be cached since we are fitting the constant K
         if self._interpmap is None:
             # We assume x and y are R.A. and Dec
             _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
