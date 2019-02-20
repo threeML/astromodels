@@ -529,7 +529,7 @@ class Continuous_injection_diffusion_legacy(Function3D):
 
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
-    def get_total_spatial_integral(self, z=None): 
+    def get_total_spatial_integral(self, z=None):  
         """
         Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
         needs to be implemented in subclasses.
