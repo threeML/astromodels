@@ -545,7 +545,9 @@ class GalPropTemplate_3D(Function3D):
     r"""
         description :
 
-            Use a 3D template that has morphology and flux information as in a GalProp model. DRAGON model should also work if in the same format as GalProp. Only parameter is a normalization factor. 
+            Use a 3D template that has morphology and flux information.
+            GalProp, DRAGON or a similar model in fits format would work. 
+            Only parameter is a normalization factor. 
 
         latex : $ K $
 
@@ -619,7 +621,7 @@ class GalPropTemplate_3D(Function3D):
             self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)
             self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)
             for i in xrange(len(self._E)):
-                self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # Galprop map units in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
+                self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # Map units in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
             
@@ -633,7 +635,14 @@ class GalPropTemplate_3D(Function3D):
 
         if not minimal:
         
-            data['extra_setup'] = {"_fitsfile":self._fitsfile, "_frame": self._frame, "ramin": self.ramin, "ramax": self.ramax, "decmin": self.decmin, "decmax":self.decmax}
+            data['extra_setup'] = {
+                                    "_fitsfile":self._fitsfile, 
+                                    "_frame": self._frame, 
+                                    "ramin": self.ramin, 
+                                    "ramax": self.ramax, 
+                                    "decmin": self.decmin, 
+                                    "decmax":self.decmax
+                                  }
 
         return data
 
@@ -648,13 +657,14 @@ class GalPropTemplate_3D(Function3D):
 
         # Interpolated values can be cached since we are fitting the constant K
         if self._interpmap is None:
+
             # We assume x and y are R.A. and Dec
             _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
-
             b = _coord.transform_to('galactic').b.value
             l = _coord.transform_to('galactic').l.value
             lon=l 
             lat=b 
+
             #transform energy from keV to MeV. Galprop Model starts at 100 MeV
             energy = np.log10(z)-np.log10((u.MeV.to('keV')/u.keV).value)
 
@@ -681,7 +691,7 @@ class GalPropTemplate_3D(Function3D):
             assert np.all(np.isfinite(f)),"some interpolated values are wrong"
             self._interpmap=f
 
-        A = np.multiply(K,self._interpmap/1000.) #(change from MeV to KeV)
+        A = np.multiply(K,self._interpmap/1000.) #(1000 is to change from MeV to KeV)
         return A
 
     def define_region(self,a,b,c,d,galactic=False):
