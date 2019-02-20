@@ -854,10 +854,7 @@ class Constant(Function1D):
             k :
 
                 desc : Constant value
-                initial value : 1
-                fix : True
-                min : 1e-5
-                max : 1000.
+                initial value : 0
 
         """
 
