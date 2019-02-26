@@ -337,6 +337,57 @@ class Cutoff_powerlaw(Function1D):
 
         return K * np.exp(log_v)
 
+class inverse_cutoff(Function1D):
+    r"""
+    description :
+        A power law multiplied by an exponential cutoff [ Note: instead of cutoff energy energy parameters xc,
+        b = 1/xc is used]
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x~\b} $
+    parameters :
+        K :
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+            is_normalization : True
+            transformation : log10
+            min : 1e-30
+            max : 1e3
+            delta : 0.1
+        piv :
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+        index :
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+        b :
+            desc : inverse cutoff energy i.e 1/xc
+            initial value : 1
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # The index is always dimensionless
+        self.index.unit = u.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        self.b.unit = 1/x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, piv, index, b):
+
+        # Compute it in logarithm to avoid roundoff errors, then raise it
+        log_v = index * np.log(x / piv) - x * b
+
+        return K * np.exp(log_v)
 
 class Super_cutoff_powerlaw(Function1D):
     r"""
