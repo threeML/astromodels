@@ -340,7 +340,7 @@ class Cutoff_powerlaw(Function1D):
 class inverse_cutoff(Function1D):
     r"""
     description :
-        A power law multiplied by an exponential cutoff [ Note: instead of cutoff energy energy parameters xc,
+        A power law multiplied by an exponential cutoff [ Note: instead of cutoff energy energy parameter xc,
         b = 1/xc is used]
     latex : $ K~\frac{x}{piv}^{index}~\exp{-x~\b} $
     parameters :
