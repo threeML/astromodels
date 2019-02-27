@@ -337,7 +337,7 @@ class Cutoff_powerlaw(Function1D):
 
         return K * np.exp(log_v)
 
-class inverse_cutoff(Function1D):
+class Inverse_cutoff_powerlaw(Function1D):
     r"""
     description :
         A power law multiplied by an exponential cutoff [ Note: instead of cutoff energy energy parameter xc,
