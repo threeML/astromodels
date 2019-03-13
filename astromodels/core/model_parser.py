@@ -437,12 +437,15 @@ class SourceParser(object):
 
             ra = par_parser.get_variable()
 
-            ra.bounds = (0, 360)
+            if ra.bounds == (None, None):
+              ra.bounds = (0, 360)
 
             par_parser = ParameterParser('dec', sky_direction_definition['dec'])
 
             dec = par_parser.get_variable()
-            dec.bounds = (-90, 90)
+            
+            if dec.bounds == (None, None):
+              dec.bounds = (-90, 90)
 
             coordinates['ra'] = ra
             coordinates['dec'] = dec
@@ -452,12 +455,16 @@ class SourceParser(object):
             par_parser = ParameterParser('l', sky_direction_definition['l'])
 
             l = par_parser.get_variable()
-            l.bounds = (0, 360)
+            
+            if l.bounds == (None, None):
+              l.bounds = (0, 360)
 
             par_parser = ParameterParser('b', sky_direction_definition['b'])
 
             b = par_parser.get_variable()
-            b.bounds = (-90, 90)
+            
+            if b.bounds == (None, None):
+              b.bounds = (-90, 90)
 
             coordinates['l'] = l
             coordinates['b'] = b

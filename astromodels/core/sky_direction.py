@@ -98,8 +98,8 @@ class SkyDirection(Node):
 
             parameter = number_or_parameter
 
-            assert parameter.min_value == minimum, "%s must have a minimum of %s" % (what, minimum)
-            assert parameter.max_value == maximum, "%s must have a maximum of %s" % (what, maximum)
+            assert parameter.min_value >= minimum, "%s must have a minimum greater than or equal to %s" % (what, minimum)
+            assert parameter.max_value <= maximum, "%s must have a maximum less than or equal to %s" % (what, maximum)
 
         else:
 
