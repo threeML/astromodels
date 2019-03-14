@@ -10,6 +10,7 @@ import numpy as np
 import os
 import re
 from yaml.reader import ReaderError
+from yaml import SafeLoader
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import Parameter
@@ -117,7 +118,7 @@ class FunctionMeta(type):
 
         try:
 
-            function_definition = my_yaml.load(dct['__doc__'])
+            function_definition = my_yaml.load(dct['__doc__'], Loader=SafeLoader)
 
         except ReaderError:  # pragma: no cover
 
