@@ -118,7 +118,7 @@ class FunctionMeta(type):
 
         try:
 
-            function_definition = my_yaml.load(dct['__doc__'], Loader=Loader)
+            function_definition = my_yaml.load(dct['__doc__'])
 
         except ReaderError:  # pragma: no cover
 
