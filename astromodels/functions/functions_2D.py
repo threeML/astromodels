@@ -17,11 +17,11 @@ class Latitude_galactic_diffuse(Function2D):
 
             A Gaussian distribution in Galactic latitude around the Galactic plane
 
-        latex : $ K \exp{\left( \frac{-b^2}{2 \sigma_b^2} \right)} $
+        latex : $ KK \exp{\left( \frac{-b^2}{2 \sigma_b^2} \right)} $
 
         parameters :
 
-            K :
+            KK :
 
                 desc : normalization
                 initial value : 1
@@ -65,12 +65,12 @@ class Latitude_galactic_diffuse(Function2D):
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
-        self.K.unit = z_unit
+        self.KK.unit = z_unit
         self.sigma_b.unit = x_unit
         self.l_min.unit = y_unit
         self.l_max.unit = y_unit
 
-    def evaluate(self, x, y, K, sigma_b, l_min, l_max):
+    def evaluate(self, x, y, KK, sigma_b, l_min, l_max):
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
@@ -78,7 +78,7 @@ class Latitude_galactic_diffuse(Function2D):
         b = _coord.transform_to('galactic').b.value
         l = _coord.transform_to('galactic').l.value
 
-        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
+        return KK * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
 
     def get_boundaries(self):
 
@@ -108,7 +108,7 @@ class Latitude_galactic_diffuse(Function2D):
 
         #integral -inf to inf exp(-b**2 / 2*sigma_b**2 ) db = sqrt(2pi)*sigma_b 
         #Note that K refers to the peak diffuse flux (at b = 0) per square degree.
-        integral = np.sqrt( 2*np.pi ) * self.sigma_b.value * self.K.value * dL 
+        integral = np.sqrt( 2*np.pi ) * self.sigma_b.value * self.KK.value * dL 
 
         if isinstance( z, u.Quantity):
             z = z.value
