@@ -339,7 +339,7 @@ setup(
     
     install_requires=[
         'numpy >= 1.6',
-        'PyYAML=3.13',
+        'PyYAML==3.13',
         'astropy >= 1.2',
         'scipy>=0.14',
         'numdifftools',
