@@ -11,7 +11,9 @@ source:
 requirements:
   build:
     - toolchain # [osx]
+    - {{ compiler('c') }}  # [not osx]
     - {{ compiler('cxx') }}  # [not osx]
+    - {{ compiler('fortran') }}  # [not osx]
     - python
 #    - gcc  # [osx]
     - libgfortran
@@ -27,6 +29,9 @@ requirements:
     - pandas
     - xspec-modelsonly-lite
 
+  host:
+    - python
+    
   run:
     - python
     - libgfortran
