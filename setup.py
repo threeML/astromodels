@@ -339,7 +339,7 @@ setup(
     
     install_requires=[
         'numpy >= 1.6',
-        'PyYAML',
+        'PyYAML==3.13', # newer pyaml breaks models,
         'astropy >= 1.2',
         'scipy>=0.14',
         'numdifftools',
