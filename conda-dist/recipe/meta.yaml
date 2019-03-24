@@ -11,8 +11,9 @@ source:
 requirements:
   build:
 #    - toolchain # [osx]
+    - {{ compiler('cxx') }}  # [not osx]
     - python
-    - gcc  # [linux]
+    - gcc  # [osx]
     - libgfortran
     - setuptools
     - pip
