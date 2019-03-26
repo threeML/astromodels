@@ -249,15 +249,36 @@ class PointSource(Source, Node):
 
                 if par.free:
 
-                    free_parameters[par.name] = par
+                    free_parameters[par.path] = par
 
         for par in self.position.parameters.values():
 
             if par.free:
 
-                free_parameters[par.name] = par
+                free_parameters[par.path] = par
 
         return free_parameters
+
+    @property
+    def parameters(self):
+        """
+        Returns a dictionary of all parameters for this source
+
+        :return:
+        """
+        all_parameters = collections.OrderedDict()
+
+        for component in self._components.values():
+
+            for par in component.shape.parameters.values():
+
+                all_parameters[par.path] = par
+
+        for par in self.position.parameters.values():
+
+            all_parameters[par.path] = par
+
+        return all_parameters
 
     def _repr__base(self, rich_output=False):
         """

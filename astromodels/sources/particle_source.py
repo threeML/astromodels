@@ -89,3 +89,41 @@ class ParticleSource(Source, Node):
             repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
+
+    @property
+    def free_parameters(self):
+        """
+        Returns a dictionary of free parameters for this source
+
+        :return:
+        """
+        free_parameters = collections.OrderedDict()
+
+        for component in self._components.values():
+
+            for par in component.shape.parameters.values():
+
+                if par.free:
+
+                    free_parameters[par.path] = par
+
+        return free_parameters
+
+    @property
+    def parameters(self):
+        """
+        Returns a dictionary of all parameters for this source
+
+        :return:
+        """
+        all_parameters = collections.OrderedDict()
+
+        for component in self._components.values():
+
+            for par in component.shape.parameters.values():
+
+                all_parameters[par.path] = par
+
+        return all_parameters
+
+
