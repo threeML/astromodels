@@ -247,6 +247,8 @@ class ExtendedSource(Source, Node):
     def free_parameters(self):
         """
         Returns a dictionary of free parameters for this source
+        We use the parameter path as the key because it's 
+        guaranteed to be unique, unlike the parameter name.
 
         :return:
         """
@@ -258,20 +260,22 @@ class ExtendedSource(Source, Node):
 
                 if par.free:
 
-                    free_parameters[par.name] = par
+                    free_parameters[par.path] = par
 
         for par in self.spatial_shape.parameters.values():
 
             if par.free:
 
-                free_parameters[par.name] = par
+                free_parameters[par.path] = par
 
         return free_parameters
 
     @property
     def parameters(self):
         """
-        Returns a dictionary of all parameters for this source
+        Returns a dictionary of all parameters for this source.
+        We use the parameter path as the key because it's 
+        guaranteed to be unique, unlike the parameter name.
 
         :return:
         """
@@ -281,11 +285,11 @@ class ExtendedSource(Source, Node):
 
             for par in component.shape.parameters.values():
 
-                all_parameters[par.name] = par
+                all_parameters[par.path] = par
 
         for par in self.spatial_shape.parameters.values():
 
-            all_parameters[par.name] = par
+            all_parameters[par.path] = par
 
         return all_parameters
 
