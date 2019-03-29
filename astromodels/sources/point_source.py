@@ -237,7 +237,9 @@ class PointSource(Source, Node):
     @property
     def free_parameters(self):
         """
-        Returns a dictionary of free parameters for this source
+        Returns a dictionary of free parameters for this source.
+        We use the parameter path as the key because it's 
+        guaranteed to be unique, unlike the parameter name.
 
         :return:
         """
@@ -262,7 +264,9 @@ class PointSource(Source, Node):
     @property
     def parameters(self):
         """
-        Returns a dictionary of all parameters for this source
+        Returns a dictionary of all parameters for this source.
+        We use the parameter path as the key because it's 
+        guaranteed to be unique, unlike the parameter name.
 
         :return:
         """
