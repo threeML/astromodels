@@ -10,12 +10,12 @@ source:
 
 requirements:
   build:
-    - toolchain # [osx]
-    - {{ compiler('c') }}  # [not osx]
-    - {{ compiler('cxx') }}  # [not osx]
-    - {{ compiler('fortran') }}  # [not osx]
+    # - toolchain # [osx]
+    # - {{ compiler('c') }}  # [not osx]
+    # - {{ compiler('cxx') }}  # [not osx]
+    # - {{ compiler('fortran') }}  # [not osx]
 #    - python
-#    - gcc  # [osx]
+    - gcc 4.8.5  # [linux]
     - libgfortran
     - setuptools
     - pip
