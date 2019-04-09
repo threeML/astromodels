@@ -18,6 +18,9 @@ cd my_work_dir
 
 # Environment
 libgfortranver="3.0"
+XSPECVER="12.10.1b"
+NUMPYVER=1.15
+MATPLOTLIBVER=2
 
 xspec_channel=xspec/channel/dev
 
