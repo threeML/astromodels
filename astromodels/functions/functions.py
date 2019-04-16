@@ -1468,7 +1468,7 @@ class Band_Calderone(Function1D):
 
             # Cutoff power law
 
-            flux = np.power(x / Ec, alpha) * np.exp(- x / Ec)
+            flux = norm * np.power(x / Ec, alpha) * np.exp(- x / Ec)
 
         else:
 
