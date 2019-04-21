@@ -10,10 +10,10 @@ source:
 
 requirements:
   build:
-    - toolchain
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
     - python
-    - gcc  # [linux]
-    - libgfortran
     - setuptools
     - pip
     - numpy
