@@ -44,8 +44,12 @@ source activate test_env
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
 
 # Install it
-conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
-
+if ["$TEST_WITH_XSPEC"= true] ; then
+    conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
+else
+    conda install --use-local -c conda-forge -c threeml astromodels
+fi
+    
 # Run tests
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"
