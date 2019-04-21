@@ -41,11 +41,16 @@ source activate test_env
 
 # Build package
 
+if ["$TEST_WITH_XSPEC"= true] ; then
+    conda install -c threeml xspec-modelsonly-lite
+fi
+
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
 
 # Install it
 if ["$TEST_WITH_XSPEC"= true] ; then
-    conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
+    
+    conda install --use-local -c conda-forge -c threeml astromodels
 else
     conda install --use-local -c conda-forge -c threeml astromodels
 fi
