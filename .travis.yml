@@ -5,10 +5,30 @@ language: generic
 services:
   - docker
 
-os:
-  - linux
-  - osx
 
+matrix:
+
+  include:
+  
+    - os: linux
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+      
+    - os: osx
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+      
+    - os: linux
+      python: 3.5
+      env: TRAVIS_PYTHON_VERSION=3.5
+      
+    - os: osx
+      python: 3.5
+      env: TRAVIS_PYTHON_VERSION=3.5
+ 
+    
+
+  
 before_install:
   - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -31,7 +51,7 @@ script:
  - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
-         docker run -e TRAVIS_PYTHON_VERSION=2.7 \
+         docker run -e TRAVIS_PYTHON_VERSION \
                     -e TRAVIS_BRANCH \
                     -e CONDA_UPLOAD_TOKEN \
                     -e TRAVIS_OS_NAME \
@@ -45,7 +65,7 @@ script:
        else
 
           chmod u+x ci/build_and_test.sh
-          export TRAVIS_PYTHON_VERSION=2.7
+#          export TRAVIS_PYTHON_VERSION=2.7
           ./ci/build_and_test.sh
 
        fi
