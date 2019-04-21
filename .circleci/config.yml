@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    docker:
+      -image: circleci/python:2.7
+
+      working_directory: ~/my_work_dir
+
+      steps:
+        - checkout
+
+        - run :
+          name: install dependencies
+          command: |
+            python2 -m venv venv
+            . venv/bin/activate
+            pip install numpy matplotlib cython ipython pytest-cov codecov
+            python setup.py install
+  
+        - run:
+
+            name: run tests
+            command: |
+              . vevn/bin/activate
+              python -m pytest -vv --ignore=venv --cov=astromodels
