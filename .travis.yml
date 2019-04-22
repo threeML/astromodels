@@ -2,8 +2,6 @@ sudo: required
 
 language: generic
 
-services:
-  - docker
 
 
 
@@ -17,17 +15,23 @@ matrix:
   include:
   
     - os: linux
+      services:
+        - docker
+
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
            TEST_WITH_XSPEC=false
            
-
     - os: osx
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
            TEST_WITH_XSPEC=false
       
     - os: linux
+      services:
+        - docker
+
+      
       python: 3.5
       env: TRAVIS_PYTHON_VERSION=3.5
            TEST_WITH_XSPEC=false
