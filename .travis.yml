@@ -11,7 +11,7 @@ env:
 
 
     matrix:
-      - CONDA_UPLOAD=false
+     
   
   
 matrix:
@@ -25,13 +25,15 @@ matrix:
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
            TEST_WITH_XSPEC=false
+           CONDA_UPLOAD=false
 
            
     - os: osx
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
            TEST_WITH_XSPEC=false
-      
+           CONDA_UPLOAD=false
+           
     - os: linux
       services:
         - docker
@@ -40,20 +42,21 @@ matrix:
       python: 3.5
       env: TRAVIS_PYTHON_VERSION=3.5
            TEST_WITH_XSPEC=false
+           CONDA_UPLOAD=false
       
     - os: osx
       python: 3.5
       env: TRAVIS_PYTHON_VERSION=3.5
            TEST_WITH_XSPEC=false
-
-
+           CONDA_UPLOAD=false
+           
     - os: linux
       services:
         - docker
 
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
-           TEST_WITH_XSPEC=false
+           TEST_WITH_XSPEC=true
            CONDA_UPLOAD=true
     
 
