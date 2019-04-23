@@ -21,6 +21,9 @@ export PKG_VERSION=$(cd astromodels && python -c "import version;print(version._
 
 echo "Building ${PKG_VERSION} ..."
 
+echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
+
+
 # Update conda
 conda update --yes -q conda #conda-build
 
@@ -46,7 +49,7 @@ if [$TEST_WITH_XSPEC] ; then
 fi
 
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-echo $TEST_WITH_XSPEC
+
 # Install it
 if [$TEST_WITH_XSPEC] ; then
     echo "TESTING WITH XSPEC"
