@@ -41,14 +41,14 @@ source activate test_env
 
 # Build package
 
-if ["$TEST_WITH_XSPEC"= true] ; then
+if [$TEST_WITH_XSPEC] ; then
     conda install -c threeml xspec-modelsonly-lite
 fi
 
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
 
 # Install it
-if ["$TEST_WITH_XSPEC"= true] ; then
+if [$TEST_WITH_XSPEC] ; then
     
     conda install --use-local -c conda-forge -c threeml astromodels
 else
@@ -84,7 +84,7 @@ else
 
             echo "Uploading ${CONDA_BUILD_PATH}"
                         
-            if [[ "$CONDA_UPLAOD" == true ]]; then
+            if [[ $CONDA_UPLOAD ]]; then
                 
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
             
