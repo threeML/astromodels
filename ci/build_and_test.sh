@@ -84,7 +84,7 @@ else
 
             echo "Uploading ${CONDA_BUILD_PATH}"
                         
-            if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+            if [[ "$CONDA_UPLAOD" == true ]]; then
                 
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
             
