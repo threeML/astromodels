@@ -46,9 +46,10 @@ if [$TEST_WITH_XSPEC] ; then
 fi
 
 conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-
+echo $TEST_WITH_XSPEC
 # Install it
 if [$TEST_WITH_XSPEC] ; then
+    echo "TESTING WITH XSPEC"
     
     conda install --use-local -c conda-forge -c threeml astromodels
 else
