@@ -1,0 +1,79 @@
+{% set name = "astromodels" %}
+
+package:
+  name: {{ name }}
+  version: {{ os.environ.get('PKG_VERSION') }}
+
+source:
+#  git_url: https://github.com/giacomov/{{ name }}.git
+  path: ../../
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+
+
+  host:
+    - python
+    - setuptools
+    - pip
+    - numpy
+    - pyyaml
+    - astropy
+    - scipy
+    - numdifftools
+    - hdf5
+    - pytables
+    - pandas
+   
+
+  run:
+    #- python
+  #  - libgfortran
+    - numpy
+    - pyyaml
+    - astropy
+    - scipy
+    - numdifftools
+    - hdf5
+    - pytables
+    - pandas
+    - dill
+
+build:
+  script: python -m pip install --verbose --no-deps --ignore-installed .
+  skip: true  # [win]
+  skip: true  # [py3k]
+
+test:
+  # Python imports
+  imports:
+    - astromodels
+    - astromodels.core
+    - astromodels.functions
+    - astromodels.functions.dark_matter
+    - astromodels.sources
+    - astromodels.utils
+ #   - astromodels.xspec
+
+#  commands:
+#    - pytest -vv --pyargs {{ name }}
+
+  # You can also put a file called run_test.py in the recipe that will be run
+  # at test time.
+
+  requires:
+    - xspec-modelsonly-lite
+
+
+about:
+  home: https://github.com/giacomov/astromodels
+  license: UNKNOWN
+  summary: 'Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy'
+  license_family: OTHER
+
+# See
+# http://docs.continuum.io/conda/build.html for
+# more information about meta.yaml
