@@ -25,7 +25,7 @@ echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
 
 # Update conda
-conda update --yes -q conda #conda-build
+conda update --yes -q conda conda-build
 
 # Answer yes to all questions (non-interactive)
 conda config --set always_yes true
