@@ -70,12 +70,17 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
 fi
 
-# If we are on the master branch upload to the channel
-if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
+
+
+if $TEST_WITH_XSPEC ; then
+
+
+    # If we are on the master branch upload to the channel
+    if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
 
         echo "This is a pull request, not uploading to Conda channel"
 
-else
+    else
 
         if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
 
@@ -84,15 +89,19 @@ else
             conda install -c conda-forge anaconda-client
 
             echo "Uploading ${CONDA_BUILD_PATH}"
-                        
-            if $CONDA_UPLOAD; then
+            
+            if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
-            
+		
             else
-            
+		
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
-            
+		
             fi
         fi
+    fi
+else
+    echo "We didn;t test with xspec, not uploading"
+    
 fi
