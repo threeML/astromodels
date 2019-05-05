@@ -255,7 +255,7 @@ def add_method(self, method, name=None):
 
     if name is None:
 
-        name = method.func_name
+        name = method.__name__
 
     setattr(self.__class__, name, method)
 

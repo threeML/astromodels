@@ -1,3 +1,4 @@
+from __future__ import print_function
 import ast
 import collections
 import copy
@@ -935,12 +936,12 @@ class Function1D(Function):
 
             if self.has_fixed_units():
 
-                print 'here'
+                print('here')
 
                 try:
 
-                    print self.x_unit
-                    print x
+                    print(self.x_unit)
+                    print(x)
 
                     results = self.evaluate(x.to(self.x_unit), *values)
 

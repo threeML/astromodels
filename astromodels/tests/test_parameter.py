@@ -1,3 +1,4 @@
+from __future__ import print_function
 import astropy.units as u
 import pytest
 from astromodels.functions.priors import Uniform_prior, Log_uniform_prior

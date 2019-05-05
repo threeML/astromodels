@@ -1,3 +1,4 @@
+from __future__ import print_function
 import pytest
 import os
 
@@ -801,7 +802,7 @@ def test_get_function_class():
 
 def test_list_functions():
 
-    print list_functions()
+    print(list_functions())
 
 
 def test_function2D():

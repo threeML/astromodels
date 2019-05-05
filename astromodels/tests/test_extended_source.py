@@ -1,3 +1,4 @@
+from __future__ import print_function
 import astropy.units as u
 import numpy as np
 import pytest

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 __author__ = 'giacomov'
 
 __doc__ = """"""
@@ -11,8 +12,8 @@ import numpy as np
 import scipy.stats
 import warnings
 
-from tree import Node
-from thread_safe_unit_format import ThreadSafe
+from .tree import Node
+from .thread_safe_unit_format import ThreadSafe
 
 
 def _behaves_like_a_number(obj):
