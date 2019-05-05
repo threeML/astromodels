@@ -25,11 +25,11 @@ echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
 
 # Update conda
-#conda update --yes -q conda conda-build
+conda update --yes -q conda conda-build
 
 
 # newer conda is failing hard
-conda install --yes conda=4.5.12
+#conda install --yes conda=4.5.12
 
 # Answer yes to all questions (non-interactive)
 conda config --set always_yes true
