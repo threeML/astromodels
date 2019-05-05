@@ -43,7 +43,7 @@ conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
 
-#conda config --add channels defaults
+conda config --add channels defaults
 
 # Activate test environment
 source activate test_env
@@ -68,8 +68,8 @@ else
 
 	# there is some strange error about the prefix length
 
-	conda build --no-build-id -c conda-forge  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-	conda install --use-local -c conda-forge astromodels 
+	conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	conda install --use-local  astromodels 
     fi
 	
     
