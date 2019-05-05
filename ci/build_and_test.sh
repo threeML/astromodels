@@ -44,6 +44,9 @@ conda config --add channels defaults
 # Activate test environment
 source activate test_env
 
+conda config --show channels
+
+
 # Build package
 
 if $TEST_WITH_XSPEC ; then
