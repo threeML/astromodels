@@ -369,7 +369,7 @@ class Inverse_cutoff_powerlaw(Function1D):
 
     def _set_units(self, x_unit, y_unit):
         # The index is always dimensionless
-        self.index.unit = u.dimensionless_unscaled
+        self.index.unit = astropy_units.dimensionless_unscaled
 
         # The pivot energy has always the same dimension as the x variable
         self.piv.unit = x_unit

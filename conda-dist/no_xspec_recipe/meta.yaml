@@ -13,14 +13,14 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-    - xspec-modelsonly-lite
+
 
   host:
     - python
     - setuptools
     - pip
     - numpy
-    - pyyaml
+    - pyyaml==3.13 
     - astropy
     - scipy
     - numdifftools
@@ -30,10 +30,10 @@ requirements:
    
 
   run:
-    #- python
-  #  - libgfortran
+    - python
+   # - libgfortran # [osx]
     - numpy
-    - pyyaml
+    - pyyaml==3.13
     - astropy
     - scipy
     - numdifftools
@@ -56,7 +56,7 @@ test:
     - astromodels.functions.dark_matter
     - astromodels.sources
     - astromodels.utils
-    - astromodels.xspec
+ #   - astromodels.xspec
 
 #  commands:
 #    - pytest -vv --pyargs {{ name }}
@@ -64,8 +64,6 @@ test:
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
 
-  requires:
-    - xspec-modelsonly-lite
 
 
 about:

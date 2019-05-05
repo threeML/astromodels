@@ -21,8 +21,11 @@ export PKG_VERSION=$(cd astromodels && python -c "import version;print(version._
 
 echo "Building ${PKG_VERSION} ..."
 
+echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
+
+
 # Update conda
-conda update --yes -q conda #conda-build
+conda update --yes -q conda conda-build
 
 # Answer yes to all questions (non-interactive)
 conda config --set always_yes true
@@ -36,16 +39,35 @@ conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
 
+conda config --add channels defaults
+
 # Activate test environment
 source activate test_env
 
 # Build package
 
-conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+if $TEST_WITH_XSPEC ; then
+    echo "Building WITH xspec"
+    
+    conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+    conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
+else
 
-# Install it
-conda install --use-local -c conda-forge -c threeml astromodels xspec-modelsonly-lite
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+	
+	conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
 
+    else
+
+	# there is some strange error about the prefix length
+
+	conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+    fi
+	
+    conda install --use-local -c conda-forge -c threeml astromodels 
+fi
+
+    
 # Run tests
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"
@@ -60,12 +82,19 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
 fi
 
-# If we are on the master branch upload to the channel
-if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
+
+
+# We do not want to upload if we do not test with xspec
+
+if $TEST_WITH_XSPEC ; then
+
+
+    # If we are on the master branch upload to the channel
+    if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
 
         echo "This is a pull request, not uploading to Conda channel"
 
-else
+    else
 
         if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
 
@@ -74,15 +103,19 @@ else
             conda install -c conda-forge anaconda-client
 
             echo "Uploading ${CONDA_BUILD_PATH}"
-                        
+            
             if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
-            
+		
             else
-            
+		
                 anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
-            
+		
             fi
         fi
+    fi
+else
+    echo "We didn;t test with xspec, not uploading"
+    
 fi
