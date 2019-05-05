@@ -68,7 +68,7 @@ else
 
 	# there is some strange error about the prefix length
 
-	conda build --no-build-id -c onda-forge  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	conda build --no-build-id -c conda-forge  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
 	conda install --use-local -c conda-forge astromodels 
     fi
 	
