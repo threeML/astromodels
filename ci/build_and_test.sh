@@ -62,16 +62,17 @@ else
 
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 	
-	conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-
+	conda build -c conda-forge --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	conda install --use-local -c conda-forge astromodels 
     else
 
 	# there is some strange error about the prefix length
 
-	conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	conda build --no-build-id -c onda-forge  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	conda install --use-local -c conda-forge astromodels 
     fi
 	
-    conda install --use-local -c conda-forge -c threeml astromodels 
+    
 fi
 
     
