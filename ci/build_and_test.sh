@@ -59,7 +59,7 @@ else
 
 	# there is some strange error about the prefix length
 
-	conda build --prefix-length 255 --no-build-id -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	conda-build --no-build-id -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
     fi
 	
     conda install --use-local -c conda-forge -c threeml astromodels 
@@ -81,6 +81,8 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 fi
 
 
+
+# We do not want to upload if we do not test with xspec
 
 if $TEST_WITH_XSPEC ; then
 
