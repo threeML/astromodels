@@ -3,6 +3,9 @@ sudo: required
 language: generic
 
 
+os:
+  - linux
+  - osx
 
 
 env:
@@ -79,7 +82,7 @@ script:
  - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
-         docker run -e TRAVIS_PYTHON_VERSION \
+         docker run -e TRAVIS_PYTHON_VERSION=2.7 \
                     -e TRAVIS_BRANCH \
                     -e TEST_WITH_XSPEC \
                     -e CONDA_UPLOAD_TOKEN \
