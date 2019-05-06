@@ -50,6 +50,7 @@ source activate test_env
 
 conda config --show channels
 
+conda config --show-sources
 
 # Build package
 
