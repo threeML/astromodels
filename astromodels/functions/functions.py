@@ -914,7 +914,7 @@ class Constant(Function1D):
         self.k.unit = y_unit
 
     def evaluate(self, x, k):
-        return k
+        return k*np.ones(np.size(x))
 
 
 class DiracDelta(Function1D):
