@@ -10,6 +10,7 @@ import numpy as np
 import os
 import re
 from yaml.reader import ReaderError
+from yaml import Loader
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import Parameter
