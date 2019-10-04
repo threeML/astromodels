@@ -99,9 +99,11 @@ if $TEST_WITH_XSPEC ; then
     echo "Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        conda index /opt/conda/conda-bld
     else
     	# there is some strange error about the prefix length
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        conda index /Users/travis/miniconda/conda-bld
     fi
 	echo "======> installing..."
     conda install --use-local -c conda-forge -c threeml astromodels
@@ -110,13 +112,15 @@ else
 
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 	
-	conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-
+	    conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+        conda index /opt/conda/conda-bld
     else
 
-	# there is some strange error about the prefix length
+    	# there is some strange error about the prefix length
 
-	conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	    conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+        conda index /Users/travis/miniconda/conda-bld
+
     fi
 	
     echo "======>  installing..."

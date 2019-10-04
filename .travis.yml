@@ -80,6 +80,7 @@ before_install:
 
 script:
  - |
+       travis_wait 30 sh -c '
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
          docker run -e TRAVIS_PYTHON_VERSION=${TRAVIS_PYTHON_VERSION} \
@@ -100,5 +101,5 @@ script:
           chmod u+x ci/build_and_test.sh
           ./ci/build_and_test.sh
 
-       fi
+       fi'
 
