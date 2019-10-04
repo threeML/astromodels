@@ -15,6 +15,7 @@
 //  with this program; if not, write to the Free Software Foundation, Inc.,
 //  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 // INIT_XSPEC is used by xspecmodelfct() in xspec_extension.hh, so it needs to
 // be defined before that file is included
 int _sherpa_init_xspec_library();
@@ -121,17 +122,14 @@ void xsaped_(float* ear, int* ne, float* param, int* ifl, float* photar, float* 
 void xsbape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 #endif
 
-//void xsaped_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-//void xsbape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-
 void xsblbd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbbrd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbmc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbrms_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 
-//#ifndef XSPEC_12_9_1
-//void xsbvpe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-//#endif
+#ifndef XSPEC_12_9_1
+void xsbvpe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
 
 #ifndef XSPEC_12_10_0
 void c6mekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
@@ -976,7 +974,6 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_NORM( xsaped, 4 ),
   XSPECMODELFCT_NORM( xsbape, 5 ),
 #endif
-
   XSPECMODELFCT_NORM( xsblbd, 2 ),
   XSPECMODELFCT_NORM( xsbbrd, 2 ),
   XSPECMODELFCT_C_NORM( C_xsbexrav, 10 ),
@@ -1304,8 +1301,7 @@ static PyMethodDef XSpecMethods[] = {
 #ifdef XSPEC_12_10_0
   XSPECMODELFCT_CON(C_gsmooth, 2),
 #else
-  //XSPECMODELFCT_CON(C_xsgsmt, 2),
-  XSPECMODELFCT_CON(C_gsmooth, 2),
+  XSPECMODELFCT_CON(C_xsgsmt, 2),
 #endif
 
   XSPECMODELFCT_CON(C_ireflct, 7),
@@ -1320,8 +1316,7 @@ static PyMethodDef XSpecMethods[] = {
 #ifdef XSPEC_12_10_0
   XSPECMODELFCT_CON(C_lsmooth, 2),
 #else
-  XSPECMODELFCT_CON(C_lsmooth, 2),
-  //XSPECMODELFCT_CON(C_xslsmt, 2),
+  XSPECMODELFCT_CON(C_xslsmt, 2),
 #endif
 
   XSPECMODELFCT_CON(C_PartialCovering, 1),

@@ -25,7 +25,13 @@ if os.environ.get("CONDA_PREFIX") is not None:
     # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
     # the 'spectral' directory is
 
-    os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
+    # os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
+
+    os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
+
+    # we need to create the directory otherwise an exception casted:
+    if not os.path.exists(os.environ['HEADAS']):
+        os.makedirs(os.environ['HEADAS'])
 
 # This list defines all python protected names (names which variables or attributes should not have)
 illegal_variable_names_ = 'and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,' \
@@ -280,6 +286,11 @@ def get_models(model_dat_path):
 
                 par_name = "redshift"
 
+                # this is illegal because of the 2D functions
+            if par_name == 'y':
+
+                par_name = 'y1'
+
             # Check that the parameter name is not an illegal Python name
             if par_name in illegal_variable_names:
 
@@ -308,6 +319,8 @@ def get_models(model_dat_path):
 
                 par_unit = ""
 
+
+
             # There are funny units in model.dat, like "Rs" (which means Schwarzschild radius) or other things
             # so let's try to convert the par_unit into an astropy.Unit instance. If that fails, use a unitless unit
             try:
@@ -327,6 +340,18 @@ def get_models(model_dat_path):
             if re.match('([a-zA-Z_][a-zA-Z0-9_]*)$', par_name) is None:
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
+
+            if float(default_value) > hard_maximum:
+
+                if hard_maximum is not None:
+                    default_value = hard_maximum
+
+            elif float(default_value) < hard_minimum:
+
+                if hard_minimum is not None:
+                    default_value = hard_minimum
+
+
 
             this_model['parameters'][par_name] = {'initial value': float(default_value),
                                                   'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
@@ -607,6 +632,7 @@ def setup_xspec_models():
 
             # convolution models are not supported
             continue
+
 
         if not hasattr(_xspec, xspec_function):
 
