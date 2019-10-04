@@ -79,11 +79,10 @@ before_install:
        fi
 
 script:
-
  - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
-         travis_wait 30 docker run -e TRAVIS_PYTHON_VERSION=${TRAVIS_PYTHON_VERSION} \
+         docker run -e TRAVIS_PYTHON_VERSION=${TRAVIS_PYTHON_VERSION} \
                     -e TRAVIS_BRANCH \
                     -e TEST_WITH_XSPEC \
                     -e CONDA_UPLOAD_TOKEN \
