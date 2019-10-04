@@ -64,9 +64,13 @@ matrix:
 before_install:
   - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         #docker pull condaforge/linux-anvil
 
-         docker pull condaforge/linux-anvil
-
+         wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+         bash miniconda.sh -b -p $HOME/miniconda
+         export PATH="$HOME/miniconda/bin:$PATH"
+         conda install -y conda-build
+         conda config --add channels conda-forge
        else
 
          # Install Miniconda
@@ -80,8 +84,7 @@ before_install:
 
 script:
  - |
-       travis_wait 30 sh -c '
-       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+       if [[ "$TRAVIS_OS_NAME" == "cacca" ]]; then
 
          docker run -e TRAVIS_PYTHON_VERSION=${TRAVIS_PYTHON_VERSION} \
                     -e TRAVIS_BRANCH \
