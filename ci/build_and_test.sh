@@ -40,12 +40,12 @@ fi
 
 
 
-
 # Get the version in the __version__ environment variable
 python ci/set_minor_version.py --patch $TRAVIS_BUILD_NUMBER --version_file astromodels/version.py
 
 export PKG_VERSION=$(cd astromodels && python -c "import version;print(version.__version__)")
 
+echo "HOME= ${HOME}"
 echo "Building ${PKG_VERSION} ..."
 echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
@@ -165,7 +165,7 @@ if $TEST_WITH_XSPEC ; then
             
             if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
-                anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /opt/conda/conda-bld/linux-64/*.tar.bz2 --force
+                anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
 		
             else
 		
