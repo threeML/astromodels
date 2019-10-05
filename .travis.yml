@@ -83,26 +83,6 @@ before_install:
        fi
 
 script:
- - |
-       if [[ "$TRAVIS_OS_NAME" == "cacca" ]]; then
-
-         docker run -e TRAVIS_PYTHON_VERSION=${TRAVIS_PYTHON_VERSION} \
-                    -e TRAVIS_BRANCH \
-                    -e TEST_WITH_XSPEC \
-                    -e CONDA_UPLOAD_TOKEN \
-                    -e CONDA_UPLOAD \
-                    -e TRAVIS_OS_NAME \
-                    -e TRAVIS_EVENT_TYPE \
-                    -e TRAVIS_BUILD_NUMBER \
-                    -e TRAVIS_BUILD_DIR \
-                    -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                    -it --rm -e user_id=`id -u` \
-                    condaforge/linux-anvil \
-                    /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
-       else
-
-          chmod u+x ci/build_and_test.sh
-          ./ci/build_and_test.sh
-
-       fi
+  - chmod u+x ci/build_and_test.sh
+  - ./ci/build_and_test.sh
 
