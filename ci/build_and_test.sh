@@ -157,7 +157,7 @@ if $TEST_WITH_XSPEC ; then
 
         if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
             echo "This is a push to TRAVIS_BRANCH=${TRAVIS_BRANCH}"
-            if [["${TRAVIS_BRANCH}" == "master"]]; then
+            if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
                 conda install -c conda-forge anaconda-client
                 echo "Uploading ${CONDA_BUILD_PATH}"
             
