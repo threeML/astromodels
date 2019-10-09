@@ -156,21 +156,19 @@ if $TEST_WITH_XSPEC ; then
     else
 
         if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
-
-            echo "This is a push, uploading to Conda channel"
-
-            conda install -c conda-forge anaconda-client
-
-            echo "Uploading ${CONDA_BUILD_PATH}"
+            echo "This is a push to TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+            if [["${TRAVIS_BRANCH}" == "master"]]; then
+                conda install -c conda-forge anaconda-client
+                echo "Uploading ${CONDA_BUILD_PATH}"
             
-            if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+                if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
-                anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
+                    anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
 		
-            else
+                else
 		
-                anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
-		
+                    anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
+		        fi
             fi
         fi
     fi
