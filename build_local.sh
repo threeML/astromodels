@@ -1,10 +1,42 @@
 #!/usr/bin/env bash
+TRAVIS_OS_NAME="unknown"
 
-export TEST_WITH_XSPEC=true
-export TRAVIS_PYTHON_VERSION=3.5
-export TRAVIS_OS_NAME=osx
-export TRAVIS_BUILD_NUMBER=0
-ENVNAME=test_env_$TRAVIS_PYTHON_VERSION
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+
+        # Linux
+
+        TRAVIS_OS_NAME="linux"
+
+
+elif [[ "$OSTYPE" == darwin* ]]; then
+
+        # Mac OSX
+
+        TRAVIS_OS_NAME="osx"
+
+
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+
+        # POSIX compatibility layer and Linux environment emulation for Windows
+
+        TRAVIS_OS_NAME="linux"
+
+else
+
+        # Unknown.
+
+        echo "Could not guess your OS. Exiting."
+
+        exit 1
+
+fi
+
+echo "Running on ${TRAVIS_OS_NAME}"
+
+TEST_WITH_XSPEC=true
+TRAVIS_PYTHON_VERSION=2.7
+TRAVIS_BUILD_NUMBER=0
+ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
 # Make sure we fail in case of errors
 set -e
