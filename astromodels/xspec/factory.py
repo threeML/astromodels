@@ -341,10 +341,10 @@ def get_models(model_dat_path):
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
 
-            if hard_maximum<hard_maximum:
+            if hard_maximum < hard_minimum:
 
-                raise ValueError("Hard maximum (%s) < hard minimum (%s)" %(hard_maximum,hard_maximum))
-            
+                raise ValueError("Hard maximum (%s) < hard minimum (%s)" %(hard_maximum,hard_minimum))
+
             if float(default_value) > hard_maximum:
 
                 if hard_maximum is not None:
