@@ -347,7 +347,7 @@ setup(
         'pandas',
         'dill',
         'future',  #py2to3 compatibility layer
-        'past'
+        
     ],
 
     extras_require={
