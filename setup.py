@@ -329,9 +329,9 @@ setup(
 
     author_email='giacomo.vianello@gmail.com',
 
-    url='https://github.com/giacomov/astromodels',
+    url='https://github.com/threeml/astromodels',
 
-    download_url='https://github.com/giacomov/astromodels/archive/v0.1',
+    download_url='https://github.com/threeml/astromodels/archive/v0.1',
 
     keywords=['Likelihood', 'Models', 'fit'],
 
@@ -339,7 +339,7 @@ setup(
     
     install_requires=[
         'numpy >= 1.6',
-        'PyYAML',
+        'PyYAML==3.13', # newer pyaml breaks models,
         'astropy >= 1.2',
         'scipy>=0.14',
         'numdifftools',

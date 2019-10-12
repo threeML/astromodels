@@ -2,19 +2,63 @@ sudo: required
 
 language: generic
 
-services:
-  - docker
 
-os:
-  - linux
-  - osx
+env:
+  global:
+    - secure: ht6GWpJyaTqTCQzTXuf7IQDKyl1OUISFXzHaLCcurBY5lZVkK+NIGaVMw0wNksQbgpF5t7JyojK39+usJ1WeYD4xvi3n7KxU9Cy8MGAuyY8iWFCmnVtkBoDkghGQBuUzf2UZ24IcH1JtlgOx28qJhEdXLfWPDd9/OvJLMrkpwcKcn0XV3dcheYvs3EyV8kyxfbaV3G9DsHY1bFZjGRzOATBuwCSpjkV5WxBq0dpDoilx6JY9uMydKU81PtxHbCQmP/8ZaT9eemw1qhBfrqbhU+CbwG0PDt7lG8SkXAIOQRJo/aJ7DvxtOQAvjuM1CUsKa8yTnyDHvxHVIcLZmiuWi/Cat20/v89iyBgXguDbKAGwg4gIW/QSfxS9IFR3eR5EX8NuTZ9tcAHoa+AHou5Km/iDoEjlqu11CFr/QYtaqFcnkMpuVs4mYfdiU5xLtZryiBqec0HO8xD9Q4IKIbEGMyulJ3NBwqQ6x9iHtqJrM0JinAynLXTcHHGzOhD+YVZbT4EzlH+8dLuMj33DYdJATZAt7pIpxskqBXvPm+qKPs5TUtxDtOinpuBk264kQdxUFXFpAzL5x2qguTauhi+t4f/bMVsFcq3KsL3nn3J021ysEzZqeGmmGs6hHfGTZbZNgMhtyO+18WHtnDOD5s8fjO+58T/Z0hqJbrfjulsNNr8=
+  
+  
+matrix:
 
+  include:
+  
+    - os: linux
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+           TEST_WITH_XSPEC=false
+           CONDA_UPLOAD=false
+
+           
+    - os: osx
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+           TEST_WITH_XSPEC=false
+           CONDA_UPLOAD=false
+           
+#    - os: linux
+#      python: 3.5
+#      env: TRAVIS_PYTHON_VERSION=3.5
+#           TEST_WITH_XSPEC=false
+#           CONDA_UPLOAD=false
+      
+#    - os: osx
+#      python: 3.5
+#      env: TRAVIS_PYTHON_VERSION=3.5
+#           TEST_WITH_XSPEC=false
+#           CONDA_UPLOAD=false
+#
+    - os: linux
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+           TEST_WITH_XSPEC=true
+           CONDA_UPLOAD=true
+
+    - os: osx
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+           TEST_WITH_XSPEC=true
+           CONDA_UPLOAD=true
+  
 before_install:
   - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         #docker pull condaforge/linux-anvil
 
-         docker pull condaforge/linux-anvil
-
+         wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+         bash miniconda.sh -b -p $HOME/miniconda
+         export PATH="$HOME/miniconda/bin:$PATH"
+         conda install -y conda-build
+         conda config --add channels conda-forge
        else
 
          # Install Miniconda
@@ -27,44 +71,6 @@ before_install:
        fi
 
 script:
+  - chmod u+x ci/build_and_test.sh
+  - ./ci/build_and_test.sh
 
- - |
-       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-
-         docker run -e TRAVIS_PYTHON_VERSION=2.7 \
-                     -e TRAVIS_BRANCH \
-                     -e CONDA_UPLOAD_TOKEN \
-                     -e TRAVIS_OS_NAME \
-                     -e TRAVIS_BUILD_NUMBER \
-                     -e TRAVIS_BUILD_DIR \
-                     -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                     -it --rm -e user_id=`id -u` \
-                     condaforge/linux-anvil \
-                     /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
-
-          docker run -e TRAVIS_PYTHON_VERSION=3.7 \
-                     -e TRAVIS_BRANCH \
-                     -e CONDA_UPLOAD_TOKEN \
-                     -e TRAVIS_OS_NAME \
-                     -e TRAVIS_BUILD_NUMBER \
-                     -e TRAVIS_BUILD_DIR \
-                     -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                     -it --rm -e user_id=`id -u` \
-                     condaforge/linux-anvil \
-                     /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
-
-       else
-
-          chmod u+x ci/build_and_test.sh
-
-          export TRAVIS_PYTHON_VERSION=2.7
-          ./ci/build_and_test.sh
-
-          export TRAVIS_PYTHON_VERSION=3.7
-          ./ci/build_and_test.sh
-
-       fi
-
-env:
-  matrix:
-    secure: ht6GWpJyaTqTCQzTXuf7IQDKyl1OUISFXzHaLCcurBY5lZVkK+NIGaVMw0wNksQbgpF5t7JyojK39+usJ1WeYD4xvi3n7KxU9Cy8MGAuyY8iWFCmnVtkBoDkghGQBuUzf2UZ24IcH1JtlgOx28qJhEdXLfWPDd9/OvJLMrkpwcKcn0XV3dcheYvs3EyV8kyxfbaV3G9DsHY1bFZjGRzOATBuwCSpjkV5WxBq0dpDoilx6JY9uMydKU81PtxHbCQmP/8ZaT9eemw1qhBfrqbhU+CbwG0PDt7lG8SkXAIOQRJo/aJ7DvxtOQAvjuM1CUsKa8yTnyDHvxHVIcLZmiuWi/Cat20/v89iyBgXguDbKAGwg4gIW/QSfxS9IFR3eR5EX8NuTZ9tcAHoa+AHou5Km/iDoEjlqu11CFr/QYtaqFcnkMpuVs4mYfdiU5xLtZryiBqec0HO8xD9Q4IKIbEGMyulJ3NBwqQ6x9iHtqJrM0JinAynLXTcHHGzOhD+YVZbT4EzlH+8dLuMj33DYdJATZAt7pIpxskqBXvPm+qKPs5TUtxDtOinpuBk264kQdxUFXFpAzL5x2qguTauhi+t4f/bMVsFcq3KsL3nn3J021ysEzZqeGmmGs6hHfGTZbZNgMhtyO+18WHtnDOD5s8fjO+58T/Z0hqJbrfjulsNNr8=

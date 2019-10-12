@@ -185,7 +185,12 @@ class ModelParser(object):
 
             for property, value in list(extra_setup['extra_setup'].items()):
 
-                new_model[path].__setattr__(property, new_model[value])
+                #First, check to see if the we have a valid path in the new model.
+                #If we aren't given a path, interpret it as being given a value.
+                if value in new_model:
+                  new_model[path].__setattr__(property, new_model[value])
+                else:
+                  new_model[path].__setattr__(property, value)
 
         return new_model
 
@@ -565,7 +570,7 @@ class SourceParser(object):
 
         shape_parser = ShapeParser(self._source_name)
 
-        shape = shape_parser.parse(component_name, function_name, parameters_definition)
+        shape = shape_parser.parse(component_name, function_name, parameters_definition, is_spatial=False)
 
         # Get the links and extra setups, if any
 
@@ -598,7 +603,12 @@ class SourceParser(object):
 
         spatial_shape_parser = ShapeParser(self._source_name)
 
-        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, list(ext_source_definition.values())[0])
+        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, ext_source_definition.values()[0], is_spatial=True)
+
+        # Get the links and extra setups, if any
+
+        self._links.extend(spatial_shape_parser.links)
+        self._extra_setups.extend(spatial_shape_parser.extra_setups)
 
         # Parse the spectral information
 
@@ -642,9 +652,9 @@ class ShapeParser(object):
 
         return self._extra_setups
 
-    def parse(self, component_name, function_name, parameters_definition):
+    def parse(self, component_name, function_name, parameters_definition, is_spatial = False):
 
-        return self._parse_shape_definition(component_name, function_name, parameters_definition)
+        return self._parse_shape_definition(component_name, function_name, parameters_definition, is_spatial)
 
     @staticmethod
     def _fix(value):
@@ -653,7 +663,7 @@ class ShapeParser(object):
         # such as in units
         return value.replace("\n", " ")
 
-    def _parse_shape_definition(self, component_name, function_name, parameters_definition):
+    def _parse_shape_definition(self, component_name, function_name, parameters_definition, is_spatial=False):
 
         # Get the function
 
@@ -748,7 +758,10 @@ class ShapeParser(object):
                 link_function_instance = self._parse_shape_definition(component_name, link_function_name,
                                                                       this_definition['law'][link_function_name])
 
-                path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
+                if is_spatial:
+                    path = ".".join([self._source_name, function_name, parameter_name])
+                else:
+                    path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
 
                 self._links.append({'parameter_path': path,
                                     'law': link_function_instance,
@@ -782,8 +795,12 @@ class ShapeParser(object):
 
         # Now handle extra_setup if any
         if 'extra_setup' in parameters_definition:
-            path = ".".join([self._source_name, 'spectrum', component_name, function_name])
-
+        
+            if is_spatial:
+                path = ".".join([self._source_name, function_name])
+            else:
+                path = ".".join([self._source_name, 'spectrum', component_name, function_name])
+                
             self._extra_setups.append({'function_path': path,
                                        'extra_setup': parameters_definition['extra_setup']})
 

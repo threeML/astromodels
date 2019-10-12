@@ -13,10 +13,6 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-    - xspec-modelsonly
-    - cfitsio
-    - ccfits
-    - wcslib
 
 
   host:
@@ -24,21 +20,18 @@ requirements:
     - setuptools
     - pip
     - numpy
-    - pyyaml==3.13
+    - pyyaml==3.13 
     - astropy
     - scipy
     - numdifftools
     - hdf5
     - pytables
     - pandas
-    - cfitsio
-    - ccfits
-    - wcslib
-    - xspec-modelsonly
+   
 
   run:
-    #- python
-  #  - libgfortran
+    - python
+   # - libgfortran # [osx]
     - numpy
     - pyyaml==3.13
     - astropy
@@ -48,25 +41,22 @@ requirements:
     - pytables
     - pandas
     - dill
-    - cfitsio
-    - ccfits
-    - wcslib
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
   skip: true  # [py3k]
 
-#test:
-#  # Python imports
-#  imports:
-#    - astromodels
-#    - astromodels.core
-#    - astromodels.functions
-#    - astromodels.functions.dark_matter
-#    - astromodels.sources
-#    - astromodels.utils
-#    - astromodels.xspec
+test:
+  # Python imports
+  imports:
+    - astromodels
+    - astromodels.core
+    - astromodels.functions
+    - astromodels.functions.dark_matter
+    - astromodels.sources
+    - astromodels.utils
+ #   - astromodels.xspec
 
 #  commands:
 #    - pytest -vv --pyargs {{ name }}
@@ -74,8 +64,6 @@ build:
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
 
-#  requires:
-#    - xspec-modelsonly
 
 
 about:

@@ -139,7 +139,7 @@ class ParameterBase(Node):
     :param desc: description
     :param unit: units (string or astropy.Unit)
     :param transformation: a class which implements a .forward and a .backward method to transform forth and back from
-    face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)
+        face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)
     """
 
     def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=u.dimensionless_unscaled,
@@ -331,9 +331,9 @@ class ParameterBase(Node):
         Return the current value transformed to the new units
 
         :param unit: either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
-        instance, like "1 / (erg cm**2 s)"
+            instance, like "1 / (erg cm**2 s)"
         :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number.
-        Default is False
+            Default is False
         :return: either a floating point or a astropy.Quantity depending on the value of "as_quantity"
         """
 
@@ -771,9 +771,11 @@ class Parameter(ParameterBase):
     :param prior: the parameter's prior (default: None)
     :param is_normalization: True or False, wether the parameter is a normalization or not (default: False)
     :param transformation: a transformation to be used between external value (the value the user interacts with) and
-    the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
-    forward(external_value) and a backward(internal_value) returning respectively the transformation of the external
-    value in the internal value and viceversa.
+        the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
+        forward(external_value) and a backward(internal_value) method returning respectively the transformation of the 
+        external value in the internal value and viceversa. This is useful because for example the logarithm of a parameter
+        with a large range of possible values (say from 1e-12 to 1e20) is handled much better by fitting engines than the
+        raw value. The log transformation indeed makes the gradient much easier to compute.
     """
 
     def __init__(self, name=None, value=None, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',

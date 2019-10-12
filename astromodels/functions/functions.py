@@ -334,6 +334,56 @@ class Cutoff_powerlaw(Function1D):
 
         return K * np.exp(log_v)
 
+class Inverse_cutoff_powerlaw(Function1D):
+    r"""
+    description :
+        A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x~\b} $
+    parameters :
+        K :
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+            is_normalization : True
+            transformation : log10
+            min : 1e-30
+            max : 1e3
+            delta : 0.1
+        piv :
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+        index :
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+        b :
+            desc : inverse cutoff energy i.e 1/xc
+            initial value : 1
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit):
+        # The index is always dimensionless
+        self.index.unit = astropy_units.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        self.b.unit = 1/x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, K, piv, index, b):
+
+        # Compute it in logarithm to avoid roundoff errors, then raise it
+        log_v = index * np.log(x / piv) - x * b
+
+        return K * np.exp(log_v)
 
 @six.add_metaclass(FunctionMeta)
 class Super_cutoff_powerlaw(Function1D):
@@ -966,21 +1016,33 @@ if has_naima:
         particle_distribution = property(get_particle_distribution, set_particle_distribution,
                                          doc="""Get/set particle distribution for electrons""")
 
+        def fix_units( self, x, B, distance, emin, emax ):
+        
+            if isinstance( x, u.Quantity):
+                return True, x.to(get_units().energy), B.to(u.Gauss), distance.to(u.kpc), emin.to(u.GeV), emax.to(u.GeV)
+            else:
+                return False, x*(get_units().energy), B*(u.Gauss), distance*(u.kpc), emin*(u.GeV), emax*(u.GeV)
+
+
         # noinspection PyPep8Naming
         def evaluate(self, x, B, distance, emin, emax, need):
 
-            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B * astropy_units.Gauss,
-                                              Eemin=emin * astropy_units.GeV,
-                                              Eemax=emax * astropy_units.GeV, nEed=need)
+            has_units, x, B, distance, emin, emax = self.fix_units( x, B, distance, emin, emax )
 
-            return _synch.flux(x * get_units().energy, distance=distance * astropy_units.kpc).value
+            _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B,
+                                              Eemin=emin, Eemax=emax, nEed=need)
+
+            if has_units:
+              return _synch.flux(x , distance=distance)
+            else:
+              return _synch.flux(x , distance=distance).value
 
         def to_dict(self, minimal=False):
 
             data = super(Function1D, self).to_dict(minimal)
 
             if not minimal:
-                data['extra_setup'] = {'particle_distribution': self.particle_distribution.path}
+                data['extra_setup'] = {'particle_distribution': self.particle_distribution.path }
 
             return data
 
