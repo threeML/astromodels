@@ -1,5 +1,4 @@
-// 
-//  Copyright (C) 2007, 2015  Smithsonian Astrophysical Observatory
+//  Copyright (C) 2007, 2015-2018  Smithsonian Astrophysical Observatory
 //
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -28,145 +27,208 @@ int _sherpa_init_xspec_library();
 #include <iostream>
 #include <fstream>
 
+// The symbols listed in XSPEC version 12.9.1
+// at https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/XSappendixExternal.html
+// are given below. Note that this is the C/FORTRAN interface, not the
+// more-featureful FunctionUtility module.
+//
+// Functions which are used below:
+// FNINIT	Initializes data directory locations needed by the models. See below for a fuller description.
+// FGABND	Get an element abundance.
+// FGCHAT	Get current chatter level setting for model functions' output verbosity.
+// FPCHAT	Set the chatter level. Default is 10, higher chatter levels produce more output.
+// FGMSTR	Get a model string value (see XSPEC xset command).
+// FPMSTR	Set a model string value.
+// FGDATD	Get the model .dat files path.
+// FPDATD	Set the model .dat files path.
+// FGMODF	Get the model ion data path.
+// FPSLFL	Load values of a file solar abundance table (see abund command).
+// FGSOLR	Get the solar abundance table setting.
+// FPSOLR	Set the solar abundance table.
+// FGXSCT	Get the cross section table setting.
+// FPXSCT	Set the cross section table.
+// csmgh0	Get the cosmology H$_0$ setting (see the cosmo command).
+// csmph0	Set H$_0$.
+// csmgl0	Get $\Lambda_0$.
+// csmpl0	Set $\Lambda_0$.
+// csmgq0	Get q$_0$.
+// csmpq0	Put q$_0$.
+// xs_getVersion (or xgvers)	Retrieve XSPEC's version string.
+//
+// Functions which are not wrapped as their functionality is available:
+// RFLABD	Read abundance data from a file, then load and set this to be the current abundance table. (Essentially this combines a file read with the FPSLFL and FPSOLR functions.)
+//
+// Functions not wrapped as not felt to be that useful:
+// fzsq	Computes the luminosity distance, (c/H$_0$)*fzsq. The function is valid for small values of q$_0$*z for the case of no cosmological constant and uses the approximation of Pen (1999 ApJS 120, 49) for the case of a cosmological constant and a flat Universe. The function is not valid for non-zero cosmological constant if the Universe is not flat.
+//
+// Functions not wrapped since they are not useful as is (they need
+// functionality from 12.9.1 to set the XFLT keywords):
+// DGFILT	Get a particular XFLT keyword value from a data file.
+// DGNFLT	Get the number of XFLT keywords in a data file.
+//
+// Other symbols in xsFortran.h are:
+// DGQFLT       Does a XFLT keyword exist?
+// PDBVAL       Set a database value
+//
+// Symbols in 12.9.1/HEASOFT 6.22 but not in 12.9.0/HEASOFT 6.19
+// FGABNZ
+// FGTABN
+// FGTABZ
+// FGELTI
+// FGNELT
+// FGABFL
+// FPABFL
+// FGAPTH
+// FPAPTH
+// csmpall
+// DPFILT
+// DCLFLT
+// GDBVAL
+// CDBASE
+// FGATDV
+// FPATDV
+//
+// These seem unlikely to be useful for Sherpa
+// xs_getChat
+// xs_write
+// xs_read
+//
+// These are numeric functions which we should have available elsewhere
+// xs_erf
+// xs_erfc
+// gammap
+// gammq
+//
+#include "xsFortran.h"
+
+// TODO: is this defined in an XSPEC header file?
 #define ABUND_SIZE (30) // number of elements in Solar Abundance table
 
+// C_<model> are declared here; the other models are defined in
+// functionMap.h but that requires using the XSPEC build location
+// rather than install location.
+//
+#include "funcWrappers.h"
+
 extern "C" {
-void init_xspec();
 
-// Lifted from XSPEC 12 include directory
-char* FGXSCT(void); 
-char* FGSOLR(void);
+#ifdef XSPEC_12_10_1
+void agnsed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void qsosed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
 
-char* FGMSTR(char* dname);
-float FGABND(char* element);
-
-void FPSOLR(const char* table, int* ierr);
-void FPXSCT(const char* csection, int* ierr);
-void FPMSTR(const char* value1, const char* value2);
-void FPSLFL(float rvalue[], int nvalue, int *ierr);
-
-void FNINIT(void);
-float csmgq0(void);
-float csmgh0(void);
-float csmgl0(void);
-void csmpq0(float q0);
-void csmph0(float H0);
-void csmpl0(float lambda0);
-int FGCHAT();
-void FPCHAT(int chat);
-int xs_getVersion(char* buffer, int buffSize);
-
+#ifndef XSPEC_12_9_1
 void xsaped_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void xsblbd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbbrd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-//void xsbexrav_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xsbexrav(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_xsbexriv(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_brokenPowerLaw(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_broken2PowerLaw(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_sirf(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xsbmc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbrms_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifndef XSPEC_12_9_1
 void xsbvpe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
+#ifndef XSPEC_12_10_0
 void c6mekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void c6pmekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void c6pvmkl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void c6vmekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void cemekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_cemVMekal(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xscflw_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xscflw(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void compbb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void compls_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xscompps_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xscompps(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void compst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xstitg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_cutoffPowerLaw(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void disk_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void diskir_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsdskb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#ifndef XSPEC_12_10_1
 void xsdili_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
 void diskm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void disko_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void diskpbb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsdiskpn_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// was  void xeq_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_equil(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xsxpdec_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void ezdiskbb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifndef XSPEC_12_9_1
 void xsgaul_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xnneq_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_gnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
 void grad_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifdef XSPEC_12_10_0
+// Note: have dropped the leading 'c_' for this model
+void xsgrbcomp(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+
+void jet_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void xsgrbm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_kerrbb(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_kerrdisk(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void spin_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xslaor(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void laor2_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_laor2(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+
+#ifdef XSPEC_12_10_1
+void kyrline_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
+#ifndef XSPEC_12_9_1
 void xslorz_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsmeka_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsmekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xsmkcf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xsmkcf(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void C_xneq(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_nei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xshock_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_npshock(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
 void nsa_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void nsagrav_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void nsatmos_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifndef XSPEC_12_10_0
 void nsmax_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xsnteea_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xsnteea(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void nthcomp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_nthcomp(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
 void xspegp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xspexrav_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xspexrav(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_xspexriv(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xsp1tr_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_powerLaw(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xsposm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xneqs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_pshock(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+
+#ifndef XSPEC_12_9_1
 void xsrays_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void xredge_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsrefsch_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xsedov_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_sedov(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void srcut_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void sresc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#ifdef XSPEC_12_10_0
+void ssa_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
 void xsstep_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifndef XSPEC_12_9_1
 void xsvape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void xsbrmv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xseq_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_vequil(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xsnneq_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_vgnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+
+#ifndef XSPEC_12_9_1
 void xsvmek_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsvmkl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xsvmcf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xsvmcf(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void C_xsneq(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xsshock_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_vnpshock(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xsneqs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_vpshock(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
+#ifndef XSPEC_12_9_1
 void xsvrys_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xssedov_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_vsedov(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
 void xszbod_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszbrm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xszgau_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xszgau(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_zpowerLaw(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_xsabsori(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+
+#ifndef XSPEC_12_10_0
 void acisabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void xscnst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xscabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xscycl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
@@ -174,28 +236,21 @@ void xsdust_(float* ear, int* ne, float* param, int* ifl, float* photar, float* 
 void xsedge_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsabsc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsexp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xsgabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_gaussianAbsorptionLine(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xshecu_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xshrfl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsntch_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsabsp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsphab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsplab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void xspwab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xspwab(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xscred_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xssmdg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_superExpCutoff(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xsspln_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xssssi_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifndef XSPEC_12_10_0
 void swind1_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void tbabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_tbabs(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void tbgrain_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_tbgrain(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void tbvabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_tbvabs(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
 void xsred_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsabsv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsvphb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
@@ -207,86 +262,91 @@ void xszedg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* 
 void xszhcu_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszabp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszphb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifndef XSPEC_12_10_0
 void zxipcf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void xszcrd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void msldst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// void ztbabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_ztbabs(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xszvab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszvfe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszvph_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszwnb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 
-// New XSPEC 12.7 models
 
-void C_cplinear(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xseqpair_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xseqpair(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xseqth_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xseqth(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-// void xscompth_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_xscompth(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#ifndef XSPEC_12_9_1
 void xsbvvp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsvvap_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 void zigm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 
-// New XSPEC 12.7.1 models
-
-void C_gaussDem(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vgaussDem(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#ifndef XSPEC_12_10_1
 void logpar_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
 void eplogpar_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void optxagn_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void optxagnf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void pexmon_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 
-// Models from 12.8.0, 12.8.1, and 12.8.2
-
 // additive
-void C_agauss(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_zagauss(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xscompmag(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 void xscomptb(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+
+#ifndef XSPEC_12_10_0
 void nsmaxg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void nsx_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void C_rnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vrnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vvrnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vvgnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vvnei(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vvnpshock(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vvpshock(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_vvsedov(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
 
 //multiplicative
 void xsphei_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xslyman_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xszbabs(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 
-// XSPEC table models
-void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl, 
+#ifdef XSPEC_12_9_1
+void ismabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+// Note: have dropped the leading 'c_' for this model
+void slimbbmodel(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+#endif
+
+#ifdef XSPEC_12_10_1
+void tdrelline_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void tdrellinelp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void tdrellinelpext_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
+// XSPEC table models; in XSPEC 12.10.1 these have been consolidated
+// into the tabint routine.
+//
+#ifndef XSPEC_12_10_1
+void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl,
 	    float* photar, float* photer);
-void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl, 
+void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl,
 	    float* photar, float* photer);
+#endif
 
 // XSPEC convolution models
-void C_cflux(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_cpflux(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_xsgsmt(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_ireflct(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_kdblur(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_kdblur2(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_spinconv(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_xslsmt(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_PartialCovering(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_rdblur(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_reflct(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_simpl(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_zashift(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void C_zmshift(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+//
+
+void rgsxsrc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+#ifdef XSPEC_12_10_1
+void kyconv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void tdrelconv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void tdrelconvlp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void tdrelconvlpext_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 }
 
+// This routine could be called when the module is being initialized,
+// but this would cause XSPEC module initialization even if XSPEC
+// functionality is not used. So each function/model has to ensure
+// that they call _sherpa_init_xspec_library before calling any
+// XSPEC routine.
+//
 // Sun's C++ compiler complains if this is declared static
 int _sherpa_init_xspec_library()
 {
@@ -303,7 +363,7 @@ int _sherpa_init_xspec_library()
 		     "HEADAS environment variable is not set" );
     return EXIT_FAILURE;
   }
-  
+
   // Stream buffer for redirected stdout
   std::streambuf* cout_sbuf = NULL;
   std::ofstream fout;
@@ -327,7 +387,7 @@ int _sherpa_init_xspec_library()
 
     // Note:  since we are *not* redirecting std::cerr, any error
     // messages are still seen; if, for example, HEADAS is not set,
-    // user will still see error message printed to stderr (i.e., to 
+    // user will still see error message printed to stderr (i.e., to
     // screen by default).  We still want such error messages to be
     // seen!  So do *not* redirect std::cerr.
     //
@@ -337,19 +397,19 @@ int _sherpa_init_xspec_library()
     // Perhaps the screen output could be saved, rather than redirected
     // to /dev/null, and checked for the string '***Error: ', which
     // appears to be used in the error messages from XSPEC.
-    
+
     cout_sbuf = std::cout.rdbuf();
     fout.open("/dev/null");
     if (cout_sbuf != NULL && fout.is_open())
       std::cout.rdbuf(fout.rdbuf()); // temporary redirect stdout to /dev/null
-    
+
     // Initialize XSPEC model library
     FNINIT();
-    
+
     // Get back original std::cout
     if (cout_sbuf != NULL) {
       std::cout.clear();
-      std::cout.rdbuf(cout_sbuf); 
+      std::cout.rdbuf(cout_sbuf);
     }
     fout.clear();
     fout.close();
@@ -362,9 +422,19 @@ int _sherpa_init_xspec_library()
     csmpq0( 0.0 );
     csmpl0( 0.73 );
 
+    // Work around a XSPEC 12.10.0 issue where the atomdb version is
+    // hardcoded to 3.0.7 for the models-only build but it should be
+    // 3.0.9. This is fixed in the yet-to-be-released 12.10.1 (hence
+    // the attempt to only restrict to 12.10.0).
+    //
+#if defined (XSPEC_12_10_0) && !defined (XSPEC_12_10_1)
+    char atomdbVersion1210[6] = "3.0.9";
+    atomdbVersion1210[5] = '\0';
+    FPATDV(atomdbVersion1210);
+#endif
+
   } catch(...) {
 
-    
     // Get back original std::cout
     if (cout_sbuf != NULL) {
       std::cout.clear();
@@ -388,7 +458,7 @@ int _sherpa_init_xspec_library()
 }
 
 static PyObject* get_version( PyObject *self )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -397,7 +467,7 @@ static PyObject* get_version( PyObject *self )
   int retval;
 
   try {
-    
+
     retval = xs_getVersion(version, 256);
 
   } catch(...) {
@@ -407,19 +477,19 @@ static PyObject* get_version( PyObject *self )
     return NULL;
 
   }
-  
+
   if( retval < 0 ) {
     PyErr_SetString( PyExc_LookupError,
 		     (char*)"XSPEC version string was truncated" );
     return NULL;
   }
-  
+
   return Py_BuildValue( (char*)"s", version );
 
 }
 
 static PyObject* get_chatter( PyObject *self )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -444,7 +514,7 @@ static PyObject* get_chatter( PyObject *self )
 
 
 static PyObject* get_abund( PyObject *self, PyObject *args )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -471,46 +541,46 @@ static PyObject* get_abund( PyObject *self, PyObject *args )
   if( !element ) {
 
     retval = (PyObject*) Py_BuildValue( (char*)"s", abund );
-  
+
   } else {
 
     float abundVal = 0.0;
     std::streambuf *cerr_sbuf = NULL;
     std::ostringstream fout;
-    
+
     try {
-      
+
       cerr_sbuf = std::cerr.rdbuf();
-      
+
       if (cerr_sbuf != NULL)
 	std::cerr.rdbuf(fout.rdbuf());
-      
+
       abundVal = FGABND(element);
-      
-      // Get back original std::cerr
-      if (cerr_sbuf != NULL)
-	std::cerr.rdbuf(cerr_sbuf); 
-      
-      
-    } catch(...) {
-      
+
       // Get back original std::cerr
       if (cerr_sbuf != NULL)
 	std::cerr.rdbuf(cerr_sbuf);
-      
+
+
+    } catch(...) {
+
+      // Get back original std::cerr
+      if (cerr_sbuf != NULL)
+	std::cerr.rdbuf(cerr_sbuf);
+
       PyErr_Format( PyExc_ValueError,
 		    (char*)"could not get XSPEC abundance for '%s'",
 		  element);
       return NULL;
-      
+
     }
-    
+
     if( fout.str().size() > 0 ) {
       PyErr_Format( PyExc_TypeError,
 		    (char*)"could not find element '%s'", element);
       return NULL;
     }
-    
+
     retval = (PyObject*) Py_BuildValue( (char*)"f", abundVal );
   }
 
@@ -519,7 +589,7 @@ static PyObject* get_abund( PyObject *self, PyObject *args )
 
 
 static PyObject* get_cosmo( PyObject *self )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -548,7 +618,7 @@ static PyObject* get_cosmo( PyObject *self )
 
 
 static PyObject* get_cross( PyObject *self )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -573,7 +643,7 @@ static PyObject* get_cross( PyObject *self )
 
 
 static PyObject* set_chatter( PyObject *self, PyObject *args )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -588,7 +658,7 @@ static PyObject* set_chatter( PyObject *self, PyObject *args )
     FPCHAT( chatter );
 
   } catch(...) {
-    
+
     PyErr_Format( PyExc_ValueError,
                   (char*)"could not set XSPEC chatter level to %d",
                   chatter);
@@ -602,7 +672,7 @@ static PyObject* set_chatter( PyObject *self, PyObject *args )
 
 
 static PyObject* set_abund( PyObject *self, PyObject *args )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -618,7 +688,7 @@ static PyObject* set_abund( PyObject *self, PyObject *args )
     FPSOLR( table, &status );
 
   } catch(...) {
-    
+
     status = 1;
 
   }
@@ -631,38 +701,38 @@ static PyObject* set_abund( PyObject *self, PyObject *args )
     size_t count(0);
 
     try {
-      
+
       float element;
       fileStream.exceptions(std::ios_base::failbit);
-      
+
       while (count < ABUND_SIZE && fileStream >> element) {
 	vals[count] = element;
 	++count;
       }
-      
+
       status = 0;
     }
     catch ( std::exception& ) {
-     
+
       if( !fileStream.eof() ) {
-      	PyErr_Format( PyExc_ValueError, 
+      	PyErr_Format( PyExc_ValueError,
                       (char*)"Cannot read file '%s'.  It may not exist or contains invalid data",
                       table);
 	return NULL;
       }
-      
+
       status = 1;
     }
 
     try {
-      
+
       FPSOLR((char*)"file", &status);
       FPSLFL( &vals[0], ABUND_SIZE, &status );
-      
+
     } catch(...) {
-      
+
       status = 1;
-      
+
     }
   }
 
@@ -679,7 +749,7 @@ static PyObject* set_abund( PyObject *self, PyObject *args )
 
 
 static PyObject* set_cosmo( PyObject *self, PyObject *args )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -713,7 +783,7 @@ static PyObject* set_cosmo( PyObject *self, PyObject *args )
 
 
 static PyObject* set_cross( PyObject *self, PyObject *args )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -742,13 +812,13 @@ static PyObject* set_cross( PyObject *self, PyObject *args )
     return NULL;
   }
 
-  Py_RETURN_NONE;  
+  Py_RETURN_NONE;
 
 }
 
 
 static PyObject* set_xset( PyObject *self, PyObject *args )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -777,12 +847,12 @@ static PyObject* set_xset( PyObject *self, PyObject *args )
     return NULL;
   }
 
-  Py_RETURN_NONE;  
+  Py_RETURN_NONE;
 
 }
 
 static PyObject* get_xset( PyObject *self, PyObject *args  )
-{ 
+{
 
   if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
     return NULL;
@@ -810,297 +880,100 @@ static PyObject* get_xset( PyObject *self, PyObject *args  )
 
 }
 
-// for documentation
-#define SEEALSODOC "\nSee also\n--------\n"
-#define NOTESDOC "\nNotes\n-----\n"
-#define REFERENCESDOC "\nReferences\n----------\n"
-#define EXAMPLESDOC "\nExamples\n--------\n"
-#define PARAMETERSDOC "\nParameters\n----------\n"
-#define RETURNSDOC "\nReturns\n-------\n"
+// Perhaps this should be expanded to some of the other routines
+// that return a string, rather than just the paths?
+//
+static PyObject* get_xspec_path( const char *label, char *getfunc() )
+{
+
+  if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
+    return NULL;
+
+  char* str_value = NULL;
+  try {
+    str_value = getfunc();
+  } catch(...) {
+
+    std::ostringstream emsg;
+    emsg << "could not get XSPEC " << label << " path";
+    PyErr_SetString( PyExc_LookupError,
+                     emsg.str().c_str() );
+    return NULL;
+
+  }
+
+  return Py_BuildValue( (char*)"s", str_value );
+
+}
+
+static PyObject* get_manager_data_path( PyObject *self )
+{
+  return get_xspec_path("manager", FGDATD);
+}
+
+static PyObject* get_model_data_path( PyObject *self )
+{
+  return get_xspec_path("model", FGMODF);
+}
+
+static PyObject* set_manager_data_path( PyObject *self, PyObject *args )
+{
+
+  if ( EXIT_SUCCESS != _sherpa_init_xspec_library() )
+    return NULL;
+
+  char* path = NULL;
+
+  if ( !PyArg_ParseTuple( args, (char*)"s", &path ) )
+    return NULL;
+
+  try {
+
+    FPDATD( path );
+
+  } catch(...) {
+
+    std::ostringstream emsg;
+    emsg << "could not set XSPEC manager path to '" << path << "'";
+    PyErr_SetString( PyExc_ValueError,
+                     emsg.str().c_str() );
+    return NULL;
+  }
+
+  Py_RETURN_NONE;
+
+}
 
 static PyMethodDef XSpecMethods[] = {
-  { (char*)"get_xsversion", (PyCFunction)get_version, METH_NOARGS,
-    (char*) "get_xsversion()\n\n"
-            RETURNSDOC
-            "version : str\n"
-            "   The version of the X-Spec model library used\n"
-            "   by Sherpa [1]_.\n"
-            REFERENCESDOC "\n"
-            ".. [1] http://heasarc.nasa.gov/docs/xanadu/xspec/\n"
-            EXAMPLESDOC "\n"
-            ">>> get_xscosmo()\n'12.8.2e'\n\n"},
+  { (char*)"get_xsversion", (PyCFunction)get_version, METH_NOARGS, NULL },
+  { (char*)"get_xschatter", (PyCFunction)get_chatter, METH_NOARGS, NULL },
+  FCTSPEC(set_xschatter, set_chatter),
+  FCTSPEC(get_xsabund, get_abund),
+  FCTSPEC(set_xsabund, set_abund),
+  FCTSPEC(set_xscosmo, set_cosmo),
+  { (char*)"get_xscosmo", (PyCFunction)get_cosmo, METH_NOARGS, NULL },
+  { (char*)"get_xsxsect", (PyCFunction)get_cross, METH_NOARGS, NULL },
+  FCTSPEC(set_xsxsect, set_cross),
+  FCTSPEC(set_xsxset, set_xset),
+  FCTSPEC(get_xsxset, get_xset),
+  { (char*)"get_xspath_manager",
+    (PyCFunction)get_manager_data_path, METH_NOARGS, NULL },
+  { (char*)"get_xspath_model",
+    (PyCFunction)get_model_data_path, METH_NOARGS, NULL },
+  FCTSPEC(set_xspath_manager, set_manager_data_path),
 
-  { (char*)"get_xschatter", (PyCFunction)get_chatter, METH_NOARGS,
-    (char*) "get_xschatter()\n\n"
-            RETURNSDOC
-            "chatter : int\n"
-            "   The chatter setting used by the X-Spec routines.\n"
-            SEEALSODOC
-            "set_xschatter : Set the X-Spec chatter level.\n"
-            EXAMPLESDOC "\n"
-            ">>> get_xschatter()\n0\n\n"},
-  { (char*)"set_xschatter", (PyCFunction)set_chatter, METH_VARARGS,
-    (char*) "set_xschatter(level)\n\n"
-            "Set the chatter setting used by the X-Spec routines\n"
-            "for determining what information gets printed to the\n"
-            "screen. It is equivalent to the X-Spec `chatter`\n"
-            "command [1]_.\n"
-            PARAMETERSDOC
-            "level : int\n"
-            "   The higher the `level`, the more screen output will\n"
-            "   be created by X-Spec routines. A value of `0` hides\n"
-            "   most information while `25` will generate a lot of\n"
-            "   debug output.\n"
-            SEEALSODOC
-            "get_xschatter : Return the X-Spec chatter setting.\n"
-            NOTESDOC
-            "The default `chatter` setting used by Sherpa is `0`, which\n"
-            "is lower than - so, creates less screen output - the\n"
-            "default value used by X-Spec (`10`).\n\n"
-            "There is no way to change the X-Spec \"log chatter\"\n"
-            "setting.\n"
-            REFERENCESDOC "\n"
-            ".. [1] http://heasarc.nasa.gov/xanadu/xspec/manual/XSchatter.html\n"
-            "       Note that this may refer to a newer version than the\n"
-            "       compiled version used by Sherpa; use `get_xsversion` to\n"
-            "       check.\n\n"
-            EXAMPLESDOC "\n"
-            "Set the chatter level to the default used by X-Spec:\n\n"
-            ">>> set_xschatter(10)\n\n"},
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_NORM( agnsed, 16 ),
+  XSPECMODELFCT_NORM( qsosed, 7 ),
+#endif
 
-  { (char*)"get_xsabund", (PyCFunction)get_abund, METH_VARARGS,
-    (char*) "get_xsabund(element=None)\n\n"
-            "Return the X-Spec abundance setting or elemental abundance.\n\n"
-            PARAMETERSDOC
-            "element : str, optional\n"
-            "   When not given, the abundance table name is returned.\n"
-            "   If a string, then it must be an element name from:\n"
-            "   'H', 'He', 'Li', 'Be', 'B', 'C', 'N', 'O', 'F', 'Ne',\n"
-            "   'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'Ar', 'K',\n"
-            "   'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni',\n"
-            "   'Cu', 'Zn'. Case is important.\n"
-            RETURNSDOC
-            "val : str or float\n"
-            "   When `element` is `None`, the abundance table name is\n"
-            "   returned (see `set_xsabund`); the string 'file' is\n"
-            "   used when the abundances were read from a file. A\n"
-            "   numeric value is returned when an element name is\n"
-            "   given. This value is the elemental abundance relative\n"
-            "   to `H`.\n"
-            SEEALSODOC
-            "set_xsabund : Set the X-Spec abundance table.\n"
-            EXAMPLESDOC "\n"
-            "Return the current abundance setting, which in this case\n"
-            "is `angr`, the default value for X-Spec:\n\n"
-            ">>> get_xsabund()\n'angr'\n\n"
-            "The `set_xsabund` function has been used to read in the\n"
-            "abundances from a file, so the routine now returns the\n"
-            "string 'file':\n\n"
-            ">>> set_xsabund('abund.dat')\n"
-            ">>> get_xsabund()\n'file'\n\n"
-            ">>> get_xsabund('He')\n0.09769999980926514\n\n"},
-  { (char*)"set_xsabund", (PyCFunction)set_abund, METH_VARARGS,
-    (char*) "set_xsabund(abundance)\n\n"
-            "Set the abundance table used in the X-Spec plasma emission and\n"
-            "photoelectric absorption models. It is equivalent to the X-Spec\n"
-            "`abund` command [1]_.\n"
-            PARAMETERSDOC
-            "abundance : str\n"
-            "   A file name, format described below, or one of the\n"
-            "   pre-defined names listed below.\n"
-            SEEALSODOC
-            "get_xsabund : Return the X-Spec abundance setting or elemental abundance.\n"
-            "get_xsversion : Return the version of X-Spec used by this module.\n"
-            "set_xschatter : Control the screen output of X-Spec functions and models.\n"
-            NOTESDOC
-            "The pre-defined abundance tables are:\n\n"
-            " - `angr`, from [2]_\n"
-            " - `aspl`, from [3]_\n"
-            " - `feld`, from [4]_, except for elements not listed which\n"
-            "   are given `grsa` abundances\n"
-            " - `aneb`, from [5]_\n"
-            " - `grsa`, from [6]_\n"
-            " - `wilm`, from [7]_, except for elements not listed which\n"
-            "   are given zero abundance\n"
-            " - `lodd`, from [8]_\n\n"
-            "The values for these tables are given at [1]_.\n\n"
-            "Data files should be in ASCII format, containing a single\n"
-            "numeric (floating-point) column of the abundance values,\n"
-            "relative to Hydrogen.\n\n"
-            "The screen output of this function is controlled by the\n"
-            "X-Spec chatter setting (`set_xschatter`).\n"
-            REFERENCESDOC "\n"
-            ".. [1] http://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html\n"
-            "       Note that this may refer to a newer version than the\n"
-            "       compiled version used by Sherpa; use `get_xsversion` to\n"
-            "       check.\n\n"
-            ".. [2] Anders E. & Grevesse N. (1989, Geochimica et\n"
-            "       Cosmochimica Acta 53, 197)\n"
-            "       http://adsabs.harvard.edu/abs/1989GeCoA..53..197A\n\n"
-            ".. [3] Asplund M., Grevesse N., Sauval A.J. & Scott P.\n"
-            "       (2009, ARAA, 47, 481)\n"
-            "       http://adsabs.harvard.edu/abs/2009ARA%26A..47..481A\n\n"
-            ".. [4] Feldman U.(1992, Physica Scripta 46, 202)\n"
-            "       http://adsabs.harvard.edu/abs/1992PhyS...46..202F\n\n"
-            ".. [5] Anders E. & Ebihara (1982, Geochimica et Cosmochimica\n"
-            "       Acta 46, 2363)\n"
-            "       http://adsabs.harvard.edu/abs/1982GeCoA..46.2363A\n\n"
-            ".. [6] Grevesse, N. & Sauval, A.J. (1998, Space Science\n"
-            "       Reviews 85, 161)\n"
-            "       http://adsabs.harvard.edu/abs/1998SSRv...85..161G\n\n"
-            ".. [7] Wilms, Allen & McCray (2000, ApJ 542, 914)\n"
-            "       http://adsabs.harvard.edu/abs/2000ApJ...542..914W\n\n"
-            ".. [8] Lodders, K (2003, ApJ 591, 1220)\n"
-            "       http://adsabs.harvard.edu/abs/2003ApJ...591.1220L\n\n"
-            EXAMPLESDOC "\n"
-            ">>> set_xsabund('lodd')\n"
-            " Solar Abundance Vector set to lodd:  Lodders, K. ApJ 591, 1220 (2003)\n\n"
-            ">>> set_xsabund('abund.dat')\n"
-            " Solar Abundance Vector set to file:  User defined abundance vector / no description specified\n\n"},
-
-  { (char*)"set_xscosmo", (PyCFunction)set_cosmo, METH_VARARGS,
-    (char*) "set_xscosmo(h0, q0, l0)\n\n"
-            "Set the cosmological parameters (H_0, q_0, lambda_0) used\n"
-            "by X-Spec.\n It is equivalent to the X-Spec\n"
-            "`cosmo` command [1]_. The default values are:\n"
-            "h0=70, q0=0, l0=0.73\n"
-            PARAMETERSDOC
-            "h0 : number\n"
-            "   The Hubble constant in km/s/Mpc.\n"
-            "q0 : number\n"
-            "   The deceleration parameter.\n"
-            "l0 : number\n"
-            "   The cosmological constant. If this is non-zero\n"
-            "   then the q0 parameter is ignored and the Universe\n"
-            "   is assumed to be flat.\n"
-            SEEALSODOC
-            "get_xscosmo : Return the X-Spec cosmology settings.\n"
-            "get_xsversion : Return the version of X-Spec used by this module.\n"
-            REFERENCESDOC "\n"
-            ".. [1] http://heasarc.nasa.gov/xanadu/xspec/manual/XScosmo.html\n"
-            "       Note that this may refer to a newer version than the\n"
-            "       compiled version used by Sherpa; use `get_xsversion` to\n"
-            "       check.\n\n"
-            EXAMPLESDOC "\n"
-            ">>> set_xscosmo(73, 0, 0.73)\n"},
-  { (char*)"get_xscosmo", (PyCFunction)get_cosmo, METH_NOARGS,
-    (char*) "get_xscosmo()\n\n"
-            "Return the X-Spec cosmology settings.\n"
-            RETURNSDOC
-            "(h0,q0,l0) :\n"
-            "   The Hubble constant, in km/s/Mpc, the deceleration\n"
-            "   parameter, and the cosmological constant.\n"
-            SEEALSODOC
-            "set_xscosmo : Set the X-Spec cosmology settings.\n"
-            EXAMPLESDOC "\n"
-            ">>> get_xscosmo()\n(70.0, 0.0, 0.7300000190734863)\n\n"},
-
-  { (char*)"get_xsxsect", (PyCFunction)get_cross, METH_NOARGS,
-    (char*) "get_xsxsect()\n\n"
-            "Return the name of the X-Spec photoelectric absorption\n"
-            "cross-sections setting.\n"
-            RETURNSDOC
-            "val : str\n"
-            "   The value of the photoelectric absorption setting:\n"
-            "   one of 'bcmc', 'obcm', and 'vern'.\n"
-            SEEALSODOC
-            "set_xsxsect : Set the X-Spec photoelectric absorption cross-sections.\n"
-            EXAMPLESDOC "\n"
-            ">>> get_xsxsect()\n'bcmc'\n\n"},
-  { (char*)"set_xsxsect", (PyCFunction)set_cross, METH_VARARGS,
-    (char*) "set_xsxsect(name)\n\n"
-            "Set the X-Spec photoelectric absorption cross-sections\n"
-            "setting, which changes the cross-sections used by all\n"
-            "X-Spec absorption models *except* for `xswabs`. It is\n"
-            "equivalent to the X-Spec `xsect` command [1]_.\n"
-            PARAMETERSDOC
-            "name : { 'bcmc', 'obcm', 'vern' }\n"
-            "   The options are: 'bcmc' from [2]_ with a new\n"
-            "   He cross-section based on [3]_; 'obcm' which is,\n"
-            "   the same as 'bcmc', but with the He cross-section\n"
-            "   from [2]_, or 'vern' [4_].\n"
-            SEEALSODOC
-            "get_xsxsect : Return the name of the X-Spec photoelectric absorption cross-sections.\n"
-            "get_xsversion : Return the version of X-Spec used by this module.\n"
-            "set_xschatter : Control the screen output of X-Spec functions and models.\n"
-            NOTESDOC
-            "The screen output of this function is controlled by the\n"
-            "X-Spec chatter setting (`set_xschatter`).\n"
-            REFERENCESDOC "\n"
-            ".. [1] http://heasarc.nasa.gov/xanadu/xspec/manual/XSxsect.html\n"
-            "       Note that this may refer to a newer version than the\n"
-            "       compiled version used by Sherpa; use `get_xsversion` to\n"
-            "       check.\n\n"
-            ".. [2] Balucinska-Church & McCammon (1992; Ap.J.400, 699).\n"
-            "       http://adsabs.harvard.edu/abs/1992ApJ...400..699B\n\n"
-            ".. [3] Yan, M., Sadeghpour, H. R., Dalgarno, A. 1998,\n"
-            "       Ap.J. 496, 1044\n"
-            "       http://adsabs.harvard.edu/abs/1998ApJ...496.1044Y\n\n"
-            ".. [4] Verner et. al., 1996, Ap.J., 465, 487.\n"
-            "       http://adsabs.harvard.edu/abs/1996ApJ...465..487V\n\n"
-            EXAMPLESDOC "\n"
-            ">>> set_xsxsect('vern')\n"
-            " Cross Section Table set to vern:  Verner, Ferland, Korista, and Yakovlev 1996\n\n"},
-
-  { (char*)"set_xsxset", (PyCFunction)set_xset, METH_VARARGS,
-    (char*) "set_xsxset(name, value)\n\n"
-            "Set variables used by X-Spec models. It is equivalent to the\n"
-            "X-Spec `xset` command [1]_, but only for setting the model\n"
-            "database settings. See `set_xsabund`, `set_xscosmo`, and\n"
-            "`set_xsxsect` for the other settings.\n"
-            PARAMETERSDOC
-            "name : str\n"
-            "   The name of the setting. It is case insensitive, and\n"
-            "   is converted to upper case. There is no check that the\n"
-            "   name is valid.\n"
-            "value : str\n"
-            "   The new value of the setting. It must be given as a\n"
-            "   string.\n"
-            SEEALSODOC
-            "get_xsxset : Return the value of X-Spec model settings.\n"
-            "get_xsversion : Return the version of X-Spec used by this module.\n"
-            "set_xsabund : Set the X-Spec abundance table.\n"
-            "set_xschatter : Set the X-Spec chatter level.\n"
-            "set_xscosmo : Set the X-Spec cosmology settings.\n"
-            "set_xsxsect : Set the X-Spec photoelectric absorption cross-sections.\n"
-            NOTESDOC
-            "The available settings are listed at [1]_. Not all the\n"
-            "X-Spec model types are supported by Sherpa - for instance\n"
-            "X-Spec \"mixing models\" - so changing some of these settings\n"
-            "will make no difference. The X-Spec chatter setting can be\n"
-            "increased with `set_xschatter` if it is not clear if\n"
-            "a setting is being used.\n"
-            REFERENCESDOC "\n"
-            ".. [1] http://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html\n"
-            "       Note that this may refer to a newer version than the\n"
-            "       compiled version used by Sherpa; use `get_xsversion` to\n"
-            "       check.\n\n"
-            EXAMPLESDOC "\n"
-	    ">>> set_xsxset('NEIVERS', '2.0')\n\n"
-	    ">>> set_xsxset('NEIAPECROOT', '/data/spectral/modelData/APEC_nei_v11')\n\n"
-            ">>> set_xsxset('POW_EMIN', '0.5')\n"
-            ">>> set_xsxset('POW_EMAX', '2.0')\n\n"},
-  { (char*)"get_xsxset", (PyCFunction)get_xset, METH_VARARGS,
-    (char*) "get_xsxset(name)\n\n"
-            "Return the X-Spec model setting.\n\n"
-            PARAMETERSDOC
-            "name : str\n"
-            "   The name of the setting. There is no check that\n"
-            "   the name is valid.\n"
-            RETURNSDOC
-            "val : str\n"
-            "   Returns the value set by a previous call to `set_xsxset`\n"
-            "   or the empty string, if not set.\n"
-            SEEALSODOC
-            "set_xsxset : Set a X-Spec model setting.\n"
-            NOTESDOC "\n"
-            "Due to the way X-Spec model settings work, `get_xsxset`\n"
-            "will only return a value if it has previously been set\n"
-            "with a call to `set_xsxset`. There is no way to retrive\n"
-            "the default value of a setting.\n\n"},
-
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_apec, 4 ),
+  XSPECMODELFCT_C_NORM( C_bapec, 5 ),
+#else
   XSPECMODELFCT_NORM( xsaped, 4 ),
   XSPECMODELFCT_NORM( xsbape, 5 ),
+#endif
   XSPECMODELFCT_NORM( xsblbd, 2 ),
   XSPECMODELFCT_NORM( xsbbrd, 2 ),
   XSPECMODELFCT_C_NORM( C_xsbexrav, 10 ),
@@ -1110,11 +983,26 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C_NORM( C_sirf, 10 ),
   XSPECMODELFCT_NORM( xsbmc, 4 ),
   XSPECMODELFCT_NORM( xsbrms, 2 ),
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( C_brnei, 7 ),
+#endif
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_bvapec, 17 ),
+#else
   XSPECMODELFCT_NORM( xsbvpe, 17 ),
+#endif
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( C_bvrnei, 19 ),
+  XSPECMODELFCT_C_NORM( C_c6mekl, 11 ),
+  XSPECMODELFCT_C_NORM( C_c6pmekl, 11 ),
+  XSPECMODELFCT_C_NORM( C_c6pvmkl, 24 ),
+  XSPECMODELFCT_C_NORM( C_c6vmekl, 24 ),
+#else
   XSPECMODELFCT_NORM( c6mekl, 11 ),
   XSPECMODELFCT_NORM( c6pmekl, 11 ),
   XSPECMODELFCT_NORM( c6pvmkl, 24 ),
   XSPECMODELFCT_NORM( c6vmekl, 24 ),
+#endif
   XSPECMODELFCT_NORM( cemekl, 7 ),
   XSPECMODELFCT_C_NORM( C_cemVMekal, 20 ),
   XSPECMODELFCT_C_NORM( C_xscflw, 6 ),
@@ -1127,7 +1015,11 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_NORM( disk, 4 ),
   XSPECMODELFCT_NORM( diskir, 9 ),
   XSPECMODELFCT_NORM( xsdskb, 2 ),
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_diskline, 6 ),
+#else
   XSPECMODELFCT_NORM( xsdili, 6 ),
+#endif
   XSPECMODELFCT_NORM( diskm, 5 ),
   XSPECMODELFCT_NORM( disko, 5 ),
   XSPECMODELFCT_NORM( diskpbb, 3 ),
@@ -1135,25 +1027,60 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C_NORM( C_equil, 4 ),
   XSPECMODELFCT_NORM( xsxpdec, 2 ),
   XSPECMODELFCT_NORM( ezdiskbb, 2 ),
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_gaussianLine, 3 ),
+#else
   XSPECMODELFCT_NORM( xsgaul, 3 ),
+#endif
   XSPECMODELFCT_C_NORM( C_gnei, 6 ),
   XSPECMODELFCT_NORM( grad, 7 ),
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( xsgrbcomp, 10 ),
+#endif
   XSPECMODELFCT_NORM( xsgrbm, 4 ),
   XSPECMODELFCT_C_NORM( C_kerrbb, 10 ),
+#ifdef XSPEC_12_10_0
+  /* From an email from Craig Gordon at HEASARC:
+     12.10.0 and later: for kerrd call C_kerrd. For earlier versions kerrd should call C_kerrdisk.
+     (the model.dat file gives C_kerrdisk up to 12.10.1b)
+  */
+  XSPECMODELFCT_C_NORM( C_kerrd, 8 ),
+#else
   XSPECMODELFCT_C_NORM( C_kerrdisk, 8 ),
+#endif
   XSPECMODELFCT_NORM( spin, 10 ),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_NORM( kyrline, 12 ),
+#endif
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_laor, 6 ),
+#else
   XSPECMODELFCT_C_NORM( C_xslaor, 6 ),
+#endif
   XSPECMODELFCT_C_NORM( C_laor2, 8 ),
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_lorentzianLine, 3 ),
+  XSPECMODELFCT_C_NORM( C_meka, 5 ),
+  XSPECMODELFCT_C_NORM( C_mekal, 6 ),
+#else
   XSPECMODELFCT_NORM( xslorz, 3 ),
   XSPECMODELFCT_NORM( xsmeka, 5 ),
   XSPECMODELFCT_NORM( xsmekl, 6 ),
+#endif
   XSPECMODELFCT_C_NORM( C_xsmkcf, 6 ),
   XSPECMODELFCT_C_NORM( C_nei, 5 ),
+  XSPECMODELFCT_C_NORM( C_nlapec, 4 ),
   XSPECMODELFCT_C_NORM( C_npshock, 7 ),
   XSPECMODELFCT_NORM( nsa, 5 ),
   XSPECMODELFCT_NORM( nsagrav, 4 ),
   XSPECMODELFCT_NORM( nsatmos, 5 ),
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( C_nsmax, 4 ),
+#else
   XSPECMODELFCT_NORM( nsmax, 4 ),
+#endif
   XSPECMODELFCT_C_NORM( C_xsnteea, 16 ),
   XSPECMODELFCT_C_NORM( C_nthcomp, 6 ),
   XSPECMODELFCT_NORM( xspegp, 4 ),
@@ -1163,31 +1090,83 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C_NORM( C_powerLaw, 2 ),
   XSPECMODELFCT_NORM( xsposm, 1 ),
   XSPECMODELFCT_C_NORM( C_pshock, 6 ),
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM(C_raysmith, 4 ),
+#else
   XSPECMODELFCT_NORM( xsrays, 4 ),
+#endif
   XSPECMODELFCT_NORM( xredge, 3 ),
   XSPECMODELFCT_NORM( xsrefsch, 14 ),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_NORM( tdrelline, 11 ),
+  XSPECMODELFCT_NORM( tdrellinelp, 10 ),
+  XSPECMODELFCT_NORM( tdrellinelpext, 13 ),
+#endif
+
   XSPECMODELFCT_C_NORM( C_sedov, 6 ),
   XSPECMODELFCT_NORM( srcut, 3 ),
   XSPECMODELFCT_NORM( sresc, 3 ),
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_NORM( ssa, 3 ),
+#endif
   XSPECMODELFCT_NORM( xsstep, 3 ),
+
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_vapec, 16 ),
+#else
   XSPECMODELFCT_NORM( xsvape, 16 ),
+#endif
   XSPECMODELFCT_NORM( xsbrmv, 3 ),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_vcph, 18 ),
+#endif
+
   XSPECMODELFCT_C_NORM( C_vequil, 15 ),
   XSPECMODELFCT_C_NORM( C_vgnei, 18 ),
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_vmeka, 18 ),
+  XSPECMODELFCT_C_NORM( C_vmekal, 19 ),
+#else
   XSPECMODELFCT_NORM( xsvmek, 18 ),
   XSPECMODELFCT_NORM( xsvmkl, 19 ),
+#endif
   XSPECMODELFCT_C_NORM( C_xsvmcf, 19 ),
   XSPECMODELFCT_C_NORM( C_vnei, 17 ),
   XSPECMODELFCT_C_NORM( C_vnpshock, 19 ),
   XSPECMODELFCT_C_NORM( C_vpshock, 18 ),
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_vraysmith, 15 ),
+#else
   XSPECMODELFCT_NORM( xsvrys, 15 ),
+#endif
   XSPECMODELFCT_C_NORM( C_vsedov, 18 ),
   XSPECMODELFCT_NORM( xszbod, 3 ),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_zBrokenPowerLaw, 5 ),
+#endif
+
   XSPECMODELFCT_NORM( xszbrm, 3 ),
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( C_zcutoffPowerLaw, 4),
+#endif
   XSPECMODELFCT_C_NORM( C_xszgau, 4 ),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_zLogpar, 5 ),
+#endif
+
   XSPECMODELFCT_C_NORM( C_zpowerLaw, 3 ),
   XSPECMODELFCT_C( C_xsabsori, 6 ),
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C( C_acisabs, 8 ),
+#else
   XSPECMODELFCT( acisabs, 8 ),
+#endif
+
   XSPECMODELFCT( xscnst, 1 ),
   XSPECMODELFCT( xscabs, 1 ),
   XSPECMODELFCT( xscycl, 5 ),
@@ -1208,7 +1187,13 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C( C_superExpCutoff, 2 ),
   XSPECMODELFCT( xsspln, 6 ),
   XSPECMODELFCT( xssssi, 1 ),
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C( C_swind1, 4 ),
+#else
   XSPECMODELFCT( swind1, 4 ),
+#endif
+
   XSPECMODELFCT_C( C_tbabs, 1 ),
   XSPECMODELFCT_C( C_tbgrain, 6 ),
   XSPECMODELFCT_C( C_tbvabs, 42 ),
@@ -1223,7 +1208,13 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT( xszhcu, 3 ),
   XSPECMODELFCT( xszabp, 3 ),
   XSPECMODELFCT( xszphb, 2 ),
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C( C_zxipcf, 4 ),
+#else
   XSPECMODELFCT( zxipcf, 4 ),
+#endif
+
   XSPECMODELFCT( xszcrd, 2 ),
   XSPECMODELFCT( msldst, 4 ),
   XSPECMODELFCT_C( C_ztbabs, 2 ),
@@ -1232,19 +1223,35 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT( xszvph, 19 ),
   XSPECMODELFCT( xszabs, 2 ),
   XSPECMODELFCT( xszwnb, 3 ),
-  // New XSPEC 12.7 models
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_cph, 5 ),
+#endif
+
   XSPECMODELFCT_C_NORM( C_cplinear, 21 ),
   XSPECMODELFCT_C_NORM( C_xseqpair, 21 ),
   XSPECMODELFCT_C_NORM( C_xseqth, 21 ),
   XSPECMODELFCT_C_NORM( C_xscompth, 21 ),
+#ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM( C_bvvapec, 34 ),
+  XSPECMODELFCT_C_NORM( C_vvapec, 33 ),
+#else
   XSPECMODELFCT_NORM( xsbvvp, 34 ),
   XSPECMODELFCT_NORM( xsvvap, 33 ),
+#endif
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( C_bvvrnei, 36 ),
+#endif
   XSPECMODELFCT( zigm, 3 ),
   // New XSPEC 12.7.1 models
   XSPECMODELFCT_C_NORM( C_gaussDem, 7 ),
   XSPECMODELFCT_C_NORM( C_vgaussDem, 20 ),
   XSPECMODELFCT_NORM( eplogpar, 3 ),
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_C_NORM( C_logpar, 4 ),
+#else
   XSPECMODELFCT_NORM( logpar, 4 ),
+#endif
   XSPECMODELFCT_NORM( optxagn, 14 ),
   XSPECMODELFCT_NORM( optxagnf, 12 ),
   XSPECMODELFCT_NORM( pexmon, 8 ),
@@ -1256,8 +1263,15 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C_NORM( C_zagauss, 4 ),
   XSPECMODELFCT_C_NORM( xscompmag, 9 ), // DJB thinks it's okay to use the C++ wrapper for C
   XSPECMODELFCT_C_NORM( xscomptb, 7 ), // DJB thinks it's okay to use the C++ wrapper for C
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_C_NORM( C_nsmaxg, 6 ),
+  XSPECMODELFCT_C_NORM( C_nsx, 6 ),
+#else
   XSPECMODELFCT_NORM( nsmaxg, 6 ),
   XSPECMODELFCT_NORM( nsx, 6 ),
+#endif
+
   XSPECMODELFCT_C_NORM( C_rnei, 6 ),
   XSPECMODELFCT_C_NORM( C_vrnei, 18 ),
   XSPECMODELFCT_C_NORM( C_vvrnei, 35 ),
@@ -1273,35 +1287,111 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C( xszbabs, 4 ), // DJB thinks it's okay to use the C++ wrapper for C
 
   // XSPEC table models
+#ifdef XSPEC_12_10_1
+  XSPECTABLEMODEL,
+#else
   XSPECTABLEMODEL_NORM( xsatbl ),
-  XSPECTABLEMODEL_NORM( xsmtbl ),
+  XSPECTABLEMODEL( xsmtbl ),
+#endif
+
   // XSPEC convolution models
   XSPECMODELFCT_CON(C_cflux, 3),
   XSPECMODELFCT_CON(C_cpflux, 3),
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_CON(C_gsmooth, 2),
+#else
   XSPECMODELFCT_CON(C_xsgsmt, 2),
+#endif
+
   XSPECMODELFCT_CON(C_ireflct, 7),
   XSPECMODELFCT_CON(C_kdblur, 4),
   XSPECMODELFCT_CON(C_kdblur2, 6),
   XSPECMODELFCT_CON(C_spinconv, 7),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_CON_F77(kyconv, 12),
+#endif
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_CON(C_lsmooth, 2),
+#else
   XSPECMODELFCT_CON(C_xslsmt, 2),
+#endif
+
   XSPECMODELFCT_CON(C_PartialCovering, 1),
   XSPECMODELFCT_CON(C_rdblur, 4),
   XSPECMODELFCT_CON(C_reflct, 5),
+
+#ifdef XSPEC_12_10_1
+  XSPECMODELFCT_CON_F77(tdrelconv, 8),
+  XSPECMODELFCT_CON_F77(tdrelconvlp, 7),
+  XSPECMODELFCT_CON_F77(tdrelconvlpext, 10),
+#endif
+
+  XSPECMODELFCT_CON_F77(rgsxsrc, 1),
   XSPECMODELFCT_CON(C_simpl, 3),
   XSPECMODELFCT_CON(C_zashift, 1),
   XSPECMODELFCT_CON(C_zmshift, 1),
-  
+
+  // Models from 12.9.1
+  //
+  //
+  #ifdef XSPEC_12_9_1
+  XSPECMODELFCT_C_NORM(C_btapec, 6),
+  XSPECMODELFCT_C_NORM(C_bvtapec, 18),
+  XSPECMODELFCT_C_NORM(C_bvvtapec, 35),
+  XSPECMODELFCT_C_NORM(C_tapec, 5),
+  XSPECMODELFCT_C_NORM(C_vtapec, 17),
+  XSPECMODELFCT_C_NORM(C_vvtapec, 34),
+
+  XSPECMODELFCT_C_NORM(C_carbatm, 4),
+  XSPECMODELFCT_C_NORM(C_hatm, 4),
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_NORM(jet, 16),
+#endif
+  XSPECMODELFCT(ismabs, 31),
+  XSPECMODELFCT_C_NORM(slimbbmodel, 10),
+  XSPECMODELFCT_C_NORM(C_snapec, 7),
+  XSPECMODELFCT_C(C_tbfeo, 4),
+  XSPECMODELFCT_C(C_tbgas, 2),
+  XSPECMODELFCT_C(C_tbpcf, 3),
+  XSPECMODELFCT_C(C_tbrel, 42),
+  XSPECMODELFCT_C_NORM(C_voigtLine, 4),
+  XSPECMODELFCT_C(C_xscatmodel, 4),
+
+  XSPECMODELFCT_CON(C_clumin, 4),
+  XSPECMODELFCT_CON(C_rfxconv, 5),
+  XSPECMODELFCT_CON(C_vashift, 1),
+  XSPECMODELFCT_CON(C_vmshift, 1),
+  XSPECMODELFCT_CON(C_xilconv, 6),
+  #endif
+
   { NULL, NULL, 0, NULL }
 
 };
 
 
-PyMODINIT_FUNC
-init_xspec(void)
-{
+#ifdef PY3
 
+static struct PyModuleDef xspec_module = {
+        PyModuleDef_HEAD_INIT,
+        "_xspec",
+        NULL,
+        -1,
+        XSpecMethods,
+};
+
+PyMODINIT_FUNC PyInit__xspec(void) {
   import_array();
-  Py_InitModule( (char*)"_xspec", XSpecMethods );
-
+  return PyModule_Create(&xspec_module);
 }
 
+#else
+
+PyMODINIT_FUNC
+init_xspec(void) {
+  import_array();
+  Py_InitModule( (char*)"_xspec", XSpecMethods );
+}
+#endif

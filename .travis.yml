@@ -13,9 +13,6 @@ matrix:
   include:
   
     - os: linux
-      services:
-        - docker
-
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
            TEST_WITH_XSPEC=false
@@ -28,41 +25,42 @@ matrix:
            TEST_WITH_XSPEC=false
            CONDA_UPLOAD=false
            
-    - os: linux
-      services:
-        - docker
-
+#    - os: linux
+#      python: 3.5
+#      env: TRAVIS_PYTHON_VERSION=3.5
+#           TEST_WITH_XSPEC=false
+#           CONDA_UPLOAD=false
       
-      python: 3.7
-      env: TRAVIS_PYTHON_VERSION=3.7
-           TEST_WITH_XSPEC=false
-           CONDA_UPLOAD=false
-      
-    - os: osx
-      python: 3.7
-      env: TRAVIS_PYTHON_VERSION=3.7
-           TEST_WITH_XSPEC=false
-           CONDA_UPLOAD=false
-           
+#    - os: osx
+#      python: 3.5
+#      env: TRAVIS_PYTHON_VERSION=3.5
+#           TEST_WITH_XSPEC=false
+#           CONDA_UPLOAD=false
+#
     - os: linux
-      services:
-        - docker
-
       python: 2.7
       env: TRAVIS_PYTHON_VERSION=2.7
            TEST_WITH_XSPEC=true
            CONDA_UPLOAD=true
-    
 
+    - os: osx
+      python: 2.7
+      env: TRAVIS_PYTHON_VERSION=2.7
+           TEST_WITH_XSPEC=true
+           CONDA_UPLOAD=true
   
 before_install:
   - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+         #docker pull condaforge/linux-anvil
 
-         docker pull condaforge/linux-anvil
+         wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+         bash miniconda.sh -b -p $HOME/miniconda
+         export PATH="$HOME/miniconda/bin:$PATH"
+         conda install -y conda-build
+         conda config --add channels conda-forge
+       else
 
-        else
-      
          # Install Miniconda
 
          if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
@@ -70,7 +68,7 @@ before_install:
            wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
            
          else
-
+ 
            wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
 
           fi 
@@ -84,27 +82,6 @@ before_install:
        fi
 
 script:
-
- - |
-       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-
-         docker run -e TRAVIS_PYTHON_VERSION\
-                    -e TRAVIS_BRANCH \
-                    -e TEST_WITH_XSPEC \
-                    -e CONDA_UPLOAD_TOKEN \
-                    -e CONDA_UPLOAD \
-                    -e TRAVIS_OS_NAME \
-                    -e TRAVIS_EVENT_TYPE \
-                    -e TRAVIS_BUILD_NUMBER \
-                    -e TRAVIS_BUILD_DIR \
-                    -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                    -it --rm -e user_id=`id -u` \
-                    condaforge/linux-anvil \
-                    /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
-       else
-
-          chmod u+x ci/build_and_test.sh
-          ./ci/build_and_test.sh
-
-       fi
+  - chmod u+x ci/build_and_test.sh
+  - ./ci/build_and_test.sh
 

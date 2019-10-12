@@ -1,20 +1,45 @@
 #!/usr/bin/env bash
+TRAVIS_OS_NAME="unknown"
+
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+
+        # Linux
+
+        TRAVIS_OS_NAME="linux"
+
+
+elif [[ "$OSTYPE" == darwin* ]]; then
+
+        # Mac OSX
+
+        TRAVIS_OS_NAME="osx"
+
+
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+
+        # POSIX compatibility layer and Linux environment emulation for Windows
+
+        TRAVIS_OS_NAME="linux"
+
+else
+
+        # Unknown.
+
+        echo "Could not guess your OS. Exiting."
+
+        exit 1
+
+fi
+
+echo "Running on ${TRAVIS_OS_NAME}"
+
+TEST_WITH_XSPEC=true
+TRAVIS_PYTHON_VERSION=2.7
+TRAVIS_BUILD_NUMBER=0
+ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
 # Make sure we fail in case of errors
 set -e
-
-# Copy sources (we do not have write permission on the mounted $TRAVIS_BUILD_DIR),
-# so let's make a copy of the source code
-cd ~
-rm -rf my_work_dir
-mkdir my_work_dir
-# Copy also dot files (.*)
-shopt -s dotglob
-cp -R ${TRAVIS_BUILD_DIR}/* my_work_dir/
-
-cd my_work_dir
-
-#### borrowed from conda
 
 # Environment
 libgfortranver="3.0"
@@ -40,12 +65,12 @@ fi
 
 
 
+
 # Get the version in the __version__ environment variable
 python ci/set_minor_version.py --patch $TRAVIS_BUILD_NUMBER --version_file astromodels/version.py
 
 export PKG_VERSION=$(cd astromodels && python -c "import version;print(version.__version__)")
 
-echo "HOME= ${HOME}"
 echo "Building ${PKG_VERSION} ..."
 echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
@@ -72,10 +97,6 @@ fi
 
 echo "dependencies: ${MATPLOTLIB} ${NUMPY}  ${XSPEC}"
 
-
-# newer conda is failing hard
-#conda install --yes conda=4.5.12
-
 # Answer yes to all questions (non-interactive)
 conda config --set always_yes true
 
@@ -84,7 +105,7 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
+conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
   libgfortran=${libgfortranver}
 
 # Make sure conda-forge is the first channel
@@ -95,46 +116,44 @@ conda config --add channels defaults
 # Activate test environment
 echo "Activate test environment..."
 
-source activate test_env
-
-conda config --show channels
-
-conda config --show-sources
+source activate $ENVNAME
 
 # Build package
 echo "Build package..."
 if $TEST_WITH_XSPEC ; then
     echo "Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        conda index /home/travis/miniconda/conda-bld
+        conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        conda index $HOME/miniconda/conda-bld
     else
     	# there is some strange error about the prefix length
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        conda index /Users/travis/miniconda/conda-bld
+        conda index $HOME/miniconda/conda-bld
     fi
 	echo "======> installing..."
     conda install --use-local -c conda-forge -c threeml astromodels
+    # xspec-modelsonly
 else
 
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-	
-	    conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index /home/travis/miniconda/conda-bld
+
+	    conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+        conda index $HOME/miniconda/conda-bld
+
     else
 
-    	# there is some strange error about the prefix length
+	# there is some strange error about the prefix length
 
 	    conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index /Users/travis/miniconda/conda-bld
+        conda index $HOME/miniconda/conda-bld
 
     fi
-	
-    echo "======>  installing..."
+
+	echo "======>  installing..."
     conda install --use-local -c conda-forge -c threeml astromodels
 fi
 
-    
+
 # Run tests
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"
@@ -147,40 +166,4 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     echo "********************************** COVERAGE ******************************"
     codecov -t 493c9a2d-42fc-40d6-8e65-24e681efaa1e
 
-fi
-
-
-
-# We do not want to upload if we do not test with xspec
-
-if $TEST_WITH_XSPEC ; then
-
-
-    # If we are on the master branch upload to the channel
-    if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
-
-        echo "This is a pull request, not uploading to Conda channel"
-
-    else
-
-        if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
-            echo "This is a push to TRAVIS_BRANCH=${TRAVIS_BRANCH}"
-            if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
-                conda install -c conda-forge anaconda-client
-                echo "Uploading ${CONDA_BUILD_PATH}"
-            
-                if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-                
-                    anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
-		
-                else
-		
-                    anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
-		        fi
-            fi
-        fi
-    fi
-else
-    echo "We didn;t test with xspec, not uploading"
-    
 fi
