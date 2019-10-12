@@ -49,6 +49,7 @@ matrix:
            TEST_WITH_XSPEC=true
            CONDA_UPLOAD=true
   
+
 before_install:
   - |
        if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -59,24 +60,12 @@ before_install:
          export PATH="$HOME/miniconda/bin:$PATH"
          conda install -y conda-build
          conda config --add channels conda-forge
-
-        else
+       else
 
          # Install Miniconda
-
-         if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-
-           wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
-           
-         else
- 
-           wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
-
-          fi 
-         
+         wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
          bash miniconda.sh -b -p $HOME/miniconda
          export PATH="$HOME/miniconda/bin:$PATH"
-         
          conda install -y conda-build
          conda config --add channels conda-forge
 
