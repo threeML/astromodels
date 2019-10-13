@@ -603,7 +603,7 @@ class SourceParser(object):
 
         spatial_shape_parser = ShapeParser(self._source_name)
 
-        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, ext_source_definition.values()[0], is_spatial=True)
+        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, list(ext_source_definition.values())[0], is_spatial=True)
 
         # Get the links and extra setups, if any
 
