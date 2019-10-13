@@ -686,7 +686,7 @@ class ShapeParser(object):
         # Loop over the parameters of the function instance, instead of the specification,
         # so we can understand if there are parameters missing from the specification
 
-        for parameter_name in list(function_instance.parameters.keys()):
+        for parameter_name, _ in function_instance.parameters.items():
 
             try:
 
