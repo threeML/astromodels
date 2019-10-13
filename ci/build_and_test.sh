@@ -181,6 +181,6 @@ if $TEST_WITH_XSPEC ; then
         fi
     fi
 else
-    echo "We didn;t test with xspec, not uploading"
+    echo "We didn't test with xspec, not uploading"
     
 fi
