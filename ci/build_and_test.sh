@@ -72,6 +72,10 @@ fi
 
 echo "dependencies: ${MATPLOTLIB} ${NUMPY}  ${XSPEC}"
 
+
+# newer conda is failing hard
+#conda install --yes conda=4.5.12
+
 # Answer yes to all questions (non-interactive)
 conda config --set always_yes true
 
@@ -92,6 +96,10 @@ conda config --add channels defaults
 echo "Activate test environment..."
 
 source activate test_env
+
+conda config --show channels
+
+conda config --show-sources
 
 # Build package
 echo "Build package..."
