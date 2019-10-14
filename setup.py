@@ -329,9 +329,9 @@ setup(
 
     author_email='giacomo.vianello@gmail.com',
 
-    url='https://github.com/giacomov/astromodels',
+    url='https://github.com/threeml/astromodels',
 
-    download_url='https://github.com/giacomov/astromodels/archive/v0.1',
+    download_url='https://github.com/threeml/astromodels/archive/v0.1',
 
     keywords=['Likelihood', 'Models', 'fit'],
 

@@ -5,7 +5,7 @@ package:
   version: {{ os.environ.get('PKG_VERSION') }}
 
 source:
-#  git_url: https://github.com/giacomov/{{ name }}.git
+#  git_url: https://github.com/threeml/{{ name }}.git
   path: ../../
 
 requirements:
@@ -13,27 +13,34 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-    - xspec-modelsonly-lite
+    - xspec-modelsonly
+    - cfitsio
+    - ccfits
+    - wcslib
+
 
   host:
     - python
     - setuptools
     - pip
     - numpy
-    - pyyaml
+    - pyyaml==3.13
     - astropy
     - scipy
     - numdifftools
     - hdf5
     - pytables
     - pandas
-   
+    - cfitsio
+    - ccfits
+    - wcslib
+    - xspec-modelsonly
 
   run:
     #- python
   #  - libgfortran
     - numpy
-    - pyyaml
+    - pyyaml==3.13
     - astropy
     - scipy
     - numdifftools
@@ -41,22 +48,25 @@ requirements:
     - pytables
     - pandas
     - dill
+    - cfitsio
+    - ccfits
+    - wcslib
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
   skip: true  # [py3k]
 
-test:
-  # Python imports
-  imports:
-    - astromodels
-    - astromodels.core
-    - astromodels.functions
-    - astromodels.functions.dark_matter
-    - astromodels.sources
-    - astromodels.utils
-    - astromodels.xspec
+#test:
+#  # Python imports
+#  imports:
+#    - astromodels
+#    - astromodels.core
+#    - astromodels.functions
+#    - astromodels.functions.dark_matter
+#    - astromodels.sources
+#    - astromodels.utils
+#    - astromodels.xspec
 
 #  commands:
 #    - pytest -vv --pyargs {{ name }}
@@ -64,12 +74,12 @@ test:
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
 
-  requires:
-    - xspec-modelsonly-lite
+#  requires:
+#    - xspec-modelsonly
 
 
 about:
-  home: https://github.com/giacomov/astromodels
+  home: https://github.com/threeml/astromodels
   license: UNKNOWN
   summary: 'Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy'
   license_family: OTHER
