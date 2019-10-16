@@ -105,8 +105,8 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver}
+conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
+  libgfortran=${libgfortranver} openblas-devel=0.3.6
 
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
@@ -116,6 +116,8 @@ conda config --add channels defaults
 # Activate test environment
 echo "Activate test environment..."
 
+#source $HOME/work/fermi/miniconda3/etc/profile.d/conda.sh
+#conda activate $ENVNAME
 source activate $ENVNAME
 
 # Build package
@@ -123,7 +125,8 @@ echo "Build package..."
 if $TEST_WITH_XSPEC ; then
     echo "Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        #conda index $HOME/work/fermi/miniconda3/conda-bld
         conda index $HOME/miniconda/conda-bld
     else
     	# there is some strange error about the prefix length
@@ -137,7 +140,7 @@ else
 
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
-	    conda build -c conda-forge -c threeml --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	    conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
         conda index $HOME/miniconda/conda-bld
 
     else

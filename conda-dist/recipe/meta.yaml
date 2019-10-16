@@ -17,7 +17,8 @@ requirements:
     - cfitsio
     - ccfits
     - wcslib
-
+    - openblas-devel==0.3.6
+    - krb5==1.14.6
 
   host:
     - python
@@ -35,6 +36,8 @@ requirements:
     - ccfits
     - wcslib
     - xspec-modelsonly
+    - openblas-devel==0.3.6
+    - krb5==1.14.6
 
   run:
     #- python
@@ -51,6 +54,8 @@ requirements:
     - cfitsio
     - ccfits
     - wcslib
+    - openblas-devel==0.3.6
+    - krb5==1.14.6
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
