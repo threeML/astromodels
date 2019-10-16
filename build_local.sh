@@ -35,7 +35,7 @@ echo "Running on ${TRAVIS_OS_NAME}"
 
 TEST_WITH_XSPEC=true
 TRAVIS_PYTHON_VERSION=2.7
-TRAVIS_BUILD_NUMBER=0
+TRAVIS_BUILD_NUMBER=3
 ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
 # Make sure we fail in case of errors
@@ -106,7 +106,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
-  libgfortran=${libgfortranver} openblas-devel=0.3.6
+  libgfortran=${libgfortranver} krb5=1.14.6
 
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
