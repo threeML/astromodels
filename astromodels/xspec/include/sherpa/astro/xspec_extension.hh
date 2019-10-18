@@ -39,8 +39,8 @@
 //
 
 #define XSPEC_12_9_1 1
-#define XSPEC_12_10_0 1
-#define XSPEC_12_10_1 1
+#define XSPEC_12_10_0 0
+#define XSPEC_12_10_1 0
 
 #ifdef XSPEC_12_10_1
 void tabint(float* ear, int ne, float* param, int npar, const char* filenm, int ifl,

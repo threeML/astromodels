@@ -43,12 +43,15 @@ set -e
 
 # Environment
 libgfortranver="3.0"
-XSPECVER="12.10.1b"
-NUMPYVER=1.15
-MATPLOTLIBVER=2
+#XSPECVER="12.10.1b"
+XSPECVER="12.9.1u"
+
+#NUMPYVER=1.15
+#MATPLOTLIBVER=2
 UPDATE_CONDA=true
 
-xspec_channel=xspec/channel/dev
+#xspec_channel=xspec/channel/dev
+xspec_channel=cxc/label/dev
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -105,11 +108,15 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
-  libgfortran=${libgfortranver} krb5=1.14.6
+conda create --yes --name $ENVNAME -c conda-forge/label/cf201901 -c fermi python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
+  libgfortran=${libgfortranver} fermitools fermipy
+
+#conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
+#  libgfortran=${libgfortranver} krb5=1.14.6
+
 
 # Make sure conda-forge is the first channel
-conda config --add channels conda-forge
+#conda config --add channels conda-forge
 
 conda config --add channels defaults
 
@@ -134,7 +141,7 @@ if $TEST_WITH_XSPEC ; then
         conda index $HOME/miniconda/conda-bld
     fi
 	echo "======> installing..."
-    conda install --use-local -c conda-forge -c threeml astromodels
+    conda install --use-local -c conda-forge astromodels
     # xspec-modelsonly
 else
 
