@@ -44,14 +44,15 @@ set -e
 # Environment
 libgfortranver="3.0"
 #XSPECVER="12.10.1b"
-XSPECVER="12.9.1u"
+#XSPECVER="12.9.1u"
+XSPECVER="6.22.1"
 
 #NUMPYVER=1.15
 #MATPLOTLIBVER=2
 UPDATE_CONDA=true
 
 #xspec_channel=xspec/channel/dev
-xspec_channel=cxc/label/dev
+#xspec_channel=cxc/label/dev
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -84,7 +85,7 @@ if $UPDATE_CONDA ; then
     conda update --yes -q conda conda-build
 fi
 
-conda config --add channels ${xspec_channel}
+#conda config --add channels ${xspec_channel}
 
 if [[ ${TRAVIS_OS_NAME} == osx ]];
 then
@@ -108,15 +109,15 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-conda create --yes --name $ENVNAME -c conda-forge/label/cf201901 -c fermi python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
-  libgfortran=${libgfortranver} fermitools fermipy
+#conda create --yes --name $ENVNAME -c conda-forge/label/cf201901 -c fermi python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
+#  libgfortran=${libgfortranver} fermitools fermipy
 
-#conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
-#  libgfortran=${libgfortranver} krb5=1.14.6
+conda create --yes --name $ENVNAME -c conda-forge -c threeml python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
+  libgfortran=${libgfortranver}
 
 
 # Make sure conda-forge is the first channel
-#conda config --add channels conda-forge
+conda config --add channels conda-forge
 
 conda config --add channels defaults
 
