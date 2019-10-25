@@ -17,7 +17,7 @@ requirements:
     - cfitsio
     - ccfits
     - wcslib
-    #- krb5==1.14.6
+    - krb5==1.14.6
 
   host:
     - python
@@ -25,34 +25,34 @@ requirements:
     - pip
     - numpy
     - pyyaml==3.13
-    - astropy
-    - scipy
+    #- astropy
+    #- scipy
     - numdifftools
-    - hdf5
-    - pytables
-    - pandas
+    #- hdf5
+    #- pytables
+    #- pandas
     - cfitsio
     - ccfits
     - wcslib
     - xspec-modelsonly
-    #- krb5==1.14.6
+    - krb5==1.14.6
 
   run:
-    #- python
+    - python
   #  - libgfortran
     - numpy
     - pyyaml==3.13
-    - astropy
-    - scipy
+    #- astropy
+    #- scipy
     - numdifftools
-    - hdf5
-    - pytables
-    - pandas
+    #- hdf5
+    #- pytables
+    #- pandas
     - dill
     - cfitsio
     - ccfits
     - wcslib
-    #- krb5==1.14.6
+    - krb5==1.14.6
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
