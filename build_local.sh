@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+# Make sure we fail in case of errors
+set -e
+
 TRAVIS_OS_NAME="unknown"
 
 if [[ "$OSTYPE" == "linux-gnu" ]]; then
@@ -38,13 +41,8 @@ TRAVIS_PYTHON_VERSION=2.7
 TRAVIS_BUILD_NUMBER=3
 ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
-# Make sure we fail in case of errors
-set -e
-
 # Environment
 libgfortranver="3.0"
-#XSPECVER="12.10.1b"
-#XSPECVER="12.9.1u"
 XSPECVER="6.22.1"
 
 #NUMPYVER=1.15
@@ -53,6 +51,7 @@ UPDATE_CONDA=true
 
 #xspec_channel=xspec/channel/dev
 #xspec_channel=cxc/label/dev
+xspec_channel=threeml
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -66,9 +65,6 @@ else  # osx
     # We also need to pin down ncurses, for now only on macos.
     xorg="xorg-libx11 ncurses=5"
 fi
-
-
-
 
 # Get the version in the __version__ environment variable
 python ci/set_minor_version.py --patch $TRAVIS_BUILD_NUMBER --version_file astromodels/version.py
@@ -85,7 +81,7 @@ if $UPDATE_CONDA ; then
     conda update --yes -q conda conda-build
 fi
 
-#conda config --add channels ${xspec_channel}
+conda config --add channels ${xspec_channel}
 
 if [[ ${TRAVIS_OS_NAME} == osx ]];
 then
@@ -109,10 +105,8 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-#conda create --yes --name $ENVNAME -c conda-forge/label/cf201901 -c fermi python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
-#  libgfortran=${libgfortranver} fermitools fermipy
 
-conda create --yes --name $ENVNAME -c conda-forge -c threeml python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
+conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
   libgfortran=${libgfortranver}
 
 
@@ -124,9 +118,8 @@ conda config --add channels defaults
 # Activate test environment
 echo "Activate test environment..."
 
-#source $HOME/work/fermi/miniconda3/etc/profile.d/conda.sh
-#conda activate $ENVNAME
-source activate $ENVNAME
+source $CONDA_PREFIX/etc/profile.d/conda.sh
+conda activate $ENVNAME
 
 # Build package
 echo "Build package..."
@@ -134,29 +127,28 @@ if $TEST_WITH_XSPEC ; then
     echo "Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        #conda index $HOME/work/fermi/miniconda3/conda-bld
-        conda index $HOME/miniconda/conda-bld
+        #conda index $HOME/miniconda/conda-bld
     else
     	# there is some strange error about the prefix length
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        conda index $HOME/miniconda/conda-bld
+        #conda index $CONDA_PREFIX/conda-bld
     fi
 	echo "======> installing..."
     conda install --use-local -c conda-forge astromodels
-    # xspec-modelsonly
+
 else
 
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
 	    conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index $HOME/miniconda/conda-bld
+        conda index $CONDA_PREFIX/conda-bld
 
     else
 
-	# there is some strange error about the prefix length
+    	# there is some strange error about the prefix length
 
 	    conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index $HOME/miniconda/conda-bld
+        conda index $CONDA_PREFIX/conda-bld
 
     fi
 

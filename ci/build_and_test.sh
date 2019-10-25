@@ -18,12 +18,14 @@ cd my_work_dir
 
 # Environment
 libgfortranver="3.0"
-XSPECVER="12.10.1b"
+XSPECVER="6.22.1"
+
 NUMPYVER=1.15
 MATPLOTLIBVER=2
 UPDATE_CONDA=true
 
-xspec_channel=xspec/channel/dev
+#xspec_channel=xspec/channel/dev
+xspec_channel=threeml
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -80,7 +82,7 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
+conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
   libgfortran=${libgfortranver}
 
 # Make sure conda-forge is the first channel
