@@ -43,15 +43,10 @@ ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
 # Environment
 libgfortranver="3.0"
-XSPECVER="6.22.1"
 
 #NUMPYVER=1.15
 #MATPLOTLIBVER=2
 UPDATE_CONDA=true
-
-#xspec_channel=xspec/channel/dev
-#xspec_channel=cxc/label/dev
-xspec_channel=threeml
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -75,13 +70,18 @@ echo "Building ${PKG_VERSION} ..."
 echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
+if ${TEST_WITH_XSPEC}; then
+    XSPECVER="6.22.1"
+    xspec_channel=threeml
+    conda config --add channels ${xspec_channel}
+    export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
+fi
+
 if $UPDATE_CONDA ; then
     # Update conda
     echo "Update conda..."
     conda update --yes -q conda conda-build
 fi
-
-conda config --add channels ${xspec_channel}
 
 if [[ ${TRAVIS_OS_NAME} == osx ]];
 then
@@ -91,9 +91,6 @@ fi
 # Figure out requested dependencies
 if [ -n "${MATPLOTLIBVER}" ]; then MATPLOTLIB="matplotlib=${MATPLOTLIBVER}"; fi
 if [ -n "${NUMPYVER}" ]; then NUMPY="numpy=${NUMPYVER}"; fi
-if [ -n "${XSPECVER}" ];
- then export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}";
-fi
 
 echo "dependencies: ${MATPLOTLIB} ${NUMPY}  ${XSPEC}"
 
@@ -119,6 +116,7 @@ conda config --add channels defaults
 echo "Activate test environment..."
 
 source $CONDA_PREFIX/etc/profile.d/conda.sh
+#source /home/ndilalla/work/fermi/miniconda3/etc/profile.d/conda.sh
 conda activate $ENVNAME
 
 # Build package
@@ -127,6 +125,7 @@ if $TEST_WITH_XSPEC ; then
     echo "Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        #conda index /home/ndilalla/work/fermi/miniconda3/conda-bld
         conda index $CONDA_PREFIX/conda-bld
     else
     	# there is some strange error about the prefix length
