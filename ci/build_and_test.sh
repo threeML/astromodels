@@ -52,7 +52,7 @@ echo "Building ${PKG_VERSION} ..."
 echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
-if [ ${TEST_WITH_XSPEC} ]; then
+if ${TEST_WITH_XSPEC}; then
     XSPECVER="6.22.1"
     xspec_channel=threeml
     conda config --add channels ${xspec_channel}
