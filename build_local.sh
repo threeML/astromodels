@@ -106,8 +106,8 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 
-conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${compilers}\
-  libgfortran=${libgfortranver}
+conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
+  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readiline=6.2
 
 
 # Make sure conda-forge is the first channel
@@ -127,11 +127,11 @@ if $TEST_WITH_XSPEC ; then
     echo "Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        #conda index $HOME/miniconda/conda-bld
+        conda index $CONDA_PREFIX/conda-bld
     else
     	# there is some strange error about the prefix length
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        #conda index $CONDA_PREFIX/conda-bld
+        conda index $CONDA_PREFIX/conda-bld
     fi
 	echo "======> installing..."
     conda install --use-local -c conda-forge astromodels
