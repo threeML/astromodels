@@ -37,9 +37,9 @@ fi
 echo " ===> Running on ${TRAVIS_OS_NAME}"
 
 TEST_WITH_XSPEC=true
-USE_LOCAL=true
+USE_LOCAL=false
 TRAVIS_PYTHON_VERSION=2.7
-TRAVIS_BUILD_NUMBER=3
+TRAVIS_BUILD_NUMBER=6
 ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
 # Environment
@@ -70,15 +70,18 @@ export PKG_VERSION=$(cd astromodels && python -c "import version;print(version._
 echo "Building ${PKG_VERSION} ..."
 echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
+echo "Use local is: ${USE_LOCAL}"
 
 if ${TEST_WITH_XSPEC}; then
     XSPECVER="6.22.1"
+    export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
     xspec_channel=threeml
-    conda config --add channels ${xspec_channel}
-
+    
     if ${USE_LOCAL}; then
-        export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
         conda config --remove channels ${xspec_channel}
+        use_local="--use-local"
+    else
+        conda config --add channels ${xspec_channel}
     fi
 fi
 
@@ -86,11 +89,6 @@ if $UPDATE_CONDA ; then
     # Update conda
     echo "Update conda..."
     conda update --yes -q conda conda-build
-fi
-
-if [[ ${TRAVIS_OS_NAME} == osx ]];
-then
-    conda config --add channels conda-forge
 fi
 
 # Figure out requested dependencies
@@ -108,7 +106,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 
-conda create --yes --name $ENVNAME -c conda-forge --use-local python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
+conda create --yes --name $ENVNAME -c conda-forge ${use_local} python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
   libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2
 
 
@@ -148,7 +146,10 @@ fi
 
 echo "======>  installing..."
 conda install --use-local -c conda-forge astromodels
-conda install -c conda-forge/label/cf201901 ccfits=2.5
+
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    conda install -c conda-forge/label/cf201901 ccfits=2.5
+fi
 
 echo "======>  Run tests..."
 
