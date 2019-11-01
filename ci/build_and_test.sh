@@ -132,7 +132,8 @@ else
     conda install --use-local -c conda-forge -c threeml astromodels
 fi
 
-    
+conda install -c conda-forge/label/cf201901 ccfits=2.5
+
 # Run tests
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"

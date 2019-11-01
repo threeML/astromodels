@@ -34,9 +34,10 @@ else
 
 fi
 
-echo "Running on ${TRAVIS_OS_NAME}"
+echo " ===> Running on ${TRAVIS_OS_NAME}"
 
 TEST_WITH_XSPEC=true
+USE_LOCAL=true
 TRAVIS_PYTHON_VERSION=2.7
 TRAVIS_BUILD_NUMBER=3
 ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
@@ -74,7 +75,11 @@ if ${TEST_WITH_XSPEC}; then
     XSPECVER="6.22.1"
     xspec_channel=threeml
     conda config --add channels ${xspec_channel}
-    export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
+
+    if ${USE_LOCAL}; then
+        export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
+        conda config --remove channels ${xspec_channel}
+    fi
 fi
 
 if $UPDATE_CONDA ; then
@@ -103,7 +108,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 
-conda create --yes --name $ENVNAME -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
+conda create --yes --name $ENVNAME -c conda-forge --use-local python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
   libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2
 
 
@@ -121,42 +126,32 @@ conda activate $ENVNAME
 
 # Build package
 echo "Build package..."
+conda config --show channels
+
 if $TEST_WITH_XSPEC ; then
-    echo "Building WITH xspec"
+    echo " ====> Building WITH xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        #conda index /home/ndilalla/work/fermi/miniconda3/conda-bld
-        conda index $CONDA_PREFIX/conda-bld
     else
     	# there is some strange error about the prefix length
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        conda index $CONDA_PREFIX/conda-bld
     fi
-	echo "======> installing..."
-    conda install --use-local -c conda-forge astromodels
-
 else
-
+    echo " ====> Building WITHOUT xspec"
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-
 	    conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index $CONDA_PREFIX/conda-bld
-
     else
-
     	# there is some strange error about the prefix length
-
 	    conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index $CONDA_PREFIX/conda-bld
-
     fi
-
-	echo "======>  installing..."
-    conda install --use-local -c conda-forge -c threeml astromodels
 fi
 
+echo "======>  installing..."
+conda install --use-local -c conda-forge astromodels
+conda install -c conda-forge/label/cf201901 ccfits=2.5
 
-# Run tests
+echo "======>  Run tests..."
+
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"
 
