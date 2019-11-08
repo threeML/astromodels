@@ -13,20 +13,22 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
+    - krb5==1.14.6
 
 
   host:
-    - python
+    - python <=2.7.16
     - setuptools
     - pip
     - numpy
     - pyyaml==3.13 
     - astropy
-    - scipy
+    #- scipy
     - numdifftools
-    - hdf5
-    - pytables
+    #- hdf5
+    #- pytables
     - pandas
+    - krb5==1.14.6
    
 
   run:
@@ -35,12 +37,13 @@ requirements:
     - numpy
     - pyyaml==3.13
     - astropy
-    - scipy
+    #- scipy
     - numdifftools
-    - hdf5
-    - pytables
+    #- hdf5
+    #- pytables
     - pandas
     - dill
+    - krb5==1.14.6
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
