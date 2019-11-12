@@ -14,10 +14,10 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
     - xspec-modelsonly
-    - cfitsio
+    - cfitsio==3.410
     - ccfits
-    - wcslib
-
+    - wcslib==5.18
+    - krb5==1.14.6
 
   host:
     - python
@@ -25,34 +25,42 @@ requirements:
     - pip
     - numpy
     - pyyaml==3.13
-    - astropy
-    - scipy
+    #- astropy
+    #- scipy
     - numdifftools
-    - hdf5
-    - pytables
+    #- hdf5
+    #- pytables
     - pandas
-    - cfitsio
+    - cfitsio==3.410
     - ccfits
-    - wcslib
+    - wcslib==5.18
     - xspec-modelsonly
+<<<<<<< HEAD
     - future
+=======
+    - krb5==1.14.6
+>>>>>>> master
 
   run:
-    #- python
+    - python
   #  - libgfortran
     - numpy
     - pyyaml==3.13
     - astropy
-    - scipy
+    #- scipy
     - numdifftools
-    - hdf5
+    #- hdf5
     - pytables
     - pandas
     - dill
-    - cfitsio
+    - cfitsio==3.410
     - ccfits
     - wcslib
+<<<<<<< HEAD
     - future
+=======
+    - krb5==1.14.6
+>>>>>>> master
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .

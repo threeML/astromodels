@@ -26,9 +26,9 @@ if os.environ.get("CONDA_PREFIX") is not None and os.environ.get("HEADAS", None)
     # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
     # the 'spectral' directory is
 
-    # os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
+    os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
 
-    os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
+    #os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
 
     # we need to create the directory otherwise an exception casted:
     if not os.path.exists(os.environ['HEADAS']):
@@ -342,18 +342,19 @@ def get_models(model_dat_path):
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
 
-            if hard_maximum < hard_minimum:
 
-                raise ValueError("Hard maximum (%s) < hard minimum (%s)" %(hard_maximum,hard_minimum))
+            if hard_maximum is not None and hard_minimum is not None:
 
-            if float(default_value) > hard_maximum:
+                if (float(hard_maximum) < float(hard_minimum)):
 
-                if hard_maximum is not None:
+                    raise ValueError("Hard maximum (%s) < hard minimum (%s)" %(hard_maximum,hard_minimum))
+
+                if float(default_value) > float(hard_maximum):
+
                     default_value = hard_maximum
 
-            elif float(default_value) < hard_minimum:
+                elif float(default_value) < float(hard_minimum):
 
-                if hard_minimum is not None:
                     default_value = hard_minimum
 
 

@@ -18,12 +18,14 @@ cd my_work_dir
 
 # Environment
 libgfortranver="3.0"
-XSPECVER="12.10.1b"
-NUMPYVER=1.15
-MATPLOTLIBVER=2
+
+
+#NUMPYVER=1.15
+#MATPLOTLIBVER=2
 UPDATE_CONDA=true
 
-xspec_channel=xspec/channel/dev
+#xspec_channel=xspec/channel/dev
+
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -50,13 +52,20 @@ echo "Building ${PKG_VERSION} ..."
 echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
+if ${TEST_WITH_XSPEC}; then
+    XSPECVER="6.22.1"
+    xspec_channel=threeml
+    conda config --add channels ${xspec_channel}
+    export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
+fi
+
 if $UPDATE_CONDA ; then
     # Update conda
     echo "Update conda..."
     conda update --yes -q conda conda-build
 fi
 
-conda config --add channels ${xspec_channel}
+
 
 if [[ ${TRAVIS_OS_NAME} == osx ]];
 then
@@ -66,9 +75,6 @@ fi
 # Figure out requested dependencies
 if [ -n "${MATPLOTLIBVER}" ]; then MATPLOTLIB="matplotlib=${MATPLOTLIBVER}"; fi
 if [ -n "${NUMPYVER}" ]; then NUMPY="numpy=${NUMPYVER}"; fi
-if [ -n "${XSPECVER}" ];
- then export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}";
-fi
 
 echo "dependencies: ${MATPLOTLIB} ${NUMPY}  ${XSPEC}"
 
@@ -85,7 +91,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver}
+  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2
 
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
@@ -113,28 +119,24 @@ if $TEST_WITH_XSPEC ; then
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
         conda index /Users/travis/miniconda/conda-bld
     fi
-	echo "======> installing..."
-    conda install --use-local -c conda-forge -c threeml astromodels
 else
-
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-	
 	    conda build --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index /home/travis/miniconda/conda-bld
+	    conda index /home/travis/miniconda/conda-bld
     else
-
     	# there is some strange error about the prefix length
-
 	    conda build --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
-        conda index /Users/travis/miniconda/conda-bld
-
+	    conda index /Users/travis/miniconda/conda-bld
     fi
-	
-    echo "======>  installing..."
-    conda install --use-local -c conda-forge -c threeml astromodels
 fi
 
-    
+echo "======>  installing..."
+conda install --use-local -c conda-forge astromodels
+
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    conda install -c conda-forge/label/cf201901 ccfits=2.5
+fi
+
 # Run tests
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"
@@ -171,11 +173,11 @@ if $TEST_WITH_XSPEC ; then
             
                 if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
-                    anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
+                    anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
 		
                 else
 		
-                    anaconda -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
+                    anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
 		        fi
             fi
         fi
