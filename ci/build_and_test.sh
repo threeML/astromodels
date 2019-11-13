@@ -91,7 +91,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2
+  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2 future
 
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
