@@ -137,6 +137,9 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
     conda install -c conda-forge/label/cf201901 ccfits=2.5
 fi
 
+# "Cleaning the user data directory...")
+# clean_user_data_path()
+
 # Run tests
 cd astromodels/tests
 python -m pytest -vv --cov=astromodels # -k "not slow"
