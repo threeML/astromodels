@@ -22,10 +22,8 @@ libgfortranver="3.0"
 
 #NUMPYVER=1.15
 #MATPLOTLIBVER=2
+READLINE_VERSION="6.2"
 UPDATE_CONDA=true
-
-#xspec_channel=xspec/channel/dev
-
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -37,10 +35,8 @@ else  # osx
 
     # On macOS we also need the conda libx11 libraries used to build xspec
     # We also need to pin down ncurses, for now only on macos.
-    xorg="xorg-libx11 ncurses=5"
+    xorg="xorg-libx11" # ncurses=5
 fi
-
-
 
 # Get the version in the __version__ environment variable
 python ci/set_minor_version.py --patch $TRAVIS_BUILD_NUMBER --version_file astromodels/version.py
@@ -54,7 +50,7 @@ echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
 if ${TEST_WITH_XSPEC}; then
     XSPECVER="6.22.1"
-    xspec_channel=threeml
+    xspec_channel=xspecmodels
     conda config --add channels ${xspec_channel}
     export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
 fi
@@ -65,18 +61,16 @@ if $UPDATE_CONDA ; then
     conda update --yes -q conda conda-build
 fi
 
-
-
-if [[ ${TRAVIS_OS_NAME} == osx ]];
+if [[ ${TRAVIS_PYTHON_VERSION} == 2.7 ]];
 then
-    conda config --add channels conda-forge
+    READLINE="readline=${READLINE_VERSION}"
 fi
 
 # Figure out requested dependencies
 if [ -n "${MATPLOTLIBVER}" ]; then MATPLOTLIB="matplotlib=${MATPLOTLIBVER}"; fi
 if [ -n "${NUMPYVER}" ]; then NUMPY="numpy=${NUMPYVER}"; fi
 
-echo "dependencies: ${MATPLOTLIB} ${NUMPY}  ${XSPEC}"
+echo "dependencies: ${MATPLOTLIB} ${NUMPY} ${XSPEC}"
 
 
 # newer conda is failing hard
@@ -91,7 +85,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2 future
+  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 ${READLINE} future
 
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
