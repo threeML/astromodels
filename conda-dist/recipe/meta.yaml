@@ -10,17 +10,10 @@ source:
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - xspec-modelsonly
-    - cfitsio==3.410
-    - ccfits
-    - wcslib==5.18
-    - krb5==1.14.6
-
-  host:
-    - python
+    - python x.x
+    # - {{ compiler('c') }}
+    # - {{ compiler('cxx') }}
+    # - {{ compiler('fortran') }}
     - setuptools
     - pip
     - numpy
