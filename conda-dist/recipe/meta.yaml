@@ -10,10 +10,18 @@ source:
 
 requirements:
   build:
-    - python x.x
-    # - {{ compiler('c') }}
-    # - {{ compiler('cxx') }}
-    # - {{ compiler('fortran') }}
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - xspec-modelsonly
+    - cfitsio==3.410
+    - ccfits
+    - wcslib==5.18
+    - krb5==1.14.6
+    - readline==6.2 # [py2k]
+
+  host:
+    - python
     - setuptools
     - pip
     - numpy
@@ -30,6 +38,7 @@ requirements:
     - xspec-modelsonly
     - future
     - krb5==1.14.6
+    - readline==6.2 # [py2k]
 
   run:
     - python
@@ -48,6 +57,7 @@ requirements:
     - wcslib
     - future
     - krb5==1.14.6
+    - readline==6.2 # [py2k]
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
