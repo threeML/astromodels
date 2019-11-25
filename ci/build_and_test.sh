@@ -17,12 +17,10 @@ cd my_work_dir
 #### borrowed from conda
 
 # Environment
-libgfortranver="3.0"
-
-
 #NUMPYVER=1.15
 #MATPLOTLIBVER=2
 READLINE_VERSION="6.2"
+libgfortranver="3.0"
 UPDATE_CONDA=true
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
@@ -53,6 +51,7 @@ if ${TEST_WITH_XSPEC}; then
     xspec_channel=xspecmodels
     conda config --add channels ${xspec_channel}
     export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
+    LIBGFORTRAN="libgfortran=${libgfortranver}"
 fi
 
 if $UPDATE_CONDA ; then
@@ -70,7 +69,7 @@ fi
 if [ -n "${MATPLOTLIBVER}" ]; then MATPLOTLIB="matplotlib=${MATPLOTLIBVER}"; fi
 if [ -n "${NUMPYVER}" ]; then NUMPY="numpy=${NUMPYVER}"; fi
 
-echo "dependencies: ${MATPLOTLIB} ${NUMPY} ${XSPEC}"
+echo "dependencies: ${MATPLOTLIB} ${NUMPY} ${XSPEC} ${READLINE} ${LIBGFORTRAN}"
 
 
 # newer conda is failing hard
@@ -85,7 +84,7 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 ${READLINE} future
+  ${LIBGFORTRAN} scipy pytables krb5=1.14.6 ${READLINE} future
 
 # Make sure conda-forge is the first channel
 conda config --add channels defaults
