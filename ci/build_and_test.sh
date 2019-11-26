@@ -127,9 +127,11 @@ fi
 echo "======>  installing..."
 conda install --use-local -c conda-forge astromodels
 
-#if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-#    conda install -c conda-forge/label/cf201901 ccfits=2.5
-#fi
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+   ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
+   conda install -c conda-forge/label/cf201901 ccfits=2.5
+   ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
+fi
 
 # Run tests
 cd astromodels/tests
