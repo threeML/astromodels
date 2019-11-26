@@ -51,8 +51,9 @@ if ${TEST_WITH_XSPEC}; then
     xspec_channel=xspecmodels
     conda config --add channels ${xspec_channel}
     export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
-    LIBGFORTRAN="libgfortran=${libgfortranver}"
 fi
+
+LIBGFORTRAN="libgfortran=${libgfortranver}"
 
 if $UPDATE_CONDA ; then
     # Update conda
@@ -87,10 +88,9 @@ conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest
   ${LIBGFORTRAN} scipy pytables krb5=1.14.6 ${READLINE} future
 
 # Make sure conda-forge is the first channel
-conda config --add channels defaults
-
 conda config --add channels conda-forge
 
+conda config --add channels defaults
 
 # Activate test environment
 echo "Activate test environment..."
@@ -151,6 +151,8 @@ fi
 
 if $TEST_WITH_XSPEC ; then
 
+    echo "======>  importing XSPEC..."
+    python -c "import astromodels.xspec"
 
     # If we are on the master branch upload to the channel
     if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
