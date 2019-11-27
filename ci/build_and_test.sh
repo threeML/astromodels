@@ -128,14 +128,17 @@ echo "======>  installing..."
 conda install --use-local -c conda-forge astromodels
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-   ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
-   conda install -c conda-forge/label/cf201901 ccfits=2.5
-   ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
+    if ${TEST_WITH_XSPEC}; then
+        ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
+        conda install -c conda-forge/label/cf201901 ccfits=2.5
+        ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
+    fi
 fi
 
 # Run tests
 cd astromodels/tests
-python -m pytest -vv --cov=astromodels # -k "not slow"
+python -m pytest -vv --disable-warnings --cov=astromodels # -k "not slow"
+pytest -s --disable-warnings test_load_xspec_models.py
 
 # Codecov needs to run in the main git repo
 
@@ -153,8 +156,8 @@ fi
 
 if $TEST_WITH_XSPEC ; then
 
-    echo "======>  importing XSPEC..."
-    python -c "import astromodels.xspec"
+    #echo "======>  importing XSPEC..."
+    #python -c "import astromodels.xspec"
 
     # If we are on the master branch upload to the channel
     if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
