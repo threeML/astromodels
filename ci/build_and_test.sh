@@ -137,8 +137,9 @@ fi
 
 # Run tests
 cd astromodels/tests
-python -m pytest -vv --disable-warnings --cov=astromodels # -k "not slow"
+echo "======>  importing XSPEC..."
 pytest -s --disable-warnings test_load_xspec_models.py
+python -m pytest -vv --disable-warnings --cov=astromodels # -k "not slow"
 
 # Codecov needs to run in the main git repo
 
