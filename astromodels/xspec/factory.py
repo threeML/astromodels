@@ -1,3 +1,4 @@
+from __future__ import print_function
 import collections
 import sys
 
@@ -19,7 +20,7 @@ from astromodels.xspec import _xspec
 # When running in a Anaconda environment, the package xspec-modelsonly
 # will install the models data in a specific place, so we set the HEADAS variable to point to the right place for
 # the models to find their data
-if os.environ.get("CONDA_PREFIX") is not None:
+if os.environ.get("CONDA_PREFIX") is not None and os.environ.get("HEADAS", None) is None:
 
     # NOTE: the 'headas' directory doesn't actually exists, but models are looked for (according to Xspec documentation)
     # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
@@ -377,6 +378,7 @@ from astromodels.functions.function import FunctionMeta, Function1D
 import numpy as np
 import astropy.units as u
 from astromodels.xspec import _xspec
+import six
 
 # These are multiplicative functions which need numerical differentiation
 _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
@@ -384,13 +386,12 @@ _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
                           'XS_cabs', 'XS_wabs', 'XS_zwabs'
                           ]
 
+@six.add_metaclass(FunctionMeta)
 class XS_$MODEL_NAME$(Function1D):
 
     """
 $DOCSTRING$
     """
-
-    __metaclass__ = FunctionMeta
 
     def _setup(self):
 
@@ -587,7 +588,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         assert model_type != 'con', "Convolution models are not yet supported"
 
         # Get a list of the parameter names
-        parameters_names = ", ".join(definition['parameters'].keys())
+        parameters_names = ", ".join(list(definition['parameters'].keys()))
 
         # Create the docstring
         docstring = my_yaml.dump(definition, default_flow_style=False)

@@ -1,14 +1,15 @@
+from builtins import str
+from builtins import object
 __author__ = 'giacomov'
 
 import collections
-import exceptions
 
 PARTICLE_SOURCE = 'particle source'
 POINT_SOURCE = 'point source'
 EXTENDED_SOURCE = 'extended source'
 
 
-class UnknownSourceType(exceptions.Exception):
+class UnknownSourceType(Exception):
     pass
 
 

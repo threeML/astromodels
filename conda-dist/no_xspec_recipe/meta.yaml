@@ -17,7 +17,8 @@ requirements:
 
 
   host:
-    - python <=2.7.16
+    - python<=2.7.16 # [py2k]
+    - python # [py3k]
     - setuptools
     - pip
     - numpy
@@ -28,12 +29,12 @@ requirements:
     #- hdf5
     #- pytables
     - pandas
+    - future
     - krb5==1.14.6
    
 
   run:
     - python
-   # - libgfortran # [osx]
     - numpy
     - pyyaml==3.13
     - astropy
@@ -43,12 +44,13 @@ requirements:
     #- pytables
     - pandas
     - dill
+    - future
     - krb5==1.14.6
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
-  skip: true  # [py3k]
+  #skip: true  # [py3k]
 
 test:
   # Python imports
@@ -59,7 +61,7 @@ test:
     - astromodels.functions.dark_matter
     - astromodels.sources
     - astromodels.utils
- #   - astromodels.xspec
+
 
 #  commands:
 #    - pytest -vv --pyargs {{ name }}

@@ -1,3 +1,5 @@
+from __future__ import print_function
+from __future__ import division
 import astropy.units as u
 import numpy as np
 import pytest
@@ -273,7 +275,7 @@ def test_call_with_composite_function_with_units():
         res = pts([100, 200] * x_unit_to_use)
 
         # This will fail if the units are wrong
-        res.to(1 / (u.keV * u.cm**2 * u.s))
+        res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
 
     # Test a simple composition
 

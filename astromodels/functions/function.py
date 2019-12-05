@@ -1,3 +1,9 @@
+from __future__ import print_function
+from builtins import str
+from builtins import map
+from builtins import chr
+import sys
+import six
 import ast
 import collections
 import copy
@@ -79,6 +85,19 @@ class UnknownParameter(ValueError):
 NO_LATEX_FORMULA = '(no latex formula available)'
 
 
+# A function to find the calling sequence of a function, compatible
+# with both python2 and 3
+def _py2to3_getargspec(function):
+    if sys.version_info[0] < 3:
+
+        argspec = inspect.getargspec(function)
+
+    else:  # PY3
+
+        argspec = inspect.getfullargspec(function)
+
+    return argspec
+
 
 # This dictionary will contain the known function by name, so that the model_parser can instance
 # them by looking into this dictionary. It will be filled by the FunctionMeta meta-class.
@@ -135,10 +154,10 @@ class FunctionMeta(type):
 
         # Enforce the presence of a description and of a parameters dictionary
 
-        assert "description" in function_definition.keys(), "You have to provide a 'description' token in the " \
+        assert "description" in list(function_definition.keys()), "You have to provide a 'description' token in the " \
                                                             "documentation of class %s" % name
 
-        assert "parameters" in function_definition.keys(), "You have to provide a 'parameters' token in the " \
+        assert "parameters" in list(function_definition.keys()), "You have to provide a 'parameters' token in the " \
                                                            "documentation of class %s" % name
 
         # If there is a latex formula, store it in the type
@@ -165,7 +184,7 @@ class FunctionMeta(type):
 
         dct['_parameters'] = collections.OrderedDict()
 
-        for parameter_name, parameter_definition in function_definition['parameters'].iteritems():
+        for parameter_name, parameter_definition in list(function_definition['parameters'].items()):
 
             this_parameter = FunctionMeta.parse_parameter_definition(name, parameter_name, parameter_definition)
 
@@ -236,7 +255,7 @@ class FunctionMeta(type):
             # Add the description of each parameter and their current value
             repr_dict['default parameters'] = collections.OrderedDict()
 
-            for parameter_name in dct['_parameters'].keys():
+            for parameter_name in list(dct['_parameters'].keys()):
 
                 repr_dict['default parameters'][parameter_name] = dct['_parameters'][parameter_name].to_dict()
 
@@ -282,7 +301,7 @@ class FunctionMeta(type):
 
         # Fill it by duplicating the parameters contained in the dictionary in the type
 
-        for key, value in type(instance)._parameters.iteritems():
+        for key, value in list(type(instance)._parameters.items()):
 
             copy_of_parameters[key] = value.duplicate()
 
@@ -295,7 +314,7 @@ class FunctionMeta(type):
                 copy_of_parameters[key].value = kwargs[key]
 
         # Now check that all the parameters specified in the kwargs are actually parameters of this function
-        for key in kwargs.keys():
+        for key in list(kwargs.keys()):
 
             try:
 
@@ -355,20 +374,20 @@ class FunctionMeta(type):
 
         try:
 
-            calling_sequence = inspect.getargspec(function.input_object).args
+            calling_sequence = _py2to3_getargspec(function.input_object).args
 
         except AttributeError:
 
-            # This might happen if the function is with memoization
+            # This might happen if the function is without memoization
 
-            calling_sequence = inspect.getargspec(function).args
+            calling_sequence = _py2to3_getargspec(function).args
 
         assert calling_sequence[0] == 'self', "Wrong syntax for 'evaluate' in %s. The first argument " \
                                               "should be called 'self'." % name
 
         # Figure out how many variables are used
 
-        variables = filter(lambda var: var in possible_variables, calling_sequence)
+        variables = [var for var in calling_sequence if var in possible_variables]
 
         # Check that they actually make sense. They must be used in the same order
         # as specified in possible_variables
@@ -380,7 +399,7 @@ class FunctionMeta(type):
             raise AssertionError("The variables %s are out of order in '%s' of %s. Should be %s."
                                  % (",".join(variables), function_name, name, possible_variables[:len(variables)]))
 
-        other_parameters = filter(lambda var: var not in variables and var != 'self', calling_sequence)
+        other_parameters = [var for var in calling_sequence if var not in variables and var != 'self']
 
         return variables, other_parameters
 
@@ -413,7 +432,7 @@ class FunctionMeta(type):
 
         def _parse_value(val):
 
-            if isinstance(val, str):
+            if isinstance(val, six.string_types):
 
                 return eval(val)
 
@@ -486,7 +505,7 @@ class Function(Node):
 
         self._parameters = collections.OrderedDict()
 
-        for child_name, child in parameters.iteritems():
+        for child_name, child in list(parameters.items()):
 
             self._parameters[child_name] = child
 
@@ -522,7 +541,7 @@ class Function(Node):
         :return: dictionary of free parameters
         """
 
-        free_parameters = collections.OrderedDict([(k,v) for k, v in self.parameters.iteritems() if v.free])
+        free_parameters = collections.OrderedDict([(k,v) for k, v in list(self.parameters.items()) if v.free])
 
         return free_parameters
 
@@ -923,7 +942,7 @@ class Function1D(Function):
     def _call_with_units(self, x):
 
         # Gather the current parameters' values with units
-        values = map(attrgetter("as_quantity"), self._get_children())
+        values = list(map(attrgetter("as_quantity"), self._get_children()))
 
         try:
 
@@ -935,12 +954,7 @@ class Function1D(Function):
 
             if self.has_fixed_units():
 
-                print 'here'
-
                 try:
-
-                    print self.x_unit
-                    print x
 
                     results = self.evaluate(x.to(self.x_unit), *values)
 
@@ -967,7 +981,7 @@ class Function1D(Function):
 
         # NOTE: it is important to use value, and not _value, to support linking
 
-        values = map(attrgetter("value"), self._get_children())
+        values = list(map(attrgetter("value"), self._get_children()))
 
         return self.evaluate(x, *values)
 
@@ -1093,7 +1107,7 @@ class Function2D(Function):
 
         # Gather the current parameters' values with units
 
-        values = map(attrgetter("as_quantity"), self._get_children())
+        values = list(map(attrgetter("as_quantity"), self._get_children()))
 
         try:
 
@@ -1114,7 +1128,7 @@ class Function2D(Function):
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        values = map(attrgetter("value"), self._get_children())
+        values = list(map(attrgetter("value"), self._get_children()))
 
         return self.evaluate(x, y, *values)
 
@@ -1242,7 +1256,7 @@ class Function3D(Function):
 
         # Gather the current parameters' values with units
 
-        values = map(attrgetter("as_quantity"), self._get_children())
+        values = list(map(attrgetter("as_quantity"), self._get_children()))
 
         try:
 
@@ -1263,7 +1277,7 @@ class Function3D(Function):
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        values = map(attrgetter("value"), self._get_children())
+        values = list(map(attrgetter("value"), self._get_children()))
 
         return self.evaluate(x, y, z, *values)
 
@@ -1400,7 +1414,7 @@ class CompositeFunction(Function):
 
         for i, function in enumerate(self._functions):
 
-            for parameter_name, parameter in function.parameters.iteritems():
+            for parameter_name, parameter in list(function.parameters.items()):
 
                 # New name to avoid possible duplicates
 
@@ -1602,7 +1616,7 @@ def get_function(function_name, composite_function_expression=None):
             except MissingDataFile:
 
                 raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                                      (function_name, ",".join(_known_functions.keys())))
+                                      (function_name, ",".join(list(_known_functions.keys()))))
 
             else:
 
@@ -1624,7 +1638,7 @@ def get_function_class(function_name):
     else:
 
         raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                              (function_name, ",".join(_known_functions.keys())))
+                              (function_name, ",".join(list(_known_functions.keys()))))
 
 
 def list_functions():
@@ -1632,7 +1646,7 @@ def list_functions():
     # Gather all defined functions and their descriptions
 
     functions_and_descriptions = {key:{'Description': value._function_definition['description']}
-                                  for key,value in _known_functions.iteritems()}
+                                  for key,value in list(_known_functions.items())}
 
     # Order by key (i.e., by function name)
 
@@ -1765,13 +1779,13 @@ def _parse_function_expression(function_specification):
 
     # Let's start from the function expression
 
-    for function_expression in instances.keys():
+    for function_expression in list(instances.keys()):
 
         string_for_literal_eval = string_for_literal_eval.replace(function_expression, '0 ')
 
     # Now remove all the known operators
 
-    for operator in _operations.keys():
+    for operator in list(_operations.keys()):
 
         string_for_literal_eval = string_for_literal_eval.replace(operator,'0 ')
 
@@ -1812,7 +1826,7 @@ def _parse_function_expression(function_specification):
 
         sanitized_function_specification = function_specification
 
-        for function_expression in instances.keys():
+        for function_expression in list(instances.keys()):
 
             sanitized_function_specification = sanitized_function_specification.replace(function_expression,
                                                                                         'instances["%s"]' %

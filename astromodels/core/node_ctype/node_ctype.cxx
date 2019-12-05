@@ -70,7 +70,25 @@ PyObject *strobj_from_string(const char *str)
 
 }
 
-int check_string(PyObject *obj) {  return PyString_Check(obj); }
+int check_string(PyObject *obj) {
+
+    int res = PyString_Check(obj);
+
+    if(res==0)
+    {
+
+      // Maybe a unicode literal
+      res = PyUnicode_Check(obj);
+
+      return res;
+
+    } else {
+
+      return 1;
+
+    }
+
+    }
 
 #endif
 
@@ -683,6 +701,13 @@ node_getattro(Node *self, PyObject *name)
 
       Node *this_node = (Node *) (it->second);
 
+      if(!this_node)
+      {
+
+          return NULL;
+
+      }
+
       Py_INCREF(this_node);
 
       return (PyObject *) this_node;
@@ -737,8 +762,6 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 
       PyErr_SetString(PyExc_AttributeError, "You cannot override a node.");
 
-      std::cerr << "HEY" << std::endl;
-
       return -1;
     } else
     {
@@ -751,9 +774,7 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
       // Set the .value attribute of the node to the provided value
       // (this call will increase the reference count again)
 
-      PyObject_SetAttrString(it->second, "value", value);
-
-      return 0;
+      return PyObject_SetAttrString(it->second, "value", value);
 
     }
 
@@ -765,16 +786,7 @@ node_setattro(PyObject *obj, PyObject *name, PyObject *value)
 
     // call the normal setter
     // NOTE: we cannot call PyObject_SetAttr because that would call into setattro again, giving infinite recursion
-    if (PyObject_GenericSetAttr(obj, name, value) == -1)
-    {
-
-       // The exception is already set by GenericSetAttr
-
-       return -1;
-
-    }
-
-    return 0;
+    return PyObject_GenericSetAttr(obj, name, value);
 
   }
 

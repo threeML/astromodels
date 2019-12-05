@@ -1,3 +1,8 @@
+from __future__ import division
+from builtins import str
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import collections
 
 import astropy.units as u
@@ -13,6 +18,7 @@ from pandas import HDFStore
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
+from future.utils import with_metaclass
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
@@ -105,7 +111,7 @@ class TemplateModelFactory(object):
 
         # Verify that the grid has been defined for all parameters
 
-        for grid in self._parameters_grids.values():
+        for grid in list(self._parameters_grids.values()):
 
             if grid is None:
 
@@ -118,8 +124,8 @@ class TemplateModelFactory(object):
 
             # Create the multi-index
 
-            self._multi_index = pd.MultiIndex.from_product(self._parameters_grids.values(),
-                                                           names=self._parameters_grids.keys())
+            self._multi_index = pd.MultiIndex.from_product(list(self._parameters_grids.values()),
+                                                           names=list(self._parameters_grids.keys()))
 
             # Pre-fill the data matrix with nans, so we will know if some elements have not been filled
 
@@ -132,7 +138,7 @@ class TemplateModelFactory(object):
 
             assert key in self._parameters_grids, "Parameter %s is not known" % key
 
-            idx = self._parameters_grids.keys().index(key)
+            idx = list(self._parameters_grids.keys()).index(key)
 
             parameters_values[idx] = parameters_values_input[key]
 
@@ -149,7 +155,7 @@ class TemplateModelFactory(object):
 
         # Then we transform it in the right units and we cast it back to a pure np.array
 
-        differential_fluxes = np.array(differential_fluxes.to(1 / (u.keV * u.s * u.cm ** 2)).value)
+        differential_fluxes = np.array(differential_fluxes.to(old_div(1, (u.keV * u.s * u.cm ** 2))).value)
 
         # Now let's check for valid inputs
 
@@ -255,7 +261,7 @@ def add_method(self, method, name=None):
 
     if name is None:
 
-        name = method.func_name
+        name = method.__name__
 
     setattr(self.__class__, name, method)
 
@@ -280,7 +286,7 @@ class RectBivariateSplineWrapper(object):
         return res[0][0]
 
 
-class TemplateModel(Function1D):
+class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
     r"""
         description :
@@ -298,8 +304,6 @@ class TemplateModel(Function1D):
                 initial value : 1.0
                 min : 1e-5
         """
-
-    __metaclass__ = FunctionMeta
 
     def _custom_init_(self, model_name, other_name=None,log_interp = True):
         """
@@ -337,7 +341,7 @@ class TemplateModel(Function1D):
 
             processed_parameters = 0
 
-            for key in store.keys():
+            for key in list(store.keys()):
 
                 match = re.search('p_([0-9]+)_(.+)', key)
 
@@ -386,7 +390,7 @@ class TemplateModel(Function1D):
         parameters['K'] = Parameter('K', 1.0)
         parameters['scale'] = Parameter('scale', 1.0)
 
-        for parameter_name in self._parameters_grids.keys():
+        for parameter_name in list(self._parameters_grids.keys()):
 
             grid = self._parameters_grids[parameter_name]
 
@@ -409,7 +413,7 @@ class TemplateModel(Function1D):
     def _prepare_interpolators(self, log_interp):
 
         # Figure out the shape of the data matrices
-        data_shape = map(lambda x: x.shape[0], self._parameters_grids.values())
+        data_shape = [x.shape[0] for x in list(self._parameters_grids.values())]
         
         self._interpolators = []
 
@@ -433,9 +437,9 @@ class TemplateModel(Function1D):
 
                 self._is_log10 = False
 
-            if len(self._parameters_grids.values()) == 2:
+            if len(list(self._parameters_grids.values())) == 2:
 
-                x, y = self._parameters_grids.values()
+                x, y = list(self._parameters_grids.values())
 
                 # Make sure that the requested polynomial degree is less than the number of data sets in
                 # both directions
@@ -461,7 +465,7 @@ class TemplateModel(Function1D):
 
                 # In more than 2d we can only use linear interpolation
 
-                this_interpolator = scipy.interpolate.RegularGridInterpolator(self._parameters_grids.values(),
+                this_interpolator = scipy.interpolate.RegularGridInterpolator(list(self._parameters_grids.values()),
                                                                               this_data)
 
             self._interpolators.append(this_interpolator)
@@ -470,7 +474,7 @@ class TemplateModel(Function1D):
 
         self.K.unit = y_unit
 
-        self.scale.unit = 1 / x_unit
+        self.scale.unit = old_div(1, x_unit)
 
     # This function will be substituted during construction by another version with
     # all the parameters of this template
@@ -491,7 +495,7 @@ class TemplateModel(Function1D):
 
             # Same for the scale
 
-            scale = scale.to(1 / u.keV).value
+            scale = scale.to(old_div(1, u.keV)).value
 
         if self._is_log10:
 
@@ -507,8 +511,7 @@ class TemplateModel(Function1D):
         # (these are the logarithm of the values)
         # note that if these are not logged, then the name is superflous
 
-        log_interpolations = np.array(map(lambda i:self._interpolators[i](np.atleast_1d(parameters_values)),
-                                          range(self._energies.shape[0])))
+        log_interpolations = np.array([self._interpolators[i](np.atleast_1d(parameters_values)) for i in range(self._energies.shape[0])])
 
         # Now interpolate the interpolations to get the flux at the requested energies
 
@@ -539,7 +542,7 @@ class TemplateModel(Function1D):
 
         # NOTE: the units are added back through the multiplication by K in the evaluate method
 
-        return values / scale
+        return old_div(values, scale)
 
     @property
     def data_file(self):

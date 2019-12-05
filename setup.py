@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import ctypes.util
 import glob
 import sys
@@ -345,7 +346,10 @@ setup(
         'numdifftools',
         'tables',
         'pandas',
-        'dill'],
+        'dill',
+        'future',  #py2to3 compatibility layer
+        
+    ],
 
     extras_require={
         'tests': [

@@ -1,18 +1,22 @@
+from __future__ import absolute_import
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 __author__ = 'giacomov'
 
 __doc__ = """"""
 
 import collections
 import copy
-import exceptions
 
 import astropy.units as u
 import numpy as np
 import scipy.stats
 import warnings
 
-from tree import Node
-from thread_safe_unit_format import ThreadSafe
+from .tree import Node
+from .thread_safe_unit_format import ThreadSafe
 
 
 def _behaves_like_a_number(obj):
@@ -26,7 +30,7 @@ def _behaves_like_a_number(obj):
 
         obj + 1
         obj * 2
-        obj / 2
+        old_div(obj, 2)
         obj - 1
 
     except TypeError:
@@ -545,7 +549,7 @@ class ParameterBase(Node):
 
             warnings.warn("The current value of the parameter %s (%s) "
                           "was below the new minimum %s." % (self.name, self.value, self._external_min_value),
-                          exceptions.RuntimeWarning)
+                          RuntimeWarning)
 
             self.value = self._external_min_value
 
@@ -608,7 +612,7 @@ class ParameterBase(Node):
 
             warnings.warn("The current value of the parameter %s (%s) "
                           "was above the new maximum %s." % (self.name, self.value, self._external_max_value),
-                          exceptions.RuntimeWarning)
+                          RuntimeWarning)
             self.value = self._external_max_value
 
     max_value = property(_get_max_value, _set_max_value,
@@ -893,12 +897,12 @@ class Parameter(ParameterBase):
                     else:
 
                         # Fix delta
-                        self.delta = abs(self.value - self.min_value) / 4.0
+                        self.delta = old_div(abs(self.value - self.min_value), 4.0)
 
                         if self.delta == 0:
 
                             # Parameter at the minimum
-                            self.delta = abs(self.value - self.max_value) / 4.0
+                            self.delta = old_div(abs(self.value - self.max_value), 4.0)
 
                         # Try again
                         continue
@@ -1210,7 +1214,7 @@ class Parameter(ParameterBase):
 
             if min_value is not None:
 
-                a = (min_value - value) / std
+                a = old_div((min_value - value), std)
 
             else:
 
@@ -1218,7 +1222,7 @@ class Parameter(ParameterBase):
 
             if max_value is not None:
 
-                b = (max_value - value) / std
+                b = old_div((max_value - value), std)
 
             else:
 

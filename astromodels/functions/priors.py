@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import math
 
 import astropy.units as astropy_units
@@ -5,13 +7,14 @@ import numpy as np
 from scipy.special import  erfcinv, erf
 
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
+from future.utils import with_metaclass
 
 
-deg2rad = np.pi/180.
-rad2deg = 180./np.pi
+deg2rad = old_div(np.pi,180.)
+rad2deg = old_div(180.,np.pi)
 
 # noinspection PyPep8Naming
-class Gaussian(Function1D):
+class Gaussian(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
 
@@ -43,11 +46,9 @@ class Gaussian(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
 
     def _setup(self):
 
@@ -68,9 +69,9 @@ class Gaussian(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, F, mu, sigma):
 
-        norm = self.__norm_const / sigma
+        norm = old_div(self.__norm_const, sigma)
 
-        return F * norm * np.exp(-np.power(x - mu, 2.) / (2 * np.power(sigma, 2.)))
+        return F * norm * np.exp(old_div(-np.power(x - mu, 2.), (2 * np.power(sigma, 2.))))
 
     def from_unit_cube(self, x):
         """
@@ -97,7 +98,7 @@ class Gaussian(Function1D):
 
         return res
 
-class Truncated_gaussian(Function1D):
+class Truncated_gaussian(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
 
@@ -140,11 +141,9 @@ class Truncated_gaussian(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
 
     def _setup(self):
 
@@ -176,7 +175,7 @@ class Truncated_gaussian(Function1D):
         # phi is in unitless, so we need to do this trick
         # to keep the units right
 
-        norm = self.__norm_const / sigma
+        norm = old_div(self.__norm_const, sigma)
 
         phi = np.zeros(x.shape) * F * norm * 0.
         idx = (x >= lower_bound) & (x <= upper_bound)
@@ -185,14 +184,14 @@ class Truncated_gaussian(Function1D):
 
         # precalculate the arguments to the CDF
 
-        lower_arg = (lower_bound - mu) / sigma
-        upper_arg = (upper_bound - mu) / sigma
+        lower_arg = old_div((lower_bound - mu), sigma)
+        upper_arg = old_div((upper_bound - mu), sigma)
 
 
 
         # the typical gaussian functions
 
-        phi[idx] = np.exp(-np.power(x[idx] - mu, 2.) / (2 * np.power(sigma, 2.))) * F * norm
+        phi[idx] = np.exp(old_div(-np.power(x[idx] - mu, 2.), (2 * np.power(sigma, 2.)))) * F * norm
 
         # the denominator is a function of the CDF
 
@@ -203,14 +202,14 @@ class Truncated_gaussian(Function1D):
             upper_arg = upper_arg.value
             lower_arg = lower_arg.value
 
-        theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
+        theta_lower = 0.5 + 0.5 * erf(old_div(lower_arg, sqrt_two))
 
-        theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
-
-
+        theta_upper = 0.5 + 0.5 * erf(old_div(upper_arg, sqrt_two))
 
 
-        return phi / (theta_upper - theta_lower)
+
+
+        return old_div(phi, (theta_upper - theta_lower))
 
     def from_unit_cube(self, x):
 
@@ -226,12 +225,12 @@ class Truncated_gaussian(Function1D):
 
         # precalculate the arguments to the  CDF
 
-        lower_arg = (lower_bound - mu) / sigma
-        upper_arg = (upper_bound - mu) / sigma
+        lower_arg = old_div((lower_bound - mu), sigma)
+        upper_arg = old_div((upper_bound - mu), sigma)
 
-        theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
+        theta_lower = 0.5 + 0.5 * erf(old_div(lower_arg, sqrt_two))
 
-        theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
+        theta_upper = 0.5 + 0.5 * erf(old_div(upper_arg, sqrt_two))
 
         # now precalculate the argument to the Inv. CDF
 
@@ -241,7 +240,7 @@ class Truncated_gaussian(Function1D):
         
         return np.clip(out, lower_bound, upper_bound)
 
-class Cauchy(Function1D):
+class Cauchy(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
 
@@ -273,11 +272,9 @@ class Cauchy(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
 
     def _setup(self):
         self._is_prior = True
@@ -295,7 +292,7 @@ class Cauchy(Function1D):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, x0, gamma):
-        norm = 1 / (gamma * np.pi)
+        norm = old_div(1, (gamma * np.pi))
 
         gamma2 = gamma * gamma
 
@@ -321,7 +318,7 @@ class Cauchy(Function1D):
         return res
 
 
-class Cosine_Prior(Function1D):
+class Cosine_Prior(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
 
@@ -354,8 +351,6 @@ class Cosine_Prior(Function1D):
 
 
     """
-
-    __metaclass__ = FunctionMeta
 
 
     def _setup(self):
@@ -428,7 +423,7 @@ class Cosine_Prior(Function1D):
         return dec
 
 
-class Log_normal(Function1D):
+class Log_normal(with_metaclass(FunctionMeta, Function1D)):
     r"""
        description :
 
@@ -464,11 +459,9 @@ class Log_normal(Function1D):
 
        """
 
-    __metaclass__ = FunctionMeta
-
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
+    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
 
     def _setup(self):
 
@@ -501,7 +494,7 @@ class Log_normal(Function1D):
         idx = (x > 0 * x)
 
         result[idx] = F * self.__norm_const / (sigma / piv * x / piv) * np.exp(
-            -np.power(np.log(x / piv) - mu / piv, 2.) / (2 * np.power(sigma / piv, 2.)))
+            old_div(-np.power(np.log(old_div(x, piv)) - old_div(mu, piv), 2.), (2 * np.power(old_div(sigma, piv), 2.))))
 
         return result
 
@@ -531,7 +524,7 @@ class Log_normal(Function1D):
         return np.exp(res)
 
 
-class Uniform_prior(Function1D):
+class Uniform_prior(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
 
@@ -566,8 +559,6 @@ class Uniform_prior(Function1D):
         - { x : -0.5, function value: 0, tolerance: 1e-20}
 
     """
-
-    __metaclass__ = FunctionMeta
 
     def _setup(self):
         self._is_prior = True
@@ -611,7 +602,7 @@ class Uniform_prior(Function1D):
 
         return par
 
-class Log_uniform_prior(Function1D):
+class Log_uniform_prior(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
 
@@ -644,8 +635,6 @@ class Log_uniform_prior(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     def _setup(self):
 
         self._is_prior = True
@@ -660,7 +649,7 @@ class Log_uniform_prior(Function1D):
     def evaluate(self, x, lower_bound, upper_bound, K):
         # This makes the prior proper because it is the integral between lower_bound and upper_bound
 
-        res = np.where((x > lower_bound) & (x < upper_bound), K / x, 0)
+        res = np.where((x > lower_bound) & (x < upper_bound), old_div(K, x), 0)
 
         if isinstance(x, astropy_units.Quantity):
 

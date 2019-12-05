@@ -1,3 +1,4 @@
+from __future__ import print_function
 __author__ = 'giacomov'
 
 # Import IPython display facility, if available. Otherwise,

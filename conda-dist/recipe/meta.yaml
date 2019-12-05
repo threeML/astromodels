@@ -18,6 +18,7 @@ requirements:
     - ccfits
     - wcslib==5.18
     - krb5==1.14.6
+    - readline==6.2 # [py2k]
 
   host:
     - python
@@ -35,29 +36,33 @@ requirements:
     - ccfits
     - wcslib==5.18
     - xspec-modelsonly
+    - future
     - krb5==1.14.6
+    - readline==6.2 # [py2k]
 
   run:
     - python
   #  - libgfortran
     - numpy
     - pyyaml==3.13
-    - astropy
+    - astropy<3.2
     #- scipy
     - numdifftools
     #- hdf5
     - pytables
     - pandas
     - dill
-    - cfitsio==3.410
+    - cfitsio
     - ccfits
     - wcslib
+    - future
     - krb5==1.14.6
+    - readline==6.2 # [py2k]
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
-  skip: true  # [py3k]
+#  skip: true  # [py3k]
 
 #test:
 #  # Python imports

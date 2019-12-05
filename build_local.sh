@@ -38,7 +38,7 @@ echo " ===> Running on ${TRAVIS_OS_NAME}"
 
 TEST_WITH_XSPEC=true
 USE_LOCAL=false
-TRAVIS_PYTHON_VERSION=2.7
+TRAVIS_PYTHON_VERSION=3.5
 TRAVIS_BUILD_NUMBER=6
 ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 
@@ -47,7 +47,8 @@ libgfortranver="3.0"
 
 #NUMPYVER=1.15
 #MATPLOTLIBVER=2
-UPDATE_CONDA=true
+READLINE_VERSION="6.2"
+UPDATE_CONDA=false
 
 if [[ ${TRAVIS_OS_NAME} == linux ]];
 then
@@ -59,7 +60,7 @@ else  # osx
 
     # On macOS we also need the conda libx11 libraries used to build xspec
     # We also need to pin down ncurses, for now only on macos.
-    xorg="xorg-libx11 ncurses=5"
+    xorg="xorg-libx11" # ncurses=5
 fi
 
 # Get the version in the __version__ environment variable
@@ -75,10 +76,10 @@ echo "Use local is: ${USE_LOCAL}"
 if ${TEST_WITH_XSPEC}; then
     XSPECVER="6.22.1"
     export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
-    xspec_channel=threeml
+    xspec_channel=xspecmodels
     
     if ${USE_LOCAL}; then
-        conda config --remove channels ${xspec_channel}
+        #conda config --remove channels ${xspec_channel}
         use_local="--use-local"
     else
         conda config --add channels ${xspec_channel}
@@ -89,6 +90,11 @@ if $UPDATE_CONDA ; then
     # Update conda
     echo "Update conda..."
     conda update --yes -q conda conda-build
+fi
+
+if [[ ${TRAVIS_PYTHON_VERSION} == 2.7 ]];
+then
+    READLINE="readline=${READLINE_VERSION}"
 fi
 
 # Figure out requested dependencies
@@ -107,13 +113,13 @@ conda config --set anaconda_upload no
 echo "Create test environment..."
 
 conda create --yes --name $ENVNAME -c conda-forge ${use_local} python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 readline=6.2
+  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 ${READLINE} future
 
 
 # Make sure conda-forge is the first channel
-conda config --add channels conda-forge
-
 conda config --add channels defaults
+
+conda config --add channels conda-forge
 
 # Activate test environment
 echo "Activate test environment..."
@@ -133,7 +139,7 @@ if $TEST_WITH_XSPEC ; then
     else
     	# there is some strange error about the prefix length
         conda build --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
-        conda install -c conda-forge/label/cf201901 ccfits=2.5
+        #conda install -c conda-forge/label/cf201901 ccfits=2.5
     fi
 else
     echo " ====> Building WITHOUT xspec"

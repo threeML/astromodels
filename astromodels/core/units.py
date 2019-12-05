@@ -1,7 +1,7 @@
+from builtins import object
 __author__ = 'giacomov'
 
 import collections
-import exceptions
 
 import astropy.units as u
 
@@ -18,7 +18,7 @@ _ANGLE = u.deg
 _AREA = u.cm**2
 
 
-class UnknownUnit(exceptions.Exception):
+class UnknownUnit(Exception):
     pass
 
 
