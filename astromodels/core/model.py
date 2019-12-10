@@ -275,7 +275,7 @@ class Model(Node):
 
             _ = self._get_child_from_path(path)
 
-        except (AttributeError, KeyError):
+        except:
 
             return False
 
