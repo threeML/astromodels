@@ -345,7 +345,7 @@ setup(
         'scipy>=0.14',
         'numdifftools',
         'tables',
-        'pandas',
+        'pandas>=0.23',
         'dill',
         'future',  #py2to3 compatibility layer
         
