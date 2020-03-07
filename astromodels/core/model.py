@@ -543,9 +543,9 @@ class Model(Node):
             new_line = '\n'
 
         # Table with the summary of the various kind of sources
-        sources_summary = pd.DataFrame.from_items((('Point sources', [self.get_number_of_point_sources()]),
-                                                   ('Extended sources', [self.get_number_of_extended_sources()]),
-                                                   ('Particle sources', [self.get_number_of_particle_sources()])),
+        sources_summary = pd.DataFrame.from_dict( collections.OrderedDict([('Point sources', [self.get_number_of_point_sources()]),
+                                                                          ('Extended sources', [self.get_number_of_extended_sources()]),
+                                                                           ('Particle sources', [self.get_number_of_particle_sources()])]),
                                                   columns=['N'], orient='index')
 
         # These properties traverse the whole tree everytime, so let's cache their results here
