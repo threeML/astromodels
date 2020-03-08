@@ -311,7 +311,7 @@ setup(
     setup_requires=['numpy'],
 
     #cmdclass={'build_ext': My_build_ext},
-    cmdclass=versioneer.get_cmdclass(My_build_ext),
+    cmdclass=versioneer.get_cmdclass({'build_ext': My_build_ext}),
     
     packages=packages,
 
