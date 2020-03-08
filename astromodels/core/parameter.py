@@ -18,6 +18,7 @@ import warnings
 from .tree import Node
 from .thread_safe_unit_format import ThreadSafe
 
+from astromodels.core.parameter_transformation import ParameterTransformation
 
 def _behaves_like_a_number(obj):
     """
@@ -173,6 +174,8 @@ class ParameterBase(Node):
 
         # Store the transformation. This allows to disentangle the value of the parameter which the user interact
         # width with the value of the parameter the fitting engine (or the Bayesian sampler) interact with
+        if transformation is not None:
+            assert isinstance(transformation, ParameterTransformation)
         self._transformation = transformation
 
         # Let's store the init value
@@ -528,6 +531,10 @@ class ParameterBase(Node):
 
             if min_value is not None:
 
+                if self._transformation.is_positive:
+
+                    assert min_value >0., 'The transformation %s is postive definite and the min_value was set to a negative number for %s '%(type(self._transformation), self.path)
+                
                 try:
 
                     _ = self._transformation.forward(min_value)
@@ -538,7 +545,15 @@ class ParameterBase(Node):
                                      "is defined for the parameter %s" % (min_value,
                                                                           type(self._transformation),
                                                                           self.path))
+            else:
 
+                if self._transformation.is_positive:
+
+                    # set it by default to for the user
+                    min_value = 1e-99
+
+                    warnings.warn('We have set the min_value of %s to 1e-99 because there was a postive transform' % self.path)
+                
         # Store the minimum as a pure float
 
         self._external_min_value = min_value
