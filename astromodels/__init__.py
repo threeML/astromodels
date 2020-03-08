@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 # Import the version
-from .version import __version__
+
 #
 #
 
