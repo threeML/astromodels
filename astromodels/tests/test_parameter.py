@@ -756,20 +756,4 @@ def test_internal_delta():
 
 
 
-
-    # def test_internal_external():
-
-
-#     p = Parameter('test_parameter',1.0)
-
-#     with pytest.raises(AttributeError):
-    
-#         p.internal_to_external_delta(3., .1)
-
-#     p._set_internal_value(5.)
-
-
-
-#     p.display()
-
-
+    p._get_internal_delta()
