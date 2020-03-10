@@ -151,35 +151,34 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
 fi
 
-
-
 # We do not want to upload if we do not test with xspec
-
 if $TEST_WITH_XSPEC ; then
-
     #echo "======>  importing XSPEC..."
     #python -c "import astromodels.xspec"
-
+    
     # If we are on the master branch upload to the channel
     if [[ "${TRAVIS_EVENT_TYPE}" == "pull_request" ]]; then
-
         echo "This is a pull request, not uploading to Conda channel"
-
-    else
-
-        if [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
-            echo "This is a push to TRAVIS_BRANCH=${TRAVIS_BRANCH}"
+    
+    elif [[ "${TRAVIS_EVENT_TYPE}" == "api" ]]; then
+        echo "This build was triggered via API"
+    
+    elif [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
+        echo "This is a push to branch ${TRAVIS_BRANCH}"
+        
+        echo "$TRAVIS_TAG"
+        if [ -n "$TRAVIS_TAG" ]; then
             if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
+                echo "This is the tag $TRAVIS_TAG of branch ${TRAVIS_BRANCH}"
                 conda install -c conda-forge anaconda-client
                 echo "Uploading ${CONDA_BUILD_PATH}"
-            
-                if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
                 
-                    anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
-		
+                if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+                    echo "Skipping the upload for the moment"
+                    #anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
                 else
-		
-                    anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
+		            echo "Skipping the upload for the moment"
+                    #anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
 		        fi
             fi
         fi
