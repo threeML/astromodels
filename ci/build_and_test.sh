@@ -166,20 +166,16 @@ if $TEST_WITH_XSPEC ; then
     elif [[ "${TRAVIS_EVENT_TYPE}" == "push" ]]; then
         echo "This is a push to branch ${TRAVIS_BRANCH}"
         
-        echo "$TRAVIS_TAG"
-        if [ -n "$TRAVIS_TAG" ]; then
-            if [[ "${TRAVIS_BRANCH}" == "master" ]]; then
-                echo "This is the tag $TRAVIS_TAG of branch ${TRAVIS_BRANCH}"
-                conda install -c conda-forge anaconda-client
-                echo "Uploading ${CONDA_BUILD_PATH}"
-                
-                if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-                    echo "Skipping the upload for the moment"
-                    #anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
-                else
-		            echo "Skipping the upload for the moment"
-                    #anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
-		        fi
+        echo "${TRAVIS_TAG}"
+        if [ -n "${TRAVIS_TAG}" ]; then
+            echo "This is the tag ${TRAVIS_TAG}"
+            conda install -c conda-forge anaconda-client
+            echo "Uploading ${CONDA_BUILD_PATH}"
+            
+            if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+                anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /home/travis/miniconda/conda-bld/linux-64/*.tar.bz2 --force
+            else
+                anaconda -v --show-traceback -t $CONDA_UPLOAD_TOKEN upload -u threeml /Users/travis/miniconda/conda-bld/*/*.tar.bz2 --force
             fi
         fi
     fi
