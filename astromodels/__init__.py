@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 # Import the version
-from .version import __version__
+
 #
 #
 
@@ -33,3 +33,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
 
 import astropy.units as u
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
