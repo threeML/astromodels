@@ -90,6 +90,8 @@ conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest
 # Make sure conda-forge is the first channel
 conda config --add channels conda-forge
 
+conda config --add channels conda-forge/label/cf201901
+
 conda config --add channels defaults
 
 # Activate test environment

@@ -122,6 +122,8 @@ conda create --yes --name $ENVNAME -c conda-forge ${use_local} python=$TRAVIS_PY
 # Make sure conda-forge is the first channel
 conda config --add channels defaults
 
+conda config --add channels conda-forge/label/cf201901
+
 conda config --add channels conda-forge
 
 # Activate test environment
