@@ -1,7 +1,7 @@
 from __future__ import print_function
 import collections
 import sys
-
+import glob
 import astropy.units as u
 import os
 import re
@@ -603,17 +603,18 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         code = code.replace('$MODEL_TYPE$', model_type)
 
         # Write to the file
-
-        with open(code_file_name, 'w+') as f:
-
+        with open(code_file_name, 'w') as f:
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
-
+    
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
-
         sys.path.append(user_data_path)
-
+    
+    print(sys.path)
+    print(glob.glob(user_data_path))
+    os.system('less %s' %  code_file_name)
+    
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
@@ -621,7 +622,6 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         module = __import__(class_name)
 
     # Return the class we just created
-
     #return class_name, locals()[class_name]
     return class_name, module
 
