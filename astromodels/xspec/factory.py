@@ -617,12 +617,13 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        exec('from %s import %s' % (class_name, class_name))
+        #exec('from %s import %s' % (class_name, class_name))
+        module = __import__(class_name)
 
     # Return the class we just created
 
-    return class_name, locals()[class_name]
-
+    #return class_name, locals()[class_name]
+    return class_name, module
 
 def setup_xspec_models():
 
