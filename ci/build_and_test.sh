@@ -135,6 +135,7 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         ls /Users/travis/miniconda/envs/test_env/lib/libcfitsio*
         ls /Users/travis/miniconda/envs/test_env/lib/libwcs*
         conda install -c conda-forge/label/cf201901 ccfits=2.5
+        ln -s /Users/travis/miniconda/envs/test_env/lib/libCCfits.2.5.dylib /Users/travis/miniconda/envs/test_env/lib/libCCfits.0.dylib
         ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
     fi
 fi
