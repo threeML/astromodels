@@ -609,7 +609,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
         #TEMP
-        time.sleep(0.5)
+        time.sleep(1)
     
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
