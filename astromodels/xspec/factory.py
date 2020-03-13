@@ -1,7 +1,7 @@
 from __future__ import print_function
 import collections
 import sys
-
+import time
 import astropy.units as u
 import os
 import re
@@ -608,6 +608,8 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
+        
+        time.sleep(1)
 
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
@@ -617,13 +619,10 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        #exec('from %s import %s' % (class_name, class_name))
-        module = __import__(class_name)
+        exec('from %s import %s' % (class_name, class_name))
 
     # Return the class we just created
-
-    #return class_name, locals()[class_name]
-    return class_name, module
+    return class_name, locals()[class_name]
 
 def setup_xspec_models():
 
