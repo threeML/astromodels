@@ -6,6 +6,7 @@ import astropy.units as u
 import os
 import re
 import warnings
+import importlib
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions.function import get_function_class
@@ -617,14 +618,17 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     os.system('less %s' %  code_file_name)
     
     #TEMP
-    if class_name == 'XS_bbody':
+    if class_name == 'XS_agauss':
         return class_name, None
         
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
         #exec('from %s import %s' % (class_name, class_name))
-        module = __import__(class_name)
+        try:
+            module = __import__(class_name)
+        except:
+            module = importlib.import_module(class_name)
 
     # Return the class we just created
     #return class_name, locals()[class_name]
@@ -635,7 +639,12 @@ def setup_xspec_models():
     classes = []
 
     sys.stdout.write("Loading xspec models...")
-
+    
+    user_data_path = get_user_data_path()
+    init_file = os.path.join(user_data_path, '__init__.py')
+    with open(init_file, 'w+') as f:
+        pass
+    
     all_models = get_models(find_model_dat())
 
     for (model_name, xspec_function, model_type) in all_models:
