@@ -609,33 +609,24 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
         #TEMP
-        time.sleep(1)
+        time.sleep(0.5)
     
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
         sys.path.append(user_data_path)
-    
-    print(user_data_path)
-    print(sys.path)
-    print(glob.glob('%s/*' % user_data_path))
-    #os.system('less %s' %  code_file_name)
-    
-    #TEMP
-    if class_name == 'XS_agauss':
-        return class_name, None
         
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        #exec('from %s import %s' % (class_name, class_name))
-        try:
-            module = __import__(class_name)
-        except:
-            module = importlib.import_module(class_name)
+        exec('from %s import %s' % (class_name, class_name))
+        #try:
+        #    module = __import__(class_name)
+        #except:
+        #    module = importlib.import_module(class_name)
 
     # Return the class we just created
-    #return class_name, locals()[class_name]
-    return class_name, module
+    return class_name, locals()[class_name]
+    #return class_name, module
 
 def setup_xspec_models():
 
@@ -643,10 +634,10 @@ def setup_xspec_models():
 
     sys.stdout.write("Loading xspec models...")
     
-    user_data_path = get_user_data_path()
-    init_file = os.path.join(user_data_path, '__init__.py')
-    with open(init_file, 'w+') as f:
-        pass
+    #user_data_path = get_user_data_path()
+    #init_file = os.path.join(user_data_path, '__init__.py')
+    #with open(init_file, 'w+') as f:
+    #    pass
     
     all_models = get_models(find_model_dat())
 
