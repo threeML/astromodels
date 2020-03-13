@@ -603,7 +603,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         code = code.replace('$MODEL_TYPE$', model_type)
 
         # Write to the file
-        with open(code_file_name, 'w') as f:
+        with open(code_file_name, 'w+') as f:
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
     
@@ -611,10 +611,15 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     if user_data_path not in sys.path:
         sys.path.append(user_data_path)
     
+    print(user_data_path)
     print(sys.path)
-    print(glob.glob(user_data_path))
+    print(glob.glob('%s/*' % user_data_path))
     os.system('less %s' %  code_file_name)
     
+    #TEMP
+    if class_name == 'XS_bbody':
+        return class_name, None
+        
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
