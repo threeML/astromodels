@@ -7,6 +7,7 @@ import os
 import re
 import warnings
 import importlib
+import time
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions.function import get_function_class
@@ -607,6 +608,8 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         with open(code_file_name, 'w+') as f:
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
+        #TEMP
+        time.sleep(1)
     
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
@@ -615,7 +618,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     print(user_data_path)
     print(sys.path)
     print(glob.glob('%s/*' % user_data_path))
-    os.system('less %s' %  code_file_name)
+    #os.system('less %s' %  code_file_name)
     
     #TEMP
     if class_name == 'XS_agauss':
