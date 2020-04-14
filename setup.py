@@ -315,7 +315,10 @@ setup(
     
     packages=packages,
 
-    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
+    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml')),
+                ('astromodels/data/tests',  glob.glob('astromodels/data/tests/*.fits'))
+
+    ],
 
     # The __version__ comes from the exec at the top
 
