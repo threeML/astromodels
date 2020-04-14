@@ -194,7 +194,7 @@ def test_input_output():
 
 def test_xspec_table_model():
 
-    test_table = _get_data_file_path("test/test_xspec_table_model.fits")
+    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
 
     xtm = XSPECTableModel(test_table)
 
