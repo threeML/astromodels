@@ -562,7 +562,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
 class XSPECTableModel(object):
     def __init__(
-        self, xspec_table_model_file, interpolation_degree=1, spline_smoothing_factor=0
+            self, xspec_table_model_file, interpolation_degree=1, spline_smoothing_factor=0, log_centers=True
     ):
         """
         Convert an XSPEC table model to an astromodels TemplateModel.
@@ -578,7 +578,8 @@ class XSPECTableModel(object):
 
         :param xspec_table_model_file: 
         :param interpolation_degree: 
-        :param spline_smoothing_factor: 
+        :param spline_smoothing_factor: spline smoothing 
+        :param log_centers: treat energies with log centers
         :returns: 
         :rtype: 
 
@@ -586,7 +587,8 @@ class XSPECTableModel(object):
 
         self._interpolation_degree = interpolation_degree
         self._spline_smoothing_factor = spline_smoothing_factor
-
+        self._log_centers = log_centers
+        
         self._xspec_file_name = xspec_table_model_file
         self._extract_model()
 
@@ -602,8 +604,13 @@ class XSPECTableModel(object):
 
             # log centers
 
-            self._energy = np.sqrt(ene_lo * ene_hi)
+            if self._log_centers:
+                self._energy = np.sqrt(ene_lo * ene_hi)
 
+            else:
+
+                self._energy = (ene_hi + ene_lo)/2.
+                
             params = f["PARAMETERS"]
 
             self._names = params.data["NAME"]
@@ -626,14 +633,14 @@ class XSPECTableModel(object):
 
                     try:
 
-                        this_dict["values"] = spectra.data[f"PARAMVAL{i}"]
+                        this_dict["values"] = spectra.data["PARAMVAL{%d}"%i]
 
                     except:
-                        this_dict["values"] = spectra.data[f"PARAMVAL"][:, i]
+                        this_dict["values"] = spectra.data["PARAMVAL"][:, i]
 
                 else:
 
-                    this_dict["values"] = spectra.data[f"PARAMVAL"]
+                    this_dict["values"] = spectra.data["PARAMVAL"]
 
                 self._params_dict[name] = this_dict
 
@@ -668,8 +675,6 @@ class XSPECTableModel(object):
             input_dict = {}
             for k, v in self._params_dict.items():
                 input_dict[k] = v["values"][i]
-
-            print(input_dict)
 
             tmf.add_interpolation_data(self._spectrum[i, :], **input_dict)
 
