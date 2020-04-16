@@ -199,17 +199,17 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
     def init_xsect(self, abund_table='AG89'):
         # load cross section data
 
-        path_to_xsect = os.path.join(configuration.get_user_data_path() , 'xsect')
-
         if abund_table == 'AG89':
-            fxs = fits.open(path_to_xsect + '/xsect_phabs_angr.fits')
+            path_to_xsect = get_path_of_data_file('xsect_phabs_angr.fits')
 
         elif abund_table == 'ASPL':
-            fxs = fits.open(path_to_xsect + '/xsect_phabs_aspl.fits')
+            path_to_xsect = get_path_of_data_file('xsect_phabs_aspl.fits')
+
         else:
             print('Unknown abundace table %s, reverting to AG89' % (abund_table))
-            fxs = fits.open(path_to_xsect + '/xsect_phabs_angr.fits')
+            path_to_xsect = get_path_of_data_file('xsect_phabs_angr.fits')
 
+        fxs = fits.open(path_to_xsect)
         dxs = fxs[1].data
         self.xsect_ene = dxs['ENERGY']
         self.xsect_val = dxs['SIGMA']
@@ -242,21 +242,23 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** 2
 
-    def init_xsect(self, abund_table='AG89'):
+    def init_xsect(self, abund_table='WILM'):
         # load cross section data
 
-        path_to_xsect = os.path.join(configuration.get_user_data_path() , 'xsect')
-
         if abund_table == 'AG89':
-            fxs = fits.open(path_to_xsect + '/xsect_tbabs_angr.fits')
+            path_to_xsect = get_path_of_data_file('xsect_tbabs_angr.fits')
+
         elif abund_table == 'ASPL':
-            fxs = fits.open(path_to_xsect + '/xsect/xsect_tbabs_aspl.fits')
+            path_to_xsect = get_path_of_data_file('xsect_tbab_aspl.fits')
+
         elif abund_table == 'WILM':
-            fxs = fits.open(path_to_xsect + '/xsect/xsect_tbabs_wilm.fits')
+            path_to_xsect = get_path_of_data_file('xsect_tbabs_wilm.fits')
+
         else:
             print('Unknown abundace table %s, reverting to WILM' % (abund_table))
-            fxs = fits.open(path_to_xsect + '/xsect/xsect_tbabs_wilm.fits')
+            path_to_xsect = get_path_of_data_file('xsect_tbabs_wilm.fits')
 
+        fxs = fits.open(path_to_xsect)
         dxs = fxs[1].data
         self.xsect_ene = dxs['ENERGY']
         self.xsect_val = dxs['SIGMA']
