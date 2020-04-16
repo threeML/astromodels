@@ -330,7 +330,7 @@ setup(
     ext_modules=ext_modules_configuration,
 
     package_data={
-        'astromodels': ['data/dark_matter/*'],
+        'astromodels': ['data/dark_matter/*', 'data/xsect/*'],
     },
 
 

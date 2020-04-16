@@ -9,6 +9,14 @@ from astromodels.utils import configuration
 from astropy.io import fits
 import  os
 
+import pkg_resources
+
+def get_path_of_data_file(data_file):
+    file_path = pkg_resources.resource_filename("astromodels", 'data/%s' % data_file)
+
+    return file_path
+
+
 # APEC class
 class APEC(Function1D, metaclass=FunctionMeta):
     r"""
