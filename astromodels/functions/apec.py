@@ -12,7 +12,7 @@ import  os
 import pkg_resources
 
 def get_path_of_data_file(data_file):
-    file_path = pkg_resources.resource_filename("astromodels", 'data/%s' % data_file)
+    file_path = pkg_resources.resource_filename("astromodels", 'data/xsect/%s' % data_file)
 
     return file_path
 
