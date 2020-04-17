@@ -192,7 +192,7 @@ def test_call_with_units():
 
             # elif instance.name in ["PhAbs", "TbAbs"]:
 
-            #     instance.init_xsect()
+            #     instance
                 
 
             result = ps(1.0)
@@ -309,12 +309,19 @@ def test_call_with_composite_function_with_units():
     one_test(spectrum)
 
     # test the absorption models
-    
-    spectrum = PhAbs() * Powerlaw()
 
+
+    phabs = PhAbs()
+    phabs.init_xsect()
+    spectrum = phabs * Powerlaw()
+    
+    
     one_test(spectrum)
 
-    spectrum = TbAbs() * Powerlaw()
+    tbabs = TbAbs()
+    tbabs.init_xsect()
+    
+    spectrum = tbabs * Powerlaw()
 
     one_test(spectrum)
 
