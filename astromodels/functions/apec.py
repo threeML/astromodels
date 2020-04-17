@@ -68,7 +68,7 @@ if has_atomdb:
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
 
-            self.K.unit = astropy_units.ph / astropy_units.s / astropy_units.keV
+            self.K.unit = y_unit
 
         def init_session(self, abund_table="AG89"):
             # initialize PyAtomDB session
@@ -258,6 +258,10 @@ class PhAbs(Function1D):
             delta : 0.1
     """
 
+    def _setup(self):
+        self._fixed_units = (u.keV, u.dimensionless_unscaled)
+
+    
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
 
@@ -331,6 +335,9 @@ class TbAbs(Function1D):
 
     """
 
+    def _setup(self):
+        self._fixed_units = (u.keV, u.dimensionless_unscaled)
+    
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
 
