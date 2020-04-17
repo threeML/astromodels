@@ -259,7 +259,7 @@ class PhAbs(Function1D):
     """
 
     def _set_units(self, x_unit, y_unit):
-        self.NH.unit = astropy_units.cm ** 2
+        self.NH.unit = astropy_units.cm ** (-2)
 
     def init_xsect(self, abund_table="AG89"):
         """
@@ -299,7 +299,7 @@ class PhAbs(Function1D):
 
         if isinstance(NH, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**(-2)
+            _unit = astropy_units.cm**2
 
         else:
 
@@ -332,7 +332,7 @@ class TbAbs(Function1D):
     """
 
     def _set_units(self, x_unit, y_unit):
-        self.NH.unit = astropy_units.cm ** 2
+        self.NH.unit = astropy_units.cm ** (-2)
 
     def init_xsect(self, abund_table="WILM"):
         """
@@ -375,7 +375,7 @@ class TbAbs(Function1D):
 
         if isinstance(NH, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**(-2)
+            _unit = astropy_units.cm**2
 
         else:
 
