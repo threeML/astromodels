@@ -184,6 +184,11 @@ def test_call_with_units():
                 instance.set_particle_distribution(particleSource.spectrum.main.shape)
 
 
+            elif instance.name in ["PhAbs", "TbAbs"]:
+
+                instance.init_xsect()
+                
+
             result = ps(1.0)
 
             assert isinstance(result, float)
