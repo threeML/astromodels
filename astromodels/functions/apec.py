@@ -297,9 +297,17 @@ class PhAbs(Function1D):
     def evaluate(self, x, NH):
         assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect(abund)"
 
-        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)* astropy_units.cm**(-2)
+        if isinstance(NH, astropy_units.Quantity):
 
-        spec = np.exp(-NH * xsect_interp)
+            _unit = astropy_units.cm**(-2)
+
+        else:
+
+            _unit = 1.
+            
+        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+
+        spec = np.exp(-NH * xsect_interp * _unit)
 
         return spec
 
@@ -365,8 +373,17 @@ class TbAbs(Function1D):
     def evaluate(self, x, NH):
         assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect(abund)"
 
-        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val) * astropy_units.cm**(-2)
+        if isinstance(NH, astropy_units.Quantity):
 
-        spec = np.exp(-NH * xsect_interp)
+            _unit = astropy_units.cm**(-2)
+
+        else:
+
+            _unit = 1.
+
+
+        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+
+        spec = np.exp(-NH * xsect_interp * _unit )
 
         return spec
