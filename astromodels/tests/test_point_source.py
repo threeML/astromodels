@@ -29,6 +29,9 @@ from astromodels.functions.function import _known_functions
 __author__ = 'giacomov'
 
 
+
+_multiplicative_models = ["PhAbs", "TbAbs"]
+
 def test_constructor():
 
     # RA, Dec and L,B of the same point in the sky
@@ -184,9 +187,9 @@ def test_call_with_units():
                 instance.set_particle_distribution(particleSource.spectrum.main.shape)
 
 
-            elif instance.name in ["PhAbs", "TbAbs"]:
+            # elif instance.name in ["PhAbs", "TbAbs"]:
 
-                instance.init_xsect()
+            #     instance.init_xsect()
                 
 
             result = ps(1.0)
@@ -232,7 +235,7 @@ def test_call_with_units():
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
-        if key.find("XS")==0 and key != "XS_powerlaw":
+        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models):
 
             # An XSpec model. Test it only if it's a power law (the others might need other parameters during
             # initialization)
