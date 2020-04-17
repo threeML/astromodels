@@ -1,8 +1,17 @@
 import astropy.units as astropy_units
 import numpy as np
 
-import pyatomdb
+try:
 
+    import pyatomdb
+
+    has_atomdb = True
+    
+except:
+
+    has_atomdb = False
+
+    
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import configuration
 
