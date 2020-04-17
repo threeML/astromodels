@@ -259,7 +259,7 @@ class PhAbs(Function1D):
     """
 
     def _setup(self):
-        self._fixed_units = (u.keV, u.dimensionless_unscaled)
+        self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
 
     
     def _set_units(self, x_unit, y_unit):
@@ -336,7 +336,7 @@ class TbAbs(Function1D):
     """
 
     def _setup(self):
-        self._fixed_units = (u.keV, u.dimensionless_unscaled)
+        self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
     
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
