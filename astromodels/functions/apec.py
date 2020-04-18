@@ -75,6 +75,8 @@ if has_atomdb:
             self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
 
         def evaluate(self, x, K, kT, abund, redshift):
+            assert self.session is not None, "please run init_session(abund)"
+
             sess = self.session
 
             nval = len(x)
@@ -129,12 +131,12 @@ if has_atomdb:
 
             return K * spec
 
-    # APEC class
+    # VAPEC class
     @six.add_metaclass(FunctionMeta)
     class VAPEC(Function1D):
         r"""
         description :
-            The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable
+            The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable abundances for individual elements
             contributed by Dominique Eckert
         parameters :
             K :
@@ -151,8 +153,85 @@ if has_atomdb:
                 min : 0.08
                 max : 64
                 delta : 0.1
-            abund :
-                desc : Metal abundance
+            Fe :
+                desc : Fe abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            C :
+                desc : C abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            N :
+                desc : N abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            O :
+                desc : O abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Ne :
+                desc : Ne abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Mg :
+                desc : Mg abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Al :
+                desc : Al abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Si :
+                desc : Si abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            S :
+                desc : S abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Ar :
+                desc : Ar abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Ca :
+                desc : Ca abundance
+                initial value : 1
+                min : 0.0
+                max : 5.0
+                delta : 0.01
+                fix : yes
+            Ni :
+                desc : Ni abundance
                 initial value : 1
                 min : 0.0
                 max : 5.0
@@ -171,17 +250,39 @@ if has_atomdb:
         def _set_units(self, x_unit, y_unit):
             self.kT.unit = astropy_units.keV
 
-            self.abund.unit = astropy_units.dimensionless_unscaled
+            self.Fe.unit = astropy_units.dimensionless_unscaled
+
+            self.C.unit = astropy_units.dimensionless_unscaled
+
+            self.N.unit = astropy_units.dimensionless_unscaled
+
+            self.O.unit = astropy_units.dimensionless_unscaled
+
+            self.Ne.unit = astropy_units.dimensionless_unscaled
+
+            self.Mg.unit = astropy_units.dimensionless_unscaled
+
+            self.Al.unit = astropy_units.dimensionless_unscaled
+
+            self.Si.unit = astropy_units.dimensionless_unscaled
+
+            self.Ar.unit = astropy_units.dimensionless_unscaled
+
+            self.Ca.unit = astropy_units.dimensionless_unscaled
+
+            self.Ni.unit = astropy_units.dimensionless_unscaled
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
 
-            self.K.unit = astropy_units.ph / astropy_units.s / astropy_units.keV
+            self.K.unit = y_unit
 
         def init_session(self, abund_table="AG89"):
             # initialize PyAtomDB session
             self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
 
-        def evaluate(self, x, K, kT, abund, redshift):
+        def evaluate(self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift):
+            assert self.session is not None, "please run init_session(abund)"
+
             sess = self.session
 
             nval = len(x)
@@ -204,36 +305,89 @@ if has_atomdb:
 
             sess.set_abund(
                 [
-                    3,
-                    4,
-                    5,
                     6,
-                    7,
-                    8,
-                    9,
-                    10,
-                    11,
-                    12,
-                    13,
-                    14,
-                    16,
-                    17,
-                    18,
-                    19,
-                    20,
-                    21,
-                    22,
-                    23,
-                    24,
-                    25,
-                    26,
-                    27,
-                    28,
-                    29,
-                    30,
                 ],
-                abund,
+                C,
             )
+
+            sess.set_abund(
+                [
+                    7,
+                ],
+                N,
+            )
+
+            sess.set_abund(
+                [
+                    8,
+                ],
+                O,
+            )
+
+            sess.set_abund(
+                [
+                    10,
+                ],
+                Ne,
+            )
+
+            sess.set_abund(
+                [
+                    12,
+                ],
+                Mg,
+            )
+
+            sess.set_abund(
+                [
+                    13,
+                ],
+                Al,
+            )
+
+            sess.set_abund(
+                [
+                    14,
+                ],
+                Si,
+            )
+
+            sess.set_abund(
+                [
+                    16,
+                ],
+                S,
+            )
+
+            sess.set_abund(
+                [
+                    18,
+                ],
+                Ar,
+            )
+
+            sess.set_abund(
+                [
+                    20,
+                ],
+                Ca,
+            )
+
+            sess.set_abund(
+                [
+                    26,
+                ],
+                Fe,
+            )
+
+            sess.set_abund(
+                [
+                    28,
+                ],
+                Ni,
+            )
+
+            sess.set_abund([9, 11, 15, 17, 19, 21, 22, 23, 24, 25, 27, 29, 30], Fe) # Remaining elements are set to Fe
 
             spec = sess.return_spectrum(kT) / binsize / 1e-14
 
@@ -399,5 +553,66 @@ class TbAbs(Function1D):
         xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
 
         spec = np.exp(-NH * xsect_interp * _unit ) * _y_unit
+
+        return spec
+
+
+# WAbs class
+@six.add_metaclass(FunctionMeta)
+class WAbs(Function1D):
+    r"""
+    description :
+        Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E))
+        contributed by Dominique Eckert
+    parameters :
+        NH :
+            desc : absorbing column density in units of 1e22 particles per cm^2
+            initial value : 1.0
+            is_normalization : True
+            transformation : log10
+            min : 1e-4
+            max : 1e4
+            delta : 0.1
+
+    """
+
+    def _setup(self):
+        self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
+
+    def _set_units(self, x_unit, y_unit):
+        self.NH.unit = astropy_units.cm ** (-2)
+
+    def init_xsect(self):
+        """
+        Set the abundance table
+
+        :returns:
+        :rtype:
+
+        """
+
+        path_to_xsect = _get_data_file_path(
+                os.path.join("xsect", "xsect_wabs_angr.fits")
+            )
+
+        fxs = fits.open(path_to_xsect)
+        dxs = fxs[1].data
+        self.xsect_ene = dxs["ENERGY"]
+        self.xsect_val = dxs["SIGMA"]
+
+    def evaluate(self, x, NH):
+        assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect()"
+
+        if isinstance(NH, astropy_units.Quantity):
+
+            _unit = astropy_units.cm ** 2
+
+        else:
+
+            _unit = 1.
+
+        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+
+        spec = np.exp(-NH * xsect_interp * _unit)
 
         return spec
