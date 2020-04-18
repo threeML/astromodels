@@ -280,7 +280,9 @@ if has_atomdb:
             # initialize PyAtomDB session
             self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
 
-        def evaluate(self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift):
+        def evaluate(
+            self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift
+        ):
             assert self.session is not None, "please run init_session(abund)"
 
             sess = self.session
@@ -304,94 +306,101 @@ if has_atomdb:
             sess.set_response(ebounds, raw=True)
 
             sess.set_abund(
-                [
-                    6,
-                ],
-                C,
+                [6,], C,
             )
 
             sess.set_abund(
-                [
-                    7,
-                ],
-                N,
+                [7,], N,
             )
 
             sess.set_abund(
-                [
-                    8,
-                ],
-                O,
+                [8,], O,
             )
 
             sess.set_abund(
-                [
-                    10,
-                ],
-                Ne,
+                [10,], Ne,
             )
 
             sess.set_abund(
-                [
-                    12,
-                ],
-                Mg,
+                [12,], Mg,
             )
 
             sess.set_abund(
-                [
-                    13,
-                ],
-                Al,
+                [13,], Al,
             )
 
             sess.set_abund(
-                [
-                    14,
-                ],
-                Si,
+                [14,], Si,
             )
 
             sess.set_abund(
-                [
-                    16,
-                ],
-                S,
+                [16,], S,
             )
 
             sess.set_abund(
-                [
-                    18,
-                ],
-                Ar,
+                [18,], Ar,
             )
 
             sess.set_abund(
-                [
-                    20,
-                ],
-                Ca,
+                [20,], Ca,
             )
 
             sess.set_abund(
-                [
-                    26,
-                ],
-                Fe,
+                [26,], Fe,
             )
 
             sess.set_abund(
-                [
-                    28,
-                ],
-                Ni,
+                [28,], Ni,
             )
 
-            sess.set_abund([9, 11, 15, 17, 19, 21, 22, 23, 24, 25, 27, 29, 30], Fe) # Remaining elements are set to Fe
+            sess.set_abund(
+                [9, 11, 15, 17, 19, 21, 22, 23, 24, 25, 27, 29, 30], Fe
+            )  # Remaining elements are set to Fe
 
             spec = sess.return_spectrum(kT) / binsize / 1e-14
 
             return K * spec
+
+
+_abs_tables = {
+    "phabs": {"AG89": "angr", "ASPL": "aspl"},
+    "tbabs": {"AG89": "angr", "ASPL": "aspl", "WILM": "wilm"},
+    "wabs": {"AG89": "angr"},
+}
+_abund_info = {}
+_abund_info[
+    "WILMS"
+] = "wilms\nfrom Wilms, Allen & McCray (2000), ApJ 542, 914 \n except for elements not listed which are given zero abundance)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html "
+_abund_info[
+    "AG89"
+] = "angr\nfrom Anders E. & Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
+_abund_info[
+    "ASPL"
+] = "aspl\nfrom Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)\nhttps://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
+
+
+def _get_xsect_table(model, abund_table):
+    """
+    contructs the abundance table from the values given
+    """
+
+    assert model in _abs_tables, "the model %s does not exist" % model
+    assert abund_table in _abs_tables[model], (
+        "the table %s does not exist" % abund_table
+    )
+
+    path_to_xsect = _get_data_file_path(
+        os.path.join(
+            "xsect", "xsect_%s_%s.fits" % (model, _abs_tables[model][abund_table])
+        )
+    )
+
+    fxs = fits.open(path_to_xsect)
+    dxs = fxs[1].data
+    xsect_ene = dxs["ENERGY"]
+    xsect_val = dxs["SIGMA"]
+
+    return xsect_ene, xsect_val
 
 
 # PhAbs class
@@ -414,8 +423,8 @@ class PhAbs(Function1D):
 
     def _setup(self):
         self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
+        self.init_xsect()
 
-    
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
 
@@ -428,44 +437,38 @@ class PhAbs(Function1D):
         :rtype: 
 
         """
-        
+
         # load cross section data
 
-        if abund_table == "AG89":
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_phabs_angr.fits")
-            )
+        try:
+            self.xsect_ene, self.xsect_val = _get_xsect_table("phabs", abund_table)
+            self._abund_table = abund_table
 
-        elif abund_table == "ASPL":
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_phabs_aspl.fits")
-            )
+        except:
 
-        else:
-            print("Unknown abundace table %s, reverting to AG89" % (abund_table))
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_phabs_angr.fits")
-            )
+            print("defaulting to AG89")
+            self.xsect_ene, self.xsect_val = _get_xsect_table("phabs", abund_table)
 
-        fxs = fits.open(path_to_xsect)
-        dxs = fxs[1].data
-        self.xsect_ene = dxs["ENERGY"]
-        self.xsect_val = dxs["SIGMA"]
+            self._abund_table = "AG89"
 
     def evaluate(self, x, NH):
-        assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect(abund)"
 
-        if isinstance(NH, astropy_units.Quantity):
+        if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
+            _unit = astropy_units.cm ** 2
+            _y_unit = astropy_units.dimensionless_unscaled
+            _x = x.value
 
         else:
 
-            _unit = 1.
-            
-        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+            _unit = 1.0
+            _y_unit = 1.0
 
-        spec = np.exp(-NH * xsect_interp * _unit)
+            _x = 1
+
+        xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
+
+        spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
         return spec
 
@@ -492,9 +495,9 @@ class TbAbs(Function1D):
     def _setup(self):
 
         self.init_xsect()
-        
+
         self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
-    
+
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
 
@@ -507,52 +510,40 @@ class TbAbs(Function1D):
         :rtype: 
 
         """
-        
 
-        if abund_table == "AG89":
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_tbabs_angr.fits")
-            )
+        try:
+            self.xsect_ene, self.xsect_val = _get_xsect_table("tbabs", abund_table)
+            self._abund_table = abund_table
 
-        elif abund_table == "ASPL":
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_tbab_aspl.fits")
-            )
-        elif abund_table == "WILM":
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_tbabs_wilm.fits")
-            )
+        except:
 
-        else:
-            print("Unknown abundace table %s, reverting to WILM" % (abund_table))
-            path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_tbabs_wilm.fits")
-            )
+            print("defaulting to WILM")
+            self.xsect_ene, self.xsect_val = _get_xsect_table("tbabs", abund_table)
 
-        fxs = fits.open(path_to_xsect)
-        dxs = fxs[1].data
-        self.xsect_ene = dxs["ENERGY"]
-        self.xsect_val = dxs["SIGMA"]
+            self._abund_table = "WILM"
+
+    @property
+    def abundance_table(self):
+        print(_abund_info[self._abund_table])
 
     def evaluate(self, x, NH):
-        assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect(abund)"
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
+            _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
-            
+
         else:
 
-            _unit = 1.
-            _unit_y = 1.
+            _unit = 1.0
+            _y_unit = 1.0
 
             _x = 1
 
         xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
 
-        spec = np.exp(-NH * xsect_interp * _unit ) * _y_unit
+        spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
         return spec
 
@@ -578,6 +569,7 @@ class WAbs(Function1D):
 
     def _setup(self):
         self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
+        self.init_xsect()
 
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
@@ -591,28 +583,31 @@ class WAbs(Function1D):
 
         """
 
-        path_to_xsect = _get_data_file_path(
-                os.path.join("xsect", "xsect_wabs_angr.fits")
-            )
+        self.xsect_ene, self.xsect_val = _get_xsect_table("wabs", "AG89")
 
-        fxs = fits.open(path_to_xsect)
-        dxs = fxs[1].data
-        self.xsect_ene = dxs["ENERGY"]
-        self.xsect_val = dxs["SIGMA"]
+        self._abund_table = "AG89"
+
+    @property
+    def abundance_table(self):
+        print(_abund_info[self._abund_table])
 
     def evaluate(self, x, NH):
-        assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect()"
 
-        if isinstance(NH, astropy_units.Quantity):
+        if isinstance(x, astropy_units.Quantity):
 
             _unit = astropy_units.cm ** 2
+            _y_unit = astropy_units.dimensionless_unscaled
+            _x = x.value
 
         else:
 
-            _unit = 1.
+            _unit = 1.0
+            _y_unit = 1.0
 
-        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+            _x = 1
 
-        spec = np.exp(-NH * xsect_interp * _unit)
+        xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
+
+        spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
         return spec

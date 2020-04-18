@@ -6,7 +6,7 @@ import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
-from astromodels.functions.apec import TbAbs, PhAbs
+from astromodels.functions.apec import TbAbs, PhAbs, WAbs
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
@@ -33,7 +33,7 @@ __author__ = 'giacomov'
 
 
 
-_multiplicative_models = ["PhAbs", "TbAbs"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs"]
 
 def test_constructor():
 
@@ -311,21 +311,18 @@ def test_call_with_composite_function_with_units():
     # test the absorption models
 
 
-    phabs = PhAbs()
-    phabs.init_xsect()
-    plaw = Powerlaw()
     
-    spectrum = phabs * plaw
+    spectrum = PhAbs() * Powerlaw()
     
     
     one_test(spectrum)
 
-    tbabs = TbAbs()
-    tbabs.init_xsect()
+    spectrum = TbAbs() * Powerlaw()
 
-    plaw = Powerlaw()
-    
-    spectrum = tbabs * plaw
+    one_test(spectrum)
+
+
+    spectrum = WAbs() * Powerlaw()
 
     one_test(spectrum)
 
