@@ -281,6 +281,8 @@ if has_atomdb:
             self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
 
         def evaluate(self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift):
+            assert self.session is not None, "please run init_session(abund)"
+            
             sess = self.session
 
             nval = len(x)
