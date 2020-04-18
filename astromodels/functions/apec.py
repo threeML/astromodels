@@ -282,7 +282,7 @@ if has_atomdb:
 
         def evaluate(self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift):
             assert self.session is not None, "please run init_session(abund)"
-            
+
             sess = self.session
 
             nval = len(x)
@@ -546,5 +546,66 @@ class TbAbs(Function1D):
         xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
 
         spec = np.exp(-NH * xsect_interp * _unit )
+
+        return spec
+
+
+# WAbs class
+@six.add_metaclass(FunctionMeta)
+class WAbs(Function1D):
+    r"""
+    description :
+        Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E))
+        contributed by Dominique Eckert
+    parameters :
+        NH :
+            desc : absorbing column density in units of 1e22 particles per cm^2
+            initial value : 1.0
+            is_normalization : True
+            transformation : log10
+            min : 1e-4
+            max : 1e4
+            delta : 0.1
+
+    """
+
+    def _setup(self):
+        self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
+
+    def _set_units(self, x_unit, y_unit):
+        self.NH.unit = astropy_units.cm ** (-2)
+
+    def init_xsect(self):
+        """
+        Set the abundance table
+
+        :returns:
+        :rtype:
+
+        """
+
+        path_to_xsect = _get_data_file_path(
+                os.path.join("xsect", "xsect_wabs_angr.fits")
+            )
+
+        fxs = fits.open(path_to_xsect)
+        dxs = fxs[1].data
+        self.xsect_ene = dxs["ENERGY"]
+        self.xsect_val = dxs["SIGMA"]
+
+    def evaluate(self, x, NH):
+        assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect()"
+
+        if isinstance(NH, astropy_units.Quantity):
+
+            _unit = astropy_units.cm ** 2
+
+        else:
+
+            _unit = 1.
+
+        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+
+        spec = np.exp(-NH * xsect_interp * _unit)
 
         return spec
