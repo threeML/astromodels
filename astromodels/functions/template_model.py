@@ -6,6 +6,7 @@ from past.utils import old_div
 import collections
 
 import astropy.units as u
+import astropy.io.fits as fits
 import numpy as np
 import os
 import pandas as pd
@@ -558,3 +559,123 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         #     data['extra_setup'] = {'data_file': self._data_file}
 
         return data
+
+class XSPECTableModel(object):
+    def __init__(
+            self, xspec_table_model_file, interpolation_degree=1, spline_smoothing_factor=0, log_centers=True
+    ):
+        """
+        Convert an XSPEC table model to an astromodels TemplateModel.
+        usage: 
+        
+        xtm = XSPECTableModel("ST95.fits")
+        xtm.to_table_model('test', 'test') 
+        
+        reloaded_table_model = TemplateModel('test', log_interp=False)
+
+        Note: if the reloaded model is returning NaNs, adjust the interpolation
+        scheme
+
+        :param xspec_table_model_file: 
+        :param interpolation_degree: 
+        :param spline_smoothing_factor: spline smoothing 
+        :param log_centers: treat energies with log centers
+        :returns: 
+        :rtype: 
+
+        """
+
+        self._interpolation_degree = interpolation_degree
+        self._spline_smoothing_factor = spline_smoothing_factor
+        self._log_centers = log_centers
+        
+        self._xspec_file_name = xspec_table_model_file
+        self._extract_model()
+
+    def _extract_model(self):
+
+        with fits.open(self._xspec_file_name) as f:
+
+            # get the energies
+
+            energies = f["ENERGIES"]
+            ene_lo = energies.data["ENERG_LO"]
+            ene_hi = energies.data["ENERG_HI"]
+
+            # log centers
+
+            if self._log_centers:
+                self._energy = np.sqrt(ene_lo * ene_hi)
+
+            else:
+
+                self._energy = (ene_hi + ene_lo)/2.
+                
+            params = f["PARAMETERS"]
+
+            self._names = params.data["NAME"]
+
+            self._n_params = len(self._names)
+
+            spectra = f["SPECTRA"]
+
+            self._spectrum = spectra.data["INTPSPEC"]
+
+            self._params_dict = {}
+
+            for i, name in enumerate(self._names):
+
+                this_dict = {}
+
+                this_dict["pmin"] = params.data["MINIMUM"][i]
+                this_dict["pmax"] = params.data["MAXIMUM"][i]
+                if self._n_params > 1:
+
+                    try:
+
+                        this_dict["values"] = spectra.data["PARAMVAL{%d}"%i]
+
+                    except:
+                        this_dict["values"] = spectra.data["PARAMVAL"][:, i]
+
+                else:
+
+                    this_dict["values"] = spectra.data["PARAMVAL"]
+
+                self._params_dict[name] = this_dict
+
+    def to_table_model(self, file_name, model_name, overwrite=False):
+        """
+        Write the table model to your local astromodels database
+
+        :param file_name: name of file to store
+        :param model_name: name of the model
+        :param overwrite: overwite the previous model 
+        :returns: 
+        :rtype: 
+
+        """
+        
+        
+        tmf = TemplateModelFactory(
+            file_name,
+            model_name,
+            self._energy,
+            self._names,
+            self._interpolation_degree,
+            self._spline_smoothing_factor,
+        )
+
+        for name, param_table in self._params_dict.items():
+
+            tmf.define_parameter_grid(name, np.unique(param_table["values"]))
+
+        for i in range(self._spectrum.shape[0]):
+
+            input_dict = {}
+            for k, v in self._params_dict.items():
+                input_dict[k] = v["values"][i]
+
+            tmf.add_interpolation_data(self._spectrum[i, :], **input_dict)
+
+        tmf.save_data(overwrite=overwrite)
