@@ -336,6 +336,9 @@ class TbAbs(Function1D):
     """
 
     def _setup(self):
+
+        self.init_xsect()
+        
         self._fixed_units = (astropy_units.keV, astropy_units.dimensionless_unscaled)
     
     def _set_units(self, x_unit, y_unit):
@@ -380,17 +383,21 @@ class TbAbs(Function1D):
     def evaluate(self, x, NH):
         assert self.xsect_ene is not None and self.xsect_val is not None, "please run init_xsect(abund)"
 
-        if isinstance(NH, astropy_units.Quantity):
+        if isinstance(x, astropy_units.Quantity):
 
             _unit = astropy_units.cm**2
-
+            _y_unit = astropy_units.dimensionless_unscaled
+            _x = x.value
+            
         else:
 
             _unit = 1.
+            _unit_y = 1.
 
+            _x = 1
 
-        xsect_interp = np.interp(x, self.xsect_ene, self.xsect_val)
+        xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
 
-        spec = np.exp(-NH * xsect_interp * _unit )
+        spec = np.exp(-NH * xsect_interp * _unit ) * _y_unit
 
         return spec

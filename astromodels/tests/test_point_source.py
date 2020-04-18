@@ -313,15 +313,19 @@ def test_call_with_composite_function_with_units():
 
     phabs = PhAbs()
     phabs.init_xsect()
-    spectrum = phabs * Powerlaw()
+    plaw = Powerlaw()
+    
+    spectrum = phabs * plaw
     
     
     one_test(spectrum)
 
     tbabs = TbAbs()
     tbabs.init_xsect()
+
+    plaw = Powerlaw()
     
-    spectrum = tbabs * Powerlaw()
+    spectrum = tbabs * plaw
 
     one_test(spectrum)
 
