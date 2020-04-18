@@ -6,10 +6,13 @@ import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
+from astromodels.functions.apec import TbAbs, PhAbs, WAbs
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
+
+
 
 try:
 
@@ -28,6 +31,9 @@ from astromodels.functions.function import _known_functions
 
 __author__ = 'giacomov'
 
+
+
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs"]
 
 def test_constructor():
 
@@ -184,6 +190,11 @@ def test_call_with_units():
                 instance.set_particle_distribution(particleSource.spectrum.main.shape)
 
 
+            # elif instance.name in ["PhAbs", "TbAbs"]:
+
+            #     instance
+                
+
             result = ps(1.0)
 
             assert isinstance(result, float)
@@ -227,7 +238,7 @@ def test_call_with_units():
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
-        if key.find("XS")==0 and key != "XS_powerlaw":
+        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models):
 
             # An XSpec model. Test it only if it's a power law (the others might need other parameters during
             # initialization)
@@ -297,6 +308,25 @@ def test_call_with_composite_function_with_units():
 
     one_test(spectrum)
 
+    # test the absorption models
+
+
+    
+    spectrum = PhAbs() * Powerlaw()
+    
+    
+    one_test(spectrum)
+
+    spectrum = TbAbs() * Powerlaw()
+
+    one_test(spectrum)
+
+
+    spectrum = WAbs() * Powerlaw()
+
+    one_test(spectrum)
+
+    
     if has_xspec:
 
         spectrum = XS_phabs() * Powerlaw()
