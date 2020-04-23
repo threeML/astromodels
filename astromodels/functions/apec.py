@@ -4,7 +4,7 @@ try:
     from functools import lru_cache
 except ImportError:
 
-    def lru_cache(user_function):
+    def lru_cache(user_function, **kwargs):
         cache = {}
 
         @wraps(user_function)
