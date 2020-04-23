@@ -1,5 +1,32 @@
+from functools import lru_cache, wraps
 import astropy.units as astropy_units
 import numpy as np
+
+
+def cache_array_method(*args, **kwargs):
+    """
+    LRU cache implementation for methods whose FIRST parameter is a numpy array
+    modified from: https://gist.github.com/Susensio/61f4fee01150caaac1e10fc5f005eb75
+    """
+
+    def decorator(function):
+        @wraps(function)
+        def wrapper(s, np_array, *args, **kwargs):
+            hashable_array = tuple(np_array)
+            return cached_wrapper(s, hashable_array, *args, **kwargs)
+
+        @lru_cache(*args, **kwargs)
+        def cached_wrapper(s, hashable_array, *args, **kwargs):
+            array = np.array(hashable_array)
+            return function(s, array, *args, **kwargs)
+
+        # copy lru_cache attributes over too
+        wrapper.cache_info = cached_wrapper.cache_info
+        wrapper.cache_clear = cached_wrapper.cache_clear
+        return wrapper
+
+    return decorator
+
 
 try:
 
@@ -414,11 +441,23 @@ class PhAbs(Function1D):
         NH :
             desc : absorbing column density in units of 1e22 particles per cm^2
             initial value : 1.0
-            is_normalization : True
+            is_normalization : False
             transformation : log10
             min : 1e-4
             max : 1e4
             delta : 0.1
+
+        redshift :
+            desc : the redshift of the source
+            initial value : 0.
+            is_normalization : False
+            transformation : log10
+            min : 0
+            max : 15
+            delta : 0.1
+            fixed: True
+
+
     """
 
     def _setup(self):
@@ -427,6 +466,7 @@ class PhAbs(Function1D):
 
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
+        self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def init_xsect(self, abund_table="AG89"):
         """
@@ -451,7 +491,12 @@ class PhAbs(Function1D):
 
             self._abund_table = "AG89"
 
-    def evaluate(self, x, NH):
+    @cache_array_method()
+    def _cached_interp(self, x):
+
+        return np.interp(x, self.xsect_ene, self.xsect_val)
+
+    def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
 
@@ -464,9 +509,9 @@ class PhAbs(Function1D):
             _unit = 1.0
             _y_unit = 1.0
 
-            _x = 1
+            _x = x
 
-        xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
+        xsect_interp = self._cached_interp(_x * (1+redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
@@ -490,6 +535,17 @@ class TbAbs(Function1D):
             max : 1e4
             delta : 0.1
 
+        redshift :
+            desc : the redshift of the source
+            initial value : 0.
+            is_normalization : False
+            transformation : log10
+            min : 0
+            max : 15
+            delta : 0.1
+            fixed: True
+
+
     """
 
     def _setup(self):
@@ -500,6 +556,7 @@ class TbAbs(Function1D):
 
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
+        self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def init_xsect(self, abund_table="WILM"):
         """
@@ -526,7 +583,12 @@ class TbAbs(Function1D):
     def abundance_table(self):
         print(_abund_info[self._abund_table])
 
-    def evaluate(self, x, NH):
+    @cache_array_method()
+    def _cached_interp(self, x):
+
+        return np.interp(x, self.xsect_ene, self.xsect_val)
+
+    def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
 
@@ -539,9 +601,9 @@ class TbAbs(Function1D):
             _unit = 1.0
             _y_unit = 1.0
 
-            _x = 1
+            _x = x
 
-        xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
+        xsect_interp = self._cached_interp(_x * (1 +redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
@@ -564,6 +626,16 @@ class WAbs(Function1D):
             min : 1e-4
             max : 1e4
             delta : 0.1
+        redshift :
+            desc : the redshift of the source
+            initial value : 0.
+            is_normalization : False
+            transformation : log10
+            min : 0
+            max : 15
+            delta : 0.1
+            fixed: True
+
 
     """
 
@@ -573,7 +645,7 @@ class WAbs(Function1D):
 
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
-
+        self.redshift.unit = astropy_units.dimensionless_unscaled
     def init_xsect(self):
         """
         Set the abundance table
@@ -591,7 +663,12 @@ class WAbs(Function1D):
     def abundance_table(self):
         print(_abund_info[self._abund_table])
 
-    def evaluate(self, x, NH):
+    @cache_array_method()
+    def _cached_interp(self, x):
+
+        return np.interp(x, self.xsect_ene, self.xsect_val)
+
+    def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
 
@@ -604,9 +681,9 @@ class WAbs(Function1D):
             _unit = 1.0
             _y_unit = 1.0
 
-            _x = 1
+            _x = x
 
-        xsect_interp = np.interp(_x, self.xsect_ene, self.xsect_val)
+        xsect_interp = self._cached_interp(_x * (1+redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
