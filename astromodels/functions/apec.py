@@ -1,8 +1,22 @@
+from functools import wraps
+
 try:
     from functools import lru_cache
 except ImportError:
-    from backports.functools_lru_cache import lru_cache
-from functools import wraps
+
+    def lru_cache(user_function):
+        cache = {}
+
+        @wraps(user_function)
+        def wrapper(*args):
+            key = tuple(args)
+            if key not in cache:
+                cache[key] = user_function(*args)
+            return cache[key]
+
+        return wrapper
+
+
 import astropy.units as astropy_units
 import numpy as np
 
@@ -514,7 +528,7 @@ class PhAbs(Function1D):
 
             _x = x
 
-        xsect_interp = self._cached_interp(_x * (1+redshift))
+        xsect_interp = self._cached_interp(_x * (1 + redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
@@ -605,7 +619,7 @@ class TbAbs(Function1D):
 
             _x = x
 
-        xsect_interp = self._cached_interp(_x * (1 +redshift))
+        xsect_interp = self._cached_interp(_x * (1 + redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
@@ -647,6 +661,7 @@ class WAbs(Function1D):
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm ** (-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
+
     def init_xsect(self):
         """
         Set the abundance table
@@ -684,7 +699,7 @@ class WAbs(Function1D):
 
             _x = x
 
-        xsect_interp = self._cached_interp(_x * (1+redshift))
+        xsect_interp = self._cached_interp(_x * (1 + redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
