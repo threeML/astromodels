@@ -455,7 +455,6 @@ class PhAbs(Function1D):
             desc : the redshift of the source
             initial value : 0.
             is_normalization : False
-            transformation : log10
             min : 0
             max : 15
             delta : 0.1
@@ -543,7 +542,6 @@ class TbAbs(Function1D):
             desc : the redshift of the source
             initial value : 0.
             is_normalization : False
-            transformation : log10
             min : 0
             max : 15
             delta : 0.1
@@ -634,7 +632,6 @@ class WAbs(Function1D):
             desc : the redshift of the source
             initial value : 0.
             is_normalization : False
-            transformation : log10
             min : 0
             max : 15
             delta : 0.1
