@@ -1,4 +1,8 @@
-from functools import lru_cache, wraps
+try:
+    from functools import lru_cache
+except ImportError:
+    from backports.functools_lru_cache import lru_cache
+from functools import wraps
 import astropy.units as astropy_units
 import numpy as np
 
