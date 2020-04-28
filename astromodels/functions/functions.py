@@ -597,37 +597,27 @@ class SmoothlyBrokenPowerLaw(Function1D):
         self.break_scale.unit = astropy_units.dimensionless_unscaled
 
     def evaluate(self, x, K, alpha, break_energy, break_scale, beta, pivot):
+        
+        if isinstance(x, astropy_units.Quantity):
+            alpha_ = alpha.value
+            beta_ = beta.value
+            K_ = K.value
+            pivot_ = pivot.value
+            break_energy_ = break_energy.value
+            break_scale_ = break_scale.value
+            x_ = np.atleast_1d(x.value)
 
-        B = old_div((alpha + beta), 2.0)
-        M = old_div((beta - alpha), 2.0)
+            unit_ = self.y_unit
 
-        arg_piv = old_div(np.log10(old_div(pivot, break_energy)), break_scale)
-
-        if arg_piv < -6.0:
-            pcosh_piv = M * break_scale * (-arg_piv - np.log(2.0))
-        elif arg_piv > 4.0:
-
-            pcosh_piv = M * break_scale * (arg_piv - np.log(2.0))
         else:
-            pcosh_piv = M * break_scale * \
-                (np.log(old_div((np.exp(arg_piv) + np.exp(-arg_piv)), 2.0)))
+            unit_ = 1.0
+            K_, pivot_, x_, alpha_, beta_, break_scale_, break_energy_ = K, pivot, x, alpha, beta, break_scale, break_energy
+        
+        result = nb_func.sbplaw_eval(x_, K_, alpha_, break_energy, break_scale_, beta_, pivot_) 
 
-        arg = old_div(np.log10(old_div(x, break_energy)), break_scale)
-        idx1 = arg < -6.0
-        idx2 = arg > 4.0
-        idx3 = ~np.logical_or(idx1, idx2)
-
-        # The K * 0 part is a trick so that out will have the right units (if the input
-        # has units)
-
-        pcosh = np.zeros(x.shape)
-
-        pcosh[idx1] = M * break_scale * (-arg[idx1] - np.log(2.0))
-        pcosh[idx2] = M * break_scale * (arg[idx2] - np.log(2.0))
-        pcosh[idx3] = M * break_scale * \
-            (np.log(old_div((np.exp(arg[idx3]) + np.exp(-arg[idx3])), 2.0)))
-
-        return K * (old_div(x, pivot)) ** B * 10. ** (pcosh - pcosh_piv)
+        
+        
+        return result * unit_
 
 
 @six.add_metaclass(FunctionMeta)
