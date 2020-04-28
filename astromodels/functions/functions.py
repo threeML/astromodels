@@ -330,7 +330,7 @@ class Cutoff_powerlaw(Function1D):
 
         else:
             unit_ = 1.0
-            K_, piv_, x_, index_, xc_ = K, piv, x, index, xc_
+            K_, piv_, x_, index_, xc_ = K, piv, x, index, xc
         
         result = nb_func.cplaw_eval(x_, K_, xc_ ,index_, piv_)
         
@@ -395,9 +395,9 @@ class Inverse_cutoff_powerlaw(Function1D):
 
         else:
             unit_ = 1.0
-            K_, piv_, x_, index_, b_ = K, piv, x, index, b_
+            K_, piv_, x_, index_, b_ = K, piv, x, index, b
         
-        result = nb_func.cplaw_index_eval(x_, K_, b_ ,index_, piv_)
+        result = nb_func.cplaw_inverse_eval(x_, K_, b_ ,index_, piv_)
         
         return result * unit_
 

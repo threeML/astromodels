@@ -12,7 +12,7 @@ def plaw_eval(x, K, index, piv):
 
     for idx in range(n):
 
-        out[idx] = K * math.pow(x[idx] / piv, idx)
+        out[idx] = K * math.pow(x[idx] / piv, index)
 
     return out
 
