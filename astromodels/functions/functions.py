@@ -313,7 +313,7 @@ class Powerlaw_flux(Function1D):
 
 
         
-        return gp1 / ((b/piv) ** gp1 - (apiv) ** gp1) * plaw * unit_
+        return gp1 / ((b/piv) ** gp1 - (a/piv) ** gp1) * plaw * unit_
 
 
 @six.add_metaclass(FunctionMeta)
@@ -533,7 +533,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
 
         A Smoothly Broken Power Law
 
-    latex : $  $
+    Latex : $  $
 
     parameters :
 
