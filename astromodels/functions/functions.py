@@ -18,10 +18,6 @@ __author__ = 'giacomov'
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
 
 
-
-
-
-
 class GSLNotAvailable(ImportWarning):
     pass
 
@@ -99,7 +95,6 @@ else:
     has_ebltable = True
 
 
-
 @six.add_metaclass(FunctionMeta)
 class Powerlaw(Function1D):
     r"""
@@ -165,10 +160,9 @@ class Powerlaw(Function1D):
         else:
             unit_ = 1.0
             K_, piv_, x_, index_ = K, piv, x, index
-        
+
         result = nb_func.plaw_eval(x_, K_, index_, piv_)
 
-               
         return result * unit_
 
 
@@ -215,7 +209,7 @@ class Powerlaw_flux(Function1D):
                 fix : yes
 
             piv :
-    
+
                  desc : Pivot value
                  initial value : 1
                  fix : yes
@@ -233,7 +227,7 @@ class Powerlaw_flux(Function1D):
         # a and b have the same units as x
 
         self.piv.unit = y_unit
-        
+
         self.a.unit = x_unit
         self.b.unit = x_unit
 
@@ -252,11 +246,9 @@ class Powerlaw_flux(Function1D):
         else:
             unit_ = 1.0
             F_, piv_, x_, index_ = F, piv, x, index
-        
+
         plaw = nb_func.plaw_eval(x_, F_, index_, piv_)
 
-
-        
         return gp1 / ((b/piv) ** gp1 - (a/piv) ** gp1) * plaw * unit_
 
 
@@ -318,7 +310,6 @@ class Cutoff_powerlaw(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, xc):
 
-
         if isinstance(x, astropy_units.Quantity):
             index_ = index.value
             K_ = K.value
@@ -331,10 +322,11 @@ class Cutoff_powerlaw(Function1D):
         else:
             unit_ = 1.0
             K_, piv_, x_, index_, xc_ = K, piv, x, index, xc
-        
-        result = nb_func.cplaw_eval(x_, K_, xc_ ,index_, piv_)
-        
+
+        result = nb_func.cplaw_eval(x_, K_, xc_, index_, piv_)
+
         return result * unit_
+
 
 @six.add_metaclass(FunctionMeta)
 class Inverse_cutoff_powerlaw(Function1D):
@@ -365,8 +357,6 @@ class Inverse_cutoff_powerlaw(Function1D):
             initial value : 1
     """
 
-
-
     def _set_units(self, x_unit, y_unit):
         # The index is always dimensionless
         self.index.unit = astropy_units.dimensionless_unscaled
@@ -383,7 +373,6 @@ class Inverse_cutoff_powerlaw(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, b):
 
-        
         if isinstance(x, astropy_units.Quantity):
             index_ = index.value
             K_ = K.value
@@ -396,13 +385,10 @@ class Inverse_cutoff_powerlaw(Function1D):
         else:
             unit_ = 1.0
             K_, piv_, x_, index_, b_ = K, piv, x, index, b
-        
-        result = nb_func.cplaw_inverse_eval(x_, K_, b_ ,index_, piv_)
-        
+
+        result = nb_func.cplaw_inverse_eval(x_, K_, b_, index_, piv_)
+
         return result * unit_
-
-
-        
 
 
 @six.add_metaclass(FunctionMeta)
@@ -541,7 +527,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
         self.break_scale.unit = astropy_units.dimensionless_unscaled
 
     def evaluate(self, x, K, alpha, break_energy, break_scale, beta, pivot):
-        
+
         if isinstance(x, astropy_units.Quantity):
             alpha_ = alpha.value
             beta_ = beta.value
@@ -556,11 +542,10 @@ class SmoothlyBrokenPowerLaw(Function1D):
         else:
             unit_ = 1.0
             K_, pivot_, x_, alpha_, beta_, break_scale_, break_energy_ = K, pivot, x, alpha, beta, break_scale, break_energy
-        
-        result = nb_func.sbplaw_eval(x_, K_, alpha_, break_energy, break_scale_, beta_, pivot_) 
 
-        
-        
+        result = nb_func.sbplaw_eval(
+            x_, K_, alpha_, break_energy, break_scale_, beta_, pivot_)
+
         return result * unit_
 
 
@@ -641,9 +626,9 @@ class Broken_powerlaw(Function1D):
         else:
             unit_ = 1.0
             alpha_, beta_, K_, piv_, x_, xb_ = alpha, beta, K, piv, x, xb
-        
+
         result = nb_func.bplaw_eval(x_, K_, xb_, alpha_, beta_, piv_)
-            
+
         return result * unit_
 
 
@@ -774,6 +759,13 @@ class Blackbody(Function1D):
             desc : temperature of the blackbody
             initial value : 30.0
             min: 0.
+
+        redshift :
+            desc : redshift
+            initial value : 0
+            min: 0.
+            fixed : true
+
     """
 
     def _set_units(self, x_unit, y_unit):
@@ -782,23 +774,26 @@ class Blackbody(Function1D):
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
+        self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def evaluate(self, x, K, kT):
+    def evaluate(self, x, K, kT, redshift):
 
-        arg = np.divide(x, kT)
+        if isinstance(x, astropy_units.Quantity):
 
-        # get rid of overflow
-        idx = arg <= 700.
+            K_ = K.value
+            kT_ = kT.value
+            z_ = z.value
+            x_ = np.atleast_1d(x.value)
 
-        # The K * 0 part is a trick so that out will have the right units (if the input
-        # has units)
+            unit_ = self.y_unit
 
-        out = np.zeros(x.shape) * K * x * x * 0
+        else:
+            unit_ = 1.0
+            K_, kT_, x_, redshift_ = K, kT, x, redshift
 
-        out[idx] = np.divide(K * x[idx] * x[idx], np.expm1(arg[idx]))
-        #out[~idx] = 0. * K
+        result = nb_func.bb_eval(x_, K_, kT_)
 
-        return out
+        return result * unit_
 
 
 # noinspection PyPep8Naming
