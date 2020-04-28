@@ -270,6 +270,13 @@ class Powerlaw_flux(Function1D):
                 initial value : 100.0
                 fix : yes
 
+            piv :
+    
+                 desc : Pivot value
+                 initial value : 1
+                 fix : yes
+
+
         """
 
     def _set_units(self, x_unit, y_unit):
@@ -281,11 +288,13 @@ class Powerlaw_flux(Function1D):
 
         # a and b have the same units as x
 
+        self.piv.unit = y_unit
+        
         self.a.unit = x_unit
         self.b.unit = x_unit
 
     # noinspection PyPep8Naming
-    def evaluate(self, x, F, index, a, b):
+    def evaluate(self, x, F, index, a, b, piv):
         gp1 = index + 1
 
         if isinstance(x, astropy_units.Quantity):
@@ -294,7 +303,7 @@ class Powerlaw_flux(Function1D):
             piv_ = piv.value
             x_ = np.atleast_1d(x.value)
 
-            unit_ = self.y_unit
+            unit_ = self.y_unit * self.x_unit
 
         else:
             unit_ = 1.0
