@@ -5,7 +5,7 @@ import numpy as np
 
 
 @nb.njit(fastmath=True, cache=True)
-def plaw_eval(x,K,index,piv):
+def plaw_eval(x, K, index, piv):
 
     n = x.shape[0]
     out = np.empty(n)
@@ -17,6 +17,19 @@ def plaw_eval(x,K,index,piv):
     return out
 
 
+@nb.njit(fastmath=True, cache=True)
+def cplaw_eval(x, K, xc, index, piv):
+
+    n = x.shape[0]
+    out = np.empty(n)
+
+    for i in range(n):
+        # Compute it in logarithm to avoid roundoff errors, then raise it
+        log_v = index * np.log(x[i]/piv) - (x[i]/xc)
+        out[i] = K * np.exp(log_v)
+
+    return out
+
 
 @nb.njit(fastmath=True, cache=True)
 def band_eval(x, K, alpha, beta, E0, piv):
@@ -24,7 +37,8 @@ def band_eval(x, K, alpha, beta, E0, piv):
     n = x.shape[0]
     out = np.empty(n)
 
-    factor_ab = np.exp(beta - alpha) * math.pow((alpha - beta) * E0 / piv, alpha - beta)
+    factor_ab = np.exp(beta - alpha) * \
+        math.pow((alpha - beta) * E0 / piv, alpha - beta)
     break_point = (alpha - beta) * E0
 
     for idx in range(n):

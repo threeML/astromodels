@@ -365,10 +365,23 @@ class Cutoff_powerlaw(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, xc):
 
-        # Compute it in logarithm to avoid roundoff errors, then raise it
-        log_v = index * np.log(old_div(x, piv)) - old_div(x, xc)
 
-        return K * np.exp(log_v)
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            xc_ = xc.value
+            x_ = np.atleast_1d(x.value)
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, xc_ = K, piv, x, index, xc_
+        
+        result = nb_func.cplaw_eval(x_, K_, xc_ ,index_, piv_)
+        
+        return result * unit_
 
 
 class Inverse_cutoff_powerlaw(Function1D):
