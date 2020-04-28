@@ -39,7 +39,8 @@ requirements:
     - future
     - krb5==1.14.6
     - readline==6.2 # [py2k]
-
+    - numba
+    
   run:
     - python
   #  - libgfortran
@@ -58,7 +59,8 @@ requirements:
     - future
     - krb5==1.14.6
     - readline==6.2 # [py2k]
-
+    - numba
+    
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
