@@ -210,9 +210,22 @@ class Powerlaw(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index):
 
-        xx = np.divide(x, piv)
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            x_ = np.atleast_1d(x.value)
 
-        return K * np.power(xx, index)
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_ = K, piv, x, index
+        
+        result = nb_func.plaw_eval(x_, K_, index_, piv_)
+
+               
+        return result * unit_
 
 
 # noinspection PyPep8Naming
