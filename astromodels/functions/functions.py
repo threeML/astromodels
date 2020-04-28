@@ -288,7 +288,23 @@ class Powerlaw_flux(Function1D):
     def evaluate(self, x, F, index, a, b):
         gp1 = index + 1
 
-        return F * gp1 / (b ** gp1 - a ** gp1) * np.power(x, index)
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            F_ = F.value
+            piv_ = piv.value
+            x_ = np.atleast_1d(x.value)
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            F_, piv_, x_, index_ = F, piv, x, index
+        
+        plaw = nb_func.plaw_eval(x_, F_, index_, piv_)
+
+
+        
+        return gp1 / ((b/piv) ** gp1 - (apiv) ** gp1) * plaw * unit_
 
 
 @six.add_metaclass(FunctionMeta)

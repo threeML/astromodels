@@ -19,19 +19,6 @@ def plaw_eval(x,K,index,piv):
 
 
 @nb.njit(fastmath=True, cache=True)
-def plaw_flux_eval(x,F, index, piv):
-
-    n = x.shape[0]
-    out = np.empty(n)
-
-    for idx in range(n):
-
-        out[idx] = K * math.pow(x[idx]/piv, idx)
-
-    return out
-
-
-@nb.njit(fastmath=True, cache=True)
 def band_eval(x, K, alpha, beta, E0, piv):
 
     n = x.shape[0]
