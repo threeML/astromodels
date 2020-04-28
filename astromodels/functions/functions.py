@@ -392,7 +392,7 @@ class Cutoff_powerlaw(Function1D):
         
         return result * unit_
 
-
+@six.add_metaclass(FunctionMeta)
 class Inverse_cutoff_powerlaw(Function1D):
     r"""
     description :
@@ -421,7 +421,7 @@ class Inverse_cutoff_powerlaw(Function1D):
             initial value : 1
     """
 
-    __metaclass__ = FunctionMeta
+
 
     def _set_units(self, x_unit, y_unit):
         # The index is always dimensionless
@@ -439,10 +439,26 @@ class Inverse_cutoff_powerlaw(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, b):
 
-        # Compute it in logarithm to avoid roundoff errors, then raise it
-        log_v = index * np.log(x / piv) - x * b
+        
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            b_ = b.value
+            x_ = np.atleast_1d(x.value)
 
-        return K * np.exp(log_v)
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, b_ = K, piv, x, index, b_
+        
+        result = nb_func.cplaw_index_eval(x_, K_, b_ ,index_, piv_)
+        
+        return result * unit_
+
+
+        
 
 
 @six.add_metaclass(FunctionMeta)
