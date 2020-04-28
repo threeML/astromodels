@@ -7,7 +7,7 @@ from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
 from astromodels.utils.data_files import _get_data_file_path
 
-_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC", "DMFitFunction"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC"]
 
 def test_function_values_have_not_changed():
 
@@ -22,7 +22,7 @@ def test_function_values_have_not_changed():
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
-        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models):
+        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models) or ( key.find("DM")==0):
 
             # An XSpec model. Test it only if it's a power law (the others might need other parameters during
             # initialization)
