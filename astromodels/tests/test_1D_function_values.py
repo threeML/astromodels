@@ -7,7 +7,7 @@ from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
 from astromodels.utils.data_files import _get_data_file_path
 
-_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC", "DMFitFunction"]
 
 def test_function_values_have_not_changed():
 
