@@ -99,62 +99,6 @@ else:
     has_ebltable = True
 
 
-# noinspection PyPep8Naming
-@six.add_metaclass(FunctionMeta)
-class Powerlaw_lognorm(Function1D):
-    r"""
-    description :
-
-        A simple power-law
-
-    latex : $ K~\frac{x}{piv}^{index} $
-
-    parameters :
-
-        K :
-
-            desc : Normalization (log of differential flux at the pivot value)
-            initial value : 1.0
-            is_normalization : True
-            transformation : log10
-
-        piv :
-
-            desc : Pivot value
-            initial value : 1
-            fix : yes
-
-        index :
-
-            desc : Photon index
-            initial value : -2
-            min : -10
-            max : 10
-
-    """
-
-    def _set_units(self, x_unit, y_unit):
-
-        warnings.warn("The Powerlaw_lognorm function is deprecated. Use the normal Powerlaw function which "
-                      "has the same functionality", DeprecationWarning)
-
-        # The index is always dimensionless
-        self.index.unit = astropy_units.dimensionless_unscaled
-
-        # The pivot energy has always the same dimension as the x variable
-        self.piv.unit = x_unit
-
-        # The normalization has the same units as the y
-
-        self.K.unit = y_unit
-
-    # noinspection PyPep8Naming
-    def evaluate(self, x, K, piv, index):
-
-        xx = np.divide(x, piv)
-
-        return K * np.power(xx, index)
-
 
 @six.add_metaclass(FunctionMeta)
 class Powerlaw(Function1D):
