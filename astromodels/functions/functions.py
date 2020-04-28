@@ -12,6 +12,8 @@ from scipy.special import gammaincc, gamma, erfcinv
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
+import astromodels.functions.numba_functions as nb_func
+
 import warnings
 
 
@@ -1167,18 +1169,21 @@ class Band(Function1D):
         if (alpha < beta):
             raise ModelAssertionViolation("Alpha cannot be less than beta")
 
-        idx = x < (alpha - beta) * E0
-
-        # The K * 0 part is a trick so that out will have the right units (if the input
-        # has units)
-
-        out = np.zeros(x.shape) * K * 0
-
-        out[idx] = K * np.power(old_div(x[idx], piv), alpha) * np.exp(old_div(-x[idx], E0))
-        out[~idx] = K * np.power((alpha - beta) * E0 / piv, alpha - beta) * np.exp(beta - alpha) * \
-                    np.power(old_div(x[~idx], piv), beta)
-
-        return out
+        if isinstance(x, astropy_units.Quantity):
+            alpha_ = alpha.value
+            beta_ = alpha.value
+            K_ = K.value
+            E0_ = E0.value
+            piv_ = piv.value
+            x_ = np.atleast_1d(x.value)
+            
+            unit_ = self.y_unit
+            
+        else:
+            unit_ = 1.0
+            alpha_, beta_, K_, piv_, x_, E0_ = alpha, beta, K, piv, x, E0
+        
+        return nb_func.band_eval(x_,K_,alpha_,beta_,E0_,piv_) * unit_
 
 
 @six.add_metaclass(FunctionMeta)
