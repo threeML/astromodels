@@ -1,3 +1,4 @@
+
 import numpy.testing as npt
 import numpy as np
 import h5py
@@ -22,7 +23,7 @@ def test_function_values_have_not_changed():
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
-        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models) or ( key.find("DM")==0):
+        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models):
 
             # An XSpec model. Test it only if it's a power law (the others might need other parameters during
             # initialization)

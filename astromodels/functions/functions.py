@@ -334,6 +334,7 @@ class Cutoff_powerlaw(Function1D):
 
         return K * np.exp(log_v)
 
+@six.add_metaclass(FunctionMeta)
 class Inverse_cutoff_powerlaw(Function1D):
     r"""
     description :
@@ -362,7 +363,7 @@ class Inverse_cutoff_powerlaw(Function1D):
             initial value : 1
     """
 
-    __metaclass__ = FunctionMeta
+
 
     def _set_units(self, x_unit, y_unit):
         # The index is always dimensionless
