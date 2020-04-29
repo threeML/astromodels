@@ -1,7 +1,29 @@
+import ctypes
 import math
 
 import numba as nb
 import numpy as np
+# from numba.extending import get_cython_function_address
+
+# addr1 = get_cython_function_address(
+#     "scipy.special.cython_special", "gammaincc")
+# functype1 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double, ctypes.c_double)
+# gammaincc_fn = functype1(addr1)
+
+
+# @nb.vectorize('float64(float64, float64)')
+# def vec_gammaincc(x, y):
+#     return gammaincc_fn(x, y)
+
+
+# addr2 = get_cython_function_address("scipy.special.cython_special", "gamma")
+# functype2 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double)
+# gamma_fn = functype2(addr2)
+
+
+# @nb.vectorize('float64(float64)')
+# def vec_gamma(x):
+#     return gamma_fn(x)
 
 
 @nb.njit(fastmath=True, cache=True)
@@ -51,9 +73,10 @@ def band_eval(x, K, alpha, beta, E0, piv):
     n = x.shape[0]
     out = np.empty(n)
 
-    factor_ab = np.exp(beta - alpha) * \
-        math.pow((alpha - beta) * E0 / piv, alpha - beta)
     break_point = (alpha - beta) * E0
+
+    factor_ab = np.exp(beta - alpha) * \
+        math.pow(break_point / piv, alpha - beta)
 
     for idx in range(n):
 
@@ -103,16 +126,16 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
     Mbs = M * bs
 
     if arg_piv < -6.0:
-        pcosh_piv = M * bs * (-arg_piv - log2)
+        pcosh_piv = Mbs * (-arg_piv - log2)
 
     elif arg_piv > 4.0:
 
-        pcosh_piv = M * bs * (arg_piv - log2)
+        pcosh_piv = Mbs * (arg_piv - log2)
     else:
 
-        pcosh_piv = M * bs * np.log((np.exp(arg_piv) + np.exp(-arg_piv)) / 2.0)
+        pcosh_piv = Mbs * np.log((np.exp(arg_piv) + np.exp(-arg_piv)) / 2.0)
 
-    ten_pcosh_piv = pow(10., pcosh_piv)
+    ten_pcosh_piv = math.pow(10., pcosh_piv)
 
     for idx in range(n):
 
@@ -130,9 +153,11 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 
             pcosh = Mbs * np.log(0.5 * ((np.exp(arg) + np.exp(-arg))))
 
-        out[idx] = K * pow(x[idx]/piv, B) * pow(10., pcosh)/ten_pcosh_piv
+        out[idx] = K * math.pow(x[idx]/piv, B) * \
+            math.pow(10., pcosh)/ten_pcosh_piv
 
     return out
+
 
 @nb.njit(fastmath=True, cache=True)
 def bb_eval(x, K, kT):
@@ -146,3 +171,31 @@ def bb_eval(x, K, kT):
         out[idx] = K * x[idx] * x[idx] / np.expm1(arg)
 
     return out
+
+
+# band calderone
+
+
+@nb.njit(fastmath=True, cache=True)
+def ggrb_int_pl(a, b, Ec, Emin, Emax):
+
+    pre = math.pow(a - b, a - b) * math.exp(b - a) / math.pow(Ec, b)
+
+    if b != -2:
+        b2 = 2+b
+
+        return pre / (b2) * (math.pow(Emax, b2) - math.pow(Emin, b2))
+
+    else:
+
+        return pre * math.log(Emax/Emin)
+
+
+# @nb.njit(fastmath=True, cache=True)
+# def ggrb_int_cpl(a, Ec, Emin, Emax):
+
+#     # Gammaincc does not support quantities
+#     i1 = vec_gammaincc(2 + a, Emin/Ec) * vec_gamma(2 + a)
+#     i2 = vec_gammaincc(2 + a, Emax/Ec) * vec_gamma(2 + a)
+
+#     return -Ec * Ec * (i2 - i1)

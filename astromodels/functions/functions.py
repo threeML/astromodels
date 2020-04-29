@@ -1369,19 +1369,6 @@ class Band_Calderone(Function1D):
 
         return -Ec * Ec * (i2 - i1)
 
-    @staticmethod
-    def ggrb_int_pl(a, b, Ec, Emin, Emax):
-
-        pre = pow(a - b, a - b) * math.exp(b - a) / pow(Ec, b)
-
-        if b != -2:
-
-            return pre / (2 + b) * (pow(Emax, 2 + b) - pow(Emin, 2 + b))
-
-        else:
-
-            return pre * math.log(old_div(Emax, Emin))
-
     def evaluate(self, x, alpha, beta, xp, F, a, b, opt):
 
         assert opt == 0 or opt == 1, "Opt must be either 0 or 1"
@@ -1417,12 +1404,13 @@ class Band_Calderone(Function1D):
             b_ = b.value
             Esplit_ = Esplit.value
             beta_ = beta.value
-
+            x_ = x.value
+            
             unit_ = self.x_unit
 
         else:
 
-            alpha_, Ec_, a_, b_, Esplit_, beta_ = alpha, Ec, a, b, Esplit, beta
+            alpha_, Ec_, a_, b_, Esplit_, beta_, x_ = alpha, Ec, a, b, Esplit, beta, x
             unit_ = 1.0
 
         if opt == 0:
@@ -1438,17 +1426,17 @@ class Band_Calderone(Function1D):
             if a <= Esplit and Esplit <= b:
 
                 intflux = (self.ggrb_int_cpl(alpha_, Ec_, a_, Esplit_) +
-                           self.ggrb_int_pl(alpha_, beta_, Ec_, Esplit_, b_))
+                           nb_func.ggrb_int_pl(alpha_, beta_, Ec_, Esplit_, b_))
 
             else:
 
                 if Esplit < a:
 
-                    intflux = self.ggrb_int_pl(alpha_, beta_, Ec_, a_, b_)
+                    intflux = nb_func.ggrb_int_pl(alpha_, beta_, Ec_, a_, b_)
 
                 else:
 
-                    raise RuntimeError("Esplit > emax!")
+                    intflux = nb_func.ggrb_int_cpl(alpha_, Ec_, a_, b__)
 
         erg2keV = 6.24151e8
 
@@ -1458,23 +1446,17 @@ class Band_Calderone(Function1D):
 
             # Cutoff power law
 
-            flux = norm * np.power(old_div(x, Ec), alpha) * \
-                np.exp(old_div(- x, Ec))
+            flux = norm * nb_func.cplaw_eval(x_, 1., Ec_, Ec_)
+
+            # flux = norm * np.power(old_div(x, Ec), alpha) * \
+            #     np.exp(old_div(- x, Ec))
 
         else:
 
             # The norm * 0 is to keep the units right
 
-            flux = np.zeros(x.shape) * norm * 0
-
-            idx = x < Esplit
-
-            flux[idx] = norm * \
-                np.power(old_div(x[idx], Ec), alpha) * \
-                np.exp(old_div(-x[idx], Ec))
-            flux[~idx] = norm * pow(alpha - beta, alpha - beta) * \
-                math.exp(beta - alpha) * np.power(old_div(x[~idx], Ec), beta)
-
+            flux = norm * nb_func.band_eval(x_, 1., alpha_, beta_, Ec_, Ec_)
+            
         return flux
 
 
