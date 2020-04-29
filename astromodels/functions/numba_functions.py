@@ -188,6 +188,20 @@ def bb_eval(x, K, kT):
 
     return out
 
+# @nb.njit(fastmath=True, cache=True)
+# def bbrad_eval(x, K, kT):
+
+#     n = x.shape[0]
+#     out = np.empty(n)
+
+#     for idx in range(n):
+
+#         arg = x[idx]/kT
+#         out[idx] = K * x[idx] * x[idx] / np.expm1(arg)
+
+#     return out
+
+
 
 # band calderone
 

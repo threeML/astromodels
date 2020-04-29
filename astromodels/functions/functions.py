@@ -17,6 +17,7 @@ from astromodels.functions.function import (Function1D, FunctionMeta,
 __author__ = 'giacomov'
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
 
+erg2keV = 6.24151e8
 
 class GSLNotAvailable(ImportWarning):
     pass
@@ -208,12 +209,6 @@ class Powerlaw_flux(Function1D):
                 initial value : 100.0
                 fix : yes
 
-            piv :
-
-                 desc : Pivot value
-                 initial value : 1
-                 fix : yes
-
 
         """
 
@@ -226,30 +221,14 @@ class Powerlaw_flux(Function1D):
 
         # a and b have the same units as x
 
-        self.piv.unit = y_unit
-
         self.a.unit = x_unit
         self.b.unit = x_unit
 
     # noinspection PyPep8Naming
-    def evaluate(self, x, F, index, a, b, piv):
+    def evaluate(self, x, F, index, a, b):
         gp1 = index + 1
 
-        if isinstance(x, astropy_units.Quantity):
-            index_ = index.value
-            F_ = F.value
-            piv_ = piv.value
-            x_ = np.atleast_1d(x.value)
-
-            unit_ = self.y_unit * self.x_unit
-
-        else:
-            unit_ = 1.0
-            F_, piv_, x_, index_ = F, piv, x, index
-
-        plaw = nb_func.plaw_eval(x_, F_, index_, piv_)
-
-        return gp1 / ((b/piv) ** gp1 - (a/piv) ** gp1) * plaw * unit_
+        return F * gp1 / (b ** gp1 - a ** gp1) * np.power(x, index)
 
 
 @six.add_metaclass(FunctionMeta)
@@ -799,7 +778,7 @@ class Blackbody(Function1D):
 
             K_ = K.value
             kT_ = kT.value
-            z_ = z.value
+            redshift_ = redshift.value
             x_ = np.atleast_1d(x.value)
 
             unit_ = self.y_unit
@@ -1421,7 +1400,7 @@ class Band_Calderone(Function1D):
             b_ = b.value
             Esplit_ = Esplit.value
             beta_ = beta.value
-            x_ = x.value
+            x_ = np.atleast_1d(x.value)
 
             unit_ = self.x_unit
 
@@ -1455,15 +1434,17 @@ class Band_Calderone(Function1D):
 
                     intflux = nb_func.ggrb_int_cpl(alpha_, Ec_, a_, b__)
 
-        erg2keV = 6.24151e8
+        
 
         norm = F * erg2keV / (intflux * unit_)
 
+        
+        
         if opt == 0:
 
             # Cutoff power law
 
-            flux = norm * nb_func.cplaw_eval(x_, 1., Ec_, Ec_)
+            flux = nb_func.cplaw_eval(x_, 1., Ec_, alpha_, Ec_)
 
             # flux = norm * np.power(old_div(x, Ec), alpha) * \
             #     np.exp(old_div(- x, Ec))
@@ -1472,9 +1453,9 @@ class Band_Calderone(Function1D):
 
             # The norm * 0 is to keep the units right
 
-            flux = norm * nb_func.band_eval(x_, 1., alpha_, beta_, Ec_, Ec_)
+            flux =  nb_func.band_eval(x_, 1., alpha_, beta_, Ec_, Ec_)
 
-        return flux
+        return norm * flux
 
 
 @six.add_metaclass(FunctionMeta)
