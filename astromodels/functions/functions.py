@@ -154,7 +154,7 @@ class Powerlaw(Function1D):
             index_ = index.value
             K_ = K.value
             piv_ = piv.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -286,7 +286,7 @@ class Cutoff_powerlaw(Function1D):
 
         self.K.unit = y_unit
 
-    # noinspection PyPep8Naming
+    # noinspectionq PyPep8Naming
     def evaluate(self, x, K, piv, index, xc):
 
         if isinstance(x, astropy_units.Quantity):
@@ -294,7 +294,7 @@ class Cutoff_powerlaw(Function1D):
             K_ = K.value
             piv_ = piv.value
             xc_ = xc.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -349,7 +349,7 @@ class Inverse_cutoff_powerlaw(Function1D):
 
         self.K.unit = y_unit
 
-    # noinspection PyPep8Naming
+    # noinspectionq PyPep8Naming
     def evaluate(self, x, K, piv, index, b):
 
         if isinstance(x, astropy_units.Quantity):
@@ -357,7 +357,7 @@ class Inverse_cutoff_powerlaw(Function1D):
             K_ = K.value
             piv_ = piv.value
             b_ = b.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -439,7 +439,7 @@ class Super_cutoff_powerlaw(Function1D):
             piv_ = piv.value
             xc_ = xc.value
             gamma_ = gamma.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -531,7 +531,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
             pivot_ = pivot.value
             break_energy_ = break_energy.value
             break_scale_ = break_scale.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -615,7 +615,7 @@ class Broken_powerlaw(Function1D):
             K_ = K.value
             xb_ = xb.value
             piv_ = piv.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -779,7 +779,7 @@ class Blackbody(Function1D):
             K_ = K.value
             kT_ = kT.value
             redshift_ = redshift.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -1186,7 +1186,7 @@ class Band(Function1D):
             K_ = K.value
             E0_ = E0.value
             piv_ = piv.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.y_unit
 
@@ -1400,7 +1400,7 @@ class Band_Calderone(Function1D):
             b_ = b.value
             Esplit_ = Esplit.value
             beta_ = beta.value
-            x_ = np.atleast_1d(x.value)
+            x_ = x.value
 
             unit_ = self.x_unit
 

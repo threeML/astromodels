@@ -899,7 +899,8 @@ class Function1D(Function):
         # this transformation only when strictly required
 
         # NOTE: for a single quantity such as q = (1.0 * u.keV), isinstance(q, np.ndarray) returns True
-
+        
+        
         if isinstance(x, np.ndarray):
 
             # We have an array as input (or a single quantity)
@@ -917,7 +918,11 @@ class Function1D(Function):
                 assert self.y_unit is not None, "In order to use units you need to use the function as a spectrum or " \
                                                 "as something else, or you need to explicitly set the units."
 
-                results = self._call_with_units(x)
+                # we want to make sure this is an array
+                
+                new_input = np.atleast_1d(x)
+
+                results = self._call_with_units(new_input)
 
                 # Now convert to the expected y unit and return a astropy.Quantity by multiplying by the right unit
                 return np.squeeze(results.to(self.y_unit).value) * self.y_unit
@@ -937,7 +942,18 @@ class Function1D(Function):
             # Now remove all dimensions of size 1. For example, an array of shape (1,) will become a single number,
             # so that if the input was a single number, also the output will be a single number
 
-            return np.squeeze(result)
+            sq = np.squeeze(result)
+
+            # if this is still a list after all this work this its
+            # shape will be 
+            if sq.shape:
+                return sq
+
+            else:
+
+                # this is a single number and we assume it is a float
+
+                return np.float64(sq)
 
     def _call_with_units(self, x):
 
