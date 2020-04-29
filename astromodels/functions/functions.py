@@ -79,6 +79,7 @@ try:
 
     import ebltable.tau_from_model as ebltau
 
+    has_ebltable = True
 
 except ImportError:
 
@@ -86,10 +87,7 @@ except ImportError:
                   EBLTableNotAvailable)
 
     has_ebltable = False
-
-else:
-
-    has_ebltable = True
+    
 
 
 # noinspection PyPep8Naming
