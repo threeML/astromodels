@@ -947,6 +947,7 @@ class Function1D(Function):
             # if this is still a list after all this work this its
             # shape will be 
             if sq.shape:
+
                 return sq
 
             else:
