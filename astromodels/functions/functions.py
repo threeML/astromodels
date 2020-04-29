@@ -87,7 +87,13 @@ except ImportError:
                   EBLTableNotAvailable)
 
     has_ebltable = False
-    
+
+except:
+
+    has_ebltable = False
+
+    warnings.warn("The ebltable package is broken",
+                  EBLTableNotAvailable)
 
 
 # noinspection PyPep8Naming
