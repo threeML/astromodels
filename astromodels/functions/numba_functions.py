@@ -3,6 +3,7 @@ import math
 
 import numba as nb
 import numpy as np
+
 # from numba.extending import get_cython_function_address
 
 # addr1 = get_cython_function_address(
@@ -62,6 +63,21 @@ def cplaw_inverse_eval(x, K, b, index, piv):
     for i in range(n):
         # Compute it in logarithm to avoid roundoff errors, then raise it
         log_v = index * np.log(x[i] / piv) - x[i] * b
+        out[i] = K * np.exp(log_v)
+
+    return out
+
+
+@nb.njit(fastmath=True, cache=True)
+def super_cplaw_eval(x, K, piv, index, xc, gamma):
+
+    n = x.shape[0]
+    out = np.empty(n)
+
+    for i in range(n):
+
+        log_v = index * np.log(x[i] / piv) - gamma*(x[i] / xc)
+
         out[i] = K * np.exp(log_v)
 
     return out

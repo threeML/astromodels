@@ -453,7 +453,24 @@ class Super_cutoff_powerlaw(Function1D):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, xc, gamma):
-        return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x, xc)**gamma)
+
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            xc_ = xc.value
+            gamma_ = gamma.value
+            x_ = np.atleast_1d(x.value)
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, xc_, gamma_ = K, piv, x, index, xc, gamma
+
+        result = nb_func.super_cplaw_eval(x_, K_, piv_, index_, xc_, gamma_)
+
+        return result * unit_
 
 
 @six.add_metaclass(FunctionMeta)
@@ -1405,7 +1422,7 @@ class Band_Calderone(Function1D):
             Esplit_ = Esplit.value
             beta_ = beta.value
             x_ = x.value
-            
+
             unit_ = self.x_unit
 
         else:
@@ -1456,7 +1473,7 @@ class Band_Calderone(Function1D):
             # The norm * 0 is to keep the units right
 
             flux = norm * nb_func.band_eval(x_, 1., alpha_, beta_, Ec_, Ec_)
-            
+
         return flux
 
 
