@@ -13,6 +13,7 @@ import pandas as pd
 import scipy.interpolate
 from future.utils import with_metaclass
 from interpolation.splines import eval_linear
+from interpolation import interp
 from pandas import HDFStore
 from pandas.api.types import infer_dtype
 from past.utils import old_div
@@ -405,7 +406,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                     processed_parameters += 1
 
-            self._energies = store['energies']
+            self._energies = np.array(store['energies'])
 
             # Now get the metadata
 
@@ -570,16 +571,15 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if self._is_log10:
 
-            interpolator = eval_linear(np.log10(e_tilde),
-                                       log_interpolations)
 
-            values = np.power(10, interpolator(log_energies))
+
+            values = np.power(10, interp(np.log10(e_tilde), log_interpolations,log_energies))
 
         else:
 
-            interpolator = eval_linear(e_tilde, log_interpolations)
+            
 
-            values = interpolator(log_energies)
+            values = interp(e_tilde, log_interpolations,log_energies)
 
         # The division by scale results from the differential:
         # E = e * scale
