@@ -37,10 +37,10 @@ fi
 echo " ===> Running on ${TRAVIS_OS_NAME}"
 
 TEST_WITH_XSPEC=true
-USE_LOCAL=false
-TRAVIS_PYTHON_VERSION=3.5
-TRAVIS_BUILD_NUMBER=6
-ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
+USE_LOCAL=true
+TRAVIS_PYTHON_VERSION=3.7
+TRAVIS_BUILD_NUMBER=2
+ENVNAME=astromodels_test2_$TRAVIS_PYTHON_VERSION
 
 # Environment
 libgfortranver="3.0"
@@ -77,7 +77,7 @@ echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 echo "Use local is: ${USE_LOCAL}"
 
 if ${TEST_WITH_XSPEC}; then
-    XSPECVER="6.22.1"
+    XSPECVER="6.25"
     export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
     xspec_channel=xspecmodels
     
@@ -115,22 +115,22 @@ conda config --set anaconda_upload no
 # Create test environment
 echo "Create test environment..."
 
-conda create --yes --name $ENVNAME -c conda-forge ${use_local} python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  libgfortran=${libgfortranver} scipy pytables krb5=1.14.6 ${READLINE} future
-
+conda create --yes --name $ENVNAME -c conda-forge ${use_local} python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy=2 ${compilers}\
+  libgfortran scipy pytables ${READLINE} future
+#krb5=1.17.1 =${libgfortranver}
 
 # Make sure conda-forge is the first channel
 conda config --add channels defaults
 
-conda config --add channels conda-forge/label/cf201901
+#conda config --add channels conda-forge/label/cf201901
 
 conda config --add channels conda-forge
 
 # Activate test environment
 echo "Activate test environment..."
 
-source $CONDA_PREFIX/etc/profile.d/conda.sh
-#source /home/ndilalla/work/fermi/miniconda3/etc/profile.d/conda.sh
+#source $CONDA_PREFIX/etc/profile.d/conda.sh
+source /home/ndilalla/work/fermi/miniconda3/etc/profile.d/conda.sh
 conda activate $ENVNAME
 
 # Build package

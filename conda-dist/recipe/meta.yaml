@@ -14,10 +14,14 @@ requirements:
     - {{ compiler('cxx') }} # [linux]
     - {{ compiler('fortran') }} # [linux]
     - xspec-modelsonly
-    - cfitsio==3.410
+    - cfitsio
+    #- cfitsio
+    - cfitsio==3.470
     - ccfits
-    - wcslib==5.18
-    - krb5==1.14.6
+    - wcslib==5.20
+    #- wcslib
+    - wcslib
+    - krb5==1.14.6 # [py2k]
     - readline==6.2 # [py2k]
 
   host:
@@ -25,19 +29,22 @@ requirements:
     - setuptools
     - pip
     - numpy
-    - pyyaml==3.13
+    - pyyaml
     #- astropy
     #- scipy
     - numdifftools
     #- hdf5
     #- pytables
     - pandas>=0.23
-    - cfitsio==3.410
+    #- cfitsio
+    - cfitsio==3.470
     - ccfits
-    - wcslib==5.18
+    - wcslib==5.20
+    #- wcslib
+    - wcslib
     - xspec-modelsonly
     - future
-    - krb5==1.14.6
+    - krb5==1.14.6 # [py2k]
     - readline==6.2 # [py2k]
     - h5py
 
@@ -45,19 +52,21 @@ requirements:
     - python
   #  - libgfortran
     - numpy
-    - pyyaml==3.13
-    - astropy<3.2
+    - pyyaml
+    - astropy
     #- scipy
     - numdifftools
     #- hdf5
     - pytables
     - pandas>=0.23
     - dill
-    - cfitsio
+    #- cfitsio
+    - cfitsio==3.470
     - ccfits
-    - wcslib
+    - wcslib==5.20
+    #- wcslib
     - future
-    - krb5==1.14.6
+    - krb5==1.14.6 # [py2k]
     - readline==6.2 # [py2k]
     - h5py
 
