@@ -13,6 +13,7 @@ import pandas as pd
 from pandas.api.types import infer_dtype
 import re
 import scipy.interpolate
+from interpolation.splines import eval_linear
 import warnings
 from pandas import HDFStore
 
@@ -43,6 +44,37 @@ class MissingDataFile(RuntimeError):
 
 # This dictionary will keep track of the new classes already created in the current session
 _classes_cache = {}
+
+
+
+
+# spec = [
+#     ("_values", nb.float64[:, :, :]),
+#     (
+#         "_grid",
+#         nb.typeof(
+#             (
+#                 np.zeros(3, dtype=np.float64),
+#                 np.zeros(3, dtype=np.float64),
+#                 np.zeros(3, dtype=np.float64),
+#             )
+#         ),
+#     ),
+# ]
+
+
+#@nb.jitclass(spec)
+class FastGridInterpolate(object):
+    
+    def __init__(self, grid, values):
+        self._grid = grid
+        self._values = np.ascontiguousarray(values)
+        
+    def __call__(self, v):
+        
+        return eval_linear(self._grid, self._values, v)
+        
+
 
 
 class TemplateModelFactory(object):
@@ -466,7 +498,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                 # In more than 2d we can only use linear interpolation
 
-                this_interpolator = scipy.interpolate.RegularGridInterpolator(list(self._parameters_grids.values()),
+                this_interpolator = FastGridInterpolate(list(self._parameters_grids.values()),
                                                                               this_data)
 
             self._interpolators.append(this_interpolator)
