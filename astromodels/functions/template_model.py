@@ -570,19 +570,14 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if self._is_log10:
 
-            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(np.log10(e_tilde),
-                                                                          log_interpolations,
-                                                                          k=self._interpolation_degree,
-                                                                          ext=0)
+            interpolator = eval_linear(np.log10(e_tilde),
+                                       log_interpolations)
 
             values = np.power(10, interpolator(log_energies))
 
         else:
 
-            interpolator = scipy.interpolate.InterpolatedUnivariateSpline(e_tilde,
-                                                                          log_interpolations,
-                                                                          k=self._interpolation_degree,
-                                                                          ext=0)
+            interpolator = eval_linear(e_tilde, log_interpolations)
 
             values = interpolator(log_energies)
 
