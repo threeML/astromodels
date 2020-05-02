@@ -1,33 +1,33 @@
 from __future__ import division
-from builtins import str
-from builtins import range
-from builtins import object
-from past.utils import old_div
-import collections
 
-import astropy.units as u
-import astropy.io.fits as fits
-import numpy as np
+import collections
 import os
-import pandas as pd
-from pandas.api.types import infer_dtype
 import re
-import scipy.interpolate
-from interpolation.splines import eval_linear
 import warnings
+from builtins import object, range, str
+
+import astropy.io.fits as fits
+import astropy.units as u
+import numpy as np
+import pandas as pd
+import scipy.interpolate
+from future.utils import with_metaclass
+from interpolation.splines import eval_linear
 from pandas import HDFStore
+from pandas.api.types import infer_dtype
+from past.utils import old_div
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
-from future.utils import with_metaclass
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
 _TINY_ = 1e-50
 
 
-__all__ = ["IncompleteGrid", "ValuesNotInGrid", "MissingDataFile", "TemplateModelFactory", "TemplateModel"]
+__all__ = ["IncompleteGrid", "ValuesNotInGrid",
+           "MissingDataFile", "TemplateModelFactory", "TemplateModel"]
 
 
 class IncompleteGrid(RuntimeError):
@@ -46,8 +46,6 @@ class MissingDataFile(RuntimeError):
 _classes_cache = {}
 
 
-
-
 # spec = [
 #     ("_values", nb.float64[:, :, :]),
 #     (
@@ -63,18 +61,16 @@ _classes_cache = {}
 # ]
 
 
-#@nb.jitclass(spec)
+# @nb.jitclass(spec)
 class FastGridInterpolate(object):
-    
+
     def __init__(self, grid, values):
         self._grid = grid
         self._values = np.ascontiguousarray(values)
-        
-    def __call__(self, v):
-        
-        return eval_linear(self._grid, self._values, v)
-        
 
+    def __call__(self, v):
+
+        return eval_linear(self._grid, self._values, v)
 
 
 class TemplateModelFactory(object):
@@ -101,7 +97,8 @@ class TemplateModelFactory(object):
 
         if not isinstance(energies, u.Quantity):
 
-            warnings.warn("Energy unit is not a Quantity instance, so units has not been provided. Using keV.")
+            warnings.warn(
+                "Energy unit is not a Quantity instance, so units has not been provided. Using keV.")
 
             energies = energies * u.keV
 
@@ -136,7 +133,8 @@ class TemplateModelFactory(object):
 
         # Assert that elements are unique
 
-        assert np.all(np.unique(grid_) == grid_), "Non-unique elements in grid for parameter %s" % parameter_name
+        assert np.all(np.unique(
+            grid_) == grid_), "Non-unique elements in grid for parameter %s" % parameter_name
 
         self._parameters_grids[parameter_name] = grid_
 
@@ -162,7 +160,8 @@ class TemplateModelFactory(object):
 
             # Pre-fill the data matrix with nans, so we will know if some elements have not been filled
 
-            self._data_frame = pd.DataFrame(index=self._multi_index, columns=self._energies)
+            self._data_frame = pd.DataFrame(
+                index=self._multi_index, columns=self._energies)
 
         # Make sure we have all parameters and order the values in the same way as the dictionary
         parameters_values = np.zeros(len(self._parameters_grids)) * np.nan
@@ -177,18 +176,21 @@ class TemplateModelFactory(object):
 
         # If the user did not specify one of the parameters, then the parameters_values array will contain nan
 
-        assert np.all(np.isfinite(parameters_values)), "You didn't specify all parameters' values."
+        assert np.all(np.isfinite(parameters_values)
+                      ), "You didn't specify all parameters' values."
 
         # Make sure we are dealing with pure numpy arrays (list and astropy.Quantity instances will be transformed)
         # First we transform the input into a u.Quantity (if it's not already)
 
         if not isinstance(differential_fluxes, u.Quantity):
 
-            differential_fluxes = np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm ** 2)  # type: u.Quantity
+            differential_fluxes = np.array(
+                differential_fluxes) * 1 / (u.keV * u.s * u.cm ** 2)  # type: u.Quantity
 
         # Then we transform it in the right units and we cast it back to a pure np.array
 
-        differential_fluxes = np.array(differential_fluxes.to(old_div(1, (u.keV * u.s * u.cm ** 2))).value)
+        differential_fluxes = np.array(differential_fluxes.to(
+            old_div(1, (u.keV * u.s * u.cm ** 2))).value)
 
         # Now let's check for valid inputs
 
@@ -197,7 +199,8 @@ class TemplateModelFactory(object):
 
         # Check that the provided value does not contains nan, inf nor zero (as the interpolation happens in the
         # log space)
-        assert np.all(np.isfinite(differential_fluxes)), "You have invalid values in the differential flux (nan or inf)"
+        assert np.all(np.isfinite(differential_fluxes)
+                      ), "You have invalid values in the differential flux (nan or inf)"
         assert np.all(differential_fluxes >= 0), "You have negative values in the differential flux (which is of " \
                                                  "course impossible)"
 
@@ -215,11 +218,13 @@ class TemplateModelFactory(object):
 
         try:
 
-            self._data_frame.loc[tuple(parameters_values)] = pd.to_numeric(differential_fluxes)
+            self._data_frame.loc[tuple(parameters_values)] = pd.to_numeric(
+                differential_fluxes)
 
         except KeyError:
 
-            raise ValuesNotInGrid("The provided parameter values (%s) are not in the defined grid" % parameters_values)
+            raise ValuesNotInGrid(
+                "The provided parameter values (%s) are not in the defined grid" % parameters_values)
 
     @staticmethod
     def _clean_cols_for_hdf(data):
@@ -246,7 +251,8 @@ class TemplateModelFactory(object):
 
         # Sanitize the data file
 
-        filename_sanitized = os.path.abspath(os.path.join(data_dir_path, '%s.h5' % self._name))
+        filename_sanitized = os.path.abspath(
+            os.path.join(data_dir_path, '%s.h5' % self._name))
 
         # Check that it does not exists
         if os.path.exists(filename_sanitized):
@@ -274,7 +280,8 @@ class TemplateModelFactory(object):
             # The _clean_cols_for_hdf is needed because for some reasons the format of some columns
             # is not accepted by .to_hdf otherwise
 
-            self._clean_cols_for_hdf(self._data_frame).to_hdf(store, 'data_frame')
+            self._clean_cols_for_hdf(
+                self._data_frame).to_hdf(store, 'data_frame')
 
             store.get_storer('data_frame').attrs.metadata = {'description': self._description,
                                                              'name': self._name,
@@ -284,11 +291,13 @@ class TemplateModelFactory(object):
 
             for i, parameter_name in enumerate(self._parameters_grids.keys()):
 
-                store['p_%i_%s' % (i, parameter_name)] = pd.Series(self._parameters_grids[parameter_name])
+                store['p_%i_%s' % (i, parameter_name)] = pd.Series(
+                    self._parameters_grids[parameter_name])
 
             store['energies'] = pd.Series(self._energies)
 
 # This adds a method to a class at runtime
+
 
 def add_method(self, method, name=None):
 
@@ -310,7 +319,8 @@ class RectBivariateSplineWrapper(object):
 
         # We can use interp2, which features spline interpolation instead of linear interpolation
 
-        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
+        self._interpolator = scipy.interpolate.RectBivariateSpline(
+            *args, **kwargs)
 
     def __call__(self, x):
 
@@ -338,16 +348,15 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                 min : 1e-5
         """
 
-    def _custom_init_(self, model_name, other_name=None,log_interp = True):
+    def _custom_init_(self, model_name, other_name=None, log_interp=True):
         """
         Custom initialization for this model
-        
+
         :param model_name: the name of the model, corresponding to the root of the .h5 file in the data directory
         :param other_name: (optional) the name to be used as name of the model when used in astromodels. If None 
         (default), use the same name as model_name
         :return: none
         """
-
 
         # Get the data directory
 
@@ -355,7 +364,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         # Sanitize the data file
 
-        filename_sanitized = os.path.abspath(os.path.join(data_dir_path, '%s.h5' % model_name))
+        filename_sanitized = os.path.abspath(
+            os.path.join(data_dir_path, '%s.h5' % model_name))
 
         if not os.path.exists(filename_sanitized):
 
@@ -433,11 +443,13 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if other_name is None:
 
-            super(TemplateModel, self).__init__(name, function_definition, parameters)
+            super(TemplateModel, self).__init__(
+                name, function_definition, parameters)
 
         else:
 
-            super(TemplateModel, self).__init__(other_name, function_definition, parameters)
+            super(TemplateModel, self).__init__(
+                other_name, function_definition, parameters)
 
         # Finally prepare the interpolators
 
@@ -446,8 +458,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
     def _prepare_interpolators(self, log_interp):
 
         # Figure out the shape of the data matrices
-        data_shape = [x.shape[0] for x in list(self._parameters_grids.values())]
-        
+        data_shape = [x.shape[0]
+                      for x in list(self._parameters_grids.values())]
+
         self._interpolators = []
 
         for energy in self._energies:
@@ -458,15 +471,16 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
             if log_interp:
 
-                this_data = np.array(np.log10(self._data_frame[energy].values).reshape(*data_shape), dtype=float)
+                this_data = np.array(
+                    np.log10(self._data_frame[energy].values).reshape(*data_shape), dtype=float)
 
                 self._is_log10 = True
 
             else:
 
                 # work in linear space
-                this_data = np.array(self._data_frame[energy].values.reshape(*data_shape), dtype=float)
-
+                this_data = np.array(
+                    self._data_frame[energy].values.reshape(*data_shape), dtype=float)
 
                 self._is_log10 = False
 
@@ -483,11 +497,13 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                 if len(x) <= self._interpolation_degree:
 
-                    raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree+1, 'x'))
+                    raise RuntimeError(
+                        msg % (self._interpolation_degree, self._interpolation_degree+1, 'x'))
 
                 if len(y) <= self._interpolation_degree:
 
-                    raise RuntimeError(msg % (self._interpolation_degree, self._interpolation_degree + 1, 'y'))
+                    raise RuntimeError(
+                        msg % (self._interpolation_degree, self._interpolation_degree + 1, 'y'))
 
                 this_interpolator = RectBivariateSplineWrapper(x, y, this_data,
                                                                kx=self._interpolation_degree,
@@ -498,8 +514,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                 # In more than 2d we can only use linear interpolation
 
-                this_interpolator = FastGridInterpolate(list(self._parameters_grids.values()),
-                                                                              this_data)
+                this_interpolator = FastGridInterpolate(tuple([np.array(x) for x in list(self._parameters_grids.values())]),
+                                                        this_data)
 
             self._interpolators.append(this_interpolator)
 
@@ -524,7 +540,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
             # a dimensionless quantity (actually we take the .value property) because otherwise
             # the logarithm below will fail.
 
-            energies = np.array(energies.to('keV').value, ndmin=1, copy=False, dtype=float)
+            energies = np.array(energies.to('keV').value,
+                                ndmin=1, copy=False, dtype=float)
 
             # Same for the scale
 
@@ -544,7 +561,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         # (these are the logarithm of the values)
         # note that if these are not logged, then the name is superflous
 
-        log_interpolations = np.array([self._interpolators[i](np.atleast_1d(parameters_values)) for i in range(self._energies.shape[0])])
+        log_interpolations = np.array([self._interpolators[i](np.atleast_1d(
+            parameters_values)) for i in range(self._energies.shape[0])])
 
         # Now interpolate the interpolations to get the flux at the requested energies
 
@@ -592,6 +610,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         return data
 
+
 class XSPECTableModel(object):
     def __init__(
             self, xspec_table_model_file, interpolation_degree=1, spline_smoothing_factor=0, log_centers=True
@@ -599,10 +618,10 @@ class XSPECTableModel(object):
         """
         Convert an XSPEC table model to an astromodels TemplateModel.
         usage: 
-        
+
         xtm = XSPECTableModel("ST95.fits")
         xtm.to_table_model('test', 'test') 
-        
+
         reloaded_table_model = TemplateModel('test', log_interp=False)
 
         Note: if the reloaded model is returning NaNs, adjust the interpolation
@@ -620,7 +639,7 @@ class XSPECTableModel(object):
         self._interpolation_degree = interpolation_degree
         self._spline_smoothing_factor = spline_smoothing_factor
         self._log_centers = log_centers
-        
+
         self._xspec_file_name = xspec_table_model_file
         self._extract_model()
 
@@ -642,7 +661,7 @@ class XSPECTableModel(object):
             else:
 
                 self._energy = (ene_hi + ene_lo)/2.
-                
+
             params = f["PARAMETERS"]
 
             self._names = params.data["NAME"]
@@ -665,7 +684,7 @@ class XSPECTableModel(object):
 
                     try:
 
-                        this_dict["values"] = spectra.data["PARAMVAL{%d}"%i]
+                        this_dict["values"] = spectra.data["PARAMVAL{%d}" % i]
 
                     except:
                         this_dict["values"] = spectra.data["PARAMVAL"][:, i]
@@ -687,8 +706,7 @@ class XSPECTableModel(object):
         :rtype: 
 
         """
-        
-        
+
         tmf = TemplateModelFactory(
             file_name,
             model_name,
