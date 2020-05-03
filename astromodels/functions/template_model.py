@@ -22,6 +22,8 @@ from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
 
+
+
 # A very small number which will be substituted to zero during the construction
 # of the templates
 _TINY_ = 1e-50
