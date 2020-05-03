@@ -12,8 +12,6 @@ import numpy as np
 import pandas as pd
 import scipy.interpolate
 from future.utils import with_metaclass
-from interpolation.splines import eval_linear
-from interpolation import interp
 from pandas import HDFStore
 from pandas.api.types import infer_dtype
 from past.utils import old_div
@@ -21,8 +19,6 @@ from past.utils import old_div
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
-
-
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
@@ -49,31 +45,37 @@ class MissingDataFile(RuntimeError):
 _classes_cache = {}
 
 
-# spec = [
-#     ("_values", nb.float64[:, :, :]),
-#     (
-#         "_grid",
-#         nb.typeof(
-#             (
-#                 np.zeros(3, dtype=np.float64),
-#                 np.zeros(3, dtype=np.float64),
-#                 np.zeros(3, dtype=np.float64),
-#             )
-#         ),
-#     ),
-# ]
+try:
+
+    from interpolation import interp
+    from interpolation.splines import eval_linear
+
+    class GridInterpolate(object):
+
+        def __init__(self, grid, values):
+            self._grid = grid
+            self._values = np.ascontiguousarray(values)
+
+        def __call__(self, v):
+
+            return eval_linear(self._grid, self._values, v)
+
+    class UnivariateSpline(object):
+
+        def __init__(self, x, y):
+
+            self._x = x
+            self._y = y
+
+        def __call__(self, v):
+
+            return interp(self._x, self._y, v)
 
 
-# @nb.jitclass(spec)
-class FastGridInterpolate(object):
+except:
 
-    def __init__(self, grid, values):
-        self._grid = grid
-        self._values = np.ascontiguousarray(values)
-
-    def __call__(self, v):
-
-        return eval_linear(self._grid, self._values, v)
+    from scipy.interpolate import RegularGridInterpolator as GridInterpolate
+    from scipy.interpolate import UnivariateSpline
 
 
 class TemplateModelFactory(object):
@@ -517,8 +519,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                 # In more than 2d we can only use linear interpolation
 
-                this_interpolator = FastGridInterpolate(tuple([np.array(x) for x in list(self._parameters_grids.values())]),
-                                                        this_data)
+                this_interpolator = GridInterpolate(tuple([np.array(x) for x in list(self._parameters_grids.values())]),
+                                                    this_data)
 
             self._interpolators.append(this_interpolator)
 
@@ -573,15 +575,16 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if self._is_log10:
 
+            interpolator = UnivariateSpline(
+                np.log10(e_tilde), log_interpolations)
 
-
-            values = np.power(10, interp(np.log10(e_tilde), log_interpolations,log_energies))
+            values = np.power(10, interpolator(log_energies))
 
         else:
 
-            
+            interpolator = UnivariateSpline(e_tilde, log_interpolations)
 
-            values = interp(e_tilde, log_interpolations,log_energies)
+            values = interpolator(log_energies)
 
         # The division by scale results from the differential:
         # E = e * scale
