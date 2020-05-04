@@ -45,6 +45,11 @@ class MissingDataFile(RuntimeError):
 _classes_cache = {}
 
 
+# currently python2 lacks support for the faster interpolations
+# thus we need to use some work arounds to keep the code compatible
+# with the different versions. This means template models are slower
+# in python2
+
 try:
 
     from interpolation import interp
@@ -75,7 +80,7 @@ try:
 except:
 
     from scipy.interpolate import RegularGridInterpolator as GridInterpolate
-    from scipy.interpolate import UnivariateSpline
+    from scipy.interpolate import InterpolatedUnivariateSpline as UnivariateSpline
 
 
 class TemplateModelFactory(object):
