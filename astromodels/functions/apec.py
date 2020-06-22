@@ -1,5 +1,6 @@
 from functools import wraps
 
+
 try:
     from functools import lru_cache
 except ImportError:
@@ -21,6 +22,10 @@ import astropy.units as astropy_units
 import numpy as np
 
 import sys
+
+
+
+
 
 is_py3 = True
 
@@ -456,7 +461,7 @@ if is_py3:
         xsect_ene = dxs["ENERGY"]
         xsect_val = dxs["SIGMA"]
 
-        return xsect_ene, xsect_val
+        return np.array(xsect_ene), np.array(xsect_val)
 
 
 
