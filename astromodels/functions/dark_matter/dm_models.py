@@ -1,12 +1,13 @@
 from __future__ import print_function
+import six
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 import astropy.units as astropy_units
-
+import six
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.data_files import _get_data_file_path
 
-
+@six.add_metaclass(FunctionMeta)
 class DMFitFunction(Function1D):
     r"""
         description :
@@ -44,7 +45,6 @@ class DMFitFunction(Function1D):
                 fix : yes
         """
 
-    __metaclass__ = FunctionMeta
 
     def _setup(self):
 
@@ -165,7 +165,7 @@ class DMFitFunction(Function1D):
 
         return np.multiply(phip, np.divide(dn, x))
 
-
+@six.add_metaclass(FunctionMeta)
 class DMSpectra(Function1D):
     r"""
         description :
@@ -205,7 +205,7 @@ class DMSpectra(Function1D):
                 fix : yes
         """
 
-    __metaclass__ = FunctionMeta
+ 
 
     def _setup(self):
 

@@ -28,7 +28,7 @@ requirements:
     - pyyaml==3.13
     #- astropy
     #- scipy
-    - numdifftools
+#    - numdifftools
     #- hdf5
     #- pytables
     - pandas>=0.23
@@ -39,6 +39,10 @@ requirements:
     - future
     - krb5==1.14.6
     - readline==6.2 # [py2k]
+    - numba
+    
+    - h5py
+
 
   run:
     - python
@@ -47,7 +51,7 @@ requirements:
     - pyyaml==3.13
     - astropy<3.2
     #- scipy
-    - numdifftools
+#    - numdifftools
     #- hdf5
     - pytables
     - pandas>=0.23
@@ -58,6 +62,10 @@ requirements:
     - future
     - krb5==1.14.6
     - readline==6.2 # [py2k]
+    - numba
+    
+    - h5py
+    - interpolation>=2.1.5 # [py3k]
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .

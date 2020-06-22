@@ -82,7 +82,7 @@ def test_template_factory():
 
     t.save_data(overwrite=True)
 
-    tm = TemplateModel('__test1D')
+    tm = TemplateModel('__test')
 
     tm(energies)
 

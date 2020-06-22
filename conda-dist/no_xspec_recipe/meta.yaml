@@ -31,7 +31,9 @@ requirements:
     - pandas>=0.23
     - future
     - krb5==1.14.6
+    - numba
    
+    - h5py
 
   run:
     - python
@@ -46,7 +48,10 @@ requirements:
     - dill
     - future
     - krb5==1.14.6
+    - numba
 
+    - h5py
+    
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
