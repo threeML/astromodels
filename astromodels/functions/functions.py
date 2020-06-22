@@ -760,12 +760,6 @@ class Blackbody(Function1D):
             initial value : 30.0
             min: 0.
 
-        redshift :
-            desc : redshift
-            initial value : 0
-            min: 0.
-            fixed : true
-
     """
 
     def _set_units(self, x_unit, y_unit):
@@ -774,22 +768,22 @@ class Blackbody(Function1D):
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
-        self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def evaluate(self, x, K, kT, redshift):
+
+    def evaluate(self, x, K, kT):
 
         if isinstance(x, astropy_units.Quantity):
 
             K_ = K.value
             kT_ = kT.value
-            redshift_ = redshift.value
+        
             x_ = x.value
 
             unit_ = self.y_unit
 
         else:
             unit_ = 1.0
-            K_, kT_, x_, redshift_ = K, kT, x, redshift
+            K_, kT_, x_, = K, kT, x
 
         result = nb_func.bb_eval(x_, K_, kT_)
 
