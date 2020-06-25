@@ -1671,6 +1671,13 @@ if has_ebltable:
                 desc : redshift of the source
                 initial value : 1.0
                 fix : yes
+
+          fit : 
+                desc : float goodness of fit for attenuation
+                initial value : 1.0
+                min : 0.0
+                max : 2.0
+
         """
 
         def _setup(self):
@@ -1699,17 +1706,18 @@ if has_ebltable:
                     "Unit for y is not dimensionless.")
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
+            self.fit.unit  = astropy_units.dimensionless_unscaled
 
-        def evaluate(self, x, redshift):
+        def evaluate(self, x, redshift, fit):
 
             if isinstance(x, astropy_units.Quantity):
 
                 # ebltable expects TeV
                 eTeV = x.to(astropy_units.TeV).value
-                return np.exp(-self._tau.opt_depth(redshift.value, eTeV)) * astropy_units.dimensionless_unscaled
+                return np.exp(-self._tau.opt_depth(redshift.value, eTeV) * fit) * astropy_units.dimensionless_unscaled
 
             else:
 
                 # otherwise it's in keV
                 eTeV = old_div(x, 1e9)
-                return np.exp(-self._tau.opt_depth(redshift, eTeV))
+                return np.exp(-self._tau.opt_depth(redshift, eTeV) * fit)
