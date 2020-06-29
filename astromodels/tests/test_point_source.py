@@ -6,7 +6,16 @@ import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
-from astromodels.functions.apec import TbAbs, PhAbs, WAbs
+try:
+    from astromodels.functions.apec import TbAbs, PhAbs, WAbs
+
+    has_abs_models = True
+
+except:
+
+    has_abs_models = False
+
+    
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
@@ -310,21 +319,21 @@ def test_call_with_composite_function_with_units():
 
     # test the absorption models
 
-
+    if has_abs_models:
     
-    spectrum = PhAbs() * Powerlaw()
-    
-    
-    one_test(spectrum)
-
-    spectrum = TbAbs() * Powerlaw()
-
-    one_test(spectrum)
+        spectrum = PhAbs() * Powerlaw()
 
 
-    spectrum = WAbs() * Powerlaw()
+        one_test(spectrum)
 
-    one_test(spectrum)
+        spectrum = TbAbs() * Powerlaw()
+
+        one_test(spectrum)
+
+
+        spectrum = WAbs() * Powerlaw()
+
+        one_test(spectrum)
 
     
     if has_xspec:
