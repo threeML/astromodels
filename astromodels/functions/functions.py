@@ -1676,7 +1676,7 @@ if has_ebltable:
                 desc : float goodness of fit for attenuation
                 initial value : 1.0
                 min : 0.0
-                max : 2.0
+                max : 10.0
 
         """
 
