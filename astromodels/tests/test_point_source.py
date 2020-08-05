@@ -41,11 +41,11 @@ try:
 
 except:
 
-    has_ebl = True
+    has_ebl = False
 
 else:
 
-    has_ebl = False
+    has_ebl = True
 
 from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
