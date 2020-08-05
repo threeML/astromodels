@@ -45,7 +45,7 @@ except:
 
 else:
 
-    has_ebl = True
+    has_ebl = False
 
 from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
@@ -372,7 +372,7 @@ def test_call_with_composite_function_with_units():
         
     if has_ebl:
     
-        spectrum = Powerlaw() * EBLattenuation() 
+        spectrum = Powerlaw() * EBLattenuation()
         
         one_test(spectrum)
 
