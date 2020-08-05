@@ -35,6 +35,18 @@ else:
 
     has_xspec = True
 
+try:
+
+    from astromodels.functions.functions import EBLattenuation
+
+except:
+
+    has_ebl = True
+
+else:
+
+    has_ebl = True
+
 from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
 
@@ -42,7 +54,7 @@ __author__ = 'giacomov'
 
 
 
-_multiplicative_models = ["PhAbs", "TbAbs", "WAbs"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation"]
 
 def test_constructor():
 
@@ -356,6 +368,12 @@ def test_call_with_composite_function_with_units():
 
         spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + XS_powerlaw()
 
+        one_test(spectrum)
+        
+    if has_ebl:
+    
+        spectrum = Powerlaw() * EBLattenuation() 
+        
         one_test(spectrum)
 
 
