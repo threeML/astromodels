@@ -274,6 +274,7 @@ class Cutoff_powerlaw(Function1D):
             desc : Cutoff energy
             initial value : 10.0
             transformation : log10
+            min: 1.0
 
     """
 
@@ -406,7 +407,7 @@ class Super_cutoff_powerlaw(Function1D):
 
         xc :
 
-            desc : Photon index
+            desc : Cutoff energy
             initial value : 10.0
             min : 1.0
 
