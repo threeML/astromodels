@@ -228,9 +228,20 @@ class TemplateModelFactory(object):
 
         try:
 
-            self._data_frame.loc[tuple(parameters_values)] = pd.to_numeric(
-                differential_fluxes)
+            tmp = pd.to_numeric(
+                differential_fluxes)            
 
+            if len(parameters_values) == 1:
+            
+                self._data_frame.loc[parameters_values.tolist()] = np.atleast_2d(tmp)
+
+
+            else:
+
+                self._data_frame.loc[tuple(parameters_values)] = tmp
+
+                
+                
         except KeyError:
 
             raise ValuesNotInGrid(
