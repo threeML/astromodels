@@ -8,7 +8,7 @@ from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
 from astromodels.utils.data_files import _get_data_file_path
 
-_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC", "EBLattenuation" ]
 
 def test_function_values_have_not_changed():
 
@@ -25,7 +25,7 @@ def test_function_values_have_not_changed():
 
         if key.find("XS")==0 or (key in _multiplicative_models):
 
-            # An XSpec model. Test it only if it's a power law (the others might need other parameters during
+            # An XSpec model OR EBLattenuation function. Test it only if it's a power law (the others might need other parameters during
             # initialization)
 
             continue
