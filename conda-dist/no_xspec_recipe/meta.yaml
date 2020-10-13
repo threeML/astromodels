@@ -10,10 +10,10 @@ source:
 
 requirements:
   build:
-    - {{ compiler('c') }} # [linux]
-    - {{ compiler('cxx') }} # [linux]
-    - {{ compiler('fortran') }} # [linux]
-    - krb5==1.14.6
+    #- {{ compiler('c') }} # [linux]
+    #- {{ compiler('cxx') }} # [linux]
+    #- {{ compiler('fortran') }} # [linux]
+    #- krb5==1.14.6
 
 
   host:
@@ -22,34 +22,33 @@ requirements:
     - setuptools
     - pip
     - numpy
-    - pyyaml==3.13 
+    - pyyaml>=5.1
     - astropy
     #- scipy
     - numdifftools
     #- hdf5
-    #- pytables
+    - pytables
     - pandas>=0.23
     - future
-    - krb5==1.14.6
+    #- krb5==1.14.6
     - numba
-   
     - h5py
 
   run:
     - python
     - numpy
-    - pyyaml==3.13
+    - pyyaml==5.3
     - astropy
     #- scipy
     - numdifftools
     #- hdf5
-    #- pytables
+    - pytables
     - pandas>=0.23
     - dill
     - future
-    - krb5==1.14.6
+    #- krb5==1.14.6
     - numba
-
+    - interpolation>=2.1.5 # [py3k]
     - h5py
     
 build:

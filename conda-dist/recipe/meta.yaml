@@ -14,22 +14,20 @@ requirements:
     - {{ compiler('cxx') }} # [linux]
     - {{ compiler('fortran') }} # [linux]
     - xspec-modelsonly
-    - cfitsio
     #- cfitsio
     - cfitsio==3.470
     - ccfits
     - wcslib==5.20
     #- wcslib
-    - wcslib
-    - krb5==1.14.6 # [py2k]
-    - readline==6.2 # [py2k]
+    #- krb5==1.14.6 # [py2k]
+    #- readline==6.2 # [py2k]
 
   host:
     - python
     - setuptools
     - pip
     - numpy
-    - pyyaml
+    - pyyaml>=5.1
     #- astropy
     #- scipy
 #    - numdifftools
@@ -41,21 +39,18 @@ requirements:
     - ccfits
     - wcslib==5.20
     #- wcslib
-    - wcslib
     - xspec-modelsonly
     - future
-    - krb5==1.14.6 # [py2k]
-    - readline==6.2 # [py2k]
+    #- krb5==1.14.6 # [py2k]
+    #- readline==6.2 # [py2k]
     - numba
-    
     - h5py
-
 
   run:
     - python
   #  - libgfortran
     - numpy
-    - pyyaml
+    - pyyaml>=5.1
     - astropy
     #- scipy
 #    - numdifftools
@@ -69,10 +64,9 @@ requirements:
     - wcslib==5.20
     #- wcslib
     - future
-    - krb5==1.14.6 # [py2k]
-    - readline==6.2 # [py2k]
+    #- krb5==1.14.6 # [py2k]
+    #- readline==6.2 # [py2k]
     - numba
-    
     - h5py
     - interpolation>=2.1.5 # [py3k]
 
