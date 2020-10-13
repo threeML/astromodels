@@ -198,4 +198,4 @@ def test_xspec_table_model():
 
     xtm = XSPECTableModel(test_table)
 
-    xtm.to_table_model('xspectm_test', 'xspec model')
+    xtm.to_table_model('xspectm_test', 'xspec model', overwrite=True)
