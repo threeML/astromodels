@@ -128,8 +128,8 @@ conda config --add channels conda-forge
 # Activate test environment
 echo "Activate test environment..."
 
-#source $CONDA_PREFIX/etc/profile.d/conda.sh
-source /home/ndilalla/work/miniconda3/etc/profile.d/conda.sh
+source $CONDA_PREFIX/etc/profile.d/conda.sh
+#source /home/ndilalla/work/miniconda3/etc/profile.d/conda.sh
 conda activate $ENVNAME
 
 # Build package
