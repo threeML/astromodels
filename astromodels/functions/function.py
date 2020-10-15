@@ -137,7 +137,8 @@ class FunctionMeta(type):
 
         try:
 
-            function_definition = my_yaml.load(dct['__doc__'])
+            function_definition = my_yaml.load(dct['__doc__'], 
+                Loader=my_yaml.FullLoader)
 
         except ReaderError:  # pragma: no cover
 
@@ -677,7 +678,7 @@ class Function(Node):
                 # units to the results. So, depending on the type of the first and second model, we need to adjust
                 # their units so that the result will keep the right units.
 
-                if not self.fixed_units[1] == u.dimensionless_unscaled:
+                if not u.Unit(self.fixed_units[1]) == u.dimensionless_unscaled:
 
                     # This function has fixed unit and is not dimensionless (likely an additive XSpec model).
                     # We need to make the other function dimensionless so that the multiplication of them will keep
@@ -694,7 +695,8 @@ class Function(Node):
 
                     # However, if also the other function has fixed dimension and it is dimensionless
                     # (likely another XSpec multiplicative model) we need to flag that as well
-                    if other_instance.has_fixed_units() and (other_instance.fixed_units[1] == u.dimensionless_unscaled):
+                    if other_instance.has_fixed_units() and \
+                        (u.Unit(other_instance.fixed_units[1]) == u.dimensionless_unscaled):
                         other_instance._make_dimensionless = True
 
                         # Now we need to flag the composite function as fixed units and dimensionless

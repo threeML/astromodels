@@ -75,7 +75,8 @@ class ModelParser(object):
 
                 with open(model_file) as f:
 
-                    self._model_dict = my_yaml.load(f)
+                    self._model_dict = my_yaml.load(f, 
+                        Loader=my_yaml.FullLoader)
 
             except IOError:
 

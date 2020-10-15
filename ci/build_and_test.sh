@@ -19,7 +19,7 @@ cd my_work_dir
 # Environment
 #NUMPYVER=1.15
 #MATPLOTLIBVER=2
-READLINE_VERSION="6.2"
+#READLINE_VERSION="6.2"
 libgfortranver="3.0"
 UPDATE_CONDA=true
 
@@ -47,10 +47,10 @@ echo "Python version: ${TRAVIS_PYTHON_VERSION}"
 echo "Testing with XSPEC: ${TEST_WITH_XSPEC} ..."
 
 if ${TEST_WITH_XSPEC}; then
-    XSPECVER="6.22.1"
+    XSPECVER="6.25"
     xspec_channel=xspecmodels
     conda config --add channels ${xspec_channel}
-    export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg}"
+    export XSPEC="xspec-modelsonly=${XSPECVER} ${xorg} ccfits wcslib=5.20"
 fi
 
 LIBGFORTRAN="libgfortran=${libgfortranver}"
@@ -61,10 +61,10 @@ if $UPDATE_CONDA ; then
     conda update --yes -q conda conda-build
 fi
 
-if [[ ${TRAVIS_PYTHON_VERSION} == 2.7 ]];
-then
-    READLINE="readline=${READLINE_VERSION}"
-fi
+#if [[ ${TRAVIS_PYTHON_VERSION} == 2.7 ]];
+#then
+#    READLINE="readline=${READLINE_VERSION}"
+#fi
 
 # Figure out requested dependencies
 if [ -n "${MATPLOTLIBVER}" ]; then MATPLOTLIB="matplotlib=${MATPLOTLIBVER}"; fi
@@ -84,13 +84,12 @@ conda config --set anaconda_upload no
 
 # Create test environment
 echo "Create test environment..."
-conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION pytest codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers}\
-  ${LIBGFORTRAN} scipy pytables krb5=1.14.6 ${READLINE} future
+conda create --name test_env -c conda-forge python=$TRAVIS_PYTHON_VERSION "pytest>=3.6" codecov pytest-cov git ${MATPLOTLIB} ${NUMPY} ${XSPEC} astropy ${compilers} libgfortran scipy pytables ${READLINE} future numba h5py 
 
 # Make sure conda-forge is the first channel
 conda config --add channels defaults
 
-conda config --add channels conda-forge/label/cf201901
+#conda config --add channels conda-forge/label/cf201901
 
 conda config --add channels conda-forge
 
@@ -135,8 +134,8 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         ls /Users/travis/miniconda/envs/test_env/lib/libcfitsio*
         ls /Users/travis/miniconda/envs/test_env/lib/libwcs*
         #conda install -c conda-forge/label/cf201901 ccfits=2.5
-        ln -s /Users/travis/miniconda/envs/test_env/lib/libCCfits.0.dylib /Users/travis/miniconda/envs/test_env/lib/libCCfits.2.5.dylib
-        ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
+        # ln -s /Users/travis/miniconda/envs/test_env/lib/libCCfits.0.dylib /Users/travis/miniconda/envs/test_env/lib/libCCfits.2.5.dylib
+        # ls /Users/travis/miniconda/envs/test_env/lib/libCCfits*
     fi
 fi
 
