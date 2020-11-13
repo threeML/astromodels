@@ -57,7 +57,7 @@ class PointSource(Source, Node):
     """
 
     def __init__(self, source_name, ra=None, dec=None, spectral_shape=None,
-                 l=None, b=None, components=None, sky_position=None):
+                 l=None, b=None, components=None, sky_position=None, polarization=None):
 
         # Check that we have all the required information
 
@@ -108,7 +108,7 @@ class PointSource(Source, Node):
 
         if spectral_shape is not None:
 
-            components = [SpectralComponent("main", spectral_shape)]
+            components = [SpectralComponent("main", spectral_shape, polarization)]
 
         Source.__init__(self, components, POINT_SOURCE)
 
@@ -142,7 +142,7 @@ class PointSource(Source, Node):
 
             component.shape.set_units(x_unit, y_unit)
 
-    def __call__(self, x, tag=None):
+    def __call__(self, x, tag=None, stokes=None):
 
         if tag is None:
 
@@ -152,7 +152,7 @@ class PointSource(Source, Node):
 
                 # Slow version with units
 
-                results = [component.shape(x) for component in list(self.components.values())]
+                results = [component(x, stokes) for component in list(self.components.values())]
 
                 # We need to sum like this (slower) because using np.sum will not preserve the units
                 # (thanks astropy.units)
@@ -164,7 +164,7 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same units as currently defined in
                 # units.get_units()
 
-                results = [component.shape(x) for component in list(self.components.values())]
+                results = [component(x, stokes) for component in list(self.components.values())]
 
                 return numpy.sum(results, 0)
 

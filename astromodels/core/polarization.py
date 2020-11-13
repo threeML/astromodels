@@ -74,31 +74,22 @@ class LinearPolarization(Polarization):
 
 class StokesPolarization(Polarization):
 
-    def __init__(self, I, Q, U, V):
+    def __init__(self, I=None, Q=None, U=None, V=None):
         """
         Stokes parameterization of polarization
-
-        :param I:
-        :param Q:
-        :param U:
-        :param V:
         """
         super(StokesPolarization, self).__init__(polarization_type='stokes')
-
-        # get the parameters set up
-
-        I = self._get_parameter_from_input(I, 0, 1, 'I', 'Stokes I')
-        Q = self._get_parameter_from_input(Q, 0, 1, 'Q', 'Stokes Q')
-        U = self._get_parameter_from_input(U, 0, 1, 'U', 'Stokes U')
-        V = self._get_parameter_from_input(V, 0, 1, 'V', 'Stokes V')
-
-        # add the children
-
-        self._add_child(I)
-        self._add_child(Q)
-        self._add_child(U)
-        self._add_child(V)
-
+        self._Q = StokesParameter('Q', Q)
+        self._add_child(self._Q)
+        self._U = StokesParameter('U', U)
+        self._add_child(self._U)
+    
+    def __call__(self, energies, stokes):
+        if stokes == 'Q':
+            return self._Q(energies)
+        elif stokes == 'U':
+            return self._U(energies)
+        return 1
 
 #     def to_linear_polarization(self):
 #         # polarization angle
@@ -112,3 +103,15 @@ class StokesPolarization(Polarization):
 #         #angle = 0.5 * np.arctan2(se)
 #
 #
+
+class StokesParameter(Node):
+
+    def __init__(self, name, value):
+
+        assert name in ['I', 'Q', 'U', 'V']
+        Node.__init__(self, name)
+        self._add_child(value)
+        self.value = value
+    
+    def __call__(self, energies):
+        return self.value(energies)

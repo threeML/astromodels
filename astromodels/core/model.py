@@ -966,7 +966,7 @@ class Model(Node):
 
         return pts.position.get_ra(), pts.position.get_dec()
 
-    def get_point_source_fluxes(self, id, energies, tag=None):
+    def get_point_source_fluxes(self, id, energies, tag=None, stokes=None):
         """
         Get the fluxes from the id-th point source
 
@@ -980,7 +980,7 @@ class Model(Node):
         :return: fluxes
         """
 
-        return list(self._point_sources.values())[id](energies, tag=tag)
+        return list(self._point_sources.values())[id](energies, tag=tag, stokes=stokes)
 
     def get_point_source_name(self, id):
 

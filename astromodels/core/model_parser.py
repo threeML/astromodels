@@ -492,7 +492,6 @@ class SourceParser(object):
 
         polarization_params = {}
 
-
         if 'degree' in polarization_definititon and 'angle' in polarization_definititon:
 
             par_parser = ParameterParser('degree', polarization_definititon['degree'])
@@ -509,39 +508,34 @@ class SourceParser(object):
 
             this_polarization = polarization.LinearPolarization(angle=angle, degree=degree)
 
-        elif 'I' in polarization_definititon and 'U' in polarization_definititon and 'Q' in polarization_definititon and 'V' in polarization_definititon:
+        elif 'I' in polarization_definititon or 'U' in polarization_definititon and 'Q' in polarization_definititon or 'V' in polarization_definititon:
 
-            par_parser = ParameterParser('I', polarization_definititon['I'])
+            par_dict = {'I': None, 'Q':None, 'U':None, 'V':None}
+            par_names = list(polarization_definititon.keys())
+            
+            for par in par_names:
+                
+                try:
+                    function_name = list(polarization_definititon[par].keys())[0]
+                    parameters_definition = polarization_definititon[par][function_name]
+                    
+                    # parse the function
+                    shape_parser = ShapeParser(self._source_name)
 
-            I = par_parser.get_variable()
+                    shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                    par_dict[par] = shape
 
-            I.bounds = (0, 1)
+                except KeyError: # pragma: no cover
 
-            par_parser = ParameterParser('U', polarization_definititon['U'])
+                    raise ModelSyntaxError("The component %s of source %s is malformed"
+                                    % (component_name, self._source_name))
 
-            U = par_parser.get_variable()
-
-            U.bounds = (0, 1)
-
-            par_parser = ParameterParser('Q', polarization_definititon['Q'])
-
-            Q = par_parser.get_variable()
-
-            Q.bounds = (0, 1)
-
-            par_parser = ParameterParser('V', polarization_definititon['V'])
-
-            V = par_parser.get_variable()
-
-            V.bounds = (0, 1)
-
-
-            this_polarization = polarization.StokesPolarization(I=I, Q=Q, U=U, V=V)
+            this_polarization = polarization.StokesPolarization(**par_dict)
 
         else:
 
             # just make a default polarization
-            
+
             this_polarization = polarization.Polarization()
             # raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
             #                        " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
