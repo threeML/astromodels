@@ -369,6 +369,67 @@ def test_links():
     
     m.unlink([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K])
   
+  
+def test_auto_unlink():
+
+    mg = ModelGetter()
+
+    m = mg.model
+
+    n_free_before_link = len(m.free_parameters)
+
+    # Link as equal (default)
+    m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K)
+    m.link(m.one.spectrum.main.Powerlaw.index, m.two.spectrum.main.Powerlaw.index)
+
+    n_free_source2 = len(m.two.free_parameters)
+
+    #This should give a warning about automatically unlinking 2 parameters
+    with pytest.warns(RuntimeWarning):
+        
+        m.remove_source(m.two.name)
+    
+    assert len(m.free_parameters) == n_free_before_link - n_free_source2
+    
+
+    # Redo the same, but with a powerlaw law
+
+    mg = ModelGetter()
+    
+    m = mg.model
+    
+    link_law = Powerlaw()
+
+    link_law.K.value = 1.0
+    link_law.index.value = -1.0
+
+    m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K, link_law)
+
+    with pytest.warns(RuntimeWarning):
+        
+        m.remove_source(m.two.name)
+    
+    assert len(m.free_parameters) == n_free_before_link - n_free_source2
+
+
+    # Redo the same, but with two linked parameters
+
+    mg = ModelGetter()
+    
+    m = mg.model
+    
+    m.link([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K],m.two.spectrum.main.Powerlaw.K)
+
+    with pytest.warns(RuntimeWarning):
+        
+        m.remove_source(m.two.name)
+    
+    assert len(m.free_parameters) == n_free_before_link - n_free_source2
+
+    
+    
+    
+
 
 def test_external_parameters():
 
