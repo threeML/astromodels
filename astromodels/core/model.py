@@ -361,7 +361,7 @@ class Model(Node):
 
     def remove_source(self, source_name):
         """
-        Returns a new model with the provided source removed from the current model
+        Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.
 
         :param source_name: the name of the source to be removed
         :return: a new Model instance without the source
@@ -373,13 +373,13 @@ class Model(Node):
 
         self._update_parameters()
 
-    def unlink_all_from_source(self, source_name, warn=True):
+    def unlink_all_from_source(self, source_name, warn=False):
         """
         Unlink all parameters of the current model that are linked to a parameter of a given source.
         To be called before removing a source from the model.
 
         :param source_name: the name of the source to which to remove all links
-        :param warn: whether to print a warning if any parameters were unlinked
+        :param warn: If True, prints a warning if any parameters were unlinked.
         """
     
         tempmodel = Model(self[source_name])
