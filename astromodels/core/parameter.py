@@ -1,19 +1,24 @@
+from __future__ import absolute_import
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 __author__ = 'giacomov'
 
 __doc__ = """"""
 
 import collections
 import copy
-import exceptions
 
 import astropy.units as u
 import numpy as np
 import scipy.stats
 import warnings
 
-from tree import Node
-from thread_safe_unit_format import ThreadSafe
+from .tree import Node
+from .thread_safe_unit_format import ThreadSafe
 
+from astromodels.core.parameter_transformation import ParameterTransformation
 
 def _behaves_like_a_number(obj):
     """
@@ -26,7 +31,7 @@ def _behaves_like_a_number(obj):
 
         obj + 1
         obj * 2
-        obj / 2
+        old_div(obj, 2)
         obj - 1
 
     except TypeError:
@@ -135,7 +140,7 @@ class ParameterBase(Node):
     :param desc: description
     :param unit: units (string or astropy.Unit)
     :param transformation: a class which implements a .forward and a .backward method to transform forth and back from
-    face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)
+        face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)
     """
 
     def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=u.dimensionless_unscaled,
@@ -169,6 +174,8 @@ class ParameterBase(Node):
 
         # Store the transformation. This allows to disentangle the value of the parameter which the user interact
         # width with the value of the parameter the fitting engine (or the Bayesian sampler) interact with
+        if transformation is not None:
+            assert isinstance(transformation, ParameterTransformation)
         self._transformation = transformation
 
         # Let's store the init value
@@ -327,9 +334,9 @@ class ParameterBase(Node):
         Return the current value transformed to the new units
 
         :param unit: either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
-        instance, like "1 / (erg cm**2 s)"
+            instance, like "1 / (erg cm**2 s)"
         :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number.
-        Default is False
+            Default is False
         :return: either a floating point or a astropy.Quantity depending on the value of "as_quantity"
         """
 
@@ -524,6 +531,10 @@ class ParameterBase(Node):
 
             if min_value is not None:
 
+                if self._transformation.is_positive:
+
+                    assert min_value >0., 'The transformation %s is postive definite and the min_value was set to a negative number for %s '%(type(self._transformation), self.path)
+                
                 try:
 
                     _ = self._transformation.forward(min_value)
@@ -534,7 +545,15 @@ class ParameterBase(Node):
                                      "is defined for the parameter %s" % (min_value,
                                                                           type(self._transformation),
                                                                           self.path))
+            else:
 
+                if self._transformation.is_positive:
+
+                    # set it by default to for the user
+                    min_value = 1e-99
+
+                    warnings.warn('We have set the min_value of %s to 1e-99 because there was a postive transform' % self.path)
+                
         # Store the minimum as a pure float
 
         self._external_min_value = min_value
@@ -545,7 +564,7 @@ class ParameterBase(Node):
 
             warnings.warn("The current value of the parameter %s (%s) "
                           "was below the new minimum %s." % (self.name, self.value, self._external_min_value),
-                          exceptions.RuntimeWarning)
+                          RuntimeWarning)
 
             self.value = self._external_min_value
 
@@ -608,7 +627,7 @@ class ParameterBase(Node):
 
             warnings.warn("The current value of the parameter %s (%s) "
                           "was above the new maximum %s." % (self.name, self.value, self._external_max_value),
-                          exceptions.RuntimeWarning)
+                          RuntimeWarning)
             self.value = self._external_max_value
 
     max_value = property(_get_max_value, _set_max_value,
@@ -767,9 +786,11 @@ class Parameter(ParameterBase):
     :param prior: the parameter's prior (default: None)
     :param is_normalization: True or False, wether the parameter is a normalization or not (default: False)
     :param transformation: a transformation to be used between external value (the value the user interacts with) and
-    the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
-    forward(external_value) and a backward(internal_value) returning respectively the transformation of the external
-    value in the internal value and viceversa.
+        the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
+        forward(external_value) and a backward(internal_value) method returning respectively the transformation of the 
+        external value in the internal value and viceversa. This is useful because for example the logarithm of a parameter
+        with a large range of possible values (say from 1e-12 to 1e20) is handled much better by fitting engines than the
+        raw value. The log transformation indeed makes the gradient much easier to compute.
     """
 
     def __init__(self, name=None, value=None, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',
@@ -891,12 +912,12 @@ class Parameter(ParameterBase):
                     else:
 
                         # Fix delta
-                        self.delta = abs(self.value - self.min_value) / 4.0
+                        self.delta = old_div(abs(self.value - self.min_value), 4.0)
 
                         if self.delta == 0:
 
                             # Parameter at the minimum
-                            self.delta = abs(self.value - self.max_value) / 4.0
+                            self.delta = old_div(abs(self.value - self.max_value), 4.0)
 
                         # Try again
                         continue
@@ -1208,7 +1229,7 @@ class Parameter(ParameterBase):
 
             if min_value is not None:
 
-                a = (min_value - value) / std
+                a = old_div((min_value - value), std)
 
             else:
 
@@ -1216,7 +1237,7 @@ class Parameter(ParameterBase):
 
             if max_value is not None:
 
-                b = (max_value - value) / std
+                b = old_div((max_value - value), std)
 
             else:
 

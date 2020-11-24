@@ -1,8 +1,16 @@
+from builtins import object
 import numpy as np
 
 
 class ParameterTransformation(object):
+    def __init__(self, is_positive=False):
 
+        self._is_positive = is_positive
+
+    @property
+    def is_positive(self):
+        return self._is_positive
+    
     def forward(self, external_value):
 
         raise NotImplementedError("You have to implement this")
@@ -14,6 +22,10 @@ class ParameterTransformation(object):
 
 class LogarithmicTransformation(ParameterTransformation):
 
+    def __init__(self):
+
+        super(LogarithmicTransformation, self).__init__(is_positive=True)
+    
     def forward(self, external_value):
 
         #  Throw an error if taking the logarithm of a negative number (or nan)

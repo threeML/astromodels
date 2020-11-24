@@ -1,13 +1,27 @@
+from __future__ import print_function
+from __future__ import division
 import astropy.units as u
 import numpy as np
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
+try:
+    from astromodels.functions.apec import TbAbs, PhAbs, WAbs
+
+    has_abs_models = True
+
+except:
+
+    has_abs_models = False
+
+    
 from astromodels.sources.point_source import PointSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
+
+
 
 try:
 
@@ -21,11 +35,26 @@ else:
 
     has_xspec = True
 
+try:
+
+    from astromodels.functions.functions import EBLattenuation
+
+except:
+
+    has_ebl = False
+
+else:
+
+    has_ebl = True
+
 from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
 
 __author__ = 'giacomov'
 
+
+
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation"]
 
 def test_constructor():
 
@@ -182,6 +211,11 @@ def test_call_with_units():
                 instance.set_particle_distribution(particleSource.spectrum.main.shape)
 
 
+            # elif instance.name in ["PhAbs", "TbAbs"]:
+
+            #     instance
+                
+
             result = ps(1.0)
 
             assert isinstance(result, float)
@@ -225,7 +259,7 @@ def test_call_with_units():
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
-        if key.find("XS")==0 and key != "XS_powerlaw":
+        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models):
 
             # An XSpec model. Test it only if it's a power law (the others might need other parameters during
             # initialization)
@@ -273,7 +307,7 @@ def test_call_with_composite_function_with_units():
         res = pts([100, 200] * x_unit_to_use)
 
         # This will fail if the units are wrong
-        res.to(1 / (u.keV * u.cm**2 * u.s))
+        res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
 
     # Test a simple composition
 
@@ -295,6 +329,25 @@ def test_call_with_composite_function_with_units():
 
     one_test(spectrum)
 
+    # test the absorption models
+
+    if has_abs_models:
+    
+        spectrum = PhAbs() * Powerlaw()
+
+
+        one_test(spectrum)
+
+        spectrum = TbAbs() * Powerlaw()
+
+        one_test(spectrum)
+
+
+        spectrum = WAbs() * Powerlaw()
+
+        one_test(spectrum)
+
+    
     if has_xspec:
 
         spectrum = XS_phabs() * Powerlaw()
@@ -315,6 +368,12 @@ def test_call_with_composite_function_with_units():
 
         spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + XS_powerlaw()
 
+        one_test(spectrum)
+        
+    if has_ebl:
+    
+        spectrum = Powerlaw() * EBLattenuation()
+        
         one_test(spectrum)
 
 

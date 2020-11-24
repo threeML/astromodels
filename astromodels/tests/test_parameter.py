@@ -1,3 +1,7 @@
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import astropy.units as u
 import pytest
 from astromodels.functions.priors import Uniform_prior, Log_uniform_prior
@@ -8,7 +12,7 @@ __author__ = 'giacomov'
 from astromodels.core.parameter import Parameter, SettingOutOfBounds, \
     CannotConvertValueToNewUnits, NotCallableOrErrorInCall, IndependentVariable, ParameterMustHaveBounds
 from astromodels.functions.functions import Line
-
+from astromodels.core.parameter_transformation import LogarithmicTransformation
 
 def test_default_constructor():
 
@@ -74,7 +78,7 @@ def test_default_constructor_units():
 def test_constructor_complete():
 
     p = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
-                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True)
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True,)
 
     assert p.min_value == -5.0
     assert p.max_value == 5.0
@@ -92,7 +96,31 @@ def test_constructor_complete():
 
     p.display()
 
+def test_constructor_with_transform():
 
+    p = Parameter('test_parameter', 1.0, min_value=0.1, max_value=5.0, delta=0.2, desc='test',
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True,)
+
+    assert p.min_value == 0.1
+    assert p.max_value == 5.0
+    assert p.value == 1.0
+    assert p.delta == 0.2
+    assert p.name == 'test_parameter'
+    assert p.description == 'test'
+    assert p.fix == True
+    assert p.free == False
+    assert p.has_prior() == True
+
+    assert p.unit == u.MeV
+
+    assert p.is_normalization
+
+    assert p.has_transformation
+    
+    p.display()
+
+
+    
 def test_conflicting_units_in_initial_value_and_unit_keyword():
 
     p = Parameter('test_parameter', 1.0 * u.keV, desc='Description', unit=u.MeV)
@@ -480,11 +508,11 @@ def test_to_dict():
 
     repr = p1.to_dict(minimal=False)
 
-    assert len(repr.keys()) == 5
+    assert len(list(repr.keys())) == 5
 
     repr2 = p1.to_dict(minimal=True)
 
-    assert len(repr2.keys()) == 1
+    assert len(list(repr2.keys())) == 1
     assert 'value' in repr2
 
     assert repr2['value'] == p1.value
@@ -554,7 +582,6 @@ def test_prior():
     p1.set_uninformative_prior(Uniform_prior)
 
     # Log-uniform cannot be used if minimum is 0.0
-
     with pytest.raises(SettingOutOfBounds):
 
         p1.set_uninformative_prior(Log_uniform_prior)
@@ -611,7 +638,7 @@ class Callback(object):
 
 def test_pickle():
 
-    import cPickle
+    from astromodels.core.cpickle_compatibility_layer import cPickle
 
     p_orig = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
                        free=False, unit=u.MeV, prior=Uniform_prior())
@@ -651,7 +678,7 @@ def test_pickle():
 
 def test_links_and_pickle():
 
-    import cPickle
+    import pickle
 
     p_orig = Parameter('test_parameter', 1.0, min_value=-5.0, max_value=5.0, delta=0.2, desc='test',
                        free=False, unit=u.MeV, prior=Uniform_prior())
@@ -671,9 +698,9 @@ def test_links_and_pickle():
 
     # Now pickle and unpickle
 
-    d = cPickle.dumps(p_orig)
+    d = pickle.dumps(p_orig)
 
-    p = cPickle.loads(d)
+    p = pickle.loads(d)
 
     assert p.has_auxiliary_variable() == True
 
@@ -689,3 +716,44 @@ def test_links_and_pickle():
     p.value = -1.0
 
     assert p.value == 6.0
+
+def test_internal_setting():
+
+
+    p = Parameter('test_parameter',1.0)
+
+    p._set_internal_value(5.)
+
+
+    p._get_internal_value()
+
+    p.display()
+
+    p._get_internal_min_value()
+    p._get_internal_max_value()
+
+def test_internal_delta():
+
+    p = Parameter('test_parameter',1.0)
+    p.min_value = None
+    p.max_value = None
+
+    p._get_internal_delta()
+
+
+    p = Parameter('test_parameter', 1.0, min_value=0.1, max_value=5.0, delta=0.2, desc='test',
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True, transformation=LogarithmicTransformation())
+
+    p._get_internal_delta()
+
+    with pytest.raises(AssertionError):
+        p = Parameter('test_parameter', 1.0, min_value=-1., max_value=5.0, delta=0.2, desc='test',
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True, transformation=LogarithmicTransformation())
+
+
+    p = Parameter('test_parameter', 1.0, min_value=None, max_value=5.0, delta=0.2, desc='test',
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True, transformation=LogarithmicTransformation())
+
+
+
+    p._get_internal_delta()

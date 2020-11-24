@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import ctypes.util
 import glob
 import sys
@@ -9,6 +10,7 @@ import re
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 
+import versioneer
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
@@ -172,10 +174,6 @@ def find_library(library_root, additional_places=None):
             return sanitize_lib_name(library_name), library_dir
 
 
-# Get the version number
-vfilename = "astromodels/version.py"
-exec(compile(open(vfilename, "rb").read(), vfilename, 'exec'))
-#execfile('astromodels/version.py')
 
 
 def setup_xspec():
@@ -309,58 +307,34 @@ else:
 
 
 setup(
-    name="astromodels",
 
     setup_requires=['numpy'],
 
-    cmdclass={'build_ext': My_build_ext},
-
+    #cmdclass={'build_ext': My_build_ext},
+    cmdclass=versioneer.get_cmdclass({'build_ext': My_build_ext}),
+    
     packages=packages,
 
-    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
+    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml')),
+                ('astromodels/data/tests',  glob.glob('astromodels/data/tests/*.fits'))
+
+    ],
 
     # The __version__ comes from the exec at the top
 
-    version=__version__,
+    version=versioneer.get_version(),
 
-    description="Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy",
 
-    author='Giacomo Vianello',
-
-    author_email='giacomo.vianello@gmail.com',
-
-    url='https://github.com/giacomov/astromodels',
-
-    download_url='https://github.com/giacomov/astromodels/archive/v0.1',
+    download_url='https://github.com/threeml/astromodels/archive/v0.1',
 
     keywords=['Likelihood', 'Models', 'fit'],
-
-    classifiers=[],
     
-    install_requires=[
-        'numpy >= 1.6',
-        'PyYAML',
-        'astropy >= 1.2',
-        'scipy>=0.14',
-        'numdifftools',
-        'tables',
-        'pandas',
-        'dill'],
-
-    extras_require={
-        'tests': [
-            'pytest', ],
-        'docs': [
-            'sphinx >= 1.4',
-            'sphinx_rtd_theme',
-            'nbsphinx',
-            'sphinx-autoapi']},
 
     ext_modules=ext_modules_configuration,
 
     package_data={
-        'astromodels': ['data/dark_matter/*'],
+        'astromodels': ['data/dark_matter/*', 'data/xsect/*', 'data/past_1D_values.h5'],
     },
-    include_package_data=True,
+
 
 )

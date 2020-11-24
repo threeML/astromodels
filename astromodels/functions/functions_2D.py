@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import numpy as np
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
@@ -9,9 +11,10 @@ from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
 
 import hashlib
+from future.utils import with_metaclass
 
 
-class Latitude_galactic_diffuse(Function2D):
+class Latitude_galactic_diffuse(with_metaclass(FunctionMeta, Function2D)):
     r"""
         description :
 
@@ -42,8 +45,6 @@ class Latitude_galactic_diffuse(Function2D):
                 initial value : 30
 
         """
-
-    __metaclass__ = FunctionMeta
 
     # This is optional, and it is only needed if we need more setup after the
     # constructor provided by the meta class
@@ -78,7 +79,7 @@ class Latitude_galactic_diffuse(Function2D):
         b = _coord.transform_to('galactic').b.value
         l = _coord.transform_to('galactic').l.value
 
-        return K * np.exp(-b ** 2 / (2 * sigma_b ** 2)) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
+        return K * np.exp(old_div(-b ** 2, (2 * sigma_b ** 2))) * np.logical_or(np.logical_and(l > l_min, l < l_max),np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)))
 
     def get_boundaries(self):
 
@@ -115,7 +116,7 @@ class Latitude_galactic_diffuse(Function2D):
         return integral * np.power( 180. / np.pi, -2 ) * np.ones_like( z )
         
 
-class Gaussian_on_sphere(Function2D):
+class Gaussian_on_sphere(with_metaclass(FunctionMeta, Function2D)):
     r"""
         description :
 
@@ -148,8 +149,6 @@ class Gaussian_on_sphere(Function2D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit, z_unit):
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
@@ -168,7 +167,7 @@ class Gaussian_on_sphere(Function2D):
 
         s2 = sigma**2
 
-        return (180 / np.pi)**2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2/s2)
+        return (old_div(180, np.pi))**2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2/s2)
 
     def get_boundaries(self):
 
@@ -215,7 +214,7 @@ class Gaussian_on_sphere(Function2D):
         
 
 
-class Asymm_Gaussian_on_sphere(Function2D):
+class Asymm_Gaussian_on_sphere(with_metaclass(FunctionMeta, Function2D)):
     r"""
         description :
 
@@ -262,8 +261,6 @@ class Asymm_Gaussian_on_sphere(Function2D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit, z_unit):
 
         # lon0 and lat0 and a have most probably all units of degrees. However,
@@ -305,15 +302,15 @@ class Asymm_Gaussian_on_sphere(Function2D):
         
         sin_2phi = np.sin( 2. * phi * np.pi/180.)
         
-        A = cos2_phi / (2.*b**2) + sin2_phi / (2.*a**2)
+        A = old_div(cos2_phi, (2.*b**2)) + old_div(sin2_phi, (2.*a**2))
 
-        B = - sin_2phi / (4.*b**2) + sin_2phi / (4.*a**2)
+        B = old_div(- sin_2phi, (4.*b**2)) + old_div(sin_2phi, (4.*a**2))
 
-        C = sin2_phi / (2.*b**2) + cos2_phi / (2.*a**2)
+        C = old_div(sin2_phi, (2.*b**2)) + old_div(cos2_phi, (2.*a**2))
 
         E = -A*np.power(dX, 2) + 2.*B*dX*dY - C*np.power(dY, 2)
 
-        return np.power(180. / np.pi, 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
+        return np.power(old_div(180, np.pi), 2) * 1. / (2 * np.pi * a * b) * np.exp( E )
         
     def get_boundaries(self):
 
@@ -357,7 +354,7 @@ class Asymm_Gaussian_on_sphere(Function2D):
         return np.ones_like( z )
 
 
-class Disk_on_sphere(Function2D):
+class Disk_on_sphere(with_metaclass(FunctionMeta, Function2D)):
     r"""
         description :
 
@@ -390,8 +387,6 @@ class Disk_on_sphere(Function2D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit, z_unit):
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
@@ -408,7 +403,7 @@ class Disk_on_sphere(Function2D):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, 2) * 1. / (np.pi * radius ** 2) * (angsep <= radius)
+        return np.power(old_div(180, np.pi), 2) * 1. / (np.pi * radius ** 2) * (angsep <= radius)
 
     def get_boundaries(self):
 
@@ -454,7 +449,7 @@ class Disk_on_sphere(Function2D):
         return np.ones_like( z )
 
 
-class Ellipse_on_sphere(Function2D):
+class Ellipse_on_sphere(with_metaclass(FunctionMeta, Function2D)):
     r"""
         description :
 
@@ -499,8 +494,6 @@ class Ellipse_on_sphere(Function2D):
                 min : -90.0
                 max : 90.0
         """
-
-    __metaclass__ = FunctionMeta
     
     lon1 = None
     lat1 = None
@@ -554,7 +547,7 @@ class Ellipse_on_sphere(Function2D):
         angsep2 = angular_distance(self.lon2, self.lat2, lon, lat)
         angsep  = angsep1 + angsep2
         
-        return np.power(180 / np.pi, 2) * 1. / (np.pi * a * b) * (angsep <= 2*a)
+        return np.power(old_div(180, np.pi), 2) * 1. / (np.pi * a * b) * (angsep <= 2*a)
 
     def get_boundaries(self):
 
@@ -600,7 +593,7 @@ class Ellipse_on_sphere(Function2D):
         return np.ones_like( z )
 
 
-class SpatialTemplate_2D(Function2D):
+class SpatialTemplate_2D(with_metaclass(FunctionMeta, Function2D)):
     r"""
         description :
         
@@ -623,8 +616,6 @@ class SpatialTemplate_2D(Function2D):
                 fix: yes
         
         """
-    
-    __metaclass__ = FunctionMeta
     
     def _set_units(self, x_unit, y_unit, z_unit):
         
@@ -665,7 +656,7 @@ class SpatialTemplate_2D(Function2D):
             #this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
             h = hashlib.sha224()
             h.update( self._map)
-            h.update( repr(self._wcs) )
+            h.update( repr(self._wcs).encode('utf-8') )
             self.hash = int(h.hexdigest(), 16)
             
 
@@ -737,6 +728,8 @@ class SpatialTemplate_2D(Function2D):
         
         return (min_lon, max_lon), (min_lat, max_lat)
 
+
+
     def get_total_spatial_integral(self, z=None):  
         """
         Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
@@ -749,8 +742,8 @@ class SpatialTemplate_2D(Function2D):
             z = z.value
         return np.multiply(self.K.value,np.ones_like( z ) )
         
-        
-class Power_law_on_sphere(Function2D):
+class Power_law_on_sphere(with_metaclass(FunctionMeta, Function2D)):        
+
     r"""
         description :
 
@@ -794,8 +787,6 @@ class Power_law_on_sphere(Function2D):
                 fix : yes
 
         """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit, z_unit):
 

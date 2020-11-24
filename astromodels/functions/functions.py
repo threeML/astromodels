@@ -1,18 +1,23 @@
-__author__ = 'giacomov'
-# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
+from __future__ import division
 
-import exceptions
 import math
+import warnings
 
 import astropy.units as astropy_units
 import numpy as np
-import warnings
-from scipy.special import gammaincc, gamma, erfcinv
+import six
+from past.utils import old_div
+from scipy.special import erfcinv, gamma, gammaincc
 
+import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
-from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
-import warnings
+from astromodels.functions.function import (Function1D, FunctionMeta,
+                                            ModelAssertionViolation)
 
+__author__ = 'giacomov'
+# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
+
+erg2keV = 6.24151e8
 
 class GSLNotAvailable(ImportWarning):
     pass
@@ -26,7 +31,7 @@ class EBLTableNotAvailable(ImportWarning):
     pass
 
 
-class InvalidUsageForFunction(exceptions.Exception):
+class InvalidUsageForFunction(Exception):
     pass
 
 
@@ -72,12 +77,13 @@ else:
 
 try:
 
-    # ebltable is a Python packages to read in and interpolate tables for the photon density of 
-    # the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma 
+    # ebltable is a Python packages to read in and interpolate tables for the photon density of
+    # the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma
     # rays.
 
     import ebltable.tau_from_model as ebltau
 
+    has_ebltable = True
 
 except ImportError:
 
@@ -86,13 +92,16 @@ except ImportError:
 
     has_ebltable = False
 
-else:
+except:
 
-    has_ebltable = True
+    has_ebltable = False
+
+    warnings.warn("The ebltable package is broken",
+                  EBLTableNotAvailable)
 
 
-# noinspection PyPep8Naming
-class Powerlaw_lognorm(Function1D):
+@six.add_metaclass(FunctionMeta)
+class Powerlaw(Function1D):
     r"""
     description :
 
@@ -104,10 +113,13 @@ class Powerlaw_lognorm(Function1D):
 
         K :
 
-            desc : Normalization (log of differential flux at the pivot value)
+            desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
             is_normalization : True
             transformation : log10
+            min : 1e-30
+            max : 1e3
+            delta : 0.1
 
         piv :
 
@@ -122,15 +134,13 @@ class Powerlaw_lognorm(Function1D):
             min : -10
             max : 10
 
+    tests :
+        - { x : 10, function value: 0.01, tolerance: 1e-20}
+        - { x : 100, function value: 0.0001, tolerance: 1e-20}
+
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
-
-        warnings.warn("The Powerlaw_lognorm function is deprecated. Use the normal Powerlaw function which "
-                      "has the same functionality", DeprecationWarning)
-
         # The index is always dimensionless
         self.index.unit = astropy_units.dimensionless_unscaled
 
@@ -144,72 +154,25 @@ class Powerlaw_lognorm(Function1D):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index):
 
-        xx = np.divide(x, piv)
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            x_ = x.value
 
-        return K * np.power(xx, index)
+            unit_ = self.y_unit
 
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_ = K, piv, x, index
 
-class Powerlaw(Function1D):
-        r"""
-        description :
+        result = nb_func.plaw_eval(x_, K_, index_, piv_)
 
-            A simple power-law
-
-        latex : $ K~\frac{x}{piv}^{index} $
-
-        parameters :
-
-            K :
-
-                desc : Normalization (differential flux at the pivot value)
-                initial value : 1.0
-                is_normalization : True
-                transformation : log10
-                min : 1e-30
-                max : 1e3
-                delta : 0.1
-
-            piv :
-
-                desc : Pivot value
-                initial value : 1
-                fix : yes
-
-            index :
-
-                desc : Photon index
-                initial value : -2
-                min : -10
-                max : 10
-
-        tests :
-            - { x : 10, function value: 0.01, tolerance: 1e-20}
-            - { x : 100, function value: 0.0001, tolerance: 1e-20}
-
-        """
-
-        __metaclass__ = FunctionMeta
-
-        def _set_units(self, x_unit, y_unit):
-            # The index is always dimensionless
-            self.index.unit = astropy_units.dimensionless_unscaled
-
-            # The pivot energy has always the same dimension as the x variable
-            self.piv.unit = x_unit
-
-            # The normalization has the same units as the y
-
-            self.K.unit = y_unit
-
-        # noinspection PyPep8Naming
-        def evaluate(self, x, K, piv, index):
-
-            xx = np.divide(x, piv)
-
-            return K * np.power(xx, index)
+        return result * unit_
 
 
 # noinspection PyPep8Naming
+@six.add_metaclass(FunctionMeta)
 class Powerlaw_flux(Function1D):
     r"""
         description :
@@ -250,9 +213,8 @@ class Powerlaw_flux(Function1D):
                 initial value : 100.0
                 fix : yes
 
-        """
 
-    __metaclass__ = FunctionMeta
+        """
 
     def _set_units(self, x_unit, y_unit):
         # The flux is the integral over x, so:
@@ -273,6 +235,7 @@ class Powerlaw_flux(Function1D):
         return F * gp1 / (b ** gp1 - a ** gp1) * np.power(x, index)
 
 
+@six.add_metaclass(FunctionMeta)
 class Cutoff_powerlaw(Function1D):
     r"""
     description :
@@ -311,10 +274,9 @@ class Cutoff_powerlaw(Function1D):
             desc : Cutoff energy
             initial value : 10.0
             transformation : log10
+            min: 1.0
 
     """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
         # The index is always dimensionless
@@ -329,15 +291,91 @@ class Cutoff_powerlaw(Function1D):
 
         self.K.unit = y_unit
 
-    # noinspection PyPep8Naming
+    # noinspectionq PyPep8Naming
     def evaluate(self, x, K, piv, index, xc):
 
-        # Compute it in logarithm to avoid roundoff errors, then raise it
-        log_v = index * np.log(x / piv) - x / xc
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            xc_ = xc.value
+            x_ = x.value
 
-        return K * np.exp(log_v)
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, xc_ = K, piv, x, index, xc
+
+        result = nb_func.cplaw_eval(x_, K_, xc_, index_, piv_)
+
+        return result * unit_
 
 
+@six.add_metaclass(FunctionMeta)
+class Inverse_cutoff_powerlaw(Function1D):
+    r"""
+    description :
+        A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x~\b} $
+    parameters :
+        K :
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+            is_normalization : True
+            transformation : log10
+            min : 1e-30
+            max : 1e3
+            delta : 0.1
+        piv :
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+        index :
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+        b :
+            desc : inverse cutoff energy i.e 1/xc
+            initial value : 1
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # The index is always dimensionless
+        self.index.unit = astropy_units.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        self.b.unit = 1/x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspectionq PyPep8Naming
+    def evaluate(self, x, K, piv, index, b):
+
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            b_ = b.value
+            x_ = x.value
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, b_ = K, piv, x, index, b
+
+        result = nb_func.cplaw_inverse_eval(x_, K_, b_, index_, piv_)
+
+        return result * unit_
+
+
+@six.add_metaclass(FunctionMeta)
 class Super_cutoff_powerlaw(Function1D):
     r"""
     description :
@@ -369,7 +407,7 @@ class Super_cutoff_powerlaw(Function1D):
 
         xc :
 
-            desc : Photon index
+            desc : Cutoff energy
             initial value : 10.0
             min : 1.0
 
@@ -381,8 +419,6 @@ class Super_cutoff_powerlaw(Function1D):
             max : 10.0
 
     """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
         # The index is always dimensionless
@@ -401,17 +437,34 @@ class Super_cutoff_powerlaw(Function1D):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index, xc, gamma):
-        return K * np.power(np.divide(x, piv), index) * np.exp(-1 * np.divide(x, xc)**gamma)
+
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            xc_ = xc.value
+            gamma_ = gamma.value
+            x_ = x.value
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, xc_, gamma_ = K, piv, x, index, xc, gamma
+
+        result = nb_func.super_cplaw_eval(x_, K_, piv_, index_, xc_, gamma_)
+
+        return result * unit_
 
 
-
+@six.add_metaclass(FunctionMeta)
 class SmoothlyBrokenPowerLaw(Function1D):
     r"""
     description :
 
         A Smoothly Broken Power Law
 
-    latex : $  $
+    Latex : $  $
 
     parameters :
 
@@ -421,7 +474,7 @@ class SmoothlyBrokenPowerLaw(Function1D):
             initial value : 1
             min : 0
             is_normalization : True
-    
+
 
         alpha :
 
@@ -461,8 +514,6 @@ class SmoothlyBrokenPowerLaw(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
 
         # norm has same unit as energy
@@ -478,36 +529,28 @@ class SmoothlyBrokenPowerLaw(Function1D):
 
     def evaluate(self, x, K, alpha, break_energy, break_scale, beta, pivot):
 
-        B = (alpha + beta) / 2.0
-        M = (beta - alpha) / 2.0
+        if isinstance(x, astropy_units.Quantity):
+            alpha_ = alpha.value
+            beta_ = beta.value
+            K_ = K.value
+            pivot_ = pivot.value
+            break_energy_ = break_energy.value
+            break_scale_ = break_scale.value
+            x_ = x.value
 
-        arg_piv = np.log10(pivot / break_energy) / break_scale
+            unit_ = self.y_unit
 
-        if arg_piv < -6.0:
-            pcosh_piv = M * break_scale * (-arg_piv - np.log(2.0))
-        elif arg_piv > 4.0:
-
-            pcosh_piv = M * break_scale * (arg_piv - np.log(2.0))
         else:
-            pcosh_piv = M * break_scale * (np.log((np.exp(arg_piv) + np.exp(-arg_piv)) / 2.0))
+            unit_ = 1.0
+            K_, pivot_, x_, alpha_, beta_, break_scale_, break_energy_ = K, pivot, x, alpha, beta, break_scale, break_energy
 
-        arg = np.log10(x / break_energy) / break_scale
-        idx1 = arg < -6.0
-        idx2 = arg > 4.0
-        idx3 = ~np.logical_or(idx1, idx2)
+        result = nb_func.sbplaw_eval(
+            x_, K_, alpha_, break_energy, break_scale_, beta_, pivot_)
 
-        # The K * 0 part is a trick so that out will have the right units (if the input
-        # has units)
-
-        pcosh = np.zeros(x.shape)
-
-        pcosh[idx1] = M * break_scale * (-arg[idx1] - np.log(2.0))
-        pcosh[idx2] = M * break_scale * (arg[idx2] - np.log(2.0))
-        pcosh[idx3] = M * break_scale * (np.log((np.exp(arg[idx3]) + np.exp(-arg[idx3])) / 2.0))
-
-        return K * (x / pivot) ** B * 10. ** (pcosh - pcosh_piv)
+        return result * unit_
 
 
+@six.add_metaclass(FunctionMeta)
 class Broken_powerlaw(Function1D):
     r"""
     description :
@@ -552,8 +595,6 @@ class Broken_powerlaw(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
         self.K.unit = y_unit
@@ -573,15 +614,26 @@ class Broken_powerlaw(Function1D):
         # array with the same units as K. If the input has no units, this will have no
         # effect whatsoever
 
-        result = np.zeros(x.shape) * K * 0
+        if isinstance(x, astropy_units.Quantity):
+            alpha_ = alpha.value
+            beta_ = alpha.value
+            K_ = K.value
+            xb_ = xb.value
+            piv_ = piv.value
+            x_ = x.value
 
-        idx = (x < xb)
-        result[idx] = K * np.power(x[idx] / piv, alpha)
-        result[~idx] = K * np.power(xb / piv, alpha - beta) * np.power(x[~idx] / piv, beta)
+            unit_ = self.y_unit
 
-        return result
+        else:
+            unit_ = 1.0
+            alpha_, beta_, K_, piv_, x_, xb_ = alpha, beta, K, piv, x, xb
+
+        result = nb_func.bplaw_eval(x_, K_, xb_, alpha_, beta_, piv_)
+
+        return result * unit_
 
 
+@six.add_metaclass(FunctionMeta)
 class StepFunction(Function1D):
     r"""
         description :
@@ -597,15 +649,11 @@ class StepFunction(Function1D):
 
                 desc : Lower bound for the interval
                 initial value : 0
-                min : -np.inf
-                max : np.inf
 
             upper_bound :
 
                 desc : Upper bound for the interval
                 initial value : 1
-                min : -np.inf
-                max : np.inf
 
             value :
 
@@ -617,8 +665,6 @@ class StepFunction(Function1D):
             - { x : -0.5, function value: 0, tolerance: 1e-20}
 
         """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
         # Lower and upper bound has the same unit as x
@@ -639,7 +685,7 @@ class StepFunction(Function1D):
         return result
 
 
-
+@six.add_metaclass(FunctionMeta)
 class StepFunctionUpper(Function1D):
     r"""
         description :
@@ -655,16 +701,12 @@ class StepFunctionUpper(Function1D):
 
                 desc : Lower bound for the interval
                 initial value : 0
-                min : -np.inf
-                max : np.inf
                 fix : yes
 
             upper_bound :
 
                 desc : Upper bound for the interval
                 initial value : 1
-                min : -np.inf
-                max : np.inf
                 fix : yes
 
             value :
@@ -677,8 +719,6 @@ class StepFunctionUpper(Function1D):
             - { x : -0.5, function value: 0, tolerance: 1e-20}
 
         """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
         # Lower and upper bound has the same unit as x
@@ -699,8 +739,8 @@ class StepFunctionUpper(Function1D):
         return result
 
 
-
 # noinspection PyPep8Naming
+@six.add_metaclass(FunctionMeta)
 class Blackbody(Function1D):
     r"""
 
@@ -715,41 +755,44 @@ class Blackbody(Function1D):
             initial value : 1e-4
             min : 0.
             is_normalization : True
-    
+
         kT :
             desc : temperature of the blackbody
             initial value : 30.0
             min: 0.
-    """
 
-    __metaclass__ = FunctionMeta
+    """
 
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
-        self.K.unit = y_unit / (x_unit ** 2)
+        self.K.unit = old_div(y_unit, (x_unit ** 2))
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
 
+
     def evaluate(self, x, K, kT):
 
-        arg = np.divide(x,kT)
+        if isinstance(x, astropy_units.Quantity):
 
-        # get rid of overflow
-        idx = arg <= 700.
+            K_ = K.value
+            kT_ = kT.value
+        
+            x_ = x.value
 
-        # The K * 0 part is a trick so that out will have the right units (if the input
-        # has units)
+            unit_ = self.y_unit
 
-        out = np.zeros(x.shape) * K * x * x  * 0
+        else:
+            unit_ = 1.0
+            K_, kT_, x_, = K, kT, x
 
-        out[idx]  = np.divide(K * x[idx] * x[idx], np.expm1(arg[idx]))
-        #out[~idx] = 0. * K
+        result = nb_func.bb_eval(x_, K_, kT_)
 
-        return out
+        return result * unit_
 
 
 # noinspection PyPep8Naming
+@six.add_metaclass(FunctionMeta)
 class Sin(Function1D):
     r"""
     description :
@@ -786,8 +829,6 @@ class Sin(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same unit of y
         self.K.unit = y_unit
@@ -805,8 +846,7 @@ class Sin(Function1D):
         return K * np.sin(2 * np.pi * f * x + phi)
 
 
-
-
+@six.add_metaclass(FunctionMeta)
 class Line(Function1D):
     r"""
     description :
@@ -829,11 +869,9 @@ class Line(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         # a has units of y_unit / x_unit, so that a*x has units of y_unit
-        self.a.unit = y_unit / x_unit
+        self.a.unit = old_div(y_unit, x_unit)
 
         # b has units of y
         self.b.unit = y_unit
@@ -841,6 +879,8 @@ class Line(Function1D):
     def evaluate(self, x, a, b):
         return a * x + b
 
+
+@six.add_metaclass(FunctionMeta)
 class Constant(Function1D):
     r"""
         description :
@@ -858,8 +898,6 @@ class Constant(Function1D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         self.k.unit = y_unit
 
@@ -867,6 +905,7 @@ class Constant(Function1D):
         return k
 
 
+@six.add_metaclass(FunctionMeta)
 class DiracDelta(Function1D):
     r"""
         description :
@@ -891,8 +930,6 @@ class DiracDelta(Function1D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
 
         self.value.unit = y_unit
@@ -902,15 +939,13 @@ class DiracDelta(Function1D):
 
         out = np.zeros(x.shape) * value * 0
 
-        out[ x == zero_point ] = value
-
+        out[x == zero_point] = value
 
         return out
 
 
-
 if has_naima:
-
+    @six.add_metaclass(FunctionMeta)
     class Synchrotron(Function1D):
         r"""
         description :
@@ -943,8 +978,6 @@ if has_naima:
                 fix : yes
         """
 
-        __metaclass__ = FunctionMeta
-
         def _set_units(self, x_unit, y_unit):
 
             # This function can only be used as a spectrum,
@@ -955,10 +988,11 @@ if has_naima:
 
                 # Now check that y is a differential flux
                 current_units = get_units()
-                should_be_unitless = y_unit * (current_units.energy * current_units.time * current_units.area)
+                should_be_unitless = y_unit * \
+                    (current_units.energy * current_units.time * current_units.area)
 
                 if not hasattr(should_be_unitless, 'physical_type') or \
-                                should_be_unitless.decompose().physical_type != 'dimensionless':
+                        should_be_unitless.decompose().physical_type != 'dimensionless':
                     # y is not a differential flux
                     raise InvalidUsageForFunction("Unit for y is not differential flux. The function synchrotron "
                                                   "can only be used as a spectrum.")
@@ -977,13 +1011,15 @@ if has_naima:
 
             current_units = get_units()
 
-            self._particle_distribution.set_units(current_units.energy, current_units.energy ** (-1))
+            self._particle_distribution.set_units(
+                current_units.energy, current_units.energy ** (-1))
 
             # Naima wants a function which accepts a quantity as x (in units of eV) and returns an astropy quantity,
             # so we need to create a wrapper which will remove the unit from x and add the unit to the return
             # value
 
-            self._particle_distribution_wrapper = lambda x: function(x.value) / current_units.energy
+            self._particle_distribution_wrapper = lambda x: old_div(
+                function(x.value), current_units.energy)
 
         def get_particle_distribution(self):
 
@@ -992,37 +1028,39 @@ if has_naima:
         particle_distribution = property(get_particle_distribution, set_particle_distribution,
                                          doc="""Get/set particle distribution for electrons""")
 
-        def fix_units( self, x, B, distance, emin, emax ):
-        
-            if isinstance( x, u.Quantity):
+        def fix_units(self, x, B, distance, emin, emax):
+
+            if isinstance(x, u.Quantity):
                 return True, x.to(get_units().energy), B.to(u.Gauss), distance.to(u.kpc), emin.to(u.GeV), emax.to(u.GeV)
             else:
                 return False, x*(get_units().energy), B*(u.Gauss), distance*(u.kpc), emin*(u.GeV), emax*(u.GeV)
 
-
         # noinspection PyPep8Naming
         def evaluate(self, x, B, distance, emin, emax, need):
 
-            has_units, x, B, distance, emin, emax = self.fix_units( x, B, distance, emin, emax )
+            has_units, x, B, distance, emin, emax = self.fix_units(
+                x, B, distance, emin, emax)
 
             _synch = naima.models.Synchrotron(self._particle_distribution_wrapper, B,
                                               Eemin=emin, Eemax=emax, nEed=need)
 
             if has_units:
-              return _synch.flux(x , distance=distance)
+                return _synch.flux(x, distance=distance)
             else:
-              return _synch.flux(x , distance=distance).value
+                return _synch.flux(x, distance=distance).value
 
         def to_dict(self, minimal=False):
 
             data = super(Function1D, self).to_dict(minimal)
 
             if not minimal:
-                data['extra_setup'] = {'particle_distribution': self.particle_distribution.path }
+                data['extra_setup'] = {
+                    'particle_distribution': self.particle_distribution.path}
 
             return data
 
 
+@six.add_metaclass(FunctionMeta)
 class _ComplexTestFunction(Function1D):
     r"""
     description :
@@ -1045,12 +1083,10 @@ class _ComplexTestFunction(Function1D):
             delta : 0.1
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
 
         self.A.unit = y_unit
-        self.B.unit = y_unit / x_unit
+        self.B.unit = old_div(y_unit, x_unit)
 
     def set_particle_distribution(self, function):
 
@@ -1063,12 +1099,10 @@ class _ComplexTestFunction(Function1D):
     particle_distribution = property(get_particle_distribution, set_particle_distribution,
                                      doc="""Get/set particle distribution for electrons""")
 
-
     # noinspection PyPep8Naming
     def evaluate(self, x, A, B):
 
         return A + B * x
-
 
     def to_dict(self, minimal=False):
 
@@ -1076,11 +1110,13 @@ class _ComplexTestFunction(Function1D):
 
         if not minimal:
 
-            data['extra_setup'] = {'particle_distribution': self.particle_distribution.path}
+            data['extra_setup'] = {
+                'particle_distribution': self.particle_distribution.path}
 
         return data
 
 
+@six.add_metaclass(FunctionMeta)
 class Band(Function1D):
     r"""
     description :
@@ -1124,8 +1160,6 @@ class Band(Function1D):
             fix : yes
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
         self.K.unit = y_unit
@@ -1140,24 +1174,29 @@ class Band(Function1D):
         self.beta.unit = astropy_units.dimensionless_unscaled
 
     def evaluate(self, x, K, alpha, xp, beta, piv):
-        E0 = xp / (2 + alpha)
+        E0 = old_div(xp, (2 + alpha))
 
         if (alpha < beta):
             raise ModelAssertionViolation("Alpha cannot be less than beta")
 
-        idx = x < (alpha - beta) * E0
+        if isinstance(x, astropy_units.Quantity):
+            alpha_ = alpha.value
+            beta_ = alpha.value
+            K_ = K.value
+            E0_ = E0.value
+            piv_ = piv.value
+            x_ = x.value
 
-        # The K * 0 part is a trick so that out will have the right units (if the input
-        # has units)
+            unit_ = self.y_unit
 
-        out = np.zeros(x.shape) * K * 0
+        else:
+            unit_ = 1.0
+            alpha_, beta_, K_, piv_, x_, E0_ = alpha, beta, K, piv, x, E0
 
-        out[idx] = K * np.power(x[idx] / piv, alpha) * np.exp(-x[idx] / E0)
-        out[~idx] = K * np.power((alpha - beta) * E0 / piv, alpha - beta) * np.exp(beta - alpha) * \
-                    np.power(x[~idx] / piv, beta)
+        return nb_func.band_eval(x_, K_, alpha_, beta_, E0_, piv_) * unit_
 
-        return out
 
+@six.add_metaclass(FunctionMeta)
 class Band_grbm(Function1D):
     r"""
     description :
@@ -1201,8 +1240,6 @@ class Band_grbm(Function1D):
             fix : yes
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
         self.K.unit = y_unit
@@ -1218,7 +1255,6 @@ class Band_grbm(Function1D):
 
     def evaluate(self, x, K, alpha, xc, beta, piv):
 
-
         if (alpha < beta):
             raise ModelAssertionViolation("Alpha cannot be less than beta")
 
@@ -1229,14 +1265,15 @@ class Band_grbm(Function1D):
 
         out = np.zeros(x.shape) * K * 0
 
-        out[idx] = K * np.power(x[idx] / piv, alpha) * np.exp(-x[idx] / xc)
+        out[idx] = K * np.power(old_div(x[idx], piv),
+                                alpha) * np.exp(old_div(-x[idx], xc))
         out[~idx] = K * np.power((alpha - beta) * xc / piv, alpha - beta) * np.exp(beta - alpha) * \
-                    np.power(x[~idx] / piv, beta)
+            np.power(old_div(x[~idx], piv), beta)
 
         return out
 
 
-
+@six.add_metaclass(FunctionMeta)
 class Band_Calderone(Function1D):
     r"""
     description :
@@ -1298,8 +1335,6 @@ class Band_Calderone(Function1D):
 
     """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
 
         # alpha and beta are always unitless
@@ -1324,23 +1359,10 @@ class Band_Calderone(Function1D):
     def ggrb_int_cpl(a, Ec, Emin, Emax):
 
         # Gammaincc does not support quantities
-        i1 = gammaincc(2 + a, Emin / Ec) * gamma(2 + a)
-        i2 = gammaincc(2 + a, Emax / Ec) * gamma(2 + a)
+        i1 = gammaincc(2 + a, old_div(Emin, Ec)) * gamma(2 + a)
+        i2 = gammaincc(2 + a, old_div(Emax, Ec)) * gamma(2 + a)
 
         return -Ec * Ec * (i2 - i1)
-
-    @staticmethod
-    def ggrb_int_pl(a, b, Ec, Emin, Emax):
-
-        pre = pow(a - b, a - b) * math.exp(b - a) / pow(Ec, b)
-
-        if b != -2:
-
-            return pre / (2 + b) * (pow(Emax, 2 + b) - pow(Emin, 2 + b))
-
-        else:
-
-            return pre * math.log(Emax / Emin)
 
     def evaluate(self, x, alpha, beta, xp, F, a, b, opt):
 
@@ -1356,11 +1378,11 @@ class Band_Calderone(Function1D):
 
         if alpha == -2:
 
-            Ec = xp / 0.0001  # TRICK: avoid a=-2
+            Ec = old_div(xp, 0.0001)  # TRICK: avoid a=-2
 
         else:
 
-            Ec = xp / (2 + alpha)
+            Ec = old_div(xp, (2 + alpha))
 
         # Split energy
 
@@ -1377,12 +1399,13 @@ class Band_Calderone(Function1D):
             b_ = b.value
             Esplit_ = Esplit.value
             beta_ = beta.value
+            x_ = x.value
 
             unit_ = self.x_unit
 
         else:
 
-            alpha_, Ec_, a_, b_, Esplit_, beta_ = alpha, Ec, a, b, Esplit, beta
+            alpha_, Ec_, a_, b_, Esplit_, beta_, x_ = alpha, Ec, a, b, Esplit, beta, x
             unit_ = 1.0
 
         if opt == 0:
@@ -1398,42 +1421,43 @@ class Band_Calderone(Function1D):
             if a <= Esplit and Esplit <= b:
 
                 intflux = (self.ggrb_int_cpl(alpha_, Ec_, a_, Esplit_) +
-                           self.ggrb_int_pl(alpha_, beta_, Ec_, Esplit_, b_))
+                           nb_func.ggrb_int_pl(alpha_, beta_, Ec_, Esplit_, b_))
 
             else:
 
                 if Esplit < a:
 
-                    intflux = self.ggrb_int_pl(alpha_, beta_, Ec_, a_, b_)
+                    intflux = nb_func.ggrb_int_pl(alpha_, beta_, Ec_, a_, b_)
 
                 else:
 
-                    raise RuntimeError("Esplit > emax!")
+                    intflux = nb_func.ggrb_int_cpl(alpha_, Ec_, a_, b__)
 
-        erg2keV = 6.24151e8
+        
 
         norm = F * erg2keV / (intflux * unit_)
 
+        
+        
         if opt == 0:
 
             # Cutoff power law
 
-            flux = np.power(x / Ec, alpha) * np.exp(- x / Ec)
+            flux = nb_func.cplaw_eval(x_, 1., Ec_, alpha_, Ec_)
+
+            # flux = norm * np.power(old_div(x, Ec), alpha) * \
+            #     np.exp(old_div(- x, Ec))
 
         else:
 
             # The norm * 0 is to keep the units right
 
-            flux = np.zeros(x.shape) * norm * 0
+            flux =  nb_func.band_eval(x_, 1., alpha_, beta_, Ec_, Ec_)
 
-            idx = x < Esplit
-
-            flux[idx] = norm * np.power(x[idx] / Ec, alpha) * np.exp(-x[idx] / Ec)
-            flux[~idx] = norm * pow(alpha - beta, alpha - beta) * math.exp(beta - alpha) * np.power(x[~idx] / Ec, beta)
-
-        return flux
+        return norm * flux
 
 
+@six.add_metaclass(FunctionMeta)
 class Log_parabola(Function1D):
     r"""
     description :
@@ -1471,8 +1495,6 @@ class Log_parabola(Function1D):
             initial value : 1.0
 
     """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit):
 
@@ -1519,10 +1541,11 @@ class Log_parabola(Function1D):
         # Eq. 6 in Massaro et al. 2004
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
-        return self.piv.value * pow(10, ((2 + self.alpha.value) * np.log(10)) / (2 * self.beta.value))
+        return self.piv.value * pow(10, old_div(((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value)))
 
 
 if has_gsl:
+    @six.add_metaclass(FunctionMeta)
     class Cutoff_powerlaw_flux(Function1D):
         r"""
             description :
@@ -1563,8 +1586,6 @@ if has_gsl:
                     fix : yes
             """
 
-        __metaclass__ = FunctionMeta
-
         def _set_units(self, x_unit, y_unit):
             # K has units of y * x
             self.F.unit = y_unit * x_unit
@@ -1581,7 +1602,8 @@ if has_gsl:
         def _integral(a, b, index, ec):
             ap1 = index + 1
 
-            integrand = lambda x: -pow(ec, ap1) * gamma_inc(ap1, x / ec)
+            def integrand(x): return -pow(ec, ap1) * \
+                gamma_inc(ap1, old_div(x, ec))
 
             return integrand(b) - integrand(a)
 
@@ -1591,6 +1613,7 @@ if has_gsl:
             return F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
 
 
+@six.add_metaclass(FunctionMeta)
 class Exponential_cutoff(Function1D):
     r"""
         description :
@@ -1614,8 +1637,6 @@ class Exponential_cutoff(Function1D):
                 min : 1
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit):
         # K has units of y
 
@@ -1629,63 +1650,70 @@ class Exponential_cutoff(Function1D):
 
 
 if has_ebltable:
-
+    @six.add_metaclass(FunctionMeta)
     class EBLattenuation(Function1D):
         r"""
         description :
             Attenuation factor for absorption in the extragalactic background light (EBL) ,
             to be used for extragalactic source spectra. Based on package "ebltable" by
             Manuel Meyer, https://github.com/me-manu/ebltable .
-        
+
         latex: not available
-        
+
         parameters :
-           
+
           redshift :
                 desc : redshift of the source
                 initial value : 1.0
                 fix : yes
+
+          attenuation : 
+                desc : scaling factor for the strength of attenuation
+                initial value : 1.0
+                min : 0.0
+                max : 10.0
+                fix : yes
+
         """
 
-        __metaclass__ = FunctionMeta
-        
         def _setup(self):
 
             # define EBL model, use dominguez as default
-            self._tau =  ebltau.OptDepth.readmodel(model = 'dominguez')
-       
-        def set_ebl_model(self,modelname):
-            
-            #passing modelname to ebltable, which will check if defined
-            self._tau =  ebltau.OptDepth.readmodel(model = modelname)
-            
+            self._tau = ebltau.OptDepth.readmodel(model='dominguez')
+
+        def set_ebl_model(self, modelname):
+
+            # passing modelname to ebltable, which will check if defined
+            self._tau = ebltau.OptDepth.readmodel(model=modelname)
+
         def _set_units(self, x_unit, y_unit):
 
-            if not hasattr(x_unit, "physical_type") and x_unit.physical_type == 'energy':
-                
+            if not hasattr(x_unit, "physical_type") or x_unit.physical_type != 'energy':
+
                 # x should be energy
                 raise InvalidUsageForFunction("Unit for x is not an energy. The function "
-                                  "EBLOptDepth calculates energy-dependent "
-                                  "absorption.")
+                                              "EBLOptDepth calculates energy-dependent "
+                                              "absorption.")
 
-                # y should be dimensionless
-                if not hasattr(y_unit, 'physical_type') or \
-                                y_unit.physical_type != 'dimensionless':
-                    raise InvalidUsageForFunction("Unit for y is not dimensionless.")
+            # y should be dimensionless
+            if not hasattr(y_unit, 'physical_type') or \
+                    y_unit.physical_type != 'dimensionless':
+                raise InvalidUsageForFunction(
+                    "Unit for y is not dimensionless.")
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
-        
-        def evaluate(self, x, redshift):
-          
+            self.attenuation.unit  = astropy_units.dimensionless_unscaled
+
+        def evaluate(self, x, redshift, attenuation):
+
             if isinstance(x, astropy_units.Quantity):
-                
+
                 # ebltable expects TeV
-                eTeV = x.to(astropy_units.TeV).value 
-                return np.exp(-self._tau.opt_depth( redshift.value, eTeV )) * astropy_units.dimensionless_unscaled 
-                
+                eTeV = x.to(astropy_units.TeV).value
+                return np.exp(-self._tau.opt_depth(redshift.value, eTeV) * attenuation) * astropy_units.dimensionless_unscaled
+
             else:
-                
-                #otherwise it's in keV
-                eTeV = x / 1e9
-                return np.exp(-self._tau.opt_depth( redshift, eTeV ))
- 
+
+                # otherwise it's in keV
+                eTeV = old_div(x, 1e9)
+                return np.exp(-self._tau.opt_depth(redshift, eTeV) * attenuation)

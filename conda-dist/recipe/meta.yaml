@@ -5,55 +5,86 @@ package:
   version: {{ os.environ.get('PKG_VERSION') }}
 
 source:
-#  git_url: https://github.com/giacomov/{{ name }}.git
+#  git_url: https://github.com/threeml/{{ name }}.git
   path: ../../
 
 requirements:
   build:
-    - toolchain
+    - {{ compiler('c') }} # [linux]
+    - {{ compiler('cxx') }} # [linux]
+    - {{ compiler('fortran') }} # [linux]
+    - xspec-modelsonly
+    #- cfitsio
+    - cfitsio==3.470
+    - ccfits
+    - wcslib==5.20
+    #- wcslib
+    #- krb5==1.14.6 # [py2k]
+    #- readline==6.2 # [py2k]
+
+  host:
     - python
-    - gcc  # [linux]
-    - libgfortran
     - setuptools
     - pip
     - numpy
-    - pyyaml
-    - astropy
-    - scipy
-    - numdifftools
-    - hdf5
-    - pytables
-    - pandas
-    - xspec-modelsonly-lite
+    - pyyaml>=5.1
+    #- astropy
+    #- scipy
+#    - numdifftools
+    #- hdf5
+    #- pytables
+    - pandas>=0.23
+    #- cfitsio==3.410 # [py2k]
+    - cfitsio==3.470
+    - ccfits
+    - wcslib==5.20
+    #- wcslib
+    - xspec-modelsonly
+    - future
+    #- krb5==1.14.6 # [py2k]
+    #- readline==6.2 # [py2k]
+    - numba
+    - h5py
 
   run:
     - python
-    - libgfortran
+  #  - libgfortran
     - numpy
-    - pyyaml
+    - pyyaml>=5.1
     - astropy
-    - scipy
-    - numdifftools
-    - hdf5
+    #- scipy
+#    - numdifftools
+    #- hdf5
     - pytables
-    - pandas
+    - pandas>=0.23
     - dill
+    #- cfitsio
+    - cfitsio==3.470
+    - ccfits
+    - wcslib==5.20
+    #- wcslib
+    - future
+    #- krb5==1.14.6 # [py2k]
+    #- readline==6.2 # [py2k]
+    - numba
+    - h5py
+    - interpolation>=2.1.5 # [py3k]
 
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
-  skip: true  # [py3k]
+#  skip: true  # [py3k]
 
-test:
-  # Python imports
-  imports:
-    - astromodels
-    - astromodels.core
-    - astromodels.functions
-    - astromodels.functions.dark_matter
-    - astromodels.sources
-    - astromodels.utils
-    - astromodels.xspec
+#test:
+#  # Python imports
+#  imports:
+#    - astromodels
+#    - astromodels.core
+#    - astromodels.functions
+#    - astromodels.functions.dark_matter
+#    - astromodels.sources
+#    - astromodels.utils
+#    - astromodels.xspec
 
 #  commands:
 #    - pytest -vv --pyargs {{ name }}
@@ -61,12 +92,12 @@ test:
   # You can also put a file called run_test.py in the recipe that will be run
   # at test time.
 
-  requires:
-    - xspec-modelsonly-lite
+#  requires:
+#    - xspec-modelsonly
 
 
 about:
-  home: https://github.com/giacomov/astromodels
+  home: https://github.com/threeml/astromodels
   license: UNKNOWN
   summary: 'Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy'
   license_family: OTHER

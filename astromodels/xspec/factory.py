@@ -1,6 +1,7 @@
+from __future__ import print_function
 import collections
 import sys
-
+import time
 import astropy.units as u
 import os
 import re
@@ -19,13 +20,19 @@ from astromodels.xspec import _xspec
 # When running in a Anaconda environment, the package xspec-modelsonly
 # will install the models data in a specific place, so we set the HEADAS variable to point to the right place for
 # the models to find their data
-if os.environ.get("CONDA_PREFIX") is not None:
+if os.environ.get("CONDA_PREFIX") is not None and os.environ.get("HEADAS", None) is None:
 
     # NOTE: the 'headas' directory doesn't actually exists, but models are looked for (according to Xspec documentation)
     # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
     # the 'spectral' directory is
 
     os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
+
+    #os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
+
+    # we need to create the directory otherwise an exception casted:
+    if not os.path.exists(os.environ['HEADAS']):
+        os.makedirs(os.environ['HEADAS'])
 
 # This list defines all python protected names (names which variables or attributes should not have)
 illegal_variable_names_ = 'and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,' \
@@ -280,6 +287,11 @@ def get_models(model_dat_path):
 
                 par_name = "redshift"
 
+                # this is illegal because of the 2D functions
+            if par_name == 'y':
+
+                par_name = 'y1'
+
             # Check that the parameter name is not an illegal Python name
             if par_name in illegal_variable_names:
 
@@ -308,6 +320,8 @@ def get_models(model_dat_path):
 
                 par_unit = ""
 
+
+
             # There are funny units in model.dat, like "Rs" (which means Schwarzschild radius) or other things
             # so let's try to convert the par_unit into an astropy.Unit instance. If that fails, use a unitless unit
             try:
@@ -328,6 +342,23 @@ def get_models(model_dat_path):
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
 
+
+            if hard_maximum is not None and hard_minimum is not None:
+
+                if (float(hard_maximum) < float(hard_minimum)):
+
+                    raise ValueError("Hard maximum (%s) < hard minimum (%s)" %(hard_maximum,hard_minimum))
+
+                if float(default_value) > float(hard_maximum):
+
+                    default_value = hard_maximum
+
+                elif float(default_value) < float(hard_minimum):
+
+                    default_value = hard_minimum
+
+
+
             this_model['parameters'][par_name] = {'initial value': float(default_value),
                                                   'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
                                                           'XspecModels.html)',
@@ -347,6 +378,7 @@ from astromodels.functions.function import FunctionMeta, Function1D
 import numpy as np
 import astropy.units as u
 from astromodels.xspec import _xspec
+import six
 
 # These are multiplicative functions which need numerical differentiation
 _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
@@ -354,13 +386,12 @@ _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
                           'XS_cabs', 'XS_wabs', 'XS_zwabs'
                           ]
 
+@six.add_metaclass(FunctionMeta)
 class XS_$MODEL_NAME$(Function1D):
 
     """
 $DOCSTRING$
     """
-
-    __metaclass__ = FunctionMeta
 
     def _setup(self):
 
@@ -557,7 +588,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         assert model_type != 'con', "Convolution models are not yet supported"
 
         # Get a list of the parameter names
-        parameters_names = ", ".join(definition['parameters'].keys())
+        parameters_names = ", ".join(list(definition['parameters'].keys()))
 
         # Create the docstring
         docstring = my_yaml.dump(definition, default_flow_style=False)
@@ -577,6 +608,8 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
             f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
+        
+        time.sleep(1)
 
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
@@ -589,9 +622,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         exec('from %s import %s' % (class_name, class_name))
 
     # Return the class we just created
-
     return class_name, locals()[class_name]
-
 
 def setup_xspec_models():
 
@@ -607,6 +638,7 @@ def setup_xspec_models():
 
             # convolution models are not supported
             continue
+
 
         if not hasattr(_xspec, xspec_function):
 
