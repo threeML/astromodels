@@ -179,11 +179,11 @@ def find_library(library_root, additional_places=None):
 def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
+    conda_prefix = os.environ.get("CONDA_PREFIX")
 
     if headas_root is None:
 
         # See, maybe we are running in Conda
-        conda_prefix = os.environ.get("CONDA_PREFIX")
         
         if conda_prefix is None:
             
@@ -224,6 +224,12 @@ def setup_xspec():
     else:
 
         print("\n Xspec is detected. Will compile the Xspec extension.\n")
+        print("\n NOTICE!!!!!\n")
+        print("If you have issues, manually set the ENV variable XSPEC_INC_PATH")
+        print("To the location of the XSPEC headers\n\n")
+        print("If you are still having issues, unset HEADAS before installing and contact the support team")
+        
+
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
@@ -254,17 +260,50 @@ def setup_xspec():
 
                 library_dirs.append(this_library_path)
 
-    # Remove duplicates from library_dirs
 
-    library_dirs = list(set(library_dirs))
+    # try to manually add on the include directory
+
+    header_paths = []
+    
+    if library_dirs:
+
+        # grab it from the lib assuming that it is one up
+        xspec_path, _ = os.path.split(library_dirs[0])
+        include_path = os.path.join(xspec_path, "include")
+
+        header_paths.append(include_path)
+
+    # let's be sure to add the conda include directory
+       
+    if conda_prefix is not None:
+        
+        conda_include_path = os.path.join(conda_prefix, 'include')
+        header_paths.append(conda_include_path)
+
+    # check if there are user set the location of the xspec headers:
+   
+    xspec_headers_path = os.environ.get("XSPEC_INC_PATH")
+    
+    if xspec_headers_path is not None:
+
+        print("You have set XSPEC_INC_PATH=%s" % xspec_headers_path)
+
+        header_paths.append(xspec_headers_path)
+    
+    # Remove duplicates from library_dirs and header_paths
+
+    library_dirs = list(set(library_dirs))  
+    header_paths = list(set(header_paths))
 
     # Configure the variables to build the external module with the C/C++ wrapper
+
+
     ext_modules_configuration = [
 
         Extension("astromodels.xspec._xspec",
 
                   ["astromodels/xspec/src/_xspec.cc", ],
-
+                  include_dirs=header_paths,
                   libraries=libraries,
                   library_dirs=library_dirs,
                   runtime_library_dirs=library_dirs,
