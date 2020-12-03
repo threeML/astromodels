@@ -282,7 +282,7 @@ def setup_xspec():
 
     
     
-    xspec_headers_path = os.environ("XSPEC_INC_PATH")
+    xspec_headers_path = os.environ.get("XSPEC_INC_PATH")
     
     if xspec_headers_path is not None:
 
