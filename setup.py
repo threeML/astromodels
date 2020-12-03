@@ -179,11 +179,11 @@ def find_library(library_root, additional_places=None):
 def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
+    conda_prefix = os.environ.get("CONDA_PREFIX")
 
     if headas_root is None:
 
         # See, maybe we are running in Conda
-        conda_prefix = os.environ.get("CONDA_PREFIX")
         
         if conda_prefix is None:
             
@@ -269,28 +269,31 @@ def setup_xspec():
 
         # grab it from the lib assuming that it is one up
         xspec_path, _ = os.path.split(library_dirs[0])
-        include_path = os.path.join(xspec_path,"include")
+        include_path = os.path.join(xspec_path, "include")
 
         header_paths.append(include_path)
-        
-                
-    # Remove duplicates from library_dirs
 
-    library_dirs = list(set(library_dirs))
+    # let's be sure to add the conda include directory
+       
+    if conda_prefix is not None:
+        
+        conda_include_path = os.path.join(conda_prefix, 'include')
+        header_paths.append(conda_include_path)
 
     # check if there are user set the location of the xspec headers:
-
-    
-    
+   
     xspec_headers_path = os.environ.get("XSPEC_INC_PATH")
     
     if xspec_headers_path is not None:
 
-        print(f" You have set XSPEC_INC_PATH={xspec_headers_path}")
+        print("You have set XSPEC_INC_PATH=%s" % xspec_headers_path)
 
         header_paths.append(xspec_headers_path)
     
-    
+    # Remove duplicates from library_dirs and header_paths
+
+    library_dirs = list(set(library_dirs))  
+    header_paths = list(set(header_paths))
 
     # Configure the variables to build the external module with the C/C++ wrapper
 
