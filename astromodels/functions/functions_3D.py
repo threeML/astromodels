@@ -541,6 +541,7 @@ class Continuous_injection_diffusion_legacy(Function3D):
             z = z.value
         return np.ones_like( z )
 
+
 class GalPropTemplate_3D(Function3D):
     r"""
         description :
