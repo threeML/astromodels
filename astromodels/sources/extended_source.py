@@ -111,7 +111,7 @@ class ExtendedSource(Source, Node):
         # Add a node called 'spectrum'
 
         spectrum_node = Node('spectrum')
-        spectrum_node._add_children(self._components.values())
+        spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
 
@@ -178,7 +178,7 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        results = [component.shape(energies) for component in self.components.values()]
+        results = [component.shape(energies) for component in list(self.components.values())]
 
         if isinstance(energies, u.Quantity):
 
@@ -227,15 +227,15 @@ class ExtendedSource(Source, Node):
         :return:
         """
 
-        for component in self._components.values():
+        for component in list(self._components.values()):
 
-            for par in component.shape.parameters.values():
+            for par in list(component.shape.parameters.values()):
 
                 if par.free:
 
                     return True
 
-        for par in self.spatial_shape.parameters.values():
+        for par in list(self.spatial_shape.parameters.values()):
 
             if par.free:
 
@@ -247,45 +247,49 @@ class ExtendedSource(Source, Node):
     def free_parameters(self):
         """
         Returns a dictionary of free parameters for this source
+        We use the parameter path as the key because it's 
+        guaranteed to be unique, unlike the parameter name.
 
         :return:
         """
         free_parameters = collections.OrderedDict()
 
-        for component in self._components.values():
+        for component in list(self._components.values()):
 
-            for par in component.shape.parameters.values():
+            for par in list(component.shape.parameters.values()):
 
                 if par.free:
 
-                    free_parameters[par.name] = par
+                    free_parameters[par.path] = par
 
-        for par in self.spatial_shape.parameters.values():
+        for par in list(self.spatial_shape.parameters.values()):
 
             if par.free:
 
-                free_parameters[par.name] = par
+                free_parameters[par.path] = par
 
         return free_parameters
 
     @property
     def parameters(self):
         """
-        Returns a dictionary of all parameters for this source
+        Returns a dictionary of all parameters for this source.
+        We use the parameter path as the key because it's 
+        guaranteed to be unique, unlike the parameter name.
 
         :return:
         """
         all_parameters = collections.OrderedDict()
 
-        for component in self._components.values():
+        for component in list(self._components.values()):
 
-            for par in component.shape.parameters.values():
+            for par in list(component.shape.parameters.values()):
 
-                all_parameters[par.name] = par
+                all_parameters[par.path] = par
 
-        for par in self.spatial_shape.parameters.values():
+        for par in list(self.spatial_shape.parameters.values()):
 
-            all_parameters[par.name] = par
+            all_parameters[par.path] = par
 
         return all_parameters
 
@@ -307,7 +311,7 @@ class ExtendedSource(Source, Node):
         repr_dict[key]['shape'] = self._spatial_shape.to_dict(minimal=True)
         repr_dict[key]['spectrum'] = collections.OrderedDict()
 
-        for component_name, component in self.components.iteritems():
+        for component_name, component in list(self.components.items()):
             repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)

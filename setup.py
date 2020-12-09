@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
 import ctypes.util
 import glob
 import sys
@@ -9,6 +10,7 @@ import re
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as _build_ext
 
+import versioneer
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
@@ -172,20 +174,16 @@ def find_library(library_root, additional_places=None):
             return sanitize_lib_name(library_name), library_dir
 
 
-# Get the version number
-vfilename = "astromodels/version.py"
-exec(compile(open(vfilename, "rb").read(), vfilename, 'exec'))
-#execfile('astromodels/version.py')
 
 
 def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
+    conda_prefix = os.environ.get("CONDA_PREFIX")
 
     if headas_root is None:
 
         # See, maybe we are running in Conda
-        conda_prefix = os.environ.get("CONDA_PREFIX")
         
         if conda_prefix is None:
             
@@ -226,6 +224,12 @@ def setup_xspec():
     else:
 
         print("\n Xspec is detected. Will compile the Xspec extension.\n")
+        print("\n NOTICE!!!!!\n")
+        print("If you have issues, manually set the ENV variable XSPEC_INC_PATH")
+        print("To the location of the XSPEC headers\n\n")
+        print("If you are still having issues, unset HEADAS before installing and contact the support team")
+        
+
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
@@ -256,17 +260,50 @@ def setup_xspec():
 
                 library_dirs.append(this_library_path)
 
-    # Remove duplicates from library_dirs
 
-    library_dirs = list(set(library_dirs))
+    # try to manually add on the include directory
+
+    header_paths = []
+    
+    if library_dirs:
+
+        # grab it from the lib assuming that it is one up
+        xspec_path, _ = os.path.split(library_dirs[0])
+        include_path = os.path.join(xspec_path, "include")
+
+        header_paths.append(include_path)
+
+    # let's be sure to add the conda include directory
+       
+    if conda_prefix is not None:
+        
+        conda_include_path = os.path.join(conda_prefix, 'include')
+        header_paths.append(conda_include_path)
+
+    # check if there are user set the location of the xspec headers:
+   
+    xspec_headers_path = os.environ.get("XSPEC_INC_PATH")
+    
+    if xspec_headers_path is not None:
+
+        print("You have set XSPEC_INC_PATH=%s" % xspec_headers_path)
+
+        header_paths.append(xspec_headers_path)
+    
+    # Remove duplicates from library_dirs and header_paths
+
+    library_dirs = list(set(library_dirs))  
+    header_paths = list(set(header_paths))
 
     # Configure the variables to build the external module with the C/C++ wrapper
+
+
     ext_modules_configuration = [
 
         Extension("astromodels.xspec._xspec",
 
                   ["astromodels/xspec/src/_xspec.cc", ],
-
+                  include_dirs=header_paths,
                   libraries=libraries,
                   library_dirs=library_dirs,
                   runtime_library_dirs=library_dirs,
@@ -309,58 +346,34 @@ else:
 
 
 setup(
-    name="astromodels",
 
     setup_requires=['numpy'],
 
-    cmdclass={'build_ext': My_build_ext},
-
+    #cmdclass={'build_ext': My_build_ext},
+    cmdclass=versioneer.get_cmdclass({'build_ext': My_build_ext}),
+    
     packages=packages,
 
-    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml'))],
+    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml')),
+                ('astromodels/data/tests',  glob.glob('astromodels/data/tests/*.fits'))
+
+    ],
 
     # The __version__ comes from the exec at the top
 
-    version=__version__,
+    version=versioneer.get_version(),
 
-    description="Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy",
 
-    author='Giacomo Vianello',
-
-    author_email='giacomo.vianello@gmail.com',
-
-    url='https://github.com/giacomov/astromodels',
-
-    download_url='https://github.com/giacomov/astromodels/archive/v0.1',
+    download_url='https://github.com/threeml/astromodels/archive/v0.1',
 
     keywords=['Likelihood', 'Models', 'fit'],
-
-    classifiers=[],
     
-    install_requires=[
-        'numpy >= 1.6',
-        'PyYAML',
-        'astropy >= 1.2',
-        'scipy>=0.14',
-        'numdifftools',
-        'tables',
-        'pandas',
-        'dill'],
-
-    extras_require={
-        'tests': [
-            'pytest', ],
-        'docs': [
-            'sphinx >= 1.4',
-            'sphinx_rtd_theme',
-            'nbsphinx',
-            'sphinx-autoapi']},
 
     ext_modules=ext_modules_configuration,
 
     package_data={
-        'astromodels': ['data/dark_matter/*'],
+        'astromodels': ['data/dark_matter/*', 'data/xsect/*', 'data/past_1D_values.h5'],
     },
-    include_package_data=True,
+
 
 )

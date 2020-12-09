@@ -1,3 +1,4 @@
+from __future__ import print_function
 import astropy.units as u
 import numpy as np
 import pytest
@@ -185,7 +186,7 @@ def test_call_with_units():
       assert np.all( np.abs(one + two - source.get_spatially_integrated_flux([1,2,3]*u.keV)) == 0 )
     
       #check spectral and spatial components
-      spatial = source.spatial_shape( ra*u.deg,dec*u.deg )
+      #spatial = source.spatial_shape( ra*u.deg,dec*u.deg )
       spatial = source.spatial_shape( [ra, ra, ra]*u.deg, [dec, dec, dec]*u.deg )
 
       total = source( [ra, ra, ra]*u.deg, [dec, dec, dec]*u.deg, [1,2,3]*u.keV)

@@ -3,6 +3,7 @@
 # COnvert all notebooks to .rst format and save them
 # in the ../doc folder
 
+from __future__ import print_function
 import glob
 import subprocess
 import shutil

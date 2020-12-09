@@ -24,27 +24,27 @@ def dict_to_table(dictionary, list_of_keys=None):
 
         # Add the names as first column
 
-        table['name'] = dictionary.keys()
+        table['name'] = list(dictionary.keys())
 
         # Now add all other properties
 
         # Use the first parameter as prototype
 
-        prototype = dictionary.values()[0]
+        prototype = list(dictionary.values())[0]
 
-        column_names = prototype.keys()
+        column_names = list(prototype.keys())
 
         # If we have a white list for the columns, use it
 
         if list_of_keys is not None:
 
-            column_names = filter(lambda key: key in list_of_keys, column_names)
+            column_names = [key for key in column_names if key in list_of_keys]
 
         # Fill the table
 
         for column_name in column_names:
 
-            table[column_name] = map(lambda x: x[column_name], dictionary.values())
+            table[column_name] = [x[column_name] for x in list(dictionary.values())]
 
     return table
 

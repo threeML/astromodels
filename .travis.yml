@@ -1,55 +1,91 @@
-sudo: required
-
 language: generic
 
-services:
-  - docker
-
-os:
-  - linux
-  - osx
+jobs:
+  include:
+  # - os: linux
+  #   python: 2.7
+  #   env: TRAVIS_PYTHON_VERSION=2.7 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: osx
+  #   python: 2.7
+  #   env: TRAVIS_PYTHON_VERSION=2.7 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  - os: linux
+    python: 2.7
+    env: TRAVIS_PYTHON_VERSION=2.7 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  - os: osx
+    python: 2.7
+    env: TRAVIS_PYTHON_VERSION=2.7 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  # - os: linux
+  #   python: 3.5
+  #   env: TRAVIS_PYTHON_VERSION=3.5 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: osx
+  #   python: 3.5
+  #   env: TRAVIS_PYTHON_VERSION=3.5 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: linux
+  #   python: 3.6
+  #   env: TRAVIS_PYTHON_VERSION=3.6 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: osx
+  #   python: 3.6
+  #   env: TRAVIS_PYTHON_VERSION=3.6 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: linux
+  #   python: 3.7
+  #   env: TRAVIS_PYTHON_VERSION=3.7 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: osx
+  #   python: 3.7
+  #   env: TRAVIS_PYTHON_VERSION=3.7 TEST_WITH_XSPEC=false CONDA_UPLOAD=false
+  # - os: linux
+  #   python: 3.5
+  #   env: TRAVIS_PYTHON_VERSION=3.5 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  # - os: osx
+  #   python: 3.5
+  #   env: TRAVIS_PYTHON_VERSION=3.5 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  # - os: linux
+  #   python: 3.6
+  #   env: TRAVIS_PYTHON_VERSION=3.6 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  # - os: osx
+  #   python: 3.6
+  #   env: TRAVIS_PYTHON_VERSION=3.6 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  - os: linux
+    python: 3.7
+    env: TRAVIS_PYTHON_VERSION=3.7 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
+  - os: osx
+    python: 3.7
+    env: TRAVIS_PYTHON_VERSION=3.7 TEST_WITH_XSPEC=true CONDA_UPLOAD=true
 
 before_install:
-  - |
-       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+- |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    #docker pull condaforge/linux-anvil
 
-         docker pull condaforge/linux-anvil
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
+    bash miniconda.sh -b -p $HOME/miniconda
+    export PATH="$HOME/miniconda/bin:$PATH"
+    conda install -y conda-build
+    conda config --add channels conda-forge
+  else
 
-       else
+    # Install Miniconda
+    wget https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh
+    bash miniconda.sh -b -p $HOME/miniconda
+    export PATH="$HOME/miniconda/bin:$PATH"
+    conda install -y conda-build
+    conda config --add channels conda-forge
 
-         # Install Miniconda
-         wget https://repo.continuum.io/miniconda/Miniconda2-latest-MacOSX-x86_64.sh -O miniconda.sh
-         bash miniconda.sh -b -p $HOME/miniconda
-         export PATH="$HOME/miniconda/bin:$PATH"
-         conda install -y conda-build
-         conda config --add channels conda-forge
-
-       fi
-
+  fi
+  
 script:
+- chmod u+x ci/build_and_test.sh
+- |
+  while sleep 500; do
+     echo "====[ $SECONDS seconds still running ]===="
+  done &
+- "./ci/build_and_test.sh"
 
- - |
-       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-
-         docker run -e TRAVIS_PYTHON_VERSION=2.7 \
-                    -e TRAVIS_BRANCH \
-                    -e CONDA_UPLOAD_TOKEN \
-                    -e TRAVIS_OS_NAME \
-                    -e TRAVIS_EVENT_TYPE \
-                    -e TRAVIS_BUILD_NUMBER \
-                    -e TRAVIS_BUILD_DIR \
-                    -v ${TRAVIS_BUILD_DIR}:${TRAVIS_BUILD_DIR} \
-                    -it --rm -e user_id=`id -u` \
-                    condaforge/linux-anvil \
-                    /bin/bash -c "source ${TRAVIS_BUILD_DIR}/ci/build_and_test.sh"
-       else
-
-          chmod u+x ci/build_and_test.sh
-          export TRAVIS_PYTHON_VERSION=2.7
-          ./ci/build_and_test.sh
-
-       fi
-
-env:
-  matrix:
-    secure: ht6GWpJyaTqTCQzTXuf7IQDKyl1OUISFXzHaLCcurBY5lZVkK+NIGaVMw0wNksQbgpF5t7JyojK39+usJ1WeYD4xvi3n7KxU9Cy8MGAuyY8iWFCmnVtkBoDkghGQBuUzf2UZ24IcH1JtlgOx28qJhEdXLfWPDd9/OvJLMrkpwcKcn0XV3dcheYvs3EyV8kyxfbaV3G9DsHY1bFZjGRzOATBuwCSpjkV5WxBq0dpDoilx6JY9uMydKU81PtxHbCQmP/8ZaT9eemw1qhBfrqbhU+CbwG0PDt7lG8SkXAIOQRJo/aJ7DvxtOQAvjuM1CUsKa8yTnyDHvxHVIcLZmiuWi/Cat20/v89iyBgXguDbKAGwg4gIW/QSfxS9IFR3eR5EX8NuTZ9tcAHoa+AHou5Km/iDoEjlqu11CFr/QYtaqFcnkMpuVs4mYfdiU5xLtZryiBqec0HO8xD9Q4IKIbEGMyulJ3NBwqQ6x9iHtqJrM0JinAynLXTcHHGzOhD+YVZbT4EzlH+8dLuMj33DYdJATZAt7pIpxskqBXvPm+qKPs5TUtxDtOinpuBk264kQdxUFXFpAzL5x2qguTauhi+t4f/bMVsFcq3KsL3nn3J021ysEzZqeGmmGs6hHfGTZbZNgMhtyO+18WHtnDOD5s8fjO+58T/Z0hqJbrfjulsNNr8=
+deploy:
+  provider: pypi
+  user: __token__
+  password:
+    secure: 2I14ixrWgiOiE2ha9sai44mJC8stU9pB2sv/51AMIU6E1TK09RCzRd7Hk6KeuBk7bdF6+qnBcA8khicEkwamvxmtUre2RBOjO3PE9qBdHmPHfMF19fZWSxWHHBL76I6O212MkvzQWpmWEksPcLYf2wgeOv7wMNTzjFJjd39AQE+zZUpA38OOSjHn1FJe+sf/ru8f99vTu4tCEjiNvf3THbw3s22bEQcquhehXM+UB7ZNU4s1iGgMgJHHrIHhPF/1t67iddOeKbYFzkAtRaanNf5r2Z2m0w67Nx5hJSXxbfJN3RrWGj8/SdMj0IxT4gK88WzM5BY2fKhyvewRRP5ph7a/9EA3NsabhSKor6R5Q/pJQUJR7Ln1t0Sw3oziUmcLOYna6ijfBML1cJtn24jNR8mt73/h7Wj6iPnx8yTpKL1oUGKDQIjdEdsMGSiyTRPdTv6ynV67UybbENQtIoNNrGa0l2TguF3AV+FoZGlPy1uYaM3LZ/FKqMPsGRtxmzn8W8bldZXZnzYfMNS3VculTEZ5v3KoF9CbFvE5udEvB558yhB8PV3oR+oajpEGy9E1U6pskMOVpATG0s3ne7U83kgmRcT2ArfTzOWYv3MYZBNZm4vBlQLH37+KXO2rZoVVygoYVS6g1mCz9d8yWZdoo9zb+epNX57xAUz2ewZboyk=
+  distributions: sdist
+  skip_existing: true
+  on:
+    tags: true

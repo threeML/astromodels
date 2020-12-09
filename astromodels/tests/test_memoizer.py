@@ -1,3 +1,4 @@
+from builtins import zip
 from astromodels.functions.functions import Powerlaw
 import numpy as np
 

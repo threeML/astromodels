@@ -1,3 +1,5 @@
+from future import standard_library
+standard_library.install_aliases()
 from astromodels.core.model import Model
 from astromodels.core.model_parser import ModelParser
 
@@ -11,7 +13,7 @@ try:
 
 except ImportError:
 
-    import copy_reg as copyreg #py2
+    import copyreg as copyreg #py2
 
 
 # Model serializer

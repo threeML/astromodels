@@ -1,3 +1,5 @@
+from __future__ import division
+from past.utils import old_div
 import astropy.units as u
 from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
 from astropy.io import fits
@@ -7,13 +9,14 @@ from astromodels.functions.function import Function3D, FunctionMeta
 import numpy as np
 
 from astromodels.utils.angular_distance import angular_distance_fast
+from future.utils import with_metaclass
 
 from scipy.interpolate import RegularGridInterpolator
 
 import hashlib
 
 
-class Continuous_injection_diffusion_ellipse(Function3D):
+class Continuous_injection_diffusion_ellipse(with_metaclass(FunctionMeta, Function3D)):
     r"""
         description :
 
@@ -91,8 +94,6 @@ class Continuous_injection_diffusion_ellipse(Function3D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
@@ -124,12 +125,12 @@ class Continuous_injection_diffusion_ellipse(Function3D):
         # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
         # of a dimensionless quantity, so there must be a pivot there.
 
-        e_energy_piv2 = 17. * np.power(energy / piv2, 0.54 + 0.046 * np.log10(energy / piv2))
-        e_piv_piv2 = 17. * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
+        e_energy_piv2 = 17. * np.power(old_div(energy, piv2), 0.54 + 0.046 * np.log10(old_div(energy, piv2)))
+        e_piv_piv2 = 17. * np.power(old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2)))
 
         try:
 
-            rdiff_a = rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, (delta - 1.) / 2.) * \
+            rdiff_a = rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.), 2.)) * \
                     np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) / \
                     np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_energy_piv2, -1.5))
 
@@ -140,9 +141,8 @@ class Continuous_injection_diffusion_ellipse(Function3D):
 
             # Work around the problem with this loop, which is slow but using units is only for testing purposes or
             # single calls, so it shouldn't matter too much
-            rdiff_a = np.array( map(lambda x: (rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, x)).value,
-                                  (delta - 1.) / 2. * np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) /
-                                  np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_energy_piv2, -1.5)))) * rdiff0.unit
+            rdiff_a = np.array( [(rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value for x in (delta - 1.) / 2. * np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) /
+                                  np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_energy_piv2, -1.5))]) * rdiff0.unit
 
         rdiff_b = rdiff_a * elongation
 
@@ -151,7 +151,7 @@ class Continuous_injection_diffusion_ellipse(Function3D):
         angsep = angular_distance_fast(lon, lat, lon0, lat0)
         ang = np.arctan2(lat - lat0, (lon - lon0) * np.cos(lat0 * np.pi / 180.))
 
-        theta = np.arctan2(np.sin(ang-incl*np.pi/180.)/elongation, np.cos(ang-incl*np.pi/180.))
+        theta = np.arctan2(old_div(np.sin(ang-incl*np.pi/180.),elongation), np.cos(ang-incl*np.pi/180.))
 
         rdiffs_a, thetas = np.meshgrid(rdiff_a, theta)
         rdiffs_b, angseps = np.meshgrid(rdiff_b, angsep)
@@ -159,7 +159,7 @@ class Continuous_injection_diffusion_ellipse(Function3D):
         rdiffs = np.sqrt(rdiffs_a ** 2 * np.cos(thetas) ** 2 + rdiffs_b ** 2 * np.sin(thetas) ** 2)
 
 
-        results = np.power(180.0 / pi, 2) * 1.22 / (pi * np.sqrt(pi) * rdiffs_a * np.sqrt(elongation) * (angseps + 0.06 * rdiffs)) *  np.exp(-np.power(angseps, 2) / rdiffs ** 2)
+        results = np.power(old_div(180.0, pi), 2) * 1.22 / (pi * np.sqrt(pi) * rdiffs_a * np.sqrt(elongation) * (angseps + 0.06 * rdiffs)) *  np.exp(old_div(-np.power(angseps, 2), rdiffs ** 2))
 
         return results
 
@@ -175,15 +175,15 @@ class Continuous_injection_diffusion_ellipse(Function3D):
 
         max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
 
-        if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+        if max_abs_lat > 89. or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.)) >= 180.:
 
             min_longitude = 0.
             max_longitude = 360.
 
         else:
 
-            min_longitude = self.lon0.value - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
-            max_longitude = self.lon0.value + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+            min_longitude = self.lon0.value - old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.))
+            max_longitude = self.lon0.value + old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.))
 
             if min_longitude < 0.:
 
@@ -208,7 +208,7 @@ class Continuous_injection_diffusion_ellipse(Function3D):
         return np.ones_like( z )
 
 
-class Continuous_injection_diffusion(Function3D):
+class Continuous_injection_diffusion(with_metaclass(FunctionMeta, Function3D)):
     r"""
         description :
 
@@ -278,8 +278,6 @@ class Continuous_injection_diffusion(Function3D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
@@ -310,14 +308,14 @@ class Continuous_injection_diffusion(Function3D):
         # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
         # of a dimensionless quantity, so there must be a pivot there.
 
-        e_energy_piv2 = 17. * np.power(energy / piv2, 0.54 + 0.046 * np.log10(energy / piv2))
-        e_piv_piv2 = 17. * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
+        e_energy_piv2 = 17. * np.power(old_div(energy, piv2), 0.54 + 0.046 * np.log10(old_div(energy, piv2)))
+        e_piv_piv2 = 17. * np.power(old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2)))
 
-        rdiff_c = rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, (delta - 1.) / 2.) * \
+        rdiff_c = rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.), 2.)) * \
                 np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) / \
                 np.sqrt(b * b / 8. / np.pi * 0.624 + 0.26 * np.power(1. + 0.0107 * e_energy_piv2, -1.5))
 
-        rdiff_i = rdiff0 * rinj * np.power(e_energy_piv2 / e_piv_piv2, delta / 2.)
+        rdiff_i = rdiff0 * rinj * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div(delta, 2.))
 
         rdiff = np.minimum(rdiff_c, rdiff_i)
 
@@ -327,8 +325,8 @@ class Continuous_injection_diffusion(Function3D):
 
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
-        return np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
-               np.exp(-np.power(angseps, 2) / rdiffs ** 2)
+        return np.power(old_div(180.0, pi), 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
+               np.exp(old_div(-np.power(angseps, 2), rdiffs ** 2))
 
 
     def get_boundaries(self):
@@ -342,15 +340,15 @@ class Continuous_injection_diffusion(Function3D):
 
         max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
 
-        if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+        if max_abs_lat > 89. or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.)) >= 180.:
 
             min_longitude = 0.
             max_longitude = 360.
 
         else:
 
-            min_longitude = self.lon0.value - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
-            max_longitude = self.lon0.value + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+            min_longitude = self.lon0.value - old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.))
+            max_longitude = self.lon0.value + old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.))
 
             if min_longitude < 0.:
 
@@ -375,7 +373,7 @@ class Continuous_injection_diffusion(Function3D):
         return np.ones_like( z )
 
 
-class Continuous_injection_diffusion_legacy(Function3D):
+class Continuous_injection_diffusion_legacy(with_metaclass(FunctionMeta, Function3D)):
     r"""
         description :
 
@@ -437,8 +435,6 @@ class Continuous_injection_diffusion_legacy(Function3D):
 
         """
 
-    __metaclass__ = FunctionMeta
-
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
@@ -468,12 +464,12 @@ class Continuous_injection_diffusion_legacy(Function3D):
         # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
         # of a dimensionless quantity, so there must be a pivot there.
 
-        e_energy_piv2 = 17. * np.power(energy / piv2, 0.54 + 0.046 * np.log10(energy / piv2))
-        e_piv_piv2 = 17. * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
+        e_energy_piv2 = 17. * np.power(old_div(energy, piv2), 0.54 + 0.046 * np.log10(old_div(energy, piv2)))
+        e_piv_piv2 = 17. * np.power(old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2)))
 
         try:
 
-            rdiff = rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, (delta - 1.) / 2.) * \
+            rdiff = rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.), 2.)) * \
                     np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) / \
                     np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_energy_piv2, -1.5))
 
@@ -484,9 +480,8 @@ class Continuous_injection_diffusion_legacy(Function3D):
 
             # Work around the problem with this loop, which is slow but using units is only for testing purposes or
             # single calls, so it shouldn't matter too much
-            rdiff = np.array( map(lambda x: (rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, x)).value,
-                                  (delta - 1.) / 2. * np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) /
-                                  np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_energy_piv2, -1.5)))) * rdiff0.unit
+            rdiff = np.array( [(rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value for x in (delta - 1.) / 2. * np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_piv_piv2, -1.5)) /
+                                  np.sqrt(1. + uratio * np.power(1. + 0.0107 * e_energy_piv2, -1.5))]) * rdiff0.unit
 
         angsep = angular_distance_fast(lon, lat, lon0, lat0)
 
@@ -494,8 +489,8 @@ class Continuous_injection_diffusion_legacy(Function3D):
 
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
-        return np.power(180.0 / pi, 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
-               np.exp(-np.power(angseps, 2) / rdiffs ** 2)
+        return np.power(old_div(180.0, pi), 2) * 1.2154 / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs)) * \
+               np.exp(old_div(-np.power(angseps, 2), rdiffs ** 2))
 
 
     def get_boundaries(self):
@@ -509,15 +504,15 @@ class Continuous_injection_diffusion_legacy(Function3D):
 
         max_abs_lat = max(np.absolute(min_latitude), np.absolute(max_latitude))
 
-        if max_abs_lat > 89. or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.) >= 180.:
+        if max_abs_lat > 89. or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.)) >= 180.:
 
             min_longitude = 0.
             max_longitude = 360.
 
         else:
 
-            min_longitude = self.lon0.value - maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
-            max_longitude = self.lon0.value + maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.)
+            min_longitude = self.lon0.value - old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.))
+            max_longitude = self.lon0.value + old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.))
 
             if min_longitude < 0.:
 
