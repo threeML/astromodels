@@ -1,20 +1,41 @@
 # This file contains some defaults, like locations of files, which should not
 # change much but benefits anyway of being in one central location
 
-import os
+from pathlib import Path
 
 
+def get_user_path():
+
+    user_path = Path.home() / ".astromodels"
+
+    if not user_path.exists():
+
+        user_path.mkdir()
+
+    return user_path
+        
+    
 def get_user_data_path():
 
-    user_data = os.path.join(os.path.expanduser('~'), '.astromodels','data')
+    user_data = get_user_path() / "data"
 
     # Create it if doesn't exist
-    if os.path.exists(user_data):
+    if not user_data.exists():
 
-        return user_data
+        user_data.mkdir()
 
-    else:
 
-        os.makedirs(user_data)
+    return user_data
 
-        return user_data
+def get_user_log_path():
+
+    user_log = get_user_path() / "log"
+
+    # Create it if doesn't exist
+    if not user_log.exists():
+
+        user_log.mkdir()
+
+
+    return user_log
+
