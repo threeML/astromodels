@@ -32,7 +32,7 @@ def get_user_log_path():
     # we use the 3ML log path to simplify things
     # a more clever solution could be found
     
-    user_log = Path().home/ ".threeml"  / "log"
+    user_log = Path().home() / ".threeml"  / "log"
 
     # Create it if doesn't exist
     if not user_log.exists():
