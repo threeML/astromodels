@@ -19,6 +19,9 @@ from .tree import Node
 from .thread_safe_unit_format import ThreadSafe
 
 from astromodels.core.parameter_transformation import ParameterTransformation
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 def _behaves_like_a_number(obj):
     """
@@ -445,8 +448,8 @@ class ParameterBase(Node):
 
                 warnings.simplefilter("always", RuntimeWarning)
 
-                warnings.warn("You are trying to assign to a parameter which is either linked or "
-                              "has auxiliary variables. The assignment has no effect.", RuntimeWarning)
+                log.warning("You are trying to assign to a parameter which is either linked or "
+                              "has auxiliary variables. The assignment has no effect.")
 
         # Save the value as a pure floating point to avoid the overhead of the astropy.units machinery when
         # not needed
@@ -552,7 +555,7 @@ class ParameterBase(Node):
                     # set it by default to for the user
                     min_value = 1e-99
 
-                    warnings.warn('We have set the min_value of %s to 1e-99 because there was a postive transform' % self.path)
+                    log.warning('We have set the min_value of %s to 1e-99 because there was a postive transform' % self.path)
                 
         # Store the minimum as a pure float
 
@@ -562,9 +565,9 @@ class ParameterBase(Node):
 
         if self._external_min_value is not None and self.value < self._external_min_value:
 
-            warnings.warn("The current value of the parameter %s (%s) "
-                          "was below the new minimum %s." % (self.name, self.value, self._external_min_value),
-                          RuntimeWarning)
+            log.warning("The current value of the parameter %s (%s) "
+                          "was below the new minimum %s." % (self.name, self.value, self._external_min_value)
+                          )
 
             self.value = self._external_min_value
 
@@ -625,9 +628,8 @@ class ParameterBase(Node):
 
         if self._external_max_value is not None and self.value > self._external_max_value:
 
-            warnings.warn("The current value of the parameter %s (%s) "
-                          "was above the new maximum %s." % (self.name, self.value, self._external_max_value),
-                          RuntimeWarning)
+            log.warning("The current value of the parameter %s (%s) "
+                          "was above the new maximum %s." % (self.name, self.value, self._external_max_value) )
             self.value = self._external_max_value
 
     max_value = property(_get_max_value, _set_max_value,
@@ -1104,7 +1106,7 @@ class Parameter(ParameterBase):
 
             # do nothing, but print a warning
 
-            warnings.warn("Cannot remove a non-existing auxiliary variable", RuntimeWarning)
+            log.warning("Cannot remove a non-existing auxiliary variable")
 
         else:
 

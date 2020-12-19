@@ -1,152 +1,143 @@
-try:
-
-    from threeML.io.logging import (activate_warnings, setup_log,
-                                    silence_warnings, update_logging_level)
-
-    has_threeml = True
-
-except (ImportError):
-
-    has_threeml = False
-
 
 
 # If threeml is not installed, we create our own log,
 # otherwise, just print to the 3ML one!
     
-if not has_threeml:
-    import logging
-    import logging.handlers as handlers
-    import sys
-    from typing import Dict, Optional
 
-    import colorama
-    from colorama import Back, Fore, Style
+import logging
+import logging.handlers as handlers
+import sys
+from typing import Dict, Optional
 
-    from astromodels.utils.configuration import get_path_of_log_file
+import colorama
+from colorama import Back, Fore, Style
 
-    colorama.deinit()
-    colorama.init(strip=False)
-    ## set up the console logging
+from astromodels.utils.configuration import get_path_of_log_file
 
-    class ColoredFormatter(logging.Formatter):
-        """
-        Colored log formatter.
-        """
+colorama.deinit()
+colorama.init(strip=False)
+## set up the console logging
 
-        def __init__(
-            self, *args, colors: Optional[Dict[str, str]] = None, **kwargs
-        ) -> None:
-            """Initialize the formatter with specified format strings."""
+class ColoredFormatter(logging.Formatter):
+    """
+    Colored log formatter.
+    """
 
-            super().__init__(*args, **kwargs)
+    def __init__(
+        self, *args, colors: Optional[Dict[str, str]] = None, **kwargs
+    ) -> None:
+        """Initialize the formatter with specified format strings."""
 
-            self.colors = colors if colors else {}
+        super().__init__(*args, **kwargs)
 
-        def format(self, record) -> str:
-            """Format the specified record as text."""
+        self.colors = colors if colors else {}
 
-            record.color = self.colors.get(record.levelname, "")
-            record.reset = Style.RESET_ALL
+    def format(self, record) -> str:
+        """Format the specified record as text."""
 
-            return super().format(record)
+        record.color = self.colors.get(record.levelname, "")
+        record.reset = Style.RESET_ALL
 
-    class MyFilter(object):
-        def __init__(self, level):
-            self.__level = level
+        return super().format(record)
 
-        def filter(self, logRecord):
-            return logRecord.levelno != self.__level
+class MyFilter(object):
+    def __init__(self, level):
+        self.__level = level
 
-    # now create the developer handler that rotates every day and keeps
-    # 10 days worth of backup
-    astromodels_dev_log_handler = handlers.TimedRotatingFileHandler(
-        get_path_of_log_file("dev.log"), when="D", interval=1, backupCount=10
-    )
+    def filter(self, logRecord):
+        return logRecord.levelno != self.__level
 
-    # lots of info written out
+# now create the developer handler that rotates every day and keeps
+# 10 days worth of backup
+astromodels_dev_log_handler = handlers.TimedRotatingFileHandler(
+    get_path_of_log_file("dev.log"), when="D", interval=1, backupCount=10
+)
 
-    _dev_formatter = logging.Formatter(
-        "%(asctime)s | %(name)s | %(levelname)s| %(funcName)s | %(lineno)d | %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
+# lots of info written out
 
-    astromodels_dev_log_handler.setFormatter(_dev_formatter)
-    astromodels_dev_log_handler.setLevel(logging.DEBUG)
-    # now set up the usr log which will save the info
+_dev_formatter = logging.Formatter(
+    "%(asctime)s | %(name)s | %(levelname)s| %(funcName)s | %(lineno)d | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
 
-    astromodels_usr_log_handler = handlers.TimedRotatingFileHandler(
-        get_path_of_log_file("usr.log"), when="D", interval=1, backupCount=10
-    )
+astromodels_dev_log_handler.setFormatter(_dev_formatter)
+astromodels_dev_log_handler.setLevel(logging.DEBUG)
+# now set up the usr log which will save the info
 
-    astromodels_usr_log_handler.setLevel(logging.INFO)
+astromodels_usr_log_handler = handlers.TimedRotatingFileHandler(
+    get_path_of_log_file("usr.log"), when="D", interval=1, backupCount=10
+)
 
-    # lots of info written out
-    _usr_formatter = logging.Formatter(
-        "%(asctime)s | %(levelname)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-    )
+astromodels_usr_log_handler.setLevel(logging.INFO)
 
-    astromodels_usr_log_handler.setFormatter(_usr_formatter)
+# lots of info written out
+_usr_formatter = logging.Formatter(
+    "%(asctime)s | %(levelname)s | %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+)
 
-    # now set up the console logger
+astromodels_usr_log_handler.setFormatter(_usr_formatter)
 
-    _console_formatter = ColoredFormatter(
-        "{asctime} |{color} {levelname:8} {reset}| {color} {message} {reset}",
-        style="{",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        colors={
-            "DEBUG": Fore.CYAN,
-            "INFO": Fore.GREEN + Style.BRIGHT,
-            "WARNING": Fore.YELLOW + Style.DIM,
-            "ERROR": Fore.RED + Style.BRIGHT,
-            "CRITICAL": Fore.RED + Back.WHITE + Style.BRIGHT,
-        },
-    )
+# now set up the console logger
 
-    astromodels_console_log_handler = logging.StreamHandler(sys.stdout)
-    astromodels_console_log_handler.setFormatter(_console_formatter)
-    astromodels_console_log_handler.setLevel("INFO")
+_console_formatter = ColoredFormatter(
+    "{asctime} |{color} {levelname:8} {reset}| {color} {message} {reset}",
+    style="{",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    colors={
+        "DEBUG": Fore.CYAN,
+        "INFO": Fore.GREEN + Style.BRIGHT,
+        "WARNING": Fore.YELLOW + Style.DIM,
+        "ERROR": Fore.RED + Style.BRIGHT,
+        "CRITICAL": Fore.RED + Back.WHITE + Style.BRIGHT,
+    },
+)
 
-    warning_filter = MyFilter(logging.WARNING)
+astromodels_console_log_handler = logging.StreamHandler(sys.stdout)
+astromodels_console_log_handler.setFormatter(_console_formatter)
+astromodels_console_log_handler.setLevel("INFO")
 
-    def silence_warnings():
-        """
-        supress warning messages in console and file usr logs
-        """
+warning_filter = MyFilter(logging.WARNING)
 
-        astromodels_usr_log_handler.addFilter(warning_filter)
-        astromodels_console_log_handler.addFilter(warning_filter)
+def silence_warnings():
+    """
+    supress warning messages in console and file usr logs
+    """
 
-    def activate_warnings():
-        """
-        supress warning messages in console and file usr logs
-        """
+    astromodels_usr_log_handler.addFilter(warning_filter)
+    astromodels_console_log_handler.addFilter(warning_filter)
 
-        astromodels_usr_log_handler.removeFilter(warning_filter)
-        astromodels_console_log_handler.removeFilter(warning_filter)
+def activate_warnings():
+    """
+    supress warning messages in console and file usr logs
+    """
 
-    def update_logging_level(level):
+    astromodels_usr_log_handler.removeFilter(warning_filter)
+    astromodels_console_log_handler.removeFilter(warning_filter)
 
-        astromodels_console_log_handler.setLevel(level)
+def update_logging_level(level):
 
-    def setup_logger(name):
+    astromodels_console_log_handler.setLevel(level)
 
-        # A logger with name name will be created
-        # and then add it to the print stream
-        log = logging.getLogger(name)
+def setup_logger(name):
 
-        # this must be set to allow debug messages through
-        log.setLevel(logging.DEBUG)
+    # A logger with name name will be created
+    # and then add it to the print stream
+    log = logging.getLogger(name)
 
-        # add the handlers
+    # this must be set to allow debug messages through
+    log.setLevel(logging.DEBUG)
 
-        log.addHandler(astromodels_dev_log_handler)
+    # add the handlers
 
-        log.addHandler(astromodels_console_log_handler)
+    log.addHandler(astromodels_dev_log_handler)
 
-        log.addHandler(astromodels_usr_log_handler)
+    log.addHandler(astromodels_console_log_handler)
 
-        # we do not want to duplicate teh messages in the parents
-        log.propagate = False
+    log.addHandler(astromodels_usr_log_handler)
 
-        return log
+    # we do not want to duplicate teh messages in the parents
+    log.propagate = False
+
+    return log
+
+
