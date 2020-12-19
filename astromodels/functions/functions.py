@@ -14,6 +14,10 @@ from astromodels.core.units import get_units
 from astromodels.functions.function import (Function1D, FunctionMeta,
                                             ModelAssertionViolation)
 
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
+
 __author__ = 'giacomov'
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
 
@@ -47,8 +51,7 @@ try:
 
 except ImportError:
 
-    warnings.warn("The naima package is not available. Models that depend on it will not be available",
-                  NaimaNotAvailable)
+    log.warning("The naima package is not available. Models that depend on it will not be available" )
 
     has_naima = False
 
@@ -65,8 +68,8 @@ try:
 
 except ImportError:
 
-    warnings.warn("The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
-                  "available.", GSLNotAvailable)
+    log.warning("The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
+                  "available.")
 
     has_gsl = False
 
@@ -87,8 +90,7 @@ try:
 
 except ImportError:
 
-    warnings.warn("The ebltable package is not available. Models that depend on it will not be available",
-                  EBLTableNotAvailable)
+    log.warning("The ebltable package is not available. Models that depend on it will not be available" )
 
     has_ebltable = False
 
@@ -96,8 +98,7 @@ except:
 
     has_ebltable = False
 
-    warnings.warn("The ebltable package is broken",
-                  EBLTableNotAvailable)
+    log.warning("The ebltable package is broken" )
 
 
 @six.add_metaclass(FunctionMeta)
