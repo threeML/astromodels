@@ -39,3 +39,6 @@ def get_user_log_path():
 
     return user_log
 
+def get_path_of_log_file(filename: str):
+
+    return get_user_log_path() / filename
