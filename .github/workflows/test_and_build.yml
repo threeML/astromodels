@@ -249,9 +249,9 @@ jobs:
 
                   if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
 
-                  conda build --python=${{matrix.python-version}} conda-dist/recipes/threeml
+                  conda build --python=${{matrix.python-version}} conda-dist/recipe/
 
                   else
                   # there is some strange error about the prefix length
-                  conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipes/threeml
+                  conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
                   fi
