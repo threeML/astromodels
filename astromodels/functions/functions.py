@@ -917,6 +917,164 @@ class Constant(Function1D, metaclass=FunctionMeta):
         return k
 
 
+
+
+class Quadratic(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        A Quadratic function
+
+    latex : $ a + b \cdot x + c \cdot x^2 $
+
+    parameters :
+
+        a :
+
+            desc : coefficient
+            initial value : 1
+
+        b :
+
+            desc : coefficient
+            initial value : 1
+
+        c :
+
+            desc : coefficient
+            initial value : 1
+
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit
+
+        # b has units of y
+        self.b.unit = y_unit / x_unit
+
+        self.c.unit = y_unit / (x_unit)**2
+
+    def evaluate(self, x, a, b, c):
+        return a + b * x + c * x * x
+
+
+class Cubic(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        A cubic function
+
+    latex : $ a + b \cdot x + c \cdot x^2 + d \cdot x^3$
+
+    parameters :
+
+        a :
+
+            desc : coefficient
+            initial value : 1
+
+        b :
+
+            desc : coefficient
+            initial value : 1
+
+        c :
+
+            desc : coefficient
+            initial value : 1
+
+        d :
+
+            desc : coefficient
+            initial value : 1
+
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit
+
+        # b has units of y
+        self.b.unit = y_unit / x_unit
+
+        self.c.unit = y_unit / (x_unit)**2
+
+        self.d.unit = y_unit / (x_unit)**3
+
+    def evaluate(self, x, a, b, c, d):
+
+        x2 = x * x
+
+        x3 = x2 *x
+        
+        return a + b * x + c * x2 + d * x3
+
+class Quartic(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        A quartic function
+
+    latex : $ a + b \cdot x + c \cdot x^2 + d \cdot x^3 + e \cdot x^4$
+
+    parameters :
+
+        a :
+
+            desc : coefficient
+            initial value : 1
+
+        b :
+
+            desc : coefficient
+            initial value : 1
+
+        c :
+
+            desc : coefficient
+            initial value : 1
+
+        d :
+
+            desc : coefficient
+            initial value : 1
+
+        e :
+
+            desc : coefficient
+            initial value : 1
+
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit
+
+        # b has units of y
+        self.b.unit = y_unit / x_unit
+
+        self.c.unit = y_unit / (x_unit)**2
+
+        self.d.unit = y_unit / (x_unit)**3
+
+        self.d.unit = y_unit / (x_unit)**4
+
+    def evaluate(self, x, a, b, c, d, e):
+
+        x2 = x * x
+
+        x3 = x2 *x
+
+        x4 = x3 *x
+        
+        return a + b * x + c * x2 + d * x3 + e * x4
+
+    
+
 class DiracDelta(Function1D, metaclass=FunctionMeta):
     r"""
     description :
