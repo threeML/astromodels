@@ -7,10 +7,9 @@ from astromodels.functions.function import Function3D, FunctionMeta
 import numpy as np
 
 from astromodels.utils.angular_distance import angular_distance_fast
-from future.utils import with_metaclass
 
 
-class Continuous_injection_diffusion_ellipse(with_metaclass(FunctionMeta, Function3D)):
+class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -202,7 +201,7 @@ class Continuous_injection_diffusion_ellipse(with_metaclass(FunctionMeta, Functi
         return np.ones_like( z )
 
 
-class Continuous_injection_diffusion(with_metaclass(FunctionMeta, Function3D)):
+class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -367,7 +366,7 @@ class Continuous_injection_diffusion(with_metaclass(FunctionMeta, Function3D)):
         return np.ones_like( z )
 
 
-class Continuous_injection_diffusion_legacy(with_metaclass(FunctionMeta, Function3D)):
+class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
     r"""
         description :
 
