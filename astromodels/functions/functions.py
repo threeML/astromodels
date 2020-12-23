@@ -1061,7 +1061,7 @@ class Quartic(Function1D, metaclass=FunctionMeta):
 
         self.d.unit = y_unit / (x_unit)**3
 
-        self.d.unit = y_unit / (x_unit)**4
+        self.e.unit = y_unit / (x_unit)**4
 
     def evaluate(self, x, a, b, c, d, e):
 
