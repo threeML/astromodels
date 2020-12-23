@@ -866,7 +866,7 @@ class Line(Function1D, metaclass=FunctionMeta):
 
         A linear function
 
-    latex : $ a * x + b $
+    latex : $ b * x + a $
 
     parameters :
 
@@ -884,13 +884,13 @@ class Line(Function1D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit):
         # a has units of y_unit / x_unit, so that a*x has units of y_unit
-        self.a.unit = old_div(y_unit, x_unit)
+        self.a.unit = y_unit
 
         # b has units of y
-        self.b.unit = y_unit
+        self.b.unit = y_unit / x_unit
 
     def evaluate(self, x, a, b):
-        return a * x + b
+        return b * x + a
 
 
 class Constant(Function1D, metaclass=FunctionMeta):
