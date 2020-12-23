@@ -873,12 +873,12 @@ class Line(Function1D, metaclass=FunctionMeta):
         a :
 
             desc : linear coefficient
-            initial value : 1
+            initial value : 0
 
         b :
 
             desc : intercept
-            initial value : 0
+            initial value : 1
 
     """
 
