@@ -1,24 +1,30 @@
 from __future__ import division
-from builtins import range
-from past.utils import old_div
-from builtins import object
+
 import os
+from builtins import object, range
+
 import pytest
+from past.utils import old_div
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
-from astromodels.core.model import Model, DuplicatedNode, ModelFileExists, CannotWriteModel
-from astromodels.sources.point_source import PointSource
+import copy
+
+import numpy as np
+
+from astromodels import u
+from astromodels.core.model import (CannotWriteModel, DuplicatedNode, Model,
+                                    ModelFileExists)
+from astromodels.core.model_parser import *
+from astromodels.core.parameter import IndependentVariable, Parameter
+from astromodels.functions.functions import (Line, Powerlaw,
+                                             _ComplexTestFunction)
+from astromodels.functions.functions_2D import Gaussian_on_sphere
+from astromodels.functions.priors import Uniform_prior
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
-from astromodels.functions.functions import Powerlaw, _ComplexTestFunction, Line
-from astromodels.functions.priors import Uniform_prior
-from astromodels.functions.functions_2D import Gaussian_on_sphere
-from astromodels.core.parameter import Parameter, IndependentVariable
-from astromodels.core.model_parser import *
-from astromodels import u
-import numpy as np
-import copy
+from astromodels.sources.point_source import PointSource
+
 
 def _get_point_source(name="test"):
 
@@ -26,11 +32,13 @@ def _get_point_source(name="test"):
 
     return pts
 
+
 def _get_point_source_gal(name):
 
     pts = PointSource(name, l=0, b=0, spectral_shape=Powerlaw())
 
     return pts
+
 
 def _get_point_source_composite(name):
 
@@ -56,14 +64,13 @@ def _get_particle_source(name="test_part"):
 
 
 class ModelGetter(object):
-
     def __init__(self):
 
         # 2 point sources and 3 ext sources
-        pts1 = _get_point_source("one") # 5 params, 2 free
+        pts1 = _get_point_source("one")  # 5 params, 2 free
         pts2 = _get_point_source_gal("two")
-        pts3 = _get_point_source_composite('three')
-        ext1 = _get_extended_source("ext_one") # 6 params, 5 free
+        pts3 = _get_point_source_composite("three")
+        ext1 = _get_extended_source("ext_one")  # 6 params, 5 free
         ext2 = _get_extended_source("ext_two")
         ext3 = _get_extended_source("ext_three")
 
@@ -101,12 +108,22 @@ class ModelGetter(object):
     @property
     def total_number_of_parameters(self):
 
-        return 5 * self.n_point_sources + 6 * self.n_extended_sources + 3 * self.n_particle_sources + 3
+        return (
+            5 * self.n_point_sources
+            + 6 * self.n_extended_sources
+            + 3 * self.n_particle_sources
+            + 3
+        )
 
     @property
     def number_of_free_parameters(self):
 
-        return 2 * self.n_point_sources + 5 * self.n_extended_sources + 2 * self.n_particle_sources + 2
+        return (
+            2 * self.n_point_sources
+            + 5 * self.n_extended_sources
+            + 2 * self.n_particle_sources
+            + 2
+        )
 
     @property
     def center_of_extended_source(self):
@@ -166,11 +183,11 @@ def test_constructor_with_many_point_sources():
 
     # Test with 200 point sources
 
-    many_p_sources = [_get_point_source("pts_source%i" %x) for x in range(200)]
+    many_p_sources = [_get_point_source("pts_source%i" % x) for x in range(200)]
 
     m = Model(*many_p_sources)
 
-    assert m.get_number_of_point_sources()==200
+    assert m.get_number_of_point_sources() == 200
 
 
 def test_constructor_with_many_extended_sources():
@@ -181,7 +198,7 @@ def test_constructor_with_many_extended_sources():
     _ = Model(ext)
 
     # Test with 200 extended sources
-    many_e_sources = [_get_extended_source("ext_source%i" %x) for x in range(200)]
+    many_e_sources = [_get_extended_source("ext_source%i" % x) for x in range(200)]
 
     m = Model(*many_e_sources)
 
@@ -229,7 +246,7 @@ def test_accessors():
 
     # Test __getitem__
 
-    _ = m['ext_three.Gaussian_on_sphere.lat0']
+    _ = m["ext_three.Gaussian_on_sphere.lat0"]
 
     for p in m.parameters:
 
@@ -255,7 +272,7 @@ def test_accessors_failures():
 
     for p in m:
 
-        assert not((p.path + ".not") in m)
+        assert not ((p.path + ".not") in m)
 
 
 def test_display():
@@ -268,7 +285,7 @@ def test_display():
     m.display(complete=True)
 
     # Now display a model without free parameters
-    m = Model(PointSource("test",0.0, 0.0, Powerlaw()))
+    m = Model(PointSource("test", 0.0, 0.0, Powerlaw()))
 
     for parameter in list(m.parameters.values()):
 
@@ -295,7 +312,7 @@ def test_links():
     # Link as equal (default)
     m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K)
 
-    assert len(m.free_parameters) == n_free_before_link -1
+    assert len(m.free_parameters) == n_free_before_link - 1
 
     # Try to display it just to make sure it works
 
@@ -351,24 +368,26 @@ def test_links():
     # Remove the link
     m.unlink(m.one.spectrum.main.Powerlaw.K)
 
-    
     # Redo the same, but with a list of 2 parameters
     n_free_before_link = len(m.free_parameters)
-    
-    m.link([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K],m.two.spectrum.main.Powerlaw.K)
-    assert len(m.free_parameters) == n_free_before_link -2
-    
+
+    m.link(
+        [m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K],
+        m.two.spectrum.main.Powerlaw.K,
+    )
+    assert len(m.free_parameters) == n_free_before_link - 2
+
     # Now test the link
-    
+
     new_value = 1.23456
     m.two.spectrum.main.Powerlaw.K.value = new_value
 
     assert m.one.spectrum.main.Powerlaw.K.value == new_value
     assert m.ext_one.spectrum.main.Powerlaw.K.value == new_value
     # Remove the links at once
-    
-    m.unlink([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K])
-  
+
+    m.unlink([m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K])
+
 
 def test_external_parameters():
 
@@ -379,7 +398,9 @@ def test_external_parameters():
     n_free_before_external = len(m.free_parameters)
 
     # Create parameter
-    fake_parameter = Parameter("external_parameter",1.0, min_value=-1.0, max_value=1.0, free=True)
+    fake_parameter = Parameter(
+        "external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True
+    )
 
     # Link as equal (default)
     m.add_external_parameter(fake_parameter)
@@ -402,10 +423,6 @@ def test_external_parameters():
     with pytest.warns(RuntimeWarning):
 
         m.add_external_parameter(fake_parameter)
-
-
-
-
 
 
 def test_input_output_basic():
@@ -444,7 +461,10 @@ def test_input_output_basic():
 
     new_m = load_model(temp_file)
 
-    assert list(m.free_parameters.values())[0].prior.to_dict() == list(new_m.free_parameters.values())[0].prior.to_dict()
+    assert (
+        list(m.free_parameters.values())[0].prior.to_dict()
+        == list(new_m.free_parameters.values())[0].prior.to_dict()
+    )
 
     os.remove(temp_file)
 
@@ -495,7 +515,9 @@ def test_input_output_with_external_parameters():
     m = mg.model
 
     # Create an external parameter
-    fake_parameter = Parameter("external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True)
+    fake_parameter = Parameter(
+        "external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True
+    )
 
     # Link as equal (default)
     m.add_external_parameter(fake_parameter)
@@ -515,7 +537,7 @@ def test_input_output_with_external_parameters():
     assert list(m_reloaded.sources.keys()) == list(m.sources.keys())
 
     # Check that the external parameter have been recovered
-    assert 'external_parameter' in m_reloaded
+    assert "external_parameter" in m_reloaded
 
     # Remove external parameter
     m.remove_external_parameter("external_parameter")
@@ -542,7 +564,7 @@ def test_input_output_with_external_parameters():
     assert list(m_reloaded.sources.keys()) == list(m.sources.keys())
 
     # Check that the external parameter have been recovered
-    assert 'external_parameter' in m_reloaded
+    assert "external_parameter" in m_reloaded
 
     assert m.external_parameter.value == m_reloaded.external_parameter.value
 
@@ -553,7 +575,7 @@ def test_input_output_with_complex_functions():
 
     my_particle_distribution.index = -1.52
 
-    electrons = ParticleSource('electrons', distribution_shape=my_particle_distribution)
+    electrons = ParticleSource("electrons", distribution_shape=my_particle_distribution)
 
     # Now set up the synch. spectrum for our source and the source itself
 
@@ -564,7 +586,9 @@ def test_input_output_with_complex_functions():
 
     synch_spectrum.particle_distribution = my_particle_distribution
 
-    synch_source = PointSource('synch_source', ra=12.6, dec=-13.5, spectral_shape=synch_spectrum)
+    synch_source = PointSource(
+        "synch_source", ra=12.6, dec=-13.5, spectral_shape=synch_spectrum
+    )
 
     my_model = Model(electrons, synch_source)
 
@@ -576,7 +600,10 @@ def test_input_output_with_complex_functions():
 
     assert len(new_model.sources) == len(my_model.sources)
 
-    assert my_particle_distribution.index.value == new_model.electrons.spectrum.main.shape.index.value
+    assert (
+        my_particle_distribution.index.value
+        == new_model.electrons.spectrum.main.shape.index.value
+    )
 
 
 def test_add_remove_sources():
@@ -658,7 +685,7 @@ def test_add_and_remove_independent_variable():
 
     # Now see if it works
 
-    for t in np.linspace(0,10,100):
+    for t in np.linspace(0, 10, 100):
 
         independent_variable.value = t
 
@@ -691,7 +718,7 @@ def test_input_output_with_independent_variable():
     assert list(m_reloaded.sources.keys()) == list(m.sources.keys())
 
     # Check that the external parameter have been recovered
-    assert 'time' in m_reloaded
+    assert "time" in m_reloaded
 
 
 def test_3ML_interface():
@@ -710,7 +737,7 @@ def test_3ML_interface():
     assert ra == list(m.point_sources.values())[0].position.ra.value
     assert dec == list(m.point_sources.values())[0].position.dec.value
 
-    energies = np.logspace(1,2,10)
+    energies = np.logspace(1, 2, 10)
     fluxes = m.get_point_source_fluxes(0, energies)
 
     assert np.all(fluxes == list(m.point_sources.values())[0](energies))
@@ -718,9 +745,9 @@ def test_3ML_interface():
     assert m.get_point_source_name(0) == list(m.point_sources.values())[0].name
 
     # Test extended source interface
-    ra = np.random.uniform(0,1.0, 100)
+    ra = np.random.uniform(0, 1.0, 100)
     dec = np.random.uniform(0.0, 1.0, 100)
-    energies = np.logspace(3,4,100)
+    energies = np.logspace(3, 4, 100)
     fluxes = m.get_extended_source_fluxes(0, ra, dec, energies)
 
     assert np.all(fluxes == list(m.extended_sources.values())[0](ra, dec, energies))
@@ -759,9 +786,14 @@ def test_clone_model():
 
     # Test that changing the parameter in one model does not changes the other
 
-    list(m2.free_parameters.values())[0].value = old_div(list(m2.free_parameters.values())[0].value, 2.0)
+    list(m2.free_parameters.values())[0].value = old_div(
+        list(m2.free_parameters.values())[0].value, 2.0
+    )
 
-    assert list(m2.free_parameters.values())[0].value != list(m1.free_parameters.values())[0].value
+    assert (
+        list(m2.free_parameters.values())[0].value
+        != list(m1.free_parameters.values())[0].value
+    )
 
     # test cloning model with linked external parameters
 
@@ -769,19 +801,19 @@ def test_clone_model():
     m1 = mg.model
 
     # Create parameter
-    fake_parameter = Parameter("external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True)
+    fake_parameter = Parameter(
+        "external_parameter", 1.0, min_value=-1.0, max_value=1.0, free=True
+    )
 
     # Link as equal (default)
     m1.add_external_parameter(fake_parameter)
 
-    m1.link(m1.one.spectrum.main.Powerlaw.K,fake_parameter)
+    m1.link(m1.one.spectrum.main.Powerlaw.K, fake_parameter)
 
     _ = clone_model(m1)
 
     mg = ModelGetter()
     m1 = mg.model
-
-
 
     # Link as equal (default)
     m1.add_external_parameter(fake_parameter)
@@ -789,9 +821,6 @@ def test_clone_model():
     m1.link(fake_parameter, m1.one.spectrum.main.Powerlaw.K)
 
     _ = clone_model(m1)
-
-
-
 
 
 def test_model_parser():
@@ -838,6 +867,7 @@ def test_time_domain_integration():
     line = Line()
 
     line.a = 0.0
+    line.b = 1.0
 
     m.link(po.index, time, line)
 
@@ -848,7 +878,9 @@ def test_time_domain_integration():
 
     energies = np.linspace(1, 10, 10)
 
-    results = m.get_point_source_fluxes(0, energies, tag=(time, 0, 10))  # type: np.ndarray
+    results = m.get_point_source_fluxes(
+        0, energies, tag=(time, 0, 10)
+    )  # type: np.ndarray
 
     assert np.all(results == 1.0)
 
@@ -861,8 +893,8 @@ def test_time_domain_integration():
 
     line2 = Line()
 
-    line2.a = 0.0
-    line2.b = 1.0
+    line2.a = 1.0
+    line2.b = 0.0
 
     m.link(po.K, time, line2)
 
@@ -876,11 +908,13 @@ def test_time_domain_integration():
     line2.a = 1.0
     line2.b = 1.0
 
-    results = m.get_point_source_fluxes(0, energies, tag=(time, 0, 10))  # type: np.ndarray
+    results = m.get_point_source_fluxes(
+        0, energies, tag=(time, 0, 10)
+    )  # type: np.ndarray
 
     # Compare with analytical result
     def F(x):
-        return line2.a.value / 2.0 * x ** 2 + line2.b.value * x
+        return line2.b.value / 2.0 * x ** 2 + line2.a.value * x
 
     effective_norm = old_div((F(10) - F(0)), 10.0)
 

@@ -860,39 +860,6 @@ class Sin(Function1D, metaclass=FunctionMeta):
         return K * np.sin(2 * np.pi * f * x + phi)
 
 
-class Line(Function1D, metaclass=FunctionMeta):
-    r"""
-    description :
-
-        A linear function
-
-    latex : $ b * x + a $
-
-    parameters :
-
-        a :
-
-            desc : linear coefficient
-            initial value : 0
-
-        b :
-
-            desc : intercept
-            initial value : 1
-
-    """
-
-    def _set_units(self, x_unit, y_unit):
-        # a has units of y_unit / x_unit, so that a*x has units of y_unit
-        self.a.unit = y_unit
-
-        # b has units of y
-        self.b.unit = y_unit / x_unit
-
-    def evaluate(self, x, a, b):
-        return b * x + a
-
-
 class Constant(Function1D, metaclass=FunctionMeta):
     r"""
     description :
@@ -917,6 +884,37 @@ class Constant(Function1D, metaclass=FunctionMeta):
         return k
 
 
+class Line(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        A linear function
+
+    latex : $ b * x + a $
+
+    parameters :
+
+        a :
+
+            desc :  intercept
+            initial value : 0
+
+        b :
+
+            desc : coeff
+            initial value : 1
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # a has units of y_unit / x_unit, so that a*x has units of y_unit
+        self.a.unit = y_unit
+
+        # b has units of y
+        self.b.unit = y_unit / x_unit
+
+    def evaluate(self, x, a, b):
+        return b * x + a
 
 
 class Quadratic(Function1D, metaclass=FunctionMeta):
@@ -954,7 +952,7 @@ class Quadratic(Function1D, metaclass=FunctionMeta):
         # b has units of y
         self.b.unit = y_unit / x_unit
 
-        self.c.unit = y_unit / (x_unit)**2
+        self.c.unit = y_unit / (x_unit) ** 2
 
     def evaluate(self, x, a, b, c):
         return a + b * x + c * x * x
@@ -1000,17 +998,18 @@ class Cubic(Function1D, metaclass=FunctionMeta):
         # b has units of y
         self.b.unit = y_unit / x_unit
 
-        self.c.unit = y_unit / (x_unit)**2
+        self.c.unit = y_unit / (x_unit) ** 2
 
-        self.d.unit = y_unit / (x_unit)**3
+        self.d.unit = y_unit / (x_unit) ** 3
 
     def evaluate(self, x, a, b, c, d):
 
         x2 = x * x
 
-        x3 = x2 *x
-        
+        x3 = x2 * x
+
         return a + b * x + c * x2 + d * x3
+
 
 class Quartic(Function1D, metaclass=FunctionMeta):
     r"""
@@ -1057,23 +1056,22 @@ class Quartic(Function1D, metaclass=FunctionMeta):
         # b has units of y
         self.b.unit = y_unit / x_unit
 
-        self.c.unit = y_unit / (x_unit)**2
+        self.c.unit = y_unit / (x_unit) ** 2
 
-        self.d.unit = y_unit / (x_unit)**3
+        self.d.unit = y_unit / (x_unit) ** 3
 
-        self.e.unit = y_unit / (x_unit)**4
+        self.e.unit = y_unit / (x_unit) ** 4
 
     def evaluate(self, x, a, b, c, d, e):
 
         x2 = x * x
 
-        x3 = x2 *x
+        x3 = x2 * x
 
-        x4 = x3 *x
-        
+        x4 = x3 * x
+
         return a + b * x + c * x2 + d * x3 + e * x4
 
-    
 
 class DiracDelta(Function1D, metaclass=FunctionMeta):
     r"""
