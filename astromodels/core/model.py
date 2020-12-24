@@ -469,10 +469,10 @@ class Model(Node):
             # parameters to be linked will vary together
             link_function = get_function('Line')
 
-            link_function.a.value = 1
+            link_function.a.value = 0
             link_function.a.fix = True
 
-            link_function.b.value = 0
+            link_function.b.value = 1
             link_function.b.fix = True
         
         
