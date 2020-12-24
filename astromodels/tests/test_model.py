@@ -866,7 +866,7 @@ def test_time_domain_integration():
     # Now link one of the parameters with a simple line law
     line = Line()
 
-    line.a = 1.0
+    line.a = 0.0
     line.b = 0.0
 
     m.link(po.index, time, line)
