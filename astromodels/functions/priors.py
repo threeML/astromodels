@@ -7,14 +7,14 @@ import numpy as np
 from scipy.special import  erfcinv, erf
 
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
-from future.utils import with_metaclass
+
 
 
 deg2rad = old_div(np.pi,180.)
 rad2deg = old_div(180.,np.pi)
 
 # noinspection PyPep8Naming
-class Gaussian(with_metaclass(FunctionMeta, Function1D)):
+class Gaussian(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -98,7 +98,7 @@ class Gaussian(with_metaclass(FunctionMeta, Function1D)):
 
         return res
 
-class Truncated_gaussian(with_metaclass(FunctionMeta, Function1D)):
+class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -240,7 +240,7 @@ class Truncated_gaussian(with_metaclass(FunctionMeta, Function1D)):
         
         return np.clip(out, lower_bound, upper_bound)
 
-class Cauchy(with_metaclass(FunctionMeta, Function1D)):
+class Cauchy(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -318,7 +318,7 @@ class Cauchy(with_metaclass(FunctionMeta, Function1D)):
         return res
 
 
-class Cosine_Prior(with_metaclass(FunctionMeta, Function1D)):
+class Cosine_Prior(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -423,7 +423,7 @@ class Cosine_Prior(with_metaclass(FunctionMeta, Function1D)):
         return dec
 
 
-class Log_normal(with_metaclass(FunctionMeta, Function1D)):
+class Log_normal(Function1D, metaclass=FunctionMeta):
     r"""
        description :
 
@@ -524,7 +524,7 @@ class Log_normal(with_metaclass(FunctionMeta, Function1D)):
         return np.exp(res)
 
 
-class Uniform_prior(with_metaclass(FunctionMeta, Function1D)):
+class Uniform_prior(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -602,7 +602,7 @@ class Uniform_prior(with_metaclass(FunctionMeta, Function1D)):
 
         return par
 
-class Log_uniform_prior(with_metaclass(FunctionMeta, Function1D)):
+class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 

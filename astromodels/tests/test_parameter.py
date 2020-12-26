@@ -391,8 +391,8 @@ def test_set_auxiliary_variable():
     # ax + b
 
     law = Line()
-    law.a = 1.0
-    law.b = 2.0
+    law.a = 2.0
+    law.b = 1.0
 
     p1.add_auxiliary_variable(x, law)
 
@@ -433,8 +433,8 @@ def test_remove_auxiliary_variable():
     # ax + b
 
     law = Line()
-    law.a = 1.0
-    law.b = 2.0
+    law.a = 2.0
+    law.b = 1.0
 
     p1.add_auxiliary_variable(x, law)
 
@@ -691,8 +691,8 @@ def test_links_and_pickle():
     # ax + b
 
     law = Line()
-    law.a = 1.0
-    law.b = 2.0
+    law.a = 2.0
+    law.b = 1.0
 
     p_orig.add_auxiliary_variable(x, law)
 
