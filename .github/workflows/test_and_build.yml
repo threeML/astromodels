@@ -120,7 +120,6 @@ jobs:
             - name: install it
               shell: bash -l {0}
               run: |
-
                   pip install -e .
             - name: Lint with flake8
               shell: bash -l {0}
@@ -194,9 +193,8 @@ jobs:
               run: |
                   python -m twine check dist/*
 
-    publish-conda:
-        needs: test-conda
-        name: Publish to conda
+    build-conda:
+        name: Build in Conda
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
