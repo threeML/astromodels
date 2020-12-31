@@ -1467,7 +1467,8 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
         out = np.zeros(x.shape) * K * 0
 
         out[idx] = (
-            K * np.power(old_div(x[idx], piv), alpha) * np.exp(old_div(-x[idx], xc))
+            K * np.power(old_div(x[idx], piv), alpha) *
+            np.exp(old_div(-x[idx], xc))
         )
         out[~idx] = (
             K
@@ -1637,7 +1638,7 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
                 else:
 
-                    intflux = nb_func.ggrb_int_cpl(alpha_, Ec_, a_, b__)
+                    intflux = nb_func.ggrb_int_cpl(alpha_, Ec_, a_, b_)
 
         norm = F * erg2keV / (intflux * unit_)
 
@@ -1743,7 +1744,8 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
         return self.piv.value * pow(
-            10, old_div(((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value))
+            10, old_div(((2 + self.alpha.value) * np.log(10)),
+                        (2 * self.beta.value))
         )
 
 
@@ -1814,7 +1816,8 @@ if has_gsl:
             this_integral = self._integral(a, b, index, xc)
 
             return (
-                F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
+                F / this_integral *
+                np.power(x, index) * np.exp(-1 * np.divide(x, xc))
             )
 
 
@@ -1906,7 +1909,8 @@ if has_ebltable:
                 not hasattr(y_unit, "physical_type")
                 or y_unit.physical_type != "dimensionless"
             ):
-                raise InvalidUsageForFunction("Unit for y is not dimensionless.")
+                raise InvalidUsageForFunction(
+                    "Unit for y is not dimensionless.")
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
             self.attenuation.unit = astropy_units.dimensionless_unscaled
