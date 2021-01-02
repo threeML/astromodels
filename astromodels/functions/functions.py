@@ -8,6 +8,7 @@ import numpy as np
 import six
 from past.utils import old_div
 from scipy.special import erfcinv, gamma, gammaincc
+from typing import Iterable
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
@@ -881,7 +882,8 @@ class Constant(Function1D, metaclass=FunctionMeta):
         self.k.unit = y_unit
 
     def evaluate(self, x, k):
-        return k
+        
+        return k * np.ones_like(x)
 
 
 class Line(Function1D, metaclass=FunctionMeta):
