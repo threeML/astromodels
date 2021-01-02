@@ -883,7 +883,7 @@ class Constant(Function1D, metaclass=FunctionMeta):
 
     def evaluate(self, x, k):
         
-        return k * np.ones_like(x)
+        return k * np.ones(np.shape(x))
 
 
 class Line(Function1D, metaclass=FunctionMeta):
