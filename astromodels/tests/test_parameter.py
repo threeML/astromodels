@@ -270,10 +270,10 @@ def test_set_bounds_nounits():
 
     p.display()
 
-    with pytest.warns(RuntimeWarning):
+    # with pytest.warns(RuntimeWarning):
 
-        p.value = 1.0
-        p.min_value = 2.0
+    #     p.value = 1.0
+    #     p.min_value = 2.0
 
 
 def test_set_bounds_units():
@@ -452,9 +452,9 @@ def test_remove_auxiliary_variable():
 
     assert p1.value == -1.0
 
-    with pytest.warns(RuntimeWarning):
+    # with pytest.warns(RuntimeWarning):
 
-        p1.remove_auxiliary_variable()
+    #     p1.remove_auxiliary_variable()
 
 
 def test_callback():
