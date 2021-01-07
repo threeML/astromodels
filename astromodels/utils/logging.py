@@ -2,7 +2,7 @@
 
 # If threeml is not installed, we create our own log,
 # otherwise, just print to the 3ML one!
-    
+
 
 import logging
 import logging.handlers as handlers
@@ -16,7 +16,8 @@ from astromodels.utils.configuration import get_path_of_log_file
 
 colorama.deinit()
 colorama.init(strip=False)
-## set up the console logging
+# set up the console logging
+
 
 class ColoredFormatter(logging.Formatter):
     """
@@ -40,12 +41,14 @@ class ColoredFormatter(logging.Formatter):
 
         return super().format(record)
 
+
 class MyFilter(object):
     def __init__(self, level):
         self.__level = level
 
     def filter(self, logRecord):
         return logRecord.levelno != self.__level
+
 
 # now create the developer handler that rotates every day and keeps
 # 10 days worth of backup
@@ -98,6 +101,7 @@ astromodels_console_log_handler.setLevel("INFO")
 
 warning_filter = MyFilter(logging.WARNING)
 
+
 def silence_warnings():
     """
     supress warning messages in console and file usr logs
@@ -105,6 +109,7 @@ def silence_warnings():
 
     astromodels_usr_log_handler.addFilter(warning_filter)
     astromodels_console_log_handler.addFilter(warning_filter)
+
 
 def activate_warnings():
     """
@@ -114,9 +119,11 @@ def activate_warnings():
     astromodels_usr_log_handler.removeFilter(warning_filter)
     astromodels_console_log_handler.removeFilter(warning_filter)
 
+
 def update_logging_level(level):
 
     astromodels_console_log_handler.setLevel(level)
+
 
 def setup_logger(name):
 
@@ -139,5 +146,3 @@ def setup_logger(name):
     log.propagate = False
 
     return log
-
-

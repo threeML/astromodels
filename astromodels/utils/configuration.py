@@ -10,7 +10,7 @@ def get_user_path():
 
     if not user_path.exists():
 
-        user_path.mkdir()
+        user_path.mkdir(parents=True)
 
     return user_path
         
@@ -22,7 +22,7 @@ def get_user_data_path():
     # Create it if doesn't exist
     if not user_data.exists():
 
-        user_data.mkdir()
+        user_data.mkdir(parents=True)
 
 
     return user_data
@@ -37,7 +37,7 @@ def get_user_log_path():
     # Create it if doesn't exist
     if not user_log.exists():
 
-        user_log.mkdir()
+        user_log.mkdir(parents=True)
 
 
     return user_log
