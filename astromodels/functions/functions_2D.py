@@ -11,10 +11,9 @@ from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.vincenty import vincenty
 
 import hashlib
-from future.utils import with_metaclass
 
 
-class Latitude_galactic_diffuse(with_metaclass(FunctionMeta, Function2D)):
+class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -116,7 +115,7 @@ class Latitude_galactic_diffuse(with_metaclass(FunctionMeta, Function2D)):
         return integral * np.power( 180. / np.pi, -2 ) * np.ones_like( z )
         
 
-class Gaussian_on_sphere(with_metaclass(FunctionMeta, Function2D)):
+class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -214,7 +213,7 @@ class Gaussian_on_sphere(with_metaclass(FunctionMeta, Function2D)):
         
 
 
-class Asymm_Gaussian_on_sphere(with_metaclass(FunctionMeta, Function2D)):
+class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -354,7 +353,7 @@ class Asymm_Gaussian_on_sphere(with_metaclass(FunctionMeta, Function2D)):
         return np.ones_like( z )
 
 
-class Disk_on_sphere(with_metaclass(FunctionMeta, Function2D)):
+class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -449,7 +448,7 @@ class Disk_on_sphere(with_metaclass(FunctionMeta, Function2D)):
         return np.ones_like( z )
 
 
-class Ellipse_on_sphere(with_metaclass(FunctionMeta, Function2D)):
+class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -593,7 +592,7 @@ class Ellipse_on_sphere(with_metaclass(FunctionMeta, Function2D)):
         return np.ones_like( z )
 
 
-class SpatialTemplate_2D(with_metaclass(FunctionMeta, Function2D)):
+class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
     r"""
         description :
         
@@ -742,7 +741,7 @@ class SpatialTemplate_2D(with_metaclass(FunctionMeta, Function2D)):
             z = z.value
         return np.multiply(self.K.value,np.ones_like( z ) )
         
-class Power_law_on_sphere(with_metaclass(FunctionMeta, Function2D)):        
+class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):        
 
     r"""
         description :
