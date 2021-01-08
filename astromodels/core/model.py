@@ -361,15 +361,44 @@ class Model(Node):
 
     def remove_source(self, source_name):
         """
-        Returns a new model with the provided source removed from the current model
+        Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.
 
         :param source_name: the name of the source to be removed
         :return: a new Model instance without the source
         """
+        
+        self.unlink_all_from_source(source_name, warn=True)
 
         self._remove_source(source_name)
 
         self._update_parameters()
+
+    def unlink_all_from_source(self, source_name, warn=False):
+        """
+        Unlink all parameters of the current model that are linked to a parameter of a given source.
+        To be called before removing a source from the model.
+
+        :param source_name: the name of the source to which to remove all links
+        :param warn: If True, prints a warning if any parameters were unlinked.
+        """
+    
+        tempmodel = Model(self[source_name])
+        unlinked_parameters = collections.OrderedDict()
+
+        for par in self.linked_parameters.values():
+        
+          target=par._aux_variable['variable']
+
+          if target.path in tempmodel:
+
+              unlinked_parameters[par.name] = par
+              self.unlink(par)
+        
+        if warn and unlinked_parameters:
+        
+            warnings.warn("The following %d parameters that were linked to source %s have been automatically un-linked: %s" %
+                          (len(unlinked_parameters), source_name, [p.path for p in unlinked_parameters.values() ] ), 
+                              RuntimeWarning)
 
     def add_independent_variable(self, variable):
         """
