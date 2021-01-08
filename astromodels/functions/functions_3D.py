@@ -1,12 +1,18 @@
 from __future__ import division
 from past.utils import old_div
 import astropy.units as u
+from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
+from astropy.io import fits
 
 from astromodels.functions.function import Function3D, FunctionMeta
 
 import numpy as np
 
 from astromodels.utils.angular_distance import angular_distance_fast
+
+from scipy.interpolate import RegularGridInterpolator
+
+import hashlib
 
 
 class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta):
@@ -529,3 +535,184 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
             z = z.value
         return np.ones_like( z )
 
+
+class GalPropTemplate_3D(Function3D):
+    r"""
+        description :
+
+            Use a 3D template that has morphology and flux information.
+            GalProp, DRAGON or a similar model in fits format would work. 
+            Only parameter is a normalization factor. 
+
+        latex : $ K $
+
+        parameters :
+
+            K :
+
+                desc : normalization
+                initial value : 1
+                fix : yes
+
+            hash :
+                
+                desc : hash of model map [needed for memoization]
+                initial value : 1
+                fix : yes         
+
+    """
+
+    __metaclass__ = FunctionMeta
+
+    def _set_units(self, x_unit, y_unit, z_unit, w_unit):
+
+        self.K.unit = (u.MeV * u.cm**2 * u.s * u.sr) ** (-1)
+
+    def _setup(self):
+
+        self._frame = ICRS()
+        self._map = None
+        self._fitsfile = None
+        self._interpmap = None
+
+    def set_frame(self, new_frame):
+        """
+        Set a new frame for the coordinates (the default is ICRS J2000)
+
+        :param new_frame: a coordinate frame from astropy
+        :return: (none)
+        """
+        assert isinstance(new_frame, BaseCoordinateFrame)
+
+        self._frame = new_frame
+
+    def load_file(self,fitsfile,phi1,phi2,theta1,theta2,galactic=False,ihdu=0):
+        
+        if fitsfile is None:
+            raise RuntimeError( "Need to specify a fits file with a template map." )
+
+        self._fitsfile = fitsfile
+        p1,p2,t1,t2 = self.define_region(phi1,phi2,theta1,theta2,galactic)
+        self.ramin = p1
+        self.ramax = p2
+        self.decmin = t1
+        self.decmax = t2
+        
+        with fits.open(self._fitsfile) as f:
+
+            self._delLon = f[ihdu].header['CDELT1']
+            self._delLat = f[ihdu].header['CDELT2']
+            self._delEn = f[ihdu].header['CDELT3']
+            self._refLon = f[ihdu].header['CRVAL1']
+            self._refLat = f[ihdu].header['CRVAL2']
+            self._refEn = f[ihdu].header['CRVAL3'] # values in log10
+            self._map = f[ihdu].data
+            self._nl = f[ihdu].header['NAXIS1'] #longitude
+            self._nb = f[ihdu].header['NAXIS2'] #latitude
+            self._ne = f[ihdu].header['NAXIS3'] #energy
+
+            #Create the function for the interpolation
+            self._L = np.linspace(self._refLon,self._refLon+(self._nl-1)*self._delLon,self._nl)
+            self._B = np.linspace(self._refLat,self._refLat+(self._nb-1)*self._delLat,self._nb)
+            self._E = np.linspace(self._refEn,self._refEn+(self._ne-1)*self._delEn,self._ne)
+            for i in xrange(len(self._E)):
+                self._map[i] = self._map[i]/(np.power(10,self._E[i])*np.power(10,self._E[i])) # Map units in Mev / cm^2 s sr, changing to 1 / MeV cm^2 s sr
+                self._map[i] = (np.fliplr(self._map[i]))
+            self._F = RegularGridInterpolator((self._E,self._B,self._L),self._map,bounds_error=False)
+            
+            h = hashlib.sha224()
+            h.update( self._map )
+            self.hash = int(h.hexdigest(), 16)
+
+    def to_dict(self, minimal=False):
+        
+        data = super(Function3D, self).to_dict(minimal)
+
+        if not minimal:
+        
+            data['extra_setup'] = {
+                                    "_fitsfile":self._fitsfile, 
+                                    "_frame": self._frame, 
+                                    "ramin": self.ramin, 
+                                    "ramax": self.ramax, 
+                                    "decmin": self.decmin, 
+                                    "decmax":self.decmax
+                                  }
+
+        return data
+
+    def which_model_file(self):
+        return self._fitsfile
+
+    def evaluate(self, x,y,z,K,hash):
+
+        if self._map is None:
+    
+            self.load_file(self._fitsfile,self.ramin,self.ramax,self.decmin,self.decmax,False,ihdu=0)
+
+        # Interpolated values can be cached since we are fitting the constant K
+        if self._interpmap is None:
+
+            # We assume x and y are R.A. and Dec
+            _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+            b = _coord.transform_to('galactic').b.value
+            l = _coord.transform_to('galactic').l.value
+            lon=l 
+            lat=b 
+
+            #transform energy from keV to MeV. Galprop Model starts at 100 MeV
+            energy = np.log10(z)-np.log10((u.MeV.to('keV')/u.keV).value)
+
+            if lon.size != lat.size:
+                raise AttributeError("Lon and Lat should be the same size")
+            f=np.zeros([lon.size,energy.size])
+            E0 = self._refEn
+            Ef = self._refEn + (self._ne-1)*self._delEn
+
+            #fix longitude
+            shift = np.where(lon>180.)
+            lon[shift] = 180 - lon[shift]
+
+            for i in xrange(energy.size):
+                e=np.repeat(energy[i],len(lon))    
+                try:
+                    f[:,i] = self._F(zip(e,lat,lon))
+                except ValueError:
+                    pass 
+            bad_idx = np.isnan(f)
+            f[bad_idx]=0
+            bad_idx = np.isinf(f)
+            f[bad_idx]=0
+            assert np.all(np.isfinite(f)),"some interpolated values are wrong"
+            self._interpmap=f
+
+        A = np.multiply(K,self._interpmap/1000.) #(1000 is to change from MeV to KeV)
+        return A
+
+    def define_region(self,a,b,c,d,galactic=False):
+        if galactic:
+            lmin = a
+            lmax = b
+            bmin = c
+            bmax = d
+
+            _coord = SkyCoord(l=[lmin,lmin,lmax,lmax], b=[bmin, bmax, bmax, bmin], frame='galactic', unit='deg')
+            
+            ramin = min(_coord.transform_to('icrs').ra.value)
+            ramax = max(_coord.transform_to('icrs').ra.value)
+            decmin = min(_coord.transform_to('icrs').dec.value)
+            decmax = max(_coord.transform_to('icrs').dec.value)
+
+        else: 
+            ramin = a
+            ramax = b
+            decmin = c
+            decmax = d
+        return ramin,ramax,decmin,decmax
+
+    def get_boundaries(self):
+        min_longitude = self.ramin
+        max_longitude = self.ramax
+        min_latitude = self.decmin
+        max_latitude = self.decmax
+        return (min_longitude, max_longitude), (min_latitude, max_latitude)
