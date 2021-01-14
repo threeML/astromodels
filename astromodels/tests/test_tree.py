@@ -118,7 +118,7 @@ def test_get_child():
 
     assert t._get_child("node") == n
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(KeyError):
         t._get_child("not existing")
 
     clean()
@@ -156,7 +156,7 @@ def test_remove_child():
     with pytest.raises(AttributeError):
         print(t.node)
 
-    with pytest.raises(AttributeError):
+    with pytest.raises(KeyError):
         t._get_child("node")
 
     clean()
