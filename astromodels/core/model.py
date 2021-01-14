@@ -1,22 +1,27 @@
 from builtins import zip
-__author__ = 'giacomov'
+
+__author__ = "giacomov"
 
 import collections
-
 import os
-import pandas as pd
-import numpy as np
-import scipy.integrate
 import warnings
 
-from astromodels.core.my_yaml import my_yaml
-from astromodels.core.parameter import Parameter, IndependentVariable
-from astromodels.core.tree import Node, DuplicatedNode
-from astromodels.functions.function import get_function
-from astromodels.sources.source import Source, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
-from astromodels.utils.disk_usage import disk_usage
-from astromodels.utils.long_path_formatter import long_path_formatter
+import numpy as np
+import pandas as pd
+import scipy.integrate
+
 from astromodels.core.memoization import use_astromodels_memoization
+from astromodels.core.my_yaml import my_yaml
+from astromodels.core.parameter import IndependentVariable, Parameter
+from astromodels.core.tree import DuplicatedNode, Node
+from astromodels.functions.function import get_function
+from astromodels.sources.source import (EXTENDED_SOURCE, PARTICLE_SOURCE,
+                                        POINT_SOURCE, Source)
+from astromodels.utils.disk_usage import disk_usage
+from astromodels.utils.logging import setup_logger
+from astromodels.utils.long_path_formatter import long_path_formatter
+
+log = setup_logger(__name__)
 
 
 class ModelFileExists(IOError):
@@ -34,7 +39,9 @@ class CannotWriteModel(IOError):
         free_space = disk_usage(directory).free
 
         message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (
-            directory, free_space / 1024.0 / 1024.0)
+            directory,
+            free_space / 1024.0 / 1024.0,
+        )
 
         super(CannotWriteModel, self).__init__(message)
 
@@ -45,7 +52,6 @@ class ModelInternalError(ValueError):
 
 
 class Model(Node):
-
     def __init__(self, *sources):
 
         # Setup the node, using the special name '__root__' to indicate that this is the root of the tree
@@ -95,8 +101,10 @@ class Model(Node):
 
             if isinstance(source, Source):
 
-                raise DuplicatedNode("More than one source with the name '%s'. You cannot use the same name for multiple "
-                                     "sources" % source.name)
+                raise DuplicatedNode(
+                    "More than one source with the name '%s'. You cannot use the same name for multiple "
+                    "sources" % source.name
+                )
 
             else:  # pragma: no cover
 
@@ -119,7 +127,9 @@ class Model(Node):
 
         else:  # pragma: no cover
 
-            raise InvalidInput("Input sources must be either a point source or an extended source")
+            raise InvalidInput(
+                "Input sources must be either a point source or an extended source"
+            )
 
     def _remove_source(self, source_name):
         """
@@ -128,7 +138,9 @@ class Model(Node):
         :return:
         """
 
-        assert source_name in self.sources, "Source %s is not part of the current model" % source_name
+        assert source_name in self.sources, (
+            "Source %s is not part of the current model" % source_name
+        )
 
         source = self.sources.pop(source_name)
 
@@ -408,7 +420,9 @@ class Model(Node):
         :return: none
         """
 
-        assert isinstance(variable, IndependentVariable), "Variable must be an instance of IndependentVariable"
+        assert isinstance(
+            variable, IndependentVariable
+        ), "Variable must be an instance of IndependentVariable"
 
         if self._has_child(variable.name):
 
@@ -440,7 +454,9 @@ class Model(Node):
         :return: none
         """
 
-        assert isinstance(parameter, Parameter), "Variable must be an instance of IndependentVariable"
+        assert isinstance(
+            parameter, Parameter
+        ), "Variable must be an instance of IndependentVariable"
 
         if self._has_child(parameter.name):
 
@@ -450,8 +466,10 @@ class Model(Node):
 
             if isinstance(self._get_child(parameter.name), Parameter):
 
-                warnings.warn("External parameter %s already exist in the model. Overwriting it..." % parameter.name,
-                              RuntimeWarning)
+                log.warning(
+                    "External parameter %s already exist in the model. Overwriting it..."
+                    % parameter.name
+                )
 
                 self._remove_child(parameter.name)
 
@@ -480,41 +498,38 @@ class Model(Node):
         Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
         :return: (none)
         """
-        if not isinstance(parameter_1,list):
-        # Make a list of one element
-            parameter_1_list  = [parameter_1]
+        if not isinstance(parameter_1, list):
+            # Make a list of one element
+            parameter_1_list = [parameter_1]
         else:
-        # Make a copy to avoid tampering with the input
+            # Make a copy to avoid tampering with the input
             parameter_1_list = list(parameter_1)
-        
-        
-        for param_1 in parameter_1_list:
-            assert param_1.path in self, "Parameter %s is not contained in this model" % param_1.path
 
-        assert parameter_2.path in self, "Parameter %s is not contained in this model" % parameter_2.path
-        
+        for param_1 in parameter_1_list:
+            assert param_1.path in self, (
+                "Parameter %s is not contained in this model" % param_1.path
+            )
+
+        assert parameter_2.path in self, (
+            "Parameter %s is not contained in this model" % parameter_2.path
+        )
+
         if link_function is None:
             # Use the Line function by default, with both parameters fixed so that the two
             # parameters to be linked will vary together
-            link_function = get_function('Line')
+            link_function = get_function("Line")
 
             link_function.a.value = 0
             link_function.a.fix = True
 
             link_function.b.value = 1
             link_function.b.fix = True
-        
-        
-        
-        for param_1 in parameter_1_list: 
+
+        for param_1 in parameter_1_list:
             param_1.add_auxiliary_variable(parameter_2, link_function)
             # Now set the units of the link function
             link_function.set_units(parameter_2.unit, param_1.unit)
-        
-        
-        
-        
-        
+
     def unlink(self, parameter):
         """
         Sets free one or more parameters which have been linked previously
@@ -523,14 +538,14 @@ class Model(Node):
         :return: (none)
         """
 
-        if not isinstance(parameter,list):
-        # Make a list of one element
-            parameter_list  = [parameter]
+        if not isinstance(parameter, list):
+            # Make a list of one element
+            parameter_list = [parameter]
         else:
-        # Make a copy to avoid tampering with the input
+            # Make a copy to avoid tampering with the input
             parameter_list = list(parameter)
-            
-        for param in parameter_list:    
+
+        for param in parameter_list:
             if param.has_auxiliary_variable():
                 param.remove_auxiliary_variable()
 
@@ -540,7 +555,10 @@ class Model(Node):
 
                     warnings.simplefilter("always", RuntimeWarning)
 
-                    warnings.warn("Parameter %s has no link to be removed." % param.path, RuntimeWarning)
+                    log.warning(
+                        "Parameter %s has no link to be removed." % param.path
+                       
+                    )
 
     def display(self, complete=False):
         """
@@ -565,17 +583,24 @@ class Model(Node):
 
         if rich_output:
 
-            new_line = '<br>'
+            new_line = "<br>"
 
         else:
 
-            new_line = '\n'
+            new_line = "\n"
 
         # Table with the summary of the various kind of sources
-        sources_summary = pd.DataFrame.from_dict( collections.OrderedDict([('Point sources', [self.get_number_of_point_sources()]),
-                                                                          ('Extended sources', [self.get_number_of_extended_sources()]),
-                                                                           ('Particle sources', [self.get_number_of_particle_sources()])]),
-                                                  columns=['N'], orient='index')
+        sources_summary = pd.DataFrame.from_dict(
+            collections.OrderedDict(
+                [
+                    ("Point sources", [self.get_number_of_point_sources()]),
+                    ("Extended sources", [self.get_number_of_extended_sources()]),
+                    ("Particle sources", [self.get_number_of_particle_sources()]),
+                ]
+            ),
+            columns=["N"],
+            orient="index",
+        )
 
         # These properties traverse the whole tree everytime, so let's cache their results here
         parameters = self.parameters
@@ -604,14 +629,16 @@ class Model(Node):
                 d = parameter.to_dict()
                 parameter_dict[this_name] = collections.OrderedDict()
 
-                for key in ['value','unit','min_value','max_value']:
+                for key in ["value", "unit", "min_value", "max_value"]:
 
                     parameter_dict[this_name][key] = d[key]
 
             free_parameters_summary = pd.DataFrame.from_dict(parameter_dict).T
 
             # Re-order it
-            free_parameters_summary = free_parameters_summary[['value','min_value','max_value','unit']]
+            free_parameters_summary = free_parameters_summary[
+                ["value", "min_value", "max_value", "unit"]
+            ]
 
         else:
 
@@ -641,14 +668,16 @@ class Model(Node):
                 d = parameter.to_dict()
                 fixed_parameter_dict[this_name] = collections.OrderedDict()
 
-                for key in ['value','unit','min_value','max_value']:
+                for key in ["value", "unit", "min_value", "max_value"]:
 
                     fixed_parameter_dict[this_name][key] = d[key]
 
             fixed_parameters_summary = pd.DataFrame.from_dict(fixed_parameter_dict).T
 
             # Re-order it
-            fixed_parameters_summary = fixed_parameters_summary[['value','min_value','max_value','unit']]
+            fixed_parameters_summary = fixed_parameters_summary[
+                ["value", "min_value", "max_value", "unit"]
+            ]
 
         else:
 
@@ -670,10 +699,10 @@ class Model(Node):
 
                 this_dict = collections.OrderedDict()
 
-                this_dict['linked to'] = variable.path
-                this_dict['function'] = law.name
-                this_dict['current value'] = parameter.value
-                this_dict['unit'] = parameter.unit
+                this_dict["linked to"] = variable.path
+                this_dict["function"] = law.name
+                this_dict["current value"] = parameter.value
+                this_dict["unit"] = parameter.unit
 
                 parameter_dict[parameter_name] = this_dict
 
@@ -695,7 +724,9 @@ class Model(Node):
 
         if self._independent_variables:
 
-            for variable_name, variable_instance in list(self._independent_variables.items()):
+            for variable_name, variable_instance in list(
+                self._independent_variables.items()
+            ):
 
                 v_dict = collections.OrderedDict()
 
@@ -703,8 +734,8 @@ class Model(Node):
 
                 this_dict = collections.OrderedDict()
 
-                this_dict['current value'] = variable_instance.value
-                this_dict['unit'] = variable_instance.unit
+                this_dict["current value"] = variable_instance.value
+                this_dict["unit"] = variable_instance.unit
 
                 v_dict[variable_name] = this_dict
 
@@ -763,7 +794,6 @@ class Model(Node):
             else:
 
                 fixed_parameters_representation = fixed_parameters_summary._repr_html_()
-
 
         else:
 
@@ -831,7 +861,11 @@ class Model(Node):
 
         # Free parameters
 
-        representation += "%sFree parameters (%i):%s" % (new_line, len(free_parameters), new_line)
+        representation += "%sFree parameters (%i):%s" % (
+            new_line,
+            len(free_parameters),
+            new_line,
+        )
 
         if not rich_output:
 
@@ -865,13 +899,19 @@ class Model(Node):
 
         else:
 
-            representation += '(abridged. Use complete=True to see all fixed parameters)%s' % new_line
+            representation += (
+                "(abridged. Use complete=True to see all fixed parameters)%s" % new_line
+            )
 
         representation += new_line
 
         # Linked parameters
 
-        representation += "%sLinked parameters (%i):%s" % (new_line, len(self.linked_parameters), new_line)
+        representation += "%sLinked parameters (%i):%s" % (
+            new_line,
+            len(self.linked_parameters),
+            new_line,
+        )
 
         if not rich_output:
 
@@ -922,21 +962,21 @@ class Model(Node):
                 # There are three possible cases. Either the element is a source, or it is an independent
                 # variable, or a parameter
 
-                if hasattr(element, 'source_type'):
+                if hasattr(element, "source_type"):
 
                     # Change the name of the key adding the source type
 
-                    data['%s (%s)' % (key, element.source_type)] = data.pop(key)
+                    data["%s (%s)" % (key, element.source_type)] = data.pop(key)
 
                 elif isinstance(element, IndependentVariable):
 
-                    data['%s (%s)' % (key, 'IndependentVariable')] = data.pop(key)
+                    data["%s (%s)" % (key, "IndependentVariable")] = data.pop(key)
 
                 elif isinstance(element, Parameter):
 
-                    data['%s (%s)' % (key, 'Parameter')] = data.pop(key)
+                    data["%s (%s)" % (key, "Parameter")] = data.pop(key)
 
-                else: # pragma: no cover
+                else:  # pragma: no cover
 
                     raise ModelInternalError("Found an unknown class at the top level")
 
@@ -948,8 +988,11 @@ class Model(Node):
 
         if os.path.exists(output_file) and overwrite is False:
 
-            raise ModelFileExists("The file %s exists already. If you want to overwrite it, use the 'overwrite=True' "
-                                  "options as 'model.save(\"%s\", overwrite=True)'. " % (output_file, output_file))
+            raise ModelFileExists(
+                "The file %s exists already. If you want to overwrite it, use the 'overwrite=True' "
+                "options as 'model.save(\"%s\", overwrite=True)'. "
+                % (output_file, output_file)
+            )
 
         else:
 
@@ -971,9 +1014,11 @@ class Model(Node):
 
             except IOError:
 
-                raise CannotWriteModel(os.path.dirname(os.path.abspath(output_file)),
-                                       "Could not write model file %s. Check your permissions to write or the "
-                                       "report on the free space which follows: " % output_file)
+                raise CannotWriteModel(
+                    os.path.dirname(os.path.abspath(output_file)),
+                    "Could not write model file %s. Check your permissions to write or the "
+                    "report on the free space which follows: " % output_file,
+                )
 
     def get_number_of_point_sources(self):
         """
@@ -1048,7 +1093,9 @@ class Model(Node):
 
     def get_extended_source_boundaries(self, id):
 
-        (ra_min, ra_max), (dec_min, dec_max) = list(self._extended_sources.values())[id].get_boundaries()
+        (ra_min, ra_max), (dec_min, dec_max) = list(self._extended_sources.values())[
+            id
+        ].get_boundaries()
 
         return ra_min, ra_max, dec_min, dec_max
 
@@ -1062,7 +1109,7 @@ class Model(Node):
             # the comparison is easier
             if ra_min > 180:
 
-                ra_min = -(360-ra_min)
+                ra_min = -(360 - ra_min)
 
             if ra_min <= j2000_ra <= ra_max and dec_min <= j2000_dec <= dec_max:
 
