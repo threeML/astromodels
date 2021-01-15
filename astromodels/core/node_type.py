@@ -15,12 +15,12 @@ class NewNodeUnpickler(object):
         return instance
 
 
-@dataclass(repr=False)
+@dataclass(repr=False,unsafe_hash=False)
 class _Node:
     _name: str
     _parent: Optional[Type["_Node"]] = field(repr=False, default=None)
     _children: Dict[str, Type["_Node"]] = field(
-        default_factory=dict, repr=False)
+        default_factory=dict, repr=False, compare=False)
     _path: Optional[str] = field(repr=False, default="")
 
     # The next 3 methods are *really* necessary for anything to work
@@ -69,20 +69,19 @@ class _Node:
 
     def _add_child(self, child: Type["_Node"]):
 
-        try:
-            if child._name not in self._children:
-                self._children[child._name] = child
-                child._set_parent(self)
+        assert isinstance(child, _Node)
+        
 
-            else:
+        if child._name not in self._children:
+            self._children[child._name] = child
+            child._set_parent(self)
 
-                raise RuntimeError(
+        else:
+
+            raise AttributeError(
                     f"A child with name {child._name} already exists")
 
-        except(AttributeError):
-
-            raise TypeError()
-
+        
     def _add_children(self, children: List[Type["_Node"]]):
 
         for child in children:
@@ -146,7 +145,7 @@ class _Node:
     def path(self):
         return self._get_path()
 
-    def _update_path(self):
+    def _update_child_path(self):
 
         # recursively update the path
 
@@ -161,11 +160,11 @@ class _Node:
 
         if self._parent is not None:
 
-            self._parent._children.pop(self._name)
+#            self._parent._children.pop(self._name)
             self._set_parent(self._parent)
 
         # update all the children
-        self._update_path()
+        self._update_child_path()
 
     @property
     def is_root(self):
@@ -198,9 +197,25 @@ class _Node:
 
     def __setattr__(self, name, value):
 
+        ### We cannot change a node
+        ### but if the node has a value
+        ### attribute, we want to call that 
+        
+        
         if "_children" in self.__dict__:
             if name in self._children:
-                raise AttributeError()
+
+                try:
+
+                    # call the value
+
+                    self._children[name].value = value
+
+                except:
+
+                    # complain!
+                
+                    raise AttributeError()
             else:
                 return super().__setattr__(name, value)
         else:

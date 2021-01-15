@@ -774,6 +774,11 @@ class Function(Node):
         """
         return self._uuid
 
+    def __eq__(self, o):
+
+        return self._uuid == o.uuid
+
+    
     def duplicate(self):
         """
         Create a copy of the current function with all the parameters equal to the current value
@@ -1394,6 +1399,7 @@ class CompositeFunction(Function):
             # Check whether this is already a composite function. If it is, add the functions contained
             # in it
 
+                        
             if isinstance(function, CompositeFunction):
 
                 for sub_function in function.functions:
@@ -1438,6 +1444,8 @@ class CompositeFunction(Function):
         self._id_to_uid = {}
 
         expression = self._uuid_expression
+
+        
 
         for i, function in enumerate(self._functions):
 
