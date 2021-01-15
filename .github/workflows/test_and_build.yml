@@ -343,6 +343,8 @@ jobs:
                   conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
                   fi
 
+                  conda install --use-local -c conda-forge astromodels
+
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
