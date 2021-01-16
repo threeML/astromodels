@@ -359,21 +359,21 @@ jobs:
               shell: bash -l {0}
               run: |
 
-                conda install -c conda-forge anaconda-client
-                echo "Uploading ${{matrix.os}}"
-            
+                  conda install -c conda-forge anaconda-client
+                  echo "Uploading ${{matrix.os}}"
 
-                if [[ ${{matrix.os}} == ubuntu-latest ]];
-                then
 
-                anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/share/miniconda/conda-bld/linux-64/*.tar.bz2 --force
+                  if [[ ${{matrix.os}} == ubuntu-latest ]];
+                  then
 
-                else
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/share/miniconda/conda-bld/linux-64/*.tar.bz2 --force
 
-                anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/local/miniconda/conda-bld/osx-64/*.tar.bz2 --force
+                  else
 
-                fi
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/local/miniconda/conda-bld/osx-64/*.tar.bz2 --force
+
+                  fi
 
               env:
-                UPLOAD_TOKEN: ${{secrets.CONDA_UPLOAD_TOKEN}}
-                CURRENT_OS: ${{matrix.os}}
+                  UPLOAD_TOKEN: ${{secrets.CONDA_UPLOAD_TOKEN}}
+                  CURRENT_OS: ${{matrix.os}}
