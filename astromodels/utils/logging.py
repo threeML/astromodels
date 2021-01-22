@@ -9,8 +9,18 @@ import logging.handlers as handlers
 import sys
 from typing import Dict, Optional
 
-import colorama
+#import colorama
 from colorama import Back, Fore, Style
+
+
+BLACK, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE = range(8)
+
+#The background is set with 40 plus the number of the color, and the foreground with 30
+
+#These are the sequences need to get colored ouput
+RESET_SEQ = "\033[0m"
+COLOR_SEQ = "\033[1;%dm"
+BOLD_SEQ = "\033[1m"
 
 from astromodels.utils.configuration import get_path_of_log_file
 
@@ -19,27 +29,27 @@ from astromodels.utils.configuration import get_path_of_log_file
 # set up the console logging
 
 
-class ColoredFormatter(logging.Formatter):
-    """
-    Colored log formatter.
-    """
+# class ColoredFormatter(logging.Formatter):
+#     """
+#     Colored log formatter.
+#     """
 
-    def __init__(
-        self, *args, colors: Optional[Dict[str, str]] = None, **kwargs
-    ) -> None:
-        """Initialize the formatter with specified format strings."""
+#     def __init__(
+#         self, *args, colors: Optional[Dict[str, str]] = None, **kwargs
+#     ) -> None:
+#         """Initialize the formatter with specified format strings."""
 
-        super().__init__(*args, **kwargs)
+#         super().__init__(*args, **kwargs)
 
-        self.colors = colors if colors else {}
+#         self.colors = colors if colors else {}
 
-    def format(self, record) -> str:
-        """Format the specified record as text."""
+#     def format(self, record) -> str:
+#         """Format the specified record as text."""
 
-        record.color = self.colors.get(record.levelname, "")
-        record.reset = Style.RESET_ALL
+#         record.color = self.colors.get(record.levelname, "")
+#         record.reset = Style.RESET_ALL
 
-        return super().format(record)
+#         return super().format(record)
 
 
 class MyFilter(object):
@@ -82,21 +92,21 @@ astromodels_usr_log_handler.setFormatter(_usr_formatter)
 
 # now set up the console logger
 
-_console_formatter = ColoredFormatter(
-    "{asctime} |{color} {levelname:8} {reset}| {color} {message} {reset}",
-    style="{",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    colors={
-        "DEBUG": Fore.CYAN,
-        "INFO": Fore.GREEN + Style.BRIGHT,
-        "WARNING": Fore.YELLOW + Style.DIM,
-        "ERROR": Fore.RED + Style.BRIGHT,
-        "CRITICAL": Fore.RED + Back.WHITE + Style.BRIGHT,
-    },
-)
+# _console_formatter = coloredformatter(
+#     "{asctime} |{color} {levelname:8} {reset}| {color} {message} {reset}",
+#     style="{",
+#     datefmt="%y-%m-%d %h:%m:%s",
+#     colors={
+#         "debug": fore.cyan,
+#         "info": fore.green + style.bright,
+#         "warning": fore.yellow + style.dim,
+#         "error": fore.red + style.bright,
+#         "critical": fore.red + back.white + style.bright,
+#     },
+# )
 
 astromodels_console_log_handler = logging.StreamHandler(sys.stdout)
-astromodels_console_log_handler.setFormatter(_console_formatter)
+astromodels_console_log_handler.setFormatter(_usr_formatter)
 astromodels_console_log_handler.setLevel("INFO")
 
 warning_filter = MyFilter(logging.WARNING)
