@@ -133,7 +133,9 @@ jobs:
             - name: Test conda install
               shell: bash -l {0}
               run: |
-                  python -m pytest -vv --cov=astromodels --cov-report=xml
+                echo "======>  importing XSPEC..."
+                python -c "import astromodels.xspec"
+                python -m pytest -vv --cov=astromodels --cov-report=xml
 
               env:
                   OMP_NUM_THREADS: 1
