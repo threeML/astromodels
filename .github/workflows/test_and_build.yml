@@ -280,7 +280,7 @@ jobs:
             - name: Test conda build
               shell: bash -l {0}
               run: |
-
+                  cd astromodels/tests
                   echo "======>  importing XSPEC..."
                   python -c "import astromodels.xspec"
                   python -m pytest -vv --cov=astromodels --cov-report=xml
