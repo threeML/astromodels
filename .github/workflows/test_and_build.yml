@@ -261,6 +261,8 @@ jobs:
                   echo "Building ${PKG_VERSION} ..."
                   echo "Python version: ${{matrix.python-version}}"
 
+                  conda install codecov pytest-cov
+
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
