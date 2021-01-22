@@ -556,7 +556,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     class_name = 'XS_%s' % model_name
 
     # Get the path to the user data directory
-    user_data_path = get_user_data_path()
+    user_data_path = str(get_user_data_path())
 
     # Check if the code for this function already exists
 
