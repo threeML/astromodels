@@ -14,8 +14,8 @@ from colorama import Back, Fore, Style
 
 from astromodels.utils.configuration import get_path_of_log_file
 
-colorama.deinit()
-colorama.init(strip=False)
+# colorama.deinit()
+# colorama.init(strip=False)
 # set up the console logging
 
 
