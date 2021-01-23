@@ -27,21 +27,3 @@ def get_user_data_path():
 
     return user_data
 
-def get_user_log_path():
-
-    # we use the 3ML log path to simplify things
-    # a more clever solution could be found
-    
-    user_log = Path().home() / ".threeML"  / "log"
-
-    # Create it if doesn't exist
-    if not user_log.exists():
-
-        user_log.mkdir(parents=True)
-
-
-    return user_log
-
-def get_path_of_log_file(filename: str):
-
-    return get_user_log_path() / filename
