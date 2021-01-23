@@ -7,16 +7,59 @@
 import logging
 import logging.handlers as handlers
 import sys
+from pathlib import Path
 from typing import Dict, Optional
 
 import colorama
 from colorama import Back, Fore, Style
 
-from astromodels.utils.configuration import get_path_of_log_file
+try:
+
+    from threeML.config.config import threeML_config
+
+    has_threeml = True
+
+except:
+
+    has_threeml = False
+
 
 colorama.deinit()
 colorama.init(strip=False)
 # set up the console logging
+
+
+def get_path_of_log_dir():
+
+    # we use the 3ML log path to simplify things
+    # a more clever solution could be found
+
+    if has_threeml:
+
+        user_log: Path = Path(threeML_config["logging"]["path"])
+
+    else:
+
+        user_log = Path().home() / ".astromodels" / "log"
+
+    # Create it if doesn't exist
+    if not user_log.exists():
+
+        user_log.mkdir(parents=True)
+
+    return user_log
+
+
+_log_file_names = ["usr.log", "dev.log"]
+
+
+def get_path_of_log_file(log_file: str) -> Path:
+    """
+    returns the path of the log files
+    """
+    assert log_file in _log_file_names, f"{log_file} is not one of {_log_file_names}"
+
+    return get_path_of_log_dir() / log_file
 
 
 class ColoredFormatter(logging.Formatter):
@@ -42,7 +85,7 @@ class ColoredFormatter(logging.Formatter):
         return super().format(record)
 
 
-class MyFilter(object):
+class LogFilter(object):
     def __init__(self, level):
         self.__level = level
 
@@ -83,9 +126,9 @@ astromodels_usr_log_handler.setFormatter(_usr_formatter)
 # now set up the console logger
 
 _console_formatter = ColoredFormatter(
-    "{asctime} |{color} {levelname:8} {reset}| {color} {message} {reset}",
+    "{color} {levelname:8} {reset}| {color} {message} {reset}",
     style="{",
-    datefmt="%Y-%m-%d %H:%M:%S",
+    datefmt="%H:%M:%S",
     colors={
         "DEBUG": Fore.CYAN,
         "INFO": Fore.GREEN + Style.BRIGHT,
@@ -99,7 +142,7 @@ astromodels_console_log_handler = logging.StreamHandler(sys.stdout)
 astromodels_console_log_handler.setFormatter(_console_formatter)
 astromodels_console_log_handler.setLevel("INFO")
 
-warning_filter = MyFilter(logging.WARNING)
+warning_filter = LogFilter(logging.WARNING)
 
 
 def silence_warnings():
