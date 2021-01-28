@@ -15,6 +15,16 @@ from astromodels.core.units import get_units
 from astromodels.functions.function import (Function1D, FunctionMeta,
                                             ModelAssertionViolation)
 
+try:
+    from threeML.config.config import threeML_config
+
+    _has_threeml = True
+
+except ImportError:
+
+    _has_threeml = False
+    
+
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
@@ -53,7 +63,15 @@ try:
 
 except ImportError:
 
-    log.warning("The naima package is not available. Models that depend on it will not be available" )
+    _flag = True
+    
+    if _has_threeml:
+
+        _flag = threeML_config.logging.startup_warnings
+
+    if _flag:
+
+        log.warning("The naima package is not available. Models that depend on it will not be available" )
 
     has_naima = False
 
@@ -70,7 +88,15 @@ try:
 
 except ImportError:
 
-    log.warning("The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
+    _flag = True
+    
+    if _has_threeml:
+
+        _flag = threeML_config.logging.startup_warnings
+
+    if _flag:
+
+        log.warning("The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
                   "available.")
 
     has_gsl = False
@@ -92,7 +118,16 @@ try:
 
 except ImportError:
 
-    log.warning("The ebltable package is not available. Models that depend on it will not be available" )
+    _flag = True
+    
+    if _has_threeml:
+
+        _flag = threeML_config.logging.startup_warnings
+
+    if _flag:
+
+    
+        log.warning("The ebltable package is not available. Models that depend on it will not be available" )
 
     has_ebltable = False
 
