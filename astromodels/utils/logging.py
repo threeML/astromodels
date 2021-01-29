@@ -8,9 +8,7 @@ import logging
 import logging.handlers as handlers
 import sys
 from hashlib import sha256
-from inspect import getframeinfo, stack
 from pathlib import Path
-from typing import Dict, Optional
 
 from .sys_tools import colored, supports_color
 
