@@ -30,7 +30,7 @@ def get_path_of_log_dir():
 
     if has_threeml:
 
-        user_log: Path = Path(threeML_config["logging"]["path"])
+        user_log: Path = Path(threeML_config["logging"]["path"]).expanduser()
 
     else:
 
