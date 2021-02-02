@@ -57,7 +57,7 @@ def get_path_of_log_file(log_file: str) -> Path:
 
 
 DEFAULT_LOG_COLORS = {
-    'DEBUG': 'thin_blue',
+    'DEBUG': 'blue',
     'INFO': 'green',
     'WARNING': 'purple',
     'ERROR': 'red',
@@ -198,27 +198,6 @@ def hash_coloured_escapes(text):
     prefix, suffix = colored('SPLIT', ansi_code=ansi_code).split('SPLIT')
     return prefix, suffix
 
-# class ColoredFormatter(logging.Formatter):
-#     """
-#     Colored log formatter.
-#     """
-
-#     def __init__(
-#         self, *args, colors: Optional[Dict[str, str]] = None, **kwargs
-#     ) -> None:
-#         """Initialize the formatter with specified format strings."""
-
-#         super().__init__(*args, **kwargs)
-
-#         self.colors = colors if colors else {}
-
-#     def format(self, record) -> str:
-#         """Format the specified record as text."""
-
-#         record.color = self.colors.get(record.levelname, "")
-#         record.reset = Style.RESET_ALL
-
-#         return super().format(record)
 
 
 class LogFilter(object):
@@ -269,7 +248,7 @@ else:
 
 date_str = ''
 
-_console_formatter = ColoredFormatter('%(log_color)s[%(levelname)-8s]'
+_console_formatter = ColoredFormatter('[%(log_color)s%(levelname)-8s%(reset)s]'
                                       '%(log_color)s %(message)s',
                                       datefmt="%H:%M:%S",
 
