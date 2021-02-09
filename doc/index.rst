@@ -38,9 +38,9 @@ Contents:
 
    Quick_start
    Functions_tutorials
-   ./Point_source_tutorial.ipynb
-   ./Extended_sources_tutorial.ipynb
-   ./Multi_component_sources.ipynb
+   notebooks/Point_source_tutorial.ipynb
+   notebooks/Extended_sources_tutorial.ipynb
+   notebooks/Multi_component_sources.ipynb
    Model_tutorial
    Priors_for_Bayesian_analysis
    Additional_features_for_scripts_and_applications
