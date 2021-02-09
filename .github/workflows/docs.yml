@@ -14,6 +14,7 @@ jobs:
           python-version: 3.8
 
       - name: Init Environment
+        shell: bash -l {0}
         run: |
           # Make sure we fail in case of error
           
@@ -30,6 +31,7 @@ jobs:
           
           
       - name: Install the package
+        shell: bash -l {0}
         run: |
 
           pip install -e .
@@ -37,7 +39,7 @@ jobs:
 
           
       - name: Execute the notebooks
-        
+        shell: bash -l {0}
         run: |
 
           jupytext --to ipynb  --execute doc/notebooks/*.md
