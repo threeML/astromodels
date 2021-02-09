@@ -61,7 +61,7 @@ jobs:
         shell: bash -l {0}
         run: |
 
-          jupytext --to ipynb --pipe black --execute doc/notebooks/*.md
+          jupytext --to ipynb  --execute doc/notebooks/*.md
           
           
       - uses: actions/upload-artifact@v2
