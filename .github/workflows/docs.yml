@@ -12,23 +12,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Cache conda
-        uses: actions/cache@v1
-        with:
-          path: ~/conda_pkgs_dir
-          key: conda-mac-python-cache-3.8-${{ hashFiles('ci/environment.yml') }}
-
-      - name: Setup Miniconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-update-conda: true
-          auto-activate-base: false
-          activate-environment: test_env
-          python-version: 3.8
-          channels: conda-forge, xspecmodels, threeml, defaults
-          environment-file: ci/environment.yml
 
       - name: Init Environment
         shell: bash -l {0}
@@ -38,15 +21,13 @@ jobs:
           # miniconda_os=Linux
           # compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
 
-          miniconda_os=MacOSX
-          compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
 
           brew install --cask basictex
 
           eval "$(/usr/libexec/path_helper)"
           #sudo apt-get install texlive
 
-          conda install ${compilers} jupytext jupyterthemes jupyter_latex_envs
+          pip install jupytext jupyterthemes jupyter_latex_envs
           
           
       - name: Install the package
