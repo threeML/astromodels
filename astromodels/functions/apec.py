@@ -456,7 +456,7 @@ class PhAbs(Function1D):
             min : 0
             max : 15
             delta : 0.1
-            fixed: True
+            fix: True
 
 
     """
@@ -547,7 +547,7 @@ class TbAbs(Function1D):
             min : 0
             max : 15
             delta : 0.1
-            fixed: True
+            fix: True
 
 
     """
@@ -641,7 +641,7 @@ class WAbs(Function1D):
             min : 0
             max : 15
             delta : 0.1
-            fixed: True
+            fix: True
 
 
     """
