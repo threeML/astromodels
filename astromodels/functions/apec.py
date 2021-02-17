@@ -396,7 +396,7 @@ _abs_tables = {
 }
 _abund_info = {}
 _abund_info[
-    "WILMS"
+    "WILM"
 ] = "wilms\nfrom Wilms, Allen & McCray (2000), ApJ 542, 914 \n except for elements not listed which are given zero abundance)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html "
 _abund_info[
     "AG89"
