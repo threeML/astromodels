@@ -19,6 +19,9 @@ from past.utils import old_div
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 # A very small number which will be substituted to zero during the construction
 # of the templates
@@ -82,8 +85,9 @@ try:
 
 except:
 
+    from scipy.interpolate import \
+        InterpolatedUnivariateSpline as UnivariateSpline
     from scipy.interpolate import RegularGridInterpolator as GridInterpolate
-    from scipy.interpolate import InterpolatedUnivariateSpline as UnivariateSpline
 
 
 class TemplateModelFactory(object):
@@ -104,11 +108,11 @@ class TemplateModelFactory(object):
         name = str(name)
 
         if re.match("[a-zA-Z_][a-zA-Z0-9_]*", name) is None:
-
-            raise RuntimeError(
+            log.error(
                 "The provided name '%s' is not a valid name. You cannot use spaces, "
                 "or special characters"
             )
+            raise RuntimeError()
 
         self._name = name
 
@@ -118,7 +122,7 @@ class TemplateModelFactory(object):
 
         if not isinstance(energies, u.Quantity):
 
-            warnings.warn(
+            log.warning(
                 "Energy unit is not a Quantity instance, so units has not been provided. Using keV."
             )
 
@@ -245,7 +249,7 @@ class TemplateModelFactory(object):
 
         if not np.all(differential_fluxes > 0):
 
-            warnings.warn(
+            log.warning(
                 "You have zeros in the differential flux. Since the interpolation happens in the log space, "
                 "this cannot be accepted. We will substitute zeros with %g" % _TINY_
             )
@@ -271,10 +275,12 @@ class TemplateModelFactory(object):
 
         except KeyError:
 
-            raise ValuesNotInGrid(
+            log.error(
                 "The provided parameter values (%s) are not in the defined grid"
                 % parameters_values
             )
+
+            raise ValuesNotInGrid()
 
     @staticmethod
     def _clean_cols_for_hdf(data):
@@ -318,17 +324,21 @@ class TemplateModelFactory(object):
 
                 except:
 
-                    raise IOError(
+                    log.error(
                         "The file %s already exists and cannot be removed (maybe you do not have "
                         "permissions to do so?). " % filename_sanitized
                     )
 
+                    raise IOError()
+
             else:
 
-                raise IOError(
+                log.error(
                     "The file %s already exists! You cannot call two different "
                     "template models with the same name" % filename_sanitized
                 )
+
+                raise IOError()
 
         # Open the HDF5 file and write objects
 
@@ -390,28 +400,28 @@ class RectBivariateSplineWrapper(object):
 class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
     r"""
-        description :
-            A template model
-        latex : $n.a.$
-        parameters :
-            K :
-                desc : Normalization (freeze this to 1 if the template provides the normalization by itself)
-                initial value : 1.0
-            scale :
-                desc : Scale for the independent variable. The templates are handled as if they contains the fluxes
-                       at E = scale * x.This is useful for example when the template describe energies in the rest
-                       frame, at which point the scale describe the transformation between rest frame energy and
-                       observer frame energy. Fix this to 1 to neutralize its effect.
-                initial value : 1.0
-                min : 1e-5
-        """
+    description :
+        A template model
+    latex : $n.a.$
+    parameters :
+        K :
+            desc : Normalization (freeze this to 1 if the template provides the normalization by itself)
+            initial value : 1.0
+        scale :
+            desc : Scale for the independent variable. The templates are handled as if they contains the fluxes
+                   at E = scale * x.This is useful for example when the template describe energies in the rest
+                   frame, at which point the scale describe the transformation between rest frame energy and
+                   observer frame energy. Fix this to 1 to neutralize its effect.
+            initial value : 1.0
+            min : 1e-5
+    """
 
     def _custom_init_(self, model_name, other_name=None, log_interp=True):
         """
         Custom initialization for this model
 
         :param model_name: the name of the model, corresponding to the root of the .h5 file in the data directory
-        :param other_name: (optional) the name to be used as name of the model when used in astromodels. If None 
+        :param other_name: (optional) the name to be used as name of the model when used in astromodels. If None
         (default), use the same name as model_name
         :return: none
         """
@@ -567,7 +577,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                 if len(x) <= self._interpolation_degree:
 
-                    raise RuntimeError(
+                    log.error(
                         msg
                         % (
                             self._interpolation_degree,
@@ -576,9 +586,11 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                         )
                     )
 
+                    raise RuntimeError()
+
                 if len(y) <= self._interpolation_degree:
 
-                    raise RuntimeError(
+                    log.error(
                         msg
                         % (
                             self._interpolation_degree,
@@ -586,6 +598,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                             "y",
                         )
                     )
+
+                    raise RuntimeError()
 
                 this_interpolator = RectBivariateSplineWrapper(
                     x,
@@ -708,22 +722,22 @@ class XSPECTableModel(object):
     ):
         """
         Convert an XSPEC table model to an astromodels TemplateModel.
-        usage: 
+        usage:
 
         xtm = XSPECTableModel("ST95.fits")
-        xtm.to_table_model('test', 'test') 
+        xtm.to_table_model('test', 'test')
 
         reloaded_table_model = TemplateModel('test', log_interp=False)
 
         Note: if the reloaded model is returning NaNs, adjust the interpolation
         scheme
 
-        :param xspec_table_model_file: 
-        :param interpolation_degree: 
-        :param spline_smoothing_factor: spline smoothing 
+        :param xspec_table_model_file:
+        :param interpolation_degree:
+        :param spline_smoothing_factor: spline smoothing
         :param log_centers: treat energies with log centers
-        :returns: 
-        :rtype: 
+        :returns:
+        :rtype:
 
         """
 
@@ -792,9 +806,9 @@ class XSPECTableModel(object):
 
         :param file_name: name of file to store
         :param model_name: name of the model
-        :param overwrite: overwite the previous model 
-        :returns: 
-        :rtype: 
+        :param overwrite: overwite the previous model
+        :returns:
+        :rtype:
 
         """
 

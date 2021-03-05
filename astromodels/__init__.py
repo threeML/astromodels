@@ -31,9 +31,11 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .core.serialization import *
 
     astromodels_units = get_units()
-
+    from astromodels.utils.logging import setup_logger, update_logging_level, silence_warnings, activate_warnings
 
 import astropy.units as u
+
+log =setup_logger(__name__)
 
 from ._version import get_versions
 __version__ = get_versions()['version']

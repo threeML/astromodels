@@ -1,6 +1,6 @@
 # astromodels
 
-[![Build Status](https://travis-ci.org/threeML/astromodels.svg?branch=master)](https://travis-ci.org/threeML/astromodels)
+![CI](https://github.com/threeML/astromodels/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/threeML/astromodels/branch/master/graph/badge.svg)](https://codecov.io/gh/threeML/astromodels)
 [![Documentation Status](https://readthedocs.org/projects/astromodels/badge/?version=latest)](http://astromodels.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)

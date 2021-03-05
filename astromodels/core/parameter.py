@@ -1,24 +1,29 @@
-from __future__ import absolute_import
-from __future__ import division
-from builtins import str
-from builtins import range
+from __future__ import absolute_import, division
+
+from builtins import range, str
+
 from past.utils import old_div
-__author__ = 'giacomov'
+
+__author__ = "giacomov"
 
 __doc__ = """"""
 
 import collections
 import copy
+import warnings
 
 import astropy.units as u
 import numpy as np
 import scipy.stats
-import warnings
-
-from .tree import Node
-from .thread_safe_unit_format import ThreadSafe
 
 from astromodels.core.parameter_transformation import ParameterTransformation
+from astromodels.utils.logging import setup_logger
+
+from .thread_safe_unit_format import ThreadSafe
+from .tree import Node
+
+log = setup_logger(__name__)
+
 
 def _behaves_like_a_number(obj):
     """
@@ -75,17 +80,16 @@ class ParameterMustHaveBounds(RuntimeError):
 
 def accept_quantity(input_type=float, allow_none=False):
     """
-        A class-method decorator which allow a given method (typically the set_value method) to receive both a
-        astropy.Quantity or a simple float, but to be coded like it's always receiving a pure float in the right units.
-        This is to give a way to avoid the huge bottleneck that are astropy.units
+    A class-method decorator which allow a given method (typically the set_value method) to receive both a
+    astropy.Quantity or a simple float, but to be coded like it's always receiving a pure float in the right units.
+    This is to give a way to avoid the huge bottleneck that are astropy.units
 
-        :param input_type: the expected type for the input (float, int)
-        :param allow_none : whether to allow or not the passage of None as argument (default: False)
-        :return: a decorator for the particular type
-        """
+    :param input_type: the expected type for the input (float, int)
+    :param allow_none : whether to allow or not the passage of None as argument (default: False)
+    :return: a decorator for the particular type
+    """
 
     def accept_quantity_wrapper(method):
-
         def handle_quantity(instance, value, *args, **kwargs):
 
             # For speed reasons, first run the case where the input is not a quantity, and fall back to the handling
@@ -115,15 +119,24 @@ def accept_quantity(input_type=float, allow_none=False):
 
                         return method(instance, None, *args, **kwargs)
 
-                    else: # pragma: no cover
+                    else:  # pragma: no cover
 
-                        raise TypeError("You cannot pass None as argument for "
-                                        "method %s of %s" % (method.__name__, instance.name))
+                        log.exception(
+                            "You cannot pass None as argument for "
+                            "method %s of %s" % (method.__name__, instance.name)
+                        )
 
-                else: # pragma: no cover
+                        raise TypeError()
 
-                    raise TypeError("You need to pass either a %s or a astropy.Quantity "
-                                    "to method %s of %s" % (input_type.__name__, method.__name__, instance.name))
+                else:  # pragma: no cover
+
+                    log.exception(
+                        "You need to pass either a %s or a astropy.Quantity "
+                        "to method %s of %s"
+                        % (input_type.__name__, method.__name__, instance.name)
+                    )
+
+                    raise TypeError()
 
         return handle_quantity
 
@@ -143,8 +156,16 @@ class ParameterBase(Node):
         face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)
     """
 
-    def __init__(self, name, value, min_value=None, max_value=None, desc=None, unit=u.dimensionless_unscaled,
-                 transformation=None):
+    def __init__(
+        self,
+        name,
+        value,
+        min_value=None,
+        max_value=None,
+        desc=None,
+        unit=u.dimensionless_unscaled,
+        transformation=None,
+    ):
 
         # Make this a node
 
@@ -179,7 +200,7 @@ class ParameterBase(Node):
         self._transformation = transformation
 
         # Let's store the init value
-        
+
         # NOTE: this will be updated immediately by the _set_value method of the "value" property
         self._internal_value = None
         # If the value is a Quantity, deal with that
@@ -208,7 +229,7 @@ class ParameterBase(Node):
 
         # Set maximum if provided, otherwise use default
 
-          # this will be overwritten immediately in the next line
+        # this will be overwritten immediately in the next line
         self.max_value = max_value
 
         # Store description
@@ -224,12 +245,15 @@ class ParameterBase(Node):
 
         if not _behaves_like_a_number(self.value):
 
-            raise TypeError("The provided initial value is not a number")
+            log.exception("The provided initial value is not a number")
 
+            raise TypeError()
 
-    def _repr__base(self, rich_output): # pragma: no cover
+    def _repr__base(self, rich_output):  # pragma: no cover
 
-        raise NotImplementedError("You need to implement this for the actual Parameter class")
+        raise NotImplementedError(
+            "You need to implement this for the actual Parameter class"
+        )
 
     # Define the property 'description' and make it read-only
 
@@ -261,7 +285,7 @@ class ParameterBase(Node):
 
         try:
 
-            new_unit = u.Unit(input_unit, format='threadsafe')
+            new_unit = u.Unit(input_unit, format="threadsafe")
 
         except ValueError:
 
@@ -276,7 +300,6 @@ class ParameterBase(Node):
         # This will fail if the input is not valid
 
         new_unit = self._safe_assign_unit(input_unit)
-
 
         # Now transform the current _value in the new unit, unless the current unit is dimensionless, in which
         # case there is no transformation to make
@@ -295,14 +318,18 @@ class ParameterBase(Node):
 
                 if new_unit == u.dimensionless_unscaled:
 
-                    new_unit_name = '(dimensionless)'
+                    new_unit_name = "(dimensionless)"
 
                 else:
 
                     new_unit_name = new_unit
 
-                raise CannotConvertValueToNewUnits("Cannot convert the value %s from %s to the "
-                                                   "new units %s" % (self.value, self._unit, new_unit_name))
+                log.exception(
+                    "Cannot convert the value %s from %s to the "
+                    "new units %s" % (self.value, self._unit, new_unit_name)
+                )
+
+                raise CannotConvertValueToNewUnits()
 
         else:
 
@@ -317,8 +344,9 @@ class ParameterBase(Node):
 
         return self._unit
 
-    unit = property(_get_unit, _set_unit,
-                    doc="""Gets or sets the unit for the parameter""")
+    unit = property(
+        _get_unit, _set_unit, doc="""Gets or sets the unit for the parameter"""
+    )
 
     @property
     def as_quantity(self):
@@ -406,7 +434,7 @@ class ParameterBase(Node):
 
         if self._aux_variable:
 
-            return self._aux_variable['law'](self._aux_variable['variable'].value)
+            return self._aux_variable["law"](self._aux_variable["variable"].value)
 
         if self._transformation is None:
 
@@ -423,7 +451,9 @@ class ParameterBase(Node):
 
     # NOTE: this function should only be used by the user. Fitting engines should only deal with
     # _get_internal_value and _set_internal_value
-    @accept_quantity(float, allow_none=False)  # This means that the method will always receive a float
+    @accept_quantity(
+        float, allow_none=False
+    )  # This means that the method will always receive a float
     def _set_value(self, new_value):
         """Sets the current value of the parameter, ensuring that it is within the allowed range."""
 
@@ -431,12 +461,16 @@ class ParameterBase(Node):
 
             raise SettingOutOfBounds(
                 "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}".format(
-                    self.name, new_value, self.min_value))
+                    self.name, new_value, self.min_value
+                )
+            )
 
         if self.max_value is not None and new_value > self.max_value:
             raise SettingOutOfBounds(
                 "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
-                    self.name, new_value, self.max_value))
+                    self.name, new_value, self.max_value
+                )
+            )
 
         # Issue a warning if there is an auxiliary variable, as the setting does not have any effect
         if self.has_auxiliary_variable():
@@ -445,8 +479,10 @@ class ParameterBase(Node):
 
                 warnings.simplefilter("always", RuntimeWarning)
 
-                warnings.warn("You are trying to assign to a parameter which is either linked or "
-                              "has auxiliary variables. The assignment has no effect.", RuntimeWarning)
+                log.warning(
+                    "You are trying to assign to a parameter which is either linked or "
+                    "has auxiliary variables. The assignment has no effect."
+                )
 
         # Save the value as a pure floating point to avoid the overhead of the astropy.units machinery when
         # not needed
@@ -475,10 +511,17 @@ class ParameterBase(Node):
 
                 except:
 
-                    raise NotCallableOrErrorInCall("Could not call callback for parameter %s" % self.name)
+                    log.exception(
+                        "Could not call callback for parameter %s" % self.name
+                    )
 
-    value = property(_get_value, _set_value,
-                     doc="Get and sets the current value for the parameter, with or without units")
+                    raise NotCallableOrErrorInCall()
+
+    value = property(
+        _get_value,
+        _set_value,
+        doc="Get and sets the current value for the parameter, with or without units",
+    )
 
     def _get_internal_value(self):
         """
@@ -490,8 +533,10 @@ class ParameterBase(Node):
 
         # NOTE: we don't need here to deal with auxiliary variables because if one is defined, the parameter is not
         # free thus it will not be touched by the fitting engine
-        assert len(self._aux_variable)==0, "You cannot get the internal value of a parameter which has an auxiliary " \
-                                           "variable"
+        assert len(self._aux_variable) == 0, (
+            "You cannot get the internal value of a parameter which has an auxiliary "
+            "variable"
+        )
 
         return self._internal_value
 
@@ -533,18 +578,24 @@ class ParameterBase(Node):
 
                 if self._transformation.is_positive:
 
-                    assert min_value >0., 'The transformation %s is postive definite and the min_value was set to a negative number for %s '%(type(self._transformation), self.path)
-                
+                    assert min_value > 0.0, (
+                        "The transformation %s is postive definite and the min_value was set to a negative number for %s "
+                        % (type(self._transformation), self.path)
+                    )
+
                 try:
 
                     _ = self._transformation.forward(min_value)
 
                 except FloatingPointError:
 
-                    raise ValueError("The provided minimum %s cannot be transformed with the transformation %s which "
-                                     "is defined for the parameter %s" % (min_value,
-                                                                          type(self._transformation),
-                                                                          self.path))
+                    log.exception(
+                        "The provided minimum %s cannot be transformed with the transformation %s which "
+                        "is defined for the parameter %s"
+                        % (min_value, type(self._transformation), self.path)
+                    )
+
+                    raise ValueError()
             else:
 
                 if self._transformation.is_positive:
@@ -552,24 +603,35 @@ class ParameterBase(Node):
                     # set it by default to for the user
                     min_value = 1e-99
 
-                    warnings.warn('We have set the min_value of %s to 1e-99 because there was a postive transform' % self.path)
-                
+                    log.warning(
+                        "We have set the min_value of %s to 1e-99 because there was a postive transform"
+                        % self.path
+                    )
+
         # Store the minimum as a pure float
 
         self._external_min_value = min_value
 
         # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
-        if self._external_min_value is not None and self.value < self._external_min_value:
+        if (
+            self._external_min_value is not None
+            and self.value < self._external_min_value
+        ):
 
-            warnings.warn("The current value of the parameter %s (%s) "
-                          "was below the new minimum %s." % (self.name, self.value, self._external_min_value),
-                          RuntimeWarning)
+            log.warning(
+                "The current value of the parameter %s (%s) "
+                "was below the new minimum %s."
+                % (self.name, self.value, self._external_min_value)
+            )
 
             self.value = self._external_min_value
 
-    min_value = property(_get_min_value, _set_min_value,
-                         doc='Gets or sets the minimum allowed value for the parameter')
+    min_value = property(
+        _get_min_value,
+        _set_min_value,
+        doc="Gets or sets the minimum allowed value for the parameter",
+    )
 
     def remove_minimum(self):
         """
@@ -579,7 +641,11 @@ class ParameterBase(Node):
 
     def _set_internal_min_value(self):
 
-        raise NotCallableOrErrorInCall("You should never attempt to change the internal representation of the minimum")
+        log.exception(
+            "You should never attempt to change the internal representation of the minimum"
+        )
+
+        raise NotCallableOrErrorInCall()
 
     def _get_internal_min_value(self):
         """
@@ -623,15 +689,23 @@ class ParameterBase(Node):
 
         # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
-        if self._external_max_value is not None and self.value > self._external_max_value:
+        if (
+            self._external_max_value is not None
+            and self.value > self._external_max_value
+        ):
 
-            warnings.warn("The current value of the parameter %s (%s) "
-                          "was above the new maximum %s." % (self.name, self.value, self._external_max_value),
-                          RuntimeWarning)
+            log.warning(
+                "The current value of the parameter %s (%s) "
+                "was above the new maximum %s."
+                % (self.name, self.value, self._external_max_value)
+            )
             self.value = self._external_max_value
 
-    max_value = property(_get_max_value, _set_max_value,
-                         doc='Gets or sets the maximum allowed value for the parameter')
+    max_value = property(
+        _get_max_value,
+        _set_max_value,
+        doc="Gets or sets the maximum allowed value for the parameter",
+    )
 
     def remove_maximum(self):
         """
@@ -641,7 +715,11 @@ class ParameterBase(Node):
 
     def _set_internal_max_value(self):
 
-        raise NotCallableOrErrorInCall("You should never attempt to change the internal representation of the minimum")
+        log.exception(
+            "You should never attempt to change the internal representation of the minimum"
+        )
+
+        raise NotCallableOrErrorInCall()
 
     def _get_internal_max_value(self):
         """
@@ -690,8 +768,11 @@ class ParameterBase(Node):
 
         return self.min_value, self.max_value
 
-    bounds = property(_get_bounds, _set_bounds, doc="Gets or sets the boundaries (minimum and maximum) for this "
-                                                    "parameter")
+    bounds = property(
+        _get_bounds,
+        _set_bounds,
+        doc="Gets or sets the boundaries (minimum and maximum) for this " "parameter",
+    )
 
     def add_callback(self, callback):
         """Add a callback to the list of functions which are called immediately after the value of the parameter
@@ -735,18 +816,18 @@ class ParameterBase(Node):
 
             # In the minimal representation we just output the value
 
-            data['value'] = self._to_python_type(self.value)
+            data["value"] = self._to_python_type(self.value)
 
         else:
 
             # In the complete representation we output everything is needed to re-build the object
 
-            data['value'] = self._to_python_type(self.value)
-            data['desc'] = str(self.description)
-            data['min_value'] = self._to_python_type(self.min_value)
-            data['max_value'] = self._to_python_type(self.max_value)
+            data["value"] = self._to_python_type(self.value)
+            data["desc"] = str(self.description)
+            data["min_value"] = self._to_python_type(self.min_value)
+            data["max_value"] = self._to_python_type(self.max_value)
             # We use our own thread-safe format for the unit
-            data['unit'] = self.unit.to_string(format='threadsafe')
+            data["unit"] = self.unit.to_string(format="threadsafe")
 
         return data
 
@@ -787,20 +868,39 @@ class Parameter(ParameterBase):
     :param is_normalization: True or False, wether the parameter is a normalization or not (default: False)
     :param transformation: a transformation to be used between external value (the value the user interacts with) and
         the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
-        forward(external_value) and a backward(internal_value) method returning respectively the transformation of the 
+        forward(external_value) and a backward(internal_value) method returning respectively the transformation of the
         external value in the internal value and viceversa. This is useful because for example the logarithm of a parameter
         with a large range of possible values (say from 1e-12 to 1e20) is handled much better by fitting engines than the
         raw value. The log transformation indeed makes the gradient much easier to compute.
     """
 
-    def __init__(self, name=None, value=None, min_value=None, max_value=None, delta=None, desc=None, free=True, unit='',
-                 prior=None, is_normalization=False, transformation=None):
+    def __init__(
+        self,
+        name=None,
+        value=None,
+        min_value=None,
+        max_value=None,
+        delta=None,
+        desc=None,
+        free=True,
+        unit="",
+        prior=None,
+        is_normalization=False,
+        transformation=None,
+    ):
 
         # This extends ParameterBase by adding the possibility for free/fix, and a delta for fitting purposes, as
         # well as a prior
 
-        super(Parameter, self).__init__(name, value, min_value=min_value, max_value=max_value, desc=desc, unit=unit,
-                                        transformation=transformation)
+        super(Parameter, self).__init__(
+            name,
+            value,
+            min_value=min_value,
+            max_value=max_value,
+            desc=desc,
+            unit=unit,
+            transformation=transformation,
+        )
 
         self._free = bool(free)
 
@@ -836,7 +936,8 @@ class Parameter(ParameterBase):
         # Now perform a very lazy check that we can perform math operations on the delta
 
         if not _behaves_like_a_number(self._delta):
-            raise TypeError("The provided delta is not a number")
+            log.exception("The provided delta is not a number")
+            raise TypeError()
 
         # Create a backup copy of the status of the parameter (useful when an auxiliary variable
         # is removed)
@@ -860,8 +961,9 @@ class Parameter(ParameterBase):
 
         self._delta = delta
 
-    delta = property(_get_delta, _set_delta,
-                     doc='''Gets or sets the delta for the parameter''')
+    delta = property(
+        _get_delta, _set_delta, doc="""Gets or sets the delta for the parameter"""
+    )
 
     def _get_internal_delta(self):
         """
@@ -951,8 +1053,11 @@ class Parameter(ParameterBase):
 
             except:
 
-                raise NotCallableOrErrorInCall("Could not call the provided prior. " +
-                                               "Is it a function accepting the current value of the parameter?")
+                log.exception(
+                    "Could not call the provided prior. "
+                    + "Is it a function accepting the current value of the parameter?"
+                )
+                raise NotCallableOrErrorInCall()
 
             try:
 
@@ -960,14 +1065,21 @@ class Parameter(ParameterBase):
 
             except AttributeError:
 
-                raise NotCallableOrErrorInCall("It looks like the provided prior is not a astromodels function.")
+                log.exception(
+                    "It looks like the provided prior is not a astromodels function."
+                )
+
+                raise NotCallableOrErrorInCall()
 
             self._prior = prior
 
-    prior = property(_get_prior, _set_prior,
-                     doc='Gets or sets the current prior for this parameter. The prior must be a callable function '
-                         "accepting the current value of the parameter as input and returning the probability "
-                         "density as output. Set to None to remove prior.")
+    prior = property(
+        _get_prior,
+        _set_prior,
+        doc="Gets or sets the current prior for this parameter. The prior must be a callable function "
+        "accepting the current value of the parameter as input and returning the probability "
+        "density as output. Set to None to remove prior.",
+    )
 
     def has_prior(self):
         """
@@ -994,8 +1106,10 @@ class Parameter(ParameterBase):
 
         if self.min_value is None:
 
-            raise ParameterMustHaveBounds("Parameter %s does not have a defined minimum. Set one first, then re-run "
-                                          "set_uninformative_prior" % self.path)
+            raise ParameterMustHaveBounds(
+                "Parameter %s does not have a defined minimum. Set one first, then re-run "
+                "set_uninformative_prior" % self.path
+            )
 
         else:
 
@@ -1005,15 +1119,19 @@ class Parameter(ParameterBase):
 
             except SettingOutOfBounds:
 
-                raise SettingOutOfBounds("Cannot use minimum of %s for prior %s" % (self.min_value,
-                                                                                    prior_instance.name))
+                raise SettingOutOfBounds(
+                    "Cannot use minimum of %s for prior %s"
+                    % (self.min_value, prior_instance.name)
+                )
 
         if self.max_value is None:
 
-            raise ParameterMustHaveBounds("Parameter %s does not have a defined maximum. Set one first, then re-run "
-                                          "set_uninformative_prior" % self.path)
+            raise ParameterMustHaveBounds(
+                "Parameter %s does not have a defined maximum. Set one first, then re-run "
+                "set_uninformative_prior" % self.path
+            )
 
-        else: # pragma: no cover
+        else:  # pragma: no cover
 
             try:
 
@@ -1021,11 +1139,17 @@ class Parameter(ParameterBase):
 
             except SettingOutOfBounds:
 
-                raise SettingOutOfBounds("Cannot use maximum of %s for prior %s" % (self.max_value,
-                                                                                    prior_instance.name))
+                raise SettingOutOfBounds(
+                    "Cannot use maximum of %s for prior %s"
+                    % (self.max_value, prior_instance.name)
+                )
 
-        assert np.isfinite(prior_instance.upper_bound.value),"The parameter %s must have a finite maximum" % self.name
-        assert np.isfinite(prior_instance.lower_bound.value),"The parameter %s must have a finite minimum" % self.name
+        assert np.isfinite(prior_instance.upper_bound.value), (
+            "The parameter %s must have a finite maximum" % self.name
+        )
+        assert np.isfinite(prior_instance.lower_bound.value), (
+            "The parameter %s must have a finite minimum" % self.name
+        )
 
         self._set_prior(prior_instance)
 
@@ -1039,23 +1163,29 @@ class Parameter(ParameterBase):
 
         return self._free
 
-    free = property(_get_free, _set_free,
-                    doc="Gets or sets whether the parameter is free or not. Use booleans, like: 'p.free = True' "
-                        " or 'p.free = False'. ")
+    free = property(
+        _get_free,
+        _set_free,
+        doc="Gets or sets whether the parameter is free or not. Use booleans, like: 'p.free = True' "
+        " or 'p.free = False'. ",
+    )
 
     # Define property "fix"
 
     def _set_fix(self, value=True):
 
-        self._free = (not value)
+        self._free = not value
 
     def _get_fix(self):
 
         return not self._free
 
-    fix = property(_get_fix, _set_fix,
-                   doc="Gets or sets whether the parameter is fixed or not. Use booleans, like: 'p.fix = True' "
-                       " or 'p.fix = False'. ")
+    fix = property(
+        _get_fix,
+        _set_fix,
+        doc="Gets or sets whether the parameter is fixed or not. Use booleans, like: 'p.fix = True' "
+        " or 'p.fix = False'. ",
+    )
 
     def add_auxiliary_variable(self, variable, law):
 
@@ -1067,12 +1197,14 @@ class Parameter(ParameterBase):
 
             _ = law(variable.value)
 
-        except: # pragma: no cover
+        except:  # pragma: no cover
 
-            raise NotCallableOrErrorInCall("The provided law for the auxiliary variable failed on call")
+            log.exception("The provided law for the auxiliary variable failed on call")
 
-        self._aux_variable['law'] = law
-        self._aux_variable['variable'] = variable
+            raise NotCallableOrErrorInCall()
+
+        self._aux_variable["law"] = law
+        self._aux_variable["variable"] = variable
 
         # Now add the law as an attribute
         # so the user will be able to access its parameters as this.name.parameter_name
@@ -1104,13 +1236,13 @@ class Parameter(ParameterBase):
 
             # do nothing, but print a warning
 
-            warnings.warn("Cannot remove a non-existing auxiliary variable", RuntimeWarning)
+            log.warning("Cannot remove a non-existing auxiliary variable")
 
         else:
 
             # Remove the law from the children
 
-            self._remove_child(self._aux_variable['law'].name)
+            self._remove_child(self._aux_variable["law"].name)
 
             # Clean up the dictionary
 
@@ -1139,20 +1271,25 @@ class Parameter(ParameterBase):
 
         :return: tuple (variable, law)
         """
-        return self._aux_variable['variable'], self._aux_variable['law']
+        return self._aux_variable["variable"], self._aux_variable["law"]
 
     def _repr__base(self, rich_output=False):
 
         if not self.has_auxiliary_variable():
 
-            representation = "Parameter %s = %s [%s]\n" \
-                             "(min_value = %s, max_value = %s, delta = %s, free = %s)" % (self.name,
-                                                                                          self.value,
-                                                                                          self.unit,
-                                                                                          self.min_value,
-                                                                                          self.max_value,
-                                                                                          self.delta,
-                                                                                          self.free)
+            representation = (
+                "Parameter %s = %s [%s]\n"
+                "(min_value = %s, max_value = %s, delta = %s, free = %s)"
+                % (
+                    self.name,
+                    self.value,
+                    self.unit,
+                    self.min_value,
+                    self.max_value,
+                    self.delta,
+                    self.free,
+                )
+            )
 
             if self._prior is not None:
 
@@ -1160,11 +1297,17 @@ class Parameter(ParameterBase):
 
         else:
 
-            representation = "Parameter %s = %s [%s]\n" \
-                             "(linked to auxiliary variable '%s' with law '%s')" % (self.name, self.value,
-                                                                                    self.unit,
-                                                                                    self._aux_variable['variable'].name,
-                                                                                    self._aux_variable['law'].name)
+            representation = (
+                "Parameter %s = %s [%s]\n"
+                "(linked to auxiliary variable '%s' with law '%s')"
+                % (
+                    self.name,
+                    self.value,
+                    self.unit,
+                    self._aux_variable["variable"].name,
+                    self._aux_variable["law"].name,
+                )
+            )
 
         return representation
 
@@ -1175,7 +1318,7 @@ class Parameter(ParameterBase):
         data = super(Parameter, self).to_dict()
 
         # Add wether is a normalization or not
-        data['is_normalization'] = self._is_normalization
+        data["is_normalization"] = self._is_normalization
 
         if minimal:
 
@@ -1190,21 +1333,23 @@ class Parameter(ParameterBase):
 
                 # Store the function and the auxiliary variable
 
-                data['value'] = 'f(%s)' % self._aux_variable['variable']._get_path()
+                data["value"] = "f(%s)" % self._aux_variable["variable"]._get_path()
 
                 aux_variable_law_data = collections.OrderedDict()
-                aux_variable_law_data[ self._aux_variable['law'].name ] = self._aux_variable['law'].to_dict()
+                aux_variable_law_data[
+                    self._aux_variable["law"].name
+                ] = self._aux_variable["law"].to_dict()
 
-                data['law'] = aux_variable_law_data
+                data["law"] = aux_variable_law_data
 
             # delta and free are attributes of Parameter, but not of ParameterBase
 
-            data['delta'] = self._to_python_type(self._delta)
-            data['free'] = self.free
+            data["delta"] = self._to_python_type(self._delta)
+            data["free"] = self.free
 
             if self.has_prior():
 
-                data['prior'] = {self.prior.name: self.prior.to_dict()}
+                data["prior"] = {self.prior.name: self.prior.to_dict()}
 
         return data
 
@@ -1220,7 +1365,10 @@ class Parameter(ParameterBase):
         if (min_value is not None) or (max_value is not None):
 
             # If _value is zero, then std will be zero, which doesn't make sense
-            assert value != 0, "You cannot randomize parameter %s because its value is exactly zero" % self.path
+            assert value != 0, (
+                "You cannot randomize parameter %s because its value is exactly zero"
+                % self.path
+            )
 
             # Bounded parameter. Use a truncated normal so we are guaranteed
             # to have a random value within the boundaries
@@ -1233,7 +1381,7 @@ class Parameter(ParameterBase):
 
             else:
 
-                a = - np.inf
+                a = -np.inf
 
             if max_value is not None:
 
@@ -1243,22 +1391,25 @@ class Parameter(ParameterBase):
 
                 b = np.inf
 
-            sample = scipy.stats.truncnorm.rvs( a, b, loc = value, scale = std, size = 1)
+            sample = scipy.stats.truncnorm.rvs(a, b, loc=value, scale=std, size=1)
 
-            if (min_value is not None and sample < min_value) or \
-               (max_value is not None and sample > max_value): # pragma: no cover
+            if (min_value is not None and sample < min_value) or (
+                max_value is not None and sample > max_value
+            ):  # pragma: no cover
 
                 # This should never happen
 
-                raise AssertionError("Got a sample outside of the boundaries of the truncated normal distribution")
+                raise AssertionError(
+                    "Got a sample outside of the boundaries of the truncated normal distribution"
+                )
 
             return sample[0]
 
         else:
 
-            #The parameter has no boundaries
+            # The parameter has no boundaries
 
-            return np.random.normal(value, abs(variance * value) )
+            return np.random.normal(value, abs(variance * value))
 
 
 class IndependentVariable(ParameterBase):
@@ -1270,15 +1421,15 @@ class IndependentVariable(ParameterBase):
 
     def __init__(self, name, value, unit, min_value=None, max_value=None, desc=None):
 
-        super(IndependentVariable, self).__init__(name, value, unit=unit,
-                                                  min_value=min_value,
-                                                  max_value=max_value,
-                                                  desc=desc)
+        super(IndependentVariable, self).__init__(
+            name, value, unit=unit, min_value=min_value, max_value=max_value, desc=desc
+        )
 
     def _repr__base(self, rich_output=False):
 
-        return "IndependentVariable %s = %s\n" \
-               "(min_value = %s, max_value = %s)" % (self.name,
-                                                     self.value,
-                                                     self.min_value,
-                                                     self.max_value)
+        return "IndependentVariable %s = %s\n" "(min_value = %s, max_value = %s)" % (
+            self.name,
+            self.value,
+            self.min_value,
+            self.max_value,
+        )
