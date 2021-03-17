@@ -1,14 +1,15 @@
 from __future__ import print_function
-import six
-import numpy as np
-from scipy.interpolate import RegularGridInterpolator
+
 import astropy.units as astropy_units
+import numpy as np
 import six
+from scipy.interpolate import RegularGridInterpolator
+
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.data_files import _get_data_file_path
 
-@six.add_metaclass(FunctionMeta)
-class DMFitFunction(Function1D):
+
+class DMFitFunction(Function1D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -44,7 +45,6 @@ class DMFitFunction(Function1D):
                 initial value : 1.e20
                 fix : yes
         """
-
 
     def _setup(self):
 
@@ -156,17 +156,19 @@ class DMFitFunction(Function1D):
 
             keVtoGeV = 1e-6
 
-            xx = np.multiply(x, keVtoGeV)  # xm expects gamma ray energies in MeV
+            # xm expects gamma ray energies in MeV
+            xx = np.multiply(x, keVtoGeV)
 
         xm = np.log10(np.divide(xx, mass))
-        phip = 1. / (8. * np.pi) * np.power(mass, -2) * (sigmav * J)  # units of this should be 1 / cm**2 / s
+        phip = 1. / (8. * np.pi) * np.power(mass, -2) * \
+            (sigmav * J)  # units of this should be 1 / cm**2 / s
         dn = self._dn_interp((mass, xm))
         dn[xm > 0] = 0
 
         return np.multiply(phip, np.divide(dn, x))
 
-@six.add_metaclass(FunctionMeta)
-class DMSpectra(Function1D):
+
+class DMSpectra(Function1D, metaclass=FunctionMeta):
     r"""
         description :
 
@@ -204,8 +206,6 @@ class DMSpectra(Function1D):
                 initial value : 1.e20
                 fix : yes
         """
-
- 
 
     def _setup(self):
 
@@ -288,8 +288,10 @@ class DMSpectra(Function1D):
                                                   fill_value=None)
 
         if self.channel.value in [1, 6, 7] and self.mass.value > 10000.:
-            print("ERROR: currently spectra for selected channel and mass not implemented.")
-            print("Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV")
+            print(
+                "ERROR: currently spectra for selected channel and mass not implemented.")
+            print(
+                "Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV")
 
     def _set_units(self, x_unit, y_unit):
 
@@ -332,11 +334,13 @@ class DMSpectra(Function1D):
 
             keVtoGeV = 1E-6
 
-            xx = np.multiply(x, keVtoGeV)  # xm expects gamma ray energies in MeV
+            # xm expects gamma ray energies in MeV
+            xx = np.multiply(x, keVtoGeV)
 
         xm = np.log10(np.divide(xx, mass))
 
-        phip = 1. / (8. * np.pi) * np.power(mass, -2) * (sigmav * J)  # units of this should be 1 / cm**2
+        phip = 1. / (8. * np.pi) * np.power(mass, -2) * \
+            (sigmav * J)  # units of this should be 1 / cm**2
         dn = self._dn_interp((mass, xm))  # note this is unitless (dx = d(xm))
         dn[xm > 0] = 0
 

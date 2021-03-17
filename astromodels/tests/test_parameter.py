@@ -4,8 +4,8 @@ standard_library.install_aliases()
 from builtins import object
 import astropy.units as u
 import pytest
-from astromodels.functions.priors import Uniform_prior, Log_uniform_prior
-from astromodels.functions.functions import  Powerlaw
+from astromodels.functions import Uniform_prior, Log_uniform_prior
+from astromodels.functions import  Powerlaw
 
 __author__ = 'giacomov'
 

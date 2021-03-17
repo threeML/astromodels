@@ -163,9 +163,27 @@ class Powerlaw_flux(Function1D, metaclass=FunctionMeta):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, F, index, a, b):
-        gp1 = index + 1
 
-        return F * gp1 / (b ** gp1 - a ** gp1) * nb_func.plf_eval(F, index, 1.)
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            F_ = F.value
+            a_ = a.value
+            b_ = b.value
+            x_ = x.value
+
+            yunit_ = self.y_unit
+            xunit_ = self.x_unit
+
+        else:
+            yunit_ = 1.0
+            xunit_ = 1.0
+            F_,  x_, index_, a_, b_ = F, x, index, a, b
+
+        gp1 = index_ + 1
+
+        norm = F_ * gp1 / (((b_)**gp1 - (a_)**gp1)  ) 
+
+        return  norm * nb_func.plaw_eval(x_, F_, index_, 1.) * yunit_
 
 
 class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
@@ -233,13 +251,21 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
             a_ = a.value
             b_ = b.value
 
-            unit_ = self.y_unit
+            yunit_ = self.y_unit
+            xunit_ = self.x_unit
 
         else:
-            unit_ = 1.0
+            yunit_ = 1.0
+            xunit_ = 1.0
             F_, piv_, x_, index_, a_, b_ = F, piv, x, index, a, b
 
-        return nb_func.plf_eval(x, F, piv, index, a, b) * unit_
+        intflux = nb_func.plf_eval(piv_, index_, a_, b_)
+
+        norm = (F_ / (intflux) )
+
+        out = nb_func.plaw_eval(x_, 1., index_, piv_)
+
+        return norm * out * yunit_
 
 
 class Cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
