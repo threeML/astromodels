@@ -560,6 +560,17 @@ class Function(Node):
 
         return free_parameters
 
+    @property
+    def has_free_parameters(self):
+        """
+        Returns True or False depending on if any parameters are free
+        """
+
+        for p in self.parameters.values():
+            if p.free:
+                return True
+        return False
+
     @staticmethod
     def _generate_uuid():
         """
