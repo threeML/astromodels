@@ -193,7 +193,7 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
     latex : $ F~\frac{x}{piv}^{index} $
     parameters :
         F :
-            desc : Normalization (energy flux at the between a and b)
+            desc : Normalization (energy flux at the between a and b) erg /cm2 s
             initial value : 1.e-5
             is_normalization : True
             transformation : log10
@@ -261,7 +261,7 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
 
         intflux = nb_func.plf_eval(piv_, index_, a_, b_)
 
-        norm = (F_ / (intflux) )
+        norm = (F_ / (intflux) ) * erg2keV
 
         out = nb_func.plaw_eval(x_, 1., index_, piv_)
 
