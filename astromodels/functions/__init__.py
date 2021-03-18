@@ -1,6 +1,7 @@
-from .functions import (Constant, Cubic, DiracDelta, Exponential_cutoff, Line,
-                        Quadratic, Sin, StepFunction, StepFunctionUpper,Log_parabola,Blackbody,
-                        has_ebltable, has_gsl, has_naima)
+from .functions import (Blackbody, Constant, Cubic, DiracDelta,
+                        Exponential_cutoff, Line, Log_parabola, Quadratic, Sin,
+                        StepFunction, StepFunctionUpper, has_ebltable, has_gsl,
+                        has_naima)
 
 if has_naima:
     from .functions import Synchrotron
@@ -25,6 +26,7 @@ if has_atomdb:
     from .apec import APEC, VAPEC
 
 from .dark_matter.dm_models import DMFitFunction, DMSpectra
+from .function import Function1D, Function2D, Function3D, FunctionMeta
 from .functions_2D import (Asymm_Gaussian_on_sphere, Disk_on_sphere,
                            Ellipse_on_sphere, Gaussian_on_sphere,
                            Latitude_galactic_diffuse, Power_law_on_sphere,
@@ -35,8 +37,8 @@ from .functions_3D import (Continuous_injection_diffusion,
                            GalPropTemplate_3D)
 from .priors import (Cauchy, Cosine_Prior, Gaussian, Log_normal,
                      Log_uniform_prior, Truncated_gaussian, Uniform_prior)
-from .template_model import (TemplateModel, TemplateModelFactory,
-                             XSPECTableModel, MissingDataFile)
+from .template_model import (MissingDataFile, TemplateModel,
+                             TemplateModelFactory, XSPECTableModel)
 
 __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
            "Cutoff_powerlaw", "Inverse_cutoff_powerlaw", "Powerlaw",
@@ -60,7 +62,12 @@ __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
            "XSPECTableModel",
            "MissingDataFile",
            "Log_parabola",
-           "Blackbody"
+           "Blackbody",
+           "Function1D",
+           "Function2D",
+           "Function3D",
+           "FunctionMeta"
+
 
 
 
