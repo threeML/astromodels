@@ -26,7 +26,8 @@ if has_atomdb:
     from .apec import APEC, VAPEC
 
 from .dark_matter.dm_models import DMFitFunction, DMSpectra
-from .function import Function1D, Function2D, Function3D, FunctionMeta
+from .function import (Function1D, Function2D, Function3D, FunctionMeta,
+                       ModelAssertionViolation)
 from .functions_2D import (Asymm_Gaussian_on_sphere, Disk_on_sphere,
                            Ellipse_on_sphere, Gaussian_on_sphere,
                            Latitude_galactic_diffuse, Power_law_on_sphere,
@@ -66,7 +67,8 @@ __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
            "Function1D",
            "Function2D",
            "Function3D",
-           "FunctionMeta"
+           "FunctionMeta",
+           "ModelAssertionViolation"
 
 
 
