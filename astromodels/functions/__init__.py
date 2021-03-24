@@ -79,7 +79,7 @@ if has_atomdb:
     __all__.extend(["APEC", "VAPEC"])
 
 
-if has_naima:
+if has_gsl:
 
     __all__.extend(["Cutoff_powerlaw_flux"])
 
