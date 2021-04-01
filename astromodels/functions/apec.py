@@ -50,8 +50,8 @@ except:
 
 if has_atomdb:
     # APEC class
-    @six.add_metaclass(FunctionMeta)
-    class APEC(Function1D):
+    
+    class APEC(Function1D, metaclass=FunctionMeta):
         r"""
         description :
             The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001)
@@ -159,8 +159,8 @@ if has_atomdb:
             return K * spec
 
     # VAPEC class
-    @six.add_metaclass(FunctionMeta)
-    class VAPEC(Function1D):
+    
+    class VAPEC(Function1D, metaclass=FunctionMeta):
         r"""
         description :
             The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable abundances for individual elements

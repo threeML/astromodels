@@ -30,14 +30,28 @@ import numpy as np
 @nb.njit(fastmath=True, cache=True)
 def plaw_eval(x, K, index, piv):
 
-    n = x.shape[0]
-    out = np.empty(n)
+    out = np.power(x / piv, index)
 
-    for idx in range(n):
+    return K * out
 
-        out[idx] = K * math.pow(x[idx] / piv, index)
 
-    return out
+@nb.njit(fastmath=True, cache=True)
+def plf_eval(piv, index, a, b):
+    """
+    energy flux power law
+    """
+    # use the limit of the
+    if index != -2.0:
+
+        dp2 = 2 + index
+
+        intflux = math.pow(piv, -index) * \
+            (math.pow(b, dp2) - math.pow(a, dp2)) / dp2
+    else:
+
+        intflux = -piv*piv * np.log(a/b)
+
+    return intflux
 
 
 @nb.njit(fastmath=True, cache=True)
@@ -200,7 +214,6 @@ def bb_eval(x, K, kT):
 #         out[idx] = K * x[idx] * x[idx] / np.expm1(arg)
 
 #     return out
-
 
 
 # band calderone
