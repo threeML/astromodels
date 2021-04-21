@@ -53,7 +53,7 @@ disk_source.spatial_shape.radius.display()
 Here's a list of available 2D functions:
 
 ```python
-print([c.__name__, for c in functions.function.Function2D.__subclasses__()])
+print([c.__name__ for c in functions.function.Function2D.__subclasses__()])
 ```
 
 Check the API or use the `display()` function to find out more about the shapes and their free parameters. 
