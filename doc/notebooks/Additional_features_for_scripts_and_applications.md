@@ -26,6 +26,10 @@ my_model = load_model("my_model.yml")
 
 ```
 
+```python
+my_model = load_model("my_model.yml")
+```
+
 ## Get dictionaries of point and extended sources
 
 If you don’t know the details (such as names) of the sources contained in the model, you can obtain dictionaries of point sources and extended sources like:
