@@ -256,6 +256,7 @@ my_model.display()
 ```python
 # Now evaluate and plot our models. You need matplotlib for this
 
+import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
 from jupyterthemes import jtplot
