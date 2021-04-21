@@ -12,6 +12,9 @@ from astromodels.utils.vincenty import vincenty
 
 import hashlib
 
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
     r"""
@@ -651,6 +654,14 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             assert self._map.shape[1] == self._nX, "NAXIS1 = %d in fits header, but %d in map" % (self._nX, self._map.shape[1])
             assert self._map.shape[0] == self._nY, "NAXIS2 = %d in fits header, but %d in map" % (self._nY, self._map.shape[0])
             
+            #test if the map is normalized as expected
+            area = wcs.utils.proj_plane_pixel_area( self._wcs )
+            dOmega = (area*u.deg*u.deg).to(u.sr).value
+            total = self._map.sum() * dOmega
+
+            if not np.isclose( total, 1,  rtol=1e-2):
+                log.warning("2D template read from {} is normalized to {} (expected: 1)".format(self._fitsfile, total) )
+            
             #hash sum uniquely identifying the template function (defined by its 2D map array and coordinate system)
             #this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
             h = hashlib.sha224()
@@ -700,7 +711,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         # find pixels that are in the template ROI, otherwise return zero
         #iz = np.where((Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0))[0]
         iz = (Xpix<self._nX) & (Xpix>=0) & (Ypix<self._nY) & (Ypix>=0)
-        out = np.zeros_like(Xpix)
+        out = np.zeros_like(Xpix).astype(float)
         out[iz] = self._map[Ypix[iz], Xpix[iz]]
         
         return np.multiply(K,out)
