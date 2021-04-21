@@ -48,10 +48,12 @@ jobs:
           #sudo apt-get install texlive
 
           conda install ${compilers} jupytext jupyterthemes jupyter_latex_envs 
+
           
       - name: Install the package
         shell: bash -l {0}
         run: |
+          pip install -e .
           
       - name: Execute the notebooks
         shell: bash -l {0}
