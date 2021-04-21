@@ -189,13 +189,13 @@ powerlaw_1.K = 1.2
    
 </div>
 
-```K_1 = my_model.source_1.spectrum.main.powerlaw.K```
+K_1 = my_model.source_1.spectrum.main.powerlaw.K
 
-```K_1 = 1.2```  *WILL NOT WORK*
+K_1 = 1.2  *WILL NOT WORK*
     
 In order to use a shortcut for a parameter to change its value, you have to explicitly
 set its property 'value':
-```K_1.value = 1.2```  *This will work*
+K_1.value = 1.2  *This will work*
 
 
 
