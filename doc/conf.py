@@ -48,7 +48,7 @@ def run_apidoc(app):
             "--separate",
             "-o",
             str(DOCS / "api"),
-            str(DOCS / ".." / "threeML"),
+            str(DOCS / ".." / "astromodels"),
         ]
     )
 
@@ -70,7 +70,7 @@ import node_ctype
 # -- Project information -----------------------------------------------------
 
 project = u'Astromodels'
-copyright = u'2016--2020, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack'
+copyright = u'2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack'
 author = u'G.Vianello'
 
 
@@ -103,7 +103,7 @@ rtds_action_path = "notebooks"
 rtds_action_artifact_prefix = "notebooks-for-"
 
 
-rtds_action_github_repo = "threeML/astromodels"
+rtds_action_github_repo = "astromodels/astromodels"
 
 # # A GitHub personal access token is required, more info below
 rtds_action_github_token = os.environ["GITHUB_TOKEN"]
