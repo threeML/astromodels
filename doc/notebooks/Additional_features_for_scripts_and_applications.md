@@ -20,10 +20,7 @@ In this document we describe some features of the astromodels package which are 
 First let’s import astromodels and let’s load a model from a file, which we will use as example:
 
 ```python
-%%capture
 from astromodels import *
-my_model = load_model("my_model.yml")
-
 ```
 
 ```python
