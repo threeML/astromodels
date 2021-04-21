@@ -36,7 +36,7 @@ def plaw_eval(x, K, index, piv):
 
 
 @nb.njit(fastmath=True, cache=True)
-def plf_eval(piv, index, a, b):
+def plaw_flux_norm(index, a, b):
     """
     energy flux power law
     """
@@ -45,11 +45,10 @@ def plf_eval(piv, index, a, b):
 
         dp2 = 2 + index
 
-        intflux = math.pow(piv, -index) * \
-            (math.pow(b, dp2) - math.pow(a, dp2)) / dp2
+        intflux = (math.pow(b, dp2) - math.pow(a, dp2)) / dp2
     else:
 
-        intflux = -piv*piv * np.log(a/b)
+        intflux = - np.log(a/b)
 
     return intflux
 

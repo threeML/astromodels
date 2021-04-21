@@ -181,9 +181,9 @@ class Powerlaw_flux(Function1D, metaclass=FunctionMeta):
 
         gp1 = index_ + 1
 
-        norm = F_ * gp1 / (((b_)**gp1 - (a_)**gp1)  ) 
+        norm = F_ * gp1 / (((b_)**gp1 - (a_)**gp1))
 
-        return  norm * nb_func.plaw_eval(x_, F_, index_, 1.) * yunit_
+        return nb_func.plaw_eval(x_, norm, index_, 1.) * yunit_
 
 
 class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
@@ -259,9 +259,9 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
             xunit_ = 1.0
             F_, piv_, x_, index_, a_, b_ = F, piv, x, index, a, b
 
-        intflux = nb_func.plf_eval(piv_, index_, a_, b_)
+        intflux = nb_func.plaw_flux_norm(index_, a_, b_)
 
-        norm = (F_ / (intflux) ) * erg2keV
+        norm = (F_ / (intflux)) * erg2keV
 
         out = nb_func.plaw_eval(x_, 1., index_, piv_)
 
