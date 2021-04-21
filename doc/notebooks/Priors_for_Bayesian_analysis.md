@@ -15,9 +15,12 @@ jupyter:
 
 # Priors for Bayesian analysis
 
-Astromodels supports the definition of priors for all parameters in your model. You can use as prior any function (although of course not all functions should be used this way, but the choice is up to you).
+Astromodels supports the definition of priors for all parameters in
+your model. You can use as prior any function (although of course not
+all functions should be used this way, but the choice is up to you).
 
-First let’s define a simple model containing one point source (see the “Model tutorial” for more info):
+First let’s define a simple model containing one point source (see the
+“Model tutorial” for more info):
 
 ```python
 %%capture
@@ -30,9 +33,10 @@ pts1 = PointSource('pts1',ra=125.23, dec=17.98, spectral_shape=Powerlaw())
 my_model = Model(pts1)
 ```
 
-```python
-Now let’s assign uniform priors to the parameters of the powerlaw function. The function uniform_prior is defined like this:
-```
+
+Now let’s assign uniform priors to the parameters of the powerlaw
+function. The function uniform_prior is defined like this:
+
 
 ```python
 Uniform_prior.info()
