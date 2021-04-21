@@ -259,7 +259,7 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
             xunit_ = 1.0
             F_, piv_, x_, index_, a_, b_ = F, piv, x, index, a, b
 
-        intflux = nb_func.plf_eval(piv_, index_, a_, b_)
+        intflux = nb_func.plaw_flux_norm(index_, a_, b_)
 
         norm = (F_ / (intflux)) * erg2keV
 
