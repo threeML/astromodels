@@ -17,6 +17,12 @@
 
 import os
 import sys
+
+print(sys.path)
+sys.path = sys.path[1:]
+print(sys.path)
+print(os.getcwd())
+
 from pathlib import Path
 
 import mock
@@ -24,8 +30,7 @@ import mock
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path = sys.path[1:]
-sys.path.insert(0, os.path.abspath('..'))
+#sys.path.insert(0, os.path.abspath('..'))
 #sys.path.insert(0, os.path.abspath('../threeML/classicMLE'))
 
 
@@ -54,19 +59,24 @@ def run_apidoc(app):
     )
 
 
-# import astromodels
+#import astromodels
+import pkgutil
+astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+print(astro_path)
 
-# sys.path.insert(0, os.path.abspath('.'))
-# sys.path.insert(1, os.path.abspath('./astromodels'))
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(1, os.path.abspath('../astromodels'))
 
-# # Add the path to the C extension
-# lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+# Add the path to the C extension
+#lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+lib_path = os.path.abspath('%s/core' % astro_path)
 
-# sys.path.insert(2, lib_path)
+sys.path.insert(2, lib_path)
 
-# This must work now
-#import node_ctype
+#This must work now
+import node_ctype
 
+import astromodels
 
 # -- Project information -----------------------------------------------------
 
