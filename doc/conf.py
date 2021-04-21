@@ -55,18 +55,18 @@ def run_apidoc(app):
 # Workaround to avoid the ImportError related to node_ctype
 os.chdir('..')
 
-import astromodels
+# import astromodels
 
-sys.path.insert(0, os.path.abspath('.'))
-sys.path.insert(1, os.path.abspath('./astromodels'))
+# sys.path.insert(0, os.path.abspath('.'))
+# sys.path.insert(1, os.path.abspath('./astromodels'))
 
-# Add the path to the C extension
-lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+# # Add the path to the C extension
+# lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
 
-sys.path.insert(2, lib_path)
+# sys.path.insert(2, lib_path)
 
 # This must work now
-import node_ctype
+#import node_ctype
 
 
 # -- Project information -----------------------------------------------------
