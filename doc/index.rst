@@ -36,12 +36,12 @@ Contents:
 .. toctree::
    :maxdepth: 3
 
-   Quick_start
-   Functions_tutorials
-   ./Point_source_tutorial.ipynb
-   ./Extended_sources_tutorial.ipynb
-   ./Multi_component_sources.ipynb
-   Model_tutorial
-   Priors_for_Bayesian_analysis
-   Additional_features_for_scripts_and_applications
+   notebooks/Quick_start.ipynb
+   notebooks/Functions_tutorials
+   notebooks/Point_source_tutorial.ipynb
+   notebooks/Extended_sources_tutorial.ipynb
+   notebooks/Multi_component_sources.ipynb
+   notebooks/Model_tutorial.ipynb
+   notebooks/Priors_for_Bayesian_analysis.ipynb
+   notebooks/Additional_features_for_scripts_and_applications.ipynb
    API

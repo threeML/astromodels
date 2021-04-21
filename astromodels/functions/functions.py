@@ -1,14 +1,8 @@
 from __future__ import division
 
-import math
-import warnings
-from typing import Iterable
-
 import astropy.units as astropy_units
 import numpy as np
-import six
 from past.utils import old_div
-from scipy.special import erfcinv, gamma, gammaincc
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
@@ -903,7 +897,8 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
         return self.piv.value * pow(
-            10, old_div(((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value))
+            10, old_div(((2 + self.alpha.value) * np.log(10)),
+                        (2 * self.beta.value))
         )
 
 
@@ -974,7 +969,8 @@ if has_gsl:
             this_integral = self._integral(a, b, index, xc)
 
             return (
-                F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
+                F / this_integral *
+                np.power(x, index) * np.exp(-1 * np.divide(x, xc))
             )
 
 
@@ -1066,7 +1062,8 @@ if has_ebltable:
                 not hasattr(y_unit, "physical_type")
                 or y_unit.physical_type != "dimensionless"
             ):
-                raise InvalidUsageForFunction("Unit for y is not dimensionless.")
+                raise InvalidUsageForFunction(
+                    "Unit for y is not dimensionless.")
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
             self.attenuation.unit = astropy_units.dimensionless_unscaled
