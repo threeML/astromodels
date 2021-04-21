@@ -9,6 +9,9 @@ Welcome to Astromodels's documentation!
 About astromodels
 -----------------
 
+.. image:: media/large_logo.png
+
+
 Astromodels is a very flexible framework to define models for likelihood or Bayesian analysis of astrophysical data. 
 
 Even though it has been designed having in mind analysis in the spectral domain, it can be used also as a 

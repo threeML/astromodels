@@ -17,6 +17,10 @@
 ![Conda](https://img.shields.io/conda/pn/threeml/astromodels)
 ![Conda](https://img.shields.io/conda/dn/threeml/astromodels)
 
+
+![alt text](https://raw.githubusercontent.com/threeml/astromodels/master/doc/media/large_logo.png)
+
+
 Spatial and spectral models for astrophysics
 
 Documentation: http://astromodels.readthedocs.org/en/latest/
