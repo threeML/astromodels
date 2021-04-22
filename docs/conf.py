@@ -220,5 +220,5 @@ release = 'latest'
 
 print("Done.")
 
-# def setup(app):
-#     app.connect("builder-inited", run_apidoc)
+def setup(app):
+    app.connect("builder-inited", run_apidoc)
