@@ -28,6 +28,12 @@ import mock
 sys.path.insert(0, os.path.abspath('..'))
 #sys.path.insert(0, os.path.abspath('../threeML/classicMLE'))
 
+print(f" current dir {os.getcwd()}")
+
+files = [f for f in os.listdir('.') if os.path.isfile(f)]
+for f in files:
+    print(f)
+
 
 DOCS = Path(__file__).parent
 
@@ -83,10 +89,17 @@ lib_path = os.path.abspath('%s/core' % astro_path)
 
 sys.path.insert(2, lib_path)
 
+
+
+
 #This must work now
 import node_ctype
 
-
+print(f" current dir {os.getcwd()}")
+files = [f for f in os.listdir('.') if os.path.isfile(f)]
+for f in files:
+    print(f)
+    
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
