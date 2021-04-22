@@ -37,6 +37,23 @@ DOCS = Path(__file__).parent
 def run_apidoc(app):
     """Generage API documentation"""
     import better_apidoc
+    import pkgutil
+    import sys
+    import os
+    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+
+    sys.path.insert(0, os.path.abspath('..'))
+    sys.path.insert(1, os.path.abspath('../astromodels'))
+
+    # Add the path to the C extension
+    #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+    lib_path = os.path.abspath('%s/core' % astro_path)
+
+    sys.path.insert(2, lib_path)
+
+    #This must work now
+    import node_ctype
+
 
     better_apidoc.APP = app
     better_apidoc.main(
