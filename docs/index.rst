@@ -37,7 +37,7 @@ Contents:
 =========
 
 .. toctree::
-   :maxdepth: 3
+    :maxdepth: 3
 
     notebooks/Quick_start.ipynb
     notebooks/Functions_tutorials
