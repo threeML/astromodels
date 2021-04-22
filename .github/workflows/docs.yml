@@ -60,8 +60,8 @@ jobs:
         run: |
 
           
-          jupytext --to ipynb --execute doc/notebooks/*.md
-          #mv docs/md_docs/*.ipynb docs/notebooks/
+          jupytext --to ipynb --execute doc/md/*.md
+          mv doc/md/*.ipynb doc/notebooks/
           ls doc/notebooks
         env:
           OMP_NUM_THREADS: 1
