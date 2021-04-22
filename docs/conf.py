@@ -86,12 +86,6 @@ sys.path.insert(2, lib_path)
 #This must work now
 import node_ctype
 
-# -- Project information -----------------------------------------------------
-
-project = u'Astromodels'
-copyright = u'2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack'
-author = u'G.Vianello'
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -119,7 +113,9 @@ napoleon_use_param = False
 
 # The path where the artifact should be extracted
 # Note: this is relative to the conf.py file!
+
 rtds_action_path = "notebooks"
+
 # # The "prefix" used in the `upload-artifact` step of the action
 rtds_action_artifact_prefix = "notebooks-for-"
 
@@ -135,22 +131,28 @@ rtds_action_error_if_missing = True
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
+source_suffix = ['.rst', '.ipynb']
+
 # The master toctree document.
 master_doc = 'index'
 
-# List of patterns, relative to source directory, that match files and
-# directories to ignore when looking for source files.
-# This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints', 'md/*']
 
-source_suffix = ['.rst', '.ipynb']
+
+# -- Project information -----------------------------------------------------
+
+project = u'Astromodels'
+copyright = u'2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack'
+author = u'G.Vianello'
+
+
+
 
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-
+language = None
 
 pygments_style = 'none'
 
@@ -169,14 +171,18 @@ for style in get_all_styles():
     with open(path, 'w') as f:
         f.write(HtmlFormatter(style=style).get_style_defs('.highlight'))
 
+
+
+
+# List of patterns, relative to source directory, that match files and
+# directories to ignore when looking for source files.
+# This pattern also affects html_static_path and html_extra_path.
+exclude_patterns = ['_build', '**.ipynb_checkpoints', 'md/*.md']
+
+pygments_style = 'sphinx'
+
 html_theme = 'sphinx_rtd_theme'
 
-# html_theme_options = {
-#     'style_external_links': True,
-#     # 'vcs_pageview_mode': 'edit',
-# #    'style_nav_header_background': '#0B4BA8',
-#     # 'only_logo': False,
-# }
 
 html_theme_options = {
     'logo_only':False,
@@ -191,10 +197,8 @@ html_logo = "media/transp_logo.png"
 html_show_sourcelink = False
 html_favicon = "media/favicon.ico"
 
+autosectionlabel_prefix_document = True
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
 version = 'latest'
