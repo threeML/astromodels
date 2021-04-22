@@ -18,11 +18,6 @@
 import os
 import sys
 
-print(sys.path)
-sys.path = sys.path[1:]
-print(sys.path)
-print(os.getcwd())
-
 from pathlib import Path
 
 import mock
@@ -62,7 +57,6 @@ def run_apidoc(app):
 #import astromodels
 import pkgutil
 astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-print(astro_path)
 
 sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(1, os.path.abspath('../astromodels'))
@@ -75,8 +69,6 @@ sys.path.insert(2, lib_path)
 
 #This must work now
 import node_ctype
-
-import astromodels
 
 # -- Project information -----------------------------------------------------
 
@@ -189,6 +181,7 @@ version = 'latest'
 # The full version, including alpha/beta/rc tags.
 release = 'latest'
 
+print("Done.")
 
 def setup(app):
     app.connect("builder-inited", run_apidoc)
