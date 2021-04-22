@@ -59,9 +59,9 @@ jobs:
         shell: bash -l {0}
         run: |
           
-          jupytext --to ipynb --execute doc/md/*.md
-          mv doc/md/*.ipynb doc/notebooks/
-          ls doc/notebooks
+          jupytext --to ipynb --execute docs/md/*.md
+          mv docs/md/*.ipynb docs/notebooks/
+          ls docs/notebooks
         env:
           OMP_NUM_THREADS: 1
           MKL_NUM_THREADS: 1
@@ -71,7 +71,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: notebooks-for-${{ github.sha }}
-          path: doc/notebooks
+          path: docs/notebooks
 
       - name: Sleep for 5 min
         uses: juliangruber/sleep-action@v1

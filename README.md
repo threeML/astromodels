@@ -18,7 +18,7 @@
 ![Conda](https://img.shields.io/conda/dn/threeml/astromodels)
 
 
-![alt text](https://raw.githubusercontent.com/threeml/astromodels/master/doc/media/large_logo.png)
+![alt text](https://raw.githubusercontent.com/threeml/astromodels/master/docs/media/large_logo.png)
 
 
 Spatial and spectral models for astrophysics

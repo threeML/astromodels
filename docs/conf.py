@@ -25,7 +25,7 @@ import mock
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('..'))
 #sys.path.insert(0, os.path.abspath('../threeML/classicMLE'))
 
 
@@ -72,20 +72,19 @@ def run_apidoc(app):
 
 
 # #import astromodels
-# import pkgutil
-# astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+import pkgutil
+astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
-# sys.path.insert(0, os.path.abspath('..'))
-# sys.path.insert(1, os.path.abspath('../astromodels'))
+sys.path.insert(1, os.path.abspath('../astromodels'))
 
-# # Add the path to the C extension
-# #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-# lib_path = os.path.abspath('%s/core' % astro_path)
+# Add the path to the C extension
+#lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+lib_path = os.path.abspath('%s/core' % astro_path)
 
-# sys.path.insert(2, lib_path)
+sys.path.insert(2, lib_path)
 
-# #This must work now
-# import node_ctype
+#This must work now
+import node_ctype
 
 # -- Project information -----------------------------------------------------
 
@@ -100,6 +99,7 @@ author = u'G.Vianello'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'rtds_action',
     'nbsphinx',
     'recommonmark',
     'sphinx.ext.autodoc',
@@ -108,7 +108,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx_gallery.load_style',
-    'rtds_action'
+    
 ]
 
 
