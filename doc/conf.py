@@ -90,7 +90,7 @@ extensions = [
     'sphinx.ext.viewcode',
 #    'sphinx_gallery.gen_gallery',
     'sphinx_gallery.load_style',
-    'rtds_actions'
+    'rtds_action'
 ]
 
 
