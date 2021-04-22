@@ -58,7 +58,6 @@ jobs:
       - name: Execute the notebooks
         shell: bash -l {0}
         run: |
-
           
           jupytext --to ipynb --execute doc/md/*.md
           mv doc/md/*.ipynb doc/notebooks/

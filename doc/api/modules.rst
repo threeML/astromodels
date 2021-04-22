@@ -1,7 +1,7 @@
-astromodels
-===========
+threeML
+=======
 
 .. toctree::
    :maxdepth: 4
 
-   astromodels
+   threeML

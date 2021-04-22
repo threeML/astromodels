@@ -105,7 +105,8 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
-#    'sphinx_gallery.gen_gallery',
+    'sphinx.ext.githubpages',
+    'sphinx.ext.napoleon',
     'sphinx_gallery.load_style',
     'rtds_action'
 ]
@@ -128,6 +129,8 @@ rtds_action_github_repo = "astromodels/astromodels"
 # # A GitHub personal access token is required, more info below
 rtds_action_github_token = os.environ["GITHUB_TOKEN"]
 
+rtds_action_error_if_missing = True
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -138,7 +141,7 @@ master_doc = 'index'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '**.ipynb_checkpoints', 'md/*']
 
 source_suffix = ['.rst', '.ipynb']
 
@@ -200,5 +203,5 @@ release = 'latest'
 
 print("Done.")
 
-def setup(app):
-    app.connect("builder-inited", run_apidoc)
+# def setup(app):
+#     app.connect("builder-inited", run_apidoc)
