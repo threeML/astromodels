@@ -10,14 +10,16 @@ from astromodels.functions.function import (Function1D, FunctionMeta,
                                             ModelAssertionViolation)
 
 try:
-    from threeML.config.config import threeML_config
+    from threeML.config import threeML_config
 
     _has_threeml = True
 
+    _startup_flag = threeML_config.logging.startup_warnings
+    
 except ImportError:
 
     _has_threeml = False
-
+    _startup_flag = True
 
 from astromodels.utils.logging import setup_logger
 
@@ -47,23 +49,19 @@ class InvalidUsageForFunction(Exception):
 
 # Now let's try and import optional dependencies
 
+import astropy.units as u
+
 try:
 
     # Naima is for numerical computation of Synch. and Inverse compton spectra in randomly oriented
     # magnetic fields
 
-    import astropy.units as u
+
     import naima
 
 except ImportError:
 
-    _flag = True
-
-    if _has_threeml:
-
-        _flag = threeML_config.logging.startup_warnings
-
-    if _flag:
+    if _startup_flag:
 
         log.warning(
             "The naima package is not available. Models that depend on it will not be available"
@@ -84,13 +82,7 @@ try:
 
 except ImportError:
 
-    _flag = True
-
-    if _has_threeml:
-
-        _flag = threeML_config.logging.startup_warnings
-
-    if _flag:
+    if _startup_flag:
 
         log.warning(
             "The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
@@ -116,13 +108,7 @@ try:
 
 except ImportError:
 
-    _flag = True
-
-    if _has_threeml:
-
-        _flag = threeML_config.logging.startup_warnings
-
-    if _flag:
+    if _startup_flag:
 
         log.warning(
             "The ebltable package is not available. Models that depend on it will not be available"
