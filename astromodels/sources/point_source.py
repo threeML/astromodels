@@ -1,6 +1,10 @@
 from __future__ import division
+from astromodels.core.parameter import Parameter
+from astromodels.functions.function import Function1D
 from past.utils import old_div
 import collections
+
+from typing import Dict, List, Optional, Union, Any
 
 import astropy.units as u
 import numpy
@@ -13,11 +17,13 @@ from astromodels.core.units import get_units
 from astromodels.sources.source import Source, POINT_SOURCE
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.core.memoization import use_astromodels_memoization
+from astromodels.utils.logging import setup_logger
 
 __author__ = 'giacomov'
 
-
 __all__ = ["PointSource"]
+
+log = setup_logger(__name__)
 
 
 class PointSource(Source, Node):
@@ -55,9 +61,15 @@ class PointSource(Source, Node):
     :param sky_position: an instance of SkyDirection
     :return:
     """
-
-    def __init__(self, source_name, ra=None, dec=None, spectral_shape=None,
-                 l=None, b=None, components=None, sky_position=None):
+    def __init__(self,
+                 source_name: str,
+                 ra: Optional[float] = None,
+                 dec: Optional[float] = None,
+                 spectral_shape: Optional[Function1D] = None,
+                 l: Optional[float] = None,
+                 b: Optional[float] = None,
+                 components=None,
+                 sky_position: Optional[SkyDirection]=None):
 
         # Check that we have all the required information
 
@@ -65,9 +77,15 @@ class PointSource(Source, Node):
 
         # Check that we have one and only one specification of the position
 
-        assert ((ra is not None and dec is not None) ^
+        if not ((ra is not None and dec is not None) ^
                 (l is not None and b is not None) ^
-                (sky_position is not None)), "You have to provide one and only one specification for the position"
+                (sky_position is not None)):
+
+            log.error(
+                "You have to provide one and only one specification for the position"
+            )
+
+            raise AssertionError()
 
         # Gather the position
 
@@ -84,8 +102,10 @@ class PointSource(Source, Node):
 
                 except (TypeError, ValueError):
 
-                    raise AssertionError("RA and Dec must be numbers. If you are confused by this message, you "
+                    log.error("RA and Dec must be numbers. If you are confused by this message, you "
                                          "are likely using the constructor in the wrong way. Check the documentation.")
+                    
+                    raise AssertionError()
 
                 sky_position = SkyDirection(ra=ra, dec=dec)
 
@@ -93,16 +113,18 @@ class PointSource(Source, Node):
 
                 sky_position = SkyDirection(l=l, b=b)
 
-        self._sky_position = sky_position
+        self._sky_position: SkyDirection = sky_position
 
         # Now gather the component(s)
 
         # We need either a single component, or a list of components, but not both
         # (that's the ^ symbol)
 
-        assert (spectral_shape is not None) ^ (components is not None), "You have to provide either a single " \
-                                                                        "component, or a list of components " \
-                                                                        "(but not both)."
+        if not (spectral_shape is not None) ^ (components is not None):
+
+            log.error("You have to provide either a single component, or a list of components (but not both).")
+
+            raise AssertionError()
 
         # If the user specified only one component, make a list of one element with a default name ("main")
 
@@ -213,7 +235,7 @@ class PointSource(Source, Node):
 
                 return old_div(integrals, (b - a))
 
-    def has_free_parameters(self):
+    def has_free_parameters(self) -> bool:
         """
         Returns True or False whether there is any parameter in this source
 
@@ -237,7 +259,7 @@ class PointSource(Source, Node):
         return False
 
     @property
-    def free_parameters(self):
+    def free_parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of free parameters for this source.
         We use the parameter path as the key because it's 
@@ -264,7 +286,7 @@ class PointSource(Source, Node):
         return free_parameters
 
     @property
-    def parameters(self):
+    def parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of all parameters for this source.
         We use the parameter path as the key because it's 

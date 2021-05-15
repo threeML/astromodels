@@ -1,21 +1,27 @@
-from .functions import (Blackbody, Constant, Cubic, DiracDelta,
-                        Exponential_cutoff, Line, Log_parabola, Quadratic, Sin,
+from .functions import (Blackbody,  DiracDelta,
+                        Exponential_cutoff, Log_parabola, Sin,
                         StepFunction, StepFunctionUpper, has_ebltable, has_gsl,
                         has_naima)
 
+
+
+
 if has_naima:
     from .functions import Synchrotron
-
 
 if has_gsl:
 
     from .functions import Cutoff_powerlaw_flux
 
-
 if has_ebltable:
     from .functions import EBLattenuation
 
-from .apec import PhAbs, TbAbs, WAbs, has_atomdb
+from .apec import  has_atomdb
+
+from .absorption import PhAbs, TbAbs, WAbs
+
+from .polynomials import Constant, Line, Quadratic, Cubic, Quartic, get_polynomial
+
 from .powerlaws import (Band, Band_Calderone, Band_grbm, Broken_powerlaw,
                         Cutoff_powerlaw, Inverse_cutoff_powerlaw, Powerlaw,
                         Powerlaw_Eflux, Powerlaw_flux, SmoothlyBrokenPowerLaw,
@@ -35,7 +41,7 @@ __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
            "Quadratic", "Sin", "StepFunction", "StepFunctionUpper",
            "PhAbs", "TbAbs", "WAbs",
            "Log_parabola",
-           "Blackbody",
+           "Blackbody","Quartic", "get_polynomial"
            ]
 
 if has_atomdb:

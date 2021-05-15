@@ -11,7 +11,7 @@ __author__ = 'giacomov'
 
 from astromodels.core.parameter import Parameter, SettingOutOfBounds, \
     CannotConvertValueToNewUnits, NotCallableOrErrorInCall, IndependentVariable, ParameterMustHaveBounds
-from astromodels.functions.functions import Line
+from astromodels.functions import Line
 from astromodels.core.parameter_transformation import LogarithmicTransformation
 
 def test_default_constructor():

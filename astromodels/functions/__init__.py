@@ -3,8 +3,8 @@ from .functions_1D import (
     Log_parabola, Quadratic, Sin, StepFunction, StepFunctionUpper,
     has_ebltable, has_gsl, has_naima, Band, Band_Calderone, Band_grbm,
     Broken_powerlaw, Cutoff_powerlaw, Inverse_cutoff_powerlaw, Powerlaw,
-    Powerlaw_Eflux, Powerlaw_flux, SmoothlyBrokenPowerLaw,
-    Super_cutoff_powerlaw, PhAbs, TbAbs, WAbs, has_atomdb)
+    Powerlaw_Eflux, Powerlaw_flux, SmoothlyBrokenPowerLaw, Quartic,
+    get_polynomial, Super_cutoff_powerlaw, PhAbs, TbAbs, WAbs, has_atomdb)
 
 if has_naima:
     from .functions_1D import Synchrotron
@@ -53,7 +53,7 @@ __all__ = [
     "Log_uniform_prior", "Truncated_gaussian", "Uniform_prior",
     "TemplateModel", "TemplateModelFactory", "XSPECTableModel",
     "MissingDataFile", "Log_parabola", "Blackbody", "Function1D", "Function2D",
-    "Function3D", "FunctionMeta", "ModelAssertionViolation"
+    "Function3D", "FunctionMeta", "ModelAssertionViolation", "Quartic", "get_polynomial"
 ]
 
 if has_atomdb:

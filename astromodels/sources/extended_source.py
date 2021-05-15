@@ -6,14 +6,17 @@ import numpy as np
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
-from astromodels.functions.functions import Constant
+from astromodels.functions import Constant
 from astromodels.sources.source import Source, EXTENDED_SOURCE
 from astromodels.utils.pretty_list import dict_to_list
 
 
 class ExtendedSource(Source, Node):
-
-    def __init__(self, source_name, spatial_shape, spectral_shape=None, components=None):
+    def __init__(self,
+                 source_name,
+                 spatial_shape,
+                 spectral_shape=None,
+                 components=None):
 
         # Check that we have all the required information
         # and set the units
@@ -39,7 +42,8 @@ class ExtendedSource(Source, Node):
 
             # Components in this case have energy as x and differential flux as y
 
-            diff_flux_units = (current_u.energy * current_u.area * current_u.time) ** (-1)
+            diff_flux_units = (current_u.energy * current_u.area *
+                               current_u.time)**(-1)
 
             # Now set the units of the components
             for component in components:
@@ -47,7 +51,8 @@ class ExtendedSource(Source, Node):
                 component.shape.set_units(current_u.energy, diff_flux_units)
 
             # Set the units of the brightness
-            spatial_shape.set_units(current_u.angle, current_u.angle, current_u.angle**(-2))
+            spatial_shape.set_units(current_u.angle, current_u.angle,
+                                    current_u.angle**(-2))
 
         elif spatial_shape.n_dim == 3:
 
@@ -62,9 +67,10 @@ class ExtendedSource(Source, Node):
                 components = [SpectralComponent("main", spectral_shape)]
 
                 # set the units
-                diff_flux_units = (current_u.energy * current_u.area * current_u.time *
-                                   current_u.angle**2) ** (-1)
-                spatial_shape.set_units(current_u.angle, current_u.angle, current_u.energy, diff_flux_units)
+                diff_flux_units = (current_u.energy * current_u.area *
+                                   current_u.time * current_u.angle**2)**(-1)
+                spatial_shape.set_units(current_u.angle, current_u.angle,
+                                        current_u.energy, diff_flux_units)
 
             else:
 

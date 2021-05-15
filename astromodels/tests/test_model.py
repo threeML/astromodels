@@ -19,7 +19,7 @@ from astromodels.core.model_parser import *
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.functions import (Gaussian_on_sphere, Line, Powerlaw,
                                    Uniform_prior)
-from astromodels.functions.functions import _ComplexTestFunction
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
