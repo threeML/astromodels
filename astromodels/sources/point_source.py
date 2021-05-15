@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Union, Any
 
 import astropy.units as u
 import numpy
+import numba as nb
 import scipy.integrate
 
 from astromodels.core.sky_direction import SkyDirection
@@ -18,6 +19,8 @@ from astromodels.sources.source import Source, POINT_SOURCE
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.utils.logging import setup_logger
+
+
 
 __author__ = 'giacomov'
 
@@ -186,9 +189,9 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same units as currently defined in
                 # units.get_units()
 
-                results = [component.shape(x) for component in list(self.components.values())]
+                results = numpy.array([component.shape(x) for component in list(self.components.values())])
 
-                return numpy.sum(results, 0)
+                return _sum(results)
 
         else:
 
@@ -332,3 +335,9 @@ class PointSource(Source, Node):
 
         return dict_to_list(repr_dict, rich_output)
 
+
+
+@nb.njit(fastmath=True)
+def _sum(x):
+    return numpy.sum(x, axis=0)
+    
