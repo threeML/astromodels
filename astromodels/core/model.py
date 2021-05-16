@@ -176,10 +176,14 @@ class Model(Node):
 
         for child in node._get_children():
 
+            #log.debug(f"on child {child._name}")
+            
             if isinstance(child, Parameter):
 
                 path = child._get_path()
 
+                #log.debug(f"on child {path}")
+                
                 instances[path] = child
 
                 for sub_child in child._get_children():

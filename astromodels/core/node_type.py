@@ -82,10 +82,14 @@ class _Node:
             self._children[child._name] = child
             child._set_parent(self)
 
+            child._update_child_path()
+            
         else:
 
+            log.error(f"A child with name {child._name} already exists")
+            
             raise AttributeError(
-                    f"A child with name {child._name} already exists")
+                    )
 
         
     def _add_children(self, children: List[Type["_Node"]]):
@@ -106,7 +110,17 @@ class _Node:
         """
 
         self._parent = parent
-        self._path = f"{self._parent._get_path()}.{self._name}"
+
+        parent_path = self._parent._get_path()
+
+        if parent_path == "__root__":
+        
+            self._path = f"{self._name}"
+
+        else:
+
+            self._path = f"{parent_path}.{self._name}"
+            
         log.debug(f"path is now: {self._path}")
 
         
@@ -160,8 +174,12 @@ class _Node:
         for name, child in self._children.items():
 
             child._path = f"{child._parent._get_path()}.{child._name}"
-            child._update_path()
 
+            if not child.is_leaf:
+            
+                child._update_child_path()
+        
+            
     def _change_name(self, name: str):
 
         self._name = name
