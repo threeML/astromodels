@@ -1,5 +1,5 @@
 from builtins import zip
-from astromodels.functions.functions import Powerlaw
+from astromodels.functions import Powerlaw
 import numpy as np
 
 

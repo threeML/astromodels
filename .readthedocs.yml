@@ -1,9 +1,18 @@
+version: 2
+
+sphinx:
+  builder: html
+  configuration: docs/conf.py
+  fail_on_warning: false
+
+
 python:
-
-   version: 2.7
-
-   pip_install: true
-
-   extra_requirements:
-
+  version: 3.7
+  install:
+    - requirements: docs/requirements.txt
+    - method: pip
+      path: .
+      extra_requirements:
         - docs
+        
+

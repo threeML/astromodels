@@ -77,11 +77,11 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Cache conda
-              uses: actions/cache@v1
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
+            # - name: Cache conda
+            #   uses: actions/cache@v1
+            #   with:
+            #       path: ~/conda_pkgs_dir
+            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
             - name: Setup Miniconda
               uses: conda-incubator/setup-miniconda@v2
               with:
@@ -133,6 +133,9 @@ jobs:
             - name: Test conda install
               shell: bash -l {0}
               run: |
+              
+                  echo "======>  importing XSPEC..."
+                  python -c "import astromodels.xspec"
                   python -m pytest -vv --cov=astromodels --cov-report=xml
 
               env:
@@ -162,7 +165,7 @@ jobs:
             - name: Build package
               run: |
                   pip install wheel
-                  python setup.py sdist bdist_wheel
+                  python setup.py sdist
             - name: Publish
               uses: pypa/gh-action-pypi-publish@v1.1.0
               with:
@@ -203,16 +206,19 @@ jobs:
                 python-version: [3.7]
 
         steps:
-            - uses: actions/checkout@v2
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
             - name: Set up Python
               uses: actions/setup-python@v2
               with:
                   python-version: ${{ matrix.python-version }}
-            - name: Cache conda
-              uses: actions/cache@v1
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
+            # - name: Cache conda
+            #   uses: actions/cache@v1
+            #   with:
+            #       path: ~/conda_pkgs_dir
+            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v2
               with:
@@ -249,10 +255,13 @@ jobs:
                   #export PKG_VERSION=$(cd threeML && python -c "import version;print(version.__version__)")
 
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
+                  echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
                   echo "HOME= ${HOME}"
                   echo "Building ${PKG_VERSION} ..."
                   echo "Python version: ${{matrix.python-version}}"
+
+                  conda install codecov pytest-cov
 
             - name: Build the Distribution
               shell: bash -l {0}
@@ -267,6 +276,22 @@ jobs:
                   # there is some strange error about the prefix length
                   conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
                   fi
+
+                  conda install --use-local -c conda-forge astromodels
+            
+            - name: Test conda build
+              shell: bash -l {0}
+              run: |
+                  cd astromodels/tests
+                  echo "======>  importing XSPEC..."
+                  python -c "import astromodels.xspec"
+                  python -m pytest -vv --cov=astromodels --cov-report=xml
+
+              env:
+                  OMP_NUM_THREADS: 1
+                  MKL_NUM_THREADS: 1
+                  NUMEXPR_NUM_THREADS: 1
+                  MPLBACKEND: "Agg"
 
     publish-conda:
         name: Publish to Conda
@@ -278,16 +303,19 @@ jobs:
                 python-version: [3.7]
 
         steps:
-            - uses: actions/checkout@v2
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                  fetch-depth: 0
             - name: Set up Python
               uses: actions/setup-python@v2
               with:
                   python-version: ${{ matrix.python-version }}
-            - name: Cache conda
-              uses: actions/cache@v1
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
+            # - name: Cache conda
+            #   uses: actions/cache@v1
+            #   with:
+            #       path: ~/conda_pkgs_dir
+            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v2
               with:
@@ -324,6 +352,7 @@ jobs:
                   #export PKG_VERSION=$(cd threeML && python -c "import version;print(version.__version__)")
 
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
+                  echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
                   echo "HOME= ${HOME}"
                   echo "Building ${PKG_VERSION} ..."
@@ -343,23 +372,27 @@ jobs:
                   conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
                   fi
 
+                  #conda install --use-local -c conda-forge astromodels
+
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
 
-                conda install -c conda-forge anaconda-client
-                echo "Uploading ${CONDA_BUILD_PATH}"
-            
-                if [[ "$CURRENT_OS" == "ubuntu_latest" ]]; then
+                  conda install -c conda-forge anaconda-client
+                  echo "Uploading ${{matrix.os}}"
 
-                anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/share/miniconda/conda-bld/linux-64/*.tar.bz2 --force
 
-                else
+                  if [[ ${{matrix.os}} == ubuntu-latest ]];
+                  then
 
-                anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/local/miniconda/conda-bld/osx-64/*.tar.bz2 --force
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/share/miniconda/conda-bld/linux-64/*.tar.bz2 --force
 
-                fi
+                  else
+
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml /usr/local/miniconda/conda-bld/osx-64/*.tar.bz2 --force
+
+                  fi
 
               env:
-                UPLOAD_TOKEN: secrets.CONDA_UPLOAD_TOKEN
-                CURRENT_OS: ${{matrix.os}}
+                  UPLOAD_TOKEN: ${{secrets.CONDA_UPLOAD_TOKEN}}
+                  CURRENT_OS: ${{matrix.os}}

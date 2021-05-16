@@ -4,14 +4,14 @@ standard_library.install_aliases()
 from builtins import object
 import astropy.units as u
 import pytest
-from astromodels.functions.priors import Uniform_prior, Log_uniform_prior
-from astromodels.functions.functions import  Powerlaw
+from astromodels.functions import Uniform_prior, Log_uniform_prior
+from astromodels.functions import  Powerlaw
 
 __author__ = 'giacomov'
 
 from astromodels.core.parameter import Parameter, SettingOutOfBounds, \
     CannotConvertValueToNewUnits, NotCallableOrErrorInCall, IndependentVariable, ParameterMustHaveBounds
-from astromodels.functions.functions import Line
+from astromodels.functions import Line
 from astromodels.core.parameter_transformation import LogarithmicTransformation
 
 def test_default_constructor():
@@ -270,10 +270,10 @@ def test_set_bounds_nounits():
 
     p.display()
 
-    with pytest.warns(RuntimeWarning):
+    # with pytest.warns(RuntimeWarning):
 
-        p.value = 1.0
-        p.min_value = 2.0
+    #     p.value = 1.0
+    #     p.min_value = 2.0
 
 
 def test_set_bounds_units():
@@ -452,9 +452,9 @@ def test_remove_auxiliary_variable():
 
     assert p1.value == -1.0
 
-    with pytest.warns(RuntimeWarning):
+    # with pytest.warns(RuntimeWarning):
 
-        p1.remove_auxiliary_variable()
+    #     p1.remove_auxiliary_variable()
 
 
 def test_callback():

@@ -1,17 +1,20 @@
-from builtins import str
-from builtins import object
-__author__ = 'giacomov'
+from builtins import object, str
+
+__author__ = "giacomov"
 
 import re
 import warnings
 
-from astromodels.core import parameter, sky_direction, model, polarization, spectral_component
+from astromodels.core import (model, parameter, polarization, sky_direction,
+                              spectral_component)
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
-from astromodels.sources import extended_source
-from astromodels.sources import particle_source
-from astromodels.sources import point_source
-from astromodels.sources.source import POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE
+from astromodels.sources import extended_source, particle_source, point_source
+from astromodels.sources.source import (EXTENDED_SOURCE, PARTICLE_SOURCE,
+                                        POINT_SOURCE)
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 
 class ModelIOError(IOError):
@@ -61,11 +64,11 @@ def model_unpickler(state):
 
 
 class ModelParser(object):
-
     def __init__(self, model_file=None, model_dict=None):
 
-        assert (model_file is not None) or (model_dict is not None), "You have to provide either a model file or a" \
-                                                                     "model dictionary"
+        assert (model_file is not None) or (model_dict is not None), (
+            "You have to provide either a model file or a" "model dictionary"
+        )
 
         if model_file is not None:
 
@@ -75,16 +78,20 @@ class ModelParser(object):
 
                 with open(model_file) as f:
 
-                    self._model_dict = my_yaml.load(f, 
-                        Loader=my_yaml.FullLoader)
+                    self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
             except IOError:
 
-                raise ModelIOError("File %s cannot be read. Check path and permissions for current user." % model_file)
+                raise ModelIOError(
+                    "File %s cannot be read. Check path and permissions for current user."
+                    % model_file
+                )
 
             except my_yaml.YAMLError:
 
-                raise ModelYAMLError("Could not parse file %s. Check your syntax." % model_file)
+                raise ModelYAMLError(
+                    "Could not parse file %s. Check your syntax." % model_file
+                )
 
         else:
 
@@ -105,13 +112,17 @@ class ModelParser(object):
         self._external_parameter_links = []
         self._extra_setups = []
 
-        for source_or_var_name, source_or_var_definition in list(self._model_dict.items()):
+        for source_or_var_name, source_or_var_definition in list(
+            self._model_dict.items()
+        ):
 
             if source_or_var_name.find("(IndependentVariable)") > 0:
 
-                var_name = source_or_var_name.split("(")[0].replace(" ","")
+                var_name = source_or_var_name.split("(")[0].replace(" ", "")
 
-                this_parser = IndependentVariableParser(var_name, source_or_var_definition)
+                this_parser = IndependentVariableParser(
+                    var_name, source_or_var_definition
+                )
 
                 res = this_parser.get_variable()
 
@@ -132,7 +143,7 @@ class ModelParser(object):
                 self._external_parameters.append(res)
 
                 self._links.extend(this_parser.links)
-#                self._external_parameter_links.extend(this_parser.links)
+            #                self._external_parameter_links.extend(this_parser.links)
 
             else:
 
@@ -140,9 +151,11 @@ class ModelParser(object):
 
                 res = this_parser.get_source()
 
-                assert isinstance(res, point_source.PointSource) or \
-                       isinstance(res, extended_source.ExtendedSource) or \
-                       isinstance(res, particle_source.ParticleSource)
+                assert (
+                    isinstance(res, point_source.PointSource)
+                    or isinstance(res, extended_source.ExtendedSource)
+                    or isinstance(res, particle_source.ParticleSource)
+                )
 
                 self._sources.append(res)
 
@@ -171,33 +184,31 @@ class ModelParser(object):
 
         for link in self._links:
 
-            path = link['parameter_path']
-            variable = link['variable']
-            law = link['law']
+            path = link["parameter_path"]
+            variable = link["variable"]
+            law = link["law"]
 
-            new_model[path].add_auxiliary_variable(new_model[variable],law)
-
+            new_model[path].add_auxiliary_variable(new_model[variable], law)
 
         # Finally the extra_setups (if any)
 
         for extra_setup in self._extra_setups:
 
-            path = extra_setup['function_path']
+            path = extra_setup["function_path"]
 
-            for property, value in list(extra_setup['extra_setup'].items()):
+            for property, value in list(extra_setup["extra_setup"].items()):
 
-                #First, check to see if the we have a valid path in the new model.
-                #If we aren't given a path, interpret it as being given a value.
+                # First, check to see if the we have a valid path in the new model.
+                # If we aren't given a path, interpret it as being given a value.
                 if value in new_model:
-                  new_model[path].__setattr__(property, new_model[value])
+                    new_model[path].__setattr__(property, new_model[value])
                 else:
-                  new_model[path].__setattr__(property, value)
+                    new_model[path].__setattr__(property, value)
 
         return new_model
 
 
 class IndependentVariableParser(object):
-
     def __init__(self, name, definition):
 
         self._variable = parameter.IndependentVariable(name, **definition)
@@ -208,40 +219,39 @@ class IndependentVariableParser(object):
 
 
 class ParameterParser(object):
-
     def __init__(self, name, definition):
 
         self._links = []
 
         # NOTE: this is triggered only for parameters outside of functions
 
-        if 'prior' in definition:
+        if "prior" in definition:
 
             # Need the create a function for the prior first
 
             try:
 
-                function_name = list(definition['prior'].keys())[0]
-                parameters_definition = definition['prior'][function_name]
+                function_name = list(definition["prior"].keys())[0]
+                parameters_definition = definition["prior"][function_name]
 
             except KeyError:  # pragma: no cover
 
-                raise ModelSyntaxError("The prior for parameter %s is malformed"
-                                       % name)
+                raise ModelSyntaxError("The prior for parameter %s is malformed" % name)
 
             # parse the function
 
             shape_parser = ShapeParser(name)
 
-            prior_instance = shape_parser.parse(name, function_name, parameters_definition)
+            prior_instance = shape_parser.parse(
+                name, function_name, parameters_definition
+            )
 
             # Substitute the definition with the instance, so that the following constructor will work
-            definition['prior'] = prior_instance
-
+            definition["prior"] = prior_instance
 
         # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
 
-        matches = re.findall('''f\((.+)\)''', str(definition['value']))
+        matches = re.findall("""f\((.+)\)""", str(definition["value"]))
 
         if matches:
 
@@ -253,36 +263,39 @@ class ParameterParser(object):
 
             # Now get the law
 
-            if 'law' not in definition:  # pragma: no cover
-                raise ModelSyntaxError("The parameter %s in function %s "
-                                       " is linked to %s but lacks a 'law' attribute"
-                                       % (name, function_name,  linked_variable))
+            if "law" not in definition:  # pragma: no cover
+                raise ModelSyntaxError(
+                    "The parameter %s in function %s "
+                    " is linked to %s but lacks a 'law' attribute"
+                    % (name, function_name, linked_variable)
+                )
 
-
-            link_function_name = list(definition['law'].keys())[0]
-
-
+            link_function_name = list(definition["law"].keys())[0]
 
             # ok, now we parse the linked parameter
 
             function_parser = ShapeParser(name)
 
+            link_function_instance = function_parser.parse(
+                name, link_function_name, definition["law"][link_function_name]
+            )
 
-            link_function_instance = function_parser.parse(name, link_function_name, definition['law'][link_function_name] )
-
-            self._links.append({'parameter_path': name,
-                                'law': link_function_instance,
-                                'variable': linked_variable})
+            self._links.append(
+                {
+                    "parameter_path": name,
+                    "law": link_function_instance,
+                    "variable": linked_variable,
+                }
+            )
 
             # get rid of the 'law' entry
 
-            definition.pop('law', None)
+            definition.pop("law", None)
 
             # this parameter's value will be replaced later.
             # for now we just need to get rid of the f(param) entry
 
-            definition['value'] = 1.
-
+            definition["value"] = 1.0
 
         self._variable = parameter.Parameter(name, **definition)
 
@@ -305,14 +318,18 @@ class SourceParser(object):
 
             # Point source or extended source?
 
-            source_type = re.findall('\((%s|%s|%s)\)' % (POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE),
-                                     source_name)[-1]
+            source_type = re.findall(
+                "\((%s|%s|%s)\)" % (POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE),
+                source_name,
+            )[-1]
 
-        except IndexError: # pragma: no cover
+        except IndexError:  # pragma: no cover
 
-            raise ModelSyntaxError("Don't recognize type for source '%s'. "
-                                   "Valid types are '%s', '%s' or '%s'." %
-                                   (source_name, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE))
+            raise ModelSyntaxError(
+                "Don't recognize type for source '%s'. "
+                "Valid types are '%s', '%s' or '%s'."
+                % (source_name, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE)
+            )
 
         else:
 
@@ -361,21 +378,30 @@ class SourceParser(object):
 
         try:
 
-            spectrum = particle_source_definition['spectrum']
+            spectrum = particle_source_definition["spectrum"]
 
-        except KeyError: # pragma: no cover
+        except KeyError:  # pragma: no cover
 
-            raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
+            raise ModelSyntaxError(
+                "Point source %s is missing the 'spectrum' attribute"
+                % self._source_name
+            )
 
         components = []
 
-        for component_name, component_definition in list(particle_source_definition['spectrum'].items()):
+        for component_name, component_definition in list(
+            particle_source_definition["spectrum"].items()
+        ):
 
-            this_component = self._parse_spectral_component(component_name, component_definition)
+            this_component = self._parse_spectral_component(
+                component_name, component_definition
+            )
 
             components.append(this_component)
 
-        this_particle_source = particle_source.ParticleSource(self._source_name, components=components)
+        this_particle_source = particle_source.ParticleSource(
+            self._source_name, components=components
+        )
 
         return this_particle_source
 
@@ -385,11 +411,14 @@ class SourceParser(object):
 
         try:
 
-            position_definition = pts_source_definition['position']
+            position_definition = pts_source_definition["position"]
 
-        except KeyError: # pragma: no cover
+        except KeyError:  # pragma: no cover
 
-            raise ModelSyntaxError("Point source %s is missing the 'position' attribute" % self._source_name)
+            raise ModelSyntaxError(
+                "Point source %s is missing the 'position' attribute"
+                % self._source_name
+            )
 
         this_sky_direction = self._parse_sky_direction(position_definition)
 
@@ -397,19 +426,26 @@ class SourceParser(object):
 
         try:
 
-            spectrum = pts_source_definition['spectrum']
+            spectrum = pts_source_definition["spectrum"]
 
-        except KeyError: # pragma: no cover
+        except KeyError:  # pragma: no cover
 
-            raise ModelSyntaxError("Point source %s is missing the 'spectrum' attribute" % self._source_name)
+            raise ModelSyntaxError(
+                "Point source %s is missing the 'spectrum' attribute"
+                % self._source_name
+            )
 
         components = []
 
-        for component_name, component_definition in list(pts_source_definition['spectrum'].items()):
+        for component_name, component_definition in list(
+            pts_source_definition["spectrum"].items()
+        ):
 
             try:
 
-                this_component = self._parse_spectral_component(component_name, component_definition)
+                this_component = self._parse_spectral_component(
+                    component_name, component_definition
+                )
 
                 components.append(this_component)
 
@@ -419,8 +455,11 @@ class SourceParser(object):
 
         try:
 
-            this_point_source = point_source.PointSource(self._source_name, sky_position=this_sky_direction,
-                                                         components=components)
+            this_point_source = point_source.PointSource(
+                self._source_name,
+                sky_position=this_sky_direction,
+                components=components,
+            )
 
         except:
 
@@ -434,126 +473,137 @@ class SourceParser(object):
 
         coordinates = {}
 
-        if 'ra' in sky_direction_definition and 'dec' in sky_direction_definition:
+        if "ra" in sky_direction_definition and "dec" in sky_direction_definition:
 
-            par_parser = ParameterParser('ra', sky_direction_definition['ra'])
+            par_parser = ParameterParser("ra", sky_direction_definition["ra"])
 
             ra = par_parser.get_variable()
 
-            ra.bounds = (0, 360)
+            if ra.bounds == (None, None):
+              ra.bounds = (0, 360)
 
-            par_parser = ParameterParser('dec', sky_direction_definition['dec'])
+            par_parser = ParameterParser("dec", sky_direction_definition["dec"])
 
             dec = par_parser.get_variable()
-            dec.bounds = (-90, 90)
+            
+            if dec.bounds == (None, None):
+              dec.bounds = (-90, 90)
 
-            coordinates['ra'] = ra
-            coordinates['dec'] = dec
+            coordinates["ra"] = ra
+            coordinates["dec"] = dec
 
-        elif 'l' in sky_direction_definition and 'b' in sky_direction_definition:
+        elif "l" in sky_direction_definition and "b" in sky_direction_definition:
 
-            par_parser = ParameterParser('l', sky_direction_definition['l'])
+            par_parser = ParameterParser("l", sky_direction_definition["l"])
 
             l = par_parser.get_variable()
-            l.bounds = (0, 360)
+            
+            if l.bounds == (None, None):
+              l.bounds = (0, 360)
 
-            par_parser = ParameterParser('b', sky_direction_definition['b'])
+            par_parser = ParameterParser("b", sky_direction_definition["b"])
 
             b = par_parser.get_variable()
-            b.bounds = (-90, 90)
+            
+            if b.bounds == (None, None):
+              b.bounds = (-90, 90)
 
-            coordinates['l'] = l
-            coordinates['b'] = b
+            coordinates["l"] = l
+            coordinates["b"] = b
 
-        else: # pragma: no cover
+        else:  # pragma: no cover
 
-            raise ModelSyntaxError("Position specification for source %s has an invalid coordinate pair. "
-                                   " You need to specify either 'ra' and 'dec', or 'l' and 'b'."
-                                   % self._source_name)
+            raise ModelSyntaxError(
+                "Position specification for source %s has an invalid coordinate pair. "
+                " You need to specify either 'ra' and 'dec', or 'l' and 'b'."
+                % self._source_name
+            )
 
         # Check if there is a equinox specification
 
-        if 'equinox' in sky_direction_definition:
-            coordinates['equinox'] = sky_direction_definition['equinox']
+        if "equinox" in sky_direction_definition:
+            coordinates["equinox"] = sky_direction_definition["equinox"]
 
         try:
 
             this_sky_direction = sky_direction.SkyDirection(**coordinates)
 
-        except sky_direction.WrongCoordinatePair: # pragma: no cover
+        except sky_direction.WrongCoordinatePair:  # pragma: no cover
 
-            raise ModelSyntaxError("Position specification for source %s has an invalid coordinate pair"
-                                   % self._source_name)
+            raise ModelSyntaxError(
+                "Position specification for source %s has an invalid coordinate pair"
+                % self._source_name
+            )
 
         return this_sky_direction
 
-
-    def _parse_polarization(self, polarization_definititon ):
+    def _parse_polarization(self, polarization_definititon):
 
         polarization_params = {}
 
+        if "degree" in polarization_definititon and "angle" in polarization_definititon:
 
-        if 'degree' in polarization_definititon and 'angle' in polarization_definititon:
-
-            par_parser = ParameterParser('degree', polarization_definititon['degree'])
+            par_parser = ParameterParser("degree", polarization_definititon["degree"])
 
             degree = par_parser.get_variable()
 
             degree.bounds = (0, 100)
 
-            par_parser = ParameterParser('angle', polarization_definititon['angle'])
+            par_parser = ParameterParser("angle", polarization_definititon["angle"])
 
             angle = par_parser.get_variable()
 
             angle.bounds = (0, 180)
 
-            this_polarization = polarization.LinearPolarization(angle=angle, degree=degree)
+            this_polarization = polarization.LinearPolarization(
+                angle=angle, degree=degree
+            )
 
-        elif 'I' in polarization_definititon and 'U' in polarization_definititon and 'Q' in polarization_definititon and 'V' in polarization_definititon:
+        elif (
+            "I" in polarization_definititon
+            and "U" in polarization_definititon
+            and "Q" in polarization_definititon
+            and "V" in polarization_definititon
+        ):
 
-            par_parser = ParameterParser('I', polarization_definititon['I'])
+            par_parser = ParameterParser("I", polarization_definititon["I"])
 
             I = par_parser.get_variable()
 
             I.bounds = (0, 1)
 
-            par_parser = ParameterParser('U', polarization_definititon['U'])
+            par_parser = ParameterParser("U", polarization_definititon["U"])
 
             U = par_parser.get_variable()
 
             U.bounds = (0, 1)
 
-            par_parser = ParameterParser('Q', polarization_definititon['Q'])
+            par_parser = ParameterParser("Q", polarization_definititon["Q"])
 
             Q = par_parser.get_variable()
 
             Q.bounds = (0, 1)
 
-            par_parser = ParameterParser('V', polarization_definititon['V'])
+            par_parser = ParameterParser("V", polarization_definititon["V"])
 
             V = par_parser.get_variable()
 
             V.bounds = (0, 1)
-
 
             this_polarization = polarization.StokesPolarization(I=I, Q=Q, U=U, V=V)
 
         else:
 
             # just make a default polarization
-            
+
             this_polarization = polarization.Polarization()
             # raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
             #                        " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
             #                        % self._source_name)
 
-
         return this_polarization
 
-
     def _parse_spectral_component(self, component_name, component_definition):
-
-
 
         # Parse the shape definition, which is the first to occur
 
@@ -562,38 +612,41 @@ class SourceParser(object):
             function_name = list(component_definition.keys())[0]
             parameters_definition = component_definition[function_name]
 
-        except KeyError: # pragma: no cover
+        except KeyError:  # pragma: no cover
 
-            raise ModelSyntaxError("The component %s of source %s is malformed"
-                                   % (component_name, self._source_name))
+            raise ModelSyntaxError(
+                "The component %s of source %s is malformed"
+                % (component_name, self._source_name)
+            )
 
         # parse the function
 
         shape_parser = ShapeParser(self._source_name)
 
-        shape = shape_parser.parse(component_name, function_name, parameters_definition, is_spatial=False)
+        shape = shape_parser.parse(
+            component_name, function_name, parameters_definition, is_spatial=False
+        )
 
         # Get the links and extra setups, if any
 
         self._links.extend(shape_parser.links)
         self._extra_setups.extend(shape_parser.extra_setups)
 
-        if 'polarization' in component_definition:
+        if "polarization" in component_definition:
 
             # get the polarization
 
-            polarization_definition = component_definition['polarization']
-
+            polarization_definition = component_definition["polarization"]
 
             this_polarization = self._parse_polarization(polarization_definition)
-
-
 
         else:
 
             this_polarization = polarization.Polarization()
 
-        this_spectral_component = spectral_component.SpectralComponent(component_name, shape, this_polarization)
+        this_spectral_component = spectral_component.SpectralComponent(
+            component_name, shape, this_polarization
+        )
 
         return this_spectral_component
 
@@ -604,7 +657,12 @@ class SourceParser(object):
 
         spatial_shape_parser = ShapeParser(self._source_name)
 
-        spatial_shape = spatial_shape_parser.parse("n.a.", name_of_spatial_shape, list(ext_source_definition.values())[0], is_spatial=True)
+        spatial_shape = spatial_shape_parser.parse(
+            "n.a.",
+            name_of_spatial_shape,
+            list(ext_source_definition.values())[0],
+            is_spatial=True,
+        )
 
         # Get the links and extra setups, if any
 
@@ -615,28 +673,33 @@ class SourceParser(object):
 
         try:
 
-            spectrum = ext_source_definition['spectrum']
+            spectrum = ext_source_definition["spectrum"]
 
-        except KeyError: # pragma: no cover
+        except KeyError:  # pragma: no cover
 
-            raise ModelSyntaxError("Ext. source %s is missing the 'spectrum' attribute" % self._source_name)
+            raise ModelSyntaxError(
+                "Ext. source %s is missing the 'spectrum' attribute" % self._source_name
+            )
 
         components = []
 
-        for component_name, component_definition in list(ext_source_definition['spectrum'].items()):
-            this_component = self._parse_spectral_component(component_name, component_definition)
+        for component_name, component_definition in list(
+            ext_source_definition["spectrum"].items()
+        ):
+            this_component = self._parse_spectral_component(
+                component_name, component_definition
+            )
 
             components.append(this_component)
 
-        this_ext_source = extended_source.ExtendedSource(self._source_name, spatial_shape, components=components)
+        this_ext_source = extended_source.ExtendedSource(
+            self._source_name, spatial_shape, components=components
+        )
 
         return this_ext_source
 
 
-
-
 class ShapeParser(object):
-
     def __init__(self, source_name):
 
         self._source_name = source_name
@@ -653,9 +716,13 @@ class ShapeParser(object):
 
         return self._extra_setups
 
-    def parse(self, component_name, function_name, parameters_definition, is_spatial = False):
+    def parse(
+        self, component_name, function_name, parameters_definition, is_spatial=False
+    ):
 
-        return self._parse_shape_definition(component_name, function_name, parameters_definition, is_spatial)
+        return self._parse_shape_definition(
+            component_name, function_name, parameters_definition, is_spatial
+        )
 
     @staticmethod
     def _fix(value):
@@ -664,14 +731,18 @@ class ShapeParser(object):
         # such as in units
         return value.replace("\n", " ")
 
-    def _parse_shape_definition(self, component_name, function_name, parameters_definition, is_spatial=False):
+    def _parse_shape_definition(
+        self, component_name, function_name, parameters_definition, is_spatial=False
+    ):
 
         # Get the function
 
-        if 'expression' in parameters_definition:
+        if "expression" in parameters_definition:
 
             # This is a composite function
-            function_instance = function.get_function(function_name, parameters_definition['expression'])
+            function_instance = function.get_function(
+                function_name, parameters_definition["expression"]
+            )
 
         else:
 
@@ -679,10 +750,13 @@ class ShapeParser(object):
 
                 function_instance = function.get_function(function_name)
 
-            except function.UnknownFunction: # pragma: no cover
+            except function.UnknownFunction:  # pragma: no cover
 
-                raise ModelSyntaxError("Function %s, specified as shape for %s of source %s, is not a "
-                                       "known function" % (function_name, component_name, self._source_name))
+                raise ModelSyntaxError(
+                    "Function %s, specified as shape for %s of source %s, is not a "
+                    "known function"
+                    % (function_name, component_name, self._source_name)
+                )
 
         # Loop over the parameters of the function instance, instead of the specification,
         # so we can understand if there are parameters missing from the specification
@@ -693,11 +767,13 @@ class ShapeParser(object):
 
                 this_definition = parameters_definition[parameter_name]
 
-            except KeyError: # pragma: no cover
+            except KeyError:  # pragma: no cover
 
-                raise ModelSyntaxError("Function %s, specified as shape for %s of source %s, lacks "
-                                       "the definition for parameter %s"
-                                       % (function_name, component_name, self._source_name, parameter_name))
+                raise ModelSyntaxError(
+                    "Function %s, specified as shape for %s of source %s, lacks "
+                    "the definition for parameter %s"
+                    % (function_name, component_name, self._source_name, parameter_name)
+                )
 
             # Update the parameter. Note that the order is important, because trying to set the value before the
             # minimum and maximum could result in a error.
@@ -712,31 +788,43 @@ class ShapeParser(object):
 
                 warnings.simplefilter("ignore", RuntimeWarning)
 
-                if 'min_value' in this_definition:
-                    function_instance.parameters[parameter_name].min_value = this_definition['min_value']
+                if "min_value" in this_definition:
+                    function_instance.parameters[
+                        parameter_name
+                    ].min_value = this_definition["min_value"]
 
-                if 'max_value' in this_definition:
-                    function_instance.parameters[parameter_name].max_value = this_definition['max_value']
+                if "max_value" in this_definition:
+                    function_instance.parameters[
+                        parameter_name
+                    ].max_value = this_definition["max_value"]
 
-            if 'delta' in this_definition:
-                function_instance.parameters[parameter_name].delta = this_definition['delta']
+            if "delta" in this_definition:
+                function_instance.parameters[parameter_name].delta = this_definition[
+                    "delta"
+                ]
 
-            if 'free' in this_definition:
-                function_instance.parameters[parameter_name].free = this_definition['free']
+            if "free" in this_definition:
+                function_instance.parameters[parameter_name].free = this_definition[
+                    "free"
+                ]
 
-            if 'unit' in this_definition:
-                function_instance.parameters[parameter_name].unit = self._fix(this_definition['unit'])
+            if "unit" in this_definition:
+                function_instance.parameters[parameter_name].unit = self._fix(
+                    this_definition["unit"]
+                )
 
             # Now set the value, which must be present
 
-            if 'value' not in this_definition:  # pragma: no cover
-                raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
-                                       "of source %s, lacks a 'value' attribute"
-                                       % (parameter_name, function_name, component_name, self._source_name))
+            if "value" not in this_definition:  # pragma: no cover
+                raise ModelSyntaxError(
+                    "The parameter %s in function %s, specified as shape for %s "
+                    "of source %s, lacks a 'value' attribute"
+                    % (parameter_name, function_name, component_name, self._source_name)
+                )
 
             # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
 
-            matches = re.findall('''f\((.+)\)''', str(this_definition['value']))
+            matches = re.findall("""f\((.+)\)""", str(this_definition["value"]))
 
             if matches:
 
@@ -748,62 +836,95 @@ class ShapeParser(object):
 
                 # Now get the law
 
-                if 'law' not in this_definition:  # pragma: no cover
-                    raise ModelSyntaxError("The parameter %s in function %s, specified as shape for %s "
-                                           "of source %s, is linked to %s but lacks a 'law' attribute"
-                                           % (parameter_name, function_name, component_name,
-                                              self._source_name, linked_variable))
+                if "law" not in this_definition:  # pragma: no cover
+                    raise ModelSyntaxError(
+                        "The parameter %s in function %s, specified as shape for %s "
+                        "of source %s, is linked to %s but lacks a 'law' attribute"
+                        % (
+                            parameter_name,
+                            function_name,
+                            component_name,
+                            self._source_name,
+                            linked_variable,
+                        )
+                    )
 
-                link_function_name = list(this_definition['law'].keys())[0]
+                link_function_name = list(this_definition["law"].keys())[0]
 
-                link_function_instance = self._parse_shape_definition(component_name, link_function_name,
-                                                                      this_definition['law'][link_function_name])
+                link_function_instance = self._parse_shape_definition(
+                    component_name,
+                    link_function_name,
+                    this_definition["law"][link_function_name],
+                )
 
                 if is_spatial:
                     path = ".".join([self._source_name, function_name, parameter_name])
                 else:
-                    path = ".".join([self._source_name, 'spectrum', component_name, function_name, parameter_name])
+                    path = ".".join(
+                        [
+                            self._source_name,
+                            "spectrum",
+                            component_name,
+                            function_name,
+                            parameter_name,
+                        ]
+                    )
 
-                self._links.append({'parameter_path': path,
-                                    'law': link_function_instance,
-                                    'variable': linked_variable})
+                self._links.append(
+                    {
+                        "parameter_path": path,
+                        "law": link_function_instance,
+                        "variable": linked_variable,
+                    }
+                )
 
             else:
 
                 # This is a normal (not linked) parameter
 
-                function_instance.parameters[parameter_name].value = this_definition['value']
+                function_instance.parameters[parameter_name].value = this_definition[
+                    "value"
+                ]
 
             # Setup the prior for this parameter, if it exists
-            if 'prior' in this_definition:
+            if "prior" in this_definition:
                 # Get the function for this prior
 
                 # A name to display in case of errors
 
-                name_for_errors = 'prior for %s' % function_instance.parameters[parameter_name].path
+                name_for_errors = (
+                    "prior for %s" % function_instance.parameters[parameter_name].path
+                )
 
-                prior_function_name = list(this_definition['prior'].keys())[0]
+                prior_function_name = list(this_definition["prior"].keys())[0]
 
-                prior_function_definition = this_definition['prior'][prior_function_name]
+                prior_function_definition = this_definition["prior"][
+                    prior_function_name
+                ]
 
-                prior_function = self._parse_shape_definition(name_for_errors,
-                                                              prior_function_name,
-                                                              prior_function_definition)
+                prior_function = self._parse_shape_definition(
+                    name_for_errors, prior_function_name, prior_function_definition
+                )
 
                 # Set it as prior for current parameter
 
                 function_instance.parameters[parameter_name].prior = prior_function
 
         # Now handle extra_setup if any
-        if 'extra_setup' in parameters_definition:
-        
+        if "extra_setup" in parameters_definition:
+
             if is_spatial:
                 path = ".".join([self._source_name, function_name])
             else:
-                path = ".".join([self._source_name, 'spectrum', component_name, function_name])
-                
-            self._extra_setups.append({'function_path': path,
-                                       'extra_setup': parameters_definition['extra_setup']})
+                path = ".".join(
+                    [self._source_name, "spectrum", component_name, function_name]
+                )
+
+            self._extra_setups.append(
+                {
+                    "function_path": path,
+                    "extra_setup": parameters_definition["extra_setup"],
+                }
+            )
 
         return function_instance
-
