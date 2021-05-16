@@ -410,10 +410,10 @@ def test_auto_unlink():
 
     n_free_source2 = len(m.two.free_parameters)
 
-    # This should give a warning about automatically unlinking 2 parameters
-    with pytest.warns(RuntimeWarning):
+    # # This should give a warning about automatically unlinking 2 parameters
+    # with pytest.warns(RuntimeWarning):
 
-        m.remove_source(m.two.name)
+    m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
@@ -431,9 +431,9 @@ def test_auto_unlink():
     m.link(m.one.spectrum.main.Powerlaw.K,
            m.two.spectrum.main.Powerlaw.K, link_law)
 
-    with pytest.warns(RuntimeWarning):
+    
 
-        m.remove_source(m.two.name)
+    m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
@@ -446,9 +446,9 @@ def test_auto_unlink():
     m.link([m.one.spectrum.main.Powerlaw.K,
             m.ext_one.spectrum.main.Powerlaw.K], m.two.spectrum.main.Powerlaw.K)
 
-    with pytest.warns(RuntimeWarning):
+    #with pytest.warns(RuntimeWarning):
 
-        m.remove_source(m.two.name)
+    m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
