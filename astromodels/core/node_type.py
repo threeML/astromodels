@@ -2,7 +2,12 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Type
 import itertools
 
+from astromodels.utils.logging import setup_logger
+
 from .cpickle_compatibility_layer import cPickle
+
+log = setup_logger(__name__)
+
 
 # This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)
 # during unpickling
@@ -70,7 +75,8 @@ class _Node:
     def _add_child(self, child: Type["_Node"]):
 
         assert isinstance(child, _Node)
-        
+
+        log.debug(f"adding child {child._name}")
 
         if child._name not in self._children:
             self._children[child._name] = child
@@ -101,7 +107,9 @@ class _Node:
 
         self._parent = parent
         self._path = f"{self._parent._get_path()}.{self._name}"
+        log.debug(f"path is now: {self._path}")
 
+        
     def _get_child(self, name: str):
         """
         return a child object

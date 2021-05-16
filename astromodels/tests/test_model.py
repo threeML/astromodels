@@ -23,6 +23,11 @@ from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
+from astromodels import update_logging_level
+
+update_logging_level("DEBUG")
+
+
 
 
 def _get_point_source(name="test"):
