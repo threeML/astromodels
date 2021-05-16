@@ -74,14 +74,28 @@ class _Node:
 
     def _add_child(self, child: Type["_Node"]):
 
-        assert isinstance(child, _Node)
+        if not isinstance(child, _Node):
+
+            log.error(f"{child} is not of type Node")
+
+            raise TypeError()
 
         log.debug(f"adding child {child._name}")
 
         if child._name not in self._children:
+
+            # add the child to the dict
+            
             self._children[child._name] = child
+
+            # set the parent
+            
             child._set_parent(self)
 
+            # now go through and make sure
+            # all the children know about the
+            # new parent recursively
+            
             child._update_child_path()
             
         else:
@@ -231,17 +245,27 @@ class _Node:
         if "_children" in self.__dict__:
             if name in self._children:
 
-                try:
-
-                    # call the value
-
+                if ("_internal_value" in self._children[name].__dict__) and (self._children[name].is_leaf):
+                
                     self._children[name].value = value
 
-                except:
+                else:
 
-                    # complain!
-                
                     raise AttributeError()
+                    
+                # try:
+
+                #     # call the value
+
+                #     self._children[name].value = value
+
+                # except:
+
+                #     # complain!
+
+                #     log.exception(f"{name}")
+                    
+                #     raise AttributeError()
             else:
                 return super().__setattr__(name, value)
         else:

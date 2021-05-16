@@ -27,7 +27,6 @@ log = setup_logger(__name__)
 # of the templates
 _TINY_ = 1e-50
 
-
 __all__ = [
     "IncompleteGrid",
     "ValuesNotInGrid",
@@ -51,7 +50,6 @@ class MissingDataFile(RuntimeError):
 
 # This dictionary will keep track of the new classes already created in the current session
 _classes_cache = {}
-
 
 # currently python2 lacks support for the faster interpolations
 # thus we need to use some work arounds to keep the code compatible

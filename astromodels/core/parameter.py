@@ -157,11 +157,11 @@ class ParameterBase(Node):
         self,
         name: str,
         value: float,
-        min_value: Optional[float]=None,
-        max_value: Optional[float]=None,
-        desc: Optional[str]=None,
-        unit: u.Unit=u.dimensionless_unscaled,
-        transformation: Optional[ParameterTransformation]=None,
+        min_value: Optional[float] = None,
+        max_value: Optional[float] = None,
+        desc: Optional[str] = None,
+        unit: u.Unit = u.dimensionless_unscaled,
+        transformation: Optional[ParameterTransformation] = None,
     ):
 
         # Make this a node
@@ -198,8 +198,9 @@ class ParameterBase(Node):
                 log.error("transformation is not of ParameterTransform ")
 
                 raise AssertionError()
-                
-        self._transformation: Optional[ParameterTransformation] = transformation
+
+        self._transformation: Optional[
+            ParameterTransformation] = transformation
 
         # Let's store the init value
 
@@ -254,8 +255,7 @@ class ParameterBase(Node):
     def _repr__base(self, rich_output):  # pragma: no cover
 
         raise NotImplementedError(
-            "You need to implement this for the actual Parameter class"
-        )
+            "You need to implement this for the actual Parameter class")
 
     # Define the property 'description' and make it read-only
 
@@ -326,10 +326,9 @@ class ParameterBase(Node):
 
                     new_unit_name = new_unit
 
-                log.exception(
-                    "Cannot convert the value %s from %s to the "
-                    "new units %s" % (self.value, self._unit, new_unit_name)
-                )
+                log.exception("Cannot convert the value %s from %s to the "
+                              "new units %s" %
+                              (self.value, self._unit, new_unit_name))
 
                 raise CannotConvertValueToNewUnits()
 
@@ -346,9 +345,9 @@ class ParameterBase(Node):
 
         return self._unit
 
-    unit = property(
-        _get_unit, _set_unit, doc="""Gets or sets the unit for the parameter"""
-    )
+    unit = property(_get_unit,
+                    _set_unit,
+                    doc="""Gets or sets the unit for the parameter""")
 
     @property
     def as_quantity(self) -> u.Quantity:
@@ -436,7 +435,8 @@ class ParameterBase(Node):
 
         if self._aux_variable:
 
-            return self._aux_variable["law"](self._aux_variable["variable"].value)
+            return self._aux_variable["law"](
+                self._aux_variable["variable"].value)
 
         if self._transformation is None:
 
@@ -461,18 +461,19 @@ class ParameterBase(Node):
 
         if self.min_value is not None and new_value < self.min_value:
 
-            raise SettingOutOfBounds(
-                "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}".format(
-                    self.name, new_value, self.min_value
-                )
-            )
+            log.error(
+                "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}"
+                .format(self.name, new_value, self.min_value))
+
+            raise SettingOutOfBounds()
 
         if self.max_value is not None and new_value > self.max_value:
-            raise SettingOutOfBounds(
-                "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}".format(
-                    self.name, new_value, self.max_value
-                )
-            )
+
+            log.error(
+                "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}"
+                .format(self.name, new_value, self.max_value))
+
+            raise SettingOutOfBounds()
 
         # Issue a warning if there is an auxiliary variable, as the setting does not have any effect
         if self.has_auxiliary_variable():
@@ -483,8 +484,7 @@ class ParameterBase(Node):
 
                 log.warning(
                     "You are trying to assign to a parameter which is either linked or "
-                    "has auxiliary variables. The assignment has no effect."
-                )
+                    "has auxiliary variables. The assignment has no effect.")
 
         # Save the value as a pure floating point to avoid the overhead of the astropy.units machinery when
         # not needed
@@ -513,16 +513,16 @@ class ParameterBase(Node):
 
                 except:
 
-                    log.exception(
-                        "Could not call callback for parameter %s" % self.name
-                    )
+                    log.exception("Could not call callback for parameter %s" %
+                                  self.name)
 
                     raise NotCallableOrErrorInCall()
 
     value = property(
         _get_value,
         _set_value,
-        doc="Get and sets the current value for the parameter, with or without units",
+        doc=
+        "Get and sets the current value for the parameter, with or without units",
     )
 
     def _get_internal_value(self):
@@ -537,8 +537,7 @@ class ParameterBase(Node):
         # free thus it will not be touched by the fitting engine
         assert len(self._aux_variable) == 0, (
             "You cannot get the internal value of a parameter which has an auxiliary "
-            "variable"
-        )
+            "variable")
 
         return self._internal_value
 
@@ -570,7 +569,6 @@ class ParameterBase(Node):
 
     @accept_quantity(float, allow_none=True)
     def _set_min_value(self, min_value):
-
         """Sets current minimum allowed value"""
 
         # Check that the min value can be transformed if a transformation is present
@@ -582,8 +580,7 @@ class ParameterBase(Node):
 
                     assert min_value > 0.0, (
                         "The transformation %s is postive definite and the min_value was set to a negative number for %s "
-                        % (type(self._transformation), self.path)
-                    )
+                        % (type(self._transformation), self.path))
 
                 try:
 
@@ -593,9 +590,8 @@ class ParameterBase(Node):
 
                     log.exception(
                         "The provided minimum %s cannot be transformed with the transformation %s which "
-                        "is defined for the parameter %s"
-                        % (min_value, type(self._transformation), self.path)
-                    )
+                        "is defined for the parameter %s" %
+                        (min_value, type(self._transformation), self.path))
 
                     raise ValueError()
             else:
@@ -607,8 +603,7 @@ class ParameterBase(Node):
 
                     log.warning(
                         "We have set the min_value of %s to 1e-99 because there was a postive transform"
-                        % self.path
-                    )
+                        % self.path)
 
         # Store the minimum as a pure float
 
@@ -616,16 +611,12 @@ class ParameterBase(Node):
 
         # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
-        if (
-            self._external_min_value is not None
-            and self.value < self._external_min_value
-        ):
+        if (self._external_min_value is not None
+                and self.value < self._external_min_value):
 
-            log.warning(
-                "The current value of the parameter %s (%s) "
-                "was below the new minimum %s."
-                % (self.name, self.value, self._external_min_value)
-            )
+            log.warning("The current value of the parameter %s (%s) "
+                        "was below the new minimum %s." %
+                        (self.name, self.value, self._external_min_value))
 
             self.value = self._external_min_value
 
@@ -678,7 +669,6 @@ class ParameterBase(Node):
     # Define the property "max_value"
 
     def _get_max_value(self):
-
         """Return current maximum allowed value"""
 
         return self._external_max_value
@@ -691,16 +681,12 @@ class ParameterBase(Node):
 
         # Check that the current value of the parameter is still within the boundaries. If not, issue a warning
 
-        if (
-            self._external_max_value is not None
-            and self.value > self._external_max_value
-        ):
+        if (self._external_max_value is not None
+                and self.value > self._external_max_value):
 
-            log.warning(
-                "The current value of the parameter %s (%s) "
-                "was above the new maximum %s."
-                % (self.name, self.value, self._external_max_value)
-            )
+            log.warning("The current value of the parameter %s (%s) "
+                        "was above the new maximum %s." %
+                        (self.name, self.value, self._external_max_value))
             self.value = self._external_max_value
 
     max_value = property(
@@ -773,7 +759,8 @@ class ParameterBase(Node):
     bounds = property(
         _get_bounds,
         _set_bounds,
-        doc="Gets or sets the boundaries (minimum and maximum) for this " "parameter",
+        doc="Gets or sets the boundaries (minimum and maximum) for this "
+        "parameter",
     )
 
     def add_callback(self, callback):
@@ -809,7 +796,6 @@ class ParameterBase(Node):
         return new_parameter
 
     def to_dict(self, minimal=False) -> Dict[str, Any]:
-
         """Returns the representation for serialization"""
 
         data = collections.OrderedDict()
@@ -1108,10 +1094,10 @@ class Parameter(ParameterBase):
 
         if self.min_value is None:
 
-            raise ParameterMustHaveBounds(
-                "Parameter %s does not have a defined minimum. Set one first, then re-run "
-                "set_uninformative_prior" % self.path
-            )
+            log.error("Parameter %s does not have a defined minimum. Set one first, then re-run "
+                "set_uninformative_prior" % self.path)
+            
+            raise ParameterMustHaveBounds( )
 
         else:
 
@@ -1121,17 +1107,18 @@ class Parameter(ParameterBase):
 
             except SettingOutOfBounds:
 
-                raise SettingOutOfBounds(
-                    "Cannot use minimum of %s for prior %s"
+                log.error( "Cannot use minimum of %s for prior %s"
                     % (self.min_value, prior_instance.name)
                 )
+                
+                raise SettingOutOfBounds( )
 
         if self.max_value is None:
 
-            raise ParameterMustHaveBounds(
-                "Parameter %s does not have a defined maximum. Set one first, then re-run "
-                "set_uninformative_prior" % self.path
-            )
+            log.error( "Parameter %s does not have a defined maximum. Set one first, then re-run "
+                "set_uninformative_prior" % self.path)
+            
+            raise ParameterMustHaveBounds( )
 
         else:  # pragma: no cover
 
@@ -1141,18 +1128,27 @@ class Parameter(ParameterBase):
 
             except SettingOutOfBounds:
 
-                raise SettingOutOfBounds(
-                    "Cannot use maximum of %s for prior %s"
-                    % (self.max_value, prior_instance.name)
-                )
+                log.error("Cannot use maximum of %s for prior %s"
+                    % (self.max_value, prior_instance.name))
+                
+                raise SettingOutOfBounds( )
 
-        assert np.isfinite(prior_instance.upper_bound.value), (
+        if not np.isfinite(prior_instance.upper_bound.value):
+
+            log.error(
             "The parameter %s must have a finite maximum" % self.name
         )
-        assert np.isfinite(prior_instance.lower_bound.value), (
+
+            raise AssertionError()
+            
+        if not np.isfinite(prior_instance.lower_bound.value):
+
+            log.error(
             "The parameter %s must have a finite minimum" % self.name
         )
 
+            raise AssertionError()
+            
         self._set_prior(prior_instance)
 
     # Define property "free"
