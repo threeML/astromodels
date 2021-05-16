@@ -50,9 +50,8 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         from .functions import Synchrotron
 
     from .functions.function import get_function_class, list_functions
-    from .sources.extended_source import ExtendedSource
-    from .sources.particle_source import ParticleSource
-    from .sources.point_source import PointSource
+    from .sources import ExtendedSource, PointSource, ParticleSource
+
 
     astromodels_units = get_units()
     from astromodels.utils.logging import setup_logger, update_logging_level, silence_warnings, activate_warnings
