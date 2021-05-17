@@ -5,6 +5,8 @@ import os
 import re
 import warnings
 from builtins import object, range, str
+from pathlib import Path
+from typing import Dict, Optional, List, Union
 
 import astropy.io.fits as fits
 import astropy.units as u
@@ -80,7 +82,6 @@ try:
 
             return interp(self._x, self._y, v)
 
-
 except:
 
     from scipy.interpolate import \
@@ -91,30 +92,29 @@ except:
 class TemplateModelFactory(object):
     def __init__(
         self,
-        name,
-        description,
-        energies,
-        names_of_parameters,
-        interpolation_degree=1,
-        spline_smoothing_factor=0,
+        name: str,
+        description: str,
+        energies: np.ndarray,
+        names_of_parameters: List[str],
+        interpolation_degree: int = 1,
+        spline_smoothing_factor: int = 0,
     ):
 
         # Store model name
 
         # Enforce that it does not contain spaces nor strange characters
 
-        name = str(name)
+        name: str = str(name)
 
         if re.match("[a-zA-Z_][a-zA-Z0-9_]*", name) is None:
             log.error(
                 "The provided name '%s' is not a valid name. You cannot use spaces, "
-                "or special characters"
-            )
+                "or special characters")
             raise RuntimeError()
 
-        self._name = name
+        self._name: str = name
 
-        self._description = str(description)
+        self._description: str = str(description)
 
         # Store energy grid
 
@@ -124,16 +124,17 @@ class TemplateModelFactory(object):
                 "Energy unit is not a Quantity instance, so units has not been provided. Using keV."
             )
 
-            energies = energies * u.keV
+            energies: u.Quantity = energies * u.keV
 
-        self._energies = np.array(energies.to(u.keV).value)
+        self._energies: np.ndarray = np.array(energies.to(u.keV).value)
 
         # Enforce that they are ordered
         self._energies.sort()
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids = collections.OrderedDict()
+        self._parameters_grids: Dict[
+            str, Optional[np.ndarray]] = collections.OrderedDict()
 
         for parameter_name in names_of_parameters:
 
@@ -143,31 +144,39 @@ class TemplateModelFactory(object):
         self._multi_index = None
         self._interpolators = None
 
-        self._interpolation_degree = interpolation_degree
+        self._interpolation_degree: int = interpolation_degree
 
-        self._spline_smoothing_factor = int(spline_smoothing_factor)
+        self._spline_smoothing_factor: int = int(spline_smoothing_factor)
 
     def define_parameter_grid(self, parameter_name, grid):
 
-        assert parameter_name in self._parameters_grids, (
-            "Parameter %s is not part of this model" % parameter_name
-        )
+        if not parameter_name in self._parameters_grids:
+
+            log.error("Parameter %s is not part of this model" %
+                      parameter_name)
+
+            raise AssertionError()
 
         grid_ = np.array(grid)
 
-        assert (
-            grid_.shape[0] > 1
-        ), "A grid for a parameter must contain at least two elements"
+        if not (grid_.shape[0] > 1):
+
+            log.error(
+                "A grid for a parameter must contain at least two elements")
 
         # Assert that elements are unique
 
-        assert np.all(np.unique(grid_) == grid_), (
-            "Non-unique elements in grid for parameter %s" % parameter_name
-        )
+        if not np.all(np.unique(grid_) == grid_):
+
+            log.error("Non-unique elements in grid for parameter %s" %
+                      parameter_name)
+
+            raise AssertionError()
 
         self._parameters_grids[parameter_name] = grid_
 
-    def add_interpolation_data(self, differential_fluxes, **parameters_values_input):
+    def add_interpolation_data(self, differential_fluxes: np.ndarray,
+                               **parameters_values_input: Dict[str, float]):
 
         # Verify that the grid has been defined for all parameters
 
@@ -175,10 +184,11 @@ class TemplateModelFactory(object):
 
             if grid is None:
 
-                raise IncompleteGrid(
+                log.error(
                     "You need to define a grid for all parameters, by using the "
-                    "define_parameter_grid method."
-                )
+                    "define_parameter_grid method.")
+
+                raise IncompleteGrid()
 
         if self._data_frame is None:
 
@@ -193,9 +203,8 @@ class TemplateModelFactory(object):
 
             # Pre-fill the data matrix with nans, so we will know if some elements have not been filled
 
-            self._data_frame = pd.DataFrame(
-                index=self._multi_index, columns=self._energies
-            )
+            self._data_frame = pd.DataFrame(index=self._multi_index,
+                                            columns=self._energies)
 
         # Make sure we have all parameters and order the values in the same way as the dictionary
         parameters_values = np.zeros(len(self._parameters_grids)) * np.nan
@@ -210,47 +219,56 @@ class TemplateModelFactory(object):
 
         # If the user did not specify one of the parameters, then the parameters_values array will contain nan
 
-        assert np.all(
-            np.isfinite(parameters_values)
-        ), "You didn't specify all parameters' values."
+        if not np.all(np.isfinite(parameters_values)):
+
+            log.error("You didn't specify all parameters' values.")
+
+            raise AssertionError()
 
         # Make sure we are dealing with pure numpy arrays (list and astropy.Quantity instances will be transformed)
         # First we transform the input into a u.Quantity (if it's not already)
 
         if not isinstance(differential_fluxes, u.Quantity):
 
-            differential_fluxes = (
-                np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm ** 2)
-            )  # type: u.Quantity
+            differential_fluxes = (np.array(differential_fluxes) * 1 /
+                                   (u.keV * u.s * u.cm**2))  # type: u.Quantity
 
         # Then we transform it in the right units and we cast it back to a pure np.array
 
         differential_fluxes = np.array(
-            differential_fluxes.to(old_div(1, (u.keV * u.s * u.cm ** 2))).value
-        )
+            differential_fluxes.to(old_div(1, (u.keV * u.s * u.cm**2))).value)
 
         # Now let's check for valid inputs
 
-        assert self._energies.shape[0] == differential_fluxes.shape[0], (
-            "Differential fluxes and energies must have " "the same number of elements"
-        )
+        if not self._energies.shape[0] == differential_fluxes.shape[0]:
+
+            log.error("Differential fluxes and energies must have "
+                      "the same number of elements")
+
+            raise AssertionError()
 
         # Check that the provided value does not contains nan, inf nor zero (as the interpolation happens in the
         # log space)
-        assert np.all(
-            np.isfinite(differential_fluxes)
-        ), "You have invalid values in the differential flux (nan or inf)"
-        assert np.all(differential_fluxes >= 0), (
-            "You have negative values in the differential flux (which is of "
-            "course impossible)"
-        )
+        if not np.all(np.isfinite(differential_fluxes)):
+
+            log.error(
+                "You have invalid values in the differential flux (nan or inf)"
+            )
+
+            raise AssertionError()
+
+        if not np.all(differential_fluxes >= 0):
+
+            log.error(
+                "You have negative values in the differential flux (which is of "
+                "course impossible)")
 
         if not np.all(differential_fluxes > 0):
 
             log.warning(
                 "You have zeros in the differential flux. Since the interpolation happens in the log space, "
-                "this cannot be accepted. We will substitute zeros with %g" % _TINY_
-            )
+                "this cannot be accepted. We will substitute zeros with %g" %
+                _TINY_)
 
             idx = differential_fluxes == 0  # type: np.ndarray
             differential_fluxes[idx] = _TINY_
@@ -265,7 +283,8 @@ class TemplateModelFactory(object):
 
             if len(parameters_values) == 1:
 
-                self._data_frame.loc[parameters_values.tolist()] = np.atleast_2d(tmp)
+                self._data_frame.loc[
+                    parameters_values.tolist()] = np.atleast_2d(tmp)
 
             else:
 
@@ -275,8 +294,7 @@ class TemplateModelFactory(object):
 
             log.error(
                 "The provided parameter values (%s) are not in the defined grid"
-                % parameters_values
-            )
+                % parameters_values)
 
             raise ValuesNotInGrid()
 
@@ -291,28 +309,29 @@ class TemplateModelFactory(object):
 
         return data
 
-    def save_data(self, overwrite=False):
+    def save_data(self, overwrite: bool = False) -> None:
 
         # First make sure that the whole data matrix has been filled
 
-        assert not self._data_frame.isnull().values.any(), (
-            "You have NaNs in the data matrix. Usually this means "
-            "that you didn't fill it up completely, or that some of "
-            "your data contains nans. Cannot save the file."
-        )
+        if not not self._data_frame.isnull().values.any():
 
+            log.error("You have NaNs in the data matrix. Usually this means "
+                      "that you didn't fill it up completely, or that some of "
+                      "your data contains nans. Cannot save the file.")
+
+            raise AssertionError()
+            
         # Get the data directory
 
-        data_dir_path = get_user_data_path()
+        data_dir_path: Path = get_user_data_path()
 
         # Sanitize the data file
 
-        filename_sanitized = os.path.abspath(
-            os.path.join(data_dir_path, "%s.h5" % self._name)
-        )
+        filename_sanitized: Path = data_dir_path.absolute() /  f"{self._name}.h5"
+        
 
         # Check that it does not exists
-        if os.path.exists(filename_sanitized):
+        if filename_sanitized.exists():
 
             if overwrite:
 
@@ -395,7 +414,7 @@ class RectBivariateSplineWrapper(object):
         return res[0][0]
 
 
-class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
+class TemplateModel(Function1D, metaclass=FunctionMeta):
 
     r"""
     description :
@@ -414,7 +433,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
             min : 1e-5
     """
 
-    def _custom_init_(self, model_name, other_name=None, log_interp=True):
+    def _custom_init_(self, model_name, other_name=None, log_interp: bool=True):
         """
         Custom initialization for this model
 
@@ -425,31 +444,30 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         """
 
         # Get the data directory
-
-        data_dir_path = get_user_data_path()
+ 
+        data_dir_path: Path = get_user_data_path()
 
         # Sanitize the data file
 
-        filename_sanitized = os.path.abspath(
-            os.path.join(data_dir_path, "%s.h5" % model_name)
-        )
+        filename_sanitized = data_dir_path.absolute() /  f"{model_name}.h5"
+        
 
-        if not os.path.exists(filename_sanitized):
+        if not filename_sanitized.exists():
 
-            raise MissingDataFile(
-                "The data file %s does not exists. Did you use the "
-                "TemplateFactory?" % (filename_sanitized)
-            )
+            log.error(f"The data file {filename_sanitized} does not exists. Did you use the "
+                "TemplateFactory?")
+            
+            raise MissingDataFile()
 
         # Open the template definition and read from it
 
-        self._data_file = filename_sanitized
+        self._data_file: Path = filename_sanitized
 
         with HDFStore(filename_sanitized) as store:
 
             self._data_frame = store["data_frame"]
 
-            self._parameters_grids = collections.OrderedDict()
+            self._parameters_grids: Dict[str, np.ndarray] = collections.OrderedDict()
 
             processed_parameters = 0
 
@@ -468,9 +486,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                     this_parameter_number = int(tokens[0])
                     this_parameter_name = str(tokens[1])
 
-                    assert (
-                        this_parameter_number == processed_parameters
-                    ), "Parameters out of order!"
+                    if not ( this_parameter_number == processed_parameters ):
+
+                        log.error("Parameters out of order!")
 
                     self._parameters_grids[this_parameter_name] = store[key]
 
