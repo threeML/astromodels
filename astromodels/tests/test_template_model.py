@@ -178,7 +178,7 @@ def test_input_output():
     # tm.beta = -2.23
 
 
-    new_shape = tm * Powerlaw()    
+    new_shape = tm +  Powerlaw()    
 
     new_shape.index_2 = -2.256
 
@@ -208,15 +208,15 @@ def test_input_output():
     # tm.beta = -2.23
 
     
-    new_shape2 = Powerlaw() * tm
+    new_shape2 = Powerlaw() + tm
 
-    new_shape2.index_2 = -2.256
+    new_shape2.index_1 = -2.256
 
     dump2 = pickle.dumps(new_shape2)
 
     clone3 = pickle.loads(dump2)
 
-    assert clone3.index_2.value == new_shape2.index_2.value
+    assert clone3.index_1.value == new_shape2.index_1.value
     
     # Now save to disk and reload
     fake_source2 = PointSource("test", ra=0.0, dec=0.0, spectral_shape=new_shape2)

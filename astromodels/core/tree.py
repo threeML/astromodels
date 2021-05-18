@@ -5,6 +5,7 @@ from future import standard_library
 from astromodels.core.node_type import _Node
 from astromodels.utils.io import display
 from astromodels.utils.valid_variable import is_valid_variable_name
+from astromodels.utils.logging import setup_logger
 
 standard_library.install_aliases()
 
@@ -21,16 +22,26 @@ class NonExistingAttribute(RuntimeWarning):
     pass
 
 
+log = setup_logger(__name__)
+
 class Node(_Node):
 
     # This apparently dumb constructor is needed otherwise pickle will fail
 
     def __init__(self, name):
 
-        assert is_valid_variable_name(name), "Illegal characters in name %s. You can only use letters and numbers, " \
-                                             "and _" % name
+        if not is_valid_variable_name(name):
 
-        assert name != "name", "You cannot call a node 'name', it is reserved."
+            log.error("Illegal characters in name %s. You can only use letters and numbers, " \
+                                             "and _" % name)
+
+            raise AssertionError()
+
+        if not name != "name":
+
+            log.error("You cannot call a node 'name', it is reserved.")
+
+            raise AssertionError()
 
         _Node.__init__(self, name)
 
@@ -48,7 +59,7 @@ class Node(_Node):
 
         return this_dict
 
-   # This is used by dir() and by the autocompletion in Ipython
+    # This is used by dir() and by the autocompletion in Ipython
 
     def __dir__(self):
 
@@ -62,7 +73,7 @@ class Node(_Node):
 
     def _repr__base(self, rich_output):
 
-        return "Node with name %s" % self.name
+        return f"Node with name {self.name}"
 
     def __repr__(self):
         """

@@ -1520,12 +1520,16 @@ class CompositeFunction(Function):
                 
                 parameter._change_name(new_name, clear_parent = False)
 
-            # if not function.is_root:
-
-            #     # if the function is attached to a source, we want to ditch the source
-            #     # because now this function is part of a composite
+            if not function.is_root:
                 
-            #     function = function._parent._remove_child(function.name, delete=False)
+                log.warning(f"{function.name} was previously assigned to {function._root(source_only=True).name}")
+                log.warning(f"it has now been removed as it is a composite")
+                log.warning("you can create a new function and link it to the composite parameters if needed")
+                
+                # if the function is attached to a source, we want to ditch the source
+                # because now this function is part of a composite
+                
+                function = function._parent._remove_child(function.name, delete=False)
             
             log.debug(f"func path after comp: {function.path}")
         # Now build a meaningful description
@@ -1536,10 +1540,6 @@ class CompositeFunction(Function):
         Function.__init__(self, 'composite', _function_definition, parameters)
 
         self._uuid = self._uuid_expression
-
-        self._orphan()
-
-        log.debug(f"path after init: {self.path}")
 
     def set_units(self, x_unit, y_unit, relaxed=False):
 
