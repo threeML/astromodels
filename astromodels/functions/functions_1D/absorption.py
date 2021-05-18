@@ -1,7 +1,5 @@
 import os
 import sys
-from functools import lru_cache, wraps
-
 import astropy.units as astropy_units
 import numpy as np
 import numba as nb
@@ -13,31 +11,6 @@ from astromodels.utils import configuration
 from astromodels.utils.data_files import _get_data_file_path
 
 from interpolation import interp
-
-
-def cache_array_method(*args, **kwargs):
-    """
-    LRU cache implementation for methods whose FIRST parameter is a numpy array
-    modified from: https://gist.github.com/Susensio/61f4fee01150caaac1e10fc5f005eb75
-    """
-    def decorator(function):
-        @wraps(function)
-        def wrapper(s, np_array, *args, **kwargs):
-            hashable_array = tuple(np_array)
-            return cached_wrapper(s, hashable_array, *args, **kwargs)
-
-        @lru_cache(*args, **kwargs)
-        def cached_wrapper(s, hashable_array, *args, **kwargs):
-            array = np.array(hashable_array)
-            return function(s, array, *args, **kwargs)
-
-        # copy lru_cache attributes over too
-        wrapper.cache_info = cached_wrapper.cache_info
-        wrapper.cache_clear = cached_wrapper.cache_clear
-        return wrapper
-
-    return decorator
-
 
 _abs_tables = {
     "phabs": {
@@ -81,7 +54,8 @@ def _get_xsect_table(model, abund_table):
     xsect_ene = dxs["ENERGY"]
     xsect_val = dxs["SIGMA"]
 
-    return np.array(xsect_ene,dtype=np.float64), np.array(xsect_val, dtype=np.float64)
+    return np.array(xsect_ene, dtype=np.float64), np.array(xsect_val,
+                                                           dtype=np.float64)
 
 
 # PhAbs class
@@ -146,11 +120,6 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
                 "phabs", abund_table)
 
             self._abund_table = "AG89"
-
-    @cache_array_method()
-    def _cached_interp(self, x):
-
-        return np.interp(x, self.xsect_ene, self.xsect_val)
 
     def evaluate(self, x, NH, redshift):
 
@@ -241,11 +210,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
     def abundance_table(self):
         print(_abund_info[self._abund_table])
 
-    @cache_array_method()
-    def _cached_interp(self, x):
-
-        return np.interp(x, self.xsect_ene, self.xsect_val)
-
+ 
     def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
@@ -323,10 +288,6 @@ class WAbs(Function1D, metaclass=FunctionMeta):
     def abundance_table(self):
         print(_abund_info[self._abund_table])
 
-    @cache_array_method()
-    def _cached_interp(self, x):
-
-        return np.interp(x, self.xsect_ene, self.xsect_val)
 
     def evaluate(self, x, NH, redshift):
 
