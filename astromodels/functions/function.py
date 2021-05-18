@@ -1517,7 +1517,6 @@ class CompositeFunction(Function):
                 # parameter, not a copy, as always in python)
 
                 parameters[new_name] = parameter
-
                 
                 parameter._change_name(new_name, clear_parent = False)
 
