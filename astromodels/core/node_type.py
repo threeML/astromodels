@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from os import curdir
 from typing import Dict, List, Optional, Type
 import itertools
 
@@ -12,7 +13,6 @@ log = setup_logger(__name__)
 # This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)
 # during unpickling
 class NewNodeUnpickler(object):
-
     def __call__(self, cls):
 
         instance = cls.__new__(cls)
@@ -20,12 +20,13 @@ class NewNodeUnpickler(object):
         return instance
 
 
-@dataclass(repr=False,unsafe_hash=False)
+@dataclass(repr=False, unsafe_hash=False)
 class _Node:
     _name: str
     _parent: Optional[Type["_Node"]] = field(repr=False, default=None)
-    _children: Dict[str, Type["_Node"]] = field(
-        default_factory=dict, repr=False, compare=False)
+    _children: Dict[str, Type["_Node"]] = field(default_factory=dict,
+                                                repr=False,
+                                                compare=False)
     _path: Optional[str] = field(repr=False, default="")
 
     # The next 3 methods are *really* necessary for anything to work
@@ -39,7 +40,7 @@ class _Node:
         state['name'] = self._name
         state['__dict__'] = self.__dict__
 
-        return NewNodeUnpickler(), (self.__class__,), state
+        return NewNodeUnpickler(), (self.__class__, ), state
 
     def __setstate__(self, state):
 
@@ -85,39 +86,39 @@ class _Node:
         if child._name not in self._children:
 
             # add the child to the dict
-            
+
             self._children[child._name] = child
 
             # set the parent
-            
+
             child._set_parent(self)
 
             # now go through and make sure
             # all the children know about the
             # new parent recursively
-            
+
             child._update_child_path()
-            
+
         else:
 
             log.error(f"A child with name {child._name} already exists")
-            
-            raise AttributeError(
-                    )
 
-        
+            raise AttributeError()
+
     def _add_children(self, children: List[Type["_Node"]]):
 
         for child in children:
             self._add_child(child)
 
-    def _remove_child(self, name: str, delete: bool=True) -> Optional["_Node"]:
+    def _remove_child(self,
+                      name: str,
+                      delete: bool = True) -> Optional["_Node"]:
         """
         return a child
         """
 
         # this kills the child
-        
+
         if delete:
 
             del self._children[name]
@@ -126,7 +127,7 @@ class _Node:
 
         # we want to keep the child
         # but orphan it
-        
+
         else:
 
             child = self._children.pop(name)
@@ -216,6 +217,37 @@ class _Node:
         else:
             return self._name
 
+    def _root(self, source_only: bool=False) -> "_Node":
+        """
+        returns the root of the node, will stop at the source
+        if source_only
+        """
+        if self.is_root:
+            return self
+
+        else:
+
+            current_node = self
+
+            # recursively walk up the tree to
+            # the root
+            
+            while True:
+
+                parent = current_node._parent
+                
+                if source_only:
+
+                    if parent.name == "__root__":
+
+                        return current_node
+
+                current_node = current_node._parent
+
+                if current_node.is_root:
+
+                    return current_node
+        
     @property
     def path(self):
         return self._get_path()
