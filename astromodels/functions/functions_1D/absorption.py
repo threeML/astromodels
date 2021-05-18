@@ -161,15 +161,15 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
-
+            _redshift = redshift.value
         else:
 
             _unit = 1.0
             _y_unit = 1.0
-
+            _redshift = redshift
             _x = x
 
-        xsect_interp = self._cached_interp(_x * (1 + redshift))
+        xsect_interp = self._cached_interp(_x * (1 + _redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
@@ -256,15 +256,15 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
-
+            _redshift = redshift.value
         else:
 
             _unit = 1.0
             _y_unit = 1.0
-
+            _redshift = redshift
             _x = x
 
-        xsect_interp = self._cached_interp(_x * (1 + redshift))
+        xsect_interp = self._cached_interp(_x * (1 + _redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
@@ -337,15 +337,16 @@ class WAbs(Function1D, metaclass=FunctionMeta):
             _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
+            _redshift = redshift.value
 
         else:
 
             _unit = 1.0
             _y_unit = 1.0
-
+            _redshift = redshift
             _x = x
 
-        xsect_interp = self._cached_interp(_x * (1 + redshift))
+        xsect_interp = self._cached_interp(_x * (1 + _redshift))
 
         spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
 
