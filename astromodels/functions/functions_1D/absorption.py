@@ -14,6 +14,8 @@ from astromodels.utils import configuration
 from astromodels.utils.data_files import _get_data_file_path
 from astromodels.utils.logging import setup_logger
 
+log = setup_logger(__name__)
+
 _abs_tables = {
     "phabs": {
         "AG89": "angr",
