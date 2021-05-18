@@ -433,7 +433,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             min : 1e-5
     """
 
-    def _custom_init_(self, model_name, other_name=None, log_interp: bool=True):
+    def _custom_init_(self, model_name: str, other_name:Optional[str]=None, log_interp: bool=True):
         """
         Custom initialization for this model
 

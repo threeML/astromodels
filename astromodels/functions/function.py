@@ -25,6 +25,11 @@ from astromodels.core.tree import Node
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
 
+from astromodels.utils.logging import setup_logger
+
+
+log = setup_logger(__name__)
+
 __author__ = 'giacomov'
 
 
@@ -121,8 +126,10 @@ class FunctionMeta(type):
 
         if 'evaluate' not in dct:
 
+            log.error("You have to implement the 'evaluate' method in %s" % name)
+            
             raise AttributeError(
-                "You have to implement the 'evaluate' method in %s" % name)
+                )
 
         # We also need the method _set_units
 
@@ -229,7 +236,7 @@ class FunctionMeta(type):
 
         # Figure out the dimensionality of this function
 
-        n_dim = len(variables)
+        n_dim: int = len(variables)
 
         # Store the dimensionality in the *type*
 
@@ -1381,7 +1388,11 @@ class CompositeFunction(Function):
 
     def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
 
-        assert operation in _operations, "Do not know operation %s" % operation
+        if not operation in _operations:
+
+            log.error("Do not know operation %s" % operation)
+
+            raise AssertionError()
 
         # Save this to make the class pickeable (see the __setstate__ and __getstate__ methods)
 
@@ -1402,6 +1413,8 @@ class CompositeFunction(Function):
         self._uuid_expression = self._get_uuid_expression(
             operation, function_or_scalar_1, function_or_scalar_2)
 
+        log.debug(f"UUID of composite {self._uuid_expression}")
+        
         # Makes the list of unique functions which compose this composite function.
 
         self._functions = []
@@ -1469,13 +1482,19 @@ class CompositeFunction(Function):
         # Save the expression
         self._expression = expression
 
+        log.debug(f"function expression: {self._expression}")
+        
         # Build the parameters dictionary assigning a new name to each parameter to account for possible
         # duplicates.
 
         parameters = collections.OrderedDict()
 
+        
+        
         for i, function in enumerate(self._functions):
 
+            log.debug(f"func path before comp: {function.path}")
+            
             for parameter_name, parameter in list(function.parameters.items()):
 
                 # New name to avoid possible duplicates
@@ -1492,12 +1511,24 @@ class CompositeFunction(Function):
 
                 new_name = "%s_%i" % (original_name, i+1)
 
+                log.debug(f"rename {original_name} -> {new_name}")
+
                 # Store the parameter under the new name (obviously this is a reference to the
                 # parameter, not a copy, as always in python)
 
                 parameters[new_name] = parameter
-                parameter._change_name(new_name)
 
+                
+                parameter._change_name(new_name, clear_parent = False)
+
+            # if not function.is_root:
+
+            #     # if the function is attached to a source, we want to ditch the source
+            #     # because now this function is part of a composite
+                
+            #     function = function._parent._remove_child(function.name, delete=False)
+            
+            log.debug(f"func path after comp: {function.path}")
         # Now build a meaningful description
 
         _function_definition = {
@@ -1506,6 +1537,10 @@ class CompositeFunction(Function):
         Function.__init__(self, 'composite', _function_definition, parameters)
 
         self._uuid = self._uuid_expression
+
+        self._orphan()
+
+        log.debug(f"path after init: {self.path}")
 
     def set_units(self, x_unit, y_unit, relaxed=False):
 

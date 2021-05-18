@@ -8,8 +8,12 @@ from astromodels.functions import TemplateModel, TemplateModelFactory, MissingDa
 from astromodels.functions import Band, Powerlaw
 from astromodels import Model, PointSource, clone_model, load_model
 from astromodels.utils.data_files import _get_data_file_path
+from astromodels import update_logging_level
 
 import pickle
+
+
+update_logging_level("DEBUG")
 
 __author__ = 'giacomov'
 
@@ -167,7 +171,14 @@ def test_input_output():
     assert np.allclose(clone2.test.spectrum.main.shape(xx), fake_model.test.spectrum.main.shape(xx))
 
     # Test pickling with other functions
-    new_shape = tm * Powerlaw()
+
+    
+    # tm = TemplateModel('__test')
+    # tm.alpha = -0.95
+    # tm.beta = -2.23
+
+
+    new_shape = tm * Powerlaw()    
 
     new_shape.index_2 = -2.256
 
@@ -176,7 +187,7 @@ def test_input_output():
     clone3 = pickle.loads(dump2)
 
     assert clone3.index_2.value == new_shape.index_2.value
-
+    
     # Now save to disk and reload
     fake_source2 = PointSource("test", ra=0.0, dec=0.0, spectral_shape=new_shape)
 
@@ -190,6 +201,38 @@ def test_input_output():
     assert reloaded_model.get_number_of_point_sources() == 1
     assert np.allclose(fake_model2.test.spectrum.main.shape(xx), reloaded_model.test.spectrum.main.shape(xx))
 
+    # test that the inversion works
+
+    # tm = TemplateModel('__test')
+    # tm.alpha = -0.95
+    # tm.beta = -2.23
+
+    
+    new_shape2 = Powerlaw() * tm
+
+    new_shape2.index_2 = -2.256
+
+    dump2 = pickle.dumps(new_shape2)
+
+    clone3 = pickle.loads(dump2)
+
+    assert clone3.index_2.value == new_shape2.index_2.value
+    
+    # Now save to disk and reload
+    fake_source2 = PointSource("test", ra=0.0, dec=0.0, spectral_shape=new_shape2)
+
+    fake_model2 = Model(fake_source2)
+
+    fake_model2.save("__test.yml", overwrite=True)
+
+    # Now try to reload
+    reloaded_model = load_model("__test.yml")
+
+    assert reloaded_model.get_number_of_point_sources() == 1
+    assert np.allclose(fake_model2.test.spectrum.main.shape(xx), reloaded_model.test.spectrum.main.shape(xx))
+
+
+    
     os.remove("__test.yml")
 
 def test_xspec_table_model():

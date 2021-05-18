@@ -783,7 +783,7 @@ class ShapeParser(object):
 
                 for k,v in parameters_definition.items():
                 
-                    log.error(k,v)
+                    log.error((k, v))
                 
                 raise ModelSyntaxError()
 

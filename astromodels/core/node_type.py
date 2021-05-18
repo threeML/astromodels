@@ -111,14 +111,53 @@ class _Node:
         for child in children:
             self._add_child(child)
 
-    def _remove_child(self, name: str):
+    def _remove_child(self, name: str, delete: bool=True) -> Optional["_Node"]:
         """
         return a child
         """
-        del self._children[name]
-        # return self._children.pop(name)
 
-    def _set_parent(self, parent: Type["_Node"]):
+        # this kills the child
+        
+        if delete:
+
+            del self._children[name]
+
+            # return none
+
+        # we want to keep the child
+        # but orphan it
+        
+        else:
+
+            child = self._children.pop(name)
+
+            # now orphan the child
+
+            child._orphan()
+
+            # we want to get the
+            # orphan back
+            
+            return child
+            
+            # return self._children.pop(name)
+
+    def _orphan(self) -> None:
+        """
+        This will disconnect the current node from its parent
+        and inform all the children about the change
+        """
+
+        # disconnect from parent
+        
+        self._parent = None
+
+        # be nice to the kids and tell them
+        
+        self._update_child_path()
+        
+        
+    def _set_parent(self, parent: Type["_Node"]) -> None:
         """
         set the parent and update path
         """
@@ -194,11 +233,11 @@ class _Node:
                 child._update_child_path()
         
             
-    def _change_name(self, name: str):
+    def _change_name(self, name: str, clear_parent: bool = False):
 
         self._name = name
 
-        if self._parent is not None:
+        if (self._parent is not None) and (not clear_parent):
 
 #            self._parent._children.pop(self._name)
             self._set_parent(self._parent)
