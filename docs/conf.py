@@ -43,14 +43,7 @@ DOCS = Path(__file__).parent
 def run_apidoc(app):
     """Generage API documentation"""
     import better_apidoc
-    import pkgutil
-    import sys
-    import os
-    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-
-    sys.path.insert(0, os.path.abspath('..'))
-    sys.path.insert(1, os.path.abspath('../astromodels'))
-
+   
     # Add the path to the C extension
     #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
     lib_path = os.path.abspath('%s/core' % astro_path)
@@ -58,7 +51,7 @@ def run_apidoc(app):
     sys.path.insert(2, lib_path)
 
     #This must work now
-    import node_ctype
+#    import node_ctype
 
 
     better_apidoc.APP = app
@@ -78,27 +71,27 @@ def run_apidoc(app):
 
 
 # #import astromodels
-import pkgutil
-astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+# import pkgutil
+# astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
-sys.path.insert(1, os.path.abspath('../astromodels'))
+# sys.path.insert(1, os.path.abspath('../astromodels'))
 
-# Add the path to the C extension
-#lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-lib_path = os.path.abspath('%s/core' % astro_path)
+# # Add the path to the C extension
+# #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+# lib_path = os.path.abspath('%s/core' % astro_path)
 
-sys.path.insert(2, lib_path)
-
-
+# sys.path.insert(2, lib_path)
 
 
-#This must work now
-import node_ctype
 
-print(f" current dir {os.getcwd()}")
-files = [f for f in os.listdir('.') if os.path.isfile(f)]
-for f in files:
-    print(f)
+
+# #this must work now
+# import node_ctype
+
+# print(f" current dir {os.getcwd()}")
+# files = [f for f in os.listdir('.') if os.path.isfile(f)]
+# for f in files:
+#     print(f)
     
 # -- General configuration ---------------------------------------------------
 
