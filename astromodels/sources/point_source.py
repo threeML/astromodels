@@ -10,15 +10,17 @@ from astromodels.core.sky_direction import SkyDirection
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
-from astromodels.sources.source import Source, POINT_SOURCE
+from astromodels.sources.source import Source, SourceType
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.core.memoization import use_astromodels_memoization
-
+from astromodels.utils.logging import setup_logger
 __author__ = 'giacomov'
 
 
 __all__ = ["PointSource"]
 
+
+log = setup_logger(__name__)
 
 class PointSource(Source, Node):
     """
@@ -110,7 +112,7 @@ class PointSource(Source, Node):
 
             components = [SpectralComponent("main", spectral_shape)]
 
-        Source.__init__(self, components, POINT_SOURCE)
+        Source.__init__(self, components, src_type=SourceType.POINT_SOURCE)
 
         # A source is also a Node in the tree
 

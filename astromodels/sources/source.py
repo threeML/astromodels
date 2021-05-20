@@ -1,12 +1,20 @@
-from builtins import str
-from builtins import object
+
 __author__ = 'giacomov'
 
+from enum import Enum, unique
+from astromodels.utils.logging import setup_logger
 import collections
 
-PARTICLE_SOURCE = 'particle source'
-POINT_SOURCE = 'point source'
-EXTENDED_SOURCE = 'extended source'
+log = setup_logger(__name__)
+
+@unique
+class SourceType(Enum):
+    PARTICLE_SOURCE = 'particle source'
+    POINT_SOURCE = 'point source'
+    EXTENDED_SOURCE = 'extended source'
+
+    def __str__(self):
+        return f"{self.value}"
 
 
 class UnknownSourceType(Exception):
@@ -24,14 +32,16 @@ class Source(object):
 
             self._components[component.name] = component
 
-        if src_type not in (PARTICLE_SOURCE, POINT_SOURCE, EXTENDED_SOURCE):
+        if src_type not in SourceType:
 
-            raise UnknownSourceType("Source of type %s is unknown" % src_type)
+            log.error(f"Source of type {src_type} is unknown")
+            
+            raise UnknownSourceType()
 
         else:
 
             # Store the type string
-            self._src_type = str(src_type)
+            self._src_type = src_type
 
     def has_free_parameters(self):
 

@@ -7,7 +7,7 @@ from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
 from astromodels.functions.functions import Constant
-from astromodels.sources.source import Source, EXTENDED_SOURCE
+from astromodels.sources.source import Source, SourceType
 from astromodels.utils.pretty_list import dict_to_list
 
 
@@ -71,10 +71,14 @@ class ExtendedSource(Source, Node):
                 # the spectral shape has been given, so this is a case where the spatial template gives an
                 # energy-dependent shape and the spectral components give the spectrum
 
-                assert (spectral_shape is not None) ^ (components is not None), "You can provide either a single " \
-                                                                                "component, or a list of components " \
-                                                                                "(but not both)."
+                if not ((spectral_shape is not None) ^ (components is not None)):
 
+                    log.error("You can provide either a single "
+                              "component, or a list of components "
+                              "(but not both).")
+
+                    raise AssertionError()
+                    
                 if spectral_shape is not None:
 
                     components = [SpectralComponent("main", spectral_shape)]
@@ -91,11 +95,13 @@ class ExtendedSource(Source, Node):
 
         else:
 
-            raise RuntimeError("The spatial shape must have either 2 or 3 dimensions.")
+            log.error("The spatial shape must have either 2 or 3 dimensions.")
+
+            raise RuntimeError()
 
         # Here we have a list of components
 
-        Source.__init__(self, components, EXTENDED_SOURCE)
+        Source.__init__(self, components, SourceType.EXTENDED_SOURCE)
 
         # A source is also a Node in the tree
 

@@ -10,8 +10,7 @@ from astromodels.core import (model, parameter, polarization, sky_direction,
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
-from astromodels.sources.source import (EXTENDED_SOURCE, PARTICLE_SOURCE,
-                                        POINT_SOURCE)
+from astromodels.sources.source import SourceType
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
@@ -319,16 +318,18 @@ class SourceParser(object):
             # Point source or extended source?
 
             source_type = re.findall(
-                "\((%s|%s|%s)\)" % (POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE),
+                "\((%s|%s|%s)\)" % (SourceType.POINT_SOURCE, SourceType.EXTENDED_SOURCE, SourceType.PARTICLE_SOURCE),
                 source_name,
             )[-1]
 
+            
+            
         except IndexError:  # pragma: no cover
 
             raise ModelSyntaxError(
                 "Don't recognize type for source '%s'. "
                 "Valid types are '%s', '%s' or '%s'."
-                % (source_name, POINT_SOURCE, EXTENDED_SOURCE, PARTICLE_SOURCE)
+                % (source_name, SourceType.POINT_SOURCE, SourceType.EXTENDED_SOURCE, SourceType.PARTICLE_SOURCE)
             )
 
         else:
@@ -346,15 +347,15 @@ class SourceParser(object):
         # to make a synchrotron spectrum uses this to save and set up the particle distribution
         self._extra_setups = []
 
-        if source_type == POINT_SOURCE:
+        if source_type == SourceType.POINT_SOURCE.value:
 
             self._parsed_source = self._parse_point_source(source_definition)
 
-        elif source_type == EXTENDED_SOURCE:
+        elif source_type == SourceType.EXTENDED_SOURCE.value:
 
             self._parsed_source = self._parse_extended_source(source_definition)
 
-        elif source_type == PARTICLE_SOURCE:
+        elif source_type == SourceType.PARTICLE_SOURCE.value:
 
             self._parsed_source = self._parse_particle_source(source_definition)
 
