@@ -161,7 +161,30 @@ def test_remove_child():
 
     clean()
 
+    t = _SimpleInheritance("test")
 
+    n = Node("node")
+
+    for i in range(1000):
+
+        t._add_child(n)
+
+        assert t._get_child("node") == n
+
+        old = t._remove_child("node", delete=False)
+
+        assert old == n
+
+        assert old.is_root
+
+    with pytest.raises(AttributeError):
+        print(t.node)
+
+    with pytest.raises(KeyError):
+        t._get_child("node")
+
+    clean()
+    
 def test_get_path():
     # Make a small tree
 

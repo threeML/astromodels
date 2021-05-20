@@ -10,7 +10,8 @@ from astromodels.functions.function import (Function1D, FunctionMeta,
                                             ModelAssertionViolation)
 
 try:
-    from threeML.config import threeML_config
+
+    from threeML import threeML_config
 
     _has_threeml = True
 

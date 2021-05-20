@@ -1,6 +1,7 @@
 import collections
 
 from future import standard_library
+from typing import List, Optional, Dict, Union, Any
 
 from astromodels.core.node_type import _Node
 from astromodels.utils.io import display
@@ -28,7 +29,7 @@ class Node(_Node):
 
     # This apparently dumb constructor is needed otherwise pickle will fail
 
-    def __init__(self, name):
+    def __init__(self, name: str):
 
         if not is_valid_variable_name(name):
 
@@ -49,9 +50,9 @@ class Node(_Node):
 
     # This is used by dir() and by the autocompletion in Ipython
 
-    def to_dict(self, minimal=False):
-
-        this_dict = collections.OrderedDict()
+    def to_dict(self, minimal: bool=False) -> Dict[str, Any]:
+        
+        this_dict: Dict[str, Any] = collections.OrderedDict()
 
         for child in self._get_children():
 

@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from os import curdir
-from typing import Dict, List, Optional, Type
+from typing import Dict, List, Optional, Type, Tuple
 import itertools
 
 from astromodels.utils.logging import setup_logger
@@ -73,7 +73,7 @@ class _Node:
 
         return cPickle.loads(cPickle.dumps(self))
 
-    def _add_child(self, child: Type["_Node"]):
+    def _add_child(self, child: Type["_Node"]) -> None:
 
         if not isinstance(child, _Node):
 
@@ -105,7 +105,7 @@ class _Node:
 
             raise AttributeError()
 
-    def _add_children(self, children: List[Type["_Node"]]):
+    def _add_children(self, children: List[Type["_Node"]]) -> None:
 
         for child in children:
             self._add_child(child)
@@ -178,24 +178,27 @@ class _Node:
         log.debug(f"path is now: {self._path}")
 
         
-    def _get_child(self, name: str):
+    def _get_child(self, name: str) -> "_Node":
         """
         return a child object
         """
 
         return self._children[name]
 
-    def _has_child(self, name: str):
+    def _has_child(self, name: str) -> bool:
+        """
+        is this child (name) in the tree
+        """
         return name in self._children
 
-    def _get_children(self):
+    def _get_children(self) -> Tuple["_Node"]:
         """
         return a tuple of children
         """
 
         return tuple(self._children.values())
 
-    def _get_child_from_path(self, path: str):
+    def _get_child_from_path(self, path: str) -> "_Node":
         """
         get a child from a string path
         """
@@ -206,10 +209,10 @@ class _Node:
 
         return _next
 
-    def _get_parent(self):
+    def _get_parent(self) -> "_Node":
         return self._parent
 
-    def _get_path(self):
+    def _get_path(self) -> "str":
 
         if self._parent is not None:
             return self._path
@@ -249,7 +252,7 @@ class _Node:
                     return current_node
         
     @property
-    def path(self):
+    def path(self) -> str:
         return self._get_path()
 
     def _update_child_path(self):
@@ -265,8 +268,12 @@ class _Node:
                 child._update_child_path()
         
             
-    def _change_name(self, name: str, clear_parent: bool = False):
-
+    def _change_name(self, name: str, clear_parent: bool = False) -> None:
+        """
+        change the name of this node. This will have to update the
+        children about the change. if clear_parent is provided, then
+        the parent is removed
+        """
         self._name = name
 
         if (self._parent is not None) and (not clear_parent):
@@ -278,14 +285,14 @@ class _Node:
         self._update_child_path()
 
     @property
-    def is_root(self):
+    def is_root(self) -> bool:
         """
         is this the root of the tree
         """
         return self._parent is None
 
     @property
-    def is_leaf(self):
+    def is_leaf(self) -> bool:
         """
         is this a a leaf of the tree
         """
@@ -297,7 +304,7 @@ class _Node:
             return False
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     def __getattr__(self, name):
@@ -323,27 +330,17 @@ class _Node:
                 else:
 
                     raise AttributeError()
-                    
-                # try:
-
-                #     # call the value
-
-                #     self._children[name].value = value
-
-                # except:
-
-                #     # complain!
-
-                #     log.exception(f"{name}")
-                    
-                #     raise AttributeError()
             else:
                 return super().__setattr__(name, value)
         else:
 
             return super().__setattr__(name, value)
 
-    def plot_tree(self):
+    def plot_tree(self) -> None:
+        """
+        this plots the tree to the 
+        screen
+        """
 
         print(self._plot_tree_console())
 
