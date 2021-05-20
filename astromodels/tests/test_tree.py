@@ -63,6 +63,7 @@ def test_constructor():
 
         n2 = Node()
 
+        
     clean()
 
 
@@ -83,13 +84,9 @@ def test_add_child():
 
     clara = Node("clara")
 
-#    clara_ref_count = node_ctype._get_reference_counts(clara)
-
     t._add_child(clara)
 
-    # We expect 2 more references: one for the map, one for the vector
-
-#    assert node_ctype._get_reference_counts(clara) == clara_ref_count + 1
+    t.plot_tree()
 
     assert t.clara == clara
 

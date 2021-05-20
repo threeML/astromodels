@@ -387,9 +387,15 @@ def test_free_param():
     for param in parameters:
         param.free = False
 
+    assert not source.has_free_parameters
+        
     assert len(source.free_parameters) == 0
 
+    assert len(source.parameters) > len(source.free_parameters)
+    
     for i, param in enumerate(parameters):
         param.free = True
         assert len(source.free_parameters) == i+1
 
+
+    assert source.has_free_parameters
