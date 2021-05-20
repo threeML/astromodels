@@ -11,6 +11,7 @@ __doc__ = """"""
 import collections
 import copy
 import warnings
+from typing import Optional, Union, List, Dict, Any
 
 import astropy.units as u
 import numpy as np
@@ -25,7 +26,7 @@ from .tree import Node
 log = setup_logger(__name__)
 
 
-def _behaves_like_a_number(obj):
+def _behaves_like_a_number(obj) -> True:
     """
 
     :param obj:
@@ -88,7 +89,6 @@ def accept_quantity(input_type=float, allow_none=False):
     :param allow_none : whether to allow or not the passage of None as argument (default: False)
     :return: a decorator for the particular type
     """
-
     def accept_quantity_wrapper(method):
         def handle_quantity(instance, value, *args, **kwargs):
 
@@ -121,10 +121,9 @@ def accept_quantity(input_type=float, allow_none=False):
 
                     else:  # pragma: no cover
 
-                        log.exception(
-                            "You cannot pass None as argument for "
-                            "method %s of %s" % (method.__name__, instance.name)
-                        )
+                        log.exception("You cannot pass None as argument for "
+                                      "method %s of %s" %
+                                      (method.__name__, instance.name))
 
                         raise TypeError()
 
@@ -132,9 +131,8 @@ def accept_quantity(input_type=float, allow_none=False):
 
                     log.exception(
                         "You need to pass either a %s or a astropy.Quantity "
-                        "to method %s of %s"
-                        % (input_type.__name__, method.__name__, instance.name)
-                    )
+                        "to method %s of %s" %
+                        (input_type.__name__, method.__name__, instance.name))
 
                     raise TypeError()
 
@@ -155,16 +153,15 @@ class ParameterBase(Node):
     :param transformation: a class which implements a .forward and a .backward method to transform forth and back from
         face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)
     """
-
     def __init__(
         self,
-        name,
-        value,
-        min_value=None,
-        max_value=None,
-        desc=None,
-        unit=u.dimensionless_unscaled,
-        transformation=None,
+        name: str,
+        value: float,
+        min_value: Optional[float]=None,
+        max_value: Optional[float]=None,
+        desc: Optional[str]=None,
+        unit: u.Unit=u.dimensionless_unscaled,
+        transformation: Optional[ParameterTransformation]=None,
     ):
 
         # Make this a node
@@ -172,7 +169,7 @@ class ParameterBase(Node):
         Node.__init__(self, name)
 
         # Make a static name which will never change (not even after a _change_name call)
-        self._static_name = str(name)
+        self._static_name: str = str(name)
 
         # Callbacks are executed any time the value for the parameter changes (i.e., its value changes)
 
@@ -186,23 +183,28 @@ class ParameterBase(Node):
         self._unit = self._safe_assign_unit(unit)
 
         # A ParameterBase instance cannot have auxiliary variables
-        self._aux_variable = {}
+        self._aux_variable: Dict[str, Any] = {}
 
         # Set min and max to None first so that the .value setter will work,
         # we will override them later if needed
-        self._external_min_value = None
-        self._external_max_value = None
+        self._external_min_value: Optional[float] = None
+        self._external_max_value: Optional[float] = None
 
         # Store the transformation. This allows to disentangle the value of the parameter which the user interact
         # width with the value of the parameter the fitting engine (or the Bayesian sampler) interact with
         if transformation is not None:
-            assert isinstance(transformation, ParameterTransformation)
-        self._transformation = transformation
+            if not isinstance(transformation, ParameterTransformation):
+
+                log.error("transformation is not of ParameterTransform ")
+
+                raise AssertionError()
+                
+        self._transformation: Optional[ParameterTransformation] = transformation
 
         # Let's store the init value
 
         # NOTE: this will be updated immediately by the _set_value method of the "value" property
-        self._internal_value = None
+        self._internal_value: Optional[float] = None
         # If the value is a Quantity, deal with that
 
         if isinstance(value, u.Quantity):
@@ -216,7 +218,7 @@ class ParameterBase(Node):
 
             # Convert the value to the provided unit (if necessary)
 
-            self.value = value.to(self._unit).value
+            self.value: float = value.to(self._unit).value
 
         else:
 
@@ -225,16 +227,16 @@ class ParameterBase(Node):
         # Set minimum if provided, otherwise use default
         # (use the property so the checks that are there are performed also on construction)
 
-        self.min_value = min_value
+        self.min_value: Optional[float] = min_value
 
         # Set maximum if provided, otherwise use default
 
         # this will be overwritten immediately in the next line
-        self.max_value = max_value
+        self.max_value: Optional[float] = max_value
 
         # Store description
 
-        self._desc = desc
+        self._desc: Optional[float] = desc
 
         # Make the description the documentation as well
 
@@ -258,7 +260,7 @@ class ParameterBase(Node):
     # Define the property 'description' and make it read-only
 
     @property
-    def static_name(self):
+    def static_name(self) -> str:
         """
         Returns a name which will never change, even if the name of the parameter does (for example in composite
         functions)
@@ -270,7 +272,7 @@ class ParameterBase(Node):
         return self._static_name
 
     @property
-    def description(self):
+    def description(self) -> Optional[str]:
         """
         Return a description of this parameter
 
@@ -279,7 +281,7 @@ class ParameterBase(Node):
         return self._desc
 
     @staticmethod
-    def _safe_assign_unit(input_unit):
+    def _safe_assign_unit(input_unit) -> u.Unit:
 
         # We first try to use our own, thread-safe format, if we fail then we try the astropy one
 
@@ -295,7 +297,7 @@ class ParameterBase(Node):
         return new_unit
 
     # Define the property 'unit'
-    def _set_unit(self, input_unit):
+    def _set_unit(self, input_unit) -> None:
 
         # This will fail if the input is not valid
 
@@ -349,7 +351,7 @@ class ParameterBase(Node):
     )
 
     @property
-    def as_quantity(self):
+    def as_quantity(self) -> u.Quantity:
         """
         Return the current value with its units (as an astropy.Quantity instance)
 
@@ -357,7 +359,7 @@ class ParameterBase(Node):
         """
         return self.value * self._unit
 
-    def in_unit_of(self, unit, as_quantity=False):
+    def in_unit_of(self, unit, as_quantity=False) -> u.Quantity:
         """
         Return the current value transformed to the new units
 
@@ -380,7 +382,7 @@ class ParameterBase(Node):
 
             return new_quantity.value
 
-    def has_auxiliary_variable(self):
+    def has_auxiliary_variable(self) -> bool:
 
         if self._aux_variable:
 
@@ -390,7 +392,7 @@ class ParameterBase(Node):
 
             return False
 
-    def has_transformation(self):
+    def has_transformation(self) -> bool:
 
         if self._transformation is None:
 
@@ -401,7 +403,7 @@ class ParameterBase(Node):
             return True
 
     @property
-    def transformation(self):
+    def transformation(self) -> Optional[ParameterTransformation]:
 
         return self._transformation
 
@@ -426,7 +428,7 @@ class ParameterBase(Node):
     # Define the property "value" with a control that the parameter cannot be set
     # outside of its bounds
 
-    def _get_value(self):
+    def _get_value(self) -> float:
         """Return current parameter value"""
 
         # This is going to be true (possibly) only for derived classes. It is here to make the code cleaner
@@ -791,11 +793,11 @@ class ParameterBase(Node):
         """
         return self._callbacks
 
-    def empty_callbacks(self):
+    def empty_callbacks(self) -> None:
         """Remove all callbacks for this parameter"""
         self._callbacks = []
 
-    def duplicate(self):
+    def duplicate(self) -> "Parameter":
         """
         Returns an exact copy of the current parameter
         """
@@ -806,7 +808,7 @@ class ParameterBase(Node):
 
         return new_parameter
 
-    def to_dict(self, minimal=False):
+    def to_dict(self, minimal=False) -> Dict[str, Any]:
 
         """Returns the representation for serialization"""
 
@@ -876,17 +878,17 @@ class Parameter(ParameterBase):
 
     def __init__(
         self,
-        name=None,
-        value=None,
-        min_value=None,
-        max_value=None,
-        delta=None,
-        desc=None,
-        free=True,
+        name: Optional[str]=None,
+        value: Optional[float] = None,
+        min_value: Optional[float]=None,
+        max_value: Optional[float]=None,
+        delta: Optional[float]=None,
+        desc: Optional[str]=None,
+        free: bool=True,
         unit="",
         prior=None,
-        is_normalization=False,
-        transformation=None,
+        is_normalization: bool=False,
+        transformation: Optional[ParameterTransformation]=None,
     ):
 
         # This extends ParameterBase by adding the possibility for free/fix, and a delta for fitting purposes, as
@@ -902,13 +904,13 @@ class Parameter(ParameterBase):
             transformation=transformation,
         )
 
-        self._free = bool(free)
+        self._free: bool = bool(free)
 
         # Set delta if provided, otherwise use default
 
         if delta is not None:
 
-            self._delta = delta
+            self._delta: float = delta
 
         else:
 
@@ -946,7 +948,7 @@ class Parameter(ParameterBase):
         self._is_normalization = bool(is_normalization)
 
     @property
-    def is_normalization(self):
+    def is_normalization(self) -> bool:
 
         return self._is_normalization
 

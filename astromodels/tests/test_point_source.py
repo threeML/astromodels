@@ -37,7 +37,7 @@ else:
 
 try:
 
-    from astromodels.functions.functions import EBLattenuation
+    from astromodels.functions import EBLattenuation
 
 except:
 
