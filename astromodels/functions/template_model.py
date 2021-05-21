@@ -1,10 +1,11 @@
 from __future__ import division
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import collections
 import os
 import re
-import warnings
+
+import gc
 from builtins import object, range, str
 from typing import List, Dict, Optional, Union, Any
 
@@ -432,7 +433,11 @@ class RectBivariateSplineWrapper(object):
 
 @dataclass
 class TemplateFile:
+    """
+    simple container to read and write 
+    the data to an hdf5 file
 
+    """
     name: str
     description: str
     grid: np.ndarray
@@ -445,6 +450,14 @@ class TemplateFile:
 
     def save(self, file_name: str):
 
+        """
+        serialize the contents to a file
+
+        :param file_name: 
+        :type file_name: str
+        :returns: 
+
+        """
         with h5py.File(file_name, "w") as f:
 
             f.attrs["name"] = self.name
@@ -468,6 +481,16 @@ class TemplateFile:
     @classmethod
     def from_file(cls, file_name: str):
 
+        """
+        read contents from a file
+
+        :param cls: 
+        :type cls: 
+        :param file_name: 
+        :type file_name: str
+        :returns: 
+
+        """
         with h5py.File(file_name, "r") as f:
 
             name = f.attrs["name"]
@@ -553,8 +576,6 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                                                    
         template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
 
-        self._data_frame = template_file.grid
-
         self._parameters_grids = collections.OrderedDict()
 
         processed_parameters = 0
@@ -589,7 +610,6 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         function_definition["latex"] = "n.a."
 
-        del template_file
         
         # Now build the parameters according to the content of the parameter grid
 
@@ -621,9 +641,14 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         # Finally prepare the interpolators
 
-        self._prepare_interpolators(log_interp)
+        self._prepare_interpolators(log_interp, template_file.grid)
 
-    def _prepare_interpolators(self, log_interp):
+        del template_file
+
+        gc.collect()
+        
+        
+    def _prepare_interpolators(self, log_interp, data_frame):
 
         # Figure out the shape of the data matrices
         data_shape = [x.shape[0] for x in list(self._parameters_grids.values())]
@@ -639,7 +664,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
             if log_interp:
 
                 this_data = np.array(
-                    np.log10(self._data_frame[...,i]).reshape(*data_shape),
+                    np.log10(data_frame[...,i]).reshape(*data_shape),
                     dtype=float,
                 )
 
@@ -649,7 +674,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
                 # work in linear space
                 this_data = np.array(
-                    self._data_frame[..., i].reshape(*data_shape), dtype=float
+                    data_frame[..., i].reshape(*data_shape), dtype=float
                 )
 
                 self._is_log10 = False
@@ -790,7 +815,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         # NOTE: the units are added back through the multiplication by K in the evaluate method
 
-        return old_div(values, scale)
+        return values / scale
 
     @property
     def data_file(self):
