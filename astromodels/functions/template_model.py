@@ -964,21 +964,21 @@ class XSPECTableModel(object):
 def convert_old_table_model(model_name: str):
     from pandas import HDFStore
 
-     # Get the data directory
+    # Get the data directory
 
-     data_dir_path: Path = get_user_data_path()
+    data_dir_path: Path = get_user_data_path()
 
-     # Sanitize the data file
+    # Sanitize the data file
+    
+    filename_sanitized = data_dir_path / f"{model_name}.h5"
+    
+    
+    if not filename_sanitized.exists():
 
-     filename_sanitized = data_dir_path / f"{model_name}.h5"
-
-
-     if not filename_sanitized.exists():
-
-         log.error("The data file %s does not exists. Did you use the "
+        log.error("The data file %s does not exists. Did you use the "
              "TemplateFactory?" % (filename_sanitized))
          
-         raise MissingDataFile( )
+        raise MissingDataFile( )
     
     with HDFStore(filename_sanitized) as store:
     
@@ -1013,7 +1013,7 @@ def convert_old_table_model(model_name: str):
                 
         energies = np.array(store["energies"])
 
-        shape = [len(x) for _, x in in parameters_grids.items()]
+        shape = [len(x) for _, x in parameters_grids.items()]
 
         shape.append(len(energies))
 
@@ -1021,7 +1021,7 @@ def convert_old_table_model(model_name: str):
 
         for i, e in enumerate(energies):
 
-            data = data_frame[e].values
+            data = data_frame[e].values.reshape(*shape[:-1])
 
             grid[...,i] = data
         
@@ -1047,17 +1047,17 @@ def convert_old_table_model(model_name: str):
 
 
 
-        template_file: TemplateFile = TemplateFile(
-            name=name,
-            description=description,
-            spline_smoothing_factor=spline_smoothing_factor,
-            interpolation_degree=interpolation_degree,
-            grid=grid,
-            energies=energies,
-            parameters=parameters_grids,
-            parameter_order=list(parameters_grids.keys()))
+    template_file: TemplateFile = TemplateFile(
+        name=name,
+        description=description,
+        spline_smoothing_factor=spline_smoothing_factor,
+        interpolation_degree=interpolation_degree,
+        grid=grid,
+        energies=energies,
+        parameters=parameters_grids,
+        parameter_order=list(parameters_grids.keys()))
 
-        template_file.save(filename_sanitized)
+    template_file.save(filename_sanitized)
 
 
         
