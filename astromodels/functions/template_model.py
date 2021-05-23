@@ -1019,7 +1019,11 @@ def convert_old_table_model(model_name: str):
 
         grid = np.zeros(shape)
 
-        
+        for i, e in enumerate(energies):
+
+            data = data_frame[e].values
+
+            grid[...,i] = data
         
                      
         
@@ -1041,5 +1045,19 @@ def convert_old_table_model(model_name: str):
 
         function_definition["description"] = description
 
-        function_definition["latex"] = "n.a."
 
+
+        template_file: TemplateFile = TemplateFile(
+            name=name,
+            description=description,
+            spline_smoothing_factor=spline_smoothing_factor,
+            interpolation_degree=interpolation_degree,
+            grid=grid,
+            energies=energies,
+            parameters=parameters_grids,
+            parameter_order=list(parameters_grids.keys()))
+
+        template_file.save(filename_sanitized)
+
+
+        
