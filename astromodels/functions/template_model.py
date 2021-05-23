@@ -19,6 +19,9 @@ from future.utils import with_metaclass
 
 from past.utils import old_div
 
+from interpolation import interp
+from interpolation.splines import eval_linear
+
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
@@ -54,40 +57,26 @@ class MissingDataFile(RuntimeError):
 # This dictionary will keep track of the new classes already created in the current session
 _classes_cache = {}
 
-# currently python2 lacks support for the faster interpolations
-# thus we need to use some work arounds to keep the code compatible
-# with the different versions. This means template models are slower
-# in python2
 
-try:
+class GridInterpolate(object):
+    def __init__(self, grid, values):
+        self._grid = grid
+        self._values = np.ascontiguousarray(values)
 
-    from interpolation import interp
-    from interpolation.splines import eval_linear
+    def __call__(self, v):
 
-    class GridInterpolate(object):
-        def __init__(self, grid, values):
-            self._grid = grid
-            self._values = np.ascontiguousarray(values)
+        return eval_linear(self._grid, self._values, v)
 
-        def __call__(self, v):
 
-            return eval_linear(self._grid, self._values, v)
+class UnivariateSpline(object):
+    def __init__(self, x, y):
 
-    class UnivariateSpline(object):
-        def __init__(self, x, y):
+        self._x = x
+        self._y = y
 
-            self._x = x
-            self._y = y
+    def __call__(self, v):
 
-        def __call__(self, v):
-
-            return interp(self._x, self._y, v)
-
-except:
-
-    from scipy.interpolate import \
-        InterpolatedUnivariateSpline as UnivariateSpline
-    from scipy.interpolate import RegularGridInterpolator as GridInterpolate
+        return interp(self._x, self._y, v)
 
 
 class TemplateModelFactory(object):
@@ -266,7 +255,7 @@ class TemplateModelFactory(object):
         # Then we transform it in the right units and we cast it back to a pure np.array
 
         differential_fluxes = np.array(
-            differential_fluxes.to(old_div(1, (u.keV * u.s * u.cm**2))).value)
+            differential_fluxes.to(1/ (u.keV * u.s * u.cm**2)).value)
 
         # Now let's check for valid inputs
 
@@ -318,11 +307,9 @@ class TemplateModelFactory(object):
 
         if np.any(np.isnan(self._data_frame)):
 
-            log.error(
-            "You have NaNs in the data matrix. Usually this means "
-            "that you didn't fill it up completely, or that some of "
-            "your data contains nans. Cannot save the file."
-        )
+            log.error("You have NaNs in the data matrix. Usually this means "
+                      "that you didn't fill it up completely, or that some of "
+                      "your data contains nans. Cannot save the file.")
 
             raise AssertionError()
 
@@ -332,11 +319,10 @@ class TemplateModelFactory(object):
 
         # Sanitize the data file
 
-        filename_sanitized: Path = data_dir_path / f"{self._name}.h5" 
-        
+        filename_sanitized: Path = data_dir_path / f"{self._name}.h5"
 
         # Check that it does not exists
-        
+
         if filename_sanitized.exists():
 
             if overwrite:
@@ -349,8 +335,7 @@ class TemplateModelFactory(object):
 
                     log.error(
                         "The file %s already exists and cannot be removed (maybe you do not have "
-                        "permissions to do so?). " % filename_sanitized
-                    )
+                        "permissions to do so?). " % filename_sanitized)
 
                     raise IOError()
 
@@ -358,25 +343,24 @@ class TemplateModelFactory(object):
 
                 log.error(
                     "The file %s already exists! You cannot call two different "
-                    "template models with the same name" % filename_sanitized
-                )
+                    "template models with the same name" % filename_sanitized)
 
                 raise IOError()
 
         # Open the HDF5 file and write objects
 
-        template_file: TemplateFile = TemplateFile(name=self._name,
-                                                   description=self._description,
-                                                   spline_smoothing_factor=self._spline_smoothing_factor,
-                                                   interpolation_degree=self._interpolation_degree,
-                                                   grid = self._data_frame,
-                                                   energies=self._energies,
-                                                   parameters = self._parameters_grids,
-                                                   parameter_order = list(self._parameters_grids.keys())
-                                     )
+        template_file: TemplateFile = TemplateFile(
+            name=self._name,
+            description=self._description,
+            spline_smoothing_factor=self._spline_smoothing_factor,
+            interpolation_degree=self._interpolation_degree,
+            grid=self._data_frame,
+            energies=self._energies,
+            parameters=self._parameters_grids,
+            parameter_order=list(self._parameters_grids.keys()))
 
         template_file.save(filename_sanitized)
-        
+
         # with HDFStore(filename_sanitized) as store:
 
         #     # The _clean_cols_for_hdf is needed because for some reasons the format of some columns
@@ -418,18 +402,19 @@ class RectBivariateSplineWrapper(object):
     syntax as the other interpolation methods
 
     """
-
     def __init__(self, *args, **kwargs):
 
         # We can use interp2, which features spline interpolation instead of linear interpolation
 
-        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
+        self._interpolator = scipy.interpolate.RectBivariateSpline(
+            *args, **kwargs)
 
     def __call__(self, x):
 
         res = self._interpolator(*x)
 
         return res[0][0]
+
 
 @dataclass
 class TemplateFile:
@@ -746,7 +731,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         self.K.unit = y_unit
 
-        self.scale.unit = old_div(1, x_unit)
+        self.scale.unit = 1 / x_unit
 
     # This function will be substituted during construction by another version with
     # all the parameters of this template
@@ -769,7 +754,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
             # Same for the scale
 
-            scale = scale.to(old_div(1, u.keV)).value
+            scale = scale.to(1/ u.keV).value
 
         if self._is_log10:
 
@@ -817,6 +802,22 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         return values / scale
 
+    def clean(self):
+        """
+        Table models can consume a lot of memory. If are creating lots of 
+        table models in memory for simulations, you may want to call
+        clean on the model try and remove some of the memory consumed by the models
+
+        :returns: 
+
+        """
+        
+        self._interpolators = None
+        del self._interpolators
+        gc.collect()
+
+        log.info("You have 'cleaned' the table model at it will no longer be useable")
+        
     @property
     def data_file(self):
 
