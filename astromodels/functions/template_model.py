@@ -1,26 +1,22 @@
 from __future__ import division
 
-from dataclasses import dataclass
 import collections
+import gc
 import os
 import re
-
-import gc
 from builtins import object, range, str
-from typing import List, Dict, Optional, Union, Any
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional, Union
 
 import astropy.io.fits as fits
 import astropy.units as u
-import numpy as np
-
 import h5py
+import numpy as np
 import scipy.interpolate
 from future.utils import with_metaclass
-
-from past.utils import old_div
-
 from interpolation import interp
 from interpolation.splines import eval_linear
+from past.utils import old_div
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -476,6 +472,7 @@ class TemplateFile:
         :returns: 
 
         """
+        
         with h5py.File(file_name, "r") as f:
 
             name = f.attrs["name"]
@@ -817,6 +814,11 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         gc.collect()
 
         log.info("You have 'cleaned' the table model at it will no longer be useable")
+
+    def __del__(self):
+
+        self.clean()
+
         
     @property
     def data_file(self):
@@ -956,3 +958,88 @@ class XSPECTableModel(object):
             tmf.add_interpolation_data(self._spectrum[i, :], **input_dict)
 
         tmf.save_data(overwrite=overwrite)
+
+
+
+def convert_old_table_model(model_name: str):
+    from pandas import HDFStore
+
+     # Get the data directory
+
+     data_dir_path: Path = get_user_data_path()
+
+     # Sanitize the data file
+
+     filename_sanitized = data_dir_path / f"{model_name}.h5"
+
+
+     if not filename_sanitized.exists():
+
+         log.error("The data file %s does not exists. Did you use the "
+             "TemplateFactory?" % (filename_sanitized))
+         
+         raise MissingDataFile( )
+    
+    with HDFStore(filename_sanitized) as store:
+    
+        data_frame = store["data_frame"]
+
+        parameters_grids = collections.OrderedDict()
+
+        processed_parameters = 0
+
+        for key in list(store.keys()):
+
+            match = re.search("p_([0-9]+)_(.+)", key)
+            
+            if match is None:
+                
+                continue
+            
+            else:
+                
+                tokens = match.groups()
+                
+                this_parameter_number = int(tokens[0])
+                this_parameter_name = str(tokens[1])
+                
+                assert (
+                    this_parameter_number == processed_parameters
+                ), "Parameters out of order!"
+                
+                parameters_grids[this_parameter_name] = store[key]
+                
+                processed_parameters += 1
+                
+        energies = np.array(store["energies"])
+
+        shape = [len(x) for _, x in in parameters_grids.items()]
+
+        shape.append(len(energies))
+
+        grid = np.zeros(shape)
+
+        
+        
+                     
+        
+        # Now get the metadata
+            
+        metadata = store.get_storer("data_frame").attrs.metadata
+        
+        description = metadata["description"]
+        
+        name = metadata["name"]
+        
+        interpolation_degree = metadata["interpolation_degree"]
+        
+        spline_smoothing_factor = metadata["spline_smoothing_factor"]
+        
+        # Make the dictionary of parameters
+
+        function_definition = collections.OrderedDict()
+
+        function_definition["description"] = description
+
+        function_definition["latex"] = "n.a."
+
