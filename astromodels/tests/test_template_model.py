@@ -1,12 +1,14 @@
-from __future__ import print_function
-from __future__ import division
-import pytest
-import os
-import numpy as np
+from __future__ import division, print_function
 
-from astromodels.functions import TemplateModel, TemplateModelFactory, MissingDataFile, XSPECTableModel
-from astromodels.functions import Band, Powerlaw
+import os
+
+import numpy as np
+import pytest
+
 from astromodels import Model, PointSource, clone_model, load_model
+from astromodels.functions import (Band, MissingDataFile, Powerlaw,
+                                   TemplateModel, TemplateModelFactory,
+                                   XSPECTableModel)
 from astromodels.utils.data_files import _get_data_file_path
 from astromodels.utils.logging import update_logging_level
 
@@ -90,6 +92,8 @@ def test_template_factory():
 
     tm(energies)
 
+    tm.clean()
+    
 
 
 
