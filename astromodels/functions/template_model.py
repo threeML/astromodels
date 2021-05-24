@@ -16,6 +16,7 @@ import numpy as np
 from future.utils import with_metaclass
 from interpolation import interp
 from interpolation.splines import eval_linear
+import scipy.interpolate
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -356,6 +357,28 @@ class TemplateModelFactory(object):
 
         template_file.save(filename_sanitized)
 
+        # with HDFStore(filename_sanitized) as store:
+
+        #     # The _clean_cols_for_hdf is needed because for some reasons the format of some columns
+        #     # is not accepted by .to_hdf otherwise
+
+        #     self._clean_cols_for_hdf(self._data_frame).to_hdf(store, "data_frame")
+
+        #     store.get_storer("data_frame").attrs.metadata = {
+        #         "description": self._description,
+        #         "name": self._name,
+        #         "interpolation_degree": int(self._interpolation_degree),
+        #         "spline_smoothing_factor": self._spline_smoothing_factor,
+        #     }
+
+        #     for i, parameter_name in enumerate(self._parameters_grids.keys()):
+
+        #         store["p_%i_%s" % (i, parameter_name)] = pd.Series(
+        #             self._parameters_grids[parameter_name]
+        #         )
+
+        #     store["energies"] = pd.Series(self._energies)
+
 
 # This adds a method to a class at runtime
 
@@ -368,6 +391,25 @@ def add_method(self, method, name=None):
 
     setattr(self.__class__, name, method)
 
+
+class RectBivariateSplineWrapper(object):
+    """
+    Wrapper around RectBivariateSpline, which supplies a __call__ method which accept the same
+    syntax as the other interpolation methods
+
+    """
+    def __init__(self, *args, **kwargs):
+
+        # We can use interp2, which features spline interpolation instead of linear interpolation
+
+        self._interpolator = scipy.interpolate.RectBivariateSpline(
+            *args, **kwargs)
+
+    def __call__(self, x):
+
+        res = self._interpolator(*x)
+
+        return res[0][0]
 
 
 @dataclass
