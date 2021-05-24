@@ -13,10 +13,10 @@ import astropy.io.fits as fits
 import astropy.units as u
 import h5py
 import numpy as np
+import scipy.interpolate
 from future.utils import with_metaclass
 from interpolation import interp
 from interpolation.splines import eval_linear
-import scipy.interpolate
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -555,7 +555,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         # Open the template definition and read from it
 
         self._data_file = filename_sanitized
-                                                   
+
+        # use the file shadow to read
+        
         template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
 
         self._parameters_grids = collections.OrderedDict()
@@ -564,8 +566,20 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         for key in template_file.parameter_order:
 
-            k = key.decode()
-            
+            try:
+
+                # sometimes this is
+                # stored binary
+                
+                k = key.decode()
+
+            except(AttributeError):
+
+                # if not, then we
+                # load as a normal str
+                
+                k = key
+                                
             log.debug(f"reading parameter {str(k)}")
 
   
@@ -625,11 +639,12 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         self._prepare_interpolators(log_interp, template_file.grid)
 
+        # try can clean up the file
+        
         del template_file
 
         gc.collect()
-        
-        
+                
     def _prepare_interpolators(self, log_interp, data_frame):
 
         # Figure out the shape of the data matrices
