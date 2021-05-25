@@ -676,10 +676,7 @@ class Band(Function1D, metaclass=FunctionMeta):
 
         Band model from Band et al., 1993, parametrized with the peak energy
 
-    latex : $K\left\{\begin{array}{ll}
-\left(\frac{x}{100 \mathrm{keV}}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) & x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\
-\left(\frac{x}{100 \mathrm{keV}}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{100 \mathrm{keV}(2+\alpha)}\right]^{\alpha-\beta} &x>(\alpha-\beta) \frac{x_{p}}{(\alpha+2)}
-\end{array}\right.$
+    latex : $ K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) & x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &x>(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $
 
     parameters :
 
