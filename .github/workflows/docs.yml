@@ -14,11 +14,11 @@ jobs:
           python-version: 3.7
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Cache conda
-        uses: actions/cache@v2
-        with:
-          path: ~/conda_pkgs_dir
-          key: conda-ubuntu-python-cache-3.7-${{ hashFiles('environment-ci.yml') }}
+      # - name: Cache conda
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: ~/conda_pkgs_dir
+      #     key: conda-ubuntu-python-cache-3.7-${{ hashFiles('environment-ci.yml') }}
 
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
