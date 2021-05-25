@@ -23,11 +23,11 @@ jobs:
       - name: Setup Miniconda
         uses: conda-incubator/setup-miniconda@v2
         with:
-          auto-update-conda: false
+          auto-update-conda: true
           auto-activate-base: false
           activate-environment: test_env
           python-version: 3.7
-          channels: conda-forge, xspecmodels, threeml, fermi, defaults
+          channels: conda-forge, xspecmodels, defaults
           environment-file: ci/environment.yml
 
       - name: Init Environment
