@@ -7,6 +7,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -47,7 +50,7 @@ jobs:
           eval "$(/usr/libexec/path_helper)"
           #sudo apt-get install texlive
 
-          conda install ${compilers} jupytext jupyterthemes jupyter_latex_envs 
+          conda install ${compilers} jupytext jupyterthemes jupyter_latex_envs papermill
 
           
       - name: Install the package
@@ -67,7 +70,23 @@ jobs:
           MKL_NUM_THREADS: 1
           NUMEXPR_NUM_THREADS: 1
           MPLBACKEND: "Agg"
+      - name: Create function gallery
+        shell: bash -l {0}
+        run: |
 
+          # move to the scripts directory
+          cd scripts
+
+          # now generate the function docs
+          python generate_func_docs.py
+
+          cd ..
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{GITHUB_REF##*/}}
+          
       - uses: actions/upload-artifact@v2
         with:
           name: notebooks-for-${{ github.sha }}

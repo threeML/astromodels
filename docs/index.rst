@@ -40,6 +40,7 @@ Contents:
     :maxdepth: 3
 
     notebooks/Quick_start.ipynb
+    function_docs/functions.rst
     notebooks/Functions_tutorial.ipynb
     notebooks/Point_source_tutorial.ipynb
     notebooks/Extended_sources_tutorial.ipynb

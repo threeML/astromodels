@@ -62,7 +62,7 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
         index :
 
             desc : Photon index
-            initial value : -2
+            initial value : -2.01
             min : -10
             max : 10
 
