@@ -96,7 +96,7 @@ for k, v in _known_functions.items():
 
 p = Path("../docs/function_docs/functions_1d.rst").absolute()
 
-with p.open("w") as f:
+with p.open("r") as f:
 
     rst_1d = f.read()
 
