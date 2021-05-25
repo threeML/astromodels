@@ -102,7 +102,7 @@ with p.open("w") as f:
 
 for name in one_d_func_list:
 
-    if f"{name}.ipynb" no in rst_1d:
+    if f"{name}.ipynb" not in rst_1d:
 
         raise RuntimeError(f"{name} is not in the RST! Run the generation script")
         
