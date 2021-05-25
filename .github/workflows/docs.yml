@@ -40,7 +40,9 @@ jobs:
           eval "$(/usr/libexec/path_helper)"
           #sudo apt-get install texlive
 
-          pip install  jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables
+          pip install pip -U
+          
+          pip install  numpy numba jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables
 
           
       - name: Install the package
