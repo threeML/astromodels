@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import jupytext
 import papermill as pm
 
@@ -93,22 +94,17 @@ for k, v in _known_functions.items():
         two_d_func_list.append(k)
 
 
-# now we want to update the ReST galleries
-
-with open("functions_1d.rst") as f:
-
-    lines = f.readlines()
-
-    for func in one_d_func_list:
-
-        lines.append(f"   ../notebooks/{func}.ipynb\n")
-
 p = Path("../docs/function_docs/functions_1d.rst").absolute()
 
 with p.open("w") as f:
 
-    for line in lines:
-        f.write(line)
+    rst_1d = f.read()
 
+for name in one_d_func_list:
+
+    if f"{name}.ipynb" no in rst_1d:
+
+        raise RuntimeError(f"{name} is not in the RST! Run the generation script")
+        
 
         

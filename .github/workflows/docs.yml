@@ -80,12 +80,6 @@ jobs:
 
           ls docs/notebooks
           
-      - name: Commit & Push changes
-        uses: actions-js/push@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
-          
       - uses: actions/upload-artifact@v2
         with:
           name: notebooks-for-${{ github.sha }}
