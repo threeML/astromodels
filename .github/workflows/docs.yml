@@ -85,7 +85,7 @@ jobs:
         uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{GITHUB_REF##*/}}
+          branch: ${GITHUB_REF##*/}
           
       - uses: actions/upload-artifact@v2
         with:
