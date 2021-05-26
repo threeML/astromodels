@@ -19,6 +19,7 @@ from past.utils import old_div
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import get_user_data_path
+from astromodels.utils.interpolation import GridInterpolate, UnivariateSpline
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
@@ -51,43 +52,6 @@ class MissingDataFile(RuntimeError):
 
 # This dictionary will keep track of the new classes already created in the current session
 _classes_cache = {}
-
-
-# currently python2 lacks support for the faster interpolations
-# thus we need to use some work arounds to keep the code compatible
-# with the different versions. This means template models are slower
-# in python2
-
-try:
-
-    from interpolation import interp
-    from interpolation.splines import eval_linear
-
-    class GridInterpolate(object):
-        def __init__(self, grid, values):
-            self._grid = grid
-            self._values = np.ascontiguousarray(values)
-
-        def __call__(self, v):
-
-            return eval_linear(self._grid, self._values, v)
-
-    class UnivariateSpline(object):
-        def __init__(self, x, y):
-
-            self._x = x
-            self._y = y
-
-        def __call__(self, v):
-
-            return interp(self._x, self._y, v)
-
-
-except:
-
-    from scipy.interpolate import \
-        InterpolatedUnivariateSpline as UnivariateSpline
-    from scipy.interpolate import RegularGridInterpolator as GridInterpolate
 
 
 class TemplateModelFactory(object):
