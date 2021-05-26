@@ -31,7 +31,7 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
 
         mass :
             desc : DM mass (GeV)
-            initial value : 10
+            initial value : 10.
             fix : yes
 
         channel :
@@ -179,8 +179,12 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
             # We need to convert to GeV
             xx = x.to(astropy_units.GeV)
 
+            _mass = mass.value
+            _xx = xx.value
+            
         else:
 
+            _mass  = mass
             # We can assume that the input is in keV
 
             keVtoGeV = 1e-6
@@ -188,11 +192,18 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
             # xm expects gamma ray energies in MeV
             xx = np.multiply(x, keVtoGeV)
 
-        xm = np.log10(np.divide(xx, mass))
+            _xx = xx
+            
+        xm = np.log10(np.divide(_xx, _mass))
         phip = (
-            1.0 / (8.0 * np.pi) * np.power(mass, -2) * (sigmav * J)
+            1.0 / (8.0 * np.pi) * np.power(_mass, -2) * (sigmav * J)
         )  # units of this should be 1 / cm**2 / s
-        dn = self._dn_interp((mass, xm))
+
+        input =[_mass]
+        input.extend(xm)
+        
+        dn = self._dn_interp(np.array(input))
+        
         dn[xm > 0] = 0
 
         return np.multiply(phip, np.divide(dn, x))
@@ -219,7 +230,7 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
 
         mass :
             desc : DM mass (GeV)
-            initial value : 10
+            initial value : 10.
             fix : yes
 
         channel :
@@ -432,10 +443,14 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
         if isinstance(x, astropy_units.Quantity):
 
             # We need to convert to GeV
-            xx = x.to(astropy_units.MeV)
+            xx = x.to(astropy_units.GeV)
 
+            _mass = mass.value
+            _xx = xx.value
+            
         else:
 
+            _mass  = mass
             # We can assume that the input is in keV
 
             keVtoGeV = 1e-6
@@ -443,12 +458,16 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
             # xm expects gamma ray energies in MeV
             xx = np.multiply(x, keVtoGeV)
 
-        xm = np.log10(np.divide(xx, mass))
+            _xx = xx
+
+        
+        xm = np.log10(np.divide(_xx, _mass))
 
         phip = (
-            1.0 / (8.0 * np.pi) * np.power(mass, -2) * (sigmav * J)
+            1.0 / (8.0 * np.pi) * np.power(_mass, -2) * (sigmav * J)
         )  # units of this should be 1 / cm**2
-        dn = self._dn_interp((mass, xm))  # note this is unitless (dx = d(xm))
+        dn = self._dn_interp(np.array([_mass, xm]))
+
         dn[xm > 0] = 0
 
         return np.multiply(phip, np.divide(dn, x))

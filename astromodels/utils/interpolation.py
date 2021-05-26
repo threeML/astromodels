@@ -19,7 +19,7 @@ class GridInterpolate(object):
 
         """
         self._grid: np.ndarray = grid
-        self._values: np.ndarray() = np.ascontiguousarray(values)
+        self._values: np.ndarray = np.ascontiguousarray(values)
         
     def __call__(self, v) -> np.ndarray:
 
