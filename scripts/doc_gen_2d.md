@@ -37,15 +37,6 @@ from jupyterthemes import jtplot
 jtplot.style(context="talk", fscale=1, ticks=False, grid=False)
 
 
-NSIDE = 2**7
-NPIX = hp.nside2npix(NSIDE)
-theta, phi = np.degrees(hp.pix2ang(nside=NSIDE,ipix=np.arange(NPIX)))
-
-ra = phi
-idx = phi>180
-ra[idx] = ra[idx] - 360
-ra = np.deg2rad(ra)
-dec = np.deg2rad(90-theta)
 
 
 
@@ -58,6 +49,18 @@ func_name = "Latitude_galactic_diffuse"
 
 ```python nbsphinx="hidden" tags=[]
 func = _known_functions[func_name]()
+
+NSIDE = 2**7
+NPIX = hp.nside2npix(NSIDE)
+
+theta, phi = np.degrees(hp.pix2ang(nside=NSIDE,ipix=np.arange(NPIX)))
+
+ra = phi
+idx = phi>180
+ra[idx] = ra[idx] - 360
+ra = np.deg2rad(ra)
+dec = np.deg2rad(90-theta)
+
 
 ```
 ## Description
@@ -73,7 +76,8 @@ The shape of the function on the sky.
 fig, ax = plt.subplots(subplot_kw=dict(projection="aitoff"))
 
 # evaluate
-z = func(phi,90-theta)
+
+z = func(phi, 90-theta)
 
 
 

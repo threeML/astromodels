@@ -787,7 +787,7 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
             maxr :
 
                 desc : max radius
-                initial value : 5.
+                initial value : 20.
                 fix : yes
 
             minr :
