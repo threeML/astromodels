@@ -1,7 +1,9 @@
+from typing import Tuple
+
 import numpy as np
 from interpolation import interp
 from interpolation.splines import eval_linear
-from typing import Tuple
+
 
 class GridInterpolate(object):
     def __init__(self, grid: Tuple[np.ndarray], values: np.ndarray) -> None:
@@ -19,9 +21,9 @@ class GridInterpolate(object):
         self._grid: np.ndarray = grid
         self._values: np.ndarray() = np.ascontiguousarray(values)
         
-        def __call__(self, v) -> np.ndarray:
+    def __call__(self, v) -> np.ndarray:
 
-            return eval_linear(self._grid, self._values, v)
+        return eval_linear(self._grid, self._values, v)
 
 class UnivariateSpline(object):
     
