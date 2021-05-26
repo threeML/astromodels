@@ -1,7 +1,7 @@
-from dataclasses import dataclass, field
-from os import curdir
-from typing import Dict, List, Optional, Type, Tuple
 import itertools
+from dataclasses import dataclass, field
+
+from typing import Dict, List, Optional, Tuple, Type
 
 from astromodels.utils.logging import setup_logger
 
@@ -324,11 +324,15 @@ class _Node:
             if name in self._children:
 
                 if ("_internal_value" in self._children[name].__dict__) and (self._children[name].is_leaf):
-                
+                    # ok, this is likely  parameter
+                    
                     self._children[name].value = value
 
                 else:
 
+                    # this is going to be a node which
+                    # we are not allowed to erase
+                    
                     raise AttributeError()
             else:
                 return super().__setattr__(name, value)
