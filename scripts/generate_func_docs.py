@@ -7,7 +7,7 @@ from astromodels.functions.function import _known_functions
 
 narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]
 
-models_to_exclude = ["_ComplexTestFunction","TemplateModel"]
+models_to_exclude = ["_ComplexTestFunction","TemplateModel", "SpatialTemplate_2D"]
 
 
 linear_models = ["Constant", "Cubic", "DiracDelta", "Line", "Quadratic", "Quartic", "StepFunction", "StepFunctionUpper", "Sin"]
@@ -20,9 +20,9 @@ with open("doc_gen_1d.md") as f:
 
     base_1d_md_str = f.read()
 
-# with open("doc_gen_2d.md") as f:
+with open("doc_gen_2d.md") as f:
 
-#     base_2d_md_str = f.read()
+    base_2d_md_str = f.read()
 
 
 
@@ -47,7 +47,7 @@ for k, v in _known_functions.items():
 
         # inject the func name into the markdown
 
-        this_md_str = base_1d_md_str.replace("func_title", k)
+        this_md_str = base_1d_md_str.replace("func_title", k.replace("_", " "))
 
         # create
         
@@ -91,8 +91,31 @@ for k, v in _known_functions.items():
         
     if instance.n_dim == 2:
 
+        print(f"generating {k}")
+        
         two_d_func_list.append(k)
 
+
+        # inject the func name into the markdown
+
+        this_md_str = base_2d_md_str.replace("func_title", k.replace("_", " "))
+
+        # create
+        
+        ntbk = jupytext.reads(this_md_str, fmt='md')
+            
+        jupytext.write(ntbk, ntbk_file_name)
+
+        print(f"excecuting {ntbk_file_name}")
+
+        pm.execute_notebook(
+            ntbk_file_name,
+            f'../docs/notebooks/{ntbk_file_name}',
+
+            parameters=dict(func_name=k,
+                            ))
+
+        
 
 p = Path("../docs/function_docs/functions_1d.rst").absolute()
 
@@ -103,6 +126,19 @@ with p.open("r") as f:
 for name in one_d_func_list:
 
     if f"{name}.ipynb" not in rst_1d:
+
+        raise RuntimeError(f"{name} is not in the RST! Run the generation script")
+        
+
+p = Path("../docs/function_docs/functions_2d.rst").absolute()
+
+with p.open("r") as f:
+
+    rst_2d = f.read()
+
+for name in two_d_func_list:
+
+    if f"{name}.ipynb" not in rst_2d:
 
         raise RuntimeError(f"{name} is not in the RST! Run the generation script")
         

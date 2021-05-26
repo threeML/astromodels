@@ -1,18 +1,18 @@
 from __future__ import division
-from past.utils import old_div
-import numpy as np
-from astropy.coordinates import SkyCoord, ICRS, BaseCoordinateFrame
-from astropy.io import fits
-from astropy import wcs
-import astropy.units as u
-
-from astromodels.functions.function import Function2D, FunctionMeta
-from astromodels.utils.angular_distance import angular_distance
-from astromodels.utils.vincenty import vincenty
 
 import hashlib
 
+import astropy.units as u
+import numpy as np
+from astropy import wcs
+from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
+from astropy.io import fits
+from past.utils import old_div
+
+from astromodels.functions.function import Function2D, FunctionMeta
+from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.logging import setup_logger
+from astromodels.utils.vincenty import vincenty
 
 log = setup_logger(__name__)
 
@@ -145,7 +145,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
             sigma :
 
                 desc : Standard deviation of the Gaussian distribution
-                initial value : 0.5
+                initial value : 10
                 min : 0
                 max : 20
 
@@ -243,21 +243,21 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
             a :
 
                 desc : Standard deviation of the Gaussian distribution (major axis)
-                initial value : 0.5
+                initial value : 10
                 min : 0
                 max : 20
 
             e :
 
                 desc : Excentricity of Gaussian ellipse
-                initial value : 0.5
+                initial value : 0.9
                 min : 0
                 max : 1
                 
             theta :
 
                 desc : inclination of major axis to a line of constant latitude
-                initial value : 0.0
+                initial value : 10.
                 min : -90.0
                 max : 90.0
 
@@ -383,7 +383,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
             radius :
 
                 desc : Radius of the disk
-                initial value : 0.5
+                initial value : 15
                 min : 0
                 max : 20
 
@@ -478,14 +478,14 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
             a :
 
                 desc : semimajor axis of the ellipse
-                initial value : 0.5
+                initial value : 15.
                 min : 0
                 max : 20
                 
             e :
 
                 desc : eccentricity of ellipse 
-                initial value : 0.5
+                initial value : 0.9
                 min : 0
                 max : 1
 

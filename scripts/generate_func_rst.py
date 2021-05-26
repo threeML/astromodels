@@ -4,7 +4,7 @@ from astromodels.functions.function import _known_functions
 
 narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]
 
-models_to_exclude = ["_ComplexTestFunction","TemplateModel"]
+models_to_exclude = ["_ComplexTestFunction","TemplateModel", "SpatialTemplate_2D"]
 
 
 linear_models = ["Constant", "Cubic", "DiracDelta", "Line", "Quadratic", "Quartic", "StepFunction", "StepFunctionUpper", "Sin"]
@@ -32,6 +32,8 @@ for k, v in _known_functions.items():
         
     if instance.n_dim == 2:
 
+        print(f"generating {k}")
+        
         two_d_func_list.append(k)
 
 
@@ -46,6 +48,25 @@ with open("functions_1d.rst") as f:
         lines.append(f"   ../notebooks/{func}.ipynb\n")
 
 p = Path("../docs/function_docs/functions_1d.rst").absolute()
+
+with p.open("w") as f:
+
+    for line in lines:
+        f.write(line)
+
+
+
+# now we want to update the ReST galleries
+
+with open("functions_2d.rst") as f:
+
+    lines = f.readlines()
+
+    for func in two_d_func_list:
+
+        lines.append(f"   ../notebooks/{func}.ipynb\n")
+
+p = Path("../docs/function_docs/functions_2d.rst").absolute()
 
 with p.open("w") as f:
 
