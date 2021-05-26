@@ -68,7 +68,7 @@ func.display()
 ## Shape
 
 The shape of the function on the sky.
-```pytho tags=["nbsphinx-gallery"]
+```python tags=["nbsphinx-gallery"]
 
 fig, ax = plt.subplots(subplot_kw=dict(projection="aitoff"))
 
