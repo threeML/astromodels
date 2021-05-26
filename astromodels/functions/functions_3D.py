@@ -646,7 +646,10 @@ class GalPropTemplate_3D(Function3D):
                     (np.power(10, self._E[i])*np.power(10, self._E[i]))
                 self._map[i] = (np.fliplr(self._map[i]))
             self._F = GridInterpolate(
-                (self._E, self._B, self._L), self._map, bounds_error=False)
+                (self._E, self._B, self._L),
+                self._map,
+                #bounds_error=False
+            )
 
             h = hashlib.sha224()
             h.update(self._map)
