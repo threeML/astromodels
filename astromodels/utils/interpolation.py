@@ -1,10 +1,10 @@
 import numpy as np
 from interpolation import interp
 from interpolation.splines import eval_linear
-
+from typing import Tuple
 
 class GridInterpolate(object):
-    def __init__(self, grid: np.ndarray, values: np.ndarray) -> None:
+    def __init__(self, grid: Tuple[np.ndarray], values: np.ndarray) -> None:
         """
         A numba version of the RegularGridInterpolator from scipy.
         The call is the same as the scipy version

@@ -7,10 +7,10 @@ import numpy as np
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
 from past.utils import old_div
-from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.functions.function import Function3D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance_fast
+from astromodels.utils.interpolation import GridInterpolate
 
 
 class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta):
@@ -645,7 +645,7 @@ class GalPropTemplate_3D(Function3D):
                 self._map[i] = self._map[i] / \
                     (np.power(10, self._E[i])*np.power(10, self._E[i]))
                 self._map[i] = (np.fliplr(self._map[i]))
-            self._F = RegularGridInterpolator(
+            self._F = GridInterpolate(
                 (self._E, self._B, self._L), self._map, bounds_error=False)
 
             h = hashlib.sha224()

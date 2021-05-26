@@ -3,10 +3,10 @@ from __future__ import print_function
 import astropy.units as astropy_units
 import numpy as np
 import six
-from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils.interpolation import GridInterpolate
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
@@ -125,11 +125,11 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
         )
         self._dn = self._data.reshape((12, 24, 250))
 
-        self._dn_interp = RegularGridInterpolator(
-            [self._mass, self._x],
+        self._dn_interp = GridInterpolate(
+            tuple([self._mass, self._x]),
             self._dn[ichan, :, :],
-            bounds_error=False,
-            fill_value=None,
+            # bounds_error=False,
+            # fill_value=None,
         )
 
         if self.mass.value > 10000:
@@ -384,11 +384,11 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
         self._dn[:, 0:24, :] = self._dn_f
         self._dn[:, 24:, :] = self._dn_h[:, 27:, :]
 
-        self._dn_interp = RegularGridInterpolator(
+        self._dn_interp = GridInterpolate(
             [self._mass, self._x],
             self._dn[ichan, :, :],
-            bounds_error=False,
-            fill_value=None,
+            # bounds_error=False,
+            # fill_value=None,
         )
 
         if self.channel.value in [1, 6, 7] and self.mass.value > 10000.0:
