@@ -53,16 +53,7 @@ func = _known_functions[func_name]()
 NSIDE = 2**7
 NPIX = hp.nside2npix(NSIDE)
 
-theta, phi = np.degrees(hp.pix2ang(nside=NSIDE,ipix=np.arange(NPIX)))
 ra, dec  = hp.pix2ang(nside=NSIDE, ipix=np.arange(NPIX), lonlat=True)
-
-
-#ra = phi
-#idx = phi>180
-#ra[idx] = ra[idx] - 360
-#ra = np.deg2rad(ra)
-#dec = np.deg2rad(90-theta)
-
 
 ```
 ## Description
