@@ -983,9 +983,13 @@ class Function1D(Function):
 
                 # This is an array with units or a single quantity, let's use the slow call which preserves units
 
-                assert self.y_unit is not None, "In order to use units you need to use the function as a spectrum or " \
-                                                "as something else, or you need to explicitly set the units."
+                if self.y_unit is None:
 
+                    log.error("In order to use units you need to use the function as a spectrum or " \
+                                                "as something else, or you need to explicitly set the units.")
+
+                    raise AssertionError()
+                    
                 # we want to make sure this is an array
 
                 new_input = np.atleast_1d(x)
@@ -1046,12 +1050,16 @@ class Function1D(Function):
 
                 except u.UnitsError:
 
-                    raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                    log.error("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                        "calling function %s" % self.name)
+                    
+                    raise u.UnitsError()
             else:
 
-                raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                log.error("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                    "calling function %s" % self.name)
+
+                raise u.UnitsError()
 
         else:
 
@@ -1067,7 +1075,7 @@ class Function1D(Function):
 
         values = list(map(attrgetter("value"), self._get_children()))
 
-        return self.evaluate(x, *values)
+        return self.evaluate(x, * values)
 
     def get_boundaries(self):
         """
@@ -1077,7 +1085,9 @@ class Function1D(Function):
         :return: a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)
         """
 
-        raise DesignViolation("Cannot call get_boundaries() on a 1d function")
+        log.error("Cannot call get_boundaries() on a 1d function")
+
+        raise DesignViolation()
 
 
 class Function2D(Function):

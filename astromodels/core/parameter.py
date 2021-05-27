@@ -202,6 +202,12 @@ class ParameterBase(Node):
         self._transformation: Optional[
             ParameterTransformation] = transformation
 
+        # save the transformation so that it can be restored
+        
+        self._original_transformation: Optional[
+            ParameterTransformation] = transformation
+
+        
         # Let's store the init value
 
         # NOTE: this will be updated immediately by the _set_value method of the "value" property
@@ -403,6 +409,55 @@ class ParameterBase(Node):
 
         return self._transformation
 
+    def remove_transformation(self) -> None:
+        """
+        
+        remove any transform on the parameter
+
+        useful in bayesian fits where 
+        we do not care about 
+        transformations but want speed
+
+        :returns: 
+
+        """
+        # first get the real value
+        old_value = self.value
+
+        # now erase the transform
+        
+        self._transformation = None
+
+        # restore the value which
+        # will now be done without
+        # the transformation
+        
+        self.value = old_value
+
+    def restore_transformation(self) -> None:
+        """
+        
+        restore the original transformation
+        if it had been removed
+
+        :returns: 
+
+        """
+        # first get the real value
+        old_value = self.value
+
+        # now reset
+        
+        self._transformation = self._original_transformation
+
+        # restore the value which
+        # will now be done without
+        # the transformation
+        
+        self.value = old_value
+
+        
+    
     def internal_to_external_delta(self, internal_value, internal_delta):
         """
         Transform an interval from the internal to the external reference (through the transformation). It is useful
