@@ -10,6 +10,7 @@ from astropy.io import fits
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import configuration
 from astromodels.utils.data_files import _get_data_file_path
+import gc
 
 try:
 
@@ -73,6 +74,16 @@ if has_atomdb:
         def init_session(self, abund_table="AG89"):
             # initialize PyAtomDB session
             self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
+
+        def clean(self):
+            """
+            Clean the current APEC session to avoid having too many open files
+            :returns: 
+            """
+            
+            self.session = None
+            del self.session
+            gc.collect()
 
         def evaluate(self, x, K, kT, abund, redshift):
             assert self.session is not None, "please run init_session(abund)"
@@ -279,6 +290,16 @@ if has_atomdb:
         def init_session(self, abund_table="AG89"):
             # initialize PyAtomDB session
             self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
+
+        def clean(self):
+            """
+            Clean the current APEC session to avoid having too many open files
+            :returns: 
+            """
+            
+            self.session = None
+            del self.session
+            gc.collect()
 
         def evaluate(
             self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift
