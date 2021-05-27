@@ -129,8 +129,13 @@ def test_hashing():
     node22 = Node('node22')
     node3 = Node('node3')
 
-    d = {}
+    d ={}
 
+    d[node1] = 1
+    d[node2] = 2
+    
+    d = {}
+    
     d["node1"] = node1
 
     
@@ -142,6 +147,18 @@ def test_hashing():
 
     d["node1"] = node1
     d["node2"] = node2
+
+    d = {}
+
+
+    d ={}
+
+    d[node1] = 1
+    d[node2] = 2
+
+    
+
+    
     
 
 def test_get_children():
