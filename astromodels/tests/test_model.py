@@ -329,10 +329,15 @@ def test_links():
 
     # Now test the link
 
-    # # This should print a warning, as trying to change the value of a linked parameters does not have any effect
-    # with pytest.warns(RuntimeWarning):
+    # This should print a warning, as trying to change the value of a linked parameters does not have any effect
+    
+    old_value = m.one.spectrum.main.Powerlaw.K
+    
+    
+    m.one.spectrum.main.Powerlaw.K = 1.23456
 
-    #     m.one.spectrum.main.Powerlaw.K = 1.23456
+    assert old_value == m.one.spectrum.main.Powerlaw.K
+    
 
     # This instead should work
     new_value = 1.23456
@@ -342,10 +347,9 @@ def test_links():
 
     # Now try to remove the link
 
-    # First we remove it from the wrong parameters, which should issue a warning
-    # with pytest.warns(RuntimeWarning):
+    #    First we remove it from the wrong parameters, which should issue a warning
 
-    #     m.unlink(m.two.spectrum.main.Powerlaw.K)
+    m.unlink(m.two.spectrum.main.Powerlaw.K)
 
     # Remove it from the right parameter
 

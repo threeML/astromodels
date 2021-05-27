@@ -1,18 +1,25 @@
 from __future__ import print_function
+
 from future import standard_library
+
 standard_library.install_aliases()
 from builtins import object
+
 import astropy.units as u
 import pytest
-from astromodels.functions import Uniform_prior, Log_uniform_prior
-from astromodels.functions import  Powerlaw
+
+from astromodels.functions import Log_uniform_prior, Powerlaw, Uniform_prior
 
 __author__ = 'giacomov'
 
-from astromodels.core.parameter import Parameter, SettingOutOfBounds, \
-    CannotConvertValueToNewUnits, NotCallableOrErrorInCall, IndependentVariable, ParameterMustHaveBounds
-from astromodels.functions import Line
+from astromodels.core.parameter import (CannotConvertValueToNewUnits,
+                                        IndependentVariable,
+                                        NotCallableOrErrorInCall, Parameter,
+                                        ParameterMustHaveBounds,
+                                        SettingOutOfBounds)
 from astromodels.core.parameter_transformation import LogarithmicTransformation
+from astromodels.functions import Line
+
 
 def test_default_constructor():
 
@@ -99,7 +106,7 @@ def test_constructor_complete():
 def test_constructor_with_transform():
 
     p = Parameter('test_parameter', 1.0, min_value=0.1, max_value=5.0, delta=0.2, desc='test',
-                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True,)
+                  free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True, transformation=LogarithmicTransformation())
 
     assert p.min_value == 0.1
     assert p.max_value == 5.0
@@ -396,7 +403,7 @@ def test_set_auxiliary_variable():
 
     p1.add_auxiliary_variable(x, law)
 
-    assert p1.has_auxiliary_variable() == True
+    assert p1.has_auxiliary_variable == True
 
     assert p1.value == 3.0
 
@@ -446,7 +453,7 @@ def test_remove_auxiliary_variable():
 
     p1.remove_auxiliary_variable()
 
-    assert p1.has_auxiliary_variable() == False
+    assert p1.has_auxiliary_variable == False
 
     p1.value = -1.0
 
@@ -702,7 +709,7 @@ def test_links_and_pickle():
 
     p = pickle.loads(d)
 
-    assert p.has_auxiliary_variable() == True
+    assert p.has_auxiliary_variable == True
 
     assert p.value == 3.0
 

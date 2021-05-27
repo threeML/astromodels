@@ -128,7 +128,7 @@ def test_function_meta():
 
                 return a * x + b
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
         class Wrong_test_function4(with_metaclass(FunctionMeta, Function1D)):
