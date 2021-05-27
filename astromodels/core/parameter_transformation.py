@@ -17,7 +17,7 @@ class ParameterTransformation(object):
 
         raise NotImplementedError("You have to implement this")
 
-    def backward(self, internal_value):
+    def backward(self, internal_value, vector: bool=False):
 
         raise NotImplementedError("You have to implement this")
 
@@ -39,11 +39,16 @@ class LogarithmicTransformation(ParameterTransformation):
 
         return res
 
-    def backward(self, internal_value):
+    def backward(self, internal_value, vector=False):
 
         # math is 10x faster than numpy or numba
-        return math.pow(10., internal_value)
+        if not vector:
+            return math.pow(10., internal_value)
 
+        else:
+
+            return np.power(10., internal_value)
+        
 
 _known_transformations = {'log10': LogarithmicTransformation}
 
