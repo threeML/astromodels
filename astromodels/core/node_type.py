@@ -323,10 +323,19 @@ class _Node:
         if "_children" in self.__dict__:
             if name in self._children:
 
-                if ("_internal_value" in self._children[name].__dict__) and (self._children[name].is_leaf):
-                    # ok, this is likely  parameter
+                if ("_internal_value" in self._children[name].__dict__):
+
+                    if not self._children[name].is_leaf:
+
+                        log.warning(f"Trying to set the value of a linked parameter ({name}) directly has no effect ")
+
+                        
+                        return
+                        
+                    else:
+                        # ok, this is likely  parameter
                     
-                    self._children[name].value = value
+                        self._children[name].value = value
 
                 else:
 
