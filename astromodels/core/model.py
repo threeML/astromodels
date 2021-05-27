@@ -257,7 +257,7 @@ class Model(Node):
 
         for parameter_name, parameter in list(self._parameters.items()):
 
-            if parameter.has_auxiliary_variable():
+            if parameter.has_auxiliary_variable:
 
                 linked_parameter_dictionary[parameter_name] = parameter
 
@@ -587,7 +587,7 @@ class Model(Node):
             parameter_list = list(parameter)
 
         for param in parameter_list:
-            if param.has_auxiliary_variable():
+            if param.has_auxiliary_variable:
                 param.remove_auxiliary_variable()
 
             else:

@@ -11,7 +11,7 @@ __doc__ = """"""
 import collections
 import copy
 import warnings
-from typing import Optional, Union, List, Dict, Any
+from typing import Any, Dict, List, Optional, Union, Tuple
 
 import astropy.units as u
 import numpy as np
@@ -183,7 +183,7 @@ class ParameterBase(Node):
         self._unit = self._safe_assign_unit(unit)
 
         # A ParameterBase instance cannot have auxiliary variables
-        self._aux_variable: Dict[str, Any] = {}
+        self._aux_variable: Optional[Dict[str, Any]] = None
 
         # Set min and max to None first so that the .value setter will work,
         # we will override them later if needed
@@ -381,16 +381,13 @@ class ParameterBase(Node):
 
             return new_quantity.value
 
+    @property
     def has_auxiliary_variable(self) -> bool:
 
-        if self._aux_variable:
+        return self._aux_variable is not None
 
-            return True
 
-        else:
-
-            return False
-
+    @property
     def has_transformation(self) -> bool:
 
         if self._transformation is None:
@@ -476,7 +473,7 @@ class ParameterBase(Node):
             raise SettingOutOfBounds()
 
         # Issue a warning if there is an auxiliary variable, as the setting does not have any effect
-        if self.has_auxiliary_variable():
+        if self.has_auxiliary_variable:
 
             with warnings.catch_warnings():
 
@@ -535,9 +532,12 @@ class ParameterBase(Node):
 
         # NOTE: we don't need here to deal with auxiliary variables because if one is defined, the parameter is not
         # free thus it will not be touched by the fitting engine
-        assert len(self._aux_variable) == 0, (
-            "You cannot get the internal value of a parameter which has an auxiliary "
+        if not self._aux_variable is None:
+
+            log.error("You cannot get the internal value of a parameter which has an auxiliary "
             "variable")
+
+            raise AssertionError()
 
         return self._internal_value
 
@@ -1185,8 +1185,17 @@ class Parameter(ParameterBase):
         " or 'p.fix = False'. ",
     )
 
-    def add_auxiliary_variable(self, variable, law):
+    def add_auxiliary_variable(self, variable, law) -> None:
+        """TODO describe function
 
+        :param variable: 
+        :type variable: 
+        :param law: 
+        :type law: 
+        :returns: 
+
+        """
+        
         # Assign units to the law
         law.set_units(variable.unit, self.unit)
 
@@ -1201,9 +1210,8 @@ class Parameter(ParameterBase):
 
             raise NotCallableOrErrorInCall()
 
-        self._aux_variable["law"] = law
-        self._aux_variable["variable"] = variable
-
+        self._aux_variable = dict(law=law, variable=variable)
+        
         # Now add the law as an attribute
         # so the user will be able to access its parameters as this.name.parameter_name
 
@@ -1230,7 +1238,7 @@ class Parameter(ParameterBase):
         :return:
         """
 
-        if not self.has_auxiliary_variable():
+        if not self.has_auxiliary_variable:
 
             # do nothing, but print a warning
 
@@ -1244,26 +1252,21 @@ class Parameter(ParameterBase):
 
             # Clean up the dictionary
 
-            self._aux_variable = {}
+            self._aux_variable = None
 
             # Set the parameter to the status it has before the auxiliary variable was created
 
             self.free = self._old_free
 
-    def has_auxiliary_variable(self):
+    @property
+    def has_auxiliary_variable(self) -> bool:
         """
         Returns whether the parameter is linked to an auxiliary variable
         """
-        if self._aux_variable:
-
-            return True
-
-        else:
-
-            return False
+        return  self._aux_variable is not None
 
     @property
-    def auxiliary_variable(self):
+    def auxiliary_variable(self) -> Tuple:
         """
         Returns a tuple with the auxiliary variable and the law
 
@@ -1273,7 +1276,7 @@ class Parameter(ParameterBase):
 
     def _repr__base(self, rich_output=False):
 
-        if not self.has_auxiliary_variable():
+        if not self.has_auxiliary_variable:
 
             representation = (
                 "Parameter %s = %s [%s]\n"
@@ -1327,7 +1330,7 @@ class Parameter(ParameterBase):
 
             # In the complete representation we output everything is needed to re-build the object
 
-            if self.has_auxiliary_variable():
+            if self.has_auxiliary_variable:
 
                 # Store the function and the auxiliary variable
 

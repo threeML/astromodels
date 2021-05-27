@@ -1,12 +1,12 @@
 import collections
+from typing import Any, Dict, List, Optional, Union
 
 from future import standard_library
-from typing import List, Optional, Dict, Union, Any
 
 from astromodels.core.node_type import _Node
 from astromodels.utils.io import display
-from astromodels.utils.valid_variable import is_valid_variable_name
 from astromodels.utils.logging import setup_logger
+from astromodels.utils.valid_variable import is_valid_variable_name
 
 standard_library.install_aliases()
 
@@ -47,8 +47,6 @@ class Node(_Node):
         _Node.__init__(self, name)
 
         #########################################################################
-
-    # This is used by dir() and by the autocompletion in Ipython
 
     def to_dict(self, minimal: bool=False) -> Dict[str, Any]:
         

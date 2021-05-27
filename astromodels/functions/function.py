@@ -7,10 +7,10 @@ import inspect
 import os
 import re
 import sys
-from typing import Optional, Dict, List
 import uuid
 from builtins import chr, map, str
 from operator import attrgetter
+from typing import Dict, List, Optional
 
 import astropy.units as u
 import numpy as np
@@ -22,11 +22,9 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.tree import Node
+from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
-
-from astromodels.utils.logging import setup_logger
-
 
 log = setup_logger(__name__)
 
@@ -35,7 +33,7 @@ __author__ = 'giacomov'
 
 try:
 
-    from IPython.display import display, HTML
+    from IPython.display import HTML, display
 
 except:
 
@@ -232,7 +230,9 @@ class FunctionMeta(type):
                 msg = "Parameters %s are used in 'evaluate' but do not have init values in %s" % \
                       (",".join(missing), name)
 
-            raise FunctionDefinitionError(msg)
+            log.error(msg)
+                
+            raise FunctionDefinitionError()
 
         # Figure out the dimensionality of this function
 
@@ -335,8 +335,10 @@ class FunctionMeta(type):
 
             except KeyError:
 
-                raise UnknownParameter("You specified an init value for %s, which is not a "
-                                       "parameter of function %s" % (key, type(instance)._name))
+                log.error("You specified an init value for %s, which is not a "
+                          "parameter of function %s" % (key, type(instance)._name))
+                
+                raise UnknownParameter()
 
         # Now call the init of the corresponding class
         n_dim = type(instance)._n_dim
@@ -395,8 +397,12 @@ class FunctionMeta(type):
 
             calling_sequence = _py2to3_getargspec(function).args
 
-        assert calling_sequence[0] == 'self', "Wrong syntax for 'evaluate' in %s. The first argument " \
-                                              "should be called 'self'." % name
+        if not calling_sequence[0] == 'self':
+
+            log.error("Wrong syntax for 'evaluate' in %s. The first argument " \
+                                              "should be called 'self'." % name)
+
+            raise AssertionError()
 
         # Figure out how many variables are used
 
@@ -406,13 +412,18 @@ class FunctionMeta(type):
         # Check that they actually make sense. They must be used in the same order
         # as specified in possible_variables
 
-        assert len(variables) > 0, "The name of the variables for 'evaluate' in %s must be one or more " \
+        if not len(variables) > 0:
+
+            log.error("The name of the variables for 'evaluate' in %s must be one or more " \
                                    "among %s, instead of %s" % (name, ','.join(
-                                       possible_variables), ",".join(variables))
+                                       possible_variables), ",".join(variables)))
 
         if variables != possible_variables[:len(variables)]:
-            raise AssertionError("The variables %s are out of order in '%s' of %s. Should be %s."
+
+            log.error("The variables %s are out of order in '%s' of %s. Should be %s."
                                  % (",".join(variables), function_name, name, possible_variables[:len(variables)]))
+            
+            raise AssertionError()
 
         other_parameters = [
             var for var in calling_sequence if var not in variables and var != 'self']
@@ -427,12 +438,18 @@ class FunctionMeta(type):
         # Enforce the presence of attributes 'value' and 'desc'
 
         if 'initial value' not in definition:
-            raise FunctionDefinitionError("Error for parameter %s of function %s: value for parameter must be"
+
+            log.error("Error for parameter %s of function %s: value for parameter must be"
                                           " specified" % (par_name, func_name))
+            
+            raise FunctionDefinitionError()
 
         if 'desc' not in definition:
-            raise FunctionDefinitionError("Error for parameter %s of function %s: desc for parameter must be"
+
+            log.error("Error for parameter %s of function %s: desc for parameter must be"
                                           " specified" % (par_name, func_name))
+            
+            raise FunctionDefinitionError()
 
         # Fetch attributes
 
@@ -503,7 +520,12 @@ class Function(Node):
         # calling sequence of this contructor. We actually need to enforce its proper use,
         # with this assert
 
-        assert name is not None and function_definition is not None and parameters is not None
+        if (name is None) or (function_definition is None) or (parameters is  None):
+
+            log.error("improper call")
+
+            raise AssertionError()
+            
 
         # Set up the node
 
@@ -513,7 +535,11 @@ class Function(Node):
 
         # Store also the function definition
 
-        assert 'description' in function_definition, "Function definition must contain a description"
+        if not 'description' in function_definition:
+
+            log.error("Function definition must contain a description")
+
+            raise AssertionError()
 
         if 'latex' not in function_definition:
 
@@ -1704,7 +1730,8 @@ def get_function(function_name, composite_function_expression=None):
 
             # NOTE: import here to avoid circular import
 
-            from astromodels.functions.template_model import TemplateModel, MissingDataFile
+            from astromodels.functions.template_model import (MissingDataFile,
+                                                              TemplateModel)
 
             try:
 
