@@ -133,6 +133,10 @@ def test_hashing():
 
     d[node1] = 1
     d[node2] = 2
+
+    d[node1] == 1
+    d[node2] == 2
+
     
     d = {}
     
@@ -154,8 +158,12 @@ def test_hashing():
     d ={}
 
     d[node1] = 1
-    d[node2] = 2
+    d[node1.node2] = 2
 
+    
+    d[node1] == 1
+    d[node2] == 2
+    
     
 
     
