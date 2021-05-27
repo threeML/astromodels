@@ -1,14 +1,16 @@
 from future import standard_library
-standard_library.install_aliases()
-from builtins import object
-import collections
 
+standard_library.install_aliases()
+import collections
+import os
+import uuid
+from builtins import object
+
+from astromodels.core.node_ctype import _Node
+from astromodels.utils.io import display
+from astromodels.utils.valid_variable import is_valid_variable_name
 
 from .cpickle_compatibility_layer import cPickle
-
-from astromodels.utils.io import display
-from astromodels.core.node_ctype import _Node
-from astromodels.utils.valid_variable import is_valid_variable_name
 
 
 class DuplicatedNode(Exception):
@@ -47,16 +49,20 @@ class Node(_Node):
 
         _Node.__init__(self, name)
 
-
+        self._uuid_hash = uuid.UUID(bytes=os.urandom(16), version=4)
         
     #########################################################################
     # The next 3 methods are *really* necessary for anything to work
 
+    def __hash__(self):
+        return self._uuid_hash
+    
     def __reduce__(self):
 
         state = {}
         state['children'] = self._get_children()
         state['name'] = self.name
+        state['_uuid_hash'] = self._uuid_hash
         state['__dict__'] = self.__dict__
 
         return NewNodeUnpickler(), (self.__class__,), state
@@ -73,6 +79,8 @@ class Node(_Node):
 
         # Restore everything else
 
+        self._uuid_hash = state["_uuid_hash"]
+        
         for k in state['__dict__']:
 
             self.__dict__[k] = state['__dict__'][k]
