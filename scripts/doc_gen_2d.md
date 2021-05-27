@@ -54,12 +54,14 @@ NSIDE = 2**7
 NPIX = hp.nside2npix(NSIDE)
 
 theta, phi = np.degrees(hp.pix2ang(nside=NSIDE,ipix=np.arange(NPIX)))
+ra, dec  = hp.pix2ang(nside=NSIDE, ipix=np.arange(NPIX), lonlat=True)
 
-ra = phi
-idx = phi>180
-ra[idx] = ra[idx] - 360
-ra = np.deg2rad(ra)
-dec = np.deg2rad(90-theta)
+
+#ra = phi
+#idx = phi>180
+#ra[idx] = ra[idx] - 360
+#ra = np.deg2rad(ra)
+#dec = np.deg2rad(90-theta)
 
 
 ```
@@ -73,16 +75,11 @@ func.display()
 The shape of the function on the sky.
 ```python tags=["nbsphinx-gallery"]
 
-fig, ax = plt.subplots(subplot_kw=dict(projection="aitoff"))
 
-# evaluate
+m=func(ra, dec)
+hp.mollview(m, title=func_name, cmap="magma")
+hp.graticule(color="grey", lw=2)
 
-z = func(phi, 90-theta)
-
-
-
-                       
-ax.scatter(ra, dec, c=z, s=5, cmap="magma")
 
 
 ```
