@@ -20,7 +20,7 @@ class NewNodeUnpickler(object):
         return instance
 
 
-@dataclass(repr=False, unsafe_hash=False)
+@dataclass(repr=False, unsafe_hash=True)
 class _Node:
     _name: str
     _parent: Optional[Type["_Node"]] = field(repr=False, default=None)
