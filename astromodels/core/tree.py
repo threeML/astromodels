@@ -3,6 +3,7 @@ standard_library.install_aliases()
 from builtins import object
 import collections
 
+
 from .cpickle_compatibility_layer import cPickle
 
 from astromodels.utils.io import display
@@ -46,6 +47,8 @@ class Node(_Node):
 
         _Node.__init__(self, name)
 
+
+        
     #########################################################################
     # The next 3 methods are *really* necessary for anything to work
 
