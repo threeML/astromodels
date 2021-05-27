@@ -121,6 +121,29 @@ def test_get_child():
     clean()
 
 
+
+def test_hashing():
+
+    node1 = Node('node1')
+    node2 = Node('node2')
+    node22 = Node('node22')
+    node3 = Node('node3')
+
+    d = {}
+
+    d["node1"] = node1
+
+    
+    node1._add_child(node2)
+    node1._add_child(node22)
+    node2._add_child(node3)
+
+    d = {}
+
+    d["node1"] = node1
+    d["node2"] = node2
+    
+
 def test_get_children():
     node1 = Node('node1')
     node2 = Node('node2')
