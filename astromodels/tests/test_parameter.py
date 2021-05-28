@@ -122,15 +122,15 @@ def test_constructor_with_transform():
 
     assert p.is_normalization
 
-    assert p.has_transformation
+    assert p.has_transformation()
 
     p.remove_transformation()
 
-    assert not p.has_transformation
+    assert not p.has_transformation()
 
     p.restore_transformation()
 
-    assert p.has_transformation
+    assert p.has_transformation()
 
     assert p.transformation == p._original_transformation
 

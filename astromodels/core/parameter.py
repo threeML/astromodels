@@ -393,7 +393,7 @@ class ParameterBase(Node):
         return self._aux_variable is not None
 
 
-    @property
+    #@property
     def has_transformation(self) -> bool:
 
         if self._transformation is None:
