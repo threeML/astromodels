@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import ast
 import collections
@@ -366,6 +366,8 @@ class FunctionMeta(type):
 
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
+
+            log.debug(f"running setup of {instance._name}")
 
             instance._setup()
 
@@ -1489,15 +1491,17 @@ class CompositeFunction(Function):
 
         if self._n_dim > 1:
 
-            raise NotImplementedError(
-                "CompositeFunction class can only handle 1-dimensional functions at the moment.")
+            log.error("CompositeFunction class can only handle 1-dimensional functions at the moment.")
+            
+            raise NotImplementedError()
 
         for function in self._functions:
 
             if function.n_dim != self._n_dim:
 
-                raise RuntimeError(
-                    "You cannot compose functions of different dimensionality")
+                log.error("You cannot compose functions of different dimensionality")
+                
+                raise RuntimeError()
 
         # Now assign a unique name to all the functions, to make clear which is which in the definition
         # and give an easy way for the user to understand which parameter belongs to which function
@@ -1505,7 +1509,6 @@ class CompositeFunction(Function):
         self._id_to_uid = {}
 
         expression = self._uuid_expression
-
         
 
         for i, function in enumerate(self._functions):
@@ -1525,8 +1528,7 @@ class CompositeFunction(Function):
 
         parameters = collections.OrderedDict()
 
-        
-        
+                
         for i, function in enumerate(self._functions):
 
             log.debug(f"func path before comp: {function.path}")
@@ -1545,7 +1547,7 @@ class CompositeFunction(Function):
 
                     original_name = parameter_name
 
-                new_name = "%s_%i" % (original_name, i+1)
+                new_name = f"{original_name}_{i+1}"
 
                 log.debug(f"rename {original_name} -> {new_name}")
 
@@ -1942,8 +1944,6 @@ def _parse_function_expression(function_specification):
     # the parsing will fail
 
     string_for_literal_eval = ",".join(string_for_literal_eval.split())
-
-    # print(string_for_literal_eval)
 
     # At this point the string should be just a comma separated list of numbers
 

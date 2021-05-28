@@ -48,13 +48,19 @@ class Node(_Node):
 
         _Node.__init__(self, name)
 
-        self._uuid_hash = uuid.UUID(bytes=os.urandom(16), version=4).int
+        #self._uuid_hash = uuid.UUID(bytes=os.urandom(16), version=4).int
         
         #########################################################################
 
     def __hash__(self):
 
-        return self._uuid_hash
+        # return the hash of the path
+        # anytime we need a hash should
+        # be after a model is finalized
+        # so it should be static
+        
+        return hash(self._get_path())
+        #return self._uuid_hash
         
     def to_dict(self, minimal: bool=False) -> Dict[str, Any]:
         

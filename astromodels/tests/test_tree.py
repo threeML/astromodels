@@ -131,12 +131,15 @@ def test_hashing():
 
     d ={}
 
+    # nodes as hashes
+    
     d[node1] = 1
     d[node2] = 2
 
     d[node1] == 1
     d[node2] == 2
 
+    # nodes in dicts
     
     d = {}
     
