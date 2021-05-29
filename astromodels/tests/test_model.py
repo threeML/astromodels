@@ -683,6 +683,54 @@ def test_input_output_with_complex_functions():
     )
 
 
+    os.remove("__test.yml")
+
+def test_input_output_with_complex_functions_as_composites():
+
+    my_particle_distribution = Powerlaw()
+
+    my_particle_distribution.index = -1.52
+
+    electrons = ParticleSource(
+        "electrons", distribution_shape=my_particle_distribution)
+
+    # Now set up the synch. spectrum for our source and the source itself
+
+    synch_spectrum = _ComplexTestFunction()
+
+    # Use the particle distribution we created as source for the electrons
+    # producing synch. emission
+
+    synch_spectrum.particle_distribution = my_particle_distribution
+
+    photon_spec = synch_spectrum + Powerlaw()
+
+    
+    synch_source = PointSource(
+        "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
+    )
+
+    my_model = Model(electrons, synch_source)
+
+    my_model.display()
+
+    my_model.save("__testc.yml")
+
+    new_model = load_model("__testc.yml")
+
+    assert len(new_model.sources) == len(my_model.sources)
+
+    assert (
+        my_particle_distribution.index.value
+        == new_model.electrons.spectrum.main.shape.index.value
+    )
+
+
+
+
+#    os.remove("__test.yml")
+    
+
 def test_add_remove_sources():
 
     mg = ModelGetter()

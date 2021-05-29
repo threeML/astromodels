@@ -1,13 +1,15 @@
-from __future__ import print_function
-from __future__ import division
+from __future__ import division, print_function
+
 import astropy.units as u
 import numpy as np
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
+from astromodels.functions import (Band, Blackbody, Exponential_cutoff,
+                                   Log_parabola, Powerlaw)
+
 try:
-    from astromodels.functions import TbAbs, PhAbs, WAbs
+    from astromodels.functions import PhAbs, TbAbs, WAbs
 
     has_abs_models = True
 
@@ -16,12 +18,10 @@ except:
     has_abs_models = False
 
     
-from astromodels.sources.point_source import PointSource
-from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
-
-
+from astromodels.sources.particle_source import ParticleSource
+from astromodels.sources.point_source import PointSource
 
 try:
 
@@ -47,8 +47,8 @@ else:
 
     has_ebl = True
 
-from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
+from astromodels.functions.priors import *
 
 __author__ = 'giacomov'
 
@@ -207,8 +207,13 @@ def test_call_with_units():
             ps = PointSource("test", 0, 0, instance)
 
             if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
+
+                # we should not do it this way
                 particleSource = ParticleSource("particles", Powerlaw())
-                instance.set_particle_distribution(particleSource.spectrum.main.shape)
+
+                p = Powerlaw()
+
+                instance.set_particle_distribution(p)
 
 
             # elif instance.name in ["PhAbs", "TbAbs"]:
@@ -230,6 +235,24 @@ def test_call_with_units():
             
             if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
               model = Model( particleSource, ps)
+
+              # link the power law in the particle source and
+              # the synchrotron spectrum
+
+              if instance.name == "Synchrotron":
+              
+                  model.link(ps.spectrum.main.Synchrotron.Powerlaw.K,particleSource.spectrum.main.Powerlaw.K )
+
+                  model.link(ps.spectrum.main.Synchrotron.Powerlaw.index, particleSource.spectrum.main.Powerlaw.index )
+
+              else:
+
+                  model.link(ps.spectrum.main._ComplexTestFunction.Powerlaw.K,particleSource.spectrum.main.Powerlaw.K )
+
+                  model.link(ps.spectrum.main._ComplexTestFunction.Powerlaw.index, particleSource.spectrum.main.Powerlaw.index )
+
+                  
+                  
             else:
               model = Model( ps )
             
@@ -272,11 +295,11 @@ def test_call_with_units():
 
             continue
 
-#        if key.find("Synchrotron")==0:
+        if key.find("Synchrotron")==0:
 
             # Naima Synchtron function should have its own test
 
-#            continue
+            continue
 
         if this_function._n_dim == 1:
 
