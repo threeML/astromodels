@@ -10,7 +10,7 @@ import sys
 import uuid
 from builtins import chr, map, str
 from operator import attrgetter
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import astropy.units as u
 import numpy as np
@@ -576,6 +576,11 @@ class Function(Node):
 
         self._is_prior = False
 
+        # stores any extrernally linked functions
+        
+        self._external_functions: Dict[str, "Function"] = collections.OrderedDict()
+        
+
     @property
     def n_dim(self) -> int:
         """
@@ -607,6 +612,92 @@ class Function(Node):
                 return True
         return False
 
+    def _get_parameters(self) -> Tuple[Parameter]:
+        """
+        return a tuple of parameters
+        similar to get_children but for functions
+        """
+
+        return tuple(self._parameters.values())
+
+    def link_external_function(self, function: "Function", internal_name: str ):
+
+        if not isinstance(function, Function):
+
+            log.error("external functions must be of type Function")
+
+            raise RuntimeError()
+
+        if internal_name in self._external_functions:
+
+            log.error(f"a function with internal name {internal_name} is already linked!")
+
+            raise RuntimeError()
+
+
+        self._external_functions[internal_name] = function
+
+        log.debug(f"{self.name} has now linked {function.name} as {internal_name}")
+
+    def unlink_external_function(self, internal_name: str):
+
+        """
+        unlink an external function
+
+        :param internal_name: 
+        :type internal_name: str
+        :returns: 
+
+        """
+        if internal_name not in self._external_functions:
+
+            log.error(f"{internal_name} is not linked.")
+            log.error(f"Have {','.join(list(self._external_functions.keys()))}")
+        
+            raise RuntimeError()
+
+        self._external_functions.pop(internal_name)
+        
+    def unlink_all_external_functions(self):
+
+        """
+        unlinks all external functions from this function
+
+        :returns: 
+
+        """
+        names = list(self._external_functions.keys())
+
+        for n in names:
+
+            self._external_functions.pop(n)
+
+    @property
+    def external_functions(self):
+
+        return self._external_functions
+
+            
+    def to_dict(self, minimal: bool=False):
+
+        data = super(Function, self).to_dict(minimal)
+
+        if not minimal:
+
+            # link the external functions
+            # by there internal name and
+            # their path
+            
+            if self._external_functions:
+
+                data["external_functions"] = collections.OrderedDict()
+
+                for k,v in self._external_functions.items():
+
+                    data["external_functions"][k] = v.path
+
+        return data
+            
     @staticmethod
     def _generate_uuid():
         """
@@ -1033,7 +1124,7 @@ class Function1D(Function):
     def _call_with_units(self, x):
 
         # Gather the current parameters' values with units
-        values = list(map(attrgetter("as_quantity"), self._get_children()))
+        values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
 
@@ -1075,7 +1166,9 @@ class Function1D(Function):
 
         # NOTE: it is important to use value, and not _value, to support linking
 
-        values = list(map(attrgetter("value"), self._get_children()))
+        #values = list(map(attrgetter("value"), self._get_children()))
+
+        values = list(map(attrgetter("value"), self._get_parameters()))
 
         return self.evaluate(x, * values)
 
@@ -1204,7 +1297,7 @@ class Function2D(Function):
 
         # Gather the current parameters' values with units
 
-        values = list(map(attrgetter("as_quantity"), self._get_children()))
+        values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
 
@@ -1225,7 +1318,7 @@ class Function2D(Function):
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        values = list(map(attrgetter("value"), self._get_children()))
+        values = list(map(attrgetter("value"), self._get_parameters()))
 
         return self.evaluate(x, y, *values)
 
@@ -1355,7 +1448,7 @@ class Function3D(Function):
 
         # Gather the current parameters' values with units
 
-        values = list(map(attrgetter("as_quantity"), self._get_children()))
+        values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
 
@@ -1376,7 +1469,7 @@ class Function3D(Function):
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
 
-        values = list(map(attrgetter("value"), self._get_children()))
+        values = list(map(attrgetter("value"), self._get_parameters()))
 
         return self.evaluate(x, y, z, *values)
 
@@ -1528,12 +1621,13 @@ class CompositeFunction(Function):
 
         parameters = collections.OrderedDict()
 
-                
+        self._sub_children = collections.OrderedDict()
+             
         for i, function in enumerate(self._functions):
 
             log.debug(f"func path before comp: {function.path}")
             
-            for parameter_name, parameter in list(function.parameters.items()):
+            for parameter_name, parameter in function.parameters.items():
 
                 # New name to avoid possible duplicates
 
@@ -1558,6 +1652,20 @@ class CompositeFunction(Function):
                 
                 parameter._change_name(new_name, clear_parent = False)
 
+            # now, some functions may have children and we want to keep track of those
+
+            self._sub_children[function.name] = collections.OrderedDict()
+            
+            for child_name, child in function._children.items():
+
+                if child_name not in function.parameters:
+
+                    log.debug(f"{function.name} has child {child_name}")
+
+                    self._sub_children[function.name][child_name] = child.to_dict(minimal=False)
+                    
+
+                
             if not function.is_root:
                 
                 log.warning(f"{function.name} was previously assigned to {function._root(source_only=True).name}")
@@ -1709,6 +1817,28 @@ class CompositeFunction(Function):
 
             data['expression'] = self._expression
 
+            flag = False
+
+            for function in self._functions:
+
+                if function.external_functions:
+
+                    flag = True
+
+            if flag:
+            
+                data['external_functions'] = collections.OrderedDict()
+
+                for i, function in enumerate(self._functions):
+
+                    this_function = collections.OrderedDict()
+
+                    for k,v in function.external_functions.items():
+
+                        this_function[k] = v.path
+
+                    data['external_functions'][i] = this_function
+
         return data
 
 
@@ -1728,7 +1858,12 @@ def get_function(function_name, composite_function_expression=None):
 
         # Composite function
 
-        return _parse_function_expression(composite_function_expression)
+        # get the function
+        composite_function = _parse_function_expression(composite_function_expression)
+
+        # it is possible that the functions have sub children
+        
+        return composite_function
 
     else:
 
@@ -1894,7 +2029,9 @@ def _parse_function_expression(function_specification):
 
     if len(instances) == 0:
 
-        raise DesignViolation("No known function in function specification")
+        log.error("No known function in function specification")
+
+        raise DesignViolation()
 
     # The following presents a slight security problem if the model file that has been parsed comes from an untrusted
     # source. Indeed, the use of eval could make possible to execute things like os.remove.
@@ -1934,7 +2071,9 @@ def _parse_function_expression(function_specification):
 
     if re.match('''([a-zA-Z]+)''', string_for_literal_eval):
 
-        raise DesignViolation("Extraneous input in function specification")
+        log.error("Extraneous input in function specification")
+        
+        raise DesignViolation()
 
     # By using split() we separate all the numbers and parenthesis in a list, then we join them
     # with a comma, to end up with a comma-separated list of parenthesis and numbers like:
@@ -1954,8 +2093,9 @@ def _parse_function_expression(function_specification):
 
     except (ValueError, SyntaxError):
 
-        raise DesignViolation(
-            "The given expression is not a valid function expression")
+        log.error("The given expression is not a valid function expression")
+        
+        raise DesignViolation()
 
     else:
 
