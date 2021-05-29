@@ -208,7 +208,7 @@ class _Node:
             _next = _next._get_child(node)
 
         return _next
-
+    
     def _get_parent(self) -> "_Node":
         return self._parent
 
