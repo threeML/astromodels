@@ -931,3 +931,65 @@ def test_spatial_template_2D():
 
     os.remove("test1.fits")
     os.remove("test2.fits")
+
+def test_linking_external_functions():
+
+    p = Powerlaw()
+    p2 = Powerlaw()
+
+
+    # nothing there yet
+    assert not p.external_functions
+    
+    p.link_external_function(p2, "p2")
+
+    # should be there
+    
+    assert "p2" in p.external_functions
+
+    with pytest.raises(RuntimeError):
+
+        p.link_external_function(p2, "p2")
+
+
+    p.unlink_external_function("p2")
+    
+    # nothing there now
+    assert not p.external_functions
+
+    with pytest.raises(RuntimeError):
+
+        p.link_external_function("dummy", "p2")
+
+
+    with pytest.raises(RuntimeError):
+
+        p.unlink_external_function("p2")
+
+    p.link_external_function(p2, "p2")
+
+    p.unlink_all_external_functions()
+
+    assert not p.external_functions
+
+    p.link_external_function(p2, "p2")
+    
+
+    assert p2 == p.external_functions["p2"]
+
+    data = p.to_dict(minimal=False)
+
+    assert "external_functions" in data
+
+
+    p3 = Powerlaw()
+
+    p4 = p3 + p
+
+    
+    data = p4.to_dict(minimal=False)
+
+    assert "external_functions" in data
+
+
+    assert data["external_functions"][1]["p2"] == p2.path
