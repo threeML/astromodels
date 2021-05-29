@@ -462,35 +462,20 @@ if has_naima:
                 )
 
                 # we actually don't need to do anything as the units are already set up
+
         def set_particle_distribution(self, function):
 
-            if isinstance(function, str):
+            if "particle_distribution" in self._external_functions:
 
-                # ok, we are reloading from YAML
+                self.unlink_external_function("particle_distribution")
 
-                function = self._get_child(function)
-
-            else:
-
-                # we do not want to continuously
-                # add more functions in the dict
-
-                for k,v in self._children.items():
-
-                    if k not in self._parameters:
-
-                        # ok, this is probably an
-                        # older particle distribution
-                        # so we need to remove it
-
-                        self._remove_child(k)
-
-                self._add_child(function)
+            self.link_external_function(function, "particle_distribution")
 
             self._particle_distribution_name = function.name
 
             self._particle_distribution = function
-                
+
+
             # Now set the units for the function
 
             current_units = get_units()
@@ -507,9 +492,11 @@ if has_naima:
                 function(x.value), current_units.energy
             )
 
+
         def get_particle_distribution(self):
 
-            return self._get_child(self._particle_distribution.name)
+            return self._external_functions["particle_distribution"]
+ 
 
         particle_distribution = property(
             get_particle_distribution,

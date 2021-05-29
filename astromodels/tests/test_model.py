@@ -714,9 +714,9 @@ def test_input_output_with_complex_functions_as_composites():
 
     my_model.display()
 
-    my_model.save("__testc.yml")
+    my_model.save("__test.yml")
 
-    new_model = load_model("__testc.yml")
+    new_model = load_model("__test.yml")
 
     assert len(new_model.sources) == len(my_model.sources)
 
@@ -726,9 +726,7 @@ def test_input_output_with_complex_functions_as_composites():
     )
 
 
-
-
-#    os.remove("__test.yml")
+    os.remove("__test.yml")
     
 
 def test_add_remove_sources():

@@ -622,6 +622,19 @@ class Function(Node):
 
     def link_external_function(self, function: "Function", internal_name: str ):
 
+        """
+        link and external function to this function for use in its evaluate method.
+        the function can be from another source
+
+        the linked function can be accessed via self.external_functions[internal_name]
+
+        :param function: the function to link.
+        :type function: "Function"
+        :param internal_name: the internal name used to access this in the external_functions dict
+        :type internal_name: str
+        :returns: 
+
+        """
         if not isinstance(function, Function):
 
             log.error("external functions must be of type Function")

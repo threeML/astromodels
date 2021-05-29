@@ -231,19 +231,27 @@ class ModelParser(object):
                 for i, primary_func in enumerate(new_model[path]._functions):
 
                     this_ef = external_function["external_functions"][i]
+
+                    # for each function 
                     
                     if this_ef:
 
+                        # if there are extrenal linked functions
+                        
                         for fname, linked_function in this_ef.items():
 
-                            primary_func.link_external_functions(function=new_model[linked_function],
+                            # relink them
+                            
+                            primary_func.link_external_function(function=new_model[linked_function],
                                                                  internal_name=fname)
                         
             else:
 
+                # do the same if it is not composite
+
                 for fname, linked_function in external_function["external_functions"].items():
 
-                    new_model[path].link_external_functions(function=new_model[linked_function],
+                    new_model[path].link_external_function(function=new_model[linked_function],
                                                             internal_name=fname)
 
                 

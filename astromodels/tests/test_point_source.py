@@ -209,9 +209,12 @@ def test_call_with_units():
             if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
 
                 # we should not do it this way
-                particleSource = ParticleSource("particles", Powerlaw())
 
                 p = Powerlaw()
+
+                particleSource = ParticleSource("particles", p)
+
+                
 
                 instance.set_particle_distribution(p)
 
@@ -235,22 +238,6 @@ def test_call_with_units():
             
             if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
               model = Model( particleSource, ps)
-
-              # link the power law in the particle source and
-              # the synchrotron spectrum
-
-              if instance.name == "Synchrotron":
-              
-                  model.link(ps.spectrum.main.Synchrotron.Powerlaw.K,particleSource.spectrum.main.Powerlaw.K )
-
-                  model.link(ps.spectrum.main.Synchrotron.Powerlaw.index, particleSource.spectrum.main.Powerlaw.index )
-
-              else:
-
-                  model.link(ps.spectrum.main._ComplexTestFunction.Powerlaw.K,particleSource.spectrum.main.Powerlaw.K )
-
-                  model.link(ps.spectrum.main._ComplexTestFunction.Powerlaw.index, particleSource.spectrum.main.Powerlaw.index )
-
                   
                   
             else:
