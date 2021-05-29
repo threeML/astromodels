@@ -17,7 +17,6 @@
 
 import os
 import sys
-
 from pathlib import Path
 
 import mock
@@ -43,13 +42,11 @@ DOCS = Path(__file__).parent
 def run_apidoc(app):
     """Generage API documentation"""
     import better_apidoc
-   
+
     # Add the path to the C extension
     #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-    lib_path = os.path.abspath('%s/core' % astro_path)
-
-    sys.path.insert(2, lib_path)
-
+    # lib_path = os.path.abspath('%s/core' % astro_path)
+    # sys.path.insert(2, lib_path)
     #This must work now
 #    import node_ctype
 
@@ -167,6 +164,7 @@ pygments_style = 'none'
 # But do not want to depend on some random repository
 from pygments.formatters import HtmlFormatter  # noqa: E402
 from pygments.styles import get_all_styles  # noqa: E402
+
 path = os.path.join('_static', 'pygments')
 if not os.path.isdir(path):
     os.mkdir(path)
