@@ -1,6 +1,5 @@
 import itertools
 from dataclasses import dataclass, field
-
 from typing import Dict, List, Optional, Tuple, Type
 
 from astromodels.utils.logging import setup_logger
@@ -208,6 +207,10 @@ class _Node:
             _next = _next._get_child(node)
 
         return _next
+
+    def __getitem__(self, key):
+        return self._get_child_from_path(key)
+
     
     def _get_parent(self) -> "_Node":
         return self._parent
