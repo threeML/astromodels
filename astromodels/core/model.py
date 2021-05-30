@@ -5,8 +5,8 @@ __author__ = "giacomov"
 import collections
 import os
 import warnings
-
-from typing import List, Tuple, Dict, Any, Optional, Union, Iterable
+from dataclasses import dataclass
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -16,12 +16,11 @@ from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.tree import DuplicatedNode, Node
-from astromodels.functions.function import get_function
+from astromodels.functions.function import Function, get_function
+from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
+                                 Source)
 from astromodels.sources.source import (EXTENDED_SOURCE, PARTICLE_SOURCE,
                                         POINT_SOURCE)
-
-from astromodels.sources import PointSource, ExtendedSource, ParticleSource, Source
-
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.long_path_formatter import long_path_formatter
@@ -54,6 +53,32 @@ class CannotWriteModel(IOError):
 class ModelInternalError(ValueError):
 
     pass
+
+@dataclass(frozen=True)
+class _LinkedFunctionContainer:
+    function_name: str
+    linked_path: str
+    internal_name: str
+
+    def output(self, rich=True):
+
+        this_dict = collections.OrderedDict()
+
+        tmp = collections.OrderedDict()
+        tmp["linked function"] = self.linked_path
+        tmp["internal name"] = self.internal_name
+        this_dict[self.function_name] = tmp
+
+        output = pd.DataFrame.from_dict(this_dict)
+
+        if rich:
+
+            return output._repr_html_()
+
+        else:
+
+            return output.__repr__()
+
 
 
 class Model(Node):
@@ -257,12 +282,78 @@ class Model(Node):
 
         for parameter_name, parameter in list(self._parameters.items()):
 
-            if parameter.has_auxiliary_variable:
+             if parameter.has_auxiliary_variable:
 
                 linked_parameter_dictionary[parameter_name] = parameter
 
         return linked_parameter_dictionary
 
+    @property
+    def linked_functions(self) -> List[_LinkedFunctionContainer]:
+        """
+        return a list of containers for the linked functions
+        
+        """
+
+        linked_functions = []
+
+        for function in self._get_all_functions():
+
+            
+            
+            if "composite" in function._children:
+
+                data = function.to_dict()['composite']
+                
+                # this is a composite
+
+                if "external_functions" in data:
+
+                    for k, v in data["external_functions"].items():
+
+                        if v:
+
+                            for name, path in v.items():
+
+                                tmp = _LinkedFunctionContainer(function_name=function.path,
+                                                               linked_path=path,
+                                                               internal_name=name)
+
+                                linked_functions.append(tmp)
+            else:
+
+                data = function.to_dict()[function.shape.name]
+                
+                if "external_functions" in data:
+
+                    for name, path in data["external_functions"].items():
+                        
+                        tmp = _LinkedFunctionContainer(function_name=function.path,
+                                                       linked_path=path,
+                                                       internal_name=name)
+
+                
+                        linked_functions.append()
+
+
+        return linked_functions
+                                
+                                
+                                
+               
+            
+    def _get_all_functions(self) -> List[Function]:
+        all_functions = []
+
+        for source_name, source in self.sources.items():
+
+            # look at the spectrum node
+
+            all_functions.extend(source.spectrum._get_children())
+
+        return all_functions
+
+    
     def set_free_parameters(self, values: Iterable[float]) -> None:
         """
         Set the free parameters in the model to the provided values.
@@ -390,7 +481,7 @@ class Model(Node):
 
     def add_source(
         self, new_source: Union[PointSource, ExtendedSource,
-                                ParticleSource]) -> None:
+                                 ParticleSource]) -> None:
         """
         Add the provided source to the model
 
@@ -647,7 +738,8 @@ class Model(Node):
         parameters = self.parameters
         free_parameters = self.free_parameters
         linked_parameters = self.linked_parameters
-
+        linked_functions = self.linked_functions
+        
         # Summary of free parameters
         if len(free_parameters) > 0:
 
@@ -757,6 +849,8 @@ class Model(Node):
 
             pass
 
+        
+        
         empty_frame = "(none)%s" % new_line
 
         # Independent variables
@@ -790,6 +884,8 @@ class Model(Node):
 
             pass
 
+
+        
         if rich_output:
 
             source_summary_representation = sources_summary._repr_html_()
@@ -815,6 +911,21 @@ class Model(Node):
                     linked_summary_representation += linked_frame._repr_html_()
                     linked_summary_representation += new_line
 
+            if len(linked_functions) == 0:
+
+                linked_function_summary_representation = empty_frame
+
+            else:
+
+                linked_function_summary_representation = ""
+
+                for linked_function in linked_functions:
+
+                    linked_function_summary_representation += linked_function.output(rich=True)
+                    linked_function_summary_representation += new_line
+
+
+                    
             if len(independent_v_frames) == 0:
 
                 independent_v_representation = empty_frame
@@ -861,6 +972,20 @@ class Model(Node):
                     linked_summary_representation += linked_frame.__repr__()
                     linked_summary_representation += "%s%s" % (new_line, new_line)
 
+            if len(linked_functions) == 0:
+
+                linked_function_summary_representation = empty_frame
+
+            else:
+
+                linked_function_summary_representation = ""
+
+                for linked_function in linked_functions:
+
+                    linked_function_summary_representation += linked_function.output(rich=False)
+                    linked_function_summary_representation += "%s%s" % (new_line, new_line)
+
+                    
             if len(independent_v_frames) == 0:
 
                 independent_v_representation = empty_frame
@@ -978,6 +1103,25 @@ class Model(Node):
 
         representation += independent_v_representation
 
+        # Linked functions
+
+        representation += "%sLinked functions (%i):%s" % (
+            new_line,
+            len(self.linked_functions),
+            new_line,
+        )
+
+        if not rich_output:
+
+            representation += "----------------------%s%s" % (new_line, new_line)
+
+        else:
+
+            representation += new_line
+
+        representation += linked_function_summary_representation
+
+        
         return representation
 
     def to_dict_with_types(self):
@@ -1198,3 +1342,4 @@ class Model(Node):
             fluxes.append(self._point_sources[src](energies))
 
         return np.sum(fluxes, axis=0)
+
