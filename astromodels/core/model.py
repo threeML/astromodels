@@ -333,7 +333,7 @@ class Model(Node):
                                                        internal_name=name)
 
                 
-                        linked_functions.append()
+                        linked_functions.append(tmp)
 
 
         return linked_functions
