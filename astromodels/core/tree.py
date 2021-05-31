@@ -48,21 +48,15 @@ class Node(_Node):
         assert name != "name", "You cannot call a node 'name', it is reserved."
 
         _Node.__init__(self, name)
-
-        self._uuid_hash = uuid.UUID(bytes=os.urandom(16), version=4)
         
     #########################################################################
     # The next 3 methods are *really* necessary for anything to work
 
-    def __hash__(self):
-        return self._uuid_hash
-    
     def __reduce__(self):
 
         state = {}
         state['children'] = self._get_children()
         state['name'] = self.name
-        state['_uuid_hash'] = self._uuid_hash
         state['__dict__'] = self.__dict__
 
         return NewNodeUnpickler(), (self.__class__,), state
@@ -78,8 +72,6 @@ class Node(_Node):
         self._change_name(state['name'])
 
         # Restore everything else
-
-        self._uuid_hash = state["_uuid_hash"]
         
         for k in state['__dict__']:
 
