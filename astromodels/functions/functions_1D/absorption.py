@@ -1,16 +1,16 @@
 import os
 import sys
+
 import astropy.units as astropy_units
-import numpy as np
 import numba as nb
+import numpy as np
 import six
 from astropy.io import fits
+from interpolation import interp
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import configuration
 from astromodels.utils.data_files import _get_data_file_path
-
-from interpolation import interp
 
 _abs_tables = {
     "phabs": {

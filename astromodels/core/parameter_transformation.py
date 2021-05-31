@@ -28,14 +28,19 @@ class LogarithmicTransformation(ParameterTransformation):
 
         super(LogarithmicTransformation, self).__init__(is_positive=True)
     
-    def forward(self, external_value):
+    def forward(self, external_value, vector=False):
 
         #  Throw an error if taking the logarithm of a negative number (or nan)
 
         with np.errstate(invalid='raise'):
 
-            # math is 4 times faster than numpy here
-            res = math.log10(external_value)
+            if vector:
+
+                res = np.log10(external_value)
+
+            else:
+                # math is 4 times faster than numpy here
+                res = math.log10(external_value)
 
         return res
 
