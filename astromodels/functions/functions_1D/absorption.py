@@ -1,16 +1,20 @@
 import os
 import sys
+from pathlib import Path
+
 import astropy.units as astropy_units
-import numpy as np
 import numba as nb
+import numpy as np
 import six
 from astropy.io import fits
+from interpolation import interp
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import configuration
 from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils.logging import setup_logger
 
-from interpolation import interp
+log = setup_logger(__name__)
 
 _abs_tables = {
     "phabs": {
@@ -40,19 +44,28 @@ def _get_xsect_table(model, abund_table):
     contructs the abundance table from the values given
     """
 
-    assert model in _abs_tables, "the model %s does not exist" % model
-    assert abund_table in _abs_tables[model], ("the table %s does not exist" %
-                                               abund_table)
+    if not model in _abs_tables:
 
-    path_to_xsect = _get_data_file_path(
-        os.path.join(
-            "xsect",
-            "xsect_%s_%s.fits" % (model, _abs_tables[model][abund_table])))
+        log.error(f"the model {model} does not exist")
 
-    fxs = fits.open(path_to_xsect)
-    dxs = fxs[1].data
-    xsect_ene = dxs["ENERGY"]
-    xsect_val = dxs["SIGMA"]
+        raise AssertionError()
+
+    if not abund_table in _abs_tables[model]:
+
+        log.error(f"the table {abund_table} does not exist")
+
+        raise AssertionError()
+
+    _path = Path(
+        "xsect") / f"xsect_{model}_{_abs_tables[model][abund_table]}.fits"
+
+    path_to_xsect = _get_data_file_path(_path)
+
+    with fits.open(path_to_xsect) as fxs:
+
+        dxs = fxs[1].data
+        xsect_ene = dxs["ENERGY"]
+        xsect_val = dxs["SIGMA"]
 
     return np.array(xsect_ene, dtype=np.float64), np.array(xsect_val,
                                                            dtype=np.float64)
@@ -115,7 +128,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         except:
 
-            print("defaulting to AG89")
+            log.info("defaulting to AG89")
             self.xsect_ene, self.xsect_val = _get_xsect_table(
                 "phabs", abund_table)
 
@@ -201,7 +214,8 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         except:
 
-            print("defaulting to WILM")
+            log.info("defaulting to WILM")
+
             self.xsect_ene, self.xsect_val = _get_xsect_table(
                 "tbabs", abund_table)
 
@@ -211,7 +225,6 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
     def abundance_table(self):
         print(_abund_info[self._abund_table])
 
- 
     def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
@@ -227,7 +240,8 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp( self.xsect_ene, self.xsect_val,_x * (1 + _redshift))
+        xsect_interp = interp(self.xsect_ene, self.xsect_val,
+                              _x * (1 + _redshift))
 
         spec = _numba_eval(NH, xsect_interp) * _y_unit
 
@@ -288,12 +302,11 @@ class WAbs(Function1D, metaclass=FunctionMeta):
     def abundance_table(self):
         print(_abund_info[self._abund_table])
 
-
     def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -304,6 +317,8 @@ class WAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
+        xsect_interp = interp(self.xsect_ene, self.xsect_val,
+                              _x * (1 + _redshift))
 
         xsect_interp = interp( self.xsect_ene, self.xsect_val, _x * (1+ _redshift))
 
