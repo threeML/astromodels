@@ -4,27 +4,31 @@ import math
 import numba as nb
 import numpy as np
 
-# from numba.extending import get_cython_function_address
 
-# addr1 = get_cython_function_address(
-#     "scipy.special.cython_special", "gammaincc")
-# functype1 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double, ctypes.c_double)
-# gammaincc_fn = functype1(addr1)
+@nb.vectorize
+def _expm1(x):
+    
+    return math.expm1(x)
 
-
-# @nb.vectorize('float64(float64, float64)')
-# def vec_gammaincc(x, y):
-#     return gammaincc_fn(x, y)
-
-
-# addr2 = get_cython_function_address("scipy.special.cython_special", "gamma")
-# functype2 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double)
-# gamma_fn = functype2(addr2)
+@nb.vectorize
+def _exp(x):
+    
+    return math.exp(x)
 
 
-# @nb.vectorize('float64(float64)')
-# def vec_gamma(x):
-#     return gamma_fn(x)
+@nb.vectorize
+def _sqrt(x):
+    
+    return math.sqrt(x)
+
+
+@nb.vectorize
+def _pow(x, y):
+
+    return math.pow(x, y)
+
+
+
 
 
 @nb.njit(fastmath=True, cache=True)
@@ -191,15 +195,31 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 @nb.njit(fastmath=True, cache=True)
 def bb_eval(x, K, kT):
 
-    n = x.shape[0]
-    out = np.empty(n)
+    return K * x * x / _expm1(x/kT)
 
-    for idx in range(n):
+@nb.njit(fastmath=True, cache=True)
+def mbb_eval(x, K, kT):
 
-        arg = x[idx]/kT
-        out[idx] = K * x[idx] * x[idx] / np.expm1(arg)
+    arg = x/kT
 
-    return out
+    out = _pow(arg, 1.5) * _exp(-arg) /_sqrt(_expm1(-arg))
+    return out / x
+
+# @nb.njit(fastmath=True, cache=True)
+# def bbrad_eval(x, K, kT):
+
+#     tinv = 1./kT
+#     anorm = 1.0344E-3
+#     anormh = 0.5*anorm
+
+#     elow = 
+    
+#     xx = elow * tinv
+
+
+    
+
+
 
 # @nb.njit(fastmath=True, cache=True)
 # def bbrad_eval(x, K, kT):
@@ -233,11 +253,3 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
         return pre * math.log(Emax/Emin)
 
 
-# @nb.njit(fastmath=True, cache=True)
-# def ggrb_int_cpl(a, Ec, Emin, Emax):
-
-#     # Gammaincc does not support quantities
-#     i1 = vec_gammaincc(2 + a, Emin/Ec) * vec_gamma(2 + a)
-#     i2 = vec_gammaincc(2 + a, Emax/Ec) * vec_gamma(2 + a)
-
-#     return -Ec * Ec * (i2 - i1)
