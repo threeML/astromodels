@@ -493,8 +493,8 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
         # x has them, because 0 * x will be a Quantity with the same units as x
         idx = (x > 0 * x)
 
-        result[idx] = F * self.__norm_const / (sigma / piv * x / piv) * np.exp(
-            old_div(-np.power(np.log(old_div(x, piv)) - old_div(mu, piv), 2.), (2 * np.power(old_div(sigma, piv), 2.))))
+        result[idx] = F * self.__norm_const / (sigma / piv * x[idx] / piv) * np.exp(
+            old_div(-np.power(np.log(old_div(x[idx], piv)) - old_div(mu, piv), 2.), (2 * np.power(old_div(sigma, piv), 2.))))
 
         return result
 
