@@ -233,10 +233,6 @@ class Standard_Rv(Enum):
 # create some frozen data classes to hold the extinction curves
 
 
-
-
-
-
 _mw_extinction = _ExtinctionCurve(a = np.array([165., 14., 0.045, 0.002, 0.002, 0.012]),
                                   lamb = np.array([0.047, 0.08, 0.22, 9.7, 18., 25.]),
                                   b = np.array([90., 4., -1.95, -1.95, -1.8, 0.0]),
@@ -249,11 +245,13 @@ _lmc_extinction = _ExtinctionCurve(a = np.array([175., 19., 0.023, 0.005, 0.062,
                                   n = np.array([2.0, 4.5, 2., 2., 2., 2.])
                                   )
 
-_smc_extinction = _ExtinctionCurve(a = np.array([175., 19., 0.023, 0.005, 0.062, 0.02]),
-                                  lamb = np.array([0.046, 0.08, 0.22, 9.7, 18., 25.]),
+
+_smc_extinction = _ExtinctionCurve(a = np.array([185., 27., 0.005, 0.01, 0.012, 0.03]),
+                                  lamb = np.array([0.042, 0.08, 0.22, 9.7, 18., 25.]),
                                   b = np.array([90., 5.5, -1.95,-1.95, -1.8, 0.0]),
-                                  n = np.array([2.0, 4.5, 2., 2., 2., 2.])
+                                  n = np.array([2.0, 4., 2., 2., 2., 2.])
                                   )
+
 
 _extinctions_laws: Dict[str, _ExtinctionCurve] = dict(mw=_mw_extinction, lmc=_lmc_extinction, smc=_smc_extinction)
 
