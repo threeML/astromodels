@@ -2,6 +2,15 @@ import math
 from builtins import object
 
 import numpy as np
+import numba as nb
+
+@nb.vectorize
+def _pow(x, y):
+    return math.pow(x, y)
+
+@nb.vectorize
+def _log10(x, y):
+    return math.log10(x, y)
 
 
 class ParameterTransformation(object):
@@ -17,7 +26,7 @@ class ParameterTransformation(object):
 
         raise NotImplementedError("You have to implement this")
 
-    def backward(self, internal_value, vector: bool=False):
+    def backward(self, internal_value):
 
         raise NotImplementedError("You have to implement this")
 
@@ -35,19 +44,15 @@ class LogarithmicTransformation(ParameterTransformation):
         with np.errstate(invalid='raise'):
 
             # math is 4 times faster than numpy here
-            res = math.log10(external_value)
+            res = _log10(external_value)
 
         return res
 
-    def backward(self, internal_value, vector=False):
+    def backward(self, internal_value):
 
         # math is 10x faster than numpy or numba
-        if not vector:
-            return math.pow(10., internal_value)
-
-        else:
-
-            return np.power(10., internal_value)
+  
+        return _pow(10., internal_value)
         
 
 _known_transformations = {'log10': LogarithmicTransformation}
