@@ -52,7 +52,7 @@ def plaw_flux_norm(index, a, b):
         intflux = (math.pow(b, dp2) - math.pow(a, dp2)) / dp2
     else:
 
-        intflux = - np.log(a/b)
+        intflux = - math.log(a/b)
 
     return intflux
 
