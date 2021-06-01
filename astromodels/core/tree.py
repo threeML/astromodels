@@ -1,13 +1,16 @@
 from future import standard_library
+
 standard_library.install_aliases()
-from builtins import object
 import collections
+import os
+import uuid
+from builtins import object
+
+from astromodels.core.node_ctype import _Node
+from astromodels.utils.io import display
+from astromodels.utils.valid_variable import is_valid_variable_name
 
 from .cpickle_compatibility_layer import cPickle
-
-from astromodels.utils.io import display
-from astromodels.core.node_ctype import _Node
-from astromodels.utils.valid_variable import is_valid_variable_name
 
 
 class DuplicatedNode(Exception):
@@ -45,7 +48,7 @@ class Node(_Node):
         assert name != "name", "You cannot call a node 'name', it is reserved."
 
         _Node.__init__(self, name)
-
+        
     #########################################################################
     # The next 3 methods are *really* necessary for anything to work
 
@@ -69,7 +72,7 @@ class Node(_Node):
         self._change_name(state['name'])
 
         # Restore everything else
-
+        
         for k in state['__dict__']:
 
             self.__dict__[k] = state['__dict__'][k]
