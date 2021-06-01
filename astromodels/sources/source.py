@@ -2,6 +2,10 @@ from builtins import str
 from builtins import object
 __author__ = 'giacomov'
 
+from typing import Dict, Optional, List, Any
+
+from astromodels.core.parameter import Parameter
+
 import collections
 
 PARTICLE_SOURCE = 'particle source'
@@ -15,10 +19,10 @@ class UnknownSourceType(Exception):
 
 class Source(object):
 
-    def __init__(self, list_of_components, src_type, spatial_shape=None):
+    def __init__(self, list_of_components: List[Any], src_type: str, spatial_shape=None):
 
         # Make the dictionary of components
-        self._components = collections.OrderedDict()
+        self._components: Dict[str, Any] = collections.OrderedDict()
 
         for component in list_of_components:
 
@@ -31,14 +35,14 @@ class Source(object):
         else:
 
             # Store the type string
-            self._src_type = str(src_type)
+            self._src_type: str = str(src_type)
 
     def has_free_parameters(self):
 
         raise NotImplementedError("You need to override this")
 
     @property
-    def free_parameters(self):
+    def free_parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of free parameters for this source
 
@@ -48,7 +52,7 @@ class Source(object):
         raise NotImplementedError("You need to override this")
 
     @property
-    def components(self):
+    def components(self) -> Dict[str, Any]:
         """
         Return the dictionary of components
 
@@ -58,7 +62,7 @@ class Source(object):
         return self._components
 
     @property
-    def source_type(self):
+    def source_type(self) -> str:
         """
         Return the type of the source ('point source' or 'extended source')
 

@@ -19,7 +19,7 @@ from astromodels.core.model_parser import *
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.functions import (Gaussian_on_sphere, Line, Powerlaw,
                                    Uniform_prior)
-from astromodels.functions.functions import _ComplexTestFunction
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
@@ -410,10 +410,10 @@ def test_auto_unlink():
 
     n_free_source2 = len(m.two.free_parameters)
 
-    # This should give a warning about automatically unlinking 2 parameters
-    with pytest.warns(RuntimeWarning):
+    # # This should give a warning about automatically unlinking 2 parameters
+    # with pytest.warns(RuntimeWarning):
 
-        m.remove_source(m.two.name)
+    m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
@@ -431,9 +431,9 @@ def test_auto_unlink():
     m.link(m.one.spectrum.main.Powerlaw.K,
            m.two.spectrum.main.Powerlaw.K, link_law)
 
-    with pytest.warns(RuntimeWarning):
+    
 
-        m.remove_source(m.two.name)
+    m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
@@ -446,9 +446,9 @@ def test_auto_unlink():
     m.link([m.one.spectrum.main.Powerlaw.K,
             m.ext_one.spectrum.main.Powerlaw.K], m.two.spectrum.main.Powerlaw.K)
 
-    with pytest.warns(RuntimeWarning):
+    #with pytest.warns(RuntimeWarning):
 
-        m.remove_source(m.two.name)
+    m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
