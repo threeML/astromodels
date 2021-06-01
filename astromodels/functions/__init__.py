@@ -17,7 +17,7 @@ if has_ebltable:
 
 from .apec import PhAbs, TbAbs, WAbs, has_atomdb
 from .powerlaws import (Band, Band_Calderone, Band_grbm, Broken_powerlaw,
-                        Cutoff_powerlaw, Inverse_cutoff_powerlaw, Powerlaw,
+                        Cutoff_powerlaw, CPL, Inverse_cutoff_powerlaw, Powerlaw,
                         Powerlaw_Eflux, Powerlaw_flux, SmoothlyBrokenPowerLaw,
                         Super_cutoff_powerlaw)
 
@@ -42,7 +42,7 @@ from .template_model import (MissingDataFile, TemplateModel,
                              TemplateModelFactory, XSPECTableModel)
 
 __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
-           "Cutoff_powerlaw", "Inverse_cutoff_powerlaw", "Powerlaw",
+           "Cutoff_powerlaw", "CPL", "Inverse_cutoff_powerlaw", "Powerlaw",
            "Powerlaw_Eflux", "Powerlaw_flux", "SmoothlyBrokenPowerLaw",
            "Super_cutoff_powerlaw",
            "Constant", "Cubic", "DiracDelta", "Exponential_cutoff", "Line",
