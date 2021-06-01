@@ -7,6 +7,7 @@ import inspect
 import os
 import re
 import sys
+from typing import Optional, Dict, List
 import uuid
 from builtins import chr, map, str
 from operator import attrgetter
@@ -489,7 +490,7 @@ class Function(Node):
 
     """
 
-    def __init__(self, name=None, function_definition=None, parameters=None):
+    def __init__(self, name: str=None, function_definition: str=None, parameters: Dict[str, Parameter]=None):
 
         # I use default values only to avoid warnings from pycharm and other software about the
         # calling sequence of this contructor. We actually need to enforce its proper use,
@@ -517,7 +518,7 @@ class Function(Node):
         # be different than the actual name of the parameter, use the .add_child method instead
         # of the add_children method
 
-        self._parameters = collections.OrderedDict()
+        self._parameters: Dict[str, Parameter] = collections.OrderedDict()
 
         for child_name, child in list(parameters.items()):
 
@@ -541,14 +542,14 @@ class Function(Node):
         self._is_prior = False
 
     @property
-    def n_dim(self):
+    def n_dim(self) -> int:
         """
         :return: number of dimensions for this function (1, 2 or 3)
         """
         return type(self)._n_dim
 
     @property
-    def free_parameters(self):
+    def free_parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of free parameters for this function
 
@@ -561,7 +562,7 @@ class Function(Node):
         return free_parameters
 
     @property
-    def has_free_parameters(self):
+    def has_free_parameters(self) -> bool:
         """
         Returns True or False depending on if any parameters are free
         """
@@ -580,7 +581,7 @@ class Function(Node):
         """
         return uuid.UUID(bytes=os.urandom(16), version=4)
 
-    def has_fixed_units(self):
+    def has_fixed_units(self) -> bool:
         """
         Returns True if this function cannot change units, which is the case only for very specific functions (like
         models from foreign libraries like Xspec)
@@ -591,7 +592,7 @@ class Function(Node):
         return not (self._fixed_units is None)
 
     @property
-    def is_prior(self):
+    def is_prior(self) -> bool:
         """
         Returns False by default and must be overrided in the prior functions.
 
@@ -611,7 +612,7 @@ class Function(Node):
         return self._fixed_units
 
     @property
-    def description(self):
+    def description(self) -> str:
         """
         Returns a description for this function
         """
@@ -620,7 +621,7 @@ class Function(Node):
 
     # Add a property returning the parameters dictionary
     @property
-    def parameters(self):
+    def parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of parameters
         """
@@ -913,7 +914,7 @@ class Function1D(Function):
         return self._x_unit
 
     @property
-    def y_unit(self):
+    def y_unit(self) -> u.Unit:
         """
         The unit of the dependent variable
         :return: a astropy.Unit instance
@@ -1019,7 +1020,7 @@ class Function1D(Function):
             return results
 
     @memoize
-    def fast_call(self, x):
+    def fast_call(self, x) -> np.ndarray:
 
         # Gather the current parameters' values without units, which means that the whole computation
         # will be without units, with a big speed gain (~10x)
@@ -1043,7 +1044,7 @@ class Function1D(Function):
 
 class Function2D(Function):
 
-    def __init__(self, name=None, function_definition=None, parameters=None):
+    def __init__(self, name: Optional[str] = None, function_definition: Optional[str]=None, parameters: Dict[str, Parameter] =None):
 
         Function.__init__(self, name, function_definition, parameters)
 
