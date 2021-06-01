@@ -343,7 +343,84 @@ class Cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
 
         return result * unit_
 
+      
+class CPL(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
 
+        A power law multiplied by an exponential cutoff parametrized via Ep
+
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/xp} $
+
+    parameters :
+
+        K :
+
+            desc : Normalization (differential flux at the pivot value)
+            initial value : 1.0
+            is_normalization : True
+            transformation : log10
+            min : 1e-30
+            max : 1e3
+            delta : 0.1
+
+        piv :
+
+            desc : Pivot value
+            initial value : 1
+            fix : yes
+
+        index :
+
+            desc : Photon index
+            initial value : -2
+            min : -10
+            max : 10
+
+        xp :
+
+            desc : peak in the x * x * N (nuFnu if x is a energy)
+            initial value : 500
+            min : 10
+            max : 1e4
+            transformation : log10
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # The index is always dimensionless
+        self.index.unit = astropy_units.dimensionless_unscaled
+
+        # The pivot energy has always the same dimension as the x variable
+        self.piv.unit = x_unit
+
+        self.xp.unit = x_unit
+
+        # The normalization has the same units as the y
+
+        self.K.unit = y_unit
+
+    # noinspectionq PyPep8Naming
+    def evaluate(self, x, K, piv, index, xp):
+
+        if isinstance(x, astropy_units.Quantity):
+            index_ = index.value
+            K_ = K.value
+            piv_ = piv.value
+            xp_ = xp.value
+            x_ = x.value
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, x_, index_, xp_ = K, piv, x, index, xp
+
+        result = nb_func.cplaw_eval(x_, K_, xp_, index_, piv_)
+
+        return result * unit_
+      
+      
 class Inverse_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
     r"""
     description :
