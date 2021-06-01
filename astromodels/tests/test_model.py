@@ -12,7 +12,7 @@ import copy
 
 import numpy as np
 
-from astromodels import u
+from astromodels import u, update_logging_level
 from astromodels.core.model import (CannotWriteModel, DuplicatedNode, Model,
                                     ModelFileExists)
 from astromodels.core.model_parser import *
@@ -23,7 +23,6 @@ from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
-from astromodels import update_logging_level
 
 update_logging_level("DEBUG")
 

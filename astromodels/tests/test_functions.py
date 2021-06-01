@@ -808,17 +808,17 @@ def test_function2D():
     c = Gaussian_on_sphere()
 
     f1 = c(1, 1)
-    assert np.isclose(f1, 38.285617800653434, rtol=1e-10)
+    assert np.isclose(f1, 5.17276409, rtol=1e-10)
 
     a = np.array([1.0, 2.0])
 
     fa = c(a, a)
-    assert np.isclose(fa, [3.82856178e+01, 2.35952748e-04], rtol=1e-10).all()
+    assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
 
     c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
-    assert np.isclose(f1d.value, 38.285617800653434, rtol=1e-10)
+    assert np.isclose(f1d.value, 5.17276409 , rtol=1e-10)
     assert f1d.unit == u.deg**-2
 
     assert c.x_unit == u.deg
