@@ -27,10 +27,10 @@ warnings.simplefilter("ignore")
 
 from astromodels.functions.function import _known_functions
 
-%matplotlib inline
+
 from jupyterthemes import jtplot
 jtplot.style(context="talk", fscale=1, ticks=True, grid=False)
-
+%matplotlib inline
 ```
 
 ```python nbsphinx="hidden" tags=["parameters"]
@@ -75,7 +75,7 @@ The shape of the function.
 
 *If this is not a photon model but a prior or linear function then ignore the units as these docs are auto-generated*
 
-```python tags=["nbsphinx-gallery"]
+```python tags=["nbsphinx-thumbnail"]
 fig, ax = plt.subplots()
 
 
