@@ -177,7 +177,7 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
         pcosh_piv = Mbs * (arg_piv - log2)
     else:
 
-        pcosh_piv = Mbs * amth.log((math.exp(arg_piv) + math.exp(-arg_piv)) / 2.0)
+        pcosh_piv = Mbs * math.log((math.exp(arg_piv) + math.exp(-arg_piv)) / 2.0)
 
     ten_pcosh_piv = math.pow(10., pcosh_piv)
 
@@ -212,9 +212,10 @@ def bb_eval(x, K, kT):
 def mbb_eval(x, K, kT):
 
     arg = x/kT
-
-    out = _pow(arg, 1.5) * _exp(-arg) /_sqrt(_expm1(-arg))
-    return out / x
+    exp_arg = _exp(-arg)
+    
+    out = _pow(arg, 1.5) * exp_arg /_sqrt(1- exp_arg)
+    return K * out / x
 
 # @nb.njit(fastmath=True, cache=True)
 # def bbrad_eval(x, K, kT):

@@ -69,9 +69,11 @@ class ZDust(Function1D, metaclass=FunctionMeta):
         self.set_extinction_law("mw")
 
     def _set_units(self, x_unit, y_unit):
-        # self.NH.unit = astropy_units.cm**(-2)
-        # self.redshift.unit = astropy_units.dimensionless_unscaled
-        pass
+        self.rv.unit = astropy_units.dimensionless_unscaled
+        self.e_bmv.unit = astropy_units.dimensionless_unscaled
+        self.redshift.unit = astropy_units.dimensionless_unscaled
+        
+        
 
     def set_extinction_law(self, extinction_law: str = "MW") -> None:
 
@@ -127,7 +129,7 @@ class ZDust(Function1D, metaclass=FunctionMeta):
                        self._extinction_law.a,
                        self._extinction_law.lamb,
                        self._extinction_law.b,
-                       self._extinction_law.n)[:-1]
+                       self._extinction_law.n)[:-1] * _y_unit
 
         
         # xsect_interp = interp(self.xsect_ene, self.xsect_val,

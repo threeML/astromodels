@@ -87,7 +87,7 @@ class ModifiedBlackbody(Function1D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
-        self.K.unit = old_div(y_unit, (x_unit ** 2))
+        self.K.unit = y_unit / x_unit
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
@@ -104,6 +104,7 @@ class ModifiedBlackbody(Function1D, metaclass=FunctionMeta):
             unit_ = self.y_unit
 
         else:
+
             unit_ = 1.0
             K_, kT_, x_, = (
                 K,
