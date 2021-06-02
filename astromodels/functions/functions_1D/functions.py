@@ -8,18 +8,7 @@ import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
 from astromodels.functions.function import (Function1D, FunctionMeta,
                                             ModelAssertionViolation)
-
-try:
-    from threeML.config import threeML_config
-
-    _has_threeml = True
-
-    _startup_flag = threeML_config.logging.startup_warnings
-    
-except ImportError:
-
-    _has_threeml = False
-    _startup_flag = True
+from astromodels.utils.configuration import astromodels_config
 
 from astromodels.utils.logging import setup_logger
 
@@ -61,7 +50,7 @@ try:
 
 except ImportError:
 
-    if _startup_flag:
+    if astromodels_config.logging.startup_warnings:
 
         log.warning(
             "The naima package is not available. Models that depend on it will not be available"
@@ -82,7 +71,7 @@ try:
 
 except ImportError:
 
-    if _startup_flag:
+    if astromodels_config.logging.startup_warnings:
 
         log.warning(
             "The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
@@ -108,7 +97,7 @@ try:
 
 except ImportError:
 
-    if _startup_flag:
+    if astromodels_config.logging.startup_warnings:
 
         log.warning(
             "The ebltable package is not available. Models that depend on it will not be available"
