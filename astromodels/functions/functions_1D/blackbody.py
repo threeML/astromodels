@@ -121,7 +121,7 @@ class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
 
     description :
         Non-dissipative photosphere of a GRB occuring above the saturation radius
-
+        Acuner, Z., Ryde, F. & Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).
     latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.4} e^{-\left(\frac{E}{E_{c}}\right)^{0.65}}$
 
     parameters :
@@ -183,8 +183,10 @@ class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
     r"""
 
     description :
-        Non-dissipative photosphere of a GRB occuring BELOW the saturation radius
-
+        Non-dissipative photosphere of a GRB occuring BELOW the saturation radius.
+        Acuner, Z., Ryde, F. & Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).
+   
+    
     latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.66} e^{-\left(\frac{E}{E_{c}}\right)}$
 
     parameters :
