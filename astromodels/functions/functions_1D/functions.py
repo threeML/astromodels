@@ -27,12 +27,6 @@ class NaimaNotAvailable(ImportWarning):
     pass
 
 
-class EBLTableNotAvailable(ImportWarning):
-    pass
-
-
-class InvalidUsageForFunction(Exception):
-    pass
 
 
 # Now let's try and import optional dependencies

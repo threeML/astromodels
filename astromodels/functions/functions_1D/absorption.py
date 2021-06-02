@@ -37,11 +37,13 @@ except ImportError:
 
     has_ebltable = False
 
-# except:
 
-#     has_ebltable = False
+class EBLTableNotAvailable(ImportWarning):
+    pass
 
-#     log.warning("The ebltable package is broken")
+
+class InvalidUsageForFunction(Exception):
+    pass
 
 
 @dataclass(frozen=False)
