@@ -7,7 +7,7 @@ import numpy as np
 from astromodels.functions import TemplateModel, TemplateModelFactory, MissingDataFile, XSPECTableModel
 from astromodels.functions import Band, Powerlaw
 from astromodels import Model, PointSource, clone_model, load_model
-from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils import _get_data_file_path
 
 import pickle
 

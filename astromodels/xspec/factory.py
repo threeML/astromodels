@@ -9,7 +9,7 @@ import warnings
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions.function import get_function_class
-from astromodels.utils.configuration import get_user_data_path
+from astromodels.utils import get_user_data_path
 
 
 class XSpecNotAvailable(ImportWarning):

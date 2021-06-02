@@ -11,7 +11,7 @@ from interpolation import interp
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import configuration
-from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils import _get_data_file_path
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
