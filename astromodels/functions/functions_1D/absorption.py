@@ -53,7 +53,7 @@ class AbundanceTable:
     def set_table(self, table: str):
 
         """
-        set the current table from AG98, WILM or ASPL
+        set the current table from AG89, WILM or ASPL
 
         :param table: 
         :type table: str
@@ -68,7 +68,7 @@ class AbundanceTable:
         self._current_table = table
         
         
-        if self.current_table not in tables:
+        if self.current_table not in self.tables:
 
             log.error(f"{self.name} does not contain {table} choose {','.join(self.table)}")
 
@@ -108,7 +108,7 @@ class AbundanceTable:
 
         """
         _path: Path = Path(
-        "xsect") / f"xsect_{self.name}_{_abs_tables[self.name][self.current_table]}.fits"
+        "xsect") / f"xsect_{self.name}_{self.current_table}.fits"
 
         path_to_xsect: Path = _get_data_file_path(_path)
 
@@ -180,12 +180,14 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         try:
             phabs.set_table(abund_table)
+
+            log.debug(f"phabs model set to {abund_table}")
             
         except:
 
-            log.info("defaulting to AG89")
+            log.info(f"defaulting to {astromodels_config.absorption_models.phabs_table.value}")
 
-            phabs.set_table("AG89")
+            phabs.set_table(astromodels_config.absorption_models.phabs_table.value)
             
 
         self.xsect_ene, self.xsect_val = phabs.xsect_table
@@ -256,6 +258,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
                              astropy_units.dimensionless_unscaled)
 
     def _set_units(self, x_unit, y_unit):
+
         self.NH.unit = astropy_units.cm**(-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
@@ -268,15 +271,17 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
         :rtype: 
 
         """
-
+        
         try:
             tbabs.set_table(abund_table)
             
+            log.debug(f"tbabs model set to {abund_table}")
+            
         except:
 
-            log.info("defaulting to WILM")
+            log.info(f"defaulting to {astromodels_config.absorption_models.tbabs_table.value}")
 
-            tbabs.set_table("WILM")
+            tbabs.set_table(astromodels_config.absorption_models.tbabs_table.value)
             
 
         self.xsect_ene, self.xsect_val = tbabs.xsect_table
