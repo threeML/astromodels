@@ -1,5 +1,4 @@
-import os
-import sys
+import math
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -8,7 +7,6 @@ from typing import Any, Dict, List, Optional
 import astropy.units as astropy_units
 import numba as nb
 import numpy as np
-import six
 from astropy.io import fits
 from interpolation import interp
 
@@ -39,11 +37,11 @@ except ImportError:
 
     has_ebltable = False
 
-except:
+# except:
 
-    has_ebltable = False
+#     has_ebltable = False
 
-    log.warning("The ebltable package is broken")
+#     log.warning("The ebltable package is broken")
 
 
 @dataclass(frozen=False)
@@ -158,7 +156,6 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             delta : 0.1
             fix: True
 
-
     """
     def _setup(self):
         self._fixed_units = (astropy_units.keV,
@@ -250,7 +247,6 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             delta : 0.1
             fix: True
 
-
     """
     def _setup(self):
 
@@ -339,8 +335,8 @@ class WAbs(Function1D, metaclass=FunctionMeta):
             delta : 0.1
             fix: True
 
-
     """
+
     def _setup(self):
         self._fixed_units = (astropy_units.keV,
                              astropy_units.dimensionless_unscaled)
@@ -458,21 +454,29 @@ if has_ebltable:
 
                 # ebltable expects TeV
                 eTeV = x.to(astropy_units.TeV).value
-                return (
-                    np.exp(-self._tau.opt_depth(redshift.value, eTeV) * attenuation)
-                    * astropy_units.dimensionless_unscaled
-                )
+                _unit = astropy_units.dimensionless_unscaled
+                _redshift = redshift.value
+                _attenuation = attenuation.value
 
             else:
 
                 # otherwise it's in keV
-                eTeV = old_div(x, 1e9)
-                return np.exp(-self._tau.opt_depth(redshift, eTeV) * attenuation)
- 
+                eTeV = x/1.e9
+
+                _unit = 1.
+                _redshift = redshift
+                _attenuation = attenuation
+                
+                
+            return _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation) * _unit
 
 
-    
+
+@nb.vectorize
+def _exp(x):
+    return math.exp(x)
+
 @nb.njit(fastmath=True)
 def _numba_eval(nh, xsect_interp):
 
-    return np.exp(-nh * xsect_interp )
+    return _exp(-nh * xsect_interp )
