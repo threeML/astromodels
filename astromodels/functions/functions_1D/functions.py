@@ -6,8 +6,7 @@ from past.utils import old_div
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
-from astromodels.functions.function import (Function1D, FunctionMeta,
-                                            ModelAssertionViolation)
+from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 
@@ -27,6 +26,9 @@ class NaimaNotAvailable(ImportWarning):
     pass
 
 
+
+class InvalidUsageForFunction(Exception):
+    pass
 
 
 # Now let's try and import optional dependencies
