@@ -6,6 +6,7 @@ from pathlib import Path
 
 import pkg_resources
 
+_custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
 
 def _get_data_file_path(data_file: str) -> Path:
     """
@@ -18,7 +19,7 @@ def _get_data_file_path(data_file: str) -> Path:
 
     try:
 
-        file_path = pkg_resources.resource_filename("astromodels", 'data/%s' % data_file)
+        file_path: str = pkg_resources.resource_filename("astromodels", 'data/%s' % data_file)
 
     except KeyError:
 
@@ -53,4 +54,19 @@ def get_user_data_path() -> Path:
 
 
     return user_data
+
+
+def get_path_of_user_config() -> Path:
+
+    if _custom_config_path is not None:
+
+        config_path: Path = Path(_custom_config_path)
+
+    config_path: Path = Path().home() / ".config" / "astromodels"
+
+    if not config_path.exists():
+
+        config_path.mkdir(parents=True)
+
+    return config_path
 
