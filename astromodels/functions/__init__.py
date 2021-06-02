@@ -1,9 +1,11 @@
 from .functions_1D import (Band, Band_Calderone, Band_grbm, Blackbody,
                            Broken_powerlaw, Constant, Cubic, Cutoff_powerlaw,
                            DiracDelta, Exponential_cutoff,
-                           Inverse_cutoff_powerlaw, Line, Log_parabola, PhAbs,
-                           Powerlaw, Powerlaw_Eflux, Powerlaw_flux, Quadratic,
-                           Quartic, Sin, SmoothlyBrokenPowerLaw, Standard_Rv,
+                           Inverse_cutoff_powerlaw, Line, Log_parabola,
+                           ModifiedBlackbody, NonDissipativePhotosphere,
+                           NonDissipativePhotosphere_Deep, PhAbs, Powerlaw,
+                           Powerlaw_Eflux, Powerlaw_flux, Quadratic, Quartic,
+                           Sin, SmoothlyBrokenPowerLaw, Standard_Rv,
                            StepFunction, StepFunctionUpper,
                            Super_cutoff_powerlaw, TbAbs, WAbs, ZDust,
                            get_polynomial, has_atomdb, has_ebltable, has_gsl,
@@ -55,7 +57,7 @@ __all__ = [
     "TemplateModel", "TemplateModelFactory", "XSPECTableModel",
     "MissingDataFile", "Log_parabola", "Blackbody", "Function1D", "Function2D",
     "Function3D", "FunctionMeta", "ModelAssertionViolation", "Quartic", "get_polynomial",
-    "ZDust", "Standard_Rv"
+    "ZDust", "Standard_Rv", "ModifiedBlackbody", "NonDissipativePhotosphere", "NonDissipativePhotosphere_Deep",
 
     
 ]

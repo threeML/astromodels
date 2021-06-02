@@ -114,3 +114,131 @@ class ModifiedBlackbody(Function1D, metaclass=FunctionMeta):
         result = nb_func.mbb_eval(x_, K_, kT_)
 
         return result * unit_
+
+
+class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
+    r"""
+
+    description :
+        Non-dissipative photosphere of a GRB occuring above the saturation radius
+
+    latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.4} e^{-\left(\frac{E}{E_{c}}\right)^{0.65}}$
+
+    parameters :
+        K :
+            desc :
+            initial value : 1e-4
+            min : 0.
+            is_normalization : True
+
+        ec :
+            desc : peak energy
+            initial value : 200.0
+            min: 0.
+       
+        piv :
+            desc : the pivot energy
+            initial value: 100. 
+            fix: True
+
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # The normalization has the same units as y
+        self.K.unit = y_unit
+
+        # The break point has always the same dimension as the x variable
+        self.ec.unit = x_unit
+
+        self.piv.unit = x_unit
+        
+    def evaluate(self, x, K, ec, piv):
+
+        if isinstance(x, astropy_units.Quantity):
+
+            K_ = K.value
+            ec_ = ec.value
+            piv_ = piv.value
+
+            x_ = x.value
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, ec_, x_, piv_ = (
+                K,
+                ec,
+                x,
+                piv
+            )
+
+        result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.4, 0.65)
+
+        return result * unit_
+
+    
+class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
+    r"""
+
+    description :
+        Non-dissipative photosphere of a GRB occuring BELOW the saturation radius
+
+    latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.66} e^{-\left(\frac{E}{E_{c}}\right)}$
+
+    parameters :
+        K :
+            desc :
+            initial value : 1e-4
+            min : 0.
+            is_normalization : True
+
+        ec :
+            desc : peak energy
+            initial value : 200.0
+            min: 0.
+       
+        piv :
+            desc : the pivot energy
+            initial value: 100. 
+            fix: True
+
+
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # The normalization has the same units as y
+        self.K.unit = y_unit
+
+        # The break point has always the same dimension as the x variable
+        self.ec.unit = x_unit
+
+        self.piv.unit = x_unit
+        
+    def evaluate(self, x, K, ec, piv):
+
+        if isinstance(x, astropy_units.Quantity):
+
+            K_ = K.value
+            ec_ = ec.value
+            piv_ = piv.value
+
+            x_ = x.value
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, ec_, x_, piv_ = (
+                K,
+                ec,
+                x,
+                piv
+            )
+
+        result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.66, 1.)
+
+        return result * unit_
+
+    

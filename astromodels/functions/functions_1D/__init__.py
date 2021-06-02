@@ -1,4 +1,7 @@
-from .functions import (Blackbody, DiracDelta, Exponential_cutoff,
+from .blackbody import (Blackbody, ModifiedBlackbody,
+                        NonDissipativePhotosphere,
+                        NonDissipativePhotosphere_Deep)
+from .functions import (DiracDelta, Exponential_cutoff,
                         Log_parabola, Sin, StepFunction, StepFunctionUpper,
                         has_ebltable, has_gsl, has_naima)
 
@@ -36,7 +39,8 @@ __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
            "Quadratic", "Sin", "StepFunction", "StepFunctionUpper",
            "PhAbs", "TbAbs", "WAbs",
            "Log_parabola",
-           "Blackbody","Quartic", "get_polynomial", "ZDust", "Standard_Rv"
+           "Blackbody", "ModifiedBlackbody", "NonDissipativePhotosphere", "NonDissipativePhotosphere_Deep",
+           "Quartic", "get_polynomial", "ZDust", "Standard_Rv"
            ]
 
 if has_atomdb:

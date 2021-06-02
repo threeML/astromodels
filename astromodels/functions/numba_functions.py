@@ -28,6 +28,17 @@ def _pow(x, y):
     return math.pow(x, y)
 
 
+@nb.vectorize
+def _log(x):
+
+    return math.log(x)
+
+@nb.vectorize
+def _log10(x):
+
+    return math.log10(x)
+
+
 
 
 
@@ -152,9 +163,9 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
     B = 0.5 * (alpha + beta)
     M = 0.5 * (beta - alpha)
 
-    arg_piv = np.log10(piv / be) / bs
+    arg_piv = math.log10(piv / be) / bs
 
-    log2 = np.log(2.0)
+    log2 = math.log(2.0)
 
     Mbs = M * bs
 
@@ -166,13 +177,13 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
         pcosh_piv = Mbs * (arg_piv - log2)
     else:
 
-        pcosh_piv = Mbs * np.log((np.exp(arg_piv) + np.exp(-arg_piv)) / 2.0)
+        pcosh_piv = Mbs * amth.log((math.exp(arg_piv) + math.exp(-arg_piv)) / 2.0)
 
     ten_pcosh_piv = math.pow(10., pcosh_piv)
 
     for idx in range(n):
 
-        arg = np.log10(x[idx] / be) / bs
+        arg = _log10(x[idx] / be) / bs
 
         if arg < -6.0:
 
@@ -253,3 +264,9 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
         return pre * math.log(Emax/Emin)
 
 
+@nb.njit(fastmath=True)
+def non_diss_photoshere_generic(x, K, ec, piv, a, b):
+
+    log_v = a * _log(x / piv) - _pow(x / ec, b)
+
+    return K * _exp(log_v)
