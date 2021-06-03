@@ -21,6 +21,7 @@ from astromodels.core.memoization import memoize
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
+from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
@@ -148,12 +149,16 @@ class FunctionMeta(type):
 
         except ReaderError:  # pragma: no cover
 
-            raise DocstringIsNotRaw("Docstring parsing has failed. "
-                                    "Did you remember to specify the docstring of %s as raw? "
-                                    "To do that, you have to put a r before the docstring, "
-                                    '''like in \n\nr"""\n(docstring)\n"""\n\ninstead of just\n\n'''
-                                    '''"""\ndocstring\n"""''' % name)
+            
+            log.error("Docstring parsing has failed. "
+                      "Did you remember to specify the docstring of %s as raw? "
+                      "To do that, you have to put a r before the docstring, "
+                      '''like in \n\nr"""\n(docstring)\n"""\n\ninstead of just\n\n'''
+                      '''"""\ndocstring\n"""''' % name)
 
+            raise DocstringIsNotRaw()
+
+            
         else:
 
             # Store the function definition in the type
@@ -162,12 +167,20 @@ class FunctionMeta(type):
 
         # Enforce the presence of a description and of a parameters dictionary
 
-        assert "description" in list(function_definition.keys()), "You have to provide a 'description' token in the " \
-            "documentation of class %s" % name
+        if not "description" in list(function_definition.keys()):
 
-        assert "parameters" in list(function_definition.keys()), "You have to provide a 'parameters' token in the " \
-            "documentation of class %s" % name
+            log.error("You have to provide a 'description' token in the "
+                      "documentation of class %s" % name)
 
+            raise AssertionError()
+            
+        if not "parameters" in list(function_definition.keys()):
+
+            log.error("You have to provide a 'parameters' token in the "
+                      "documentation of class %s" % name)
+
+            raise AssertionError()
+            
         # If there is a latex formula, store it in the type
 
         if 'latex' in function_definition:
@@ -184,9 +197,33 @@ class FunctionMeta(type):
         # Store latex formula in the type
         dct['_latex'] = latex_formula
 
+
+        # see if we have any properties
+        if 'properties' in function_definition:
+
+            # parse the properties
+
+            dct["_properties"] = collections.OrderedDict()
+
+            for property_name, property_definition in function_definition['properties'].items():
+
+                this_property = FunctionMeta.parse_property_definition(name,
+                                                                       property_name,
+                                                                       property_definition)
+
+                dct["_properties"][this_property.name] = this_property
+            
+        else:
+
+            dct["_properties"] = None
+        
         # Parse the parameters' dictionary
-        assert isinstance(function_definition['parameters'], dict), "Wrong syntax in 'parameters' token. It must be " \
-                                                                    "a dictionary. Refer to the documentation."
+        if not isinstance(function_definition['parameters'], dict):
+
+            log.error("Wrong syntax in 'parameters' token. It must be "
+                      "a dictionary. Refer to the documentation.")
+
+            raise AssertionError()
 
         # Add the parameters as attribute of the *type*. During the __call__ method below this dictionary will be used
         # to create a copy of each parameter which will be made available as child of the *instance*.
@@ -272,6 +309,16 @@ class FunctionMeta(type):
 
                 repr_dict['default parameters'][parameter_name] = dct['_parameters'][parameter_name].to_dict()
 
+            if dct["_properties"] is not None:
+
+                # Add the description of each parameter and their current value
+                repr_dict['default properties'] = collections.OrderedDict()
+                
+                for property_name in list(dct["_properties"].keys()):
+
+                    repr_dict['default properties'][property_name] = dct['_properties'][property_name].to_dict()
+
+                
             if has_ipython:
 
                 display(HTML(dict_to_list(repr_dict, html=True)))
@@ -314,7 +361,7 @@ class FunctionMeta(type):
 
         # Fill it by duplicating the parameters contained in the dictionary in the type
 
-        for key, value in list(type(instance)._parameters.items()):
+        for key, value in type(instance)._parameters.items():
 
             copy_of_parameters[key] = value.duplicate()
 
@@ -326,6 +373,41 @@ class FunctionMeta(type):
 
                 copy_of_parameters[key].value = kwargs[key]
 
+        # now we check to see if there are any properties
+
+        if type(instance)._properties is not None:
+
+            copy_of_properties = collections.OrderedDict()
+
+            for key, value in type(instance)._properties.items():
+
+                copy_of_properties[key] = value.duplicate()
+
+                # now we see if it was a deferred value and fail
+                # if it was no specified in the constructor
+
+                if copy_of_properties[key].is_deferred:
+
+                    if key not in kwargs:
+
+                        log.error(f"{key} is specified as a deferred parameter, but no value was specfied in the constructor of {type(instance)._name}")
+
+                        raise FunctionInstanceError()
+                    
+                # If the user has specified a value in the constructor, update the
+                # corresponding parameters value. This allow to use a constructor as:
+                # my_powerlaw = powerlaw(logK=1.0, index=-2)
+
+                if key in kwargs:
+
+                    copy_of_properties[key].value = kwargs[key]
+
+        else:
+
+            copy_of_properties = None
+
+
+                
         # Now check that all the parameters specified in the kwargs are actually parameters of this function
         for key in list(kwargs.keys()):
 
@@ -335,11 +417,18 @@ class FunctionMeta(type):
 
             except KeyError:
 
-                log.error("You specified an init value for %s, which is not a "
+                try:
+
+                    copy_of_properties[key]
+
+                except KeyError:
+
+                                    
+                    log.error("You specified an init value for %s, which is not a "
                           "parameter of function %s" % (key, type(instance)._name))
                 
-                raise UnknownParameter()
-
+                    raise UnknownParameter()
+            
         # Now call the init of the corresponding class
         n_dim = type(instance)._n_dim
 
@@ -348,21 +437,27 @@ class FunctionMeta(type):
             Function1D.__init__(instance,
                                 type(instance)._name,
                                 type(instance)._function_definition,
-                                copy_of_parameters)
+                                copy_of_parameters,
+                                copy_of_properties
+                                )
 
         elif n_dim == 2:
 
             Function2D.__init__(instance,
                                 type(instance)._name,
                                 type(instance)._function_definition,
-                                copy_of_parameters)
+                                copy_of_parameters,
+                                copy_of_properties
+                                )
 
         elif n_dim == 3:
 
             Function3D.__init__(instance,
                                 type(instance)._name,
                                 type(instance)._function_definition,
-                                copy_of_parameters)
+                                copy_of_parameters,
+                                copy_of_properties
+                                )
 
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
@@ -433,7 +528,7 @@ class FunctionMeta(type):
         return variables, other_parameters
 
     @staticmethod
-    def parse_parameter_definition(func_name, par_name, definition):
+    def parse_parameter_definition(func_name, par_name, definition) -> Parameter:
 
         # Parse definition of parameter
 
@@ -509,6 +604,71 @@ class FunctionMeta(type):
 
         return new_parameter
 
+    @staticmethod
+    def parse_property_definition(func_name, prop_name, definition) -> FunctionProperty:
+
+        # Parse definition of parameter
+
+        # see if we required a value at class construction
+        
+        deferred = ( False if "defer" not in definition else bool(definition['defer']))
+            
+        
+        # Enforce the presence of attributes 'value' and 'desc'
+
+        if 'initial value' not in definition:
+
+            if not deferred: 
+
+                log.error("Error for property %s of function %s: value for parameter must be"
+                                              " specified" % (prop_name, func_name))
+
+                raise FunctionDefinitionError()
+
+        if 'desc' not in definition:
+
+            log.error("Error for property %s of function %s: desc for parameter must be"
+                                          " specified" % (prop_name, func_name))
+            
+            raise FunctionDefinitionError()
+
+        # get the allowed values
+        
+        allowed_values: Optional[List[str]] = None
+
+        if 'allowed values' in definition:
+
+            allowed_values = []
+            for val in definition['allowed values']:
+
+                allowed_values.append(str(val))
+            
+        
+
+        if not deferred:
+            
+            value = str(definition['initial value'])
+
+            if allowed_values is not None:
+
+                if not value in allowed_values:
+
+                    log.error(f"Error for property {prop_name} of {func_name}: {value} is not in {','.join(allowed_values)}")
+
+                    raise FunctionDefinitionError()
+                    
+        else:
+
+            value = None
+            
+        desc = definition['desc']
+
+        new_property = FunctionProperty(prop_name, desc, value, allowed_values, defer=deferred)
+        
+        return new_property
+
+    
+    
 
 class Function(Node):
     """
@@ -516,7 +676,7 @@ class Function(Node):
 
     """
 
-    def __init__(self, name: str=None, function_definition: str=None, parameters: Dict[str, Parameter]=None):
+    def __init__(self, name: Optional[str]=None, function_definition: Optional[str]=None, parameters: Optional[Dict[str, Parameter]]=None, properties: Optional[Dict[str, FunctionProperty]] = None):
 
         # I use default values only to avoid warnings from pycharm and other software about the
         # calling sequence of this contructor. We actually need to enforce its proper use,
@@ -563,6 +723,26 @@ class Function(Node):
 
             self._add_child(child)
 
+        # Now add the properties if there are any
+
+        if properties is not None:
+
+            self._properties: Optional[Dict[str, FunctionProperty]] = collections.OrderedDict()
+
+            for child_name, child in properties.items():
+
+                self._properties[child_name] = child
+
+                # Add the parameter as a child of the function
+
+                self._add_child(child)
+
+        else:
+
+            self._properties = None
+        
+
+            
         # Now generate a unique identifier (UUID) in a thread safe, multi-processing safe
         # way. This is used for example in the CompositeFunction class to keep track of the different
         # instances of the same function
@@ -620,6 +800,22 @@ class Function(Node):
 
         return tuple(self._parameters.values())
 
+    @property
+    def properties(self) -> Optional[Dict[str, FunctionProperty]]:
+        """
+        return the properties of the function
+
+        :returns: 
+
+        """
+        
+        return self._properties
+
+    @property
+    def has_properties(self) -> bool:
+        return self._properties is not None
+
+    
     def link_external_function(self, function: "Function", internal_name: str ):
 
         """
@@ -992,9 +1188,9 @@ class Function(Node):
 
 class Function1D(Function):
 
-    def __init__(self, name=None, function_definition=None, parameters=None):
+    def __init__(self,name: Optional[str] = None, function_definition: Optional[str]=None, parameters: Optional[Dict[str, Parameter]] =None, properties: Optional[Dict[str, FunctionProperty]] = None):
 
-        Function.__init__(self, name, function_definition, parameters)
+        Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
@@ -1200,9 +1396,9 @@ class Function1D(Function):
 
 class Function2D(Function):
 
-    def __init__(self, name: Optional[str] = None, function_definition: Optional[str]=None, parameters: Dict[str, Parameter] =None):
+    def __init__(self, name: Optional[str] = None, function_definition: Optional[str]=None, parameters: Optional[Dict[str, Parameter]] =None, properties: Optional[Dict[str, FunctionProperty]] = None ):
 
-        Function.__init__(self, name, function_definition, parameters)
+        Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
@@ -1338,9 +1534,9 @@ class Function2D(Function):
 
 class Function3D(Function):
 
-    def __init__(self, name=None, function_definition=None, parameters=None):
+    def __init__(self, name: Optional[str] = None, function_definition: Optional[str]=None, parameters: Optional[Dict[str, Parameter]] =None, properties: Optional[Dict[str, FunctionProperty]] = None):
 
-        Function.__init__(self, name, function_definition, parameters)
+        Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
@@ -1634,6 +1830,8 @@ class CompositeFunction(Function):
 
         parameters = collections.OrderedDict()
 
+        properties = collections.OrderedDict()
+        
         self._sub_children = collections.OrderedDict()
              
         for i, function in enumerate(self._functions):
@@ -1665,6 +1863,33 @@ class CompositeFunction(Function):
                 
                 parameter._change_name(new_name, clear_parent = False)
 
+            if function.properties is not None:
+                for property_name, function_property in function.properties.items():
+
+                    # New name to avoid possible duplicates
+
+                    match = re.match("(.+)_[0-9]+$", property_name)
+
+                    if match is not None:
+
+                        original_name = match.groups()[0]
+
+                    else:
+
+                        original_name = property_name
+
+                    new_name = f"{original_name}_{i+1}"
+
+                    log.debug(f"rename {original_name} -> {new_name}")
+
+                    # Store the parameter under the new name (obviously this is a reference to the
+                    # parameter, not a copy, as always in python)
+
+                    properties[new_name] = function_property
+
+                    function_property._change_name(new_name, clear_parent = False)
+
+                
             # now, some functions may have children and we want to keep track of those
 
             self._sub_children[function.name] = collections.OrderedDict()
@@ -1691,12 +1916,19 @@ class CompositeFunction(Function):
                 function = function._parent._remove_child(function.name, delete=False)
             
             log.debug(f"func path after comp: {function.path}")
-        # Now build a meaningful description
 
+        # reset properties if there were none
+        
+        if not properties:
+
+            properties = None
+            
+        # Now build a meaningful description
+        
         _function_definition = {
             'description': self.expression, 'latex': NO_LATEX_FORMULA}
 
-        Function.__init__(self, 'composite', _function_definition, parameters)
+        Function.__init__(self, 'composite', _function_definition, parameters, properties)
 
         self._uuid = self._uuid_expression
 
@@ -1882,7 +2114,36 @@ def get_function(function_name, composite_function_expression=None):
 
         if function_name in _known_functions:
 
-            return _known_functions[function_name]()
+            function_class = _known_functions[function_name]
+            
+            deferred_properites = collections.OrderedDict()
+                
+            if function_class._properties is not None:
+
+                for name, func_prop in function_class._properties.items():
+
+                    # we need to specify this in hte constructor
+                    # this will change to the saved value when the
+                    # function is fully built 
+                    
+                    if func_prop.is_deferred:
+
+                        if func_prop._allowed_values is not None:
+
+                            # if there are only allowed values
+                            # then we select the first one
+                            
+                            deferred_properites[name] = func_prop._allowed_values[0]
+
+                        else:
+
+                            deferred_properites[name] = "_tmp"
+                
+            # Ok, let's create the instance
+
+            instance = function_class(**deferred_properites)
+
+            return instance
 
         else:
 
@@ -1921,8 +2182,10 @@ def get_function_class(function_name):
 
     else:
 
-        raise UnknownFunction("Function %s is not known. Known functions are: %s" %
-                              (function_name, ",".join(list(_known_functions.keys()))))
+        log.error("Function %s is not known. Known functions are: %s" %
+                             (function_name, ",".join(list(_known_functions.keys()))))
+        
+        raise UnknownFunction()
 
 
 def list_functions():
@@ -2000,9 +2263,36 @@ def _parse_function_expression(function_specification):
 
             if issubclass(function_class, Function):
 
+                # let's see if there are any deferred
+                # properties
+
+                deferred_properites = collections.OrderedDict()
+                
+                if function_class._properties is not None:
+
+                    for name, func_prop in function_class._properties.items():
+
+                        # we need to specify this in hte constructor
+                        # this will change to the saved value when the
+                        # function is fully built 
+                        
+                        if func_prop.is_deferred:
+
+                            
+                            if func_prop._allowed_values is not None:
+
+                                # if there are only allowed values
+                                # then we select the first one
+                                
+                                deferred_properites[name] = func_prop._allowed_values[0]
+
+                            else:
+
+                                deferred_properites[name] = "_tmp"
+                
                 # Ok, let's create the instance
 
-                instance = function_class()
+                instance = function_class(**deferred_properites)
 
                 # Append the instance to the list
 
@@ -2010,8 +2300,10 @@ def _parse_function_expression(function_specification):
 
             else:
 
-                raise FunctionDefinitionError("The function specification %s does not contain a proper function"
+                log.error("The function specification %s does not contain a proper function"
                                               % unique_function)
+                
+                raise FunctionDefinitionError()
 
         else:
 

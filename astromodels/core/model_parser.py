@@ -684,6 +684,9 @@ class SourceParser(object):
 
         # parse the function
 
+        # now split the parameters and the properties
+
+        
         shape_parser = ShapeParser(self._source_name)
 
         shape = shape_parser.parse(
@@ -1001,6 +1004,51 @@ class ShapeParser(object):
 
                 function_instance.parameters[parameter_name].prior = prior_function
 
+        
+        
+                
+        if function_instance.has_properties:
+
+            # now collect the properties
+            
+            # the properties are stored in the parameters defintion
+            # as well
+            
+            for property_name, _ in function_instance.properties.items():
+
+                try:
+
+                    this_definition = parameters_definition[property_name]
+
+                except KeyError:  # pragma: no cover
+
+                    log.error( 
+                        "Function %s, specified as shape for %s of source %s, lacks "
+                        "the definition for property %s"
+                        % (function_name, component_name, self._source_name, property_name)
+                    )
+
+                    for k,v in parameters_definition.items():
+
+                        log.error((k, v))
+
+                    raise ModelSyntaxError()
+
+
+                if "value" not in this_definition:
+
+                    log.error("The property %s in function %s, specified as shape for %s "
+                              "of source %s, lacks a 'value' attribute"
+                    % (propertyr_name, function_name, component_name, self._source_name))
+                
+                    raise ModelSyntaxError()
+
+
+                function_instance.properties[property_name].value = this_definition['value']
+                    
+                
+
+                
         # Now handle extra_setup if any
         if "extra_setup" in parameters_definition:
 

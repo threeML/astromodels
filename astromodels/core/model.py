@@ -15,6 +15,7 @@ import scipy.integrate
 from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
+from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import DuplicatedNode, Node
 from astromodels.functions.function import Function, get_function
 from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
@@ -1161,6 +1162,11 @@ class Model(Node):
 
                     data["%s (%s)" % (key, "Parameter")] = data.pop(key)
 
+                # elif isinstance(element, FunctionProperty):
+
+                #     data["%s (%s)" % (key, "FunctionProperty")] = data.pop(key)
+
+                    
                 else:  # pragma: no cover
 
                     raise ModelInternalError("Found an unknown class at the top level")
