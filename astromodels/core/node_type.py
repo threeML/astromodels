@@ -309,12 +309,16 @@ class _Node:
     @property
     def name(self) -> str:
         return self._name
-
+  
     def __getattr__(self, name):
         if name in self._children:
             return self._children[name]
         else:
-            return super().__getattr__(name)
+
+            raise AttributeError()
+            pass
+            
+            #return super(_Node).__getattr__(name)
 
     def __setattr__(self, name, value):
 

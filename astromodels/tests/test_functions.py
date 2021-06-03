@@ -1026,9 +1026,11 @@ def test_abs_model():
 
         instance.info()
 
+        instance.abundance_table_info
+        
         if i != 1:
         
-            instance.init_xsect("AG89")
+            instance.abundance_table = "AG89"
 
         if i ==0:
 
@@ -1038,18 +1040,6 @@ def test_abs_model():
 
             assert phabs._current_table == "AG89"
 
-    astromodels_config.absorption_models.tbabs_table = "ASPL"
-
-    m = astromodels.TbAbs()
-
-    assert tbabs._current_table == "ASPL"
-
-
-    astromodels_config.absorption_models.phabs_table = "ASPL"
-
-    m = astromodels.PhAbs()
-
-    assert phabs._current_table == "ASPL"
 
 
             

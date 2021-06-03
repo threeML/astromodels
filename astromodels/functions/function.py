@@ -664,8 +664,15 @@ class FunctionMeta(type):
             for val in definition['allowed values']:
 
                 allowed_values.append(str(val))
+
+        if 'function' in definition:
+
+            eval_func = definition["function"]
+
+        else:
+
+            eval_func = None
             
-        
 
         if not deferred:
             
@@ -685,7 +692,7 @@ class FunctionMeta(type):
             
         desc = definition['desc']
 
-        new_property = FunctionProperty(prop_name, desc, value, allowed_values, defer=deferred)
+        new_property = FunctionProperty(prop_name, desc, value, allowed_values, defer=deferred, eval_func=eval_func)
         
         return new_property
 
