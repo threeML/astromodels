@@ -655,8 +655,10 @@ def test_input_output_with_complex_functions():
 
     # Now set up the synch. spectrum for our source and the source itself
 
-    synch_spectrum = _ComplexTestFunction()
+    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
 
+    synch_spectrum.dummy = "love"
+    
     # Use the particle distribution we created as source for the electrons
     # producing synch. emission
 
@@ -666,6 +668,9 @@ def test_input_output_with_complex_functions():
         "synch_source", ra=12.6, dec=-13.5, spectral_shape=synch_spectrum
     )
 
+
+    
+    
     my_model = Model(electrons, synch_source)
 
     my_model.display()
@@ -681,7 +686,11 @@ def test_input_output_with_complex_functions():
         == new_model.electrons.spectrum.main.shape.index.value
     )
 
+    assert new_model.synch_source.spectrum.main.shape.file_name.value == "test.txt"
 
+    assert new_model.synch_source.spectrum.main.shape.dummy.value == "love"
+    
+    
     os.remove("__test.yml")
 
 def test_input_output_with_complex_functions_as_composites():
@@ -695,8 +704,9 @@ def test_input_output_with_complex_functions_as_composites():
 
     # Now set up the synch. spectrum for our source and the source itself
 
-    synch_spectrum = _ComplexTestFunction()
-
+    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
+    
+    
     # Use the particle distribution we created as source for the electrons
     # producing synch. emission
 
@@ -704,6 +714,7 @@ def test_input_output_with_complex_functions_as_composites():
 
     photon_spec = synch_spectrum + Powerlaw()
 
+    photon_spec.dummy_1 = "love"
     
     synch_source = PointSource(
         "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
@@ -725,6 +736,11 @@ def test_input_output_with_complex_functions_as_composites():
     )
 
 
+    assert new_model.synch_source.spectrum.main.shape.file_name_1.value == "test.txt"
+
+    assert new_model.synch_source.spectrum.main.shape.dummy_1.value == "love"
+
+    
     os.remove("__test.yml")
     
 

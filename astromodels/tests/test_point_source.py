@@ -8,6 +8,9 @@ from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (Band, Blackbody, Exponential_cutoff,
                                    Log_parabola, Powerlaw)
 
+
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
+
 try:
     from astromodels.functions import PhAbs, TbAbs, WAbs
 
@@ -186,8 +189,14 @@ def test_call_with_units():
     # Now test all the functions
     def test_one(class_type):
 
-        instance = class_type()
+        if class_type == _ComplexTestFunction:
         
+            instance = class_type(file_name="test.txt")
+            
+        else:
+
+            instance = class_type()
+            
         if not instance.is_prior:
 
             # if we have fixed x_units then we will use those

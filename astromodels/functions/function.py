@@ -52,6 +52,9 @@ class WarningNoTests(ImportWarning):
 class FunctionDefinitionError(Exception):
     pass
 
+class FunctionInstanceError(Exception):
+    pass
+
 
 class DesignViolation(Exception):
     pass

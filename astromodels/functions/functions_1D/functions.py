@@ -577,6 +577,18 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
             min : -100
             max : 100
             delta : 0.1
+    
+    properties:
+        file_name: 
+            desc: a file name
+            defer: True 
+        dummy:
+            desc: a dummy property
+            initial value: test
+            allowed values:
+                - test
+                - love
+
     """
 
     
