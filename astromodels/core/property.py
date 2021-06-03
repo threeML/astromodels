@@ -131,7 +131,7 @@ class PropertyBase(Node):
         """
         return self._desc
     
-    def duplicate(self) -> "Property":
+    def duplicate(self) -> "FunctionProperty":
         """
         Returns an exact copy of the current property
         """
