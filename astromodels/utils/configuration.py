@@ -1,29 +1,16 @@
-# This file contains some defaults, like locations of files, which should not
-# change much but benefits anyway of being in one central location
+from omegaconf import OmegaConf
 
-from pathlib import Path
+from astromodels.utils import get_path_of_user_config
 
+from .config_structure import Config
 
-def get_user_path():
+# Read the default Config
+astromodels_config: Config = OmegaConf.structured(Config)
 
-    user_path = Path.home() / ".astromodels"
+# now glob the config directory
 
-    if not user_path.exists():
+for user_config_file in get_path_of_user_config().glob("*.yml"):
 
-        user_path.mkdir(parents=True)
+    _partial_conf = OmegaConf.load(user_config_file)
 
-    return user_path
-        
-    
-def get_user_data_path():
-
-    user_data = get_user_path() / "data"
-
-    # Create it if doesn't exist
-    if not user_data.exists():
-
-        user_data.mkdir(parents=True)
-
-
-    return user_data
-
+    astromodels_config: Config = OmegaConf.merge(astromodels_config, _partial_conf)

@@ -32,10 +32,10 @@ import healpy as hp
 
 from astropy.coordinates import ICRS, Galactic
 
-%matplotlib inline
+
 from jupyterthemes import jtplot
 jtplot.style(context="talk", fscale=1, ticks=False, grid=False)
-
+%matplotlib inline
 
 
 
@@ -64,7 +64,7 @@ func.display()
 ## Shape
 
 The shape of the function on the sky.
-```python tags=["nbsphinx-gallery"]
+```python tags=["nbsphinx-thumbnail"]
 
 
 m=func(ra, dec)
