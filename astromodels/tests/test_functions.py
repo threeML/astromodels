@@ -10,6 +10,7 @@ import pytest
 from astropy.io import fits
 from future.utils import with_metaclass
 
+from astromodels.core.property import SettingUnknownValue
 from astromodels.functions import (Continuous_injection_diffusion,
                                    Gaussian_on_sphere, Line, Powerlaw,
                                    SpatialTemplate_2D)
@@ -17,9 +18,11 @@ from astromodels.functions import function as function_module
 from astromodels.functions.function import (DesignViolation, Function1D,
                                             Function2D,
                                             FunctionDefinitionError,
+                                            FunctionInstanceError,
                                             FunctionMeta, UnknownFunction,
                                             UnknownParameter, get_function,
                                             get_function_class, list_functions)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 __author__ = 'giacomov'
 
@@ -993,3 +996,17 @@ def test_linking_external_functions():
 
 
     assert data["external_functions"][1]["p2"] == p2.path
+
+
+def test_function_properties():
+    
+    with pytest.raises(FunctionInstanceError):
+
+        c = _ComplexTestFunction()
+
+    c = _ComplexTestFunction(file_name="lost.txt", dummy="test")
+    
+
+    with pytest.raises(SettingUnknownValue):
+
+        c = _ComplexTestFunction(file_name="f.txt", dummy="wrong")

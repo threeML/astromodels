@@ -235,6 +235,14 @@ class FunctionMeta(type):
 
         for parameter_name, parameter_definition in list(function_definition['parameters'].items()):
 
+            if dct["_properties"] is not None:
+
+                if parameter_name in dct["_properties"]:
+
+                    log.error("you must specify unique parameters and propert names")
+
+                    raise DesignViolation()
+                    
             this_parameter = FunctionMeta.parse_parameter_definition(
                 name, parameter_name, parameter_definition)
 
@@ -420,18 +428,29 @@ class FunctionMeta(type):
 
             except KeyError:
 
-                try:
-
-                    copy_of_properties[key]
-
-                except KeyError:
-
-                                    
-                    log.error("You specified an init value for %s, which is not a "
-                          "parameter of function %s" % (key, type(instance)._name))
+                if copy_of_properties is not None:
                 
+                    try:
+
+                        copy_of_properties[key]
+
+                    except KeyError:
+
+
+                        log.error("You specified an init value for %s, which is not a "
+                              "parameter of function %s" % (key, type(instance)._name))
+
+                        raise UnknownParameter()
+
+                else:
+
+                    
+                    log.error("You specified an init value for %s, which is not a "
+                              "parameter of function %s" % (key, type(instance)._name))
+
                     raise UnknownParameter()
-            
+
+                        
         # Now call the init of the corresponding class
         n_dim = type(instance)._n_dim
 
