@@ -10,6 +10,8 @@ import pytest
 from astropy.io import fits
 from future.utils import with_metaclass
 
+import astromodels
+from astromodels import update_logging_level
 from astromodels.functions import (Continuous_injection_diffusion,
                                    Gaussian_on_sphere, Line, Powerlaw,
                                    SpatialTemplate_2D)
@@ -20,6 +22,10 @@ from astromodels.functions.function import (DesignViolation, Function1D,
                                             FunctionMeta, UnknownFunction,
                                             UnknownParameter, get_function,
                                             get_function_class, list_functions)
+from astromodels.functions.functions_1D.absorption import phabs, tbabs, wabs
+from astromodels.utils.configuration import astromodels_config
+
+update_logging_level("DEBUG")
 
 __author__ = 'giacomov'
 
@@ -931,3 +937,43 @@ def test_spatial_template_2D():
 
     os.remove("test1.fits")
     os.remove("test2.fits")
+
+
+
+def test_abs_model():
+
+    for i, m in enumerate([astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]):
+
+        instance = m()
+
+        instance.info()
+
+        if i != 1:
+        
+            instance.init_xsect("AG89")
+
+        if i ==0:
+
+            assert tbabs._current_table == "AG89"
+
+        if i == 2:
+
+            assert phabs._current_table == "AG89"
+
+    astromodels_config.absorption_models.tbabs_table = "ASPL"
+
+    m = astromodels.TbAbs()
+
+    assert tbabs._current_table == "ASPL"
+
+
+    astromodels_config.absorption_models.phabs_table = "ASPL"
+
+    m = astromodels.PhAbs()
+
+    assert phabs._current_table == "ASPL"
+
+
+            
+            
+    
