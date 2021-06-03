@@ -1039,7 +1039,7 @@ class ShapeParser(object):
 
                     log.error("The property %s in function %s, specified as shape for %s "
                               "of source %s, lacks a 'value' attribute"
-                    % (propertyr_name, function_name, component_name, self._source_name))
+                    % (property_name, function_name, component_name, self._source_name))
                 
                     raise ModelSyntaxError()
 
