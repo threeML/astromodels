@@ -9,8 +9,8 @@ def _pow(x, y):
     return math.pow(x, y)
 
 @nb.vectorize
-def _log10(x, y):
-    return math.log10(x, y)
+def _log10(x):
+    return math.log10(x)
 
 
 class ParameterTransformation(object):
