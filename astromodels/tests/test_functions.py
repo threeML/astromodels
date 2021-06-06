@@ -909,35 +909,36 @@ def test_spatial_template_2D():
     hdu.writeto("test2.fits", overwrite=True)
 
     # Now load template files and test their evaluation
-    shape1 = SpatialTemplate_2D()
-    shape1.load_file("test1.fits")
+    shape1 = SpatialTemplate_2D(fits_file="test1.fits")
+    
     shape1.K = 1
 
-    shape2 = SpatialTemplate_2D()
-    shape2.load_file("test2.fits")
+    shape2 = SpatialTemplate_2D(fits_file="test2.fits")
+    
     shape2.K = 1
 
     assert shape1.hash != shape2.hash
 
     assert np.all(shape1.evaluate(
-        [312, 306], [41, 41], [1, 1], [40, 2]) == [1., 0.])
+        [312, 306], [41, 41], [1, 1], [40, 2], 0) == [1., 0.])
     assert np.all(shape2.evaluate(
-        [312, 306], [41, 41], [1, 1], [40, 2]) == [0., 1.])
+        [312, 306], [41, 41], [1, 1], [40, 2], 0) == [0., 1.])
     assert np.all(shape1.evaluate(
-        [312, 306], [41, 41], [1, 10], [40, 2]) == [1., 0.])
+        [312, 306], [41, 41], [1, 10], [40, 2], 0) == [1., 0.])
     assert np.all(shape2.evaluate(
-        [312, 306], [41, 41], [1, 10], [40, 2]) == [0., 10.])
+        [312, 306], [41, 41], [1, 10], [40, 2], 0) == [0., 10.])
 
     shape1.K = 1
     shape2.K = 1
-    assert np.all(shape1([312, 306], [41, 41]) == [1., 0.])
-    assert np.all(shape2([312, 306], [41, 41]) == [0., 1.])
+    assert np.all(shape1([312, 306], [41, 41], 0) == [1., 0.])
+    assert np.all(shape2([312, 306], [41, 41], 0) == [0., 1.])
 
     shape1.K = 1
     shape2.K = 10
-    assert np.all(shape1([312, 306], [41, 41]) == [1., 0.])
-    assert np.all(shape2([312, 306], [41, 41]) == [0., 10.])
-
+    assert np.all(shape1([312, 306], [41, 41], 0) == [1., 0.])
+    assert np.all(shape2([312, 306], [41, 41], 0) == [0., 10.])
+    
+    
     os.remove("test1.fits")
     os.remove("test2.fits")
 

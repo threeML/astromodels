@@ -79,6 +79,12 @@ class PropertyBase(Node):
         # then we need to execute the function
         # on the parent
 
+        if (self._internal_value == "_tmp") and self._defer:
+
+            # do not execute in this mode
+            
+            return 
+
         if self._eval_func is not None:
 
             # if there is a parent

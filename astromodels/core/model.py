@@ -197,35 +197,19 @@ class Model(Node):
         self._remove_child(source_name)
 
     def _find_parameters(self, node) -> Dict[str, Parameter]:
+        
+        return self._recursively_gather_node_type(self, Parameter)
 
-        instances = collections.OrderedDict()
+    def _find_properties(self, node) -> Dict[str, FunctionProperty]:
 
-        for child in node._get_children():
+        return self._recursively_gather_node_type(self, FunctionProperty)
 
-            #log.debug(f"on child {child._name}")
-            
-            if isinstance(child, Parameter):
-
-                path = child._get_path()
-
-                #log.debug(f"on child {path}")
-                
-                instances[path] = child
-
-                for sub_child in child._get_children():
-
-                    instances.update(self._find_parameters(sub_child))
-
-            else:
-
-                instances.update(self._find_parameters(child))
-
-        return instances
-
+    
     def _update_parameters(self) -> None:
 
         self._parameters: Dict[str, Parameter] = self._find_parameters(self)
-
+        self._properties: Dict[str, FunctionProperty] = self._find_properties(self)
+        
     @property
     def parameters(self) -> Dict[str, Parameter]:
         """
@@ -290,6 +274,18 @@ class Model(Node):
         return linked_parameter_dictionary
 
     @property
+    def properties(self) -> Dict[str, Parameter]:
+        """
+        Return a dictionary with all parameters
+
+        :return: dictionary of parameters
+        """
+        self._update_parameters()
+
+        return self._properties
+
+    
+    @property
     def linked_functions(self) -> List[_LinkedFunctionContainer]:
         """
         return a list of containers for the linked functions
@@ -338,11 +334,7 @@ class Model(Node):
 
 
         return linked_functions
-                                
-                                
-                                
-               
-            
+
     def _get_all_functions(self) -> List[Function]:
         all_functions = []
 
@@ -739,6 +731,7 @@ class Model(Node):
         parameters = self.parameters
         free_parameters = self.free_parameters
         linked_parameters = self.linked_parameters
+        properties = self.properties
         linked_functions = self.linked_functions
         
         # Summary of free parameters
@@ -854,6 +847,44 @@ class Model(Node):
         
         empty_frame = "(none)%s" % new_line
 
+        # Summary of free parameters
+        if len(properties) > 0:
+
+            property_dict = collections.OrderedDict()
+
+            for property_name, prop in properties.items():
+
+                # Generate table with only a minimal set of info
+                if rich_output:
+
+                    this_name = long_path_formatter(property_name, 70)
+
+                else:
+
+                    # In a terminal we need to use less characters
+
+                    this_name = long_path_formatter(property_name, 40)
+
+                d = prop.to_dict()
+                property_dict[this_name] = collections.OrderedDict()
+                
+                for key in ["value", "allowed values"]:
+
+                    property_dict[this_name][key] = d[key]
+
+            properties_summary = pd.DataFrame.from_dict(property_dict).T
+
+            # Re-order it
+            properties_summary = properties_summary[
+                ["value", "allowed values"]
+            ]
+
+        else:
+
+            properties_summary = pd.DataFrame()
+
+        empty_frame = "(none)%s" % new_line
+        
         # Independent variables
 
         independent_v_frames = []
@@ -912,6 +943,15 @@ class Model(Node):
                     linked_summary_representation += linked_frame._repr_html_()
                     linked_summary_representation += new_line
 
+            if properties_summary.empty:
+
+                properties_representation = empty_frame
+
+            else:
+
+                properties_representation = properties_summary._repr_html_()
+
+                    
             if len(linked_functions) == 0:
 
                 linked_function_summary_representation = empty_frame
@@ -960,6 +1000,16 @@ class Model(Node):
 
                 free_parameters_representation = free_parameters_summary.__repr__()
 
+            if properties_summary.empty:
+
+                properties_representation = empty_frame
+
+            else:
+
+                properties_representation = properties_summary.__repr__()
+
+
+                
             if len(linked_frames) == 0:
 
                 linked_summary_representation = empty_frame
@@ -1072,6 +1122,27 @@ class Model(Node):
 
         representation += new_line
 
+       # Properties
+
+        representation += "%sProperties (%i):%s" % (
+            new_line,
+            len(properties),
+            new_line,
+        )
+
+        if not rich_output:
+
+            representation += "--------------------%s%s" % (new_line, new_line)
+
+        else:
+
+            representation += new_line
+
+        representation += properties_representation
+
+        representation += new_line
+
+        
         # Linked parameters
 
         representation += "%sLinked parameters (%i):%s" % (

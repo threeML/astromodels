@@ -622,9 +622,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                 fix: True 
                 min: 0
         
-
-
-         properties:
+        properties:
             fits_file:
                 desc: fits file to load
                 defer: True
@@ -647,16 +645,16 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
     # This is optional, and it is only needed if we need more setup after the
     # constructor provided by the meta class
     
-    def _setup(self):
+    # def _setup(self):
         
-        self._frame = "icrs"
-        self._fitsfile = None
-        self._map = None
+        # self._frame = "icrs"
+        # self._fitsfile = None
+        # self._map = None
     
     def _load_file(self):
         
         
-        self._fitsfile=self.fitsfile.value
+        self._fitsfile=self.fits_file.value
         
         with fits.open(self._fitsfile) as f:
     
@@ -709,12 +707,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                 
     #     self._frame = new_frame
     
-    def evaluate(self, x, y, K, hash):
-        
-        # if self._map is None:
-            
-        #     self.load_file(self._fitsfile)
-          
+    def evaluate(self, x, y, K, hash, ihdu):
+                  
         # We assume x and y are R.A. and Dec
         coord = SkyCoord(ra=x, dec=y, frame=self.frame.value, unit="deg")
         
@@ -731,7 +725,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         out = np.zeros_like(Xpix).astype(float)
         out[iz] = self._map[Ypix[iz], Xpix[iz]]
         
-        return np.multiply(K,out)
+        return np.multiply(K, out)
 
     def get_boundaries(self):
     
