@@ -9,7 +9,7 @@ from astropy.io import fits
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import configuration
-from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils import _get_data_file_path
 import gc
 
 try:

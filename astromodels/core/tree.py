@@ -47,8 +47,6 @@ class Node(_Node):
             raise AssertionError()
 
         _Node.__init__(self, name)
-
-        #self._uuid_hash = uuid.UUID(bytes=os.urandom(16), version=4).int
         
         #########################################################################
 
@@ -60,10 +58,12 @@ class Node(_Node):
         # so it should be static
         
         return hash(self._get_path())
-        #return self._uuid_hash
+        
         
     def to_dict(self, minimal: bool=False) -> Dict[str, Any]:
-        
+        """
+
+        """    
         this_dict: Dict[str, Any] = collections.OrderedDict()
 
         for child in self._get_children():
