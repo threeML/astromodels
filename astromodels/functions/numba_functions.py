@@ -68,6 +68,20 @@ def cplaw_eval(x, K, xc, index, piv):
 
 
 @nb.njit(fastmath=True, cache=True)
+def cpl_eval(x, K, xp, index, piv):
+
+    n = x.shape[0]
+    out = np.empty(n)
+
+    for i in range(n):
+        # Compute it in logarithm to avoid roundoff errors, then raise it
+        log_v = index * np.log(x[i] / piv) - (x[i] * (2 + index) / xp)
+        out[i] = K * np.exp(log_v)
+
+    return out
+
+
+@nb.njit(fastmath=True, cache=True)
 def cplaw_inverse_eval(x, K, b, index, piv):
 
     n = x.shape[0]
