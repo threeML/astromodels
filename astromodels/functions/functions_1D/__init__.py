@@ -23,7 +23,7 @@ from .absorption import PhAbs, TbAbs, WAbs
 from .polynomials import Constant, Line, Quadratic, Cubic, Quartic, get_polynomial
 
 from .powerlaws import (Band, Band_Calderone, Band_grbm, Broken_powerlaw,
-                        Cutoff_powerlaw, CPL, Inverse_cutoff_powerlaw, Powerlaw,
+                        Cutoff_powerlaw, Cutoff_powerlaw_Ep, Inverse_cutoff_powerlaw, Powerlaw,
                         Powerlaw_Eflux, Powerlaw_flux, SmoothlyBrokenPowerLaw,
                         Super_cutoff_powerlaw)
 
@@ -34,7 +34,7 @@ if has_atomdb:
 
 
 __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
-           "Cutoff_powerlaw", "CPL", "Inverse_cutoff_powerlaw", "Powerlaw",
+           "Cutoff_powerlaw", "Cutoff_powerlaw_Ep", "Inverse_cutoff_powerlaw", "Powerlaw",
            "Powerlaw_Eflux", "Powerlaw_flux", "SmoothlyBrokenPowerLaw",
            "Super_cutoff_powerlaw",
            "Constant", "Cubic", "DiracDelta", "Exponential_cutoff", "Line",

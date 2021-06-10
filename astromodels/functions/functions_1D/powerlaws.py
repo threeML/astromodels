@@ -343,14 +343,14 @@ class Cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
 
         return result * unit_
 
-      
-class CPL(Function1D, metaclass=FunctionMeta):
+
+class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A power law multiplied by an exponential cutoff parametrized via Ep
+        A power law multiplied by an exponential cutoff parametrized with Ep
 
-    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/xp} $
+    latex : $ K~\frac{x}{piv}^{index}~\exp{-x(2+index)/xp} $
 
     parameters :
 
@@ -416,10 +416,12 @@ class CPL(Function1D, metaclass=FunctionMeta):
             unit_ = 1.0
             K_, piv_, x_, index_, xp_ = K, piv, x, index, xp
 
-        result = nb_func.cplaw_eval(x_, K_, xp_, index_, piv_)
+#        result = nb_func.cplaw_eval(x_, K_, xp_, index_, piv_)
+        xc = xp*(2+index)
+        result = nb_func.cplaw_eval(x_, K_, xc, index_, piv_)
 
         return result * unit_
-      
+
 
 class Inverse_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
     r"""
