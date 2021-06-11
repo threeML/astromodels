@@ -26,10 +26,13 @@ if input == 0:
 
         already_known_functions = list(f.keys())
 
+        flag = "a"
+
 elif input == 1:
 
     already_known_functions = []
 
+    flag = "w"
 
 else:
 
@@ -40,9 +43,10 @@ print(input, already_known_functions)
     
 
 
-with h5py.File(file_path, "w") as f:
-    
-    f.create_dataset("eval_values", data=eval_x, compression="lzf")
+with h5py.File(file_path, flag) as f:
+    if input == 1:
+
+        f.create_dataset("eval_values", data=eval_x, compression="lzf")
     
     for key in _known_functions:
 
