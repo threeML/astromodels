@@ -1,33 +1,28 @@
 from __future__ import division
-from astromodels.core.parameter import Parameter
-from astromodels.functions.function import Function1D
-from past.utils import old_div
-import collections
 
-from typing import Dict, List, Optional, Union, Any
+import collections
+from typing import Any, Dict, List, Optional, Union
 
 import astropy.units as u
-import numpy
 import numba as nb
+import numpy
 import scipy.integrate
+from past.utils import old_div
 
+from astromodels.core.memoization import use_astromodels_memoization
+from astromodels.core.parameter import Parameter
 from astromodels.core.sky_direction import SkyDirection
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
+from astromodels.functions.function import Function1D
 from astromodels.sources.source import Source, SourceType
-from astromodels.utils.pretty_list import dict_to_list
-from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.utils.logging import setup_logger
-
-
+from astromodels.utils.pretty_list import dict_to_list
 
 __author__ = 'giacomov'
 
 __all__ = ["PointSource"]
-
-log = setup_logger(__name__)
-
 
 log = setup_logger(__name__)
 

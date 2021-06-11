@@ -326,11 +326,11 @@ class SourceParser(object):
             
         except IndexError:  # pragma: no cover
 
-            raise ModelSyntaxError(
-                "Don't recognize type for source '%s'. "
+            log.error("Don't recognize type for source '%s'. "
                 "Valid types are '%s', '%s' or '%s'."
-                % (source_name, SourceType.POINT_SOURCE, SourceType.EXTENDED_SOURCE, SourceType.PARTICLE_SOURCE)
-            )
+                % (source_name, SourceType.POINT_SOURCE, SourceType.EXTENDED_SOURCE, SourceType.PARTICLE_SOURCE))
+            
+            raise ModelSyntaxError()
 
         else:
 
