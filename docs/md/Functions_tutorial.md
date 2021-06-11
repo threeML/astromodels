@@ -482,7 +482,84 @@ In the docstring, one can also specify ```defer: True``` which allows you to not
 What if you need to call another astromodels function from inside your custom function? This is achieved by linking functions. For example, let's create a convolutional model that redshifts the energies of and model linked to it:
 
 ```python
+class Redshifter(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+		a function that can redshift the energies of any 1D function
+
+    latex: not available
+
+    parameters :
+        redshift :
+            desc : the redshift
+            initial value : 0
+            min : 0
+
+    """
+
+    
+    def _set_units(self, x_unit, y_unit):
+
+        self.redshift.unit = astropy_units.dimensionless_unscaled 
+
+
+    def set_linked_function(self, function):
+	     # this is an optional helper to
+		 # ease in the setting of the function
+
+	
+
+        if "func" in self._external_functions:
+   
+            # since we only want to link one function
+			# we unlink if we have linked before 
+			
+            self.unlink_external_function("func")
+ 
+        # this allows use to link in a function 
+		# with an internal name 'func'
+		
+        self.link_external_function(function, "func")
+        
+        self._linked_function = function
+
+    def get_linked_function(self):
+
+	    # linked functions are stored in a dictionary
+		# but you 
+
+        return self._external_functions["func"]
+        
+
+    linked_function = property(
+        get_linked_function,
+        set_linked_function,
+        doc="""Get/set linked function""",
+    )
+
+
+    def evaluate(self, x, redshift):
+
+
+        # we can call the function here
+        return self._linked_function(x * (1 + redshift))
+
+```
+
+With this function, whenever we set the linked_function property to another astromodels function, its call will return that function redshifted.
+
+```python
+p = Powerlaw()
+rs = Redshifter()
+
+rs.linked_function = p
+
+print(p(10.))
+
+print(rs(10.))
+
 
 ```
 
 
+We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members ```f.link_external_function(func, 'internal_name')```  and ```f.unlink_external_function('internal_name')```. You can link as many functions as needed and they are accessed via an internal dictionary ```self._extranal_functions```. As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all the complexity you built. 
