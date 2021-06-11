@@ -1,11 +1,10 @@
 
-import numpy.testing as npt
-import numpy as np
 import h5py
+import numpy as np
+import numpy.testing as npt
 
-
-from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
+from astromodels.functions.priors import *
 from astromodels.utils.data_files import _get_data_file_path
 
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC", "EBLattenuation" ]
@@ -58,10 +57,12 @@ def test_function_values_have_not_changed():
 
                     
                     print("the function %s does not exist in the past data. You must run a script to add it" %key)
+
+                else:
                 
-                old_values = f[key][()]
+                    old_values = f[key][()]
 
             
             
-            npt.assert_almost_equal(new_values, old_values)
-    
+                    npt.assert_almost_equal(new_values, old_values)
+            
