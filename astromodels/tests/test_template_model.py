@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 import numpy.testing as npt
 import pytest
+import pickle
 
 from astromodels import Model, PointSource, clone_model, load_model
 from astromodels.functions import (Band, MissingDataFile, Powerlaw,
