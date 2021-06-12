@@ -1,17 +1,23 @@
 from __future__ import division, print_function
 
 import os
-import pickle
+import shutil
+from pathlib import Path
 
 import numpy as np
+import numpy.testing as npt
 import pytest
 
 from astromodels import Model, PointSource, clone_model, load_model
 from astromodels.functions import (Band, MissingDataFile, Powerlaw,
                                    TemplateModel, TemplateModelFactory,
                                    XSPECTableModel)
+from astromodels.functions.template_model import convert_old_table_model
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.logging import update_logging_level
+
+update_logging_level("DEBUG")
+
 
 update_logging_level("DEBUG")
 
@@ -90,6 +96,8 @@ def test_template_factory():
 
     tm(energies)
 
+    tm.clean()
+    
 
 
 
@@ -242,3 +250,40 @@ def test_xspec_table_model():
     xtm = XSPECTableModel(test_table)
 
     xtm.to_table_model('xspectm_test', 'xspec model', overwrite=True)
+
+
+
+def test_table_conversion():
+
+    old_table_file = _get_data_file_path("tests/old_table.h5")
+
+    p = Path.home() / ".astromodels" / "data" / "old_table.h5"
+    
+    
+    shutil.copy(old_table_file, p)
+
+    # convert the table
+
+    convert_old_table_model("old_table")
+
+    # now load the old table
+
+    old_table = TemplateModel("old_table")
+
+
+    # should be the same as in test
+
+    test = TemplateModel("__test")
+
+    xx = np.logspace(1, 3, 50)
+
+    
+    npt.assert_almost_equal(test(xx), old_table(xx))
+    
+    p.unlink()
+    
+    
+
+    
+    
+    
