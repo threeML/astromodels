@@ -16,13 +16,10 @@ from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.tree import DuplicatedNode, Node
-from astromodels.functions.function import Function, get_function
-from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
-                                 Source)
-from astromodels.sources.source import (EXTENDED_SOURCE, PARTICLE_SOURCE,
-                                        POINT_SOURCE)
+from astromodels.functions.function import get_function
+from astromodels.sources import SourceType, Source, PointSource, ExtendedSource, ParticleSource
 from astromodels.utils.disk_usage import disk_usage
-from astromodels.utils.logging import setup_logger
+from astromodels.utils.logging import setup_logger, Function
 from astromodels.utils.long_path_formatter import long_path_formatter
 
 log = setup_logger(__name__)
@@ -148,15 +145,15 @@ class Model(Node):
         # Now see if this is a point or extended source, and add them to the
         # appropriate dictionary
 
-        if source.source_type == POINT_SOURCE:
+        if source.source_type == SourceType.POINT_SOURCE:
 
             self._point_sources[source.name] = source
 
-        elif source.source_type == EXTENDED_SOURCE:
+        elif source.source_type == SourceType.EXTENDED_SOURCE:
 
             self._extended_sources[source.name] = source
 
-        elif source.source_type == PARTICLE_SOURCE:
+        elif source.source_type == SourceType.PARTICLE_SOURCE:
 
             self._particle_sources[source.name] = source
 
@@ -181,15 +178,15 @@ class Model(Node):
 
         source = self.sources.pop(source_name)
 
-        if source.source_type == POINT_SOURCE:
+        if source.source_type == SourceType.POINT_SOURCE:
 
             self._point_sources.pop(source.name)
 
-        elif source.source_type == EXTENDED_SOURCE:
+        elif source.source_type == SourceType.EXTENDED_SOURCE:
 
             self._extended_sources.pop(source.name)
 
-        elif source.source_type == PARTICLE_SOURCE:
+        elif source.source_type == SourceType.PARTICLE_SOURCE:
 
             self._particle_sources.pop(source.name)
 
