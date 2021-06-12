@@ -541,7 +541,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         self._parameters_grids = collections.OrderedDict()
 
-        processed_parameters = 0
+        
 
         for key in template_file.parameter_order:
 
@@ -564,7 +564,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
   
             self._parameters_grids[str(k)] = template_file.parameters[key]
 
-            processed_parameters += 1
+            
 
         self._energies = template_file.energies
 
@@ -997,9 +997,12 @@ def convert_old_table_model(model_name: str):
                 this_parameter_number = int(tokens[0])
                 this_parameter_name = str(tokens[1])
                 
-                assert (
-                    this_parameter_number == processed_parameters
-                ), "Parameters out of order!"
+                
+                if not this_parameter_number == processed_parameters:
+
+                    log.error("Parameters out of order!")
+
+                    raise AssertionError()
                 
                 parameters_grids[this_parameter_name] = store[key]
                 
