@@ -401,6 +401,9 @@ class SourceParser(object):
         # to make a synchrotron spectrum uses this to save and set up the particle distribution
         self._extra_setups = []
 
+        # this will store any externally linked functions
+        self._external_functions = []
+
         if source_type == SourceType.POINT_SOURCE.value:
 
             self._parsed_source = self._parse_point_source(source_definition)
