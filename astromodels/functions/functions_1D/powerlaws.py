@@ -1088,3 +1088,164 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
             flux = nb_func.band_eval(x_, 1.0, alpha_, beta_, Ec_, Ec_)
 
         return norm * flux
+
+
+
+class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
+    r"""
+    description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).
+
+    latex : $\begin{array}{l}\begin{aligned}f(x)=& A x_{\mathrm{b}}^{\alpha_{1}}\left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right.\\&\left.+\left(\frac{x}{x_{\mathrm{j}}}\right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}{n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot\left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}\right) n_{2}}}\end{array}$
+
+    parameters :
+
+        K :
+
+            desc : Differential flux at the pivot energy
+            initial value : 1e-4
+            is_normalization : True
+
+        alpha1 :
+
+            desc : photon index below xb
+            initial value : -0.66
+
+        xb :
+
+            desc : break energy below xp
+            initial value : 100
+            min : 0
+
+        n1 :
+
+            desc : curvature of the first break
+            initial value : 2.0
+            min : 0
+            fix: True
+
+        alpha2 :
+
+            desc : photon index between xb and xp
+            initial value : -1.5
+
+        xp :
+
+            desc : nuFnu peak
+            initial value : 300
+            min : 0
+
+        n2 :
+
+            desc : curvature of the break at xp
+            initial value : 2.0
+            min : 0
+            fix: True
+
+        beta :
+
+            desc : photon index above xp
+            initial value : -2.5
+            max : 2
+
+
+        piv :
+
+            desc : pivot energy
+            initial value : 1.
+            fix : yes
+    """
+
+    def _set_units(self, x_unit, y_unit):
+        # The normalization has the same units as y
+        self.K.unit = y_unit
+
+        # The break point has always the same dimension as the x variable
+        self.xp.unit = x_unit
+        self.xb.unit = x_unit
+        self.piv.unit = x_unit
+
+        # alpha and beta are dimensionless
+        self.alpha1.unit = astropy_units.dimensionless_unscaled
+        self.alpha2.unit = astropy_units.dimensionless_unscaled                
+        self.beta.unit = astropy_units.dimensionless_unscaled
+
+        self.n1.unit = astropy_units.dimensionless_unscaled
+        self.n2.unit = astropy_units.dimensionless_unscaled                
+   
+
+    def _fix_units(self, x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv):
+
+            if isinstance(x, astropy_units.Quantity):
+
+                return ( x.value,
+                         K.value,
+                         alpha1.value,
+                         xb.value,
+                         n1.value,
+                         alpha2.value,
+                         xp.value,
+                         n2.value,
+                         beta.value,
+                         piv.value,
+                         self.y_unit
+                )
+            
+            else:
+
+                return ( x,
+                         K,
+                         alpha1,
+                         xb,
+                         n1,
+                         alpha2,
+                         xp,
+                         n2,
+                         beta,
+                         piv,
+                         1.
+                )
+
+
+        
+    def free_curvature(self) -> None:
+
+        """
+        free the two curvature parameters n1, n2
+
+        :returns: 
+
+        """
+        self.n1.free = True
+        self.n2.free = True
+
+
+    def fix_curvature(self) -> None:
+
+        """
+        fix the two curvature parameters n1, n2
+
+        :returns: 
+
+        """
+        self.n1.fix = True
+        self.n2.fix = True
+
+        
+    def evaluate(self, x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv):
+
+        x_, K_, alpha1_, xb_, n1_, alpha2_, xp_, n2_, beta_, piv_, y_unit = self._fix_units(x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv)
+
+        return nb_func.dbl_sbpl(x_,
+                        K_,
+                        alpha1_,
+                        alpha2_,
+                        beta_,
+                        xp_,
+                        xb_,
+                        n1_,
+                        n2_,
+                        piv_) * y_unit
+        
+
+
+    

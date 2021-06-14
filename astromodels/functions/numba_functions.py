@@ -271,3 +271,21 @@ def non_diss_photoshere_generic(x, K, ec, piv, a, b):
     log_v = a * _log(x / piv) - _pow(x / ec, b)
 
     return K * _exp(log_v)
+
+
+@nb.njit(fastmath=True)
+def dbl_sbpl(x, K, a1, a2, b1, xp, xb, n1, n2, xpiv):
+
+    xj = xp * _pow(-(a2 + 2)/ (b1 + 2), 1./((b1 - a2) * n2))
+
+    arg1 = xj/xb
+    arg2 = x/xb
+    arg3 =  x/xj
+
+    inner1 = _pow(arg2, -a1 * n1) + _pow(arg2, -a2 * n2)
+
+    inner2 = _pow(arg1, -a1 * n1) + _pow(arg1, -a2 * n2)
+
+    out = _pow(xb/xpiv, a1) * _pow( _pow(inner1, n2/n1) + _pow(arg3, -b1 * n2) * _pow(inner2, n2 / n1), -1/n2)
+
+    return K * out
