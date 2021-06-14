@@ -2,8 +2,7 @@ from .blackbody import (Blackbody, ModifiedBlackbody,
                         NonDissipativePhotosphere,
                         NonDissipativePhotosphere_Deep)
 from .functions import (DiracDelta, Exponential_cutoff, Log_parabola, Sin,
-                        StepFunction, StepFunctionUpper,  has_gsl,
-                        has_naima)
+                        StepFunction, StepFunctionUpper, has_gsl, has_naima)
 
 if has_naima:
     from .functions import Synchrotron
