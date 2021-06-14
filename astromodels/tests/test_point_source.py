@@ -57,7 +57,7 @@ __author__ = 'giacomov'
 
 
 
-_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation", "ZDust"]
 
 def test_constructor():
 
