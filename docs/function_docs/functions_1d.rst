@@ -12,6 +12,7 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/DiracDelta.ipynb
    ../notebooks/Log_parabola.ipynb
    ../notebooks/Exponential_cutoff.ipynb
+   ../notebooks/EBLattenuation.ipynb
    ../notebooks/PhAbs.ipynb
    ../notebooks/TbAbs.ipynb
    ../notebooks/WAbs.ipynb
@@ -24,6 +25,7 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/Powerlaw_flux.ipynb
    ../notebooks/Powerlaw_Eflux.ipynb
    ../notebooks/Cutoff_powerlaw.ipynb
+   ../notebooks/Cutoff_powerlaw_Ep.ipynb
    ../notebooks/Inverse_cutoff_powerlaw.ipynb
    ../notebooks/Super_cutoff_powerlaw.ipynb
    ../notebooks/SmoothlyBrokenPowerLaw.ipynb
