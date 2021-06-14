@@ -119,7 +119,7 @@ class ZDust(Function1D, metaclass=FunctionMeta):
             _rv = rv            
             _x = x
 
-        _x = np.append(_x, _x[-1]* 1.01)
+       # _x = np.append(_x, _x[-1]* 1.01)
             
         zfac = _redshift + 1.
 
@@ -129,18 +129,37 @@ class ZDust(Function1D, metaclass=FunctionMeta):
                        self._extinction_law.a,
                        self._extinction_law.lamb,
                        self._extinction_law.b,
-                       self._extinction_law.n)[:-1] * _y_unit
+                       self._extinction_law.n) * _y_unit
 
         
-        # xsect_interp = interp(self.xsect_ene, self.xsect_val,
-        #                       _x * (1 + _redshift))
-
-        # spec = np.exp(-NH * xsect_interp * _unit) * _y_unit
-
-        # return spec
 
 @nb.njit(fastmath=True)
 def ms_dust(x, e_bmv, rv, a, lamb, b, n):
+
+    # conversion constant in keV*\AA
+
+    hc = 12.3963
+
+
+    #extinction at B (a_b)
+
+    a_b = rv * (1 + e_bmv)
+
+    ne = len(x)
+
+    xx = hc / x
+    
+    out = np.zeros(ne)
+
+    for i in range(ne):
+
+        out[i] = pei(xx[i], a_b, a, lamb, b, n)
+
+
+    return out
+
+@nb.njit(fastmath=True)
+def ms_dust_xspec(x, e_bmv, rv, a, lamb, b, n):
 
     # conversion constant in keV*\AA
 
@@ -175,7 +194,7 @@ def ms_dust(x, e_bmv, rv, a, lamb, b, n):
         fl = fh
 
     return out
-        
+
 
 @nb.njit(fastmath=True)    
 def pei( rlambda, a_b, a, lamb, b, n) -> float:
