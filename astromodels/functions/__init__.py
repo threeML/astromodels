@@ -1,6 +1,6 @@
 from .functions_1D import (Band, Band_Calderone, Band_grbm, Blackbody,
                            Broken_powerlaw, Constant, Cubic, Cutoff_powerlaw,
-                           DiracDelta, Exponential_cutoff,
+                           Cutoff_powerlaw_Ep, DiracDelta, Exponential_cutoff,
                            Inverse_cutoff_powerlaw, Line, Log_parabola,
                            ModifiedBlackbody, NonDissipativePhotosphere,
                            NonDissipativePhotosphere_Deep, PhAbs, Powerlaw,
@@ -43,7 +43,7 @@ from .template_model import (MissingDataFile, TemplateModel,
 
 __all__ = [
     "Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
-    "Cutoff_powerlaw", "Inverse_cutoff_powerlaw", "Powerlaw", "Powerlaw_Eflux",
+    "Cutoff_powerlaw", "Cutoff_powerlaw_Ep", "Inverse_cutoff_powerlaw", "Powerlaw", "Powerlaw_Eflux",
     "Powerlaw_flux", "SmoothlyBrokenPowerLaw", "Super_cutoff_powerlaw",
     "Constant", "Cubic", "DiracDelta", "Exponential_cutoff", "Line",
     "Quadratic", "Sin", "StepFunction", "StepFunctionUpper", "PhAbs", "TbAbs",

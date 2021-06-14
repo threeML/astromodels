@@ -25,11 +25,12 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
                             Constant, Continuous_injection_diffusion,
                             Continuous_injection_diffusion_ellipse,
                             Continuous_injection_diffusion_legacy,
-                            Cosine_Prior, Cubic, Cutoff_powerlaw, DiracDelta,
-                            Disk_on_sphere, DMFitFunction, DMSpectra,
-                            Ellipse_on_sphere, Exponential_cutoff, Function1D,
-                            Function2D, Function3D, FunctionMeta,
-                            GalPropTemplate_3D, Gaussian, Gaussian_on_sphere,
+                            Cosine_Prior, Cubic, Cutoff_powerlaw,
+                            Cutoff_powerlaw_Ep, DiracDelta, Disk_on_sphere,
+                            DMFitFunction, DMSpectra, Ellipse_on_sphere,
+                            Exponential_cutoff, Function1D, Function2D,
+                            Function3D, FunctionMeta, GalPropTemplate_3D,
+                            Gaussian, Gaussian_on_sphere,
                             Inverse_cutoff_powerlaw, Latitude_galactic_diffuse,
                             Line, Log_normal, Log_parabola, Log_uniform_prior,
                             MissingDataFile, ModelAssertionViolation,
@@ -42,7 +43,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
                             Super_cutoff_powerlaw, TbAbs, TemplateModel,
                             TemplateModelFactory, Truncated_gaussian,
                             Uniform_prior, WAbs, XSPECTableModel, ZDust,
-                            get_polynomial, has_ebltable, has_gsl, has_naima)
+                            get_polynomial, has_ebltable, has_gsl, has_naima, has_atomdb)
 
     if has_ebltable:
 
@@ -56,6 +57,10 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
         from .functions import Synchrotron
 
+    if has_atomdb:
+
+        from .functions import APEC, VAPEC
+        
     from .functions.function import get_function_class, list_functions
     from .sources import ExtendedSource, ParticleSource, PointSource
 

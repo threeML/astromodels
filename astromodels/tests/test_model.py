@@ -324,10 +324,6 @@ def test_links():
 
     # Now test the link
 
-    # # This should print a warning, as trying to change the value of a linked parameters does not have any effect
-    # with pytest.warns(RuntimeWarning):
-
-    #     m.one.spectrum.main.Powerlaw.K = 1.23456
 
     # This instead should work
     new_value = 1.23456
