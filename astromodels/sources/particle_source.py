@@ -9,9 +9,12 @@ import numpy
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
-from astromodels.sources.source import Source, PARTICLE_SOURCE
+from astromodels.sources.source import Source, SourceType
 from astromodels.utils.pretty_list import dict_to_list
+from astromodels.utils.logging import setup_logger
 
+
+log = setup_logger(__name__)
 
 class ParticleSource(Source, Node):
     """
@@ -32,12 +35,16 @@ class ParticleSource(Source, Node):
 
         if components is None:
 
-            assert distribution_shape is not None, "You have to either provied a list of components, or a " \
-                                                   "distribution shape"
+            if distribution_shape is None:
+
+                log.error("You have to either provied a list of components, or a " \
+                                                   "distribution shape")
+
+                raise AssertionError()
 
             components = [SpectralComponent("main", distribution_shape)]
 
-        Source.__init__(self, components, PARTICLE_SOURCE)
+        Source.__init__(self, components, SourceType.PARTICLE_SOURCE)
 
         # Add a node called 'spectrum'
 
