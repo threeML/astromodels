@@ -2189,8 +2189,10 @@ def get_function(function_name, composite_function_expression=None):
 
             except MissingDataFile:
 
-                raise UnknownFunction("Function %s is not known. Known functions are: %s" %
+                log.error("Function %s is not known. Known functions are: %s" %
                                       (function_name, ",".join(list(_known_functions.keys()))))
+                
+                raise UnknownFunction()
 
             else:
 

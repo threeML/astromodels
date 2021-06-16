@@ -813,9 +813,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         log.info("You have 'cleaned' the table model at it will no longer be useable")
 
-    def __del__(self):
+    # def __del__(self):
 
-        self.clean()
+    #     self.clean()
 
         
     @property
