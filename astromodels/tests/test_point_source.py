@@ -400,7 +400,7 @@ def test_free_param():
         p = Powerlaw(index=-2.)
 
 
-        npt.assert_allclose(2., p.local_spectral_index(np.logspace(1,3,10)))
+        npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
         
 
         
