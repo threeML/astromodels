@@ -1063,7 +1063,7 @@ class Function1D(Function):
 @nb.njit
 def _local_deriv(a, b,  epsilon):
 
-    return np.log(a / b) / math.log( 1. + epsilon)
+    return - np.log(a / b) / math.log( 1. + epsilon)
     
 class Function2D(Function):
 
