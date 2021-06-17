@@ -2,6 +2,7 @@ from __future__ import division, print_function
 
 import astropy.units as u
 import numpy as np
+import numpy.testing as npt
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
@@ -209,9 +210,7 @@ def test_call_with_units():
             else:
 
                 x_unit_to_use = u.keV
-
-
-
+                
             # Use the function as a spectrum
             ps = PointSource("test", 0, 0, instance)
 
@@ -418,3 +417,14 @@ def test_free_param():
 
 
     assert source.has_free_parameters
+
+
+def test_local_deriv():
+
+    p = Powerlaw(index=-2.)
+
+
+    npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
+        
+
+        

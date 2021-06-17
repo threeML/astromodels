@@ -4,6 +4,7 @@ import ast
 import collections
 import copy
 import inspect
+import math
 import os
 import re
 import sys
@@ -13,6 +14,7 @@ from operator import attrgetter
 from typing import Dict, List, Optional, Tuple
 
 import astropy.units as u
+import numba as nb
 import numpy as np
 import six
 from yaml.reader import ReaderError
@@ -1423,6 +1425,27 @@ class Function1D(Function):
         raise DesignViolation()
 
 
+    def local_spectral_index(self, x, epsilon=1e-5):
+        """TODO describe function
+        
+        :param x: 
+        :type energy: 
+        :param epsilon: 
+        :type epsilon: 
+        :returns: 
+        
+        """
+        
+        a = self(x)
+        b = self(x * (1 + epsilon))
+
+        return _local_deriv(a, b, epsilon)
+    
+@nb.njit
+def _local_deriv(a, b,  epsilon):
+
+    return - np.log(a / b) / math.log( 1. + epsilon)
+    
 class Function2D(Function):
 
     def __init__(self, name: Optional[str] = None, function_definition: Optional[str]=None, parameters: Optional[Dict[str, Parameter]] =None, properties: Optional[Dict[str, FunctionProperty]] = None ):
