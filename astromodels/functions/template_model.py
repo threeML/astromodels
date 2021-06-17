@@ -780,7 +780,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
             interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
 
-            values = np.power(10, interpolator(log_energies))
+            values = np.power(10., interpolator(log_energies))
 
         else:
 
