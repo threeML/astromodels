@@ -8,8 +8,6 @@ import pytest
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (Band, Blackbody, Exponential_cutoff,
                                    Log_parabola, Powerlaw)
-
-
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 try:

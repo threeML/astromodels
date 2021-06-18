@@ -1,5 +1,3 @@
-
-
 import ast
 import collections
 import copy
@@ -1426,7 +1424,9 @@ class Function1D(Function):
 
 
     def local_spectral_index(self, x, epsilon=1e-5):
-        """TODO describe function
+        """
+        compute the local spectral index of the model at
+        a given set of energies
         
         :param x: 
         :type energy: 
@@ -1444,7 +1444,7 @@ class Function1D(Function):
 @nb.njit
 def _local_deriv(a, b,  epsilon):
 
-    return - np.log(a / b) / math.log( 1. + epsilon)
+    return np.log(b / a) / math.log(1. + epsilon)
     
 class Function2D(Function):
 
