@@ -16,7 +16,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .core.model import Model
     from .core.model_parser import clone_model, load_model
     from .core.parameter import (IndependentVariable, Parameter,
-                                 SettingOutOfBounds)
+                                 SettingOutOfBounds, turn_off_parameter_transforms)
     from .core.polarization import LinearPolarization, StokesPolarization
     from .core.serialization import *
     from .core.spectral_component import SpectralComponent

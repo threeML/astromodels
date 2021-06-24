@@ -9,21 +9,49 @@ __author__ = "giacomov"
 __doc__ = """"""
 
 import collections
+import contextlib
 import copy
 import warnings
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import astropy.units as u
 import numpy as np
 import scipy.stats
 
 from astromodels.core.parameter_transformation import ParameterTransformation
+from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 
 from .thread_safe_unit_format import ThreadSafe
 from .tree import Node
 
 log = setup_logger(__name__)
+
+
+
+@contextlib.contextmanager
+def turn_off_parameter_transforms() -> None:
+    """
+    deactivate parameter transforms temporarily
+    :return: None
+    """
+
+    # store the old status
+    
+    old_status = bool(astromodels_config.modeling.use_parameter_transforms)
+
+    # turn off the configuration value
+    # which will cause the transforms to deactivate in all parameters
+    
+    astromodels_config.modeling.use_parameter_transforms = False
+
+    # do your thing
+    yield
+
+    # now reset the status to the old value
+
+    astromodels_config.modeling.use_parameter_transforms = old_status
+    
 
 
 def _behaves_like_a_number(obj) -> True:
@@ -396,7 +424,7 @@ class ParameterBase(Node):
     #@property
     def has_transformation(self) -> bool:
 
-        if self._transformation is None:
+        if (self._transformation is None) or (not astromodels_config.modeling.use_parameter_transforms):
 
             return False
 
@@ -407,8 +435,14 @@ class ParameterBase(Node):
     @property
     def transformation(self) -> Optional[ParameterTransformation]:
 
-        return self._transformation
+        if astromodels_config.modeling.use_parameter_transforms:
+        
+            return self._transformation
 
+        else:
+
+            return None
+        
     def remove_transformation(self) -> None:
         """
         
