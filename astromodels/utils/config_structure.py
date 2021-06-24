@@ -50,10 +50,14 @@ class AbsorptionModels:
     phabs_table: AbsTables = AbsTables.AG89
     ebl_table: EBLTable = EBLTable.dominguez
 
-
+@dataclass
+class Modeling:
+    use_memoization: bool = True
+    use_parameter_transforms: bool = True
     
 
 @dataclass
 class Config:
     logging: Logging = Logging()
     absorption_models: AbsorptionModels = AbsorptionModels()
+    modeling: Modeling = Modeling()

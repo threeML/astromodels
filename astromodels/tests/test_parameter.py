@@ -16,10 +16,10 @@ from astromodels.core.parameter import (CannotConvertValueToNewUnits,
                                         IndependentVariable,
                                         NotCallableOrErrorInCall, Parameter,
                                         ParameterMustHaveBounds,
-                                        SettingOutOfBounds)
+                                        SettingOutOfBounds, turn_off_parameter_transforms)
 from astromodels.core.parameter_transformation import LogarithmicTransformation
 from astromodels.functions import Line
-
+from astromodels.utils.configuration import astromodels_config
 
 def test_default_constructor():
 
@@ -105,6 +105,10 @@ def test_constructor_complete():
 
 def test_constructor_with_transform():
 
+    # make sure our local config does not screw this up
+    
+    astromodels_config.modeling.use_parameter_transforms = True
+    
     p = Parameter('test_parameter', 1.0, min_value=0.1, max_value=5.0, delta=0.2, desc='test',
                   free=False, unit=u.MeV, prior=Uniform_prior(), is_normalization=True, transformation=LogarithmicTransformation())
 
@@ -137,6 +141,31 @@ def test_constructor_with_transform():
     
     p.display()
 
+    astromodels_config.modeling.use_parameter_transforms = False
+
+    assert p.transformation is None
+    assert not p.has_transformation()
+
+    astromodels_config.modeling.use_parameter_transforms = True
+
+    assert p.transformation is not None
+    assert p.has_transformation()
+
+    
+    with turn_off_parameter_transforms():
+
+        assert p.transformation is None
+        assert not p.has_transformation()
+
+        assert not astromodels_config.modeling.use_parameter_transforms
+
+    assert p.transformation is not None
+    assert p.has_transformation()
+        
+    assert astromodels_config.modeling.use_parameter_transforms
+    
+
+    
 
     
 def test_conflicting_units_in_initial_value_and_unit_keyword():
