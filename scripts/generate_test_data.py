@@ -4,20 +4,56 @@
 #
 #
 
-from astromodels.functions.priors import *
-from astromodels.functions.function import _known_functions
+import sys
+
 import h5py
+
+from astromodels.functions.function import _known_functions
+from astromodels.functions.priors import *
+from astromodels.utils.data_files import _get_data_file_path
 
 eval_x = np.logspace(-1,3, 10)
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC"]
 
+input = int(sys.argv[-1])
 
-with h5py.File("past_1D_values.h5", "w") as f:
+file_path = _get_data_file_path("past_1D_values.h5")
+
+
+if input == 0:
+    # do not regenerate only add
+    with h5py.File(file_path, "r") as f:
+
+        already_known_functions = list(f.keys())
+
+        flag = "a"
+
+elif input == 1:
+
+    already_known_functions = []
+
+    flag = "w"
+
+else:
+
+    already_known_functions = None
     
-    f.create_dataset("eval_values", data=eval_x, compression="lzf")
+print(input, already_known_functions)       
+        
+    
+
+
+with h5py.File(file_path, flag) as f:
+    if input == 1:
+
+        f.create_dataset("eval_values", data=eval_x, compression="lzf")
     
     for key in _known_functions:
 
+        if key in already_known_functions:
+
+            continue
+        
         this_function = _known_functions[key]
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV

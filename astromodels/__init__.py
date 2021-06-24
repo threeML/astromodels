@@ -36,7 +36,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         TemplateModel, TemplateModelFactory, XSPECTableModel, MissingDataFile,
         Log_parabola, Blackbody, Function1D, Function2D, Function3D,
         FunctionMeta, ModelAssertionViolation, has_naima, has_gsl,
-        has_ebltable)
+        has_ebltable, has_atomdb)
 
     if has_ebltable:
 
@@ -50,6 +50,10 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
         from .functions import Synchrotron
 
+    if has_atomdb:
+
+        from .functions import APEC, VAPEC
+        
     from .functions.function import get_function_class, list_functions
     from .sources import ExtendedSource, PointSource, ParticleSource
 
