@@ -37,7 +37,7 @@ def test_xspec_load():
 def test_xspec_saving():
 
 
-    s = XS_phabs() * XS_powerlaw() + XS_bbody()
+    s =  XS_powerlaw() + XS_bbody()
 
     ps = PointSource("test", 0, 0, spectral_shape=s)
 
