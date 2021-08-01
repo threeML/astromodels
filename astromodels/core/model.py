@@ -429,6 +429,47 @@ class Model(Node):
         return self._point_sources
 
     @property
+    def neutrino_point_sources(self) -> Dict[str, PointSource]:
+        """
+        Returns the dictionary of all defined neutrino point sources
+
+        :return: collections.OrderedDict()
+        """
+
+        out = collections.OrderedDict()
+
+        for k, v in self._point_sources.items():
+
+            if v.is_neutrino_source:
+
+                out[k] = v
+
+        
+        return out
+
+    @property
+    def electro_magnetic_point_sources(self) -> Dict[str, PointSource]:
+        """
+        Returns the dictionary of all defined electro-magnetic point sources
+
+        :return: collections.OrderedDict()
+        """
+
+        out = collections.OrderedDict()
+
+        for k, v in self._point_sources.items():
+
+            if v.is_electro_magnetic_source:
+
+                out[k] = v
+
+        
+        return out
+
+    
+
+    
+    @property
     def extended_sources(self) -> Dict[str, ExtendedSource]:
         """
         Returns the dictionary of all defined extended sources
@@ -1279,7 +1320,7 @@ class Model(Node):
                     "report on the free space which follows: " % output_file,
                 )
 
-    def get_number_of_point_sources(self) ->int:
+    def get_number_of_point_sources(self) -> int:
         """
         Return the number of point sources
 
@@ -1287,6 +1328,26 @@ class Model(Node):
         """
         return len(self._point_sources)
 
+
+    def get_number_of_neutrino_point_sources(self) -> int:
+        """
+        Return the number of point sources
+
+        :return: number of point sources
+        """
+        return len(self.neutrino_point_sources)
+
+
+    def get_number_of_electro_magnetic_point_sources(self) -> int:
+        """
+        Return the number of point sources
+
+        :return: number of point sources
+        """
+        return len(self.electro_magnetic_point_sources)
+
+
+    
     def get_point_source_position(self, id) -> Tuple[float]:
         """
         Get the point source position (R.A., Dec)
@@ -1299,6 +1360,7 @@ class Model(Node):
 
         return pts.position.get_ra(), pts.position.get_dec()
 
+    
     def get_point_source_fluxes(self, id: int, energies: np.ndarray, tag=None) -> np.ndarray:
         """
         Get the fluxes from the id-th point source
@@ -1315,6 +1377,39 @@ class Model(Node):
         
         return list(self._point_sources.values())[id](energies, tag=tag)
 
+    def get_neutrino_point_source_fluxes(self, id: int, energies: np.ndarray, tag=None) -> np.ndarray:
+        """
+        Get the fluxes from the id-th neutrino point source
+
+        :param id: id of the source
+        :param energies: energies at which you need the flux
+        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this
+        parameter is specified then the returned value will be the average flux for the source computed as the integral
+        between a and b over the integration variable divided by (b-a). The integration variable must be an independent
+        variable contained in the model. If b is None, then instead of integrating the integration variable will be
+        set to a and the model evaluated in a.
+        :return: fluxes
+        """
+        
+        return list(self.neutrino_point_sources.values())[id](energies, tag=tag)
+
+    def get_electro_magnetic_point_source_fluxes(self, id: int, energies: np.ndarray, tag=None) -> np.ndarray:
+        """
+        Get the fluxes from the id-th point source
+
+        :param id: id of the source
+        :param energies: energies at which you need the flux
+        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this
+        parameter is specified then the returned value will be the average flux for the source computed as the integral
+        between a and b over the integration variable divided by (b-a). The integration variable must be an independent
+        variable contained in the model. If b is None, then instead of integrating the integration variable will be
+        set to a and the model evaluated in a.
+        :return: fluxes
+        """
+        
+        return list(self.electro_magnetic_point_sources.values())[id](energies, tag=tag)
+
+    
     def get_point_source_name(self, id: int) -> str:
 
         return list(self._point_sources.values())[id].name

@@ -1,6 +1,7 @@
 from __future__ import division
 
 import collections
+from enum import Enum, unique
 from typing import Any, Dict, List, Optional, Union
 
 import astropy.units as u
@@ -26,6 +27,24 @@ __all__ = ["PointSource"]
 
 log = setup_logger(__name__)
 
+
+@unique
+class PointSourceType(Enum):
+
+    NEUTRINO = "neutrino"
+    ELECTRO_MAGNETIC = "electro_magnetic"
+
+    def __str__(self):
+        return str(self.value)    
+
+    def __contains__(cls, item):
+        try:
+            cls(item)
+        except ValueError:
+            return False
+        return True   
+
+    
 class PointSource(Source, Node):
     """
     A point source. You can instance this class in many ways.
@@ -69,7 +88,10 @@ class PointSource(Source, Node):
                  l: Optional[float] = None,
                  b: Optional[float] = None,
                  components=None,
-                 sky_position: Optional[SkyDirection]=None):
+                 sky_position: Optional[SkyDirection]=None,
+                 source_type: PointSourceType = PointSourceType.ELECTRO_MAGNETIC
+
+                 ):
 
         # Check that we have all the required information
 
@@ -127,7 +149,18 @@ class PointSource(Source, Node):
             raise AssertionError()
 
         # If the user specified only one component, make a list of one element with a default name ("main")
+        
+        if str(source_type) not in [str(PointSourceType.NEUTRINO), str(PointSourceType.ELECTRO_MAGNETIC)]:
 
+            log.error("point sources must be 'electro_magentic' or 'neutrino'")
+
+            raise AssertionError()
+
+
+
+        self._point_source_type = source_type
+        
+        
         if spectral_shape is not None:
 
             components = [SpectralComponent("main", spectral_shape)]
@@ -309,6 +342,11 @@ class PointSource(Source, Node):
 
         return all_parameters
 
+    @property
+    def point_source_type(self) -> PointSourceType:
+
+        return self._point_source_type
+    
     def _repr__base(self, rich_output=False):
         """
         Representation of the object
@@ -334,6 +372,15 @@ class PointSource(Source, Node):
         return dict_to_list(repr_dict, rich_output)
 
 
+    def to_dict(self, minimal: bool=False):
+
+        data = super(PointSource, self).to_dict(minimal)
+
+        data["point_source_type"] = str(self._point_source_type)
+
+        return data
+
+        
 
 @nb.njit(fastmath=True)
 def _sum(x):

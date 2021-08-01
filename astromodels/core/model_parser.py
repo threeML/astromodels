@@ -497,6 +497,18 @@ class SourceParser(object):
 
             raise ModelSyntaxError()
 
+        try:
+
+
+            point_source_type = pts_source_definition["point_source_type"]
+
+        except KeyError:
+
+            log.error("Point source %s is missing the 'point_source_type' attribute" %
+                      self._source_name)
+
+            raise ModelSyntaxError()
+        
         components = []
 
         for component_name, component_definition in list(
@@ -519,6 +531,7 @@ class SourceParser(object):
                 self._source_name,
                 sky_position=this_sky_direction,
                 components=components,
+                source_type= point_source_type
             )
 
         except:
