@@ -531,7 +531,7 @@ $DOCSTRING$
 
         # Make sure this is an energy
         #assert str(x_unit.physical_type) == 'energy', "Trying to set x-unit with (%s), which is not energy" % (x_unit)
-        assert energy in str(x_unit.physical_type), "Trying to set x-unit with (%s), which is not energy" % (x_unit)
+        assert 'energy' in str(x_unit.physical_type), "Trying to set x-unit with (%s), which is not energy" % (x_unit)
 
         # Make sure the y_unit is the correct one
         try:
