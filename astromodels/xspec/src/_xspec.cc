@@ -1425,5 +1425,3 @@ PyMODINIT_FUNC PyInit__xspec(void) {
   import_array();
   return PyModule_Create(&xspec_module);
 }
-SupportCancel
-Full-text Access 
