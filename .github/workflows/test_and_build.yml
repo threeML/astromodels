@@ -221,6 +221,7 @@ jobs:
             #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('environment-ci.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v2
+              shell: bash -l {0}
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
