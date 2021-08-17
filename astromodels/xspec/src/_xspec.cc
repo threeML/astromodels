@@ -106,7 +106,7 @@ int _sherpa_init_xspec_library();
 
 
 #include "XSFunctions/funcWrappers.h"
-
+#include "XSFunctions/Utilities/xsFortran.h"
 
 #else
 
