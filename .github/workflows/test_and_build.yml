@@ -226,7 +226,7 @@ jobs:
               uses: conda-incubator/setup-miniconda@v2
               with:
                   activate-environment: "test_env"
-                  auto-activate-base: true
+                  auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
                   conda-build-version: 3.18
@@ -234,7 +234,8 @@ jobs:
                   auto-update-conda: true
                   environment-file: ci/environment.yml
                   use-only-tar-bz2: true
-                  channels: conda-forge, xspecmodels, threeml, defaults
+                  channel_priority: strict
+                  channels: conda-forge, xspecmodels, threeml
 
             - name: Init Env
               shell: bash -l {0}
