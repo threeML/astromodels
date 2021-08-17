@@ -329,12 +329,12 @@ void tdrellinelpext_(float* ear, int* ne, float* param, int* ifl, float* photar,
 // XSPEC table models; in XSPEC 12.10.1 these have been consolidated
 // into the tabint routine.
 //
-// #ifndef XSPEC_12_10_1
-// void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl,
-// 	    float* photar, float* photer);
-// void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl,
-// 	    float* photar, float* photer);
-// #endif
+#ifndef XSPEC_12_10_1
+void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl,
+	    float* photar, float* photer);
+void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl,
+	    float* photar, float* photer);
+#endif
 
 // XSPEC convolution models
 //
@@ -972,7 +972,6 @@ static PyMethodDef XSpecMethods[] = {
   FCTSPEC(set_xspath_manager, set_manager_data_path),
 
 
-#ifdef NOT_USED
   
 #ifdef XSPEC_12_10_1
   XSPECMODELFCT_NORM( agnsed, 16 ),
@@ -1381,7 +1380,7 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_CON(C_vmshift, 1),
   XSPECMODELFCT_CON(C_xilconv, 6),
 #endif
-#endif
+
   { NULL, NULL, 0, NULL }
 
 };
