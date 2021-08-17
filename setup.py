@@ -17,7 +17,7 @@ import versioneer
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-_default_xspec_version = "12.9.1"
+_default_xspec_version = "12.10.1"
 
 
 class My_build_ext(_build_ext):
