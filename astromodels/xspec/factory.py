@@ -636,8 +636,6 @@ def setup_xspec_models():
 
     for (model_name, xspec_function, model_type) in all_models:
 
-        print(model_name)
-        
         if model_type == 'con':
 
             # convolution models are not supported
