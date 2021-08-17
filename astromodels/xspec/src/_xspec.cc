@@ -971,6 +971,9 @@ static PyMethodDef XSpecMethods[] = {
     (PyCFunction)get_model_data_path, METH_NOARGS, NULL },
   FCTSPEC(set_xspath_manager, set_manager_data_path),
 
+
+#ifdef NOT_USED
+  
 #ifdef XSPEC_12_10_1
   XSPECMODELFCT_NORM( agnsed, 16 ),
   XSPECMODELFCT_NORM( qsosed, 7 ),
@@ -1377,8 +1380,8 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_CON(C_vashift, 1),
   XSPECMODELFCT_CON(C_vmshift, 1),
   XSPECMODELFCT_CON(C_xilconv, 6),
-  #endif
-
+#endif
+#endif
   { NULL, NULL, 0, NULL }
 
 };
