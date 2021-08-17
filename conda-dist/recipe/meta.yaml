@@ -45,7 +45,8 @@ requirements:
     #- readline==6.2 # [py2k]
     - numba
     - h5py
-
+    - omegaconf
+    
   run:
     - python
   #  - libgfortran
@@ -70,7 +71,8 @@ requirements:
     - h5py
     - interpolation>=2.1.5 # [py3k]
     - colorama
-
+    - omegaconf
+    
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]

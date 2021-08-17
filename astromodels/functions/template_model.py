@@ -20,7 +20,7 @@ from interpolation.splines import eval_linear
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.configuration import get_user_data_path
+from astromodels.utils import get_user_data_path
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)

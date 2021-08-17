@@ -6,21 +6,8 @@ from past.utils import old_div
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
-from astromodels.functions.function import (Function1D, FunctionMeta,
-                                            ModelAssertionViolation)
-
-try:
-    from threeML.config import threeML_config
-
-    _has_threeml = True
-
-    _startup_flag = threeML_config.logging.startup_warnings
-    
-except ImportError:
-
-    _has_threeml = False
-    _startup_flag = True
-
+from astromodels.functions.function import Function1D, FunctionMeta
+from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
@@ -38,9 +25,6 @@ class GSLNotAvailable(ImportWarning):
 class NaimaNotAvailable(ImportWarning):
     pass
 
-
-class EBLTableNotAvailable(ImportWarning):
-    pass
 
 
 class InvalidUsageForFunction(Exception):
@@ -61,7 +45,7 @@ try:
 
 except ImportError:
 
-    if _startup_flag:
+    if astromodels_config.logging.startup_warnings:
 
         log.warning(
             "The naima package is not available. Models that depend on it will not be available"
@@ -82,7 +66,7 @@ try:
 
 except ImportError:
 
-    if _startup_flag:
+    if astromodels_config.logging.startup_warnings:
 
         log.warning(
             "The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
@@ -95,32 +79,6 @@ else:
 
     has_gsl = True
 
-
-try:
-
-    # ebltable is a Python packages to read in and interpolate tables for the photon density of
-    # the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma
-    # rays.
-
-    import ebltable.tau_from_model as ebltau
-
-    has_ebltable = True
-
-except ImportError:
-
-    if _startup_flag:
-
-        log.warning(
-            "The ebltable package is not available. Models that depend on it will not be available"
-        )
-
-    has_ebltable = False
-
-except:
-
-    has_ebltable = False
-
-    log.warning("The ebltable package is broken")
 
 
 class StepFunction(Function1D, metaclass=FunctionMeta):
@@ -781,80 +739,3 @@ class Exponential_cutoff(Function1D, metaclass=FunctionMeta):
 
     def evaluate(self, x, K, xc):
         return K * np.exp(np.divide(x, -xc))
-
-
-if has_ebltable:
-
-    class EBLattenuation(Function1D, metaclass=FunctionMeta):
-        r"""
-        description :
-            Attenuation factor for absorption in the extragalactic background light (EBL) ,
-            to be used for extragalactic source spectra. Based on package "ebltable" by
-            Manuel Meyer, https://github.com/me-manu/ebltable .
-
-        latex: not available
-
-        parameters :
-
-          redshift :
-                desc : redshift of the source
-                initial value : 1.0
-                fix : yes
-
-          attenuation :
-                desc : scaling factor for the strength of attenuation
-                initial value : 1.0
-                min : 0.0
-                max : 10.0
-                fix : yes
-
-        """
-
-        def _setup(self):
-
-            # define EBL model, use dominguez as default
-            self._tau = ebltau.OptDepth.readmodel(model="dominguez")
-
-        def set_ebl_model(self, modelname):
-
-            # passing modelname to ebltable, which will check if defined
-            self._tau = ebltau.OptDepth.readmodel(model=modelname)
-
-        def _set_units(self, x_unit, y_unit):
-
-            if not hasattr(x_unit, "physical_type") or x_unit.physical_type != "energy":
-
-                # x should be energy
-                raise InvalidUsageForFunction(
-                    "Unit for x is not an energy. The function "
-                    "EBLOptDepth calculates energy-dependent "
-                    "absorption."
-                )
-
-            # y should be dimensionless
-            if (
-                not hasattr(y_unit, "physical_type")
-                or y_unit.physical_type != "dimensionless"
-            ):
-                raise InvalidUsageForFunction(
-                    "Unit for y is not dimensionless.")
-
-            self.redshift.unit = astropy_units.dimensionless_unscaled
-            self.attenuation.unit = astropy_units.dimensionless_unscaled
-
-        def evaluate(self, x, redshift, attenuation):
-
-            if isinstance(x, astropy_units.Quantity):
-
-                # ebltable expects TeV
-                eTeV = x.to(astropy_units.TeV).value
-                return (
-                    np.exp(-self._tau.opt_depth(redshift.value, eTeV) * attenuation)
-                    * astropy_units.dimensionless_unscaled
-                )
-
-            else:
-
-                # otherwise it's in keV
-                eTeV = old_div(x, 1e9)
-                return np.exp(-self._tau.opt_depth(redshift, eTeV) * attenuation)

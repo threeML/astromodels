@@ -5,8 +5,7 @@ __author__ = "giacomov"
 import collections
 import os
 import warnings
-
-from typing import List, Tuple, Dict, Any, Optional, Union, Iterable
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -17,7 +16,8 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.tree import DuplicatedNode, Node
 from astromodels.functions.function import get_function
-from astromodels.sources import SourceType, Source, PointSource, ExtendedSource, ParticleSource
+from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
+                                 Source, SourceType)
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.long_path_formatter import long_path_formatter

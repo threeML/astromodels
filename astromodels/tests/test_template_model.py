@@ -1,22 +1,20 @@
 from __future__ import division, print_function
 
 import os
+import shutil
+from pathlib import Path
 
 import numpy as np
 import numpy.testing as npt
 import pytest
-from pathlib import Path
-import shutil
 
 from astromodels import Model, PointSource, clone_model, load_model
 from astromodels.functions import (Band, MissingDataFile, Powerlaw,
                                    TemplateModel, TemplateModelFactory,
                                    XSPECTableModel)
+from astromodels.functions.template_model import convert_old_table_model
 from astromodels.utils.data_files import _get_data_file_path
 from astromodels.utils.logging import update_logging_level
-
-from astromodels.functions.template_model import convert_old_table_model
-
 
 update_logging_level("DEBUG")
 

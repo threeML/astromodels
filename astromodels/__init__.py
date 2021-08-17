@@ -11,6 +11,7 @@ from ._version import get_versions
 
 if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
+    from .utils.configuration import astromodels_config
     from .core.memoization import use_astromodels_memoization
     from .core.model import Model
     from .core.model_parser import clone_model, load_model
