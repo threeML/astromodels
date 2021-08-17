@@ -104,9 +104,18 @@ int _sherpa_init_xspec_library();
 
 #ifdef XSPEC_12_12_0
 
+
+#include "XSFunctions/funcWrappers.h"
+
+
 #else
 
 #include "xsFortran.h"
+// C_<model> are declared here; the other models are defined in
+// functionMap.h but that requires using the XSPEC build location
+// rather than install location.
+//
+#include "funcWrappers.h"
 
 #endif
 
@@ -114,11 +123,6 @@ int _sherpa_init_xspec_library();
 // TODO: is this defined in an XSPEC header file?
 #define ABUND_SIZE (30) // number of elements in Solar Abundance table
 
-// C_<model> are declared here; the other models are defined in
-// functionMap.h but that requires using the XSPEC build location
-// rather than install location.
-//
-#include "funcWrappers.h"
 
 extern "C" {
 
