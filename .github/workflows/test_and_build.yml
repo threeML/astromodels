@@ -203,7 +203,7 @@ jobs:
         strategy:
             matrix:
                 os: [ubuntu-latest, macos-latest]
-                python-version: [3.7]
+                python-version: [3.8]
 
         steps:
             - name: Checkout
@@ -229,7 +229,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
-              #    conda-build-version: 3.18
+                  conda-build-version: 3.18
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
