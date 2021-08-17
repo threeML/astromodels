@@ -98,7 +98,14 @@ int _sherpa_init_xspec_library();
 // gammap
 // gammq
 //
+
+#ifdef XSPEC_12_12_0
+
+#else
+
 #include "xsFortran.h"
+
+#endif
 
 // TODO: is this defined in an XSPEC header file?
 #define ABUND_SIZE (30) // number of elements in Solar Abundance table

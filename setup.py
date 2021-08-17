@@ -1,19 +1,24 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
+
 import ctypes.util
 import glob
-import sys
-
 import os
 import re
-from setuptools import setup, Extension
+import sys
+from distutils.version import LooseVersion
+
+from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext as _build_ext
 
 import versioneer
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
+
+_default_xspec_version = "12.9.1"
+
 
 class My_build_ext(_build_ext):
 
@@ -180,7 +185,45 @@ def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
     conda_prefix = os.environ.get("CONDA_PREFIX")
+    xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
 
+
+    # thanks to the sherpa team for this
+    
+    if xspec_version is None:
+
+        print("WARN: You have not specified and XSPEC version with the ")
+        print("WARN: environment variable ASTRO_XSPEC_VERSION")
+        print(f"WARN: we will assume you have {_default_xspec_version}")
+
+        xspec_raw_version = _default_xspec_version 
+
+    else:
+
+        print(f"WARN: you have specified you have XSPEC version {xspec_version}")
+
+        xspec_raw_version = xspec_version
+
+
+    xspec_version = LooseVersion(xspec_raw_version)
+
+    macros = []
+
+    if xspec_version < LooseVersion("12.9.0"):
+        print("WARN: XSPEC Version is less than 12.9.0, which is the minimal supported version for astromodels")
+
+        # I am not sure what the naming of the XSPEC components are,
+        # but let's stick with major, minor, and patch.
+        #
+        for major, minor, patch in [(12, 9, 0), (12, 9, 1),
+                                    (12, 10, 0), (12, 10, 1),
+                                    (12, 11, 0), (12, 11, 1)]:
+            version = '{}.{}.{}'.format(major, minor, patch)
+            macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
+            if xspec_version >= LooseVersion(version):
+                macros += [(macro, None)]
+                        
+    
     if headas_root is None:
 
         # See, maybe we are running in Conda
@@ -307,7 +350,8 @@ def setup_xspec():
                   libraries=libraries,
                   library_dirs=library_dirs,
                   runtime_library_dirs=library_dirs,
-                  extra_compile_args=[])]
+                  extra_compile_args=[], define_macros=macros),
+    ]
 
     return ext_modules_configuration
 
