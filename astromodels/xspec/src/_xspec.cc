@@ -329,12 +329,12 @@ void tdrellinelpext_(float* ear, int* ne, float* param, int* ifl, float* photar,
 // XSPEC table models; in XSPEC 12.10.1 these have been consolidated
 // into the tabint routine.
 //
-#ifndef XSPEC_12_10_1
-void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl,
-	    float* photar, float* photer);
-void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl,
-	    float* photar, float* photer);
-#endif
+// #ifndef XSPEC_12_10_1
+// void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl,
+// 	    float* photar, float* photer);
+// void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl,
+// 	    float* photar, float* photer);
+// #endif
 
 // XSPEC convolution models
 //
