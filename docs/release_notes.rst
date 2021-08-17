@@ -6,6 +6,16 @@ Version 2.2
 -----------
 
 
+v2.2.2
+^^^^^^^^
+*Tue, 17 Aug 2020 12:30:08 + 0000*
+
+* update XSPEC models to handle different versions up to
+  12.12.0, Now setting an environment variable: ASTRO_XSPEC_VERSION
+  to the required version is needed, i.e., 12.10.1. A default of
+  12.10.1 is assumed otherwise
+
+
 v2.2.1
 ^^^^^^^^
 *Tue, 17 Aug 2020 06:30:08 + 0000*
