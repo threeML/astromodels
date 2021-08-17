@@ -221,7 +221,7 @@ def setup_xspec():
             version = '{}.{}.{}'.format(major, minor, patch)
             macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
             if xspec_version >= LooseVersion(version):
-                macros += [(macro, None)]
+                macros.append([(macro, None)])
                         
     print(macros)
                 
