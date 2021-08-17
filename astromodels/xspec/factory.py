@@ -145,6 +145,7 @@ def get_models(model_dat_path):
 
             this_model['parameters'] = collections.OrderedDict()
 
+            
             model_definitions[(model_name, library_function, model_type)] = this_model
 
         else:
@@ -386,8 +387,8 @@ _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
                           'XS_cabs', 'XS_wabs', 'XS_zwabs'
                           ]
 
-@six.add_metaclass(FunctionMeta)
-class XS_$MODEL_NAME$(Function1D):
+
+class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
 
     """
 $DOCSTRING$
