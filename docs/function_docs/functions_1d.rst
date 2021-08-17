@@ -12,10 +12,10 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/DiracDelta.ipynb
    ../notebooks/Log_parabola.ipynb
    ../notebooks/Exponential_cutoff.ipynb
-   ../notebooks/EBLattenuation.ipynb
    ../notebooks/PhAbs.ipynb
    ../notebooks/TbAbs.ipynb
    ../notebooks/WAbs.ipynb
+   ../notebooks/EBLattenuation.ipynb
    ../notebooks/Constant.ipynb
    ../notebooks/Line.ipynb
    ../notebooks/Quadratic.ipynb
