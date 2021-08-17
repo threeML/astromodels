@@ -223,7 +223,8 @@ def setup_xspec():
             if xspec_version >= LooseVersion(version):
                 macros += [(macro, None)]
                         
-    
+    print(macros)
+                
     if headas_root is None:
 
         # See, maybe we are running in Conda
