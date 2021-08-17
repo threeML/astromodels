@@ -215,15 +215,15 @@ def setup_xspec():
         # I am not sure what the naming of the XSPEC components are,
         # but let's stick with major, minor, and patch.
         #
-        for major, minor, patch in [(12, 9, 0), (12, 9, 1),
-                                    (12, 10, 0), (12, 10, 1),
-                                    (12, 11, 0), (12, 11, 1)]:
-            version = '{}.{}.{}'.format(major, minor, patch)
-            print(version)
-            macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
-            print(macro)
-            if xspec_version >= LooseVersion(version):
-                macros.append([(macro, None)])
+    for major, minor, patch in [(12, 9, 0), (12, 9, 1),
+                                (12, 10, 0), (12, 10, 1),
+                                (12, 11, 0), (12, 11, 1)]:
+        version = '{}.{}.{}'.format(major, minor, patch)
+
+        macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
+
+        if xspec_version >= LooseVersion(version):
+            macros += [(macro, None)]
                         
     print(macros)
                 
