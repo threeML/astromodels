@@ -217,7 +217,8 @@ def setup_xspec():
         #
     for major, minor, patch in [(12, 9, 0), (12, 9, 1),
                                 (12, 10, 0), (12, 10, 1),
-                                (12, 11, 0), (12, 11, 1)]:
+                                (12, 11, 0), (12, 11, 1),
+                                (12, 12, 0)]:
         version = '{}.{}.{}'.format(major, minor, patch)
 
         macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
