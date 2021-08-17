@@ -145,7 +145,6 @@ def get_models(model_dat_path):
 
             this_model['parameters'] = collections.OrderedDict()
 
-            print(model_name)
             
             model_definitions[(model_name, library_function, model_type)] = this_model
 
@@ -637,6 +636,8 @@ def setup_xspec_models():
 
     for (model_name, xspec_function, model_type) in all_models:
 
+        print(model_name)
+        
         if model_type == 'con':
 
             # convolution models are not supported
