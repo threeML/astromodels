@@ -46,6 +46,7 @@ def run_apidoc(app):
     import pkgutil
     import sys
     import os
+
     astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
     sys.path.insert(0, os.path.abspath('..'))
@@ -79,6 +80,7 @@ def run_apidoc(app):
 
 # #import astromodels
 import pkgutil
+
 astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
 sys.path.insert(1, os.path.abspath('../astromodels'))
