@@ -111,7 +111,7 @@ extensions = [
     'rtds_action',
     'nbsphinx',
     'recommonmark',
-    'sphinx.ext.autodoc',
+#    'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
