@@ -10,6 +10,7 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/Blackbody.ipynb
    ../notebooks/Sin.ipynb
    ../notebooks/DiracDelta.ipynb
+   ../notebooks/Synchrotron.ipynb
    ../notebooks/Log_parabola.ipynb
    ../notebooks/Exponential_cutoff.ipynb
    ../notebooks/PhAbs.ipynb
