@@ -48,4 +48,5 @@ Contents:
     notebooks/Model_tutorial.ipynb
     notebooks/Priors_for_Bayesian_analysis.ipynb
     notebooks/Additional_features_for_scripts_and_applications.ipynb
+    api/API
     release_notes.rst

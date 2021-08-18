@@ -111,7 +111,7 @@ extensions = [
     'rtds_action',
     'nbsphinx',
     'recommonmark',
-#    'sphinx.ext.autodoc',
+    'sphinx.ext.autodoc',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
@@ -146,7 +146,9 @@ rtds_action_error_if_missing = True
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
-source_suffix = ['.rst', '.ipynb']
+
+# see https://github.com/spatialaudio/nbsphinx/issues/595
+source_suffix = ['.rst']
 
 # The master toctree document.
 master_doc = 'index'
@@ -222,5 +224,5 @@ release = 'latest'
 
 print("Done.")
 
-# def setup(app):
-#     app.connect("builder-inited", run_apidoc)
+def setup(app):
+    app.connect("builder-inited", run_apidoc)
