@@ -40,42 +40,42 @@ DOCS = Path(__file__).parent
 # -- Generate API documentation ------------------------------------------------
 
 
-def run_apidoc(app):
-    """Generage API documentation"""
-    import better_apidoc
-    import pkgutil
-    import sys
-    import os
+# def run_apidoc(app):
+#     """Generage API documentation"""
+#     import better_apidoc
+#     import pkgutil
+#     import sys
+#     import os
 
-    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+#     astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
-    sys.path.insert(0, os.path.abspath('..'))
-    sys.path.insert(1, os.path.abspath('../astromodels'))
+#     sys.path.insert(0, os.path.abspath('..'))
+#     sys.path.insert(1, os.path.abspath('../astromodels'))
 
-    # Add the path to the C extension
-    #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-    lib_path = os.path.abspath('%s/core' % astro_path)
+#     # Add the path to the C extension
+#     #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+#     lib_path = os.path.abspath('%s/core' % astro_path)
 
-    sys.path.insert(2, lib_path)
+#     sys.path.insert(2, lib_path)
 
-    #This must work now
-    import node_ctype
+#     #This must work now
+#     import node_ctype
 
 
-    better_apidoc.APP = app
-    better_apidoc.main(
-        [
-            "better-apidoc",
-            # "-t",
-            # str(docs / "_templates"),
-            "--force",
-            "--no-toc",
-            "--separate",
-            "-o",
-            str(DOCS / "api"),
-            str(DOCS / ".." / "astromodels"),
-        ]
-    )
+#     better_apidoc.APP = app
+#     better_apidoc.main(
+#         [
+#             "better-apidoc",
+#             # "-t",
+#             # str(docs / "_templates"),
+#             "--force",
+#             "--no-toc",
+#             "--separate",
+#             "-o",
+#             str(DOCS / "api"),
+#             str(DOCS / ".." / "astromodels"),
+#         ]
+#     )
 
 
 # #import astromodels
@@ -108,7 +108,7 @@ for f in files:
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'rtds_action',
+#    'rtds_action',
     'nbsphinx',
     'recommonmark',
     'sphinx.ext.autodoc',
@@ -117,6 +117,7 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx_gallery.load_style',
+    
     
 ]
 
@@ -129,18 +130,18 @@ napoleon_use_param = False
 # The path where the artifact should be extracted
 # Note: this is relative to the conf.py file!
 
-rtds_action_path = "notebooks"
+# rtds_action_path = "notebooks"
 
-# # The "prefix" used in the `upload-artifact` step of the action
-rtds_action_artifact_prefix = "notebooks-for-"
+# # # The "prefix" used in the `upload-artifact` step of the action
+# rtds_action_artifact_prefix = "notebooks-for-"
 
 
-rtds_action_github_repo = "threeML/astromodels"
+# rtds_action_github_repo = "threeML/astromodels"
 
-# # A GitHub personal access token is required, more info below
-rtds_action_github_token = os.environ["GITHUB_TOKEN"]
+# # # A GitHub personal access token is required, more info below
+# rtds_action_github_token = os.environ["GITHUB_TOKEN"]
 
-rtds_action_error_if_missing = True
+# rtds_action_error_if_missing = True
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -224,5 +225,5 @@ release = 'latest'
 
 print("Done.")
 
-def setup(app):
-    app.connect("builder-inited", run_apidoc)
+# def setup(app):
+#     app.connect("builder-inited", run_apidoc)

@@ -108,14 +108,14 @@ jobs:
 
 
           
-      - name: Sleep for 5 min
-        uses: juliangruber/sleep-action@v1
-        with:
-          time: 5m
+      # - name: Sleep for 5 min
+      #   uses: juliangruber/sleep-action@v1
+      #   with:
+      #     time: 5m
 
-      - name: Trigger RTDs build
-        uses: dfm/rtds-action@main
-        with:
-          webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
-          webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
-          commit_ref: ${{ github.ref }}
+      # - name: Trigger RTDs build
+      #   uses: dfm/rtds-action@main
+      #   with:
+      #     webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
+      #     webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
+      #     commit_ref: ${{ github.ref }}
