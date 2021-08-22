@@ -80,8 +80,13 @@ jobs:
           pip3 install sphinx_rtd_theme
           pip3 install -U sphinx nbsphinx sphinx-gallery
 
-          sphinx-apidoc -f -o ../docs/api/ ../astromodels
-        
+
+          
+          
+          sphinx-apidoc -f -o docs/api/ astromodels
+
+          
+          
       - name: Build and Commit
         uses: sphinx-notes/pages@master
         with:
