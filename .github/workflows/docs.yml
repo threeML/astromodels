@@ -17,6 +17,9 @@ jobs:
           python-version: 3.7
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
       # - name: Cache conda
       #   uses: actions/cache@v2
       #   with:
@@ -90,7 +93,7 @@ jobs:
         shell: bash -l {0}
         run: |
 
-          pip install sphinx nbsphinx sphinx_rtd_theme sphinx-gallery
+          pip install -U sphinx nbsphinx sphinx_rtd_theme sphinx-gallery
 
           sphinx-apidoc -f -o ../docs/api/ ../astromodels
         
