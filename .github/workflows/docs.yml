@@ -46,10 +46,10 @@ jobs:
           #eval "$(/usr/libexec/path_helper)"
           #sudo apt-get install texlive
 
-          pip install pip -U
+          pip3 install pip -U
           
-          pip install -U  numpy numba jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables healpy
-          pip install ebltable
+          pip3 install -U  numpy numba jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables healpy
+          pip3 install ebltable
 
           
       - name: Install the package
@@ -95,10 +95,10 @@ jobs:
 
           brew install sphinx-doc
 
-          pip install wheel
-          pip install docutils <0.17
-          pip install sphinx_rtd_theme
-          pip install -U sphinx nbsphinx sphinx-gallery
+          pip3 install wheel
+          pip3 install docutils <0.17
+          pip3 install sphinx_rtd_theme
+          pip3 install -U sphinx nbsphinx sphinx-gallery
 
           sphinx-apidoc -f -o ../docs/api/ ../astromodels
         
