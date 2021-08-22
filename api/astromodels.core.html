@@ -1,0 +1,437 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.core package &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="astromodels.functions package" href="astromodels.functions.html" />
+    <link rel="prev" title="astromodels package" href="astromodels.html" />
+  <link rel="stylesheet" href="../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="API.html">API</a> &raquo;</li>
+        
+          <li><a href="astromodels.html">astromodels package</a> &raquo;</li>
+        
+      <li>astromodels.core package</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="astromodels-core-package">
+<h1>astromodels.core package<a class="headerlink" href="#astromodels-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-astromodels.core.cpickle_compatibility_layer">
+<span id="astromodels-core-cpickle-compatibility-layer-module"></span><h2>astromodels.core.cpickle_compatibility_layer module<a class="headerlink" href="#module-astromodels.core.cpickle_compatibility_layer" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-astromodels.core.memoization">
+<span id="astromodels-core-memoization-module"></span><h2>astromodels.core.memoization module<a class="headerlink" href="#module-astromodels.core.memoization" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.core.memoization.memoize">
+<span class="sig-prename descclassname"><span class="pre">astromodels.core.memoization.</span></span><span class="sig-name descname"><span class="pre">memoize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/memoization.html#memoize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.memoization.memoize" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator for functions of sources which memoize the results of the last _CACHE_SIZE calls,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>method</strong> – method to be memoized</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the decorated method</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.core.memoization.use_astromodels_memoization">
+<span class="sig-prename descclassname"><span class="pre">astromodels.core.memoization.</span></span><span class="sig-name descname"><span class="pre">use_astromodels_memoization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">switch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/memoization.html#use_astromodels_memoization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.memoization.use_astromodels_memoization" title="Permalink to this definition">¶</a></dt>
+<dd><p>Activate/deactivate memoization temporarily</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>switch</strong> – True (memoization on) or False (memoization off)</p></li>
+<li><p><strong>cache_size</strong> – number of previous evaluation of functions to keep in memory. Default: 100</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="astromodels-core-model-module">
+<h2>astromodels.core.model module<a class="headerlink" href="#astromodels-core-model-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="astromodels-core-model-parser-module">
+<h2>astromodels.core.model_parser module<a class="headerlink" href="#astromodels-core-model-parser-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-astromodels.core.my_yaml">
+<span id="astromodels-core-my-yaml-module"></span><h2>astromodels.core.my_yaml module<a class="headerlink" href="#module-astromodels.core.my_yaml" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.core.my_yaml.dict_constructor">
+<span class="sig-prename descclassname"><span class="pre">astromodels.core.my_yaml.</span></span><span class="sig-name descname"><span class="pre">dict_constructor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loader</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/my_yaml.html#dict_constructor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.my_yaml.dict_constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.core.my_yaml.dict_representer">
+<span class="sig-prename descclassname"><span class="pre">astromodels.core.my_yaml.</span></span><span class="sig-name descname"><span class="pre">dict_representer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dumper</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/my_yaml.html#dict_representer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.my_yaml.dict_representer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="astromodels-core-parameter-module">
+<h2>astromodels.core.parameter module<a class="headerlink" href="#astromodels-core-parameter-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-astromodels.core.parameter_transformation">
+<span id="astromodels-core-parameter-transformation-module"></span><h2>astromodels.core.parameter_transformation module<a class="headerlink" href="#module-astromodels.core.parameter_transformation" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.LogarithmicTransformation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter_transformation.</span></span><span class="sig-name descname"><span class="pre">LogarithmicTransformation</span></span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#LogarithmicTransformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.LogarithmicTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.core.parameter_transformation.ParameterTransformation" title="astromodels.core.parameter_transformation.ParameterTransformation"><code class="xref py py-class docutils literal notranslate"><span class="pre">astromodels.core.parameter_transformation.ParameterTransformation</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.LogarithmicTransformation.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">internal_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#LogarithmicTransformation.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.LogarithmicTransformation.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.LogarithmicTransformation.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">external_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#LogarithmicTransformation.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.LogarithmicTransformation.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.ParameterTransformation">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter_transformation.</span></span><span class="sig-name descname"><span class="pre">ParameterTransformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_positive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#ParameterTransformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.ParameterTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.ParameterTransformation.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">internal_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#ParameterTransformation.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.ParameterTransformation.backward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.ParameterTransformation.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">external_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#ParameterTransformation.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.ParameterTransformation.forward" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.ParameterTransformation.is_positive">
+<em class="property"><span class="pre">property</span> </em><span class="sig-name descname"><span class="pre">is_positive</span></span><a class="headerlink" href="#astromodels.core.parameter_transformation.ParameterTransformation.is_positive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.core.parameter_transformation.get_transformation">
+<span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter_transformation.</span></span><span class="sig-name descname"><span class="pre">get_transformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformation_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter_transformation.html#get_transformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.get_transformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of a transformation by name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>transformation_name</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>instance of transformation with provided name</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="astromodels-core-polarization-module">
+<h2>astromodels.core.polarization module<a class="headerlink" href="#astromodels-core-polarization-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="astromodels-core-serialization-module">
+<h2>astromodels.core.serialization module<a class="headerlink" href="#astromodels-core-serialization-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="astromodels-core-sky-direction-module">
+<h2>astromodels.core.sky_direction module<a class="headerlink" href="#astromodels-core-sky-direction-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="astromodels-core-spectral-component-module">
+<h2>astromodels.core.spectral_component module<a class="headerlink" href="#astromodels-core-spectral-component-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-astromodels.core.thread_safe_unit_format">
+<span id="astromodels-core-thread-safe-unit-format-module"></span><h2>astromodels.core.thread_safe_unit_format module<a class="headerlink" href="#module-astromodels.core.thread_safe_unit_format" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.core.thread_safe_unit_format.ThreadSafe">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">astromodels.core.thread_safe_unit_format.</span></span><span class="sig-name descname"><span class="pre">ThreadSafe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/thread_safe_unit_format.html#ThreadSafe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.thread_safe_unit_format.ThreadSafe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">astropy.units.format.base.Base</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.core.thread_safe_unit_format.ThreadSafe.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"> <span class="pre">=</span> <span class="pre">'threadsafe'</span></em><a class="headerlink" href="#astromodels.core.thread_safe_unit_format.ThreadSafe.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.core.thread_safe_unit_format.ThreadSafe.parse">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/thread_safe_unit_format.html#ThreadSafe.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.thread_safe_unit_format.ThreadSafe.parse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a string to a unit object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.core.thread_safe_unit_format.ThreadSafe.to_string">
+<em class="property"><span class="pre">classmethod</span> </em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/thread_safe_unit_format.html#ThreadSafe.to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.thread_safe_unit_format.ThreadSafe.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a unit object to a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="astromodels-core-tree-module">
+<h2>astromodels.core.tree module<a class="headerlink" href="#astromodels-core-tree-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="astromodels-core-units-module">
+<h2>astromodels.core.units module<a class="headerlink" href="#astromodels-core-units-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-astromodels.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-astromodels.core" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="astromodels.functions.html" class="btn btn-neutral float-right" title="astromodels.functions package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="astromodels.html" class="btn btn-neutral float-left" title="astromodels package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
