@@ -94,8 +94,10 @@ jobs:
         run: |
 
           brew install sphinx-doc
-          
-          pip install -U sphinx nbsphinx sphinx_rtd_theme sphinx-gallery
+
+          pip install docutils <0.17
+          pip install sphinx_rtd_theme
+          pip install -U sphinx nbsphinx sphinx-gallery
 
           sphinx-apidoc -f -o ../docs/api/ ../astromodels
         
