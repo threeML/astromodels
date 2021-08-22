@@ -1,0 +1,1240 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Functions tutorial &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Point sources" href="Point_source_tutorial.html" />
+    <link rel="prev" title="Power law on sphere" href="Power_law_on_sphere.html" />
+  <link rel="stylesheet" href="../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Creating-functions">Creating functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Getting-information-about-an-instance">Getting information about an instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Modifying-parameters">Modifying parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Using-physical-units">Using physical units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Composing-functions">Composing functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Creating-custom-functions">Creating custom functions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Functions tutorial</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Functions-tutorial">
+<h1>Functions tutorial<a class="headerlink" href="#Functions-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>In astromodels functions can be used as spectral shapes for sources, or to describe time-dependence, phase-dependence, or links among parameters.</p>
+<p>To get the list of available functions just do:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%%capture</span>
+<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">list_functions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div><table id="table4507766864">
+<thead><tr><th>name</th><th>Description</th></tr></thead>
+<tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates)
+see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>
+<tr><td>Band</td><td>Band model from Band et al., 1993, parametrized with the peak energy</td></tr>
+<tr><td>Band_Calderone</td><td>The Band model from Band et al. 1993, implemented however in a way which reduces the covariances between the parameters (Calderone et al., MNRAS, 448, 403C, 2015)</td></tr>
+<tr><td>Band_grbm</td><td>Band model from Band et al., 1993, parametrized with the cutoff energy</td></tr>
+<tr><td>Blackbody</td><td>A blackbody function</td></tr>
+<tr><td>Broken_powerlaw</td><td>A broken power law function</td></tr>
+<tr><td>Cauchy</td><td>The Cauchy distribution</td></tr>
+<tr><td>Constant</td><td>Return k</td></tr>
+<tr><td>Continuous_injection_diffusion</td><td>Positron and electrons diffusing away from the accelerator</td></tr>
+<tr><td>Continuous_injection_diffusion_ellipse</td><td>Positron and electrons diffusing away from the accelerator</td></tr>
+<tr><td>...</td><td>...</td></tr>
+<tr><td>SmoothlyBrokenPowerLaw</td><td>A Smoothly Broken Power Law</td></tr>
+<tr><td>SpatialTemplate_2D</td><td>User input Spatial Template.  Expected to be normalized to 1/sr</td></tr>
+<tr><td>StepFunction</td><td>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The extremes of the interval are counted as part of the interval.</td></tr>
+<tr><td>StepFunctionUpper</td><td>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The upper interval is open.</td></tr>
+<tr><td>Super_cutoff_powerlaw</td><td>A power law with a super-exponential cutoff</td></tr>
+<tr><td>TbAbs</td><td>Photometric absorption (Tbabs implementation), f(E) = exp(- NH * sigma(E)) contributed by Dominique Eckert</td></tr>
+<tr><td>TemplateModel</td><td>A template model</td></tr>
+<tr><td>Truncated_gaussian</td><td>A  truncated Gaussian function defined on the interval between the lower_bound (a) and upper_bound (b)</td></tr>
+<tr><td>Uniform_prior</td><td>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The extremes of the interval are counted as part of the interval.</td></tr>
+<tr><td>WAbs</td><td>Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E)) contributed by Dominique Eckert</td></tr>
+<tr><td>_ComplexTestFunction</td><td>A useless function to be used during automatic tests</td></tr>
+</table></div></div>
+</div>
+<p>If you need more info about a function, you can obtain it by using:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">Gaussian</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>description: A Gaussian function</li>
+
+<li>formula: $ K \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~(\sigma)^2}} $</li>
+
+<li>default parameters:
+<ul>
+
+<li>F:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>mu:
+<ul>
+
+<li>value: 0.0</li>
+
+<li>desc: Central value</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>sigma:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: standard deviation</li>
+
+<li>min_value: 1e-12</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+<p>Note that you don’t need to create an instance in order to call the info() method.</p>
+<div class="section" id="Creating-functions">
+<h2>Creating functions<a class="headerlink" href="#Creating-functions" title="Permalink to this headline">¶</a></h2>
+<p>Functions can be created in two different ways. We can create an instance with the default values for the parameters like this:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>or we can specify on construction specific values for the parameters:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">(</span><span class="n">K</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mf">2.2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>If you don’t remember the names of the parameters just call the .info() method as in powerlaw.info() as demonstrated above.</p>
+</div>
+<div class="section" id="Getting-information-about-an-instance">
+<h2>Getting information about an instance<a class="headerlink" href="#Getting-information-about-an-instance" title="Permalink to this headline">¶</a></h2>
+<p>Using the <code class="docutils literal notranslate"><span class="pre">.display()</span></code> method we get a representation of the instance which exploits the features of the environment we are using. If we are running inside a IPython notebook, a rich representation with the formula of the function will be displayed (if available). Otherwise, in a normal terminal, the latex formula will not be rendered:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>description: A simple power-law</li>
+
+<li>formula: $ K~\frac{x}{piv}^{index} $</li>
+
+<li>parameters:
+<ul>
+
+<li>K:
+<ul>
+
+<li>value: 0.01</li>
+
+<li>desc: Normalization (differential flux at the pivot value)</li>
+
+<li>min_value: 1e-30</li>
+
+<li>max_value: 1000.0</li>
+
+<li>unit: </li>
+
+<li>is_normalization: True</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>piv:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Pivot value</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: False</li>
+
+</ul>
+
+</li>
+
+<li>index:
+<ul>
+
+<li>value: -2.2</li>
+
+<li>desc: Photon index</li>
+
+<li>min_value: -10.0</li>
+
+<li>max_value: 10.0</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.20099999999999998</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+<p>It is also possible to get the text-only representation by simply printing the object like this:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+  * description: A simple power-law
+  * formula: $ K~\frac{x}{piv}^{index} $
+  * parameters:
+    * K:
+      * value: 0.01
+      * desc: Normalization (differential flux at the pivot value)
+      * min_value: 1.0e-30
+      * max_value: 1000.0
+      * unit: &#39;&#39;
+      * is_normalization: true
+      * delta: 0.1
+      * free: true
+    * piv:
+      * value: 1.0
+      * desc: Pivot value
+      * min_value: null
+      * max_value: null
+      * unit: &#39;&#39;
+      * is_normalization: false
+      * delta: 0.1
+      * free: false
+    * index:
+      * value: -2.2
+      * desc: Photon index
+      * min_value: -10.0
+      * max_value: 10.0
+      * unit: &#39;&#39;
+      * is_normalization: false
+      * delta: 0.20099999999999998
+      * free: true
+
+</pre></div></div>
+</div>
+<div class="admonition note">
+<p><strong>Note:</strong> the <code class="docutils literal notranslate"><span class="pre">.display()</span></code> method of an instance displays the current values of the parameters, while the .info() method demonstrated above (for which you don’t need an instance) displays the default values of the parameters.</p>
+</div>
+</div>
+<div class="section" id="Modifying-parameters">
+<h2>Modifying parameters<a class="headerlink" href="#Modifying-parameters" title="Permalink to this headline">¶</a></h2>
+<p>Modifying a parameter of a function is easy:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Modify current value</span>
+
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="mf">1.2</span>
+
+<span class="c1"># Modify minimum</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">min_value</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="c1"># Modify maximum</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="mi">15</span>
+
+<span class="c1"># We can also modify minimum and maximum at the same time</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+
+<span class="c1"># Modifying the delta for the parameter</span>
+<span class="c1"># (which can be used by downstream software for fitting, for example)</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+<span class="c1"># Fix the parameter</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># or equivalently</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># Free it again</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="c1"># or equivalently</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="c1"># We can verify what we just did by printing again the whole function as shown above,</span>
+<span class="c1"># or simply printing the parameter:</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Parameter K = 1.2 []
+(min_value = 0.5, max_value = 15.0, delta = 0.25, free = True)</div>
+</div>
+</div>
+<div class="section" id="Using-physical-units">
+<h2>Using physical units<a class="headerlink" href="#Using-physical-units" title="Permalink to this headline">¶</a></h2>
+<p>Astromodels uses the facility defined in astropy.units to make easier to convert between units during interactive analysis, when assigning to parameters. In order for functions to be aware of their units, they must be part of a `<code class="docutils literal notranslate"><span class="pre">Source</span></code>. Let’s create one:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+
+<span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">&quot;my_point_source&quot;</span><span class="p">,</span><span class="n">ra</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">dec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">powerlaw_instance</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now we can see the units</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>description: A simple power-law</li>
+
+<li>formula: $ K~\frac{x}{piv}^{index} $</li>
+
+<li>parameters:
+<ul>
+
+<li>K:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Normalization (differential flux at the pivot value)</li>
+
+<li>min_value: 1e-30</li>
+
+<li>max_value: 1000.0</li>
+
+<li>unit: keV-1 s-1 cm-2</li>
+
+<li>is_normalization: True</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>piv:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Pivot value</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: keV</li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: False</li>
+
+</ul>
+
+</li>
+
+<li>index:
+<ul>
+
+<li>value: -2.01</li>
+
+<li>desc: Photon index</li>
+
+<li>min_value: -10.0</li>
+
+<li>max_value: 10.0</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.20099999999999998</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">x_unit</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\mathrm{keV}$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">y_unit</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="math notranslate nohighlight">
+$\mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+
+<span class="c1"># Express the differential flux at the pivot energy in 1 / (MeV cm2 s)</span>
+
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">122.3</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
+
+<span class="c1"># Express the differential flux at the pivot energy in 1 / (GeV m2 s)</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">122.3</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">GeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Parameter K = 0.1223 [1 / (cm2 keV s)]
+(min_value = 1e-30, max_value = 1000.0, delta = 0.1, free = True)
+Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
+(min_value = 1e-30, max_value = 1000.0, delta = 0.1, free = True)
+</pre></div></div>
+</div>
+<p>We see that astromodels does the unit conversion for us in the background!</p>
+<p>However, astropy units are <strong>very slow</strong> and we would not want to deal with them or set parameters with units during a fit. Thus, if you do not specify units when setting a parameter, the value is assumed to have the units specified in the construction of the function.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> powerlaw_instance.K = 1
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+18.7 µs ± 1.71 µs per loop (mean ± std. dev. of 7 runs, 100000 loops each)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">%</span><span class="k">timeit</span> powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+378 µs ± 40.3 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+</pre></div></div>
+</div>
+<p>As you can see using <strong>astropy.units requires about 10x more than using a plain assignment</strong>. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. <strong>Note that this is a feature of astropy.units, not of astromodels.</strong></p>
+</div>
+<div class="section" id="Composing-functions">
+<h2>Composing functions<a class="headerlink" href="#Composing-functions" title="Permalink to this headline">¶</a></h2>
+<p>We can create arbitrary complex functions by combining “primitive” functions using the normal math operators:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">composite</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">()</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">()</span>
+
+<span class="c1"># Instead of the usual .display(), which would print all the many parameters,</span>
+<span class="c1"># let&#39;s print just the description of the new composite functions:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">composite</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(Gaussian{1} + Powerlaw{2})
+</pre></div></div>
+</div>
+<p>These expressions can be as complex as needed. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">crazy_function</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">Sin</span><span class="p">()</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="n">Gaussian</span><span class="p">())</span> <span class="o">/</span> <span class="mf">3.0</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">crazy_function</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((Sin{1} * 3) + (((Powerlaw{2} ** 2) * (Gaussian{3} + 5)) / 3.0))
+</pre></div></div>
+</div>
+<p>The numbers between <code class="docutils literal notranslate"><span class="pre">{}</span></code> enumerate the unique functions which constitute a composite function. This is useful because composite functions can be created starting from pre-existing instances of functions, in which case the same instance can be used more than once. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">a_powerlaw</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+<span class="n">a_sin</span> <span class="o">=</span> <span class="n">Sin</span><span class="p">()</span>
+
+<span class="n">another_composite</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a_powerlaw</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">a_powerlaw</span><span class="p">)</span> <span class="o">*</span> <span class="n">a_sin</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">another_composite</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((Powerlaw{1} * 2) + ((Powerlaw{1} + 3) * Sin{2}))
+</pre></div></div>
+</div>
+<p>In this case the same instance of a power law has been used twice. Changing the value of the parameters for “a_powerlaw” will affect also the second part of the expression. Instead, by doing this:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">another_composite2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Powerlaw</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">())</span> <span class="o">*</span> <span class="n">Sin</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">another_composite2</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+((Powerlaw{1} * 2) + ((Powerlaw{2} + 3) * Sin{3}))
+</pre></div></div>
+</div>
+<p>we will end up with two independent sets of parameters for the two power laws. The difference can be seen immediately from the number of parameters of the two composite functions:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">another_composite</span><span class="o">.</span><span class="n">parameters</span><span class="p">))</span> <span class="c1"># 6 parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">another_composite2</span><span class="o">.</span><span class="n">parameters</span><span class="p">))</span> <span class="c1"># 9 parameters</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+6
+9
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Creating-custom-functions">
+<h2>Creating custom functions<a class="headerlink" href="#Creating-custom-functions" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Point_source_tutorial.html" class="btn btn-neutral float-right" title="Point sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Power_law_on_sphere.html" class="btn btn-neutral float-left" title="Power law on sphere" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1208 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Extended source tutorial &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Multi-component sources" href="Multi_component_sources.html" />
+    <link rel="prev" title="Point sources" href="Point_source_tutorial.html" />
+  <link rel="stylesheet" href="../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extended source tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Available-shapes">Available shapes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#“Moveable”-Functions">“Moveable” Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Fixed-position-Functions">Fixed-position Functions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#“Calling”-extended-sources">“Calling” extended sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Caveats-and-gotchas">Caveats and gotchas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Large-extended-sources">Large extended sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Small-extended-sources">Small extended sources</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Source-support">Source support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Energy-Dependent-Morphology">Energy-Dependent Morphology</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Extended source tutorial</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Extended-source-tutorial">
+<h1>Extended source tutorial<a class="headerlink" href="#Extended-source-tutorial" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this headline">¶</a></h2>
+<p>Extended sources with constant (not energy-dependent) morphology can be instanced by providing a spectral shape (1D function) and a spatial shape (2D function):</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">disk_source</span> <span class="o">=</span> <span class="n">ExtendedSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">(),</span> <span class="n">spatial_shape</span> <span class="o">=</span> <span class="n">Disk_on_sphere</span><span class="p">()</span> <span class="p">)</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The naima package is not available. Models that depend on it will not be available</span>
+[<span class="ansi-magenta-fg">WARNING </span>]<span class="ansi-magenta-fg"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be available.</span>
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>simple_source (extended source):
+<ul>
+
+<li>shape:
+<ul>
+
+<li>lon0:
+<ul>
+
+<li>value: 0.0</li>
+
+<li>desc: Longitude of the center of the source</li>
+
+<li>min_value: 0.0</li>
+
+<li>max_value: 360.0</li>
+
+<li>unit: deg</li>
+
+<li>is_normalization: False</li>
+
+</ul>
+
+</li>
+
+<li>lat0:
+<ul>
+
+<li>value: 0.0</li>
+
+<li>desc: Latitude of the center of the source</li>
+
+<li>min_value: -90.0</li>
+
+<li>max_value: 90.0</li>
+
+<li>unit: deg</li>
+
+<li>is_normalization: False</li>
+
+</ul>
+
+</li>
+
+<li>radius:
+<ul>
+
+<li>value: 15.0</li>
+
+<li>desc: Radius of the disk</li>
+
+<li>min_value: 0.0</li>
+
+<li>max_value: 20.0</li>
+
+<li>unit: deg</li>
+
+<li>is_normalization: False</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+<li>spectrum:
+<ul>
+
+<li>main:
+<ul>
+
+<li>Powerlaw:
+<ul>
+
+<li>K:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Normalization (differential flux at the pivot value)</li>
+
+<li>min_value: 1e-30</li>
+
+<li>max_value: 1000.0</li>
+
+<li>unit: keV-1 s-1 cm-2</li>
+
+<li>is_normalization: True</li>
+
+</ul>
+
+</li>
+
+<li>piv:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Pivot value</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: keV</li>
+
+<li>is_normalization: False</li>
+
+</ul>
+
+</li>
+
+<li>index:
+<ul>
+
+<li>value: -2.01</li>
+
+<li>desc: Photon index</li>
+
+<li>min_value: -10.0</li>
+
+<li>max_value: 10.0</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+<p>Instead of the <code class="docutils literal notranslate"><span class="pre">position</span></code> property, extended sources have a <code class="docutils literal notranslate"><span class="pre">spatial_shape</span></code> property, which contains the function that was specified as the <code class="docutils literal notranslate"><span class="pre">shape</span></code> argument earlier. Information can be printed either with the regular <code class="docutils literal notranslate"><span class="pre">print</span></code> function or using <code class="docutils literal notranslate"><span class="pre">.display()</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Name Disk_on_sphere
+Class &lt;class &#39;astromodels.functions.functions_2D.Disk_on_sphere&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>description: A bidimensional disk/tophat function on a sphere (in spherical coordinates)</li>
+
+<li>formula: $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm radius}} \end{matrix}\right. $$</li>
+
+<li>parameters:
+<ul>
+
+<li>lon0:
+<ul>
+
+<li>value: 0.0</li>
+
+<li>desc: Longitude of the center of the source</li>
+
+<li>min_value: 0.0</li>
+
+<li>max_value: 360.0</li>
+
+<li>unit: deg</li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>lat0:
+<ul>
+
+<li>value: 0.0</li>
+
+<li>desc: Latitude of the center of the source</li>
+
+<li>min_value: -90.0</li>
+
+<li>max_value: 90.0</li>
+
+<li>unit: deg</li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>radius:
+<ul>
+
+<li>value: 15.0</li>
+
+<li>desc: Radius of the disk</li>
+
+<li>min_value: 0.0</li>
+
+<li>max_value: 20.0</li>
+
+<li>unit: deg</li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 1.5</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+<p>Spatial shape parameters can be listed, accessed, changed as any function parameters, for example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">)</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+odict_keys([&#39;lon0&#39;, &#39;lat0&#39;, &#39;radius&#39;])
+odict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.piv&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;, &#39;simple_source.Disk_on_sphere.lon0&#39;, &#39;simple_source.Disk_on_sphere.lat0&#39;, &#39;simple_source.Disk_on_sphere.radius&#39;])
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Parameter radius = 15.0 [deg]
+(min_value = 0.0, max_value = 20.0, delta = 1.5, free = True)</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+Parameter radius = 0.3 [deg]
+(min_value = 0.1, max_value = 1.0, delta = 1.5, free = True)</div>
+</div>
+</div>
+<div class="section" id="Available-shapes">
+<h2>Available shapes<a class="headerlink" href="#Available-shapes" title="Permalink to this headline">¶</a></h2>
+<p>Here’s a list of available 2D functions:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">functions</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Function2D</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;Latitude_galactic_diffuse&#39;, &#39;Gaussian_on_sphere&#39;, &#39;Asymm_Gaussian_on_sphere&#39;, &#39;Disk_on_sphere&#39;, &#39;Ellipse_on_sphere&#39;, &#39;SpatialTemplate_2D&#39;, &#39;Power_law_on_sphere&#39;]
+</pre></div></div>
+</div>
+<p>Check the API or use the <code class="docutils literal notranslate"><span class="pre">display()</span></code> function to find out more about the shapes and their free parameters.</p>
+<div class="section" id="“Moveable”-Functions">
+<h3>“Moveable” Functions<a class="headerlink" href="#“Moveable”-Functions" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Gaussian_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Asymm_Gaussian_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Disk_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Ellipse_on_sphere</span></code>, and <code class="docutils literal notranslate"><span class="pre">Power_law_on_sphere</span></code> each have parameters called <code class="docutils literal notranslate"><span class="pre">lat0</span></code> and <code class="docutils literal notranslate"><span class="pre">lon0</span></code>, describing the longitude (R.A.) and latitude (Declination) of the function’s “center” (center of mass/center of symmetry). These parameters can be set free to allow the source position to vary during the fit, or fixed to a known position. <strong>If fitting the source position, it is strongly recommended to restrict these
+parameters so that source overlaps the region of interest (ROI) at all times.</strong> The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting “stuck” due to the likelihood surface being flat.</p>
+<p>Each of these functions also has other parameter(s) related to the source’s extend and (if applicable) its orientation.</p>
+<p>All of these functions are normalized so that their integral is 1. The 1D <code class="docutils literal notranslate"><span class="pre">spectrum</span></code> function of an extended source can thus be interpreted as the spectrum that would be observed by a non-imaging instrument with a field of view much larger than the source in question.</p>
+</div>
+<div class="section" id="Fixed-position-Functions">
+<h3>Fixed-position Functions<a class="headerlink" href="#Fixed-position-Functions" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">Latitude_galactic_diffuse</span></code> and <code class="docutils literal notranslate"><span class="pre">SpatialTemplate_2D</span></code> do not have parameters named <code class="docutils literal notranslate"><span class="pre">lat0</span></code> and <code class="docutils literal notranslate"><span class="pre">lon0</span></code>. Their positions are always fixed throughout the fit.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Latitude_galactic_diffuse</span></code> is a function that is constant in Galactic longitude between <code class="docutils literal notranslate"><span class="pre">l_min</span></code> and <code class="docutils literal notranslate"><span class="pre">l_max</span></code> and follows a Gaussian shape in Galactic latitude, with a “width” parameter (<code class="docutils literal notranslate"><span class="pre">sigma_b</span></code>).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Latitude_galactic_diffuse</span><span class="p">()</span>
+<span class="n">diff</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>description: A Gaussian distribution in Galactic latitude around the Galactic plane</li>
+
+<li>formula: $ K \exp{\left( \frac{-b^2}{2 \sigma_b^2} \right)} $</li>
+
+<li>parameters:
+<ul>
+
+<li>K:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: normalization</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>sigma_b:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: Sigma for</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>l_min:
+<ul>
+
+<li>value: 10.0</li>
+
+<li>desc: min Longtitude</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 1.0</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+<li>l_max:
+<ul>
+
+<li>value: 30.0</li>
+
+<li>desc: max Longtitude</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 3.0</li>
+
+<li>free: True</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SpatialTemplate_2D</span></code> is designed to read in a user-provided fits file with an image (in WCS coordinates) using the <code class="docutils literal notranslate"><span class="pre">load_file()</span></code> function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The prodided template should be in units of 1/deg2 and normalized so that its integral is 1. If that is not the case, the normalization parameter <code class="docutils literal notranslate"><span class="pre">K</span></code> may be set accordingly so that the overall function is normalized as
+expected.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">SpatialTemplate_2D</span><span class="p">()</span>
+<span class="n">temp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<ul>
+
+<li>description: User input Spatial Template.  Expected to be normalized to 1/sr</li>
+
+<li>formula: $ hi $</li>
+
+<li>parameters:
+<ul>
+
+<li>K:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: normalization</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: False</li>
+
+</ul>
+
+</li>
+
+<li>hash:
+<ul>
+
+<li>value: 1.0</li>
+
+<li>desc: hash of model map [needed for memoization]</li>
+
+<li>min_value: None</li>
+
+<li>max_value: None</li>
+
+<li>unit: </li>
+
+<li>is_normalization: False</li>
+
+<li>delta: 0.1</li>
+
+<li>free: False</li>
+
+</ul>
+
+</li>
+
+</ul>
+
+</li>
+
+</ul></div>
+</div>
+</div>
+</div>
+<div class="section" id="“Calling”-extended-sources">
+<h2>“Calling” extended sources<a class="headerlink" href="#“Calling”-extended-sources" title="Permalink to this headline">¶</a></h2>
+<p>Extended sources can be called as functions. They take 3 arguments: A list or <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. <strong>If no units are
+provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s deg2).</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">ra_center</span><span class="p">,</span> <span class="n">dec_center</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">value</span>
+
+<span class="n">ra</span> <span class="o">=</span> <span class="p">[</span><span class="n">ra_center</span><span class="p">,</span> <span class="n">ra_center</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="p">[</span><span class="n">dec_center</span><span class="p">,</span> <span class="n">dec_center</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+
+<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span>
+
+<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Whole source:&quot;</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="p">)</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Spatial only:&quot;</span> <span class="p">)</span>
+<span class="n">spatial</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">spatial</span> <span class="p">)</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Spectral only:&quot;</span><span class="p">)</span>
+<span class="n">spectral</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_total_spatial_integral</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span> <span class="o">*</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span> <span class="n">spectral</span> <span class="p">)</span>
+
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span> <span class="s2">&quot;Spatial transposed times spectral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spatial</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spectral</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Whole source:
+[[1.16105524e+04 1.13462640e+02 1.10879915e+00]
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (cm2 deg2 keV s)
+
+Spatial only:
+[11610.55239595     0.        ] 1 / deg2
+
+Spectral only:
+[1.00000000e+00 9.77237221e-03 9.54992586e-05] 1 / (cm2 keV s)
+
+Spatial transposed times spectral
+[[1.16105524e+04 1.13462640e+02 1.10879915e+00]
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (cm2 deg2 keV s)
+</pre></div></div>
+</div>
+</div>
+<div class="section" id="Caveats-and-gotchas">
+<h2>Caveats and gotchas<a class="headerlink" href="#Caveats-and-gotchas" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="Large-extended-sources">
+<h3>Large extended sources<a class="headerlink" href="#Large-extended-sources" title="Permalink to this headline">¶</a></h3>
+<p>The Gaussian shapes provided here (<code class="docutils literal notranslate"><span class="pre">Gaussian_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Asymm_Gaussian_on_sphere</span></code>) are only valid as long as their width (<code class="docutils literal notranslate"><span class="pre">sigma</span></code>/<code class="docutils literal notranslate"><span class="pre">a</span></code> parameter) is much smaller than 360˚. For very large extended sources, we would need to implement the <a class="reference external" href="https://en.wikipedia.org/wiki/Kent_distribution">Kent distribution</a>, the equivalent of a Gaussian on the sphere.</p>
+</div>
+<div class="section" id="Small-extended-sources">
+<h3>Small extended sources<a class="headerlink" href="#Small-extended-sources" title="Permalink to this headline">¶</a></h3>
+<p>Most threeML plugins supporting imaging instruments perform a convolution of the <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> source(s) with the instrument’s point spread function (PSF). These convolutions are typically performed on a grid, and features in the source morphology smaller than the grid size are lost. One should take care that the extent of the source(s) in the model is constrained to be no smaller than the grid spacing used by the plugin.</p>
+</div>
+<div class="section" id="Source-support">
+<h3>Source support<a class="headerlink" href="#Source-support" title="Permalink to this headline">¶</a></h3>
+<p>Each 2D function class has a member function called <code class="docutils literal notranslate"><span class="pre">get_boundaries</span></code>, which returns the (minimal) range in RA and Dec over which the convolution with the PSF has to be computed (see example below). The exact calculation depends on the function but the range typically depends on the centroid and the <strong>maximum value of the width/radius parameter</strong>. That means that even if the radius or gaussian width parameter is fixed during the fit, it is helpful to set a maximum that is close to the fixed
+value. This reduces computation time during the likelihood fit.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span> <span class="o">=</span> <span class="mi">80</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">bounds</span> <span class="o">=</span>  <span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span> <span class="p">)</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;RA range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Dec range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+RA range: (75.62145488597581, 84.37854511402419)
+Dec range: (16.0, 24.0)
+</pre></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="Energy-Dependent-Morphology">
+<h2>Energy-Dependent Morphology<a class="headerlink" href="#Energy-Dependent-Morphology" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">astromodels</span></code> functions support energy-dependent morphology in two different ways.</p>
+<ol class="arabic simple">
+<li><p>Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/deg2. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example <code class="docutils literal notranslate"><span class="pre">`Continuous_injection_diffusion</span></code> &lt;<a class="reference external" href="https:link">https:link</a>&gt;`__.</p></li>
+<li><p>Extended sources can be instanced with just a 3D function and no energy spectrum. In that case, the 3D function is interpreted as the double-differential flux dN/dE/dOmega.</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="Multi_component_sources.html" class="btn btn-neutral float-right" title="Multi-component sources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Point_source_tutorial.html" class="btn btn-neutral float-left" title="Point sources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
