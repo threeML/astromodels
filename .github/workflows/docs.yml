@@ -86,6 +86,28 @@ jobs:
           name: notebooks-for-${{ github.sha }}
           path: docs/notebooks
 
+      - name: Build the API doc
+        shell: bash -l {0}
+        run: |
+
+          pip install sphinx nbsphinx sphinx_rtd_theme sphinx-gallery
+
+          sphinx-apidoc -f -o ../docs/api/ ../astromodels
+        
+      - name: Build and Commit
+        uses: sphinx-notes/pages@master
+        with:
+          documentation_path: docs
+        
+      - name: Push changes
+        if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+
+
+          
       - name: Sleep for 5 min
         uses: juliangruber/sleep-action@v1
         with:
