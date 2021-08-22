@@ -93,6 +93,8 @@ jobs:
         shell: bash -l {0}
         run: |
 
+          brew install sphinx-doc
+          
           pip install -U sphinx nbsphinx sphinx_rtd_theme sphinx-gallery
 
           sphinx-apidoc -f -o ../docs/api/ ../astromodels
