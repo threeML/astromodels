@@ -199,25 +199,25 @@
 <span class="kn">from</span> <span class="nn">astromodels.core.tree</span> <span class="kn">import</span> <span class="n">Node</span>
 
 
-<div class="viewcode-block" id="WrongCoordinatePair"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.WrongCoordinatePair">[docs]</a><span class="k">class</span> <span class="nc">WrongCoordinatePair</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<div class="viewcode-block" id="WrongCoordinatePair"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.WrongCoordinatePair">[docs]</a><span class="k">class</span> <span class="nc">WrongCoordinatePair</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="IllegalCoordinateValue"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.IllegalCoordinateValue">[docs]</a><span class="k">class</span> <span class="nc">IllegalCoordinateValue</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<div class="viewcode-block" id="IllegalCoordinateValue"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.IllegalCoordinateValue">[docs]</a><span class="k">class</span> <span class="nc">IllegalCoordinateValue</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="WrongCoordinateSystem"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.WrongCoordinateSystem">[docs]</a><span class="k">class</span> <span class="nc">WrongCoordinateSystem</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+<div class="viewcode-block" id="WrongCoordinateSystem"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.WrongCoordinateSystem">[docs]</a><span class="k">class</span> <span class="nc">WrongCoordinateSystem</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="SkyDirection"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection">[docs]</a><span class="k">class</span> <span class="nc">SkyDirection</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection">[docs]</a><span class="k">class</span> <span class="nc">SkyDirection</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is essentially a wrapper around astropy.coordinates.SkyCoord with a possibility for</span>
 <span class="sd">    being serialized and deserialized with YAML.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SkyDirection.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="s1">&#39;J2000&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="s1">&#39;J2000&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param ra: Right Ascension in degrees</span>
@@ -305,7 +305,7 @@
 
         <span class="k">return</span> <span class="n">parameter</span>
 
-<div class="viewcode-block" id="SkyDirection.get_ra"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_ra">[docs]</a>    <span class="k">def</span> <span class="nf">get_ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.get_ra"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_ra">[docs]</a>    <span class="k">def</span> <span class="nf">get_ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get R.A. corresponding to the current position (ICRS, J2000)</span>
 
@@ -322,7 +322,7 @@
 
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="SkyDirection.get_dec"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_dec">[docs]</a>    <span class="k">def</span> <span class="nf">get_dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.get_dec"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_dec">[docs]</a>    <span class="k">def</span> <span class="nf">get_dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Dec. corresponding to the current position (ICRS, J2000)</span>
 
@@ -339,7 +339,7 @@
 
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="SkyDirection.get_l"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_l">[docs]</a>    <span class="k">def</span> <span class="nf">get_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.get_l"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_l">[docs]</a>    <span class="k">def</span> <span class="nf">get_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Galactic Longitude (l) corresponding to the current position</span>
 
@@ -356,7 +356,7 @@
 
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;galactic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span></div>
 
-<div class="viewcode-block" id="SkyDirection.get_b"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.get_b"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Galactic latitude (b) corresponding to the current position</span>
 
@@ -428,7 +428,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span>
 
-<div class="viewcode-block" id="SkyDirection.to_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
@@ -446,7 +446,7 @@
 
         <span class="k">return</span> <span class="n">data</span></div>
 
-<div class="viewcode-block" id="SkyDirection.fix"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.fix">[docs]</a>    <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.fix"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.fix">[docs]</a>    <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
 <span class="sd">        has been instanced)</span>
@@ -463,7 +463,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="SkyDirection.free"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.free">[docs]</a>    <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SkyDirection.free"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.free">[docs]</a>    <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Free the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
 <span class="sd">        has been instanced)</span>
@@ -480,7 +480,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="SkyDirection.from_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="SkyDirection.from_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>

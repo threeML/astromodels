@@ -522,12 +522,12 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Parameters</span>
-<span class="n">func_name</span> <span class="o">=</span> <span class="s2">&quot;Powerlaw_flux&quot;</span>
-<span class="n">wide_energy_range</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">x_scale</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span>
-<span class="n">y_scale</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span>
-<span class="n">linear_range</span> <span class="o">=</span> <span class="kc">False</span>
+<span></span># Parameters
+func_name = &quot;Powerlaw_flux&quot;
+wide_energy_range = True
+x_scale = &quot;log&quot;
+y_scale = &quot;log&quot;
+linear_range = False
 
 </pre></div>
 </div>
@@ -539,7 +539,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">func</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>func.display()
 </pre></div>
 </div>
 </div>
@@ -664,15 +664,15 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span></span>fig, ax = plt.subplots()
 
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">blue</span><span class="p">)</span>
+ax.plot(energy_grid, func(energy_grid), color=blue)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;photon flux&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">y_scale</span><span class="p">)</span>
+ax.set_xlabel(&quot;energy (keV)&quot;)
+ax.set_ylabel(&quot;photon flux&quot;)
+ax.set_xscale(x_scale)
+ax.set_yscale(y_scale)
 
 </pre></div>
 </div>
@@ -693,15 +693,15 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span></span>fig, ax = plt.subplots()
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">,</span> <span class="n">energy_grid</span> <span class="o">*</span> <span class="n">func</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">),</span> <span class="n">red</span><span class="p">)</span>
+ax.plot(energy_grid, energy_grid * func(energy_grid), red)
 
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;energy flux (F$_{\nu}$)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">y_scale</span><span class="p">)</span>
+ax.set_xlabel(&quot;energy (keV)&quot;)
+ax.set_ylabel(r&quot;energy flux (F$_{\nu}$)&quot;)
+ax.set_xscale(x_scale)
+ax.set_yscale(y_scale)
 
 
 </pre></div>
@@ -723,15 +723,15 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span></span>fig, ax = plt.subplots()
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">,</span> <span class="n">energy_grid</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">func</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">green</span><span class="p">)</span>
+ax.plot(energy_grid, energy_grid**2 * func(energy_grid), color=green)
 
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\nu$F$_{\nu}$&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">y_scale</span><span class="p">)</span>
+ax.set_xlabel(&quot;energy (keV)&quot;)
+ax.set_ylabel(r&quot;$\nu$F$_{\nu}$&quot;)
+ax.set_xscale(x_scale)
+ax.set_yscale(y_scale)
 
 </pre></div>
 </div>

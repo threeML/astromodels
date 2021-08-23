@@ -194,7 +194,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="angular_distance_fast"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance_fast">[docs]</a><span class="k">def</span> <span class="nf">angular_distance_fast</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
+<div class="viewcode-block" id="angular_distance_fast"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance_fast">[docs]</a><span class="k">def</span> <span class="nf">angular_distance_fast</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute angular distance using the Haversine formula. Use this one when you know you will never ask for points at</span>
 <span class="sd">    their antipodes. If this is not the case, use the angular_distance function which is slower, but works also for</span>
@@ -219,7 +219,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">c</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="angular_distance"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance">[docs]</a><span class="k">def</span> <span class="nf">angular_distance</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
+<div class="viewcode-block" id="angular_distance"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance">[docs]</a><span class="k">def</span> <span class="nf">angular_distance</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the angular distance between two points, two sets of points, or a set of points and one point.</span>
 
@@ -251,7 +251,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">num1</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">num2</span> <span class="o">**</span> <span class="mi">2</span><span class="p">),</span> <span class="n">denominator</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="spherical_angle"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.angular_distance.spherical_angle">[docs]</a><span class="k">def</span> <span class="nf">spherical_angle</span><span class="p">(</span> <span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span> <span class="p">):</span>
+<div class="viewcode-block" id="spherical_angle"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.spherical_angle">[docs]</a><span class="k">def</span> <span class="nf">spherical_angle</span><span class="p">(</span> <span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span> <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the spherical angle distance between two sets of great circles defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)</span>
 

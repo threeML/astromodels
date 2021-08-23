@@ -479,8 +479,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%capture</span>
-<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span>%%capture
+from astromodels import *
 </pre></div>
 </div>
 </div>
@@ -489,7 +489,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">list_functions</span><span class="p">()</span>
+<span></span>list_functions()
 </pre></div>
 </div>
 </div>
@@ -498,7 +498,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div><table id="table4932648720">
+<div><table id="table4786761296">
 <thead><tr><th>name</th><th>Description</th></tr></thead>
 <tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates)
 see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>
@@ -531,7 +531,7 @@ see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_fun
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Gaussian</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span></span>Gaussian.info()
 </pre></div>
 </div>
 </div>
@@ -632,7 +632,7 @@ see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_fun
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+<span></span>powerlaw_instance = Powerlaw()
 </pre></div>
 </div>
 </div>
@@ -642,7 +642,7 @@ see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_fun
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">(</span><span class="n">K</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mf">2.2</span><span class="p">)</span>
+<span></span>powerlaw_instance = Powerlaw(K=0.01, index=-2.2)
 </pre></div>
 </div>
 </div>
@@ -656,7 +656,7 @@ see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_fun
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>powerlaw_instance.display()
 </pre></div>
 </div>
 </div>
@@ -754,7 +754,7 @@ see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_fun
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="p">)</span>
+<span></span>print(powerlaw_instance)
 </pre></div>
 </div>
 </div>
@@ -808,38 +808,38 @@ see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_fun
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Modify current value</span>
+<span></span># Modify current value
 
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="mf">1.2</span>
+powerlaw_instance.K = 1.2
 
-<span class="c1"># Modify minimum</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">min_value</span> <span class="o">=</span> <span class="mf">0.5</span>
+# Modify minimum
+powerlaw_instance.K.min_value = 0.5
 
-<span class="c1"># Modify maximum</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="mi">15</span>
+# Modify maximum
+powerlaw_instance.K.max_value = 15
 
-<span class="c1"># We can also modify minimum and maximum at the same time</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+# We can also modify minimum and maximum at the same time
+powerlaw_instance.K.bounds = (0.5, 15)
 
-<span class="c1"># Modifying the delta for the parameter</span>
-<span class="c1"># (which can be used by downstream software for fitting, for example)</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="mf">0.25</span>
+# Modifying the delta for the parameter
+# (which can be used by downstream software for fitting, for example)
+powerlaw_instance.K.delta = 0.25
 
-<span class="c1"># Fix the parameter</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+# Fix the parameter
+powerlaw_instance.K.fix = True
 
-<span class="c1"># or equivalently</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">False</span>
+# or equivalently
+powerlaw_instance.K.free = False
 
-<span class="c1"># Free it again</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
+# Free it again
+powerlaw_instance.K.fix = False
 
-<span class="c1"># or equivalently</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
+# or equivalently
+powerlaw_instance.K.free = True
 
-<span class="c1"># We can verify what we just did by printing again the whole function as shown above,</span>
-<span class="c1"># or simply printing the parameter:</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+# We can verify what we just did by printing again the whole function as shown above,
+# or simply printing the parameter:
+powerlaw_instance.K.display()
 </pre></div>
 </div>
 </div>
@@ -859,9 +859,9 @@ Parameter K = 1.2 []
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+<span></span>powerlaw_instance = Powerlaw()
 
-<span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">&quot;my_point_source&quot;</span><span class="p">,</span><span class="n">ra</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">dec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">powerlaw_instance</span><span class="p">)</span>
+point_source = PointSource(&quot;my_point_source&quot;,ra=0,dec=0, spectral_shape=powerlaw_instance)
 </pre></div>
 </div>
 </div>
@@ -871,7 +871,7 @@ Parameter K = 1.2 []
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>powerlaw_instance.display()
 </pre></div>
 </div>
 </div>
@@ -968,7 +968,7 @@ Parameter K = 1.2 []
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">x_unit</span>
+<span></span>powerlaw_instance.x_unit
 </pre></div>
 </div>
 </div>
@@ -985,7 +985,7 @@ $\mathrm{keV}$</div></div>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">y_unit</span>
+<span></span>powerlaw_instance.y_unit
 </pre></div>
 </div>
 </div>
@@ -1002,19 +1002,19 @@ $\mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span></span>import astropy.units as u
 
-<span class="c1"># Express the differential flux at the pivot energy in 1 / (MeV cm2 s)</span>
+# Express the differential flux at the pivot energy in 1 / (MeV cm2 s)
 
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">122.3</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
+powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
 
-<span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
+print(powerlaw_instance.K)
 
-<span class="c1"># Express the differential flux at the pivot energy in 1 / (GeV m2 s)</span>
-<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">122.3</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">GeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
+# Express the differential flux at the pivot energy in 1 / (GeV m2 s)
+powerlaw_instance.K = (122.3 / (u.GeV * u.m * u.m * u.s))
 
 
-<span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
+print(powerlaw_instance.K)
 </pre></div>
 </div>
 </div>
@@ -1036,7 +1036,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">timeit</span> powerlaw_instance.K = 1
+<span></span>%timeit powerlaw_instance.K = 1
 </pre></div>
 </div>
 </div>
@@ -1045,7 +1045,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-23.9 µs ± 6.09 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+17.1 µs ± 492 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1053,7 +1053,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%</span><span class="k">timeit</span> powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
+<span></span>%timeit powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
 </pre></div>
 </div>
 </div>
@@ -1062,7 +1062,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-353 µs ± 22.9 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
+363 µs ± 54 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)
 </pre></div></div>
 </div>
 <p>As you can see using <strong>astropy.units requires about 10x more than using a plain assignment</strong>. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. <strong>Note that this is a feature of astropy.units, not of astromodels.</strong></p>
@@ -1075,11 +1075,11 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">composite</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">()</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">()</span>
+<span></span>composite = Gaussian() + Powerlaw()
 
-<span class="c1"># Instead of the usual .display(), which would print all the many parameters,</span>
-<span class="c1"># let&#39;s print just the description of the new composite functions:</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">composite</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+# Instead of the usual .display(), which would print all the many parameters,
+# let&#39;s print just the description of the new composite functions:
+print(composite.description)
 </pre></div>
 </div>
 </div>
@@ -1097,9 +1097,9 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">crazy_function</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">Sin</span><span class="p">()</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="n">Gaussian</span><span class="p">())</span> <span class="o">/</span> <span class="mf">3.0</span>
+<span></span>crazy_function = 3 * Sin() + Powerlaw()**2 * (5+Gaussian()) / 3.0
 
-<span class="nb">print</span><span class="p">(</span><span class="n">crazy_function</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+print(crazy_function.description)
 </pre></div>
 </div>
 </div>
@@ -1117,12 +1117,12 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">a_powerlaw</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
-<span class="n">a_sin</span> <span class="o">=</span> <span class="n">Sin</span><span class="p">()</span>
+<span></span>a_powerlaw = Powerlaw()
+a_sin = Sin()
 
-<span class="n">another_composite</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a_powerlaw</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">a_powerlaw</span><span class="p">)</span> <span class="o">*</span> <span class="n">a_sin</span>
+another_composite = 2 * a_powerlaw + (3 + a_powerlaw) * a_sin
 
-<span class="nb">print</span><span class="p">(</span><span class="n">another_composite</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+print(another_composite.description)
 </pre></div>
 </div>
 </div>
@@ -1140,9 +1140,9 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">another_composite2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Powerlaw</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">())</span> <span class="o">*</span> <span class="n">Sin</span><span class="p">()</span>
+<span></span>another_composite2 = 2 * Powerlaw() + (3 + Powerlaw()) * Sin()
 
-<span class="nb">print</span><span class="p">(</span><span class="n">another_composite2</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
+print(another_composite2.description)
 </pre></div>
 </div>
 </div>
@@ -1160,8 +1160,8 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">another_composite</span><span class="o">.</span><span class="n">parameters</span><span class="p">))</span> <span class="c1"># 6 parameters</span>
-<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">another_composite2</span><span class="o">.</span><span class="n">parameters</span><span class="p">))</span> <span class="c1"># 9 parameters</span>
+<span></span>print(len(another_composite.parameters)) # 6 parameters
+print(len(another_composite2.parameters)) # 9 parameters
 </pre></div>
 </div>
 </div>

@@ -207,7 +207,7 @@
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Latitude_galactic_diffuse"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse">[docs]</a><span class="k">class</span> <span class="nc">Latitude_galactic_diffuse</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Latitude_galactic_diffuse"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse">[docs]</a><span class="k">class</span> <span class="nc">Latitude_galactic_diffuse</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 
@@ -246,7 +246,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">ICRS</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Latitude_galactic_diffuse.set_frame"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.set_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
+<div class="viewcode-block" id="Latitude_galactic_diffuse.set_frame"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.set_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
@@ -264,7 +264,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">l_min</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">l_max</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
-<div class="viewcode-block" id="Latitude_galactic_diffuse.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">sigma_b</span><span class="p">,</span> <span class="n">l_min</span><span class="p">,</span> <span class="n">l_max</span><span class="p">):</span>
+<div class="viewcode-block" id="Latitude_galactic_diffuse.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">sigma_b</span><span class="p">,</span> <span class="n">l_min</span><span class="p">,</span> <span class="n">l_max</span><span class="p">):</span>
 
         <span class="c1"># We assume x and y are R.A. and Dec</span>
         <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
@@ -274,7 +274,7 @@
 
         <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma_b</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">l_min</span><span class="p">,</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">l_max</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">l_min</span> <span class="o">&gt;</span> <span class="n">l_max</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">l</span> <span class="o">&gt;</span> <span class="n">l_min</span><span class="p">,</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">l_max</span><span class="p">)))</span></div>
 
-<div class="viewcode-block" id="Latitude_galactic_diffuse.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Latitude_galactic_diffuse.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">max_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_b</span><span class="o">.</span><span class="n">max_value</span>
         <span class="n">l_min</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_min</span><span class="o">.</span><span class="n">value</span>
@@ -290,7 +290,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
         
-<div class="viewcode-block" id="Latitude_galactic_diffuse.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="Latitude_galactic_diffuse.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -309,7 +309,7 @@
         <span class="k">return</span> <span class="n">integral</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span> <span class="mf">180.</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span> <span class="n">z</span> <span class="p">)</span></div></div>
         
 
-<div class="viewcode-block" id="Gaussian_on_sphere"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Gaussian_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 
@@ -352,7 +352,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
-<div class="viewcode-block" id="Gaussian_on_sphere.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<div class="viewcode-block" id="Gaussian_on_sphere.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
 
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
 
@@ -362,7 +362,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">s2</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">angsep</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">s2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Gaussian_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Gaussian_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the gaussian at 2 times the max of sigma allowed</span>
 
@@ -393,7 +393,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Gaussian_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="Gaussian_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -407,7 +407,7 @@
         
 
 
-<div class="viewcode-block" id="Asymm_Gaussian_on_sphere"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Asymm_Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Asymm_Gaussian_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Asymm_Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 
@@ -466,7 +466,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span>
 
-<div class="viewcode-block" id="Asymm_Gaussian_on_sphere.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<div class="viewcode-block" id="Asymm_Gaussian_on_sphere.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
 
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
 
@@ -505,7 +505,7 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span></div>
         
-<div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the gaussian at 2 times the max of sigma allowed</span>
 
@@ -534,7 +534,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -547,7 +547,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span> <span class="n">z</span> <span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Disk_on_sphere"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Disk_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Disk_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Disk_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 
@@ -590,7 +590,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
-<div class="viewcode-block" id="Disk_on_sphere.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+<div class="viewcode-block" id="Disk_on_sphere.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
 
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
 
@@ -598,7 +598,7 @@
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">angsep</span> <span class="o">&lt;=</span> <span class="n">radius</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Disk_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Disk_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the disk at 2 times the max of radius allowed</span>
 
@@ -629,7 +629,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Disk_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="Disk_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -642,7 +642,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span> <span class="n">z</span> <span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Ellipse_on_sphere"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Ellipse_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Ellipse_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Ellipse_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 
@@ -708,7 +708,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensionless_unscaled</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">theta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">degree</span>
         
-<div class="viewcode-block" id="Ellipse_on_sphere.calc_focal_pts"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.calc_focal_pts">[docs]</a>    <span class="k">def</span> <span class="nf">calc_focal_pts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<div class="viewcode-block" id="Ellipse_on_sphere.calc_focal_pts"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.calc_focal_pts">[docs]</a>    <span class="k">def</span> <span class="nf">calc_focal_pts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         <span class="c1"># focal distance</span>
         <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">a</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">b</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 
@@ -723,7 +723,7 @@
 
         <span class="k">return</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat1</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">lat2</span></div>
 
-<div class="viewcode-block" id="Ellipse_on_sphere.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
+<div class="viewcode-block" id="Ellipse_on_sphere.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">theta</span><span class="p">):</span>
         
         <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">e</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         
@@ -742,7 +742,7 @@
         
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">angsep</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Ellipse_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Ellipse_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the ellipse at 2 times the max of semimajor axis allowed</span>
 
@@ -773,7 +773,7 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Ellipse_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="Ellipse_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -786,7 +786,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span> <span class="n">z</span> <span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="SpatialTemplate_2D"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D">[docs]</a><span class="k">class</span> <span class="nc">SpatialTemplate_2D</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="SpatialTemplate_2D"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D">[docs]</a><span class="k">class</span> <span class="nc">SpatialTemplate_2D</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 <span class="sd">        </span>
@@ -824,7 +824,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="kc">None</span>
     
     
-<div class="viewcode-block" id="SpatialTemplate_2D.load_file"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.load_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fitsfile</span><span class="p">,</span> <span class="n">ihdu</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="SpatialTemplate_2D.load_file"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.load_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fitsfile</span><span class="p">,</span> <span class="n">ihdu</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         
         <span class="k">if</span> <span class="n">fitsfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             
@@ -861,7 +861,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span></div>
             
 
-<div class="viewcode-block" id="SpatialTemplate_2D.to_dict"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="SpatialTemplate_2D.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
          <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
@@ -872,7 +872,7 @@
          <span class="k">return</span> <span class="n">data</span></div>
         
     
-<div class="viewcode-block" id="SpatialTemplate_2D.set_frame"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.set_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
+<div class="viewcode-block" id="SpatialTemplate_2D.set_frame"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.set_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">            Set a new frame for the coordinates (the default is ICRS J2000)</span>
 <span class="sd">            </span>
@@ -883,7 +883,7 @@
                 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">new_frame</span></div>
     
-<div class="viewcode-block" id="SpatialTemplate_2D.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">):</span>
+<div class="viewcode-block" id="SpatialTemplate_2D.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">):</span>
         
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             
@@ -907,7 +907,7 @@
         
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="n">out</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="SpatialTemplate_2D.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SpatialTemplate_2D.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             
@@ -931,7 +931,7 @@
 
 
 
-<div class="viewcode-block" id="SpatialTemplate_2D.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="SpatialTemplate_2D.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -943,7 +943,7 @@
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">value</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span> <span class="n">z</span> <span class="p">)</span> <span class="p">)</span></div></div>
         
-<div class="viewcode-block" id="Power_law_on_sphere"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Power_law_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>        
+<div class="viewcode-block" id="Power_law_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Power_law_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>        
 
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
@@ -1001,7 +1001,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">maxr</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minr</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
-<div class="viewcode-block" id="Power_law_on_sphere.evaluate"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">maxr</span><span class="p">,</span> <span class="n">minr</span><span class="p">):</span>
+<div class="viewcode-block" id="Power_law_on_sphere.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">maxr</span><span class="p">,</span> <span class="n">minr</span><span class="p">):</span>
 
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
 
@@ -1018,11 +1018,11 @@
 
         <span class="k">return</span> <span class="n">value</span> <span class="o">/</span> <span class="n">norm</span></div>
 
-<div class="viewcode-block" id="Power_law_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Power_law_on_sphere.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxr</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxr</span><span class="o">.</span><span class="n">value</span><span class="p">)),</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxr</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxr</span><span class="o">.</span><span class="n">value</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Power_law_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
+<div class="viewcode-block" id="Power_law_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>  
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>

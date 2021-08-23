@@ -471,8 +471,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%capture</span>
-<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span>%%capture
+from astromodels import *
 </pre></div>
 </div>
 </div>
@@ -481,9 +481,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">test_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;test_source&#39;</span><span class="p">,</span><span class="n">ra</span><span class="o">=</span><span class="mf">123.22</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.56</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw_flux</span><span class="p">())</span>
+<span></span>test_source = PointSource(&#39;test_source&#39;,ra=123.22, dec=-13.56, spectral_shape=Powerlaw_flux())
 
-<span class="n">my_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">test_source</span><span class="p">)</span>
+my_model = Model(test_source)
 </pre></div>
 </div>
 </div>
@@ -493,11 +493,11 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Get and print the differential flux at 1 keV:</span>
+<span></span># Get and print the differential flux at 1 keV:
 
-<span class="n">differential_flux_at_1_keV</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">test_source</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+differential_flux_at_1_keV = my_model.test_source(1.0)
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Differential flux @ 1 keV : </span><span class="si">%.3f</span><span class="s2"> photons / ( cm2 s keV)&quot;</span> <span class="o">%</span> <span class="n">differential_flux_at_1_keV</span><span class="p">)</span>
+print(&quot;Differential flux @ 1 keV : %.3f photons / ( cm2 s keV)&quot; % differential_flux_at_1_keV)
 
 </pre></div>
 </div>
@@ -516,27 +516,27 @@ Differential flux @ 1 keV : 1.010 photons / ( cm2 s keV)
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">from</span> <span class="nn">jupyterthemes</span> <span class="kn">import</span> <span class="n">jtplot</span>
-<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span></span>import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+from jupyterthemes import jtplot
+jtplot.style(context=&quot;talk&quot;, fscale=1, ticks=True, grid=False)
 
-<span class="c1"># Set up the energies</span>
+# Set up the energies
 
-<span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+energies = np.logspace(0,2,100)
 
-<span class="c1"># Get the differential flux</span>
+# Get the differential flux
 
-<span class="n">differential_flux</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">test_source</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+differential_flux = my_model.test_source(energies)
 
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+fig, ax = plt.subplots()
 
-<span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">differential_flux</span><span class="p">)</span>
+ax.loglog(energies, differential_flux)
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Differential flux (ph./cm2/s/keV)&quot;</span><span class="p">)</span>
+ax.set_xlabel(&quot;Energy (keV)&quot;)
+ax.set_ylabel(&quot;Differential flux (ph./cm2/s/keV)&quot;)
 </pre></div>
 </div>
 </div>

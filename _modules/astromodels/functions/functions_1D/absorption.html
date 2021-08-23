@@ -229,21 +229,21 @@
     <span class="n">has_ebltable</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<div class="viewcode-block" id="EBLTableNotAvailable"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLTableNotAvailable">[docs]</a><span class="k">class</span> <span class="nc">EBLTableNotAvailable</span><span class="p">(</span><span class="ne">ImportWarning</span><span class="p">):</span>
+<div class="viewcode-block" id="EBLTableNotAvailable"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.EBLTableNotAvailable">[docs]</a><span class="k">class</span> <span class="nc">EBLTableNotAvailable</span><span class="p">(</span><span class="ne">ImportWarning</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="InvalidUsageForFunction"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a><span class="k">class</span> <span class="nc">InvalidUsageForFunction</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="InvalidUsageForFunction"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a><span class="k">class</span> <span class="nc">InvalidUsageForFunction</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="AbundanceTable"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<div class="viewcode-block" id="AbundanceTable"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">class</span> <span class="nc">AbundanceTable</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">tables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
     <span class="n">_current_table</span><span class="p">:</span> <span class="nb">str</span>
 
-<div class="viewcode-block" id="AbundanceTable.set_table"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>    <span class="k">def</span> <span class="nf">set_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="AbundanceTable.set_table"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>    <span class="k">def</span> <span class="nf">set_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        set the current table from AG89, WILM or ASPL</span>
@@ -325,7 +325,7 @@
 <span class="c1"># PhAbs class</span>
 
 
-<div class="viewcode-block" id="PhAbs"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs">[docs]</a><span class="k">class</span> <span class="nc">PhAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="PhAbs"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs">[docs]</a><span class="k">class</span> <span class="nc">PhAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        Photometric absorption (phabs implementation), f(E) = exp(- NH * sigma(E))</span>
@@ -359,7 +359,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">NH</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="PhAbs.init_xsect"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abund_table</span><span class="o">=</span><span class="s2">&quot;AG89&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="PhAbs.init_xsect"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abund_table</span><span class="o">=</span><span class="s2">&quot;AG89&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the abundance table</span>
 
@@ -390,7 +390,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">phabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
 
         
-<div class="viewcode-block" id="PhAbs.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+<div class="viewcode-block" id="PhAbs.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
@@ -418,7 +418,7 @@
 <span class="c1"># TbAbs class</span>
 
 
-<div class="viewcode-block" id="TbAbs"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs">[docs]</a><span class="k">class</span> <span class="nc">TbAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="TbAbs"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs">[docs]</a><span class="k">class</span> <span class="nc">TbAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        Photometric absorption (Tbabs implementation), f(E) = exp(- NH * sigma(E))</span>
@@ -455,7 +455,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">NH</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="TbAbs.init_xsect"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abund_table</span><span class="o">=</span><span class="s2">&quot;WILM&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="TbAbs.init_xsect"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abund_table</span><span class="o">=</span><span class="s2">&quot;WILM&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the abundance table</span>
 
@@ -483,7 +483,7 @@
     <span class="k">def</span> <span class="nf">abundance_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">tbabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TbAbs.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+<div class="viewcode-block" id="TbAbs.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
@@ -510,7 +510,7 @@
 <span class="c1"># WAbs class</span>
 
 
-<div class="viewcode-block" id="WAbs"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs">[docs]</a><span class="k">class</span> <span class="nc">WAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="WAbs"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs">[docs]</a><span class="k">class</span> <span class="nc">WAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E))</span>
@@ -544,7 +544,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">NH</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="WAbs.init_xsect"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="WAbs.init_xsect"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the abundance table</span>
 
@@ -561,7 +561,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">wabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="WAbs.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+<div class="viewcode-block" id="WAbs.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
@@ -589,7 +589,7 @@
 
 <span class="k">if</span> <span class="n">has_ebltable</span><span class="p">:</span>
 
-<div class="viewcode-block" id="EBLattenuation"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLattenuation">[docs]</a>    <span class="k">class</span> <span class="nc">EBLattenuation</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">EBLattenuation</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 <span class="sd">            Attenuation factor for absorption in the extragalactic background light (EBL) ,</span>
@@ -619,10 +619,10 @@
             <span class="c1"># define EBL model, use dominguez as default</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tau</span> <span class="o">=</span> <span class="n">ebltau</span><span class="o">.</span><span class="n">OptDepth</span><span class="o">.</span><span class="n">readmodel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">ebl_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="EBLattenuation.set_ebl_model"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLattenuation.set_ebl_model">[docs]</a>        <span class="k">def</span> <span class="nf">set_ebl_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelname</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">set_ebl_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelname</span><span class="p">):</span>
 
             <span class="c1"># passing modelname to ebltable, which will check if defined</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tau</span> <span class="o">=</span> <span class="n">ebltau</span><span class="o">.</span><span class="n">OptDepth</span><span class="o">.</span><span class="n">readmodel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">modelname</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tau</span> <span class="o">=</span> <span class="n">ebltau</span><span class="o">.</span><span class="n">OptDepth</span><span class="o">.</span><span class="n">readmodel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">modelname</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
@@ -646,7 +646,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">attenuation</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="EBLattenuation.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLattenuation.evaluate">[docs]</a>        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">redshift</span><span class="p">,</span> <span class="n">attenuation</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">redshift</span><span class="p">,</span> <span class="n">attenuation</span><span class="p">):</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
@@ -666,7 +666,7 @@
                 <span class="n">_attenuation</span> <span class="o">=</span> <span class="n">attenuation</span>
                 
                 
-            <span class="k">return</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tau</span><span class="o">.</span><span class="n">opt_depth</span><span class="p">(</span><span class="n">_redshift</span><span class="p">,</span> <span class="n">eTeV</span><span class="p">),</span> <span class="n">_attenuation</span><span class="p">)</span> <span class="o">*</span> <span class="n">_unit</span></div></div>
+            <span class="k">return</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tau</span><span class="o">.</span><span class="n">opt_depth</span><span class="p">(</span><span class="n">_redshift</span><span class="p">,</span> <span class="n">eTeV</span><span class="p">),</span> <span class="n">_attenuation</span><span class="p">)</span> <span class="o">*</span> <span class="n">_unit</span>
 
 
 

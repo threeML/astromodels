@@ -207,19 +207,19 @@
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ModelIOError"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelIOError">[docs]</a><span class="k">class</span> <span class="nc">ModelIOError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelIOError"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelIOError">[docs]</a><span class="k">class</span> <span class="nc">ModelIOError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ModelYAMLError"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelYAMLError">[docs]</a><span class="k">class</span> <span class="nc">ModelYAMLError</span><span class="p">(</span><span class="n">my_yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelYAMLError"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelYAMLError">[docs]</a><span class="k">class</span> <span class="nc">ModelYAMLError</span><span class="p">(</span><span class="n">my_yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ModelSyntaxError"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelSyntaxError">[docs]</a><span class="k">class</span> <span class="nc">ModelSyntaxError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelSyntaxError"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelSyntaxError">[docs]</a><span class="k">class</span> <span class="nc">ModelSyntaxError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="load_model"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.load_model">[docs]</a><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="load_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.load_model">[docs]</a><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a model from a file.</span>
 
@@ -232,7 +232,7 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="clone_model"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.clone_model">[docs]</a><span class="k">def</span> <span class="nf">clone_model</span><span class="p">(</span><span class="n">model_instance</span><span class="p">):</span>
+<div class="viewcode-block" id="clone_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.clone_model">[docs]</a><span class="k">def</span> <span class="nf">clone_model</span><span class="p">(</span><span class="n">model_instance</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a copy of the given model with all objects cloned. This is equivalent to saving the model to</span>
 <span class="sd">    a file and reload it, but it doesn&#39;t require writing or reading to/from disk. The original model is not touched.</span>
@@ -248,13 +248,13 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="model_unpickler"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.model_unpickler">[docs]</a><span class="k">def</span> <span class="nf">model_unpickler</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<div class="viewcode-block" id="model_unpickler"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.model_unpickler">[docs]</a><span class="k">def</span> <span class="nf">model_unpickler</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">ModelParser</span><span class="p">(</span><span class="n">model_dict</span><span class="o">=</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ModelParser"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelParser">[docs]</a><span class="k">class</span> <span class="nc">ModelParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ModelParser.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser">[docs]</a><span class="k">class</span> <span class="nc">ModelParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">assert</span> <span class="p">(</span><span class="n">model_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span>
             <span class="s2">&quot;You have to provide either a model file or a&quot;</span> <span class="s2">&quot;model dictionary&quot;</span>
@@ -353,7 +353,7 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">this_parser</span><span class="o">.</span><span class="n">extra_setups</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ModelParser.get_model"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelParser.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelParser.get_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Instance the model with all the parsed sources</span>
 
@@ -398,18 +398,18 @@
         <span class="k">return</span> <span class="n">new_model</span></div></div>
 
 
-<div class="viewcode-block" id="IndependentVariableParser"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser">[docs]</a><span class="k">class</span> <span class="nc">IndependentVariableParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="IndependentVariableParser.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+<div class="viewcode-block" id="IndependentVariableParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser">[docs]</a><span class="k">class</span> <span class="nc">IndependentVariableParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="IndependentVariableParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">IndependentVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="IndependentVariableParser.get_variable"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="IndependentVariableParser.get_variable"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span></div></div>
 
 
-<div class="viewcode-block" id="ParameterParser"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ParameterParser">[docs]</a><span class="k">class</span> <span class="nc">ParameterParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ParameterParser.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser">[docs]</a><span class="k">class</span> <span class="nc">ParameterParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -489,7 +489,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParameterParser.get_variable"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterParser.get_variable"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span></div>
 
@@ -499,8 +499,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span></div>
 
 
-<div class="viewcode-block" id="SourceParser"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.SourceParser">[docs]</a><span class="k">class</span> <span class="nc">SourceParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="SourceParser.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.SourceParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
+<div class="viewcode-block" id="SourceParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser">[docs]</a><span class="k">class</span> <span class="nc">SourceParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="SourceParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
 
         <span class="c1"># Get the type of the source</span>
 
@@ -560,7 +560,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span>
 
-<div class="viewcode-block" id="SourceParser.get_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.SourceParser.get_source">[docs]</a>    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SourceParser.get_source"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser.get_source">[docs]</a>    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_source</span></div>
 
@@ -891,8 +891,8 @@
         <span class="k">return</span> <span class="n">this_ext_source</span></div>
 
 
-<div class="viewcode-block" id="ShapeParser"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ShapeParser">[docs]</a><span class="k">class</span> <span class="nc">ShapeParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ShapeParser.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
+<div class="viewcode-block" id="ShapeParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser">[docs]</a><span class="k">class</span> <span class="nc">ShapeParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ShapeParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span> <span class="o">=</span> <span class="n">source_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
@@ -908,7 +908,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span>
 
-<div class="viewcode-block" id="ShapeParser.parse"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
+<div class="viewcode-block" id="ShapeParser.parse"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">parameters_definition</span><span class="p">,</span> <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">):</span>
 

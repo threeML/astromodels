@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>API &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <link rel="stylesheet" href="../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>API</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<p>Here you can find the documentation of all classes and methods:</p>
+</div>
+<div class="section" id="astromodels">
+<h1>astromodels<a class="headerlink" href="#astromodels" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.html">astromodels package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="astromodels.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="astromodels.core.html">astromodels.core package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.cpickle_compatibility_layer">astromodels.core.cpickle_compatibility_layer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.memoization">astromodels.core.memoization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.model">astromodels.core.model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.model_parser">astromodels.core.model_parser module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.my_yaml">astromodels.core.my_yaml module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.node_ctype">astromodels.core.node_ctype module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.parameter">astromodels.core.parameter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.parameter_transformation">astromodels.core.parameter_transformation module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.polarization">astromodels.core.polarization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.serialization">astromodels.core.serialization module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.sky_direction">astromodels.core.sky_direction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.spectral_component">astromodels.core.spectral_component module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.thread_safe_unit_format">astromodels.core.thread_safe_unit_format module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.tree">astromodels.core.tree module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core.units">astromodels.core.units module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html#module-astromodels.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="astromodels.functions.html">astromodels.functions package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions.function">astromodels.functions.function module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions.functions_2D">astromodels.functions.functions_2D module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions.functions_3D">astromodels.functions.functions_3D module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions.numba_functions">astromodels.functions.numba_functions module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions.priors">astromodels.functions.priors module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions.template_model">astromodels.functions.template_model module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html#module-astromodels.functions">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="astromodels.sources.html">astromodels.sources package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html#module-astromodels.sources.extended_source">astromodels.sources.extended_source module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html#module-astromodels.sources.particle_source">astromodels.sources.particle_source module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html#module-astromodels.sources.point_source">astromodels.sources.point_source module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html#module-astromodels.sources.source">astromodels.sources.source module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html#module-astromodels.sources">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="astromodels.utils.html">astromodels.utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.angular_distance">astromodels.utils.angular_distance module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.config_structure">astromodels.utils.config_structure module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.configuration">astromodels.utils.configuration module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.data_files">astromodels.utils.data_files module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.disk_usage">astromodels.utils.disk_usage module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.file_utils">astromodels.utils.file_utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.io">astromodels.utils.io module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.logging">astromodels.utils.logging module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.long_path_formatter">astromodels.utils.long_path_formatter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.pretty_list">astromodels.utils.pretty_list module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.sys_tools">astromodels.utils.sys_tools module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.table">astromodels.utils.table module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.valid_variable">astromodels.utils.valid_variable module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils.vincenty">astromodels.utils.vincenty module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.utils.html#module-astromodels.utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="astromodels.xspec.html">astromodels.xspec package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.xspec.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.xspec.html#astromodels-xspec-factory-module">astromodels.xspec.factory module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.xspec.html#astromodels-xspec-xspec-settings-module">astromodels.xspec.xspec_settings module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.xspec.html#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="astromodels.html#module-astromodels">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

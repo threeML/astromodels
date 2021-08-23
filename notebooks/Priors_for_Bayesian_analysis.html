@@ -471,14 +471,14 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">%%capture</span>
-<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
+<span></span>%%capture
+from astromodels import *
 
-<span class="c1"># Create a point source named &quot;pts1&quot;</span>
-<span class="n">pts1</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;pts1&#39;</span><span class="p">,</span><span class="n">ra</span><span class="o">=</span><span class="mf">125.23</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="mf">17.98</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+# Create a point source named &quot;pts1&quot;
+pts1 = PointSource(&#39;pts1&#39;,ra=125.23, dec=17.98, spectral_shape=Powerlaw())
 
-<span class="c1"># Create the model</span>
-<span class="n">my_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">pts1</span><span class="p">)</span>
+# Create the model
+my_model = Model(pts1)
 </pre></div>
 </div>
 </div>
@@ -488,7 +488,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">Uniform_prior</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span></span>Uniform_prior.info()
 </pre></div>
 </div>
 </div>
@@ -586,12 +586,12 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Set &#39;lower_bound&#39; to 0, &#39;upper bound&#39; to 10, and leave the &#39;value&#39; parameter</span>
-<span class="c1"># to the default value</span>
-<span class="n">pts1</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Powerlaw</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Uniform_prior</span><span class="p">(</span><span class="n">lower_bound</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">upper_bound</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span></span># Set &#39;lower_bound&#39; to 0, &#39;upper bound&#39; to 10, and leave the &#39;value&#39; parameter
+# to the default value
+pts1.spectrum.main.Powerlaw.K.prior = Uniform_prior(lower_bound = 0, upper_bound=10)
 
-<span class="c1"># Display it</span>
-<span class="n">pts1</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Powerlaw</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+# Display it
+pts1.spectrum.main.Powerlaw.K.display()
 
 </pre></div>
 </div>
@@ -610,9 +610,9 @@ Parameter K = 1.0 [1 / (cm2 keV s)]
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 
-<span></span><span class="n">pts1</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Powerlaw</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">(</span><span class="n">mu</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span></span>pts1.spectrum.main.Powerlaw.index.prior = Gaussian(mu=-2, sigma=1)
 
-<span class="n">pts1</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Powerlaw</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+pts1.spectrum.main.Powerlaw.index.display()
 </pre></div>
 </div>
 </div>
@@ -628,26 +628,26 @@ Parameter index = -2.01 []
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Let&#39;s get 500 points uniformly distributed between -20 and 20</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">from</span> <span class="nn">jupyterthemes</span> <span class="kn">import</span> <span class="n">jtplot</span>
-<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span></span># Let&#39;s get 500 points uniformly distributed between -20 and 20
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+from jupyterthemes import jtplot
+jtplot.style(context=&quot;talk&quot;, fscale=1, ticks=True, grid=False)
 
 
 
 
 
-<span class="n">random_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+random_points = np.random.uniform(-10,20,100)
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+fig, ax = plt.subplots()
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">random_points</span><span class="p">,</span><span class="n">pts1</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Powerlaw</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">prior</span><span class="p">(</span><span class="n">random_points</span><span class="p">),</span> <span class="s1">&#39;.&#39;</span> <span class="p">)</span>
+ax.plot(random_points,pts1.spectrum.main.Powerlaw.K.prior(random_points), &#39;.&#39; )
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">1.2</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;value of K&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Prior&quot;</span><span class="p">)</span>
+ax.set_ylim([-0.1,1.2])
+ax.set_xlabel(&quot;value of K&quot;)
+ax.set_ylabel(&quot;Prior&quot;)
 </pre></div>
 </div>
 </div>
@@ -672,15 +672,15 @@ Text(0, 0.5, &#39;Prior&#39;)
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">random_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span></span>random_points = np.random.uniform(-4,0,100)
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+fig, ax = plt.subplots()
 
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">random_points</span><span class="p">,</span><span class="n">pts1</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">Powerlaw</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">prior</span><span class="p">(</span><span class="n">random_points</span><span class="p">),</span> <span class="s1">&#39;r.&#39;</span> <span class="p">)</span>
+ax.plot(random_points,pts1.spectrum.main.Powerlaw.index.prior(random_points), &#39;r.&#39; )
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.6</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;value of K&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Prior&quot;</span><span class="p">)</span>
+ax.set_ylim([-0.1,0.6])
+ax.set_xlabel(&quot;value of K&quot;)
+ax.set_ylabel(&quot;Prior&quot;)
 </pre></div>
 </div>
 </div>

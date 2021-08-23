@@ -224,7 +224,7 @@
 <span class="n">erg2keV</span> <span class="o">=</span> <span class="mf">6.24151e8</span>
 
 
-<div class="viewcode-block" id="Powerlaw"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Powerlaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -275,7 +275,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Powerlaw.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="Powerlaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -297,7 +297,7 @@
 <span class="c1"># noinspection PyPep8Naming</span>
 
 
-<div class="viewcode-block" id="Powerlaw_flux"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_flux">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw_flux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Powerlaw_flux"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_flux">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw_flux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -353,7 +353,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Powerlaw_flux.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_flux.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="Powerlaw_flux.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_flux.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -377,7 +377,7 @@
         <span class="k">return</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">*</span> <span class="n">yunit_</span></div></div>
 
 
-<div class="viewcode-block" id="Powerlaw_Eflux"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_Eflux">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw_Eflux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Powerlaw_Eflux"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_Eflux">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw_Eflux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        A  power-law where the normalization is the energy flux defined between a and b</span>
@@ -432,7 +432,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">*</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Powerlaw_Eflux.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_Eflux.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="Powerlaw_Eflux.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_Eflux.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -459,7 +459,7 @@
         <span class="k">return</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">out</span> <span class="o">*</span> <span class="n">yunit_</span></div></div>
 
 
-<div class="viewcode-block" id="Cutoff_powerlaw"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Cutoff_powerlaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -515,7 +515,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
     <span class="c1"># noinspectionq PyPep8Naming</span>
-<div class="viewcode-block" id="Cutoff_powerlaw.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">):</span>
+<div class="viewcode-block" id="Cutoff_powerlaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -535,7 +535,7 @@
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="Cutoff_powerlaw_Ep"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw_Ep">[docs]</a><span class="k">class</span> <span class="nc">Cutoff_powerlaw_Ep</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Cutoff_powerlaw_Ep"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw_Ep">[docs]</a><span class="k">class</span> <span class="nc">Cutoff_powerlaw_Ep</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -592,7 +592,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
     <span class="c1"># noinspectionq PyPep8Naming</span>
-<div class="viewcode-block" id="Cutoff_powerlaw_Ep.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw_Ep.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
+<div class="viewcode-block" id="Cutoff_powerlaw_Ep.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw_Ep.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xp</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -614,7 +614,7 @@
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="Inverse_cutoff_powerlaw"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Inverse_cutoff_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Inverse_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Inverse_cutoff_powerlaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Inverse_cutoff_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Inverse_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</span>
@@ -656,7 +656,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
     <span class="c1"># noinspectionq PyPep8Naming</span>
-<div class="viewcode-block" id="Inverse_cutoff_powerlaw.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Inverse_cutoff_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="Inverse_cutoff_powerlaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Inverse_cutoff_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -676,7 +676,7 @@
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="Super_cutoff_powerlaw"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Super_cutoff_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Super_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Super_cutoff_powerlaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Super_cutoff_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Super_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -736,7 +736,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Super_cutoff_powerlaw.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Super_cutoff_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+<div class="viewcode-block" id="Super_cutoff_powerlaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Super_cutoff_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span>
@@ -757,7 +757,7 @@
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="SmoothlyBrokenPowerLaw"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.SmoothlyBrokenPowerLaw">[docs]</a><span class="k">class</span> <span class="nc">SmoothlyBrokenPowerLaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="SmoothlyBrokenPowerLaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.SmoothlyBrokenPowerLaw">[docs]</a><span class="k">class</span> <span class="nc">SmoothlyBrokenPowerLaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -826,7 +826,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">break_scale</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="SmoothlyBrokenPowerLaw.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.SmoothlyBrokenPowerLaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">break_energy</span><span class="p">,</span> <span class="n">break_scale</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">pivot</span><span class="p">):</span>
+<div class="viewcode-block" id="SmoothlyBrokenPowerLaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.SmoothlyBrokenPowerLaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">break_energy</span><span class="p">,</span> <span class="n">break_scale</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">pivot</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
@@ -858,7 +858,7 @@
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="Broken_powerlaw"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Broken_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Broken_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Broken_powerlaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Broken_powerlaw">[docs]</a><span class="k">class</span> <span class="nc">Broken_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -916,7 +916,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Broken_powerlaw.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Broken_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+<div class="viewcode-block" id="Broken_powerlaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Broken_powerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
         <span class="c1"># The K * 0 is to keep the units right. If the input has unit, this will make a result</span>
         <span class="c1"># array with the same units as K. If the input has no units, this will have no</span>
         <span class="c1"># effect whatsoever</span>
@@ -940,7 +940,7 @@
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="Band"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band">[docs]</a><span class="k">class</span> <span class="nc">Band</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Band"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band">[docs]</a><span class="k">class</span> <span class="nc">Band</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -996,7 +996,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="Band.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+<div class="viewcode-block" id="Band.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
         <span class="n">E0</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="n">beta</span><span class="p">:</span>
@@ -1019,7 +1019,7 @@
         <span class="k">return</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">band_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">alpha_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">E0_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span> <span class="o">*</span> <span class="n">unit_</span></div></div>
 
 
-<div class="viewcode-block" id="Band_grbm"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_grbm">[docs]</a><span class="k">class</span> <span class="nc">Band_grbm</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Band_grbm"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band_grbm">[docs]</a><span class="k">class</span> <span class="nc">Band_grbm</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -1075,7 +1075,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="Band_grbm.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_grbm.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+<div class="viewcode-block" id="Band_grbm.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band_grbm.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="n">beta</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">&quot;Alpha cannot be less than beta&quot;</span><span class="p">)</span>
@@ -1101,7 +1101,7 @@
         <span class="k">return</span> <span class="n">out</span></div></div>
 
 
-<div class="viewcode-block" id="Band_Calderone"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone">[docs]</a><span class="k">class</span> <span class="nc">Band_Calderone</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Band_Calderone"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone">[docs]</a><span class="k">class</span> <span class="nc">Band_Calderone</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -1182,7 +1182,7 @@
         <span class="c1"># opt is just a flag, and has no units</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">opt</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
-<div class="viewcode-block" id="Band_Calderone.ggrb_int_cpl"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone.ggrb_int_cpl">[docs]</a>    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Band_Calderone.ggrb_int_cpl"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone.ggrb_int_cpl">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">ggrb_int_cpl</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Ec</span><span class="p">,</span> <span class="n">Emin</span><span class="p">,</span> <span class="n">Emax</span><span class="p">):</span>
 
         <span class="c1"># Gammaincc does not support quantities</span>
@@ -1191,7 +1191,7 @@
 
         <span class="k">return</span> <span class="o">-</span><span class="n">Ec</span> <span class="o">*</span> <span class="n">Ec</span> <span class="o">*</span> <span class="p">(</span><span class="n">i2</span> <span class="o">-</span> <span class="n">i1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Band_Calderone.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
+<div class="viewcode-block" id="Band_Calderone.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
 
         <span class="k">assert</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Opt must be either 0 or 1&quot;</span>
 

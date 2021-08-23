@@ -204,21 +204,21 @@
 <span class="kn">from</span> <span class="nn">.cpickle_compatibility_layer</span> <span class="kn">import</span> <span class="n">cPickle</span>
 
 
-<div class="viewcode-block" id="DuplicatedNode"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.DuplicatedNode">[docs]</a><span class="k">class</span> <span class="nc">DuplicatedNode</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="DuplicatedNode"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.DuplicatedNode">[docs]</a><span class="k">class</span> <span class="nc">DuplicatedNode</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ProtectedAttribute"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.ProtectedAttribute">[docs]</a><span class="k">class</span> <span class="nc">ProtectedAttribute</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<div class="viewcode-block" id="ProtectedAttribute"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.ProtectedAttribute">[docs]</a><span class="k">class</span> <span class="nc">ProtectedAttribute</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="NonExistingAttribute"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.NonExistingAttribute">[docs]</a><span class="k">class</span> <span class="nc">NonExistingAttribute</span><span class="p">(</span><span class="ne">RuntimeWarning</span><span class="p">):</span>
+<div class="viewcode-block" id="NonExistingAttribute"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.NonExistingAttribute">[docs]</a><span class="k">class</span> <span class="nc">NonExistingAttribute</span><span class="p">(</span><span class="ne">RuntimeWarning</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 <span class="c1"># This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)</span>
 <span class="c1"># during unpickling</span>
-<div class="viewcode-block" id="NewNodeUnpickler"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.NewNodeUnpickler">[docs]</a><span class="k">class</span> <span class="nc">NewNodeUnpickler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="NewNodeUnpickler"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.NewNodeUnpickler">[docs]</a><span class="k">class</span> <span class="nc">NewNodeUnpickler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
 
@@ -227,11 +227,11 @@
         <span class="k">return</span> <span class="n">instance</span></div>
 
 
-<div class="viewcode-block" id="Node"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.Node">[docs]</a><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="n">_Node</span><span class="p">):</span>
+<div class="viewcode-block" id="Node"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node">[docs]</a><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="n">_Node</span><span class="p">):</span>
 
     <span class="c1"># This apparently dumb constructor is needed otherwise pickle will fail</span>
 
-<div class="viewcode-block" id="Node.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.Node.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="Node.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 
         <span class="k">assert</span> <span class="n">is_valid_variable_name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;Illegal characters in name </span><span class="si">%s</span><span class="s2">. You can only use letters and numbers, &quot;</span> \
                                              <span class="s2">&quot;and _&quot;</span> <span class="o">%</span> <span class="n">name</span>
@@ -286,7 +286,7 @@
 
         <span class="k">return</span> <span class="n">l</span>
 
-<div class="viewcode-block" id="Node.to_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.Node.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Node.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
@@ -309,7 +309,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Node._repr_html_"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.Node._repr_html_">[docs]</a>    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Node._repr_html_"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node._repr_html_">[docs]</a>    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        HTML representation for the IPython notebook</span>
 
@@ -318,7 +318,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Node.display"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.Node.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Node.display"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Display information about the point source.</span>
 
@@ -330,9 +330,9 @@
         <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="OldNode"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode">[docs]</a><span class="k">class</span> <span class="nc">OldNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode">[docs]</a><span class="k">class</span> <span class="nc">OldNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<div class="viewcode-block" id="OldNode.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_children</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
@@ -405,7 +405,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
 
-<div class="viewcode-block" id="OldNode._get_child_from_path"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode._get_child_from_path">[docs]</a>    <span class="k">def</span> <span class="nf">_get_child_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode._get_child_from_path"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode._get_child_from_path">[docs]</a>    <span class="k">def</span> <span class="nf">_get_child_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a children below this level, starting from a path of the kind &quot;this_level.something.something.name&quot;</span>
 
@@ -451,7 +451,7 @@
 
         <span class="k">return</span> <span class="n">parent_names</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-<div class="viewcode-block" id="OldNode.to_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
@@ -474,7 +474,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="OldNode._repr_html_"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode._repr_html_">[docs]</a>    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode._repr_html_"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode._repr_html_">[docs]</a>    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        HTML representation for the IPython notebook</span>
 
@@ -483,7 +483,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OldNode.display"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode.display"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Display information about the point source.</span>
 
@@ -494,7 +494,7 @@
 
         <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="OldNode._find_instances"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.tree.OldNode._find_instances">[docs]</a>    <span class="k">def</span> <span class="nf">_find_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="OldNode._find_instances"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode._find_instances">[docs]</a>    <span class="k">def</span> <span class="nf">_find_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find all the instances of cls below this node.</span>
 

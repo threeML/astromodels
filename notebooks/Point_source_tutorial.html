@@ -481,8 +481,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="n">simple_source_icrs</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.2</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+<span></span>from astromodels import *
+simple_source_icrs = PointSource(&#39;simple_source&#39;, ra=123.2, dec=-13.2, spectral_shape=Powerlaw())
 </pre></div>
 </div>
 </div>
@@ -501,7 +501,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">simple_source_gal</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mf">234.320573</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">11.365142</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+<span></span>simple_source_gal = PointSource(&#39;simple_source&#39;, l=234.320573, b=11.365142, spectral_shape=Powerlaw())
 </pre></div>
 </div>
 </div>
@@ -515,7 +515,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>simple_source_icrs.display()
 </pre></div>
 </div>
 </div>
@@ -664,7 +664,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="n">simple_source_icrs</span><span class="p">)</span>
+<span></span>print(simple_source_icrs)
 </pre></div>
 </div>
 </div>
@@ -728,15 +728,15 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">l</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_l</span><span class="p">()</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_b</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span></span>simple_source_icrs.position.display()
+l = simple_source_icrs.position.get_l()
+b = simple_source_icrs.position.get_b()
+print(l,b)
 
-<span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">ra</span> <span class="o">=</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_ra</span><span class="p">()</span>
-<span class="n">dec</span> <span class="o">=</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_dec</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">)</span>
+simple_source_gal.position.display()
+ra = simple_source_gal.position.get_ra()
+dec = simple_source_gal.position.get_dec()
+print(ra,dec)
 </pre></div>
 </div>
 </div>
@@ -774,10 +774,10 @@ Sky direction (l, b) = (234.32057, 11.36514) (J2000)</div>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">sky_coord_instance</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">sky_coord</span>
-<span class="n">ra</span> <span class="o">=</span> <span class="n">sky_coord_instance</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span>
-<span class="n">dec</span> <span class="o">=</span> <span class="n">sky_coord_instance</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ra</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+<span></span>sky_coord_instance = simple_source_icrs.position.sky_coord
+ra = sky_coord_instance.transform_to(&#39;icrs&#39;).ra
+dec = sky_coord_instance.transform_to(&#39;icrs&#39;).dec
+print(ra.deg)
 </pre></div>
 </div>
 </div>
@@ -798,12 +798,12 @@ Sky direction (l, b) = (234.32057, 11.36514) (J2000)</div>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">parameter_ra</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span>
-<span class="n">parameter_dec</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span>
+<span></span>parameter_ra = simple_source_icrs.position.ra
+parameter_dec = simple_source_icrs.position.dec
 
-<span class="nb">print</span><span class="p">(</span> <span class="nb">type</span><span class="p">(</span><span class="n">parameter_ra</span><span class="p">)</span> <span class="p">)</span>
-<span class="n">parameter_ra</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">parameter_dec</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+print( type(parameter_ra) )
+parameter_ra.display()
+parameter_dec.display()
 </pre></div>
 </div>
 </div>
@@ -835,10 +835,10 @@ Parameter dec = -13.2 [deg]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="k">try</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span></span>try:
+    print( simple_source_icrs.position.l)
+except Exception as e:
+    print(e)
 </pre></div>
 </div>
 </div>
@@ -856,10 +856,10 @@ Parameter dec = -13.2 [deg]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span>   <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">1.0</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">1.0</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>simple_source_icrs.position.display()
+simple_source_icrs.position.ra =   simple_source_icrs.position.ra.value + 1.0
+simple_source_icrs.position.dec = simple_source_icrs.position.dec.value - 1.0
+simple_source_icrs.position.display()
 </pre></div>
 </div>
 </div>
@@ -884,10 +884,10 @@ Sky direction (R.A., Dec.) = (124.20000, -14.20000) (J2000)</div>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (before freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (after freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span></span>print(&quot;Free parameters (before freeing position):&quot;, simple_source_icrs.free_parameters.keys())
+simple_source_icrs.position.ra.free = True
+simple_source_icrs.position.dec.fix = False
+print(&quot;Free parameters (after freeing position):&quot;, simple_source_icrs.free_parameters.keys())
 
 </pre></div>
 </div>
@@ -907,10 +907,10 @@ Free parameters (after freeing position): odict_keys([&#39;simple_source.spectru
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (before freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (after freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span></span>print(&quot;Free parameters (before freeing position):&quot;, simple_source_gal.free_parameters.keys())
+simple_source_gal.position.l.free = True
+simple_source_gal.position.b.fix = False
+print(&quot;Free parameters (after freeing position):&quot;, simple_source_gal.free_parameters.keys())
 
 </pre></div>
 </div>
@@ -930,10 +930,10 @@ Free parameters (after freeing position): odict_keys([&#39;simple_source.spectru
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">5.0</span> <span class="p">)</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">5.0</span> <span class="p">)</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>simple_source_icrs.position.ra.bounds = ( simple_source_icrs.position.ra.value - 5.0, simple_source_icrs.position.ra.value + 5.0 )
+simple_source_icrs.position.dec.bounds = ( simple_source_icrs.position.dec.value - 5.0, simple_source_icrs.position.dec.value + 5.0 )
+simple_source_icrs.position.ra.display()
+simple_source_icrs.position.dec.display()
 
 </pre></div>
 </div>
@@ -961,22 +961,22 @@ Parameter dec = -14.2 [deg]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
-<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span>
+<span></span>from astropy import units as u
+E = [1, 10, 100]*u.keV
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy in keV:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+print(&quot;Energy in keV:&quot;)
+print( &quot;With units:&quot;, simple_source_icrs(E) )
+print( &quot;Without units:&quot;, simple_source_icrs(E.value) )
 
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+print( &quot;With units:&quot;, simple_source_icrs.spectrum.main.shape(E) )
+print( &quot;Without units:&quot;, simple_source_icrs.spectrum.main.shape(E.value) )
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy in TeV:&quot;</span><span class="p">)</span>
-<span class="n">E_TeV</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">TeV</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">TeV</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+print(&quot;&quot;)
+print(&quot;Energy in TeV:&quot;)
+E_TeV = E.to(u.TeV)
+print( &quot;With units:&quot;, simple_source_icrs(E_TeV) )
+print( &quot;With units:&quot;, simple_source_icrs(E_TeV).to(1/u.cm**2/u.TeV/u.s) )
+print( &quot;Without units:&quot;, simple_source_icrs(E_TeV.value) )
 
 
 

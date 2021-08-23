@@ -216,7 +216,7 @@
     <span class="n">has_threeml</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<div class="viewcode-block" id="get_path_of_log_dir"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_dir">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_dir</span><span class="p">():</span>
+<div class="viewcode-block" id="get_path_of_log_dir"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_dir">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_dir</span><span class="p">():</span>
 
     <span class="c1"># we use the 3ML log path to simplify things</span>
     <span class="c1"># a more clever solution could be found</span>
@@ -240,7 +240,7 @@
 <span class="n">_log_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;usr.log&quot;</span><span class="p">,</span> <span class="s2">&quot;dev.log&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="get_path_of_log_file"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<div class="viewcode-block" id="get_path_of_log_file"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns the path of the log files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -259,7 +259,7 @@
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="esc"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.esc">[docs]</a><span class="k">def</span> <span class="nf">esc</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="esc"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.esc">[docs]</a><span class="k">def</span> <span class="nf">esc</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create escaped code from format code&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[&#39;</span> <span class="o">+</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;m&#39;</span></div>
 
@@ -293,19 +293,19 @@
         <span class="n">ESCAPE_CODES</span><span class="p">[</span><span class="n">_prefix_name</span> <span class="o">+</span> <span class="n">_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">esc</span><span class="p">(</span><span class="n">_prefix</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">_code</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="parse_colors"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.parse_colors">[docs]</a><span class="k">def</span> <span class="nf">parse_colors</span><span class="p">(</span><span class="n">sequence</span><span class="p">):</span>
+<div class="viewcode-block" id="parse_colors"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.parse_colors">[docs]</a><span class="k">def</span> <span class="nf">parse_colors</span><span class="p">(</span><span class="n">sequence</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return escape codes from a color sequence.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ESCAPE_CODES</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">sequence</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ColoredRecord"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredRecord">[docs]</a><span class="k">class</span> <span class="nc">ColoredRecord</span><span class="p">:</span>
+<div class="viewcode-block" id="ColoredRecord"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.ColoredRecord">[docs]</a><span class="k">class</span> <span class="nc">ColoredRecord</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wraps a LogRecord, adding named escape codes to the internal dict.</span>
 <span class="sd">    The internal dict is used when formatting the message (by the PercentStyle,</span>
 <span class="sd">    StrFormatStyle, and StringTemplateStyle classes).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ColoredRecord.__init__"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredRecord.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+<div class="viewcode-block" id="ColoredRecord.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.ColoredRecord.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add attributes from the escape_codes dict and the record.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ESCAPE_CODES</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
@@ -315,14 +315,14 @@
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__record</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="ColoredFormatter"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter">[docs]</a><span class="k">class</span> <span class="nc">ColoredFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
+<div class="viewcode-block" id="ColoredFormatter"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter">[docs]</a><span class="k">class</span> <span class="nc">ColoredFormatter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">Formatter</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A formatter that allows colors to be placed in the format string.</span>
 <span class="sd">    Intended to help in creating more readable logging output.</span>
 <span class="sd">    Based on https://github.com/borntyping/python-colorlog</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ColoredFormatter.__init__"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="ColoredFormatter.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">fmt</span><span class="p">,</span>
                  <span class="n">datefmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">style</span><span class="o">=</span><span class="s1">&#39;%&#39;</span><span class="p">,</span>
@@ -356,7 +356,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">secondary_log_colors</span> <span class="o">=</span> <span class="n">secondary_log_colors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="n">reset</span></div>
 
-<div class="viewcode-block" id="ColoredFormatter.format"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+<div class="viewcode-block" id="ColoredFormatter.format"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Format a message from a record object.&quot;&quot;&quot;</span>
         <span class="n">record</span> <span class="o">=</span> <span class="n">ColoredRecord</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
         <span class="n">record</span><span class="o">.</span><span class="n">log_color</span> <span class="o">=</span> <span class="n">escape_codes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_colors</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">levelname</span><span class="p">)</span>
@@ -374,18 +374,18 @@
         <span class="k">return</span> <span class="n">message</span></div></div>
 
 
-<div class="viewcode-block" id="escape_codes"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.escape_codes">[docs]</a><span class="k">def</span> <span class="nf">escape_codes</span><span class="p">(</span><span class="n">log_colors</span><span class="p">,</span> <span class="n">level_name</span><span class="p">):</span>
+<div class="viewcode-block" id="escape_codes"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.escape_codes">[docs]</a><span class="k">def</span> <span class="nf">escape_codes</span><span class="p">(</span><span class="n">log_colors</span><span class="p">,</span> <span class="n">level_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return escape codes from a ``log_colors`` dict.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">parse_colors</span><span class="p">(</span><span class="n">log_colors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">level_name</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="hash_coloured"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.hash_coloured">[docs]</a><span class="k">def</span> <span class="nf">hash_coloured</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="hash_coloured"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.hash_coloured">[docs]</a><span class="k">def</span> <span class="nf">hash_coloured</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return a ANSI coloured text based on its hash&quot;&quot;&quot;</span>
     <span class="n">ansi_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="mi">230</span>
     <span class="k">return</span> <span class="n">colored</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">ansi_code</span><span class="o">=</span><span class="n">ansi_code</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="hash_coloured_escapes"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.hash_coloured_escapes">[docs]</a><span class="k">def</span> <span class="nf">hash_coloured_escapes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="hash_coloured_escapes"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.hash_coloured_escapes">[docs]</a><span class="k">def</span> <span class="nf">hash_coloured_escapes</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Return the ANSI hash colour prefix and suffix for a given text&quot;&quot;&quot;</span>
     <span class="n">ansi_code</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span> <span class="o">%</span> <span class="mi">230</span>
     <span class="n">prefix</span><span class="p">,</span> <span class="n">suffix</span> <span class="o">=</span> <span class="n">colored</span><span class="p">(</span><span class="s1">&#39;SPLIT&#39;</span><span class="p">,</span> <span class="n">ansi_code</span><span class="o">=</span><span class="n">ansi_code</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;SPLIT&#39;</span><span class="p">)</span>
@@ -393,11 +393,11 @@
 
 
 
-<div class="viewcode-block" id="LogFilter"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a><span class="k">class</span> <span class="nc">LogFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="LogFilter.__init__"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+<div class="viewcode-block" id="LogFilter"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a><span class="k">class</span> <span class="nc">LogFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="LogFilter.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__level</span> <span class="o">=</span> <span class="n">level</span></div>
 
-<div class="viewcode-block" id="LogFilter.filter"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logRecord</span><span class="p">):</span>
+<div class="viewcode-block" id="LogFilter.filter"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logRecord</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">logRecord</span><span class="o">.</span><span class="n">levelno</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__level</span></div></div>
 
 
@@ -454,7 +454,7 @@
 <span class="n">warning_filter</span> <span class="o">=</span> <span class="n">LogFilter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="silence_warnings"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a><span class="k">def</span> <span class="nf">silence_warnings</span><span class="p">():</span>
+<div class="viewcode-block" id="silence_warnings"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a><span class="k">def</span> <span class="nf">silence_warnings</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    supress warning messages in console and file usr logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -463,7 +463,7 @@
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="activate_warnings"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a><span class="k">def</span> <span class="nf">activate_warnings</span><span class="p">():</span>
+<div class="viewcode-block" id="activate_warnings"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a><span class="k">def</span> <span class="nf">activate_warnings</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    supress warning messages in console and file usr logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -472,12 +472,12 @@
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">removeFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="update_logging_level"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.update_logging_level">[docs]</a><span class="k">def</span> <span class="nf">update_logging_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+<div class="viewcode-block" id="update_logging_level"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.update_logging_level">[docs]</a><span class="k">def</span> <span class="nf">update_logging_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
 
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="setup_logger"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.setup_logger">[docs]</a><span class="k">def</span> <span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="setup_logger"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.setup_logger">[docs]</a><span class="k">def</span> <span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
     <span class="c1"># A logger with name name will be created</span>
     <span class="c1"># and then add it to the print stream</span>

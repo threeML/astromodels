@@ -488,9 +488,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="n">disk_source</span> <span class="o">=</span> <span class="n">ExtendedSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">(),</span> <span class="n">spatial_shape</span> <span class="o">=</span> <span class="n">Disk_on_sphere</span><span class="p">()</span> <span class="p">)</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>from astromodels import *
+disk_source = ExtendedSource(&#39;simple_source&#39;, spectral_shape=Powerlaw(), spatial_shape = Disk_on_sphere() )
+disk_source.display()
 </pre></div>
 </div>
 </div>
@@ -666,9 +666,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">)</span> <span class="p">)</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>print(&quot;Name&quot;, disk_source.spatial_shape.name)
+print(&quot;Class&quot;, type(disk_source.spatial_shape) )
+disk_source.spatial_shape.display()
 </pre></div>
 </div>
 </div>
@@ -775,13 +775,13 @@ Class &lt;class &#39;astromodels.functions.functions_2D.Disk_on_sphere&#39;&gt;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">)</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>import astropy.units as u
+print( disk_source.spatial_shape.parameters.keys() )
+print( disk_source.parameters.keys() )
+disk_source.spatial_shape.radius.display()
+disk_source.spatial_shape.radius = 0.3 * u.deg
+disk_source.spatial_shape.radius.bounds = (0.1, 1.0)*u.deg
+disk_source.spatial_shape.radius.display()
 
 </pre></div>
 </div>
@@ -818,7 +818,7 @@ Parameter radius = 0.3 [deg]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="nb">print</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">functions</span><span class="o">.</span><span class="n">function</span><span class="o">.</span><span class="n">Function2D</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()])</span>
+<span></span>print([c.__name__ for c in functions.function.Function2D.__subclasses__()])
 </pre></div>
 </div>
 </div>
@@ -847,8 +847,8 @@ parameters so that source overlaps the region of interest (ROI) at all times.</s
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">diff</span> <span class="o">=</span> <span class="n">Latitude_galactic_diffuse</span><span class="p">()</span>
-<span class="n">diff</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>diff = Latitude_galactic_diffuse()
+diff.display()
 </pre></div>
 </div>
 </div>
@@ -970,8 +970,8 @@ expected.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">SpatialTemplate_2D</span><span class="p">()</span>
-<span class="n">temp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+<span></span>temp = SpatialTemplate_2D()
+temp.display()
 </pre></div>
 </div>
 </div>
@@ -1051,30 +1051,30 @@ provided, energies are assumed to be in keV, coordinates in degrees, and fluxes 
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">ra_center</span><span class="p">,</span> <span class="n">dec_center</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">value</span>
+<span></span>import numpy as np
+ra_center, dec_center = disk_source.spatial_shape.lon0.value, disk_source.spatial_shape.lat0.value
 
-<span class="n">ra</span> <span class="o">=</span> <span class="p">[</span><span class="n">ra_center</span><span class="p">,</span> <span class="n">ra_center</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">dec</span> <span class="o">=</span> <span class="p">[</span><span class="n">dec_center</span><span class="p">,</span> <span class="n">dec_center</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+ra = [ra_center, ra_center+2]*u.deg
+dec = [dec_center, dec_center+2]*u.deg
 
-<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span>
+E = [1, 10, 100]*u.keV
 
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Whole source:&quot;</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="p">)</span>
+print( &quot;Whole source:&quot; )
+print( disk_source(ra, dec, E) )
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Spatial only:&quot;</span> <span class="p">)</span>
-<span class="n">spatial</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">spatial</span> <span class="p">)</span>
+print (&quot;&quot;)
+print (&quot;Spatial only:&quot; )
+spatial = disk_source.spatial_shape(ra, dec)
+print( spatial )
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Spectral only:&quot;</span><span class="p">)</span>
-<span class="n">spectral</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_total_spatial_integral</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span> <span class="o">*</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span> <span class="n">spectral</span> <span class="p">)</span>
+print (&quot;&quot;)
+print (&quot;Spectral only:&quot;)
+spectral = disk_source.spatial_shape.get_total_spatial_integral( E ) * disk_source.spectrum.main.shape( E )
+print ( spectral )
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span> <span class="s2">&quot;Spatial transposed times spectral&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spatial</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spectral</span><span class="p">)</span> <span class="p">)</span>
+print (&quot;&quot;)
+print ( &quot;Spatial transposed times spectral&quot;)
+print( np.atleast_2d(spatial).T  * np.atleast_2d(spectral) )
 </pre></div>
 </div>
 </div>
@@ -1118,12 +1118,12 @@ value. This reduces computation time during the likelihood fit.</p>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span> <span class="o">=</span> <span class="mi">80</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">bounds</span> <span class="o">=</span>  <span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span> <span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;RA range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Dec range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span></span>disk_source.spatial_shape.lon0 = 80*u.deg
+disk_source.spatial_shape.lat0 = 20*u.deg
+disk_source.spatial_shape.radius.bounds = (0.1, 2)*u.deg
+bounds =  (disk_source.spatial_shape.get_boundaries() )
+print (&quot;RA range:&quot;, bounds[0])
+print (&quot;Dec range:&quot;, bounds[1])
 </pre></div>
 </div>
 </div>

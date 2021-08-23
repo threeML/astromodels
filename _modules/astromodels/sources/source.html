@@ -202,7 +202,7 @@
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<div class="viewcode-block" id="SourceType"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.source.SourceType">[docs]</a><span class="nd">@unique</span>
+<div class="viewcode-block" id="SourceType"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.source.SourceType">[docs]</a><span class="nd">@unique</span>
 <span class="k">class</span> <span class="nc">SourceType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
     <span class="n">PARTICLE_SOURCE</span> <span class="o">=</span> <span class="s1">&#39;particle source&#39;</span>
     <span class="n">POINT_SOURCE</span> <span class="o">=</span> <span class="s1">&#39;point source&#39;</span>
@@ -212,13 +212,13 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 
-<div class="viewcode-block" id="UnknownSourceType"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.source.UnknownSourceType">[docs]</a><span class="k">class</span> <span class="nc">UnknownSourceType</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="UnknownSourceType"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.source.UnknownSourceType">[docs]</a><span class="k">class</span> <span class="nc">UnknownSourceType</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.source.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Source"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.source.Source">[docs]</a><span class="k">class</span> <span class="nc">Source</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<div class="viewcode-block" id="Source.__init__"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.source.Source.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_of_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">src_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">spatial_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.source.Source.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">list_of_components</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">src_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">spatial_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="c1"># Make the dictionary of components</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
@@ -238,7 +238,7 @@
             <span class="c1"># Store the type string</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_src_type</span> <span class="o">=</span> <span class="n">src_type</span></div>
 
-<div class="viewcode-block" id="Source.has_free_parameters"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.source.Source.has_free_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Source.has_free_parameters"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.source.Source.has_free_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You need to override this&quot;</span><span class="p">)</span></div>
 

@@ -209,15 +209,15 @@
 <span class="n">_AREA</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
 
 
-<div class="viewcode-block" id="UnknownUnit"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units.UnknownUnit">[docs]</a><span class="k">class</span> <span class="nc">UnknownUnit</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="UnknownUnit"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units.UnknownUnit">[docs]</a><span class="k">class</span> <span class="nc">UnknownUnit</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="UnitMismatch"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units.UnitMismatch">[docs]</a><span class="k">class</span> <span class="nc">UnitMismatch</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="UnitMismatch"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units.UnitMismatch">[docs]</a><span class="k">class</span> <span class="nc">UnitMismatch</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="_check_unit"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._check_unit">[docs]</a><span class="k">def</span> <span class="nf">_check_unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="p">):</span>
+<div class="viewcode-block" id="_check_unit"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units._check_unit">[docs]</a><span class="k">def</span> <span class="nf">_check_unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check that the new unit is compatible with the old unit for the quantity described by variable_name</span>
 
@@ -241,11 +241,11 @@
                            <span class="o">%</span> <span class="p">(</span><span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">,</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">))</span></div>
 
 
-<div class="viewcode-block" id="_AstromodelsUnits"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits">[docs]</a><span class="k">class</span> <span class="nc">_AstromodelsUnits</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="_AstromodelsUnits"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units._AstromodelsUnits">[docs]</a><span class="k">class</span> <span class="nc">_AstromodelsUnits</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Store the fundamental units of time, energy, angle and area to be used in astromodels.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="_AstromodelsUnits.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angle_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">area_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="_AstromodelsUnits.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angle_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">area_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">energy_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">energy_unit</span> <span class="o">=</span> <span class="n">_ENERGY</span>
         <span class="k">if</span> <span class="n">time_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">time_unit</span> <span class="o">=</span> <span class="n">_TIME</span>
@@ -274,7 +274,7 @@
 
         <span class="k">return</span> <span class="n">obj</span>
 
-<div class="viewcode-block" id="_AstromodelsUnits.get"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
+<div class="viewcode-block" id="_AstromodelsUnits.get"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unit</span><span class="p">(</span><span class="n">what</span><span class="p">)</span></div>
 
@@ -333,7 +333,7 @@
 
         <span class="k">return</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="n">rich_output</span><span class="p">)</span>
 
-<div class="viewcode-block" id="_AstromodelsUnits.to_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="_AstromodelsUnits.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span></div></div>
 

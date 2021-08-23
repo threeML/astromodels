@@ -195,9 +195,9 @@
 <span class="kn">from</span> <span class="nn">astromodels.core.parameter</span> <span class="kn">import</span> <span class="n">Parameter</span>
 
 
-<div class="viewcode-block" id="Polarization"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Polarization">[docs]</a><span class="k">class</span> <span class="nc">Polarization</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+<div class="viewcode-block" id="Polarization"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.polarization.Polarization">[docs]</a><span class="k">class</span> <span class="nc">Polarization</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
-<div class="viewcode-block" id="Polarization.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Polarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Polarization.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.polarization.Polarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
 
         <span class="k">assert</span> <span class="n">polarization_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;stokes&#39;</span><span class="p">],</span> <span class="s1">&#39;polarization must be linear or stokes&#39;</span>
 
@@ -244,9 +244,9 @@
 
 <span class="c1"># TODO: add transform between polarizations</span>
 
-<div class="viewcode-block" id="LinearPolarization"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.LinearPolarization">[docs]</a><span class="k">class</span> <span class="nc">LinearPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
+<div class="viewcode-block" id="LinearPolarization"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.polarization.LinearPolarization">[docs]</a><span class="k">class</span> <span class="nc">LinearPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
 
-<div class="viewcode-block" id="LinearPolarization.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.LinearPolarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+<div class="viewcode-block" id="LinearPolarization.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.polarization.LinearPolarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Linear parameterization of polarization</span>
 
@@ -263,9 +263,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="StokesPolarization"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.StokesPolarization">[docs]</a><span class="k">class</span> <span class="nc">StokesPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
+<div class="viewcode-block" id="StokesPolarization"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.polarization.StokesPolarization">[docs]</a><span class="k">class</span> <span class="nc">StokesPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
 
-<div class="viewcode-block" id="StokesPolarization.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.StokesPolarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+<div class="viewcode-block" id="StokesPolarization.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.polarization.StokesPolarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Stokes parameterization of polarization</span>
 

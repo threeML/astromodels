@@ -193,8 +193,8 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
-<div class="viewcode-block" id="ParameterTransformation"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation">[docs]</a><span class="k">class</span> <span class="nc">ParameterTransformation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ParameterTransformation.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_positive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterTransformation"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation">[docs]</a><span class="k">class</span> <span class="nc">ParameterTransformation</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterTransformation.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_positive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_positive</span> <span class="o">=</span> <span class="n">is_positive</span></div>
 
@@ -202,22 +202,22 @@
     <span class="k">def</span> <span class="nf">is_positive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_positive</span>
     
-<div class="viewcode-block" id="ParameterTransformation.forward"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_value</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterTransformation.forward"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_value</span><span class="p">):</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You have to implement this&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ParameterTransformation.backward"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_value</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterTransformation.backward"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_value</span><span class="p">):</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You have to implement this&quot;</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="LogarithmicTransformation"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation">[docs]</a><span class="k">class</span> <span class="nc">LogarithmicTransformation</span><span class="p">(</span><span class="n">ParameterTransformation</span><span class="p">):</span>
+<div class="viewcode-block" id="LogarithmicTransformation"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation">[docs]</a><span class="k">class</span> <span class="nc">LogarithmicTransformation</span><span class="p">(</span><span class="n">ParameterTransformation</span><span class="p">):</span>
 
-<div class="viewcode-block" id="LogarithmicTransformation.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LogarithmicTransformation.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">LogarithmicTransformation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">is_positive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
     
-<div class="viewcode-block" id="LogarithmicTransformation.forward"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_value</span><span class="p">):</span>
+<div class="viewcode-block" id="LogarithmicTransformation.forward"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_value</span><span class="p">):</span>
 
         <span class="c1">#  Throw an error if taking the logarithm of a negative number (or nan)</span>
 
@@ -227,7 +227,7 @@
 
         <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="LogarithmicTransformation.backward"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_value</span><span class="p">):</span>
+<div class="viewcode-block" id="LogarithmicTransformation.backward"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.LogarithmicTransformation.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_value</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="mi">10</span><span class="o">**</span><span class="n">internal_value</span></div></div>
 
@@ -235,7 +235,7 @@
 <span class="n">_known_transformations</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;log10&#39;</span><span class="p">:</span> <span class="n">LogarithmicTransformation</span><span class="p">}</span>
 
 
-<div class="viewcode-block" id="get_transformation"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.parameter_transformation.get_transformation">[docs]</a><span class="k">def</span> <span class="nf">get_transformation</span><span class="p">(</span><span class="n">transformation_name</span><span class="p">):</span>
+<div class="viewcode-block" id="get_transformation"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.get_transformation">[docs]</a><span class="k">def</span> <span class="nf">get_transformation</span><span class="p">(</span><span class="n">transformation_name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns an instance of a transformation by name</span>
 
