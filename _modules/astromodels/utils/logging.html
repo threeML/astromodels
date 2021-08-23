@@ -305,11 +305,11 @@
 <span class="sd">    StrFormatStyle, and StringTemplateStyle classes).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
+<div class="viewcode-block" id="ColoredRecord.__init__"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredRecord.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add attributes from the escape_codes dict and the record.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ESCAPE_CODES</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__record</span> <span class="o">=</span> <span class="n">record</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__record</span> <span class="o">=</span> <span class="n">record</span></div>
 
     <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__record</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
@@ -322,7 +322,7 @@
 <span class="sd">    Based on https://github.com/borntyping/python-colorlog</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="ColoredFormatter.__init__"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">fmt</span><span class="p">,</span>
                  <span class="n">datefmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">style</span><span class="o">=</span><span class="s1">&#39;%&#39;</span><span class="p">,</span>
@@ -354,7 +354,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">log_colors</span> <span class="o">=</span> <span class="p">(</span><span class="n">log_colors</span>
                            <span class="k">if</span> <span class="n">log_colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">DEFAULT_LOG_COLORS</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">secondary_log_colors</span> <span class="o">=</span> <span class="n">secondary_log_colors</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="n">reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset</span> <span class="o">=</span> <span class="n">reset</span></div>
 
 <div class="viewcode-block" id="ColoredFormatter.format"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.ColoredFormatter.format">[docs]</a>    <span class="k">def</span> <span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">record</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Format a message from a record object.&quot;&quot;&quot;</span>
@@ -394,8 +394,8 @@
 
 
 <div class="viewcode-block" id="LogFilter"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a><span class="k">class</span> <span class="nc">LogFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__level</span> <span class="o">=</span> <span class="n">level</span>
+<div class="viewcode-block" id="LogFilter.__init__"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__level</span> <span class="o">=</span> <span class="n">level</span></div>
 
 <div class="viewcode-block" id="LogFilter.filter"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logRecord</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">logRecord</span><span class="o">.</span><span class="n">levelno</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__level</span></div></div>

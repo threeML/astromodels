@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>astromodels.utils.file_utils &mdash; Astromodels latest documentation</title>
+  <title>astromodels.utils.data_files &mdash; Astromodels latest documentation</title>
   
 
   
@@ -170,7 +170,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>astromodels.utils.file_utils</li>
+      <li>astromodels.utils.data_files</li>
     
 
     
@@ -188,18 +188,12 @@
   
            <div itemprop="articleBody">
             
-  <h1>Source code for astromodels.utils.file_utils</h1><div class="highlight"><pre>
-<span></span><span class="c1"># This file contains some defaults, like locations of files, which should not</span>
-<span class="c1"># change much but benefits anyway of being in one central location</span>
-
+  <h1>Source code for astromodels.utils.data_files</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pkg_resources</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">import</span> <span class="nn">pkg_resources</span>
 
-<span class="n">_custom_config_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ASTROMODELS_CONFIG&quot;</span><span class="p">)</span>
-
-<div class="viewcode-block" id="_get_data_file_path"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.file_utils._get_data_file_path">[docs]</a><span class="k">def</span> <span class="nf">_get_data_file_path</span><span class="p">(</span><span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<div class="viewcode-block" id="_get_data_file_path"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.data_files._get_data_file_path">[docs]</a><span class="k">def</span> <span class="nf">_get_data_file_path</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the absolute path to the required data files.</span>
 
@@ -210,7 +204,7 @@
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;astromodels&quot;</span><span class="p">,</span> <span class="s1">&#39;data/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">data_file</span><span class="p">)</span>
+        <span class="n">file_path</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span><span class="s2">&quot;astromodels&quot;</span><span class="p">,</span> <span class="s1">&#39;data/</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">data_file</span><span class="p">)</span>
 
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 
@@ -219,48 +213,7 @@
 
     <span class="k">else</span><span class="p">:</span>
 
-        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span></div>
-
-
-
-<div class="viewcode-block" id="get_user_path"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.file_utils.get_user_path">[docs]</a><span class="k">def</span> <span class="nf">get_user_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-
-    <span class="n">user_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.astromodels&quot;</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">user_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-
-        <span class="n">user_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">user_path</span></div>
-        
-    
-<div class="viewcode-block" id="get_user_data_path"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.file_utils.get_user_data_path">[docs]</a><span class="k">def</span> <span class="nf">get_user_data_path</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-
-    <span class="n">user_data</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_user_path</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
-
-    <span class="c1"># Create it if doesn&#39;t exist</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">user_data</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-
-        <span class="n">user_data</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-
-    <span class="k">return</span> <span class="n">user_data</span></div>
-
-
-<div class="viewcode-block" id="get_path_of_user_config"><a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.file_utils.get_path_of_user_config">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_user_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-
-    <span class="k">if</span> <span class="n">_custom_config_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-
-        <span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">_custom_config_path</span><span class="p">)</span>
-
-    <span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.config&quot;</span> <span class="o">/</span> <span class="s2">&quot;astromodels&quot;</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">config_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
-
-        <span class="n">config_path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">config_path</span></div>
-
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
