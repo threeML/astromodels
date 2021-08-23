@@ -82,6 +82,8 @@ jobs:
       - name: Build the API doc
         run: |
 
+          pip3 install numpy scipy numba astropy
+          
           python setup.py develop
 
           
@@ -122,6 +124,8 @@ jobs:
 
       - name: Install astromodels
         run: |
+
+          pip3 install numpy scipy numba astropy
 
           python3 setup.py develop
 
