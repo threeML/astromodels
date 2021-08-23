@@ -1,0 +1,692 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.functions.dark_matter.dm_models &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <link rel="stylesheet" href="../../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.functions.dark_matter.dm_models</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.functions.dark_matter.dm_models</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">six</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils</span> <span class="kn">import</span> <span class="n">_get_data_file_path</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DMFitFunction"><a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMFitFunction">[docs]</a><span class="k">class</span> <span class="nc">DMFitFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        Class that evaluates the spectrum for a DM particle of a given</span>
+<span class="sd">        mass, channel, cross section, and J-factor. Based on standard</span>
+<span class="sd">        Fermi Science Tools function DMFitFunction. Note input table only</span>
+<span class="sd">        calculated spectra up to m_DM of 10 TeV</span>
+
+<span class="sd">        The parameterization is given by</span>
+
+<span class="sd">        F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)</span>
+
+<span class="sd">    latex : $$</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        mass :</span>
+<span class="sd">            desc : DM mass (GeV)</span>
+<span class="sd">            initial value : 10</span>
+<span class="sd">            fix : yes</span>
+
+<span class="sd">        channel :</span>
+<span class="sd">            desc : DM annihilation channel</span>
+<span class="sd">            initial value : 4</span>
+<span class="sd">            fix : yes</span>
+
+<span class="sd">        sigmav :</span>
+<span class="sd">            desc : DM annihilation cross section (cm^3/s)</span>
+<span class="sd">            initial value : 1.e-26</span>
+
+<span class="sd">        J :</span>
+<span class="sd">            desc : Target total J-factor (GeV^2 cm^-5)</span>
+<span class="sd">            initial value : 1.e20</span>
+<span class="sd">            fix : yes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">tablepath</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/gammamc_dif.dat&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">tablepath</span><span class="p">)</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Mapping between the channel codes and the rows in the gammamc file</span>
+
+<span class="sd">            1 : 8, # ee</span>
+<span class="sd">            2 : 6, # mumu</span>
+<span class="sd">            3 : 3, # tautau</span>
+<span class="sd">            4 : 1, # bb</span>
+<span class="sd">            5 : 2, # tt</span>
+<span class="sd">            6 : 7, # gg</span>
+<span class="sd">            7 : 4, # ww</span>
+<span class="sd">            8 : 5, # zz</span>
+<span class="sd">            9 : 0, # cc</span>
+<span class="sd">            10 : 10, # uu</span>
+<span class="sd">            11 : 11, # dd</span>
+<span class="sd">            12 : 9, # ss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">channel_index_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>  <span class="c1"># ee</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>  <span class="c1"># mumu</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="c1"># tautau</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># bb</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># tt</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>  <span class="c1"># gg</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>  <span class="c1"># ww</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>  <span class="c1"># zz</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># cc</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># uu</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>  <span class="c1"># dd</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>  <span class="c1"># ss</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Number of decades in x = log10(E/M)</span>
+        <span class="n">ndec</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="n">xedge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">xedge</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">xedge</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">ndec</span> <span class="o">-</span> <span class="n">ndec</span>
+
+        <span class="n">ichan</span> <span class="o">=</span> <span class="n">channel_index_mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
+
+        <span class="c1"># These are the mass points</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mf">2.0</span><span class="p">,</span>
+                <span class="mf">4.0</span><span class="p">,</span>
+                <span class="mf">6.0</span><span class="p">,</span>
+                <span class="mf">8.0</span><span class="p">,</span>
+                <span class="mf">10.0</span><span class="p">,</span>
+                <span class="mf">25.0</span><span class="p">,</span>
+                <span class="mf">50.0</span><span class="p">,</span>
+                <span class="mf">80.3</span><span class="p">,</span>
+                <span class="mf">91.2</span><span class="p">,</span>
+                <span class="mf">100.0</span><span class="p">,</span>
+                <span class="mf">150.0</span><span class="p">,</span>
+                <span class="mf">176.0</span><span class="p">,</span>
+                <span class="mf">200.0</span><span class="p">,</span>
+                <span class="mf">250.0</span><span class="p">,</span>
+                <span class="mf">350.0</span><span class="p">,</span>
+                <span class="mf">500.0</span><span class="p">,</span>
+                <span class="mf">750.0</span><span class="p">,</span>
+                <span class="mf">1000.0</span><span class="p">,</span>
+                <span class="mf">1500.0</span><span class="p">,</span>
+                <span class="mf">2000.0</span><span class="p">,</span>
+                <span class="mf">3000.0</span><span class="p">,</span>
+                <span class="mf">5000.0</span><span class="p">,</span>
+                <span class="mf">7000.0</span><span class="p">,</span>
+                <span class="mf">1e4</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">250</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn_interp</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_mass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span><span class="p">[</span><span class="n">ichan</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span>
+            <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: DMFitFunction only appropriate for masses &lt;= 10 TeV&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;To model DM from 2 GeV &lt; mass &lt; 1 PeV use DMSpectra&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+
+        <span class="c1"># Usually a model should not assume fixed units for energy or anything else. However,</span>
+        <span class="c1"># in this case this model is so specialistic that we can assume GeV</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">GeV</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmav</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">/</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">s</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">J</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">GeV</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">5</span>
+
+<div class="viewcode-block" id="DMFitFunction.print_channel_mapping"><a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMFitFunction.print_channel_mapping">[docs]</a>    <span class="k">def</span> <span class="nf">print_channel_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">channel_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;ee&quot;</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;mumu&quot;</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;tautau&quot;</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;tt&quot;</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;gg&quot;</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;ww&quot;</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;zz&quot;</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;uu&quot;</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;dd&quot;</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;ss&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">channel_mapping</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">channel_mapping</span></div>
+
+    <span class="c1"># noinspection PyPep8Naming</span>
+<div class="viewcode-block" id="DMFitFunction.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMFitFunction.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">sigmav</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="c1"># We need to convert to GeV</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">GeV</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># We can assume that the input is in keV</span>
+
+            <span class="n">keVtoGeV</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+            <span class="c1"># xm expects gamma ray energies in MeV</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">keVtoGeV</span><span class="p">)</span>
+
+        <span class="n">xm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">mass</span><span class="p">))</span>
+        <span class="n">phip</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigmav</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># units of this should be 1 / cm**2 / s</span>
+        <span class="n">dn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn_interp</span><span class="p">((</span><span class="n">mass</span><span class="p">,</span> <span class="n">xm</span><span class="p">))</span>
+        <span class="n">dn</span><span class="p">[</span><span class="n">xm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">phip</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="DMSpectra"><a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMSpectra">[docs]</a><span class="k">class</span> <span class="nc">DMSpectra</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        Class that evaluates the spectrum for a DM particle of a given</span>
+<span class="sd">        mass, channel, cross section, and J-factor. Combines Pythia-based tables</span>
+<span class="sd">        from both Fermi (2 GeV &lt; m_DM &lt; 10 TeV) and HAWC (10 TeV &lt; m_dm &lt; 1 PeV)</span>
+
+<span class="sd">        The parameterization is given by</span>
+
+<span class="sd">        F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)</span>
+
+<span class="sd">        Note that this class assumes that mass and J-factor are provided</span>
+<span class="sd">        in units of GeV and GeV^2 cm^-5</span>
+
+<span class="sd">    latex : $$</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        mass :</span>
+<span class="sd">            desc : DM mass (GeV)</span>
+<span class="sd">            initial value : 10</span>
+<span class="sd">            fix : yes</span>
+
+<span class="sd">        channel :</span>
+<span class="sd">            desc : DM annihilation channel</span>
+<span class="sd">            initial value : 4</span>
+<span class="sd">            fix : yes</span>
+
+<span class="sd">        sigmav :</span>
+<span class="sd">            desc : DM annihilation cross section (cm^3/s)</span>
+<span class="sd">            initial value : 1.e-26</span>
+
+<span class="sd">        J :</span>
+<span class="sd">            desc : Target total J-factor (GeV^2 cm^-5)</span>
+<span class="sd">            initial value : 1.e20</span>
+<span class="sd">            fix : yes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Get and open the two data files</span>
+
+        <span class="n">tablepath_h</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/dmSpecTab.npy&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tablepath_h</span><span class="p">)</span>
+
+        <span class="n">tablepath_f</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/gammamc_dif.dat&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">tablepath_f</span><span class="p">)</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Mapping between the channel codes and the rows in the gammamc file</span>
+<span class="sd">            dmSpecTab.npy created to match this mapping too</span>
+
+<span class="sd">            1 : 8, # ee</span>
+<span class="sd">            2 : 6, # mumu</span>
+<span class="sd">            3 : 3, # tautau</span>
+<span class="sd">            4 : 1, # bb</span>
+<span class="sd">            5 : 2, # tt</span>
+<span class="sd">            6 : 7, # gg</span>
+<span class="sd">            7 : 4, # ww</span>
+<span class="sd">            8 : 5, # zz</span>
+<span class="sd">            9 : 0, # cc</span>
+<span class="sd">            10 : 10, # uu</span>
+<span class="sd">            11 : 11, # dd</span>
+<span class="sd">            12 : 9, # ss</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+        <span class="n">channel_index_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>  <span class="c1"># ee</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>  <span class="c1"># mumu</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>  <span class="c1"># tautau</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1"># bb</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1"># tt</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>  <span class="c1"># gg</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>  <span class="c1"># ww</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>  <span class="c1"># zz</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1"># cc</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># uu</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>  <span class="c1"># dd</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span>  <span class="c1"># ss</span>
+        <span class="p">}</span>
+
+        <span class="c1"># Number of decades in x = log10(E/M)</span>
+        <span class="n">ndec</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="n">xedge</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">251</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">xedge</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">xedge</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">ndec</span> <span class="o">-</span> <span class="n">ndec</span>
+
+        <span class="n">ichan</span> <span class="o">=</span> <span class="n">channel_index_mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span>
+
+        <span class="c1"># These are the mass points in GeV</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mf">50.0</span><span class="p">,</span>
+                <span class="mf">61.2</span><span class="p">,</span>
+                <span class="mf">74.91</span><span class="p">,</span>
+                <span class="mf">91.69</span><span class="p">,</span>
+                <span class="mf">112.22</span><span class="p">,</span>
+                <span class="mf">137.36</span><span class="p">,</span>
+                <span class="mf">168.12</span><span class="p">,</span>
+                <span class="mf">205.78</span><span class="p">,</span>
+                <span class="mf">251.87</span><span class="p">,</span>
+                <span class="mf">308.29</span><span class="p">,</span>
+                <span class="mf">377.34</span><span class="p">,</span>
+                <span class="mf">461.86</span><span class="p">,</span>
+                <span class="mf">565.31</span><span class="p">,</span>
+                <span class="mf">691.93</span><span class="p">,</span>
+                <span class="mf">846.91</span><span class="p">,</span>
+                <span class="mf">1036.6</span><span class="p">,</span>
+                <span class="mf">1268.78</span><span class="p">,</span>
+                <span class="mf">1552.97</span><span class="p">,</span>
+                <span class="mf">1900.82</span><span class="p">,</span>
+                <span class="mf">2326.57</span><span class="p">,</span>
+                <span class="mf">2847.69</span><span class="p">,</span>
+                <span class="mf">3485.53</span><span class="p">,</span>
+                <span class="mf">4266.23</span><span class="p">,</span>
+                <span class="mf">5221.81</span><span class="p">,</span>
+                <span class="mf">6391.41</span><span class="p">,</span>
+                <span class="mf">7823.0</span><span class="p">,</span>
+                <span class="mf">9575.23</span><span class="p">,</span>
+                <span class="mf">11719.94</span><span class="p">,</span>
+                <span class="mf">14345.03</span><span class="p">,</span>
+                <span class="mf">17558.1</span><span class="p">,</span>
+                <span class="mf">21490.85</span><span class="p">,</span>
+                <span class="mf">26304.48</span><span class="p">,</span>
+                <span class="mf">32196.3</span><span class="p">,</span>
+                <span class="mf">39407.79</span><span class="p">,</span>
+                <span class="mf">48234.54</span><span class="p">,</span>
+                <span class="mf">59038.36</span><span class="p">,</span>
+                <span class="mf">72262.07</span><span class="p">,</span>
+                <span class="mf">88447.7</span><span class="p">,</span>
+                <span class="mf">108258.66</span><span class="p">,</span>
+                <span class="mf">132506.99</span><span class="p">,</span>
+                <span class="mf">162186.57</span><span class="p">,</span>
+                <span class="mf">198513.95</span><span class="p">,</span>
+                <span class="mf">242978.11</span><span class="p">,</span>
+                <span class="mf">297401.58</span><span class="p">,</span>
+                <span class="mf">364015.09</span><span class="p">,</span>
+                <span class="mf">445549.04</span><span class="p">,</span>
+                <span class="mf">545345.37</span><span class="p">,</span>
+                <span class="mf">667494.6</span><span class="p">,</span>
+                <span class="mf">817003.43</span><span class="p">,</span>
+                <span class="mf">1000000.0</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># These are the mass points in GeV</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mf">2.0</span><span class="p">,</span>
+                <span class="mf">4.0</span><span class="p">,</span>
+                <span class="mf">6.0</span><span class="p">,</span>
+                <span class="mf">8.0</span><span class="p">,</span>
+                <span class="mf">10.0</span><span class="p">,</span>
+                <span class="mf">25.0</span><span class="p">,</span>
+                <span class="mf">50.0</span><span class="p">,</span>
+                <span class="mf">80.3</span><span class="p">,</span>
+                <span class="mf">91.2</span><span class="p">,</span>
+                <span class="mf">100.0</span><span class="p">,</span>
+                <span class="mf">150.0</span><span class="p">,</span>
+                <span class="mf">176.0</span><span class="p">,</span>
+                <span class="mf">200.0</span><span class="p">,</span>
+                <span class="mf">250.0</span><span class="p">,</span>
+                <span class="mf">350.0</span><span class="p">,</span>
+                <span class="mf">500.0</span><span class="p">,</span>
+                <span class="mf">750.0</span><span class="p">,</span>
+                <span class="mf">1000.0</span><span class="p">,</span>
+                <span class="mf">1500.0</span><span class="p">,</span>
+                <span class="mf">2000.0</span><span class="p">,</span>
+                <span class="mf">3000.0</span><span class="p">,</span>
+                <span class="mf">5000.0</span><span class="p">,</span>
+                <span class="mf">7000.0</span><span class="p">,</span>
+                <span class="mf">1e4</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mass</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mass_f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mass_h</span><span class="p">[</span><span class="mi">27</span><span class="p">:])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn_f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_f</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">250</span><span class="p">))</span>
+
+        <span class="c1"># Is this really used?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_h</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mass</span><span class="p">),</span> <span class="mi">250</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">24</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn_f</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span><span class="p">[:,</span> <span class="mi">24</span><span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn_h</span><span class="p">[:,</span> <span class="mi">27</span><span class="p">:,</span> <span class="p">:]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dn_interp</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_mass</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_dn</span><span class="p">[</span><span class="n">ichan</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span>
+            <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mf">10000.0</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;currently spectra for selected channel and mass not implemented.&quot;</span>
+            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Spectra for channels [&#39;ee&#39;,&#39;gg&#39;,&#39;WW&#39;] currently not available for mass &gt; 10 TeV&quot;</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">GeV</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sigmav</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">/</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">s</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">J</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">GeV</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">5</span>
+
+<div class="viewcode-block" id="DMSpectra.print_channel_mapping"><a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMSpectra.print_channel_mapping">[docs]</a>    <span class="k">def</span> <span class="nf">print_channel_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">channel_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;ee&quot;</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;mumu&quot;</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;tautau&quot;</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;tt&quot;</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;gg&quot;</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;ww&quot;</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;zz&quot;</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;cc&quot;</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;uu&quot;</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;dd&quot;</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;ss&quot;</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">channel_mapping</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">channel_mapping</span></div>
+
+    <span class="c1"># noinspection PyPep8Naming</span>
+<div class="viewcode-block" id="DMSpectra.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMSpectra.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">channel</span><span class="p">,</span> <span class="n">sigmav</span><span class="p">,</span> <span class="n">J</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="c1"># We need to convert to GeV</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">MeV</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># We can assume that the input is in keV</span>
+
+            <span class="n">keVtoGeV</span> <span class="o">=</span> <span class="mf">1e-6</span>
+
+            <span class="c1"># xm expects gamma ray energies in MeV</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">keVtoGeV</span><span class="p">)</span>
+
+        <span class="n">xm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">mass</span><span class="p">))</span>
+
+        <span class="n">phip</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">8.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">mass</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">sigmav</span> <span class="o">*</span> <span class="n">J</span><span class="p">)</span>
+        <span class="p">)</span>  <span class="c1"># units of this should be 1 / cm**2</span>
+        <span class="n">dn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dn_interp</span><span class="p">((</span><span class="n">mass</span><span class="p">,</span> <span class="n">xm</span><span class="p">))</span>  <span class="c1"># note this is unitless (dx = d(xm))</span>
+        <span class="n">dn</span><span class="p">[</span><span class="n">xm</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">phip</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">dn</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

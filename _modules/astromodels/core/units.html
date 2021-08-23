@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.core.units &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.core.units</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.core.units</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">object</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;giacomov&#39;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.core.tree</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.pretty_list</span> <span class="kn">import</span> <span class="n">dict_to_list</span>
+
+<span class="c1"># This module keeps the configuration of the units used in astromodels</span>
+
+<span class="c1"># Pre-defined values</span>
+
+<span class="n">_ENERGY</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span>
+<span class="n">_TIME</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span>
+<span class="n">_ANGLE</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">_AREA</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
+
+
+<div class="viewcode-block" id="UnknownUnit"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units.UnknownUnit">[docs]</a><span class="k">class</span> <span class="nc">UnknownUnit</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="UnitMismatch"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units.UnitMismatch">[docs]</a><span class="k">class</span> <span class="nc">UnitMismatch</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="_check_unit"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._check_unit">[docs]</a><span class="k">def</span> <span class="nf">_check_unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that the new unit is compatible with the old unit for the quantity described by variable_name</span>
+
+<span class="sd">    :param new_unit: instance of astropy.units.Unit</span>
+<span class="sd">    :param old_unit: instance of astropy.units.Unit</span>
+<span class="sd">    :return: nothin</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+
+        <span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+
+        <span class="k">raise</span> <span class="n">UnitMismatch</span><span class="p">(</span><span class="s2">&quot;The provided unit (</span><span class="si">%s</span><span class="s2">) has no physical type. Was expecting a unit for </span><span class="si">%s</span><span class="s2">&quot;</span>
+                           <span class="o">%</span> <span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">:</span>
+
+        <span class="k">raise</span> <span class="n">UnitMismatch</span><span class="p">(</span><span class="s2">&quot;Physical type mismatch: you provided a unit for </span><span class="si">%s</span><span class="s2"> instead of a unit for </span><span class="si">%s</span><span class="s2">&quot;</span>
+                           <span class="o">%</span> <span class="p">(</span><span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">,</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="_AstromodelsUnits"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits">[docs]</a><span class="k">class</span> <span class="nc">_AstromodelsUnits</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Store the fundamental units of time, energy, angle and area to be used in astromodels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="_AstromodelsUnits.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energy_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angle_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">area_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">energy_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">energy_unit</span> <span class="o">=</span> <span class="n">_ENERGY</span>
+        <span class="k">if</span> <span class="n">time_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">time_unit</span> <span class="o">=</span> <span class="n">_TIME</span>
+        <span class="k">if</span> <span class="n">angle_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">angle_unit</span> <span class="o">=</span> <span class="n">_ANGLE</span>
+        <span class="k">if</span> <span class="n">area_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="n">area_unit</span> <span class="o">=</span> <span class="n">_AREA</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;angle&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">area_unit</span></div>
+
+    <span class="c1"># This __new__ method add the properties to the class. We could have achieved the same with a metaclass,</span>
+    <span class="c1"># but this method is more clearer, for a tiny performance penalty. Consider also that under normal circumstances</span>
+    <span class="c1"># this class will be only created once per session</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">cls</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s1">&#39;energy&#39;</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s1">&#39;angle&#39;</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s1">&#39;area&#39;</span><span class="p">)))</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">_AstromodelsUnits</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">obj</span>
+
+<div class="viewcode-block" id="_AstromodelsUnits.get"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unit</span><span class="p">(</span><span class="n">what</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">old_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">what</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="n">UnknownUnit</span><span class="p">(</span><span class="s2">&quot;You can only assign units for energy, time, angle and area. Don&#39;t know &quot;</span>
+                              <span class="s2">&quot;anything about </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+
+        <span class="c1"># This allows to use strings in place of Unit instances as new_unit</span>
+
+        <span class="n">new_unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">)</span>
+
+        <span class="c1"># Check that old and new unit are for the appropriate quantity</span>
+
+        <span class="n">_check_unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="p">)</span>
+
+        <span class="c1"># set the new unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">what</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_unit</span>
+
+    <span class="k">def</span> <span class="nf">_get_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="n">what</span><span class="p">]</span>
+
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="n">UnknownUnit</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a fundamental unit&quot;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+
+    <span class="c1"># This is a function which generates the elements needed to make a property.photon</span>
+    <span class="c1"># Just a trick to avoid having to duplicate the same code for each unit.</span>
+    <span class="c1"># It is called in __new__</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_create_property</span><span class="p">(</span><span class="n">what</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unit</span><span class="p">(</span><span class="n">what</span><span class="p">),</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_unit</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">),</span>
+                <span class="s2">&quot;Sets or gets the unit for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+
+    <span class="c1"># Add the == and != operators</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">other</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="n">rich_output</span><span class="p">)</span>
+
+<div class="viewcode-block" id="_AstromodelsUnits.to_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.units._AstromodelsUnits.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span></div></div>
+
+
+<span class="c1"># This is a factory which will always return the same instance of the _AstromodelsUnits class</span>
+
+<span class="k">class</span> <span class="nc">_AstromodelsUnitsFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+        <span class="n">_instance</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="c1"># Create and return a new instance</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="n">_AstromodelsUnits</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># Use the instance already created</span>
+
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_instance</span>
+
+
+<span class="c1"># Create the factory to be used in the program</span>
+
+<span class="n">get_units</span> <span class="o">=</span> <span class="n">_AstromodelsUnitsFactory</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.functions.numba_functions &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.functions.numba_functions</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.functions.numba_functions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">ctypes</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># from numba.extending import get_cython_function_address</span>
+
+<span class="c1"># addr1 = get_cython_function_address(</span>
+<span class="c1">#     &quot;scipy.special.cython_special&quot;, &quot;gammaincc&quot;)</span>
+<span class="c1"># functype1 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double, ctypes.c_double)</span>
+<span class="c1"># gammaincc_fn = functype1(addr1)</span>
+
+
+<span class="c1"># @nb.vectorize(&#39;float64(float64, float64)&#39;)</span>
+<span class="c1"># def vec_gammaincc(x, y):</span>
+<span class="c1">#     return gammaincc_fn(x, y)</span>
+
+
+<span class="c1"># addr2 = get_cython_function_address(&quot;scipy.special.cython_special&quot;, &quot;gamma&quot;)</span>
+<span class="c1"># functype2 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double)</span>
+<span class="c1"># gamma_fn = functype2(addr2)</span>
+
+
+<span class="c1"># @nb.vectorize(&#39;float64(float64)&#39;)</span>
+<span class="c1"># def vec_gamma(x):</span>
+<span class="c1">#     return gamma_fn(x)</span>
+
+
+<div class="viewcode-block" id="plaw_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="plaw_flux_norm"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_flux_norm">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">plaw_flux_norm</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    energy flux power law</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># use the limit of the</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">:</span>
+
+        <span class="n">dp2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">index</span>
+
+        <span class="n">intflux</span> <span class="o">=</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">dp2</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">dp2</span><span class="p">))</span> <span class="o">/</span> <span class="n">dp2</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">intflux</span> <span class="o">=</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">a</span><span class="o">/</span><span class="n">b</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">intflux</span></div>
+
+
+<div class="viewcode-block" id="cplaw_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.cplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Compute it in logarithm to avoid roundoff errors, then raise it</span>
+        <span class="n">log_v</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">xc</span><span class="p">)</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_v</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="cplaw_inverse_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.cplaw_inverse_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cplaw_inverse_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Compute it in logarithm to avoid roundoff errors, then raise it</span>
+        <span class="n">log_v</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">b</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_v</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="super_cplaw_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.super_cplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">super_cplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+        <span class="n">log_v</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span> <span class="o">-</span> <span class="n">gamma</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">xc</span><span class="p">)</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_v</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="band_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.band_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">band_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">E0</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">break_point</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">E0</span>
+
+    <span class="n">factor_ab</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">beta</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> \
+        <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">break_point</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">break_point</span><span class="p">:</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">E0</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">factor_ab</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="bplaw_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.bplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">bplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">factor</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">xb</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">xb</span><span class="p">:</span>
+
+            <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">beta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="sbplaw_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.sbplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sbplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="n">B</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">beta</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span>
+
+    <span class="n">arg_piv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">piv</span> <span class="o">/</span> <span class="n">be</span><span class="p">)</span> <span class="o">/</span> <span class="n">bs</span>
+
+    <span class="n">log2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="n">Mbs</span> <span class="o">=</span> <span class="n">M</span> <span class="o">*</span> <span class="n">bs</span>
+
+    <span class="k">if</span> <span class="n">arg_piv</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">6.0</span><span class="p">:</span>
+        <span class="n">pcosh_piv</span> <span class="o">=</span> <span class="n">Mbs</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">arg_piv</span> <span class="o">-</span> <span class="n">log2</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">arg_piv</span> <span class="o">&gt;</span> <span class="mf">4.0</span><span class="p">:</span>
+
+        <span class="n">pcosh_piv</span> <span class="o">=</span> <span class="n">Mbs</span> <span class="o">*</span> <span class="p">(</span><span class="n">arg_piv</span> <span class="o">-</span> <span class="n">log2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">pcosh_piv</span> <span class="o">=</span> <span class="n">Mbs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">arg_piv</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg_piv</span><span class="p">))</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span>
+
+    <span class="n">ten_pcosh_piv</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mf">10.</span><span class="p">,</span> <span class="n">pcosh_piv</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">be</span><span class="p">)</span> <span class="o">/</span> <span class="n">bs</span>
+
+        <span class="k">if</span> <span class="n">arg</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">6.0</span><span class="p">:</span>
+
+            <span class="n">pcosh</span> <span class="o">=</span> <span class="n">Mbs</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="n">arg</span> <span class="o">-</span> <span class="n">log2</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">arg</span> <span class="o">&gt;</span> <span class="mf">4.0</span><span class="p">:</span>
+
+            <span class="n">pcosh</span> <span class="o">=</span> <span class="n">Mbs</span> <span class="o">*</span> <span class="p">(</span><span class="n">arg</span> <span class="o">-</span> <span class="n">log2</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">pcosh</span> <span class="o">=</span> <span class="n">Mbs</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">))))</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">/</span><span class="n">piv</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span> <span class="o">*</span> \
+            <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mf">10.</span><span class="p">,</span> <span class="n">pcosh</span><span class="p">)</span><span class="o">/</span><span class="n">ten_pcosh_piv</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="bb_eval"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.bb_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">bb_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">kT</span><span class="p">):</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+
+        <span class="n">arg</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">/</span><span class="n">kT</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">K</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+<span class="c1"># @nb.njit(fastmath=True, cache=True)</span>
+<span class="c1"># def bbrad_eval(x, K, kT):</span>
+
+<span class="c1">#     n = x.shape[0]</span>
+<span class="c1">#     out = np.empty(n)</span>
+
+<span class="c1">#     for idx in range(n):</span>
+
+<span class="c1">#         arg = x[idx]/kT</span>
+<span class="c1">#         out[idx] = K * x[idx] * x[idx] / np.expm1(arg)</span>
+
+<span class="c1">#     return out</span>
+
+
+<span class="c1"># band calderone</span>
+
+
+<div class="viewcode-block" id="ggrb_int_pl"><a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.numba_functions.ggrb_int_pl">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ggrb_int_pl</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Ec</span><span class="p">,</span> <span class="n">Emin</span><span class="p">,</span> <span class="n">Emax</span><span class="p">):</span>
+
+    <span class="n">pre</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">Ec</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">b</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+        <span class="n">b2</span> <span class="o">=</span> <span class="mi">2</span><span class="o">+</span><span class="n">b</span>
+
+        <span class="k">return</span> <span class="n">pre</span> <span class="o">/</span> <span class="p">(</span><span class="n">b2</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">Emax</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span> <span class="o">-</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">Emin</span><span class="p">,</span> <span class="n">b2</span><span class="p">))</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="n">pre</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Emax</span><span class="o">/</span><span class="n">Emin</span><span class="p">)</span></div>
+
+
+<span class="c1"># @nb.njit(fastmath=True, cache=True)</span>
+<span class="c1"># def ggrb_int_cpl(a, Ec, Emin, Emax):</span>
+
+<span class="c1">#     # Gammaincc does not support quantities</span>
+<span class="c1">#     i1 = vec_gammaincc(2 + a, Emin/Ec) * vec_gamma(2 + a)</span>
+<span class="c1">#     i2 = vec_gammaincc(2 + a, Emax/Ec) * vec_gamma(2 + a)</span>
+
+<span class="c1">#     return -Ec * Ec * (i2 - i1)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

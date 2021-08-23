@@ -1,0 +1,1430 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.core.model &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.core.model</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.core.model</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">zip</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.core.memoization</span> <span class="kn">import</span> <span class="n">use_astromodels_memoization</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.my_yaml</span> <span class="kn">import</span> <span class="n">my_yaml</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.parameter</span> <span class="kn">import</span> <span class="n">IndependentVariable</span><span class="p">,</span> <span class="n">Parameter</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.tree</span> <span class="kn">import</span> <span class="n">DuplicatedNode</span><span class="p">,</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">get_function</span>
+<span class="kn">from</span> <span class="nn">astromodels.sources</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">,</span>
+                                 <span class="n">Source</span><span class="p">,</span> <span class="n">SourceType</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.disk_usage</span> <span class="kn">import</span> <span class="n">disk_usage</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.long_path_formatter</span> <span class="kn">import</span> <span class="n">long_path_formatter</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="ModelFileExists"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.ModelFileExists">[docs]</a><span class="k">class</span> <span class="nc">ModelFileExists</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="InvalidInput"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.InvalidInput">[docs]</a><span class="k">class</span> <span class="nc">InvalidInput</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="CannotWriteModel"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.CannotWriteModel">[docs]</a><span class="k">class</span> <span class="nc">CannotWriteModel</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+<div class="viewcode-block" id="CannotWriteModel.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.CannotWriteModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="c1"># Add a report on disk usage to the message</span>
+
+        <span class="n">free_space</span> <span class="o">=</span> <span class="n">disk_usage</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">free</span>
+
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Free space on the file system hosting </span><span class="si">%s</span><span class="s2"> was </span><span class="si">%.2f</span><span class="s2"> Mbytes&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">directory</span><span class="p">,</span>
+            <span class="n">free_space</span> <span class="o">/</span> <span class="mf">1024.0</span> <span class="o">/</span> <span class="mf">1024.0</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">CannotWriteModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ModelInternalError"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.ModelInternalError">[docs]</a><span class="k">class</span> <span class="nc">ModelInternalError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+<div class="viewcode-block" id="Model.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">):</span>
+
+        <span class="c1"># Setup the node, using the special name &#39;__root__&#39; to indicate that this is the root of the tree</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;__root__&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Dictionary to keep point sources</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="c1"># Dictionary to keep extended sources</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="c1"># Dictionary to keep particle sources</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="c1"># Loop over the provided sources and process them</span>
+
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="c1"># Now make the list of all the existing parameters</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span>
+
+        <span class="c1"># This controls the verbosity of the display</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complete_display</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># This will keep track of independent variables (if any)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_independent_variables</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="Model._add_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model._add_source">[docs]</a>    <span class="k">def</span> <span class="nf">_add_source</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span>
+                                <span class="n">ParticleSource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remember to call _update_parameters after this!</span>
+<span class="sd">        :param source:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">Source</span><span class="p">):</span>
+
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;More than one source with the name &#39;</span><span class="si">%s</span><span class="s2">&#39;. You cannot use the same name for multiple &quot;</span>
+                    <span class="s2">&quot;sources&quot;</span> <span class="o">%</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">DuplicatedNode</span><span class="p">()</span>
+
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+
+                <span class="k">raise</span>
+
+        <span class="c1"># Now see if this is a point or extended source, and add them to the</span>
+        <span class="c1"># appropriate dictionary</span>
+
+        <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+
+        <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">EXTENDED_SOURCE</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+
+        <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">source</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+
+            <span class="k">raise</span> <span class="n">InvalidInput</span><span class="p">(</span>
+                <span class="s2">&quot;Input sources must be either a point source or an extended source&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model._remove_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model._remove_source">[docs]</a>    <span class="k">def</span> <span class="nf">_remove_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remember to call _update_parameters after this</span>
+<span class="sd">        :param source_name:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">source_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Source </span><span class="si">{</span><span class="n">source_name</span><span class="si">}</span><span class="s2"> is not part of the current model&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source_name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">EXTENDED_SOURCE</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">source</span><span class="o">.</span><span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">source_name</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_find_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
+
+        <span class="n">instances</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">_get_children</span><span class="p">():</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
+
+                <span class="n">path</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span>
+
+                <span class="n">instances</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+
+                <span class="k">for</span> <span class="n">sub_child</span> <span class="ow">in</span> <span class="n">child</span><span class="o">.</span><span class="n">_get_children</span><span class="p">():</span>
+
+                    <span class="n">instances</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_parameters</span><span class="p">(</span><span class="n">sub_child</span><span class="p">))</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">instances</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_parameters</span><span class="p">(</span><span class="n">child</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">instances</span>
+
+    <span class="k">def</span> <span class="nf">_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a dictionary with all parameters</span>
+
+<span class="sd">        :return: dictionary of parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a dictionary with all the free parameters in this model</span>
+
+<span class="sd">        :return: dictionary of free parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Refresh the list</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span>
+
+        <span class="c1"># Filter selecting only free parameters</span>
+
+        <span class="n">free_parameters_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">free</span><span class="p">:</span>
+
+                <span class="n">free_parameters_dictionary</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameter</span>
+
+        <span class="k">return</span> <span class="n">free_parameters_dictionary</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">linked_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a dictionary with all parameters in this model in a linked status. A parameter is in a linked status</span>
+<span class="sd">        if it is linked to another parameter (i.e. it is forced to have the same value of the other parameter), or</span>
+<span class="sd">        if it is linked with another parameter or an independent variable through a law.</span>
+
+<span class="sd">        :return: dictionary of linked parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Refresh the list</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span>
+
+        <span class="c1"># Filter selecting only free parameters</span>
+
+        <span class="n">linked_parameter_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+            <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">has_auxiliary_variable</span><span class="p">():</span>
+
+                <span class="n">linked_parameter_dictionary</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameter</span>
+
+        <span class="k">return</span> <span class="n">linked_parameter_dictionary</span>
+
+<div class="viewcode-block" id="Model.set_free_parameters"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.set_free_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the free parameters in the model to the provided values.</span>
+
+<span class="sd">        NOTE: of course, order matters</span>
+
+<span class="sd">        :param values: a list of new values</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="p">):</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;tried to pass </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters but need </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">this_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
+                                         <span class="n">values</span><span class="p">):</span>
+
+            <span class="n">parameter</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">this_value</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a parameter from a path like &quot;source_1.component.powerlaw.logK&quot;. This might be useful in certain</span>
+<span class="sd">        context, although in an interactive analysis there is no reason to use this.</span>
+
+<span class="sd">        :param path: the address of the parameter</span>
+<span class="sd">        :return: the parameter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_child_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This allows the model to be used with the &quot;in&quot; operator, like;</span>
+
+<span class="sd">        &gt; if &#39;myparameter&#39; in model:</span>
+<span class="sd">        &gt;    print(&quot;Myparameter is contained in the model&quot;)</span>
+
+<span class="sd">        :param path: the parameter to look for</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_child_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
+
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This allows the model to be iterated on, like in:</span>
+
+<span class="sd">        for parameter in model:</span>
+<span class="sd">            ...</span>
+
+<span class="sd">        NOTE: this will iterate over *all* parameters in the model, also those that are not free (and thus are not</span>
+<span class="sd">        normally displayed). If you need to operate only on free parameters, just check if they are free within</span>
+<span class="sd">        the loop or use the .free_parameters dictionary directly</span>
+
+<span class="sd">        :return: iterator</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
+
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">point_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the dictionary of all defined point sources</span>
+
+<span class="sd">        :return: collections.OrderedDict()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">extended_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the dictionary of all defined extended sources</span>
+
+<span class="sd">        :return: collections.OrderedDict()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">particle_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the dictionary of all defined particle sources</span>
+
+<span class="sd">        :return: collections.OrderedDict()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sources</span><span class="p">(</span>
+            <span class="bp">self</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary containing all defined sources (of any kind)</span>
+
+<span class="sd">        :return: collections.OrderedDict()</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span>
+                                 <span class="n">ParticleSource</span><span class="p">]]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">point_sources</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">extended_sources</span><span class="p">,</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">particle_sources</span><span class="p">):</span>
+
+            <span class="n">sources</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">sources</span>
+
+<div class="viewcode-block" id="Model.add_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.add_source">[docs]</a>    <span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">new_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span>
+                                <span class="n">ParticleSource</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add the provided source to the model</span>
+
+<span class="sd">        :param new_source: the new source to be added (an instance of PointSource, ExtendedSource or ParticleSource)</span>
+<span class="sd">        :return: (none)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_source</span><span class="p">(</span><span class="n">new_source</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Model.remove_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.remove_source">[docs]</a>    <span class="k">def</span> <span class="nf">remove_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.</span>
+
+<span class="sd">        :param source_name: the name of the source to be removed</span>
+<span class="sd">        :return: a new Model instance without the source</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">unlink_all_from_source</span><span class="p">(</span><span class="n">source_name</span><span class="p">,</span> <span class="n">warn</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_source</span><span class="p">(</span><span class="n">source_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Model.unlink_all_from_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.unlink_all_from_source">[docs]</a>    <span class="k">def</span> <span class="nf">unlink_all_from_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                               <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unlink all parameters of the current model that are linked to a parameter of a given source.</span>
+<span class="sd">        To be called before removing a source from the model.</span>
+
+<span class="sd">        :param source_name: the name of the source to which to remove all links</span>
+<span class="sd">        :param warn: If True, prints a warning if any parameters were unlinked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">tempmodel</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">source_name</span><span class="p">])</span>
+        <span class="n">unlinked_parameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">linked_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+
+            <span class="n">target</span> <span class="o">=</span> <span class="n">par</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s1">&#39;variable&#39;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="n">tempmodel</span><span class="p">:</span>
+
+                <span class="n">unlinked_parameters</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">par</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">warn</span> <span class="ow">and</span> <span class="n">unlinked_parameters</span><span class="p">:</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;The following </span><span class="si">%d</span><span class="s2"> parameters that were linked to source </span><span class="si">%s</span><span class="s2"> have been automatically un-linked: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">unlinked_parameters</span><span class="p">),</span> <span class="n">source_name</span><span class="p">,</span>
+                   <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">unlinked_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()]),</span>
+                <span class="ne">RuntimeWarning</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.add_independent_variable"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.add_independent_variable">[docs]</a>    <span class="k">def</span> <span class="nf">add_independent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">IndependentVariable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a global independent variable to this model, such as time.</span>
+
+<span class="sd">        :param variable: an IndependentVariable instance</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">IndependentVariable</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Variable must be an instance of IndependentVariable&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_child</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+
+        <span class="c1"># Add also to the list of independent variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_independent_variables</span><span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable</span></div>
+
+<div class="viewcode-block" id="Model.remove_independent_variable"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.remove_independent_variable">[docs]</a>    <span class="k">def</span> <span class="nf">remove_independent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove an independent variable which was added with add_independent_variable</span>
+
+<span class="sd">        :param variable_name: name of variable to remove</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">variable_name</span><span class="p">)</span>
+
+        <span class="c1"># Remove also from the list of independent variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_independent_variables</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">variable_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.add_external_parameter"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.add_external_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">add_external_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a parameter that comes from something other than a function, to the model.</span>
+
+<span class="sd">        :param parameter: a Parameter instance</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Variable must be an instance of IndependentVariable&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_child</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+
+            <span class="c1"># Remove it from the children only if it is a Parameter instance, otherwise don&#39;t, which will</span>
+            <span class="c1"># make the _add_child call fail (which is the expected behaviour! You shouldn&#39;t call two children</span>
+            <span class="c1"># with the same name)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">):</span>
+
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;External parameter </span><span class="si">%s</span><span class="s2"> already exist in the model. Overwriting it...&quot;</span>
+                    <span class="o">%</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># This will fail if another node with the same name is already in the model</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.remove_external_parameter"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.remove_external_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">remove_external_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove an external parameter which was added with add_external_parameter</span>
+
+<span class="sd">        :param variable_name: name of parameter to remove</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.link"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.link">[docs]</a>    <span class="k">def</span> <span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_1</span><span class="p">,</span> <span class="n">parameter_2</span><span class="p">,</span> <span class="n">link_function</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Link the value of the provided parameters through the provided function (identity is the default, i.e.,</span>
+<span class="sd">        parameter_1 = parameter_2).</span>
+
+<span class="sd">        :param parameter_1: the first parameter;can be either a single parameter or a list of prarameters</span>
+<span class="sd">        :param parameter_2: the second parameter</span>
+<span class="sd">        :param link_function: a function instance. If not provided, the identity function will be used by default.</span>
+<span class="sd">        Otherwise, this link will be set: parameter_1 = link_function(parameter_2)</span>
+<span class="sd">        :return: (none)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter_1</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># Make a list of one element</span>
+            <span class="n">parameter_1_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">parameter_1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Make a copy to avoid tampering with the input</span>
+            <span class="n">parameter_1_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameter_1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">param_1</span> <span class="ow">in</span> <span class="n">parameter_1_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">param_1</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span> <span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> is not contained in this model&quot;</span> <span class="o">%</span> <span class="n">param_1</span><span class="o">.</span><span class="n">path</span> <span class="p">)</span>
+
+                <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+                
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parameter_2</span><span class="o">.</span><span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">:</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span> <span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> is not contained in this model&quot;</span> <span class="o">%</span> <span class="n">parameter_2</span><span class="o">.</span><span class="n">path</span> <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+            
+        <span class="k">if</span> <span class="n">link_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Use the Line function by default, with both parameters fixed so that the two</span>
+            <span class="c1"># parameters to be linked will vary together</span>
+            <span class="n">link_function</span> <span class="o">=</span> <span class="n">get_function</span><span class="p">(</span><span class="s2">&quot;Line&quot;</span><span class="p">)</span>
+
+            <span class="n">link_function</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">link_function</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+
+            <span class="n">link_function</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">link_function</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">param_1</span> <span class="ow">in</span> <span class="n">parameter_1_list</span><span class="p">:</span>
+            <span class="n">param_1</span><span class="o">.</span><span class="n">add_auxiliary_variable</span><span class="p">(</span><span class="n">parameter_2</span><span class="p">,</span> <span class="n">link_function</span><span class="p">)</span>
+            <span class="c1"># Now set the units of the link function</span>
+            <span class="n">link_function</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">parameter_2</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span> <span class="n">param_1</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.unlink"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.unlink">[docs]</a>    <span class="k">def</span> <span class="nf">unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets free one or more parameters which have been linked previously</span>
+
+<span class="sd">        :param parameter: the parameter to be set free, can also be a list of parameters</span>
+<span class="sd">        :return: (none)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="c1"># Make a list of one element</span>
+            <span class="n">parameter_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Make a copy to avoid tampering with the input</span>
+            <span class="n">parameter_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">parameter_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">param</span><span class="o">.</span><span class="n">has_auxiliary_variable</span><span class="p">():</span>
+                <span class="n">param</span><span class="o">.</span><span class="n">remove_auxiliary_variable</span><span class="p">()</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> has no link to be removed.&quot;</span> <span class="o">%</span> <span class="n">param</span><span class="o">.</span><span class="n">path</span>
+                       
+                    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.display"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">complete</span><span class="p">:</span> <span class="nb">bool</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display information about the point source.</span>
+
+<span class="sd">        :param complete : if True, displays also information on fixed parameters</span>
+<span class="sd">        :return: (none)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Switch on the complete display flag</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complete_display</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">complete</span><span class="p">)</span>
+
+        <span class="c1"># This will automatically choose the best representation among repr and repr_html</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+        <span class="c1"># Go back to default</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_complete_display</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+    <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">rich_output</span><span class="p">:</span>
+
+            <span class="n">new_line</span> <span class="o">=</span> <span class="s2">&quot;&lt;br&gt;&quot;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">new_line</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Table with the summary of the various kind of sources</span>
+        <span class="n">sources_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">(</span><span class="s2">&quot;Point sources&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_point_sources</span><span class="p">()]),</span>
+                    <span class="p">(</span><span class="s2">&quot;Extended sources&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_extended_sources</span><span class="p">()]),</span>
+                    <span class="p">(</span><span class="s2">&quot;Particle sources&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_particle_sources</span><span class="p">()]),</span>
+                <span class="p">]</span>
+            <span class="p">),</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">],</span>
+            <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># These properties traverse the whole tree everytime, so let&#39;s cache their results here</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span>
+        <span class="n">free_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span>
+        <span class="n">linked_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linked_parameters</span>
+
+        <span class="c1"># Summary of free parameters</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">parameter_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                <span class="c1"># Generate table with only a minimal set of info</span>
+
+                <span class="c1"># Generate table with only a minimal set of info</span>
+                <span class="k">if</span> <span class="n">rich_output</span><span class="p">:</span>
+
+                    <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="c1"># In a terminal we need to use less characters</span>
+
+                    <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+                <span class="n">d</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="n">parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">]:</span>
+
+                    <span class="n">parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+            <span class="n">free_parameters_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">parameter_dict</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="c1"># Re-order it</span>
+            <span class="n">free_parameters_summary</span> <span class="o">=</span> <span class="n">free_parameters_summary</span><span class="p">[</span>
+                <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">free_parameters_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_parameters</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">fixed_parameter_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+                <span class="k">if</span> <span class="n">parameter</span><span class="o">.</span><span class="n">free</span> <span class="ow">or</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="n">linked_parameters</span><span class="p">:</span>
+
+                    <span class="k">continue</span>
+
+                <span class="c1"># Generate table with only a minimal set of info</span>
+                <span class="k">if</span> <span class="n">rich_output</span><span class="p">:</span>
+
+                    <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="mi">70</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="c1"># In a terminal we need to use less characters</span>
+
+                    <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+                <span class="n">d</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="n">fixed_parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">]:</span>
+
+                    <span class="n">fixed_parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+            <span class="n">fixed_parameters_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">fixed_parameter_dict</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+
+            <span class="c1"># Re-order it</span>
+            <span class="n">fixed_parameters_summary</span> <span class="o">=</span> <span class="n">fixed_parameters_summary</span><span class="p">[</span>
+                <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">]</span>
+            <span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">fixed_parameters_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+        <span class="c1"># Summary of linked parameters</span>
+
+        <span class="n">linked_frames</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">linked_parameters</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">linked_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+                <span class="n">parameter_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+                <span class="c1"># Generate table with only a minimal set of info</span>
+
+                <span class="n">variable</span><span class="p">,</span> <span class="n">law</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">auxiliary_variable</span>
+
+                <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+                <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;linked to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">path</span>
+                <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">law</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;current value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">unit</span>
+
+                <span class="n">parameter_dict</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_dict</span>
+
+                <span class="n">this_parameter_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">parameter_dict</span><span class="p">)</span>
+
+                <span class="n">linked_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_parameter_frame</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># No linked parameters</span>
+
+            <span class="k">pass</span>
+
+        <span class="n">empty_frame</span> <span class="o">=</span> <span class="s2">&quot;(none)</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">new_line</span>
+
+        <span class="c1"># Independent variables</span>
+
+        <span class="n">independent_v_frames</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_independent_variables</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">variable_name</span><span class="p">,</span> <span class="n">variable_instance</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_independent_variables</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="p">):</span>
+
+                <span class="n">v_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+                <span class="c1"># Generate table with only a minimal set of info</span>
+
+                <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+                <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;current value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_instance</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_instance</span><span class="o">.</span><span class="n">unit</span>
+
+                <span class="n">v_dict</span><span class="p">[</span><span class="n">variable_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_dict</span>
+
+                <span class="n">this_v_frame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">v_dict</span><span class="p">)</span>
+
+                <span class="n">independent_v_frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_v_frame</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># No independent variables</span>
+
+            <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">rich_output</span><span class="p">:</span>
+
+            <span class="n">source_summary_representation</span> <span class="o">=</span> <span class="n">sources_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">free_parameters_summary</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+
+                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="n">free_parameters_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">linked_summary_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">linked_summary_representation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="k">for</span> <span class="n">linked_frame</span> <span class="ow">in</span> <span class="n">linked_frames</span><span class="p">:</span>
+
+                    <span class="n">linked_summary_representation</span> <span class="o">+=</span> <span class="n">linked_frame</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
+                    <span class="n">linked_summary_representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">independent_v_frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">independent_v_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">independent_v_representation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="k">for</span> <span class="n">v_frame</span> <span class="ow">in</span> <span class="n">independent_v_frames</span><span class="p">:</span>
+
+                    <span class="n">independent_v_representation</span> <span class="o">+=</span> <span class="n">v_frame</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
+                    <span class="n">independent_v_representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+            <span class="k">if</span> <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+
+                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">source_summary_representation</span> <span class="o">=</span> <span class="n">sources_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">free_parameters_summary</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+
+                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="n">free_parameters_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">linked_summary_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">linked_summary_representation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="k">for</span> <span class="n">linked_frame</span> <span class="ow">in</span> <span class="n">linked_frames</span><span class="p">:</span>
+
+                    <span class="n">linked_summary_representation</span> <span class="o">+=</span> <span class="n">linked_frame</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+                    <span class="n">linked_summary_representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">independent_v_frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                <span class="n">independent_v_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">independent_v_representation</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+                <span class="k">for</span> <span class="n">v_frame</span> <span class="ow">in</span> <span class="n">independent_v_frames</span><span class="p">:</span>
+
+                    <span class="n">independent_v_representation</span> <span class="o">+=</span> <span class="n">v_frame</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+                    <span class="n">independent_v_representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+
+                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="n">empty_frame</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
+
+        <span class="c1"># Build the representation</span>
+
+        <span class="n">representation</span> <span class="o">=</span> <span class="s2">&quot;Model summary:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rich_output</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;==============</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="c1"># Summary on sources</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">source_summary_representation</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="c1"># Free parameters</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">Free parameters (</span><span class="si">%i</span><span class="s2">):</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">new_line</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">free_parameters</span><span class="p">),</span>
+            <span class="n">new_line</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rich_output</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;--------------------</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">free_parameters_representation</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="c1"># Fixed parameters</span>
+
+        <span class="n">n_fix</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_parameters</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_parameters</span><span class="p">)</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">Fixed parameters (</span><span class="si">%i</span><span class="s2">):</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">n_fix</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_display</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">rich_output</span><span class="p">:</span>
+
+                <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;---------------------</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="n">fixed_parameters_representation</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="s2">&quot;(abridged. Use complete=True to see all fixed parameters)</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">new_line</span>
+            <span class="p">)</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="c1"># Linked parameters</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">Linked parameters (</span><span class="si">%i</span><span class="s2">):</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">new_line</span><span class="p">,</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">linked_parameters</span><span class="p">),</span>
+            <span class="n">new_line</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rich_output</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;----------------------</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">linked_summary_representation</span>
+
+        <span class="c1"># Independent variables</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">Independent variables:</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">rich_output</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;----------------------</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">new_line</span><span class="p">,</span> <span class="n">new_line</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
+
+        <span class="n">representation</span> <span class="o">+=</span> <span class="n">independent_v_representation</span>
+
+        <span class="k">return</span> <span class="n">representation</span>
+
+<div class="viewcode-block" id="Model.to_dict_with_types"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.to_dict_with_types">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict_with_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Get the serialization dictionary</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+        <span class="c1"># Add the types to the sources</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+
+            <span class="k">try</span><span class="p">:</span>
+
+                <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Source </span><span class="si">%s</span><span class="s2"> is unknown&quot;</span> <span class="o">%</span> <span class="n">key</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># There are three possible cases. Either the element is a source, or it is an independent</span>
+                <span class="c1"># variable, or a parameter</span>
+
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;source_type&quot;</span><span class="p">):</span>
+
+                    <span class="c1"># Change the name of the key adding the source type</span>
+
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">source_type</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">IndependentVariable</span><span class="p">):</span>
+
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;IndependentVariable&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
+
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;Parameter&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+
+                    <span class="k">raise</span> <span class="n">ModelInternalError</span><span class="p">(</span><span class="s2">&quot;Found an unknown class at the top level&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="Model.save"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Save the model to disk&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="n">ModelFileExists</span><span class="p">(</span>
+                <span class="s2">&quot;The file </span><span class="si">%s</span><span class="s2"> exists already. If you want to overwrite it, use the &#39;overwrite=True&#39; &quot;</span>
+                <span class="s2">&quot;options as &#39;model.save(</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">, overwrite=True)&#39;. &quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict_with_types</span><span class="p">()</span>
+
+            <span class="c1"># Write it to disk</span>
+
+            <span class="k">try</span><span class="p">:</span>
+
+                <span class="c1"># Get the YAML representation of the data</span>
+
+                <span class="n">representation</span> <span class="o">=</span> <span class="n">my_yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+
+                    <span class="c1"># Add a new line at the end of each voice (just for clarity)</span>
+
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">representation</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">))</span>
+
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+
+                <span class="k">raise</span> <span class="n">CannotWriteModel</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output_file</span><span class="p">)),</span>
+                    <span class="s2">&quot;Could not write model file </span><span class="si">%s</span><span class="s2">. Check your permissions to write or the &quot;</span>
+                    <span class="s2">&quot;report on the free space which follows: &quot;</span> <span class="o">%</span> <span class="n">output_file</span><span class="p">,</span>
+                <span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_number_of_point_sources"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_number_of_point_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_point_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span><span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the number of point sources</span>
+
+<span class="sd">        :return: number of point sources</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_point_source_position"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_point_source_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_point_source_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the point source position (R.A., Dec)</span>
+
+<span class="sd">        :param id: id of the source</span>
+<span class="sd">        :return: a tuple with R.A. and Dec.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">pts</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_ra</span><span class="p">(),</span> <span class="n">pts</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_dec</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Model.get_point_source_fluxes"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_point_source_fluxes">[docs]</a>    <span class="k">def</span> <span class="nf">get_point_source_fluxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the fluxes from the id-th point source</span>
+
+<span class="sd">        :param id: id of the source</span>
+<span class="sd">        :param energies: energies at which you need the flux</span>
+<span class="sd">        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this</span>
+<span class="sd">        parameter is specified then the returned value will be the average flux for the source computed as the integral</span>
+<span class="sd">        between a and b over the integration variable divided by (b-a). The integration variable must be an independent</span>
+<span class="sd">        variable contained in the model. If b is None, then instead of integrating the integration variable will be</span>
+<span class="sd">        set to a and the model evaluated in a.</span>
+<span class="sd">        :return: fluxes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span><span class="n">energies</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_point_source_name"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_point_source_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_point_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="Model.get_number_of_extended_sources"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_number_of_extended_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_extended_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the number of extended sources</span>
+
+<span class="sd">        :return: number of extended sources</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_extended_source_fluxes"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_fluxes">[docs]</a>    <span class="k">def</span> <span class="nf">get_extended_source_fluxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the flux of the id-th extended sources at the given position at the given energies</span>
+
+<span class="sd">        :param id: id of the source</span>
+<span class="sd">        :param j2000_ra: R.A. where the flux is desired</span>
+<span class="sd">        :param j2000_dec: Dec. where the flux is desired</span>
+<span class="sd">        :param energies: energies at which the flux is desired</span>
+<span class="sd">        :return: flux array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span><span class="n">j2000_ra</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">,</span> <span class="n">energies</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_extended_source_name"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_extended_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the name of the n-th extended source</span>
+
+<span class="sd">        :param id: id of the source (integer)</span>
+<span class="sd">        :return: the name of the id-th source</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="Model.get_extended_source_boundaries"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_extended_source_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+
+        <span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">),</span> <span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span>
+            <span class="nb">id</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">,</span> <span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span></div>
+
+<div class="viewcode-block" id="Model.is_inside_any_extended_source"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.is_inside_any_extended_source">[docs]</a>    <span class="k">def</span> <span class="nf">is_inside_any_extended_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+
+        <span class="k">for</span> <span class="n">ext_source</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+            <span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">),</span> <span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">)</span> <span class="o">=</span> <span class="n">ext_source</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span>
+
+            <span class="c1"># Transform from the 0...360 convention to the -180..180 convention, so that</span>
+            <span class="c1"># the comparison is easier</span>
+            <span class="k">if</span> <span class="n">ra_min</span> <span class="o">&gt;</span> <span class="mi">180</span><span class="p">:</span>
+
+                <span class="n">ra_min</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mi">360</span> <span class="o">-</span> <span class="n">ra_min</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">ra_min</span> <span class="o">&lt;=</span> <span class="n">j2000_ra</span> <span class="o">&lt;=</span> <span class="n">ra_max</span> <span class="ow">and</span> <span class="n">dec_min</span> <span class="o">&lt;=</span> <span class="n">j2000_dec</span> <span class="o">&lt;=</span> <span class="n">dec_max</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># If we are here, it means that no extended source contains the provided coordinates</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Model.get_number_of_particle_sources"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_number_of_particle_sources">[docs]</a>    <span class="k">def</span> <span class="nf">get_number_of_particle_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the number of particle sources</span>
+
+<span class="sd">        :return: number of particle sources</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_particle_source_fluxes"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_fluxes">[docs]</a>    <span class="k">def</span> <span class="nf">get_particle_source_fluxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the fluxes from the id-th point source</span>
+
+<span class="sd">        :param id: id of the source</span>
+<span class="sd">        :param energies: energies at which you need the flux</span>
+<span class="sd">        :return: fluxes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span><span class="n">energies</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Model.get_particle_source_name"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_particle_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="Model.get_total_flux"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_total_flux">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the total differential flux at the provided energies from all *point* sources</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fluxes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">src</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">:</span>
+
+            <span class="n">fluxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">[</span><span class="n">src</span><span class="p">](</span><span class="n">energies</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">fluxes</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

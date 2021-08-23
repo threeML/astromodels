@@ -1,0 +1,727 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.functions.functions_1D.absorption &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <link rel="stylesheet" href="../../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.functions.functions_1D.absorption</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.functions.functions_1D.absorption</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils</span> <span class="kn">import</span> <span class="n">_get_data_file_path</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.configuration</span> <span class="kn">import</span> <span class="n">astromodels_config</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+
+    <span class="c1"># ebltable is a Python packages to read in and interpolate tables for the photon density of</span>
+    <span class="c1"># the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma</span>
+    <span class="c1"># rays.</span>
+
+    <span class="kn">import</span> <span class="nn">ebltable.tau_from_model</span> <span class="k">as</span> <span class="nn">ebltau</span>
+
+    <span class="n">has_ebltable</span> <span class="o">=</span> <span class="kc">True</span>
+
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+
+    <span class="k">if</span> <span class="n">astromodels_config</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">startup_warnings</span><span class="p">:</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;The ebltable package is not available. Models that depend on it will not be available&quot;</span>
+        <span class="p">)</span>
+
+    <span class="n">has_ebltable</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="EBLTableNotAvailable"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLTableNotAvailable">[docs]</a><span class="k">class</span> <span class="nc">EBLTableNotAvailable</span><span class="p">(</span><span class="ne">ImportWarning</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="InvalidUsageForFunction"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a><span class="k">class</span> <span class="nc">InvalidUsageForFunction</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="AbundanceTable"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">AbundanceTable</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tables</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">_current_table</span><span class="p">:</span> <span class="nb">str</span>
+
+<div class="viewcode-block" id="AbundanceTable.set_table"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>    <span class="k">def</span> <span class="nf">set_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        set the current table from AG89, WILM or ASPL</span>
+
+<span class="sd">        :param table: </span>
+<span class="sd">        :type table: str</span>
+<span class="sd">        :returns: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        
+        
+        <span class="n">old_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span> <span class="o">=</span> <span class="n">table</span>
+        
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_table</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tables</span><span class="p">:</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> does not contain </span><span class="si">{</span><span class="n">table</span><span class="si">}</span><span class="s2"> choose </span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span> <span class="o">=</span> <span class="n">old_table</span>
+            
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span></div>
+            
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="n">convert</span><span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;AG89&quot;</span><span class="p">:</span> <span class="s2">&quot;angr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;ASPL&quot;</span><span class="p">:</span> <span class="s2">&quot;aspl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;WILM&quot;</span><span class="p">:</span> <span class="s2">&quot;wilm&quot;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">convert</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span><span class="p">]</span>
+        
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="n">_abund_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">_abund_info</span><span class="p">[</span><span class="s2">&quot;WILM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;wilms</span><span class="se">\n</span><span class="s2">from Wilms, Allen &amp; McCray (2000), ApJ 542, 914 </span><span class="se">\n</span><span class="s2"> except for elements not listed which are given zero abundance)</span><span class="se">\n</span><span class="s2"> https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html &quot;</span>
+        <span class="n">_abund_info</span><span class="p">[</span><span class="s2">&quot;AG89&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;angr</span><span class="se">\n</span><span class="s2">from Anders E. &amp; Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)</span><span class="se">\n</span><span class="s2"> https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html&quot;</span>
+        <span class="n">_abund_info</span><span class="p">[</span><span class="s2">&quot;ASPL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;aspl</span><span class="se">\n</span><span class="s2">from Asplund M., Grevesse N., Sauval A.J. &amp; Scott P. (2009, ARAA, 47, 481)</span><span class="se">\n</span><span class="s2">https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html&quot;</span>
+
+        <span class="k">return</span> <span class="n">_abund_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">xsect_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        returns the XSECT table for the current model</span>
+
+<span class="sd">        :returns: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span>
+        <span class="s2">&quot;xsect&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;xsect_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_table</span><span class="si">}</span><span class="s2">.fits&quot;</span>
+
+        <span class="n">path_to_xsect</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="n">_path</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">path_to_xsect</span><span class="p">)</span> <span class="k">as</span> <span class="n">fxs</span><span class="p">:</span>
+
+            <span class="n">dxs</span> <span class="o">=</span> <span class="n">fxs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">xsect_ene</span> <span class="o">=</span> <span class="n">dxs</span><span class="p">[</span><span class="s2">&quot;ENERGY&quot;</span><span class="p">]</span>
+            <span class="n">xsect_val</span> <span class="o">=</span> <span class="n">dxs</span><span class="p">[</span><span class="s2">&quot;SIGMA&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xsect_val</span><span class="p">,</span>
+                                                           <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span></div>
+
+
+        
+<span class="n">phabs</span> <span class="o">=</span> <span class="n">AbundanceTable</span><span class="p">(</span><span class="s2">&quot;phabs&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;angr&quot;</span><span class="p">,</span><span class="s2">&quot;aspl&quot;</span><span class="p">],</span> <span class="s2">&quot;AG89&quot;</span><span class="p">)</span>
+<span class="n">tbabs</span> <span class="o">=</span> <span class="n">AbundanceTable</span><span class="p">(</span><span class="s2">&quot;tbabs&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;angr&quot;</span><span class="p">,</span><span class="s2">&quot;aspl&quot;</span><span class="p">,</span><span class="s2">&quot;wilm&quot;</span><span class="p">],</span> <span class="s2">&quot;WILM&quot;</span><span class="p">)</span>
+<span class="n">wabs</span> <span class="o">=</span> <span class="n">AbundanceTable</span><span class="p">(</span><span class="s2">&quot;wabs&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;angr&quot;</span><span class="p">],</span> <span class="s2">&quot;AG89&quot;</span><span class="p">)</span>
+    
+
+
+<span class="c1"># PhAbs class</span>
+
+
+<div class="viewcode-block" id="PhAbs"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs">[docs]</a><span class="k">class</span> <span class="nc">PhAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        Photometric absorption (phabs implementation), f(E) = exp(- NH * sigma(E))</span>
+<span class="sd">        contributed by Dominique Eckert</span>
+<span class="sd">    parameters :</span>
+<span class="sd">        NH :</span>
+<span class="sd">            desc : absorbing column density in units of 1e22 particles per cm^2</span>
+<span class="sd">            initial value : 1.0</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            transformation : log10</span>
+<span class="sd">            min : 1e-4</span>
+<span class="sd">            max : 1e4</span>
+<span class="sd">            delta : 0.1</span>
+
+<span class="sd">        redshift :</span>
+<span class="sd">            desc : the redshift of the source</span>
+<span class="sd">            initial value : 0.</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            min : 0</span>
+<span class="sd">            max : 15</span>
+<span class="sd">            delta : 0.1</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_units</span> <span class="o">=</span> <span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">keV</span><span class="p">,</span>
+                             <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_xsect</span><span class="p">(</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">phabs_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NH</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+<div class="viewcode-block" id="PhAbs.init_xsect"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abund_table</span><span class="o">=</span><span class="s2">&quot;AG89&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the abundance table</span>
+
+<span class="sd">        :param abund_table: &quot;ASPL&quot;, &quot;AG89&quot; </span>
+<span class="sd">        :returns: </span>
+<span class="sd">        :rtype: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># load cross section data</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">phabs</span><span class="o">.</span><span class="n">set_table</span><span class="p">(</span><span class="n">abund_table</span><span class="p">)</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;phabs model set to </span><span class="si">{</span><span class="n">abund_table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">except</span><span class="p">:</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;defaulting to </span><span class="si">{</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">phabs_table</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">phabs</span><span class="o">.</span><span class="n">set_table</span><span class="p">(</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">phabs_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">phabs</span><span class="o">.</span><span class="n">xsect_table</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">abundance_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">phabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+
+        
+<div class="viewcode-block" id="PhAbs.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span>
+                              <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+
+        <span class="c1"># evaluate the exponential with numba</span>
+        
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="n">NH</span><span class="p">,</span> <span class="n">xsect_interp</span><span class="p">)</span> <span class="o">*</span> <span class="n">_y_unit</span>
+        
+        <span class="k">return</span> <span class="n">spec</span></div></div>
+
+
+<span class="c1"># TbAbs class</span>
+
+
+<div class="viewcode-block" id="TbAbs"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs">[docs]</a><span class="k">class</span> <span class="nc">TbAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        Photometric absorption (Tbabs implementation), f(E) = exp(- NH * sigma(E))</span>
+<span class="sd">        contributed by Dominique Eckert</span>
+<span class="sd">    parameters :</span>
+<span class="sd">        NH :</span>
+<span class="sd">            desc : absorbing column density in units of 1e22 particles per cm^2</span>
+<span class="sd">            initial value : 1.0</span>
+<span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
+<span class="sd">            min : 1e-4</span>
+<span class="sd">            max : 1e4</span>
+<span class="sd">            delta : 0.1</span>
+
+<span class="sd">        redshift :</span>
+<span class="sd">            desc : the redshift of the source</span>
+<span class="sd">            initial value : 0.</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            min : 0</span>
+<span class="sd">            max : 15</span>
+<span class="sd">            delta : 0.1</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_xsect</span><span class="p">(</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">tbabs_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_units</span> <span class="o">=</span> <span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">keV</span><span class="p">,</span>
+                             <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">NH</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+<div class="viewcode-block" id="TbAbs.init_xsect"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">abund_table</span><span class="o">=</span><span class="s2">&quot;WILM&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the abundance table</span>
+
+<span class="sd">        :param abund_table: &quot;WILM&quot;, &quot;ASPL&quot;, &quot;AG89&quot; </span>
+<span class="sd">        :returns: </span>
+<span class="sd">        :rtype: </span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tbabs</span><span class="o">.</span><span class="n">set_table</span><span class="p">(</span><span class="n">abund_table</span><span class="p">)</span>
+            
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tbabs model set to </span><span class="si">{</span><span class="n">abund_table</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            
+        <span class="k">except</span><span class="p">:</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;defaulting to </span><span class="si">{</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">tbabs_table</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="n">tbabs</span><span class="o">.</span><span class="n">set_table</span><span class="p">(</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">tbabs_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">tbabs</span><span class="o">.</span><span class="n">xsect_table</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">abundance_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">tbabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TbAbs.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span>
+                              <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="n">NH</span><span class="p">,</span> <span class="n">xsect_interp</span><span class="p">)</span> <span class="o">*</span> <span class="n">_y_unit</span>
+
+        <span class="k">return</span> <span class="n">spec</span></div></div>
+
+
+<span class="c1"># WAbs class</span>
+
+
+<div class="viewcode-block" id="WAbs"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs">[docs]</a><span class="k">class</span> <span class="nc">WAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E))</span>
+<span class="sd">        contributed by Dominique Eckert</span>
+<span class="sd">    parameters :</span>
+<span class="sd">        NH :</span>
+<span class="sd">            desc : absorbing column density in units of 1e22 particles per cm^2</span>
+<span class="sd">            initial value : 1.0</span>
+<span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
+<span class="sd">            min : 1e-4</span>
+<span class="sd">            max : 1e4</span>
+<span class="sd">            delta : 0.1</span>
+<span class="sd">        redshift :</span>
+<span class="sd">            desc : the redshift of the source</span>
+<span class="sd">            initial value : 0.</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            min : 0</span>
+<span class="sd">            max : 15</span>
+<span class="sd">            delta : 0.1</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_units</span> <span class="o">=</span> <span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">keV</span><span class="p">,</span>
+                             <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_xsect</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NH</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+<div class="viewcode-block" id="WAbs.init_xsect"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.init_xsect">[docs]</a>    <span class="k">def</span> <span class="nf">init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the abundance table</span>
+
+<span class="sd">        :returns:</span>
+<span class="sd">        :rtype:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>            
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">wabs</span><span class="o">.</span><span class="n">xsect_table</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">abundance_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">wabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WAbs.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span>
+                              <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span> <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+
+        <span class="n">spec</span> <span class="o">=</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="n">NH</span><span class="p">,</span><span class="n">xsect_interp</span><span class="p">)</span> <span class="o">*</span> <span class="n">_y_unit</span>
+
+        <span class="k">return</span> <span class="n">spec</span></div></div>
+
+
+
+<span class="k">if</span> <span class="n">has_ebltable</span><span class="p">:</span>
+
+<div class="viewcode-block" id="EBLattenuation"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLattenuation">[docs]</a>    <span class="k">class</span> <span class="nc">EBLattenuation</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        description :</span>
+<span class="sd">            Attenuation factor for absorption in the extragalactic background light (EBL) ,</span>
+<span class="sd">            to be used for extragalactic source spectra. Based on package &quot;ebltable&quot; by</span>
+<span class="sd">            Manuel Meyer, https://github.com/me-manu/ebltable .</span>
+
+<span class="sd">        latex: not available</span>
+
+<span class="sd">        parameters :</span>
+
+<span class="sd">          redshift :</span>
+<span class="sd">                desc : redshift of the source</span>
+<span class="sd">                initial value : 1.0</span>
+<span class="sd">                fix : yes</span>
+
+<span class="sd">          attenuation :</span>
+<span class="sd">                desc : scaling factor for the strength of attenuation</span>
+<span class="sd">                initial value : 1.0</span>
+<span class="sd">                min : 0.0</span>
+<span class="sd">                max : 10.0</span>
+<span class="sd">                fix : yes</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+            <span class="c1"># define EBL model, use dominguez as default</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tau</span> <span class="o">=</span> <span class="n">ebltau</span><span class="o">.</span><span class="n">OptDepth</span><span class="o">.</span><span class="n">readmodel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">absorption_models</span><span class="o">.</span><span class="n">ebl_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EBLattenuation.set_ebl_model"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLattenuation.set_ebl_model">[docs]</a>        <span class="k">def</span> <span class="nf">set_ebl_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modelname</span><span class="p">):</span>
+
+            <span class="c1"># passing modelname to ebltable, which will check if defined</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tau</span> <span class="o">=</span> <span class="n">ebltau</span><span class="o">.</span><span class="n">OptDepth</span><span class="o">.</span><span class="n">readmodel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">modelname</span><span class="p">)</span></div>
+
+        <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="s2">&quot;physical_type&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="s2">&quot;energy&quot;</span><span class="p">:</span>
+
+                <span class="c1"># x should be energy</span>
+                <span class="k">raise</span> <span class="n">InvalidUsageForFunction</span><span class="p">(</span>
+                    <span class="s2">&quot;Unit for x is not an energy. The function &quot;</span>
+                    <span class="s2">&quot;EBLOptDepth calculates energy-dependent &quot;</span>
+                    <span class="s2">&quot;absorption.&quot;</span>
+                <span class="p">)</span>
+
+            <span class="c1"># y should be dimensionless</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">y_unit</span><span class="p">,</span> <span class="s2">&quot;physical_type&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">y_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="s2">&quot;dimensionless&quot;</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="n">InvalidUsageForFunction</span><span class="p">(</span>
+                    <span class="s2">&quot;Unit for y is not dimensionless.&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attenuation</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+<div class="viewcode-block" id="EBLattenuation.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLattenuation.evaluate">[docs]</a>        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">redshift</span><span class="p">,</span> <span class="n">attenuation</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+                <span class="c1"># ebltable expects TeV</span>
+                <span class="n">eTeV</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">TeV</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+                <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">_attenuation</span> <span class="o">=</span> <span class="n">attenuation</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># otherwise it&#39;s in keV</span>
+                <span class="n">eTeV</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="mf">1.e9</span>
+
+                <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.</span>
+                <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
+                <span class="n">_attenuation</span> <span class="o">=</span> <span class="n">attenuation</span>
+                
+                
+            <span class="k">return</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tau</span><span class="o">.</span><span class="n">opt_depth</span><span class="p">(</span><span class="n">_redshift</span><span class="p">,</span> <span class="n">eTeV</span><span class="p">),</span> <span class="n">_attenuation</span><span class="p">)</span> <span class="o">*</span> <span class="n">_unit</span></div></div>
+
+
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
+<span class="k">def</span> <span class="nf">_exp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_numba_eval</span><span class="p">(</span><span class="n">nh</span><span class="p">,</span> <span class="n">xsect_interp</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="n">_exp</span><span class="p">(</span><span class="o">-</span><span class="n">nh</span> <span class="o">*</span> <span class="n">xsect_interp</span> <span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

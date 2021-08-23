@@ -225,11 +225,124 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="astromodels-functions-dark-matter-dm-models-module">
-<h2>astromodels.functions.dark_matter.dm_models module<a class="headerlink" href="#astromodels-functions-dark-matter-dm-models-module" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-astromodels.functions.dark_matter.dm_models">
+<span id="astromodels-functions-dark-matter-dm-models-module"></span><h2>astromodels.functions.dark_matter.dm_models module<a class="headerlink" href="#module-astromodels.functions.dark_matter.dm_models" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMFitFunction">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.dark_matter.dm_models.</span></span><span class="sig-name descname"><span class="pre">DMFitFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/dark_matter/dm_models.html#DMFitFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMFitFunction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">astromodels.functions.function.Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Class that evaluates the spectrum for a DM particle of a given
+mass, channel, cross section, and J-factor. Based on standard
+Fermi Science Tools function DMFitFunction. Note input table only
+calculated spectra up to m_DM of 10 TeV</p>
+<p>The parameterization is given by</p>
+<p>F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)</p>
+</div></blockquote>
+<p>latex : $$</p>
+<p>parameters :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>mass :</dt><dd><p>desc : DM mass (GeV)
+initial value : 10
+fix : yes</p>
+</dd>
+<dt>channel :</dt><dd><p>desc : DM annihilation channel
+initial value : 4
+fix : yes</p>
+</dd>
+<dt>sigmav :</dt><dd><p>desc : DM annihilation cross section (cm^3/s)
+initial value : 1.e-26</p>
+</dd>
+<dt>J :</dt><dd><p>desc : Target total J-factor (GeV^2 cm^-5)
+initial value : 1.e20
+fix : yes</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMFitFunction.print_channel_mapping">
+<span class="sig-name descname"><span class="pre">print_channel_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/dark_matter/dm_models.html#DMFitFunction.print_channel_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMFitFunction.print_channel_mapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMFitFunction.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmav</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/dark_matter/dm_models.html#DMFitFunction.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMFitFunction.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMFitFunction.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMFitFunction.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMFitFunction.info">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMFitFunction.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMSpectra">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.dark_matter.dm_models.</span></span><span class="sig-name descname"><span class="pre">DMSpectra</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/dark_matter/dm_models.html#DMSpectra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMSpectra" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">astromodels.functions.function.Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Class that evaluates the spectrum for a DM particle of a given
+mass, channel, cross section, and J-factor. Combines Pythia-based tables
+from both Fermi (2 GeV &lt; m_DM &lt; 10 TeV) and HAWC (10 TeV &lt; m_dm &lt; 1 PeV)</p>
+<p>The parameterization is given by</p>
+<p>F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)</p>
+<p>Note that this class assumes that mass and J-factor are provided
+in units of GeV and GeV^2 cm^-5</p>
+</div></blockquote>
+<p>latex : $$</p>
+<p>parameters :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>mass :</dt><dd><p>desc : DM mass (GeV)
+initial value : 10
+fix : yes</p>
+</dd>
+<dt>channel :</dt><dd><p>desc : DM annihilation channel
+initial value : 4
+fix : yes</p>
+</dd>
+<dt>sigmav :</dt><dd><p>desc : DM annihilation cross section (cm^3/s)
+initial value : 1.e-26</p>
+</dd>
+<dt>J :</dt><dd><p>desc : Target total J-factor (GeV^2 cm^-5)
+initial value : 1.e20
+fix : yes</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMSpectra.print_channel_mapping">
+<span class="sig-name descname"><span class="pre">print_channel_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/dark_matter/dm_models.html#DMSpectra.print_channel_mapping"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMSpectra.print_channel_mapping" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMSpectra.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mass</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigmav</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">J</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/dark_matter/dm_models.html#DMSpectra.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMSpectra.evaluate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMSpectra.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMSpectra.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.dark_matter.dm_models.DMSpectra.info">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.dark_matter.dm_models.DMSpectra.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="module-contents">
-<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-astromodels.functions.dark_matter">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-astromodels.functions.dark_matter" title="Permalink to this headline">¶</a></h2>
 </div>
 </div>
 

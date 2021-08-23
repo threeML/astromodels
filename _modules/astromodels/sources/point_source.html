@@ -1,0 +1,578 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.sources.point_source &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.sources.point_source</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.sources.point_source</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span>
+<span class="kn">from</span> <span class="nn">past.utils</span> <span class="kn">import</span> <span class="n">old_div</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.core.memoization</span> <span class="kn">import</span> <span class="n">use_astromodels_memoization</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.parameter</span> <span class="kn">import</span> <span class="n">Parameter</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.sky_direction</span> <span class="kn">import</span> <span class="n">SkyDirection</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.spectral_component</span> <span class="kn">import</span> <span class="n">SpectralComponent</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.tree</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.units</span> <span class="kn">import</span> <span class="n">get_units</span>
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span>
+<span class="kn">from</span> <span class="nn">astromodels.sources.source</span> <span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">SourceType</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.pretty_list</span> <span class="kn">import</span> <span class="n">dict_to_list</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;giacomov&#39;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PointSource&quot;</span><span class="p">]</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PointSource"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.point_source.PointSource">[docs]</a><span class="k">class</span> <span class="nc">PointSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A point source. You can instance this class in many ways.</span>
+
+<span class="sd">    - with Equatorial position and a function as spectrum (the component will be automatically called &#39;main&#39;)::</span>
+
+<span class="sd">        &gt;&gt;&gt; from astromodels import *</span>
+<span class="sd">        &gt;&gt;&gt; point_source = PointSource(&#39;my_source&#39;, 125.6, -75.3, Powerlaw())</span>
+
+<span class="sd">    - with Galactic position and a function as spectrum (the component will be automatically called &#39;main&#39;)::</span>
+
+<span class="sd">        &gt;&gt;&gt; point_source = PointSource(&#39;my_source&#39;, l=15.67, b=80.75, spectral_shape=Powerlaw())</span>
+
+<span class="sd">    - with Equatorial position or Galactic position and a list of spectral components::</span>
+
+<span class="sd">        &gt;&gt;&gt; c1 = SpectralComponent(&quot;component1&quot;, Powerlaw())</span>
+<span class="sd">        &gt;&gt;&gt; c2 = SpectralComponent(&quot;component2&quot;, Powerlaw())</span>
+<span class="sd">        &gt;&gt;&gt; point_source = PointSource(&quot;test_source&quot;,125.6, -75.3,components=[c1,c2])</span>
+
+<span class="sd">        Or with Galactic position:</span>
+
+<span class="sd">        &gt;&gt;&gt; point_source = PointSource(&quot;test_source&quot;,l=15.67, b=80.75,components=[c1,c2])</span>
+<span class="sd">    </span>
+<span class="sd">    NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)</span>
+<span class="sd">    </span>
+<span class="sd">    :param source_name: name for the source</span>
+<span class="sd">    :param ra: Equatorial J2000 Right Ascension (ICRS)</span>
+<span class="sd">    :param dec: Equatorial J2000 Declination (ICRS)</span>
+<span class="sd">    :param spectral_shape: a 1d function representing the spectral shape of the source</span>
+<span class="sd">    :param l: Galactic latitude</span>
+<span class="sd">    :param b: Galactic longitude</span>
+<span class="sd">    :param components: list of spectral components (instances of SpectralComponent)</span>
+<span class="sd">    :param sky_position: an instance of SkyDirection</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PointSource.__init__"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.point_source.PointSource.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">ra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">dec</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">spectral_shape</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Function1D</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">l</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">sky_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SkyDirection</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="c1"># Check that we have all the required information</span>
+
+        <span class="c1"># (the &#39;^&#39; operator acts as XOR on booleans)</span>
+
+        <span class="c1"># Check that we have one and only one specification of the position</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">ra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span>
+                <span class="p">(</span><span class="n">l</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span>
+                <span class="p">(</span><span class="n">sky_position</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)):</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;You have to provide one and only one specification for the position&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="c1"># Gather the position</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sky_position</span><span class="p">,</span> <span class="n">SkyDirection</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">ra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">dec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+
+                <span class="c1"># Check that ra and dec are actually numbers</span>
+
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="n">ra</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span>
+                    <span class="n">dec</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;RA and Dec must be numbers. If you are confused by this message, you &quot;</span>
+                                         <span class="s2">&quot;are likely using the constructor in the wrong way. Check the documentation.&quot;</span><span class="p">)</span>
+                    
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+                <span class="n">sky_position</span> <span class="o">=</span> <span class="n">SkyDirection</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">sky_position</span> <span class="o">=</span> <span class="n">SkyDirection</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sky_position</span><span class="p">:</span> <span class="n">SkyDirection</span> <span class="o">=</span> <span class="n">sky_position</span>
+
+        <span class="c1"># Now gather the component(s)</span>
+
+        <span class="c1"># We need either a single component, or a list of components, but not both</span>
+        <span class="c1"># (that&#39;s the ^ symbol)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You have to provide either a single component, or a list of components (but not both).&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="c1"># If the user specified only one component, make a list of one element with a default name (&quot;main&quot;)</span>
+
+        <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
+
+        <span class="n">Source</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">src_type</span><span class="o">=</span><span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">)</span>
+
+        <span class="c1"># A source is also a Node in the tree</span>
+
+        <span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">)</span>
+
+        <span class="c1"># Add the position as a child node, with an explicit name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sky_position</span><span class="p">)</span>
+
+        <span class="c1"># Add a node called &#39;spectrum&#39;</span>
+
+        <span class="n">spectrum_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s1">&#39;spectrum&#39;</span><span class="p">)</span>
+        <span class="n">spectrum_node</span><span class="o">.</span><span class="n">_add_children</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">spectrum_node</span><span class="p">)</span>
+
+        <span class="c1"># Now set the units</span>
+        <span class="c1"># Now sets the units of the parameters for the energy domain</span>
+
+        <span class="n">current_units</span> <span class="o">=</span> <span class="n">get_units</span><span class="p">()</span>
+
+        <span class="c1"># Components in this case have energy as x and differential flux as y</span>
+
+        <span class="n">x_unit</span> <span class="o">=</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span>
+        <span class="n">y_unit</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_units</span><span class="o">.</span><span class="n">energy</span> <span class="o">*</span> <span class="n">current_units</span><span class="o">.</span><span class="n">area</span> <span class="o">*</span> <span class="n">current_units</span><span class="o">.</span><span class="n">time</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Now set the units of the components</span>
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+            <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># No integration nor time-varying or whatever-varying</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+                <span class="c1"># Slow version with units</span>
+
+                <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+
+                <span class="c1"># We need to sum like this (slower) because using np.sum will not preserve the units</span>
+                <span class="c1"># (thanks astropy.units)</span>
+
+                <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># Fast version without units, where x is supposed to be in the same units as currently defined in</span>
+                <span class="c1"># units.get_units()</span>
+
+                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())])</span>
+
+                <span class="k">return</span> <span class="n">_sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># Time-varying or energy-varying or whatever-varying</span>
+
+            <span class="n">integration_variable</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">tag</span>
+
+            <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+                <span class="c1"># Evaluate in a, do not integrate</span>
+
+                <span class="c1"># Suspend memoization because the memoization gets confused when integrating</span>
+                <span class="k">with</span> <span class="n">use_astromodels_memoization</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+
+                    <span class="n">integration_variable</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">a</span>
+
+                    <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">res</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># Integrate between a and b</span>
+
+                <span class="n">integrals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+                <span class="c1"># TODO: implement an integration scheme avoiding the for loop</span>
+
+                <span class="c1"># Suspend memoization because the memoization gets confused when integrating</span>
+                <span class="k">with</span> <span class="n">use_astromodels_memoization</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
+
+                    <span class="n">reentrant_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span>
+
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+
+                        <span class="k">def</span> <span class="nf">integral</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+
+                            <span class="n">integration_variable</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">y</span>
+
+                            <span class="k">return</span> <span class="n">reentrant_call</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+                        <span class="c1"># Now integrate</span>
+                        <span class="n">integrals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="n">integral</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">epsrel</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">return</span> <span class="n">old_div</span><span class="p">(</span><span class="n">integrals</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">))</span>
+
+<div class="viewcode-block" id="PointSource.has_free_parameters"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.point_source.PointSource.has_free_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True or False whether there is any parameter in this source</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+                <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">free</span><span class="p">:</span>
+
+                    <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+            <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">free</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary of free parameters for this source.</span>
+<span class="sd">        We use the parameter path as the key because it&#39;s </span>
+<span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">free_parameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+                <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">free</span><span class="p">:</span>
+
+                    <span class="n">free_parameters</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span>
+
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+
+            <span class="k">if</span> <span class="n">par</span><span class="o">.</span><span class="n">free</span><span class="p">:</span>
+
+                <span class="n">free_parameters</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span>
+
+        <span class="k">return</span> <span class="n">free_parameters</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary of all parameters for this source.</span>
+<span class="sd">        We use the parameter path as the key because it&#39;s </span>
+<span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">all_parameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+
+            <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+
+                <span class="n">all_parameters</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span>
+
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+
+            <span class="n">all_parameters</span><span class="p">[</span><span class="n">par</span><span class="o">.</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">par</span>
+
+        <span class="k">return</span> <span class="n">all_parameters</span>
+
+<div class="viewcode-block" id="PointSource._repr__base"><a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.point_source.PointSource._repr__base">[docs]</a>    <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Representation of the object</span>
+
+<span class="sd">        :param rich_output: if True, generates HTML, otherwise text</span>
+<span class="sd">        :return: the representation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Make a dictionary which will then be transformed in a list</span>
+
+        <span class="n">repr_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="n">key</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> (point source)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sky_position</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;spectrum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+            <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;spectrum&#39;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="n">repr_dict</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">)</span></div></div>
+
+
+
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_sum</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

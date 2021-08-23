@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.functions.functions_1D.polynomials &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <link rel="stylesheet" href="../../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.functions.functions_1D.polynomials</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.functions.functions_1D.polynomials</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">past.utils</span> <span class="kn">import</span> <span class="n">old_div</span>
+
+<span class="kn">import</span> <span class="nn">astromodels.functions.numba_functions</span> <span class="k">as</span> <span class="nn">nb_func</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.units</span> <span class="kn">import</span> <span class="n">get_units</span>
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span><span class="p">,</span>
+                                            <span class="n">ModelAssertionViolation</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_polynomial"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.get_polynomial">[docs]</a><span class="k">def</span> <span class="nf">get_polynomial</span><span class="p">(</span><span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Function1D</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    get a polynomial function of order</span>
+
+<span class="sd">    :param order: the order of the polynomical</span>
+<span class="sd">    :type order: int</span>
+<span class="sd">    :returns: </span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Constant</span><span class="p">(),</span> <span class="n">Line</span><span class="p">(),</span><span class="n">Quadratic</span><span class="p">(),</span> <span class="n">Cubic</span><span class="p">(),</span> <span class="n">Quartic</span><span class="p">()][</span><span class="n">order</span><span class="p">]</span></div>
+    
+    
+    
+    
+
+
+<div class="viewcode-block" id="Constant"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Constant">[docs]</a><span class="k">class</span> <span class="nc">Constant</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        Return k</span>
+
+<span class="sd">    latex : $ k $</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        k :</span>
+
+<span class="sd">            desc : Constant value</span>
+<span class="sd">            initial value : 0</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+<div class="viewcode-block" id="Constant.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Constant.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="Line"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Line">[docs]</a><span class="k">class</span> <span class="nc">Line</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        A linear function</span>
+
+<span class="sd">    latex : $ b * x + a $</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        a :</span>
+
+<span class="sd">            desc :  intercept</span>
+<span class="sd">            initial value : 0</span>
+
+<span class="sd">        b :</span>
+
+<span class="sd">            desc : coeff</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="c1"># a has units of y_unit / x_unit, so that a*x has units of y_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+        <span class="c1"># b has units of y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="n">x_unit</span>
+
+<div class="viewcode-block" id="Line.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Line.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a</span></div></div>
+
+
+<div class="viewcode-block" id="Quadratic"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Quadratic">[docs]</a><span class="k">class</span> <span class="nc">Quadratic</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        A Quadratic function</span>
+
+<span class="sd">    latex : $ a + b \cdot x + c \cdot x^2 $</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        a :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        b :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        c :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="c1"># a has units of y_unit / x_unit, so that a*x has units of y_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+        <span class="c1"># b has units of y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="n">x_unit</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_unit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<div class="viewcode-block" id="Quadratic.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Quadratic.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span></div></div>
+
+
+<div class="viewcode-block" id="Cubic"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cubic">[docs]</a><span class="k">class</span> <span class="nc">Cubic</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        A cubic function</span>
+
+<span class="sd">    latex : $ a + b \cdot x + c \cdot x^2 + d \cdot x^3$</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        a :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        b :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        c :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        d :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="c1"># a has units of y_unit / x_unit, so that a*x has units of y_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+        <span class="c1"># b has units of y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="n">x_unit</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_unit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_unit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span>
+
+<div class="viewcode-block" id="Cubic.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cubic.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x3</span></div></div>
+
+
+<div class="viewcode-block" id="Quartic"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Quartic">[docs]</a><span class="k">class</span> <span class="nc">Quartic</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+
+<span class="sd">        A quartic function</span>
+
+<span class="sd">    latex : $ a + b \cdot x + c \cdot x^2 + d \cdot x^3 + e \cdot x^4$</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        a :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        b :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        c :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        d :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+<span class="sd">        e :</span>
+
+<span class="sd">            desc : coefficient</span>
+<span class="sd">            initial value : 1</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="c1"># a has units of y_unit / x_unit, so that a*x has units of y_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+        <span class="c1"># b has units of y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="n">x_unit</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_unit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">d</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_unit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_unit</span><span class="p">)</span> <span class="o">**</span> <span class="mi">4</span>
+
+<div class="viewcode-block" id="Quartic.evaluate"><a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Quartic.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="n">x4</span> <span class="o">=</span> <span class="n">x3</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x2</span> <span class="o">+</span> <span class="n">d</span> <span class="o">*</span> <span class="n">x3</span> <span class="o">+</span> <span class="n">e</span> <span class="o">*</span> <span class="n">x4</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

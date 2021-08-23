@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.core.polarization &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.core.polarization</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.core.polarization</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;giacomov&#39;</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.core.tree</span> <span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.parameter</span> <span class="kn">import</span> <span class="n">Parameter</span>
+
+
+<div class="viewcode-block" id="Polarization"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Polarization">[docs]</a><span class="k">class</span> <span class="nc">Polarization</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Polarization.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Polarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+
+        <span class="k">assert</span> <span class="n">polarization_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;stokes&#39;</span><span class="p">],</span> <span class="s1">&#39;polarization must be linear or stokes&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_polarization_type</span> <span class="o">=</span> <span class="n">polarization_type</span>
+
+
+        <span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;polarization&#39;</span><span class="p">)</span></div>
+
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_parameter_from_input</span><span class="p">(</span><span class="n">number_or_parameter</span><span class="p">,</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+
+        <span class="c1"># Try to transform it to float, if it works than we transform it to a parameter</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">number_or_parameter</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">number_or_parameter</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">number_or_parameter</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must be either a number or a &quot;</span> \
+                                                               <span class="s2">&quot;parameter instance&quot;</span> <span class="o">%</span> <span class="n">what</span>
+
+            <span class="c1"># So this is a Parameter instance already. Enforce that it has the right maximum and minimum</span>
+
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">number_or_parameter</span>
+
+            <span class="k">assert</span> <span class="n">parameter</span><span class="o">.</span><span class="n">min_value</span> <span class="o">==</span> <span class="n">minimum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must have a minimum of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">minimum</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">parameter</span><span class="o">.</span><span class="n">max_value</span> <span class="o">==</span> <span class="n">maximum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must have a maximum of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># This was a float. Enforce that it has a legal value</span>
+
+            <span class="k">assert</span> <span class="n">minimum</span> <span class="o">&lt;=</span> <span class="n">number_or_parameter</span> <span class="o">&lt;=</span> <span class="n">maximum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> cannot have a value of </span><span class="si">%s</span><span class="s2">, &quot;</span> \
+                                                              <span class="s2">&quot;it must be </span><span class="si">%s</span><span class="s2"> &lt;= </span><span class="si">%s</span><span class="s2"> &lt;= </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">number_or_parameter</span><span class="p">,</span>
+                                                                                             <span class="n">minimum</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">number_or_parameter</span><span class="p">,</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="n">minimum</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="n">maximum</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span> <span class="n">free</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parameter</span></div>
+
+
+<span class="c1"># TODO: add transform between polarizations</span>
+
+<div class="viewcode-block" id="LinearPolarization"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.LinearPolarization">[docs]</a><span class="k">class</span> <span class="nc">LinearPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LinearPolarization.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.LinearPolarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">degree</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Linear parameterization of polarization</span>
+
+<span class="sd">        :param degree: The polarization degree</span>
+<span class="sd">        :param angle: The polarization angle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">LinearPolarization</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">polarization_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+
+        <span class="n">degree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">,</span> <span class="s1">&#39;Polarization degree&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless_unscaled&#39;</span><span class="p">)</span>
+
+        <span class="n">angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="s1">&#39;angle&#39;</span><span class="p">,</span> <span class="s1">&#39;Polarization angle&#39;</span><span class="p">,</span> <span class="s1">&#39;deg&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">degree</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StokesPolarization"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.StokesPolarization">[docs]</a><span class="k">class</span> <span class="nc">StokesPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
+
+<div class="viewcode-block" id="StokesPolarization.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.StokesPolarization.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stokes parameterization of polarization</span>
+
+<span class="sd">        :param I:</span>
+<span class="sd">        :param Q:</span>
+<span class="sd">        :param U:</span>
+<span class="sd">        :param V:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StokesPolarization</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">polarization_type</span><span class="o">=</span><span class="s1">&#39;stokes&#39;</span><span class="p">)</span>
+
+        <span class="c1"># get the parameters set up</span>
+
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;Stokes I&#39;</span><span class="p">)</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;Stokes Q&#39;</span><span class="p">)</span>
+        <span class="n">U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">U</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;Stokes U&#39;</span><span class="p">)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;Stokes V&#39;</span><span class="p">)</span>
+
+        <span class="c1"># add the children</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">Q</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">U</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">V</span><span class="p">)</span></div></div>
+
+
+<span class="c1">#     def to_linear_polarization(self):</span>
+<span class="c1">#         # polarization angle</span>
+<span class="c1"># #        psi = 0.5 * np.arctan2(U_bin, Q_bin)</span>
+<span class="c1">#</span>
+<span class="c1">#         # polarization fraction</span>
+<span class="c1"># #        frac = np.sqrt(Q_bin ** 2 + U_bin ** 2) / I_bin</span>
+<span class="c1">#</span>
+<span class="c1">#         pass</span>
+<span class="c1">#</span>
+<span class="c1">#         #angle = 0.5 * np.arctan2(se)</span>
+<span class="c1">#</span>
+<span class="c1">#</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

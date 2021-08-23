@@ -1,0 +1,549 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>astromodels.core.sky_direction &mdash; Astromodels latest documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Astromodels
+          
+
+          
+            
+            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+  <!--
+  <div class="admonition note">
+    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
+    </p>
+  </div>
+  -->
+  <li id="lightdark-li">
+    <label for="lightdark-checkbox" id="lightdark-label">
+      <input type="checkbox" id="lightdark-checkbox"/>
+      <div class="btn-neutral"></div>
+    </label>
+  </li>
+  
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>astromodels.core.sky_direction</li>
+    
+
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+  <script type="text/javascript" src=../../../_static/custom.js></script>
+  
+           <div itemprop="articleBody">
+            
+  <h1>Source code for astromodels.core.sky_direction</h1><div class="highlight"><pre>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;giacomov&#39;</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">from</span> <span class="nn">astropy</span> <span class="kn">import</span> <span class="n">coordinates</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.core.parameter</span> <span class="kn">import</span> <span class="n">Parameter</span>
+<span class="kn">from</span> <span class="nn">astromodels.core.tree</span> <span class="kn">import</span> <span class="n">Node</span>
+
+
+<div class="viewcode-block" id="WrongCoordinatePair"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.WrongCoordinatePair">[docs]</a><span class="k">class</span> <span class="nc">WrongCoordinatePair</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="IllegalCoordinateValue"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.IllegalCoordinateValue">[docs]</a><span class="k">class</span> <span class="nc">IllegalCoordinateValue</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="WrongCoordinateSystem"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.WrongCoordinateSystem">[docs]</a><span class="k">class</span> <span class="nc">WrongCoordinateSystem</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SkyDirection"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection">[docs]</a><span class="k">class</span> <span class="nc">SkyDirection</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is essentially a wrapper around astropy.coordinates.SkyCoord with a possibility for</span>
+<span class="sd">    being serialized and deserialized with YAML.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SkyDirection.__init__"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="s1">&#39;J2000&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param ra: Right Ascension in degrees</span>
+<span class="sd">        :param dec: Declination in degrees</span>
+<span class="sd">        :param l: Galactic latitude in degrees</span>
+<span class="sd">        :param b: Galactic longitude in degrees</span>
+<span class="sd">        :param equinox: string</span>
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span> <span class="o">=</span> <span class="n">equinox</span>
+
+        <span class="c1"># Create the node</span>
+
+        <span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;position&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Check that we have the right pairs of coordinates</span>
+
+        <span class="k">if</span> <span class="n">ra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># This goes against duck typing, but it is needed to provide a means of initiating this class</span>
+            <span class="c1"># with either Parameter instances or just floats</span>
+
+            <span class="c1"># Try to transform it to float, if it works than we transform it to a parameter</span>
+
+            <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s1">&#39;ra&#39;</span><span class="p">,</span><span class="s1">&#39;Right Ascension&#39;</span><span class="p">)</span>
+
+            <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;dec&#39;</span><span class="p">,</span><span class="s1">&#39;Declination&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">=</span> <span class="s1">&#39;equatorial&#39;</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">ra</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">l</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># This goes against duck typing, but it is needed to provide a means of initiating this class</span>
+            <span class="c1"># with either Parameter instances or just floats</span>
+
+            <span class="c1"># Try to transform it to float, if it works than we transform it to a parameter</span>
+
+            <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">,</span><span class="s1">&#39;Galactic longitude&#39;</span><span class="p">)</span>
+
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;Galactic latitude&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">=</span> <span class="s1">&#39;galactic&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="n">WrongCoordinatePair</span><span class="p">(</span><span class="s2">&quot;You have to specify either (ra, dec) or (l, b).&quot;</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_parameter_from_input</span><span class="p">(</span><span class="n">number_or_parameter</span><span class="p">,</span> <span class="n">minimum</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">desc</span><span class="p">):</span>
+
+        <span class="c1"># Try to transform it to float, if it works than we transform it to a parameter</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">number_or_parameter</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">number_or_parameter</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">number_or_parameter</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">),</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must be either a number or a &quot;</span> \
+                                                               <span class="s2">&quot;parameter instance&quot;</span> <span class="o">%</span> <span class="n">what</span>
+
+            <span class="c1"># So this is a Parameter instance already. Enforce that it has the right maximum and minimum</span>
+
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">number_or_parameter</span>
+
+            <span class="k">assert</span> <span class="n">parameter</span><span class="o">.</span><span class="n">min_value</span> <span class="o">&gt;=</span> <span class="n">minimum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must have a minimum greater than or equal to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">minimum</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">parameter</span><span class="o">.</span><span class="n">max_value</span> <span class="o">&lt;=</span> <span class="n">maximum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must have a maximum less than or equal to </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="c1"># This was a float. Enforce that it has a legal value</span>
+
+            <span class="k">assert</span> <span class="n">minimum</span> <span class="o">&lt;=</span> <span class="n">number_or_parameter</span> <span class="o">&lt;=</span> <span class="n">maximum</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> cannot have a value of </span><span class="si">%s</span><span class="s2">, &quot;</span> \
+                                                              <span class="s2">&quot;it must be </span><span class="si">%s</span><span class="s2"> &lt;= </span><span class="si">%s</span><span class="s2"> &lt;= </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">number_or_parameter</span><span class="p">,</span>
+                                                                                             <span class="n">minimum</span><span class="p">,</span> <span class="n">what</span><span class="p">,</span> <span class="n">maximum</span><span class="p">)</span>
+
+            <span class="n">parameter</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">number_or_parameter</span><span class="p">,</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="n">minimum</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="n">maximum</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;deg&#39;</span><span class="p">,</span> <span class="n">free</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">parameter</span>
+
+<div class="viewcode-block" id="SkyDirection.get_ra"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_ra">[docs]</a>    <span class="k">def</span> <span class="nf">get_ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get R.A. corresponding to the current position (ICRS, J2000)</span>
+
+<span class="sd">        :return: Right Ascension</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+
+            <span class="c1"># Transform from L,B to R.A., Dec</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="SkyDirection.get_dec"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_dec">[docs]</a>    <span class="k">def</span> <span class="nf">get_dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Dec. corresponding to the current position (ICRS, J2000)</span>
+
+<span class="sd">        :return: Declination</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+
+            <span class="c1"># Transform from L,B to R.A., Dec</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="SkyDirection.get_l"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_l">[docs]</a>    <span class="k">def</span> <span class="nf">get_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Galactic Longitude (l) corresponding to the current position</span>
+
+<span class="sd">        :return: Galactic Longitude</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+
+            <span class="c1"># Transform from L,B to R.A., Dec</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;galactic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="SkyDirection.get_b"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get Galactic latitude (b) corresponding to the current position</span>
+
+<span class="sd">        :return: Latitude</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+
+            <span class="c1"># Transform from L,B to R.A., Dec</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;galactic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_sky_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s1">&#39;galactic&#39;</span><span class="p">:</span>
+
+            <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="k">return</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">SkyCoord</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">b</span><span class="p">,</span>
+                                        <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;galactic&#39;</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span><span class="p">,</span>
+                                        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">dec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="k">return</span> <span class="n">coordinates</span><span class="o">.</span><span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">dec</span><span class="p">,</span>
+                                        <span class="n">frame</span><span class="o">=</span><span class="s1">&#39;icrs&#39;</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span><span class="p">,</span>
+                                        <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sky_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an instance of astropy.coordinates.SkyCoord which can be used to make all transformations supported</span>
+<span class="sd">        by it</span>
+
+<span class="sd">        :return: astropy.coordinates.SkyCoord</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_sky_coord</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the dictionary of parameters (either ra,dec or l,b)</span>
+
+<span class="sd">        :return: dictionary of parameters</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s1">&#39;galactic&#39;</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(((</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(((</span><span class="s1">&#39;ra&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;dec&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">equinox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the equinox for the coordinates.</span>
+
+<span class="sd">        :return:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span>
+
+<div class="viewcode-block" id="SkyDirection.to_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s1">&#39;equatorial&#39;</span><span class="p">:</span>
+
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;ra&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;dec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;equinox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;b&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s1">&#39;equinox&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equinox</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="SkyDirection.fix"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.fix">[docs]</a>    <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
+<span class="sd">        has been instanced)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s1">&#39;equatorial&#39;</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="SkyDirection.free"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.free">[docs]</a>    <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Free the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
+<span class="sd">        has been instanced)</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s1">&#39;equatorial&#39;</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="SkyDirection.from_dict"><a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.from_dict">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s1">&#39;equatorial&#39;</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">=</span> <span class="s1">&#39;Sky direction (R.A., Dec.) = (</span><span class="si">%.5f</span><span class="s1">, </span><span class="si">%.5f</span><span class="s1">) (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                                                                 <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                                                                 <span class="bp">self</span><span class="o">.</span><span class="n">equinox</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">representation</span> <span class="o">=</span> <span class="s1">&#39;Sky direction (l, b) = (</span><span class="si">%.5f</span><span class="s1">, </span><span class="si">%.5f</span><span class="s1">) (</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                                                           <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                                                           <span class="bp">self</span><span class="o">.</span><span class="n">equinox</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">representation</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
