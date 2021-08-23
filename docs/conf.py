@@ -93,14 +93,13 @@ sys.path.insert(2, lib_path)
 
 
 
-
 #This must work now
 import node_ctype
 
-print(f" current dir {os.getcwd()}")
-files = [f for f in os.listdir('.') if os.path.isfile(f)]
-for f in files:
-    print(f)
+# print(f" current dir {os.getcwd()}")
+# files = [f for f in os.listdir('.') if os.path.isfile(f)]
+# for f in files:
+#     print(f)
     
 # -- General configuration ---------------------------------------------------
 
@@ -137,7 +136,7 @@ autodoc_default_options = {
 }
 
 
-autodoc_typehints = 'signiture'
+autodoc_typehints = 'signature'
 
 
 # The path where the artifact should be extracted
