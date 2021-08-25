@@ -23,6 +23,7 @@ from astromodels.utils.long_path_formatter import long_path_formatter
 
 log = setup_logger(__name__)
 
+pd.options.display.float_format = '{:.6g}'.format
 
 class ModelFileExists(IOError):
     pass
@@ -634,7 +635,6 @@ class Model(Node):
                     parameter_dict[this_name][key] = d[key]
 
             free_parameters_summary = pd.DataFrame.from_dict(parameter_dict).T
-
             # Re-order it
             free_parameters_summary = free_parameters_summary[
                 ["value", "min_value", "max_value", "unit"]
