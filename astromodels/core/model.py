@@ -17,8 +17,9 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import DuplicatedNode, Node
-from astromodels.functions.function import get_function, Function
-from astromodels.sources import SourceType, Source, PointSource, ExtendedSource, ParticleSource
+from astromodels.functions.function import Function, get_function
+from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
+                                 Source, SourceType)
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.long_path_formatter import long_path_formatter

@@ -42,6 +42,14 @@ DOCS = Path(__file__).parent
 def run_apidoc(app):
     """Generage API documentation"""
     import better_apidoc
+    import pkgutil
+    import sys
+    import os
+
+    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+
+    sys.path.insert(0, os.path.abspath('..'))
+    sys.path.insert(1, os.path.abspath('../astromodels'))
 
     # Add the path to the C extension
     #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
@@ -68,8 +76,9 @@ def run_apidoc(app):
 
 
 # #import astromodels
-# import pkgutil
-# astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+import pkgutil
+
+astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
 # sys.path.insert(1, os.path.abspath('../astromodels'))
 
@@ -134,7 +143,9 @@ rtds_action_error_if_missing = True
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
-source_suffix = ['.rst', '.ipynb']
+
+# see https://github.com/spatialaudio/nbsphinx/issues/595
+source_suffix = ['.rst']
 
 # The master toctree document.
 master_doc = 'index'

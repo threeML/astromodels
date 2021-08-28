@@ -145,6 +145,7 @@ def get_models(model_dat_path):
 
             this_model['parameters'] = collections.OrderedDict()
 
+            
             model_definitions[(model_name, library_function, model_type)] = this_model
 
         else:
@@ -386,8 +387,8 @@ _force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
                           'XS_cabs', 'XS_wabs', 'XS_zwabs'
                           ]
 
-@six.add_metaclass(FunctionMeta)
-class XS_$MODEL_NAME$(Function1D):
+
+class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
 
     """
 $DOCSTRING$
@@ -530,7 +531,8 @@ $DOCSTRING$
     def _set_units(self, x_unit, y_unit):
 
         # Make sure this is an energy
-        assert str(x_unit.physical_type) == 'energy', "Trying to set x-unit with (%s), which is not energy" % (x_unit)
+        #assert str(x_unit.physical_type) == 'energy', "Trying to set x-unit with (%s), which is not energy" % (x_unit)
+        assert 'energy' in str(x_unit.physical_type), "Trying to set x-unit with (%s), which is not energy" % (x_unit)
 
         # Make sure the y_unit is the correct one
         try:
