@@ -1,4 +1,5 @@
-//  Copyright (C) 2007, 2015-2018  Smithsonian Astrophysical Observatory
+//  Copyright (C) 2007, 2015-2018, 2019, 2020
+//      Smithsonian Astrophysical Observatory
 //
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -15,6 +16,7 @@
 //  with this program; if not, write to the Free Software Foundation, Inc.,
 //  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 // INIT_XSPEC is used by xspecmodelfct() in xspec_extension.hh, so it needs to
 // be defined before that file is included
 int _sherpa_init_xspec_library();
@@ -98,16 +100,29 @@ int _sherpa_init_xspec_library();
 // gammap
 // gammq
 //
+
+
+#ifdef XSPEC_12_12_0
+
+
+#include "XSFunctions/funcWrappers.h"
+#include "XSFunctions/Utilities/xsFortran.h"
+
+#else
+
 #include "xsFortran.h"
-
-// TODO: is this defined in an XSPEC header file?
-#define ABUND_SIZE (30) // number of elements in Solar Abundance table
-
 // C_<model> are declared here; the other models are defined in
 // functionMap.h but that requires using the XSPEC build location
 // rather than install location.
 //
 #include "funcWrappers.h"
+
+#endif
+
+
+// TODO: is this defined in an XSPEC header file?
+#define ABUND_SIZE (30) // number of elements in Solar Abundance table
+
 
 extern "C" {
 
@@ -116,22 +131,23 @@ void agnsed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* 
 void qsosed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 #endif
 
+#ifdef XSPEC_12_11_0
+void agnslim_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
 #ifndef XSPEC_12_9_1
 void xsaped_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 #endif
-
-//void xsaped_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-//void xsbape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 
 void xsblbd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbbrd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbmc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 void xsbrms_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 
-//#ifndef XSPEC_12_9_1
-//void xsbvpe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-//#endif
+#ifndef XSPEC_12_9_1
+void xsbvpe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
 
 #ifndef XSPEC_12_10_0
 void c6mekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
@@ -313,14 +329,23 @@ void ismabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* 
 void slimbbmodel(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 #endif
 
-#ifdef XSPEC_12_10_1
-void tdrelline_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void tdrellinelp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void tdrellinelpext_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#ifdef XSPEC_12_11_0
+void ismdust_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+void olivineabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+
+// Note: have dropped the leading 'c_' for this model
+// TODO: should look at whether we want to fix this as now have a
+//       number of c_xxx functions in model.dat
+void beckerwolff(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
 #endif
 
+
 // XSPEC table models; in XSPEC 12.10.1 these have been consolidated
-// into the tabint routine.
+// into the tabint routine, but that is only available to C++, and
+// so is defined in sherpa/include/sherpa/astro/xspec_extension.hh
+// In XSPEC 12.11.0 tabint is available in C scope (but is again
+// defined in xspec_extension.hh as it doesn't need to be visible
+// here).
 //
 #ifndef XSPEC_12_10_1
 void xsatbl(float* ear, int ne, float* param, const char* filenm, int ifl,
@@ -336,9 +361,10 @@ void rgsxsrc_(float* ear, int* ne, float* param, int* ifl, float* photar, float*
 
 #ifdef XSPEC_12_10_1
 void kyconv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void tdrelconv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void tdrelconvlp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void tdrelconvlpext_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+#endif
+
+#ifdef XSPEC_12_11_0
+void thcompf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
 #endif
 
 }
@@ -969,6 +995,10 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_NORM( qsosed, 7 ),
 #endif
 
+#ifdef XSPEC_12_11_0
+  XSPECMODELFCT_NORM( agnslim, 15 ),
+#endif
+
 #ifdef XSPEC_12_9_1
   XSPECMODELFCT_C_NORM( C_apec, 4 ),
   XSPECMODELFCT_C_NORM( C_bapec, 5 ),
@@ -976,7 +1006,6 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_NORM( xsaped, 4 ),
   XSPECMODELFCT_NORM( xsbape, 5 ),
 #endif
-
   XSPECMODELFCT_NORM( xsblbd, 2 ),
   XSPECMODELFCT_NORM( xsbbrd, 2 ),
   XSPECMODELFCT_C_NORM( C_xsbexrav, 10 ),
@@ -1042,6 +1071,11 @@ static PyMethodDef XSpecMethods[] = {
 #endif
   XSPECMODELFCT_NORM( xsgrbm, 4 ),
   XSPECMODELFCT_C_NORM( C_kerrbb, 10 ),
+
+#ifdef XSPEC_12_11_0
+  XSPECMODELFCT_C_NORM( C_zkerrbb, 10 ),
+#endif
+
 #ifdef XSPEC_12_10_0
   /* From an email from Craig Gordon at HEASARC:
      12.10.0 and later: for kerrd call C_kerrd. For earlier versions kerrd should call C_kerrdisk.
@@ -1100,12 +1134,6 @@ static PyMethodDef XSpecMethods[] = {
 #endif
   XSPECMODELFCT_NORM( xredge, 3 ),
   XSPECMODELFCT_NORM( xsrefsch, 14 ),
-
-#ifdef XSPEC_12_10_1
-  XSPECMODELFCT_NORM( tdrelline, 11 ),
-  XSPECMODELFCT_NORM( tdrellinelp, 10 ),
-  XSPECMODELFCT_NORM( tdrellinelpext, 13 ),
-#endif
 
   XSPECMODELFCT_C_NORM( C_sedov, 6 ),
   XSPECMODELFCT_NORM( srcut, 3 ),
@@ -1284,6 +1312,14 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C_NORM( C_vvpshock, 35 ),
   XSPECMODELFCT_C_NORM( C_vvsedov, 35 ),
 
+#ifdef XSPEC_12_11_0
+  // We do not have a direct interface to the c_func routines, so
+  // take advantage of the fact XSPEC provides multiple APIs
+  // and use the C one.
+  // XSPECMODELFCT_C_NORM( c_beckerwolff, 13 ),
+  XSPECMODELFCT_C_NORM( beckerwolff, 13 ),
+#endif
+
   //multiplicative
   XSPECMODELFCT( xsphei, 3 ),
   XSPECMODELFCT( xslyman, 4 ),
@@ -1304,8 +1340,7 @@ static PyMethodDef XSpecMethods[] = {
 #ifdef XSPEC_12_10_0
   XSPECMODELFCT_CON(C_gsmooth, 2),
 #else
-  //XSPECMODELFCT_CON(C_xsgsmt, 2),
-  XSPECMODELFCT_CON(C_gsmooth, 2),
+  XSPECMODELFCT_CON(C_xsgsmt, 2),
 #endif
 
   XSPECMODELFCT_CON(C_ireflct, 7),
@@ -1320,24 +1355,21 @@ static PyMethodDef XSpecMethods[] = {
 #ifdef XSPEC_12_10_0
   XSPECMODELFCT_CON(C_lsmooth, 2),
 #else
-  XSPECMODELFCT_CON(C_lsmooth, 2),
-  //XSPECMODELFCT_CON(C_xslsmt, 2),
+  XSPECMODELFCT_CON(C_xslsmt, 2),
 #endif
 
   XSPECMODELFCT_CON(C_PartialCovering, 1),
   XSPECMODELFCT_CON(C_rdblur, 4),
   XSPECMODELFCT_CON(C_reflct, 5),
 
-#ifdef XSPEC_12_10_1
-  XSPECMODELFCT_CON_F77(tdrelconv, 8),
-  XSPECMODELFCT_CON_F77(tdrelconvlp, 7),
-  XSPECMODELFCT_CON_F77(tdrelconvlpext, 10),
-#endif
-
   XSPECMODELFCT_CON_F77(rgsxsrc, 1),
   XSPECMODELFCT_CON(C_simpl, 3),
   XSPECMODELFCT_CON(C_zashift, 1),
   XSPECMODELFCT_CON(C_zmshift, 1),
+
+#ifdef XSPEC_12_11_0
+  XSPECMODELFCT_CON_F77(thcompf, 4),
+#endif
 
   // Models from 12.9.1
   //
@@ -1352,10 +1384,8 @@ static PyMethodDef XSpecMethods[] = {
 
   XSPECMODELFCT_C_NORM(C_carbatm, 4),
   XSPECMODELFCT_C_NORM(C_hatm, 4),
-#ifdef XSPEC_12_10_0
-  XSPECMODELFCT_NORM(jet, 16),
-#endif
   XSPECMODELFCT(ismabs, 31),
+
   XSPECMODELFCT_C_NORM(slimbbmodel, 10),
   XSPECMODELFCT_C_NORM(C_snapec, 7),
   XSPECMODELFCT_C(C_tbfeo, 4),
@@ -1371,6 +1401,17 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_CON(C_vmshift, 1),
   XSPECMODELFCT_CON(C_xilconv, 6),
   #endif
+
+#ifdef XSPEC_12_10_0
+  XSPECMODELFCT_NORM(jet, 16),
+#endif
+
+#ifdef XSPEC_12_11_0
+  XSPECMODELFCT(ismdust, 3),
+  XSPECMODELFCT(olivineabs, 2),
+  XSPECMODELFCT_C(C_logconst, 1),
+  XSPECMODELFCT_C(C_log10con, 1),
+#endif
 
   { NULL, NULL, 0, NULL }
 
