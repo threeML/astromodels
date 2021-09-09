@@ -207,7 +207,7 @@ def bb_eval(x, K, kT):
 
     return K * x * x / _expm1(x/kT)
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def mbb_eval(x, K, kT):
 
     arg = x/kT
@@ -232,7 +232,7 @@ def mbb_eval(x, K, kT):
 
 
 
-# @nb.njit(fastmath=True, cache=_cache)
+# @nb.njit(fastmath=True, cache=_cache_functions)
 # def bbrad_eval(x, K, kT):
 
 #     n = x.shape[0]
@@ -268,7 +268,7 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
 # def ggrb_int_cpl(a, Ec, Emin, Emax):
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def non_diss_photoshere_generic(x, K, ec, piv, a, b):
 
     log_v = a * _log(x / piv) - _pow(x / ec, b)
@@ -276,7 +276,7 @@ def non_diss_photoshere_generic(x, K, ec, piv, a, b):
     return K * _exp(log_v)
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def dbl_sbpl(x, K, a1, a2, b1, xp, xb, n1, n2, xpiv):
 
     xj = xp * _pow(-(a2 + 2)/ (b1 + 2), 1./((b1 - a2) * n2))

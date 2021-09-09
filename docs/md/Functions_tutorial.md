@@ -227,7 +227,6 @@ To build a custom spectral 1D function in astromodels, we need to import a few t
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
 ```
 
-<!-- #region -->
 ```Function1D``` is the base class for 1D spectral models and ```FunctionMeta``` is a python meta type class that ensures all the needed parts of a model are in the class as well as making the class function as it should.
 
 
@@ -239,7 +238,6 @@ There are three basic parts to declaring a model:
 
 Let's look at the simple case of the power law already define in astromodels.
 
-<!-- #endregion -->
 
 ```python
 class Powerlaw(Function1D, metaclass=FunctionMeta):
@@ -264,7 +262,7 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
                 desc : Photon index
                 initial value : -2
                 min : -10
-                max : 10	
+                max : 10
         """
 
 
@@ -422,6 +420,7 @@ class SwitchFunction(Function1D,metaclass=FunctionMeta):
         description :
             A demo function that can alter its state
         latex : $$
+        
         parameters :
             a :
                 desc : Normalization (differential flux)
@@ -430,18 +429,19 @@ class SwitchFunction(Function1D,metaclass=FunctionMeta):
                 min : 1e-30
                 max : 1e3
                 delta : 0.1
-	    propertes:
-		    switch:
-			    initial value: powerlaw
-				allowed values:
-				    - powerlaw
-					- cosine
-				function: _say_hello
+        properties:
+            switch:
+                desc: a switch for functions
+                initial value: powerlaw
+                allowed values:
+                    - powerlaw
+                    - cosine
+                function: _say_hello
         """
         def _say_hello(self):
-		    # called when we set the value of switch
-		
- 		    print(self.switch.value)
+        # called when we set the value of switch
+
+            print(self.switch.value)
 
 
         def _set_units(self, x_unit, y_unit):
@@ -452,15 +452,15 @@ class SwitchFunction(Function1D,metaclass=FunctionMeta):
 
         
         def evaluate(self, x, a):
-            
-			if self.switch.value == "powerlaw":
-				
-				return a * np.powerlaw(x,-2)
-				
-			elif self.switch.value == "cosine":
-				
-				return a * np.cos(x)
-		
+
+            if self.switch.value == "powerlaw":
+
+                return a * np.powerlaw(x,-2)
+
+            elif self.switch.value == "cosine":
+                
+                return a * np.cos(x)
+
 ```
 
 We have added a text parameter called switch and specified the allowed values that it can take on. We can of course allow it to take on any value. Additionally, we have specified a function to call whenever we change the value. This allows use to do things like read in a table from a dictionary or load a file, etc. Properties can be set in the constructor of a function. They behave just like parameters except that they do not participate in the function call. Thus, their state is saved whenever you serialize the model to disk. 
@@ -485,7 +485,7 @@ What if you need to call another astromodels function from inside your custom fu
 class Redshifter(Function1D, metaclass=FunctionMeta):
     r"""
     description :
-		a function that can redshift the energies of any 1D function
+        a function that can redshift the energies of any 1D function
 
     latex: not available
 
@@ -550,7 +550,7 @@ With this function, whenever we set the linked_function property to another astr
 
 ```python
 p = Powerlaw()
-rs = Redshifter()
+rs = Redshifter(redshift=1)
 
 rs.linked_function = p
 

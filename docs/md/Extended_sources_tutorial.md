@@ -5,8 +5,8 @@ jupyter:
     text_representation:
       extension: .md
       format_name: markdown
-      format_version: '1.2'
-      jupytext_version: 1.8.0
+      format_version: '1.3'
+      jupytext_version: 1.11.2
   kernelspec:
     display_name: Python 3
     language: python
@@ -80,10 +80,11 @@ diff = Latitude_galactic_diffuse()
 diff.display()
 ```
 
-`SpatialTemplate_2D` is designed to read in a user-provided fits file with an image (in WCS coordinates) using the `load_file()` function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The prodided template should be in units of 1/deg2 and normalized so that its integral is 1. If that is not the case, the normalization parameter `K` may be set accordingly so that the overall function is normalized as expected.
+`SpatialTemplate_2D` is designed to read in a user-provided fits file with an image (in WCS coordinates) using the `load_file()` function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/deg2 and normalized so that its integral is 1. If that is not the case, the normalization parameter `K` may be set accordingly so that the overall function is normalized as expected.
 
 ```python
-temp = SpatialTemplate_2D()
+
+temp = SpatialTemplate_2D(fits_file='spitzer_example_image.fits')
 temp.display()
 ```
 
