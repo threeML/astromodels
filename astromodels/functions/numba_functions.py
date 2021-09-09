@@ -4,7 +4,6 @@ import math
 import numba as nb
 import numpy as np
 
-_cache = False
 
 @nb.vectorize
 def _expm1(x):
@@ -28,6 +27,7 @@ def _pow(x, y):
 
     return math.pow(x, y)
 
+_cache_functions = False
 
 @nb.vectorize
 def _log(x):
@@ -41,9 +41,7 @@ def _log10(x):
 
 
 
-
-
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def plaw_eval(x, K, index, piv):
 
     out = np.power(x / piv, index)
@@ -51,7 +49,7 @@ def plaw_eval(x, K, index, piv):
     return K * out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def plaw_flux_norm(index, a, b):
     """
     energy flux power law
@@ -69,7 +67,7 @@ def plaw_flux_norm(index, a, b):
     return intflux
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def cplaw_eval(x, K, xc, index, piv):
 
     n = x.shape[0]
@@ -83,7 +81,7 @@ def cplaw_eval(x, K, xc, index, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def cplaw_inverse_eval(x, K, b, index, piv):
 
     n = x.shape[0]
@@ -97,7 +95,7 @@ def cplaw_inverse_eval(x, K, b, index, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def super_cplaw_eval(x, K, piv, index, xc, gamma):
 
     n = x.shape[0]
@@ -112,7 +110,7 @@ def super_cplaw_eval(x, K, piv, index, xc, gamma):
     return out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def band_eval(x, K, alpha, beta, E0, piv):
 
     n = x.shape[0]
@@ -135,7 +133,7 @@ def band_eval(x, K, alpha, beta, E0, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def bplaw_eval(x, K, xb, alpha, beta, piv):
 
     n = x.shape[0]
@@ -155,7 +153,7 @@ def bplaw_eval(x, K, xb, alpha, beta, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 
     n = x.shape[0]
@@ -204,7 +202,7 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def bb_eval(x, K, kT):
 
     return K * x * x / _expm1(x/kT)
@@ -218,7 +216,7 @@ def mbb_eval(x, K, kT):
     out = _pow(arg, 1.5) * exp_arg /_sqrt(1- exp_arg)
     return K * out / x
 
-# @nb.njit(fastmath=True, cache=True)
+# @nb.njit(fastmath=True, cache=_cache_functions)
 # def bbrad_eval(x, K, kT):
 
 #     tinv = 1./kT
@@ -251,7 +249,7 @@ def mbb_eval(x, K, kT):
 # band calderone
 
 
-@nb.njit(fastmath=True, cache=_cache)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def ggrb_int_pl(a, b, Ec, Emin, Emax):
 
     pre = math.pow(a - b, a - b) * math.exp(b - a) / math.pow(Ec, b)
@@ -266,7 +264,7 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
         return pre * math.log(Emax/Emin)
 
 
-# @nb.njit(fastmath=True, cache=_cache)
+# @nb.njit(fastmath=True, cache=_cache_functions)
 # def ggrb_int_cpl(a, Ec, Emin, Emax):
 
 
