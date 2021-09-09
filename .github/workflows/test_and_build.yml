@@ -1,8 +1,13 @@
 name: CI
 on:
     push:
-        paths-ignore:
-            - "README.md"
+      branches-ignore:
+        - 'dev'
+        
+      paths-ignore:
+        - "README.md"
+        - "**/docs/**"
+
     pull_request:
       branches:
         - master
