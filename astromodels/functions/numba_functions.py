@@ -26,8 +26,9 @@ import numpy as np
 # def vec_gamma(x):
 #     return gamma_fn(x)
 
+_cache_functions = False
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def plaw_eval(x, K, index, piv):
 
     out = np.power(x / piv, index)
@@ -35,7 +36,7 @@ def plaw_eval(x, K, index, piv):
     return K * out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def plaw_flux_norm(index, a, b):
     """
     energy flux power law
@@ -53,7 +54,7 @@ def plaw_flux_norm(index, a, b):
     return intflux
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def cplaw_eval(x, K, xc, index, piv):
 
     n = x.shape[0]
@@ -67,7 +68,7 @@ def cplaw_eval(x, K, xc, index, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def cplaw_inverse_eval(x, K, b, index, piv):
 
     n = x.shape[0]
@@ -81,7 +82,7 @@ def cplaw_inverse_eval(x, K, b, index, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def super_cplaw_eval(x, K, piv, index, xc, gamma):
 
     n = x.shape[0]
@@ -96,7 +97,7 @@ def super_cplaw_eval(x, K, piv, index, xc, gamma):
     return out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def band_eval(x, K, alpha, beta, E0, piv):
 
     n = x.shape[0]
@@ -119,7 +120,7 @@ def band_eval(x, K, alpha, beta, E0, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def bplaw_eval(x, K, xb, alpha, beta, piv):
 
     n = x.shape[0]
@@ -139,7 +140,7 @@ def bplaw_eval(x, K, xb, alpha, beta, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 
     n = x.shape[0]
@@ -188,7 +189,7 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
     return out
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def bb_eval(x, K, kT):
 
     n = x.shape[0]
@@ -201,7 +202,7 @@ def bb_eval(x, K, kT):
 
     return out
 
-# @nb.njit(fastmath=True, cache=True)
+# @nb.njit(fastmath=True, cache=_cache_functions)
 # def bbrad_eval(x, K, kT):
 
 #     n = x.shape[0]
@@ -218,7 +219,7 @@ def bb_eval(x, K, kT):
 # band calderone
 
 
-@nb.njit(fastmath=True, cache=True)
+@nb.njit(fastmath=True, cache=_cache_functions)
 def ggrb_int_pl(a, b, Ec, Emin, Emax):
 
     pre = math.pow(a - b, a - b) * math.exp(b - a) / math.pow(Ec, b)
@@ -233,7 +234,7 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
         return pre * math.log(Emax/Emin)
 
 
-# @nb.njit(fastmath=True, cache=True)
+# @nb.njit(fastmath=True, cache=_cache_functions)
 # def ggrb_int_cpl(a, Ec, Emin, Emax):
 
 #     # Gammaincc does not support quantities
