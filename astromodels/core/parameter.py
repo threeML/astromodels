@@ -1,9 +1,3 @@
-from __future__ import absolute_import, division
-
-from builtins import range, str
-
-from past.utils import old_div
-
 __author__ = "giacomov"
 
 __doc__ = """"""
@@ -22,7 +16,6 @@ from astromodels.core.parameter_transformation import ParameterTransformation
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 
-from .thread_safe_unit_format import ThreadSafe
 from .tree import Node
 
 log = setup_logger(__name__)
@@ -54,7 +47,7 @@ def turn_off_parameter_transforms() -> None:
     
 
 
-def _behaves_like_a_number(obj) -> True:
+def _behaves_like_a_number(obj) -> bool:
     """
 
     :param obj:
@@ -65,7 +58,7 @@ def _behaves_like_a_number(obj) -> True:
 
         obj + 1
         obj * 2
-        old_div(obj, 2)
+        obj / 2
         obj - 1
 
     except TypeError:
@@ -542,7 +535,7 @@ class ParameterBase(Node):
     @accept_quantity(
         float, allow_none=False
     )  # This means that the method will always receive a float
-    def _set_value(self, new_value):
+    def _set_value(self, new_value) -> None:
         """Sets the current value of the parameter, ensuring that it is within the allowed range."""
 
         if self.min_value is not None and new_value < self.min_value:
@@ -611,7 +604,7 @@ class ParameterBase(Node):
         "Get and sets the current value for the parameter, with or without units",
     )
 
-    def _get_internal_value(self):
+    def _get_internal_value(self) -> float:
         """
         This is supposed to be only used by fitting engines at the beginning to get the starting value for free
         parameters. From then on, only the _set_internal_value should be used
@@ -630,7 +623,7 @@ class ParameterBase(Node):
 
         return self._internal_value
 
-    def _set_internal_value(self, new_internal_value):
+    def _set_internal_value(self, new_internal_value) -> None:
         """
         This is supposed to be only used by fitting engines
 
@@ -657,7 +650,7 @@ class ParameterBase(Node):
         return self._external_min_value
 
     @accept_quantity(float, allow_none=True)
-    def _set_min_value(self, min_value):
+    def _set_min_value(self, min_value) -> None:
         """Sets current minimum allowed value"""
 
         # Check that the min value can be transformed if a transformation is present
@@ -715,7 +708,7 @@ class ParameterBase(Node):
         doc="Gets or sets the minimum allowed value for the parameter",
     )
 
-    def remove_minimum(self):
+    def remove_minimum(self) -> None:
         """
         Remove the minimum from this parameter (i.e., it becomes boundless in the negative direction)
         """
@@ -729,7 +722,7 @@ class ParameterBase(Node):
 
         raise NotCallableOrErrorInCall()
 
-    def _get_internal_min_value(self):
+    def _get_internal_min_value(self) -> float:
         """
         This is supposed to be only used by fitting engines to get the minimum value in internal representation.
         It is supposed to be called only once before doing the minimization/sampling, to set the range of the parameter
@@ -757,13 +750,13 @@ class ParameterBase(Node):
 
     # Define the property "max_value"
 
-    def _get_max_value(self):
+    def _get_max_value(self) -> float:
         """Return current maximum allowed value"""
 
         return self._external_max_value
 
     @accept_quantity(float, allow_none=True)
-    def _set_max_value(self, max_value):
+    def _set_max_value(self, max_value) -> None:
         """Sets current maximum allowed value"""
 
         self._external_max_value = max_value
@@ -784,13 +777,13 @@ class ParameterBase(Node):
         doc="Gets or sets the maximum allowed value for the parameter",
     )
 
-    def remove_maximum(self):
+    def remove_maximum(self) -> None:
         """
         Remove the maximum from this parameter (i.e., it becomes boundless in the positive direction)
         """
         self._external_max_value = None
 
-    def _set_internal_max_value(self):
+    def _set_internal_max_value(self) -> None:
 
         log.exception(
             "You should never attempt to change the internal representation of the minimum"
@@ -798,7 +791,7 @@ class ParameterBase(Node):
 
         raise NotCallableOrErrorInCall()
 
-    def _get_internal_max_value(self):
+    def _get_internal_max_value(self) -> float:
         """
         This is supposed to be only used by fitting engines to get the maximum value in internal representation.
         It is supposed to be called only once before doing the minimization/sampling, to set the range of the parameter
@@ -824,7 +817,7 @@ class ParameterBase(Node):
 
                 return self._transformation.forward(self._external_max_value)
 
-    def _set_bounds(self, bounds):
+    def _set_bounds(self, bounds) -> None:
         """Sets the boundaries for this parameter to min_value and max_value"""
 
         # Use the properties so that the checks and the handling of units are made automatically
@@ -840,7 +833,7 @@ class ParameterBase(Node):
 
         self.max_value = max_value
 
-    def _get_bounds(self):
+    def _get_bounds(self) -> Tuple[float]:
         """Returns the current boundaries for the parameter"""
 
         return self.min_value, self.max_value
@@ -852,7 +845,7 @@ class ParameterBase(Node):
         "parameter",
     )
 
-    def add_callback(self, callback):
+    def add_callback(self, callback) -> None:
         """Add a callback to the list of functions which are called immediately after the value of the parameter
         is changed. The callback must be a function accepting the current parameter as input. The return value of the
         callback is ignored. More than one callback can be specified. In that case, the callbacks will be called in the
@@ -1091,12 +1084,12 @@ class Parameter(ParameterBase):
                     else:
 
                         # Fix delta
-                        self.delta = old_div(abs(self.value - self.min_value), 4.0)
+                        self.delta = abs(self.value - self.min_value) / 4.0
 
                         if self.delta == 0:
 
                             # Parameter at the minimum
-                            self.delta = old_div(abs(self.value - self.max_value), 4.0)
+                            self.delta = abs(self.value - self.max_value) / 4.0
 
                         # Try again
                         continue
@@ -1467,7 +1460,7 @@ class Parameter(ParameterBase):
 
             if min_value is not None:
 
-                a = old_div((min_value - value), std)
+                a = (min_value - value) / std
 
             else:
 
@@ -1475,7 +1468,7 @@ class Parameter(ParameterBase):
 
             if max_value is not None:
 
-                b = old_div((max_value - value), std)
+                b = (max_value - value) / std
 
             else:
 
