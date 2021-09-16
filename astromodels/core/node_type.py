@@ -344,7 +344,7 @@ class _Node:
 
                     # this is going to be a node which
                     # we are not allowed to erase
-                    
+                    log.error("Accessing an element of the node that does not exist")
                     raise AttributeError()
             else:
                 return super().__setattr__(name, value)
