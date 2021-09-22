@@ -18,6 +18,8 @@ from astromodels.utils.logging import setup_logger
 
 from .tree import Node
 
+from .thread_safe_unit_format import ThreadSafe
+
 log = setup_logger(__name__)
 
 
