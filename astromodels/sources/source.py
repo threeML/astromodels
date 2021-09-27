@@ -47,7 +47,8 @@ class Source(object):
             # Store the type string
             self._src_type = src_type
 
-    def has_free_parameters(self):
+    @property
+    def has_free_parameters(self) -> bool:
 
         raise NotImplementedError("You need to override this")
 

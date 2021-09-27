@@ -303,7 +303,7 @@ def test_call_with_composite_function_with_units():
 
         pts = PointSource("test", ra=0, dec=0, spectral_shape=spectrum)
 
-        res = pts([100, 200] * x_unit_to_use)
+        res = pts(np.array([100., 200.]) * x_unit_to_use)
 
         # This will fail if the units are wrong
         res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
@@ -386,21 +386,26 @@ def test_free_param():
     for param in parameters:
         param.free = False
 
+    assert not source.has_free_parameters
+        
     assert len(source.free_parameters) == 0
 
+    assert len(source.parameters) > len(source.free_parameters)
+    
     for i, param in enumerate(parameters):
         param.free = True
         assert len(source.free_parameters) == i+1
 
 
+    assert source.has_free_parameters
 
 
-    def test_local_deriv():
+def test_local_deriv():
 
-        p = Powerlaw(index=-2.)
+    p = Powerlaw(index=-2.)
 
 
-        npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
+    npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
         
 
         

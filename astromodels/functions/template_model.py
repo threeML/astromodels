@@ -78,19 +78,19 @@ class UnivariateSpline(object):
 class TemplateModelFactory(object):
     def __init__(
         self,
-        name,
-        description,
-        energies,
-        names_of_parameters,
-        interpolation_degree=1,
-        spline_smoothing_factor=0,
+        name: str,
+        description: str,
+        energies: np.ndarray,
+        names_of_parameters: List[str],
+        interpolation_degree: int = 1,
+        spline_smoothing_factor: int = 0,
     ):
 
         # Store model name
 
         # Enforce that it does not contain spaces nor strange characters
 
-        name = str(name)
+        name: str = str(name)
 
         if re.match("[a-zA-Z_][a-zA-Z0-9_]*", name) is None:
             log.error(
@@ -98,9 +98,9 @@ class TemplateModelFactory(object):
                 "or special characters")
             raise RuntimeError()
 
-        self._name = name
+        self._name: str = name
 
-        self._description = str(description)
+        self._description: str = str(description)
 
         # Store energy grid
 
@@ -110,16 +110,17 @@ class TemplateModelFactory(object):
                 "Energy unit is not a Quantity instance, so units has not been provided. Using keV."
             )
 
-            energies = energies * u.keV
+            energies: u.Quantity = energies * u.keV
 
-        self._energies = np.array(energies.to(u.keV).value)
+        self._energies: np.ndarray = np.array(energies.to(u.keV).value)
 
         # Enforce that they are ordered
         self._energies.sort()
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids = collections.OrderedDict()
+        self._parameters_grids: Dict[
+            str, Optional[np.ndarray]] = collections.OrderedDict()
 
         for parameter_name in names_of_parameters:
 
@@ -129,9 +130,9 @@ class TemplateModelFactory(object):
 
         self._interpolators = None
 
-        self._interpolation_degree = interpolation_degree
+        self._interpolation_degree: int = interpolation_degree
 
-        self._spline_smoothing_factor = int(spline_smoothing_factor)
+        self._spline_smoothing_factor: int = int(spline_smoothing_factor)
 
     def define_parameter_grid(self, parameter_name: str,
                               grid: np.ndarray) -> None:
@@ -166,8 +167,8 @@ class TemplateModelFactory(object):
 
         self._parameters_grids[parameter_name] = grid_
 
-    def add_interpolation_data(self, differential_fluxes,
-                               **parameters_values_input):
+    def add_interpolation_data(self, differential_fluxes: np.ndarray,
+                               **parameters_values_input: Dict[str, float]):
 
         # Verify that the grid has been defined for all parameters
 
@@ -309,16 +310,18 @@ class TemplateModelFactory(object):
 
             raise AssertionError()
 
+            raise AssertionError()
+            
         # Get the data directory
 
         data_dir_path: Path = get_user_data_path()
 
         # Sanitize the data file
 
-        filename_sanitized: Path = data_dir_path / f"{self._name}.h5"
+        filename_sanitized: Path = data_dir_path.absolute() /  f"{self._name}.h5"
+        
 
         # Check that it does not exists
-
         if filename_sanitized.exists():
 
             if overwrite:
@@ -506,7 +509,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
             min : 1e-5
     """
 
-    def _custom_init_(self, model_name, other_name=None, log_interp=True):
+    def _custom_init_(self, model_name: str, other_name:Optional[str]=None, log_interp: bool=True):
         """
         Custom initialization for this model
 
@@ -522,18 +525,19 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         # Sanitize the data file
 
-        filename_sanitized: Path = data_dir_path.absolute() /  f"{model_name}.h5"
+        filename_sanitized = data_dir_path.absolute() /  f"{model_name}.h5"
         
+
         if not filename_sanitized.exists():
 
-            log.error("The data file %s does not exists. Did you use the "
-                "TemplateFactory?" % (filename_sanitized))
+            log.error(f"The data file {filename_sanitized} does not exists. Did you use the "
+                "TemplateFactory?")
             
             raise MissingDataFile()
 
         # Open the template definition and read from it
 
-        self._data_file = filename_sanitized
+        self._data_file: Path = filename_sanitized
 
         # use the file shadow to read
         

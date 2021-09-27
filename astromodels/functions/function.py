@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import ast
 import collections
@@ -24,8 +24,11 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.tree import Node
+from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
+
+log = setup_logger(__name__)
 
 __author__ = 'giacomov'
 
@@ -123,8 +126,10 @@ class FunctionMeta(type):
 
         if 'evaluate' not in dct:
 
+            log.error("You have to implement the 'evaluate' method in %s" % name)
+            
             raise AttributeError(
-                "You have to implement the 'evaluate' method in %s" % name)
+                )
 
         # We also need the method _set_units
 
@@ -227,11 +232,13 @@ class FunctionMeta(type):
                 msg = "Parameters %s are used in 'evaluate' but do not have init values in %s" % \
                       (",".join(missing), name)
 
-            raise FunctionDefinitionError(msg)
+            log.error(msg)
+                
+            raise FunctionDefinitionError()
 
         # Figure out the dimensionality of this function
 
-        n_dim = len(variables)
+        n_dim: int = len(variables)
 
         # Store the dimensionality in the *type*
 
@@ -330,8 +337,10 @@ class FunctionMeta(type):
 
             except KeyError:
 
-                raise UnknownParameter("You specified an init value for %s, which is not a "
-                                       "parameter of function %s" % (key, type(instance)._name))
+                log.error("You specified an init value for %s, which is not a "
+                          "parameter of function %s" % (key, type(instance)._name))
+                
+                raise UnknownParameter()
 
         # Now call the init of the corresponding class
         n_dim = type(instance)._n_dim
@@ -359,6 +368,8 @@ class FunctionMeta(type):
 
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
+
+            log.debug(f"running setup of {instance._name}")
 
             instance._setup()
 
@@ -390,8 +401,12 @@ class FunctionMeta(type):
 
             calling_sequence = _py2to3_getargspec(function).args
 
-        assert calling_sequence[0] == 'self', "Wrong syntax for 'evaluate' in %s. The first argument " \
-                                              "should be called 'self'." % name
+        if not calling_sequence[0] == 'self':
+
+            log.error("Wrong syntax for 'evaluate' in %s. The first argument " \
+                                              "should be called 'self'." % name)
+
+            raise AssertionError()
 
         # Figure out how many variables are used
 
@@ -401,13 +416,18 @@ class FunctionMeta(type):
         # Check that they actually make sense. They must be used in the same order
         # as specified in possible_variables
 
-        assert len(variables) > 0, "The name of the variables for 'evaluate' in %s must be one or more " \
+        if not len(variables) > 0:
+
+            log.error("The name of the variables for 'evaluate' in %s must be one or more " \
                                    "among %s, instead of %s" % (name, ','.join(
-                                       possible_variables), ",".join(variables))
+                                       possible_variables), ",".join(variables)))
 
         if variables != possible_variables[:len(variables)]:
-            raise AssertionError("The variables %s are out of order in '%s' of %s. Should be %s."
+
+            log.error("The variables %s are out of order in '%s' of %s. Should be %s."
                                  % (",".join(variables), function_name, name, possible_variables[:len(variables)]))
+            
+            raise AssertionError()
 
         other_parameters = [
             var for var in calling_sequence if var not in variables and var != 'self']
@@ -422,12 +442,18 @@ class FunctionMeta(type):
         # Enforce the presence of attributes 'value' and 'desc'
 
         if 'initial value' not in definition:
-            raise FunctionDefinitionError("Error for parameter %s of function %s: value for parameter must be"
+
+            log.error("Error for parameter %s of function %s: value for parameter must be"
                                           " specified" % (par_name, func_name))
+            
+            raise FunctionDefinitionError()
 
         if 'desc' not in definition:
-            raise FunctionDefinitionError("Error for parameter %s of function %s: desc for parameter must be"
+
+            log.error("Error for parameter %s of function %s: desc for parameter must be"
                                           " specified" % (par_name, func_name))
+            
+            raise FunctionDefinitionError()
 
         # Fetch attributes
 
@@ -498,7 +524,12 @@ class Function(Node):
         # calling sequence of this contructor. We actually need to enforce its proper use,
         # with this assert
 
-        assert name is not None and function_definition is not None and parameters is not None
+        if (name is None) or (function_definition is None) or (parameters is  None):
+
+            log.error("improper call")
+
+            raise AssertionError()
+            
 
         # Set up the node
 
@@ -508,7 +539,11 @@ class Function(Node):
 
         # Store also the function definition
 
-        assert 'description' in function_definition, "Function definition must contain a description"
+        if not 'description' in function_definition:
+
+            log.error("Function definition must contain a description")
+
+            raise AssertionError()
 
         if 'latex' not in function_definition:
 
@@ -788,6 +823,11 @@ class Function(Node):
         """
         return self._uuid
 
+    def __eq__(self, o):
+
+        return self._uuid == o.uuid
+
+    
     def duplicate(self):
         """
         Create a copy of the current function with all the parameters equal to the current value
@@ -947,9 +987,13 @@ class Function1D(Function):
 
                 # This is an array with units or a single quantity, let's use the slow call which preserves units
 
-                assert self.y_unit is not None, "In order to use units you need to use the function as a spectrum or " \
-                                                "as something else, or you need to explicitly set the units."
+                if self.y_unit is None:
 
+                    log.error("In order to use units you need to use the function as a spectrum or " \
+                                                "as something else, or you need to explicitly set the units.")
+
+                    raise AssertionError()
+                    
                 # we want to make sure this is an array
 
                 new_input = np.atleast_1d(x)
@@ -1010,12 +1054,16 @@ class Function1D(Function):
 
                 except u.UnitsError:
 
-                    raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                    log.error("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                        "calling function %s" % self.name)
+                    
+                    raise u.UnitsError()
             else:
 
-                raise u.UnitsError("Looks like you didn't provide all the units, or you provided the wrong ones, when "
+                log.error("Looks like you didn't provide all the units, or you provided the wrong ones, when "
                                    "calling function %s" % self.name)
+
+                raise u.UnitsError()
 
         else:
 
@@ -1031,7 +1079,7 @@ class Function1D(Function):
 
         values = list(map(attrgetter("value"), self._get_children()))
 
-        return self.evaluate(x, *values)
+        return self.evaluate(x, * values)
 
     def get_boundaries(self):
         """
@@ -1041,7 +1089,9 @@ class Function1D(Function):
         :return: a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)
         """
 
-        raise DesignViolation("Cannot call get_boundaries() on a 1d function")
+        log.error("Cannot call get_boundaries() on a 1d function")
+
+        raise DesignViolation()
 
 
     def local_spectral_index(self, x, epsilon=1e-5):
@@ -1399,7 +1449,11 @@ class CompositeFunction(Function):
 
     def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
 
-        assert operation in _operations, "Do not know operation %s" % operation
+        if not operation in _operations:
+
+            log.error("Do not know operation %s" % operation)
+
+            raise AssertionError()
 
         # Save this to make the class pickeable (see the __setstate__ and __getstate__ methods)
 
@@ -1420,6 +1474,8 @@ class CompositeFunction(Function):
         self._uuid_expression = self._get_uuid_expression(
             operation, function_or_scalar_1, function_or_scalar_2)
 
+        log.debug(f"UUID of composite {self._uuid_expression}")
+        
         # Makes the list of unique functions which compose this composite function.
 
         self._functions = []
@@ -1429,6 +1485,7 @@ class CompositeFunction(Function):
             # Check whether this is already a composite function. If it is, add the functions contained
             # in it
 
+                        
             if isinstance(function, CompositeFunction):
 
                 for sub_function in function.functions:
@@ -1457,15 +1514,17 @@ class CompositeFunction(Function):
 
         if self._n_dim > 1:
 
-            raise NotImplementedError(
-                "CompositeFunction class can only handle 1-dimensional functions at the moment.")
+            log.error("CompositeFunction class can only handle 1-dimensional functions at the moment.")
+            
+            raise NotImplementedError()
 
         for function in self._functions:
 
             if function.n_dim != self._n_dim:
 
-                raise RuntimeError(
-                    "You cannot compose functions of different dimensionality")
+                log.error("You cannot compose functions of different dimensionality")
+                
+                raise RuntimeError()
 
         # Now assign a unique name to all the functions, to make clear which is which in the definition
         # and give an easy way for the user to understand which parameter belongs to which function
@@ -1473,6 +1532,7 @@ class CompositeFunction(Function):
         self._id_to_uid = {}
 
         expression = self._uuid_expression
+        
 
         for i, function in enumerate(self._functions):
 
@@ -1484,13 +1544,18 @@ class CompositeFunction(Function):
         # Save the expression
         self._expression = expression
 
+        log.debug(f"function expression: {self._expression}")
+        
         # Build the parameters dictionary assigning a new name to each parameter to account for possible
         # duplicates.
 
         parameters = collections.OrderedDict()
 
+                
         for i, function in enumerate(self._functions):
 
+            log.debug(f"func path before comp: {function.path}")
+            
             for parameter_name, parameter in list(function.parameters.items()):
 
                 # New name to avoid possible duplicates
@@ -1505,14 +1570,29 @@ class CompositeFunction(Function):
 
                     original_name = parameter_name
 
-                new_name = "%s_%i" % (original_name, i+1)
+                new_name = f"{original_name}_{i+1}"
+
+                log.debug(f"rename {original_name} -> {new_name}")
 
                 # Store the parameter under the new name (obviously this is a reference to the
                 # parameter, not a copy, as always in python)
 
                 parameters[new_name] = parameter
-                parameter._change_name(new_name)
+                
+                parameter._change_name(new_name, clear_parent = False)
 
+            if not function.is_root:
+                
+                log.warning(f"{function.name} was previously assigned to {function._get_root(source_only=True).name}")
+                log.warning(f"it has now been removed as it is a composite")
+                log.warning("you can create a new function and link it to the composite parameters if needed")
+                
+                # if the function is attached to a source, we want to ditch the source
+                # because now this function is part of a composite
+                
+                function = function._parent._remove_child(function.name, delete=False)
+            
+            log.debug(f"func path after comp: {function.path}")
         # Now build a meaningful description
 
         _function_definition = {
@@ -1887,8 +1967,6 @@ def _parse_function_expression(function_specification):
     # the parsing will fail
 
     string_for_literal_eval = ",".join(string_for_literal_eval.split())
-
-    # print(string_for_literal_eval)
 
     # At this point the string should be just a comma separated list of numbers
 

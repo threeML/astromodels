@@ -134,7 +134,7 @@ def test_function_meta():
 
                 return a * x + b
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
         class Wrong_test_function4(with_metaclass(FunctionMeta, Function1D)):
@@ -765,6 +765,23 @@ def test_pickling_unpickling():
     assert new_composite.a_2.value == composite.a_2.value
 
 
+    # now try with previously used function1d
+
+    # composite function
+    po3 = Powerlaw()
+    
+    composite2 = po3*li
+
+    # Change some parameter
+    composite2.K_1 = 3.2
+    composite2.a_2 = 1.56
+
+    dump2 = pickle.dumps(composite2)
+
+    new_composite2 = pickle.loads(dump2)
+
+
+    
 def test_get_function():
 
     po = get_function("Powerlaw")

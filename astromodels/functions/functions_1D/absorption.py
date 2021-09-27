@@ -1,3 +1,6 @@
+import os
+import sys
+from pathlib import Path
 import math
 from dataclasses import dataclass
 from enum import Enum
@@ -300,7 +303,6 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
-
         else:
 
             _unit = 1.0

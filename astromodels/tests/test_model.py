@@ -12,7 +12,7 @@ import copy
 
 import numpy as np
 
-from astromodels import u
+from astromodels import u, update_logging_level
 from astromodels.core.model import (CannotWriteModel, DuplicatedNode, Model,
                                     ModelFileExists)
 from astromodels.core.model_parser import *
@@ -23,6 +23,10 @@ from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
+
+update_logging_level("DEBUG")
+
+
 
 
 def _get_point_source(name="test"):
@@ -324,6 +328,15 @@ def test_links():
 
     # Now test the link
 
+    # This should print a warning, as trying to change the value of a linked parameters does not have any effect
+    
+    old_value = m.one.spectrum.main.Powerlaw.K
+    
+    
+    m.one.spectrum.main.Powerlaw.K = 1.23456
+
+    assert old_value == m.one.spectrum.main.Powerlaw.K
+    
 
     # This instead should work
     new_value = 1.23456
@@ -333,10 +346,9 @@ def test_links():
 
     # Now try to remove the link
 
-    # First we remove it from the wrong parameters, which should issue a warning
-    # with pytest.warns(RuntimeWarning):
+    #    First we remove it from the wrong parameters, which should issue a warning
 
-    #     m.unlink(m.two.spectrum.main.Powerlaw.K)
+    m.unlink(m.two.spectrum.main.Powerlaw.K)
 
     # Remove it from the right parameter
 

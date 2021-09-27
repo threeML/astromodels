@@ -16,8 +16,7 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.tree import DuplicatedNode, Node
 from astromodels.functions.function import get_function
-from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
-                                 Source, SourceType)
+from astromodels.sources import SourceType, Source, PointSource, ExtendedSource, ParticleSource
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.long_path_formatter import long_path_formatter
@@ -172,10 +171,14 @@ class Model(Node):
 
         for child in node._get_children():
 
+            #log.debug(f"on child {child._name}")
+            
             if isinstance(child, Parameter):
 
                 path = child._get_path()
 
+                #log.debug(f"on child {path}")
+                
                 instances[path] = child
 
                 for sub_child in child._get_children():
@@ -249,7 +252,7 @@ class Model(Node):
 
         for parameter_name, parameter in list(self._parameters.items()):
 
-            if parameter.has_auxiliary_variable():
+            if parameter.has_auxiliary_variable:
 
                 linked_parameter_dictionary[parameter_name] = parameter
 
@@ -579,7 +582,7 @@ class Model(Node):
             parameter_list = list(parameter)
 
         for param in parameter_list:
-            if param.has_auxiliary_variable():
+            if param.has_auxiliary_variable:
                 param.remove_auxiliary_variable()
 
             else:
