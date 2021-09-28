@@ -25,8 +25,8 @@ class NodeBase:
     _name: str
     _parent: Optional[Type["NodeBase"]] = field(repr=False, default=None)
     _children: Dict[str, Type["NodeBase"]] = field(default_factory=dict,
-                                                repr=False,
-                                                compare=False)
+                                                   repr=False,
+                                                   compare=False)
     _path: Optional[str] = field(repr=False, default="")
 
     # The next 3 methods are *really* necessary for anything to work
@@ -42,7 +42,7 @@ class NodeBase:
 
         return NewNodeUnpickler(), (self.__class__, ), state
 
-    def __setstate__(self, state):
+    def __setstate__(self, state) -> None:
 
         self._children = {}
 
