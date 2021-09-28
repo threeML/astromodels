@@ -209,7 +209,7 @@ class NodeBase:
 
         return _next
 
-    def __getitem__(self, key):
+    def __getitem__(self, key) -> "NodeBase":
         return self._get_child_from_path(key)
 
     def _recursively_gather_node_type(self, node, node_type) -> Dict[str, "NodeBase"]:
@@ -244,7 +244,9 @@ class NodeBase:
         return self._parent
 
     def _get_path(self) -> "str":
-
+        """
+        returns the str path of this node
+        """
         if self._parent is not None:
             return self._path
 
@@ -254,7 +256,7 @@ class NodeBase:
     def _root(self, source_only: bool=False) -> "NodeBase":
         """
         returns the root of the node, will stop at the source
-        if source_only
+        if source_only is set to True
         """
         if self.is_root:
             return self
@@ -286,8 +288,15 @@ class NodeBase:
     def path(self) -> str:
         return self._get_path()
 
-    def _update_child_path(self):
+    def _update_child_path(self) -> None:
+        """
 
+        Update the path of all children recursively.
+        This is needed if the name is changed
+        
+        :returns: 
+
+        """
         # recursively update the path
 
         for name, child in self._children.items():
@@ -376,7 +385,7 @@ class NodeBase:
 
                     # this is going to be a node which
                     # we are not allowed to erase
-                    
+                    log.error("Accessing an element of the node that does not exist")
                     raise AttributeError()
             else:
                 return super().__setattr__(name, value)
@@ -430,14 +439,14 @@ class NodeBase:
 
 
     
-def block_width(block):
+def block_width(block) -> int:
     try:
         return block.index('\n')
     except ValueError:
         return len(block)
 
 
-def stack_str_blocks(blocks):
+def stack_str_blocks(blocks) -> str:
     """Takes a list of multiline strings, and stacks them horizontally.
 
     For example, given 'aaa\naaa' and 'bbbb\nbbbb', it returns
