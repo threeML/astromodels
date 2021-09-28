@@ -349,11 +349,15 @@ class NodeBase:
   
     def __getattr__(self, name):
         if name in self._children:
+
             return self._children[name]
+
         else:
 
+            log.error(f"Accessing an element {name} of the node that does not exist")
+            
             raise AttributeError()
-            pass
+
             
             #return super(NodeBase).__getattr__(name)
 
@@ -385,7 +389,9 @@ class NodeBase:
 
                     # this is going to be a node which
                     # we are not allowed to erase
-                    log.error("Accessing an element of the node that does not exist")
+
+                    log.error(f"Accessing an element {name} of the node that does not exist")
+
                     raise AttributeError()
             else:
                 return super().__setattr__(name, value)

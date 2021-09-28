@@ -1958,7 +1958,7 @@ class CompositeFunction(Function):
                 
             if not function.is_root:
                 
-                log.warning(f"{function.name} was previously assigned to {function._get_root(source_only=True).name}")
+                log.warning(f"{function.name} was previously assigned to {function._root(source_only=True).name}")
                 log.warning(f"it has now been removed as it is a composite")
                 log.warning("you can create a new function and link it to the composite parameters if needed")
                 
