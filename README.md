@@ -5,6 +5,7 @@
 [![Documentation Status](https://readthedocs.org/projects/astromodels/badge/?version=latest)](http://astromodels.readthedocs.io/en/latest/?badge=latest)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 ![GitHub contributors](https://img.shields.io/github/contributors/threeML/astromodels)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646925.svg)](https://doi.org/10.5281/zenodo.5646925)
 
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/threeML/astromodels)
 ![GitHub issues](https://img.shields.io/github/issues/threeML/astromodels)
