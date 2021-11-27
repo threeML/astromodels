@@ -354,9 +354,9 @@ class NodeBase:
 
         else:
 
-            log.error(f"Accessing an element {name} of the node that does not exist")
+            #log.error(f"Accessing an element {name} of the node that does not exist")
             
-            raise AttributeError()
+            raise AttributeError(f"Accessing an element {name} of the node that does not exist")
 
             
             #return super(NodeBase).__getattr__(name)
@@ -390,9 +390,9 @@ class NodeBase:
                     # this is going to be a node which
                     # we are not allowed to erase
 
-                    log.error(f"Accessing an element {name} of the node that does not exist")
+                    # log.error(f"Accessing an element {name} of the node that does not exist")
 
-                    raise AttributeError()
+                    raise AttributeError(f"Accessing an element {name} of the node that does not exist")
             else:
                 return super().__setattr__(name, value)
         else:
