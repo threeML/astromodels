@@ -656,7 +656,7 @@ class ParameterBase(Node):
         """Sets current minimum allowed value"""
 
         # Check that the min value can be transformed if a transformation is present
-        if self._transformation is not None:
+        if self.has_transformation():
 
             if min_value is not None:
 

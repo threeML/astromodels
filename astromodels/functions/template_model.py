@@ -780,7 +780,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
             interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
 
-            values = np.power(10, interpolator(log_energies))
+            values = np.power(10., interpolator(log_energies))
 
         else:
 
@@ -813,9 +813,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         log.info("You have 'cleaned' the table model at it will no longer be useable")
 
-    def __del__(self):
+    # def __del__(self):
 
-        self.clean()
+    #     self.clean()
 
         
     @property

@@ -4,29 +4,42 @@ import math
 import numba as nb
 import numpy as np
 
-# from numba.extending import get_cython_function_address
 
-# addr1 = get_cython_function_address(
-#     "scipy.special.cython_special", "gammaincc")
-# functype1 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double, ctypes.c_double)
-# gammaincc_fn = functype1(addr1)
+@nb.vectorize
+def _expm1(x):
+    
+    return math.expm1(x)
 
-
-# @nb.vectorize('float64(float64, float64)')
-# def vec_gammaincc(x, y):
-#     return gammaincc_fn(x, y)
-
-
-# addr2 = get_cython_function_address("scipy.special.cython_special", "gamma")
-# functype2 = ctypes.CFUNCTYPE(ctypes.c_double, ctypes.c_double)
-# gamma_fn = functype2(addr2)
+@nb.vectorize
+def _exp(x):
+    
+    return math.exp(x)
 
 
-# @nb.vectorize('float64(float64)')
-# def vec_gamma(x):
-#     return gamma_fn(x)
+@nb.vectorize
+def _sqrt(x):
+    
+    return math.sqrt(x)
+
+
+@nb.vectorize
+def _pow(x, y):
+
+    return math.pow(x, y)
 
 _cache_functions = False
+
+@nb.vectorize
+def _log(x):
+
+    return math.log(x)
+
+@nb.vectorize
+def _log10(x):
+
+    return math.log10(x)
+
+
 
 @nb.njit(fastmath=True, cache=_cache_functions)
 def plaw_eval(x, K, index, piv):
@@ -49,7 +62,7 @@ def plaw_flux_norm(index, a, b):
         intflux = (math.pow(b, dp2) - math.pow(a, dp2)) / dp2
     else:
 
-        intflux = - np.log(a/b)
+        intflux = - math.log(a/b)
 
     return intflux
 
@@ -149,9 +162,9 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
     B = 0.5 * (alpha + beta)
     M = 0.5 * (beta - alpha)
 
-    arg_piv = np.log10(piv / be) / bs
+    arg_piv = math.log10(piv / be) / bs
 
-    log2 = np.log(2.0)
+    log2 = math.log(2.0)
 
     Mbs = M * bs
 
@@ -163,13 +176,13 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
         pcosh_piv = Mbs * (arg_piv - log2)
     else:
 
-        pcosh_piv = Mbs * np.log((np.exp(arg_piv) + np.exp(-arg_piv)) / 2.0)
+        pcosh_piv = Mbs * math.log((math.exp(arg_piv) + math.exp(-arg_piv)) / 2.0)
 
     ten_pcosh_piv = math.pow(10., pcosh_piv)
 
     for idx in range(n):
 
-        arg = np.log10(x[idx] / be) / bs
+        arg = _log10(x[idx] / be) / bs
 
         if arg < -6.0:
 
@@ -192,15 +205,32 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 @nb.njit(fastmath=True, cache=_cache_functions)
 def bb_eval(x, K, kT):
 
-    n = x.shape[0]
-    out = np.empty(n)
+    return K * x * x / _expm1(x/kT)
 
-    for idx in range(n):
+@nb.njit(fastmath=True, cache=_cache_functions)
+def mbb_eval(x, K, kT):
 
-        arg = x[idx]/kT
-        out[idx] = K * x[idx] * x[idx] / np.expm1(arg)
+    arg = x/kT
+    exp_arg = _exp(-arg)
+    
+    out = _pow(arg, 1.5) * exp_arg /_sqrt(1- exp_arg)
+    return K * out / x
 
-    return out
+# @nb.njit(fastmath=True, cache=_cache_functions)
+# def bbrad_eval(x, K, kT):
+
+#     tinv = 1./kT
+#     anorm = 1.0344E-3
+#     anormh = 0.5*anorm
+
+#     elow = 
+    
+#     xx = elow * tinv
+
+
+    
+
+
 
 # @nb.njit(fastmath=True, cache=_cache_functions)
 # def bbrad_eval(x, K, kT):
@@ -237,8 +267,28 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
 # @nb.njit(fastmath=True, cache=_cache_functions)
 # def ggrb_int_cpl(a, Ec, Emin, Emax):
 
-#     # Gammaincc does not support quantities
-#     i1 = vec_gammaincc(2 + a, Emin/Ec) * vec_gamma(2 + a)
-#     i2 = vec_gammaincc(2 + a, Emax/Ec) * vec_gamma(2 + a)
 
-#     return -Ec * Ec * (i2 - i1)
+@nb.njit(fastmath=True, cache=_cache_functions)
+def non_diss_photoshere_generic(x, K, ec, piv, a, b):
+
+    log_v = a * _log(x / piv) - _pow(x / ec, b)
+
+    return K * _exp(log_v)
+
+
+@nb.njit(fastmath=True, cache=_cache_functions)
+def dbl_sbpl(x, K, a1, a2, b1, xp, xb, n1, n2, xpiv):
+
+    xj = xp * _pow(-(a2 + 2)/ (b1 + 2), 1./((b1 - a2) * n2))
+
+    arg1 = xj/xb
+    arg2 = x/xb
+    arg3 =  x/xj
+
+    inner1 = _pow(arg2, -a1 * n1) + _pow(arg2, -a2 * n2)
+
+    inner2 = _pow(arg1, -a1 * n1) + _pow(arg1, -a2 * n2)
+
+    out = _pow(xb/xpiv, a1) * _pow( _pow(inner1, n2/n1) + _pow(arg3, -b1 * n2) * _pow(inner2, n2 / n1), -1/n2)
+
+    return K * out

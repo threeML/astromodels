@@ -1,7 +1,6 @@
+import math
 import os
 import sys
-from pathlib import Path
-import math
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
@@ -161,17 +160,28 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             delta : 0.1
             fix: True
 
+    properties:
+         abundance_table:
+            desc: the abundance table for the model
+            initial value: AG89
+            allowed values:
+              - AG89
+              - ASPL
+            function: _init_xsect
+
     """
     def _setup(self):
         self._fixed_units = (astropy_units.keV,
                              astropy_units.dimensionless_unscaled)
-        self.init_xsect(astromodels_config.absorption_models.phabs_table.value)
+
+        # # astromodels_config.absorption_models.phabs_table.value
+        # self.init_xsect(self.abundance_table.value)
 
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm**(-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def init_xsect(self, abund_table="AG89"):
+    def _init_xsect(self):
         """
         Set the abundance table
 
@@ -183,22 +193,13 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         # load cross section data
 
-        try:
-            phabs.set_table(abund_table)
 
-            log.debug(f"phabs model set to {abund_table}")
-            
-        except:
-
-            log.info(f"defaulting to {astromodels_config.absorption_models.phabs_table.value}")
-
-            phabs.set_table(astromodels_config.absorption_models.phabs_table.value)
-            
+        phabs.set_table(self.abundance_table.value)
 
         self.xsect_ene, self.xsect_val = phabs.xsect_table
-
+        
     @property
-    def abundance_table(self):
+    def abundance_table_info(self):
         print(phabs.info)
 
         
@@ -254,10 +255,22 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             delta : 0.1
             fix: True
 
+    properties:
+         abundance_table:
+            desc: the abundance table for the model
+            initial value: WILM
+            allowed values:
+             - WILM   
+             - AG89
+             - ASPL
+            function: _init_xsect
+
+
+
     """
     def _setup(self):
 
-        self.init_xsect(astromodels_config.absorption_models.tbabs_table.value)
+        # self.init_xsect(self.abundance_table)
 
         self._fixed_units = (astropy_units.keV,
                              astropy_units.dimensionless_unscaled)
@@ -267,7 +280,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
         self.NH.unit = astropy_units.cm**(-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def init_xsect(self, abund_table="WILM"):
+    def _init_xsect(self):
         """
         Set the abundance table
 
@@ -277,22 +290,13 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         """
         
-        try:
-            tbabs.set_table(abund_table)
-            
-            log.debug(f"tbabs model set to {abund_table}")
-            
-        except:
 
-            log.info(f"defaulting to {astromodels_config.absorption_models.tbabs_table.value}")
-
-            tbabs.set_table(astromodels_config.absorption_models.tbabs_table.value)
-            
+        tbabs.set_table(self.abundance_table.value)
 
         self.xsect_ene, self.xsect_val = tbabs.xsect_table
-
+        
     @property
-    def abundance_table(self):
+    def abundance_table_info(self):
         print(tbabs.info)
 
     def evaluate(self, x, NH, redshift):
@@ -349,13 +353,13 @@ class WAbs(Function1D, metaclass=FunctionMeta):
     def _setup(self):
         self._fixed_units = (astropy_units.keV,
                              astropy_units.dimensionless_unscaled)
-        self.init_xsect()
+        self._init_xsect()
 
     def _set_units(self, x_unit, y_unit):
         self.NH.unit = astropy_units.cm**(-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def init_xsect(self):
+    def _init_xsect(self):
         """
         Set the abundance table
 
@@ -368,7 +372,7 @@ class WAbs(Function1D, metaclass=FunctionMeta):
 
 
     @property
-    def abundance_table(self):
+    def abundance_table_info(self):
         print(wabs.info)
 
 
@@ -423,17 +427,30 @@ if has_ebltable:
                 max : 10.0
                 fix : yes
 
+        properties:
+           ebl_model:
+              desc: set the EBL model
+              initial value: dominguez
+              allowed values:
+                 - dominguez
+                 - franceschini
+                 - kneiske
+                 - inuoe
+                 - gilmore
+              function: _set_ebl_model
+        
+
         """
 
-        def _setup(self):
+        # def _setup(self):
 
-            # define EBL model, use dominguez as default
-            self._tau = ebltau.OptDepth.readmodel(model=astromodels_config.absorption_models.ebl_table.value)
+        #     # define EBL model, use dominguez as default
+        #     self._tau = ebltau.OptDepth.readmodel(model=astromodels_config.absorption_models.ebl_table.value)
 
-        def set_ebl_model(self, modelname):
+        def _set_ebl_model(self):
 
             # passing modelname to ebltable, which will check if defined
-            self._tau = ebltau.OptDepth.readmodel(model=modelname)
+            self._tau = ebltau.OptDepth.readmodel(model=self.ebl_model.value)
 
         def _set_units(self, x_unit, y_unit):
 

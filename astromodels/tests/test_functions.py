@@ -12,6 +12,7 @@ from future.utils import with_metaclass
 
 import astromodels
 from astromodels import update_logging_level
+from astromodels.core.property import SettingUnknownValue
 from astromodels.functions import (Continuous_injection_diffusion,
                                    Gaussian_on_sphere, Line, Powerlaw,
                                    SpatialTemplate_2D)
@@ -19,10 +20,12 @@ from astromodels.functions import function as function_module
 from astromodels.functions.function import (DesignViolation, Function1D,
                                             Function2D,
                                             FunctionDefinitionError,
+                                            FunctionInstanceError,
                                             FunctionMeta, UnknownFunction,
                                             UnknownParameter, get_function,
                                             get_function_class, list_functions)
 from astromodels.functions.functions_1D.absorption import phabs, tbabs, wabs
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.utils.configuration import astromodels_config
 
 update_logging_level("DEBUG")
@@ -906,38 +909,114 @@ def test_spatial_template_2D():
     hdu.writeto("test2.fits", overwrite=True)
 
     # Now load template files and test their evaluation
-    shape1 = SpatialTemplate_2D()
-    shape1.load_file("test1.fits")
+    shape1 = SpatialTemplate_2D(fits_file="test1.fits")
+    
     shape1.K = 1
 
-    shape2 = SpatialTemplate_2D()
-    shape2.load_file("test2.fits")
+    shape2 = SpatialTemplate_2D(fits_file="test2.fits")
+    
     shape2.K = 1
 
     assert shape1.hash != shape2.hash
 
     assert np.all(shape1.evaluate(
-        [312, 306], [41, 41], [1, 1], [40, 2]) == [1., 0.])
+        [312, 306], [41, 41], [1, 1], [40, 2], 0) == [1., 0.])
     assert np.all(shape2.evaluate(
-        [312, 306], [41, 41], [1, 1], [40, 2]) == [0., 1.])
+        [312, 306], [41, 41], [1, 1], [40, 2], 0) == [0., 1.])
     assert np.all(shape1.evaluate(
-        [312, 306], [41, 41], [1, 10], [40, 2]) == [1., 0.])
+        [312, 306], [41, 41], [1, 10], [40, 2], 0) == [1., 0.])
     assert np.all(shape2.evaluate(
-        [312, 306], [41, 41], [1, 10], [40, 2]) == [0., 10.])
+        [312, 306], [41, 41], [1, 10], [40, 2], 0) == [0., 10.])
 
     shape1.K = 1
     shape2.K = 1
-    assert np.all(shape1([312, 306], [41, 41]) == [1., 0.])
-    assert np.all(shape2([312, 306], [41, 41]) == [0., 1.])
+    assert np.all(shape1([312, 306], [41, 41], 0) == [1., 0.])
+    assert np.all(shape2([312, 306], [41, 41], 0) == [0., 1.])
 
     shape1.K = 1
     shape2.K = 10
-    assert np.all(shape1([312, 306], [41, 41]) == [1., 0.])
-    assert np.all(shape2([312, 306], [41, 41]) == [0., 10.])
-
+    assert np.all(shape1([312, 306], [41, 41], 0) == [1., 0.])
+    assert np.all(shape2([312, 306], [41, 41], 0) == [0., 10.])
+    
+    
     os.remove("test1.fits")
     os.remove("test2.fits")
 
+def test_linking_external_functions():
+
+    p = Powerlaw()
+    p2 = Powerlaw()
+
+
+    # nothing there yet
+    assert not p.external_functions
+    
+    p.link_external_function(p2, "p2")
+
+    # should be there
+    
+    assert "p2" in p.external_functions
+
+    with pytest.raises(RuntimeError):
+
+        p.link_external_function(p2, "p2")
+
+
+    p.unlink_external_function("p2")
+    
+    # nothing there now
+    assert not p.external_functions
+
+    with pytest.raises(RuntimeError):
+
+        p.link_external_function("dummy", "p2")
+
+
+    with pytest.raises(RuntimeError):
+
+        p.unlink_external_function("p2")
+
+    p.link_external_function(p2, "p2")
+
+    p.unlink_all_external_functions()
+
+    assert not p.external_functions
+
+    p.link_external_function(p2, "p2")
+    
+
+    assert p2 == p.external_functions["p2"]
+
+    data = p.to_dict(minimal=False)
+
+    assert "external_functions" in data
+
+
+    p3 = Powerlaw()
+
+    p4 = p3 + p
+
+    
+    data = p4.to_dict(minimal=False)
+
+    assert "external_functions" in data
+
+
+    assert data["external_functions"][1]["p2"] == p2.path
+
+
+def test_function_properties():
+    
+    with pytest.raises(FunctionInstanceError):
+
+        c = _ComplexTestFunction()
+
+    c = _ComplexTestFunction(file_name="lost.txt", dummy="test")
+    
+
+    with pytest.raises(SettingUnknownValue):
+
+        c = _ComplexTestFunction(file_name="f.txt", dummy="wrong")
 
 
 def test_abs_model():
@@ -948,9 +1027,11 @@ def test_abs_model():
 
         instance.info()
 
+        instance.abundance_table_info
+        
         if i != 1:
         
-            instance.init_xsect("AG89")
+            instance.abundance_table = "AG89"
 
         if i ==0:
 
@@ -960,18 +1041,6 @@ def test_abs_model():
 
             assert phabs._current_table == "AG89"
 
-    astromodels_config.absorption_models.tbabs_table = "ASPL"
-
-    m = astromodels.TbAbs()
-
-    assert tbabs._current_table == "ASPL"
-
-
-    astromodels_config.absorption_models.phabs_table = "ASPL"
-
-    m = astromodels.PhAbs()
-
-    assert phabs._current_table == "ASPL"
 
 
             

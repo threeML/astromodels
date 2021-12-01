@@ -655,8 +655,10 @@ def test_input_output_with_complex_functions():
 
     # Now set up the synch. spectrum for our source and the source itself
 
-    synch_spectrum = _ComplexTestFunction()
+    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
 
+    synch_spectrum.dummy = "love"
+    
     # Use the particle distribution we created as source for the electrons
     # producing synch. emission
 
@@ -664,6 +666,58 @@ def test_input_output_with_complex_functions():
 
     synch_source = PointSource(
         "synch_source", ra=12.6, dec=-13.5, spectral_shape=synch_spectrum
+    )
+
+
+    
+    
+    my_model = Model(electrons, synch_source)
+
+    my_model.display()
+
+    my_model.save("__test.yml")
+
+    new_model = load_model("__test.yml")
+
+    assert len(new_model.sources) == len(my_model.sources)
+
+    assert (
+        my_particle_distribution.index.value
+        == new_model.electrons.spectrum.main.shape.index.value
+    )
+
+    assert new_model.synch_source.spectrum.main.shape.file_name.value == "test.txt"
+
+    assert new_model.synch_source.spectrum.main.shape.dummy.value == "love"
+    
+    
+    os.remove("__test.yml")
+
+def test_input_output_with_complex_functions_as_composites():
+
+    my_particle_distribution = Powerlaw()
+
+    my_particle_distribution.index = -1.52
+
+    electrons = ParticleSource(
+        "electrons", distribution_shape=my_particle_distribution)
+
+    # Now set up the synch. spectrum for our source and the source itself
+
+    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
+    
+    
+    # Use the particle distribution we created as source for the electrons
+    # producing synch. emission
+
+    synch_spectrum.particle_distribution = my_particle_distribution
+
+    photon_spec = synch_spectrum + Powerlaw()
+
+    photon_spec.dummy_1 = "love"
+    
+    synch_source = PointSource(
+        "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
     )
 
     my_model = Model(electrons, synch_source)
@@ -681,6 +735,14 @@ def test_input_output_with_complex_functions():
         == new_model.electrons.spectrum.main.shape.index.value
     )
 
+
+    assert new_model.synch_source.spectrum.main.shape.file_name_1.value == "test.txt"
+
+    assert new_model.synch_source.spectrum.main.shape.dummy_1.value == "love"
+
+    
+    os.remove("__test.yml")
+    
 
 def test_add_remove_sources():
 

@@ -4,6 +4,7 @@ __author__ = "giacomov"
 
 import re
 import warnings
+from typing import Any, Dict, List, Optional, Union
 
 from astromodels.core import (model, parameter, polarization, sky_direction,
                               spectral_component)
@@ -116,10 +117,13 @@ class ModelParser(object):
         self._links = []
         self._external_parameter_links = []
         self._extra_setups = []
-
+        self._external_functions = []
         for source_or_var_name, source_or_var_definition in list(
                 self._model_dict.items()):
 
+
+            # first look for independent variable
+            
             if source_or_var_name.find("(IndependentVariable)") > 0:
 
                 var_name = source_or_var_name.split("(")[0].replace(" ", "")
@@ -165,7 +169,10 @@ class ModelParser(object):
                 self._links.extend(this_parser.links)
 
                 self._extra_setups.extend(this_parser.extra_setups)
+                
+                self._external_functions.extend(this_parser.external_functions)
 
+                
     def get_model(self):
 
         # Instance the model with all the parsed sources
@@ -193,13 +200,15 @@ class ModelParser(object):
 
             new_model[path].add_auxiliary_variable(new_model[variable], law)
 
-        # Finally the extra_setups (if any)
+        # the extra_setups (if any)
 
         for extra_setup in self._extra_setups:
 
             path = extra_setup["function_path"]
 
             for property, value in list(extra_setup["extra_setup"].items()):
+
+                log.debug(f"adding {property} with {value}")
 
                 # First, check to see if the we have a valid path in the new model.
                 # If we aren't given a path, interpret it as being given a value.
@@ -208,6 +217,47 @@ class ModelParser(object):
                 else:
                     new_model[path].__setattr__(property, value)
 
+        # finally the external functions if any
+        for external_function in self._external_functions:
+
+            path = external_function["function_path"]
+
+            if external_function["is_composite"]:
+
+                # we need to loop through the sub functions
+                # can link them
+                
+                for i, primary_func in enumerate(new_model[path]._functions):
+
+                    this_ef = external_function["external_functions"][i]
+
+                    # for each function 
+                    
+                    if this_ef:
+
+                        # if there are extrenal linked functions
+                        
+                        for fname, linked_function in this_ef.items():
+
+                            # relink them
+                            
+                            primary_func.link_external_function(function=new_model[linked_function],
+                                                                 internal_name=fname)
+                        
+            else:
+
+                # do the same if it is not composite
+
+                for fname, linked_function in external_function["external_functions"].items():
+
+                    new_model[path].link_external_function(function=new_model[linked_function],
+                                                            internal_name=fname)
+
+                
+
+                            
+
+                    
         return new_model
 
 
@@ -351,6 +401,9 @@ class SourceParser(object):
         # to make a synchrotron spectrum uses this to save and set up the particle distribution
         self._extra_setups = []
 
+        # this will store any externally linked functions
+        self._external_functions = []
+
         if source_type == SourceType.POINT_SOURCE.value:
 
             self._parsed_source = self._parse_point_source(source_definition)
@@ -370,6 +423,11 @@ class SourceParser(object):
 
         return self._extra_setups
 
+    @property
+    def external_functions(self) -> List[Dict[str,str]]:
+
+        return self._external_functions
+    
     @property
     def links(self):
 
@@ -624,6 +682,9 @@ class SourceParser(object):
 
         # parse the function
 
+        # now split the parameters and the properties
+
+        
         shape_parser = ShapeParser(self._source_name)
 
         shape = shape_parser.parse(
@@ -634,7 +695,9 @@ class SourceParser(object):
 
         self._links.extend(shape_parser.links)
         self._extra_setups.extend(shape_parser.extra_setups)
+        self._external_functions.extend(shape_parser.external_functions)
 
+        
         if "polarization" in component_definition:
 
             # get the polarization
@@ -671,7 +734,7 @@ class SourceParser(object):
 
         self._links.extend(spatial_shape_parser.links)
         self._extra_setups.extend(spatial_shape_parser.extra_setups)
-
+        self._external_functions.extend(spatial_shape_parser.external_functions)
         # Parse the spectral information
 
         try:
@@ -708,7 +771,9 @@ class ShapeParser(object):
         self._source_name = source_name
         self._links = []
         self._extra_setups = []
+        self._external_functions = []
 
+        
     @property
     def links(self):
 
@@ -719,6 +784,11 @@ class ShapeParser(object):
 
         return self._extra_setups
 
+    @property
+    def external_functions(self):
+
+        return self._external_functions
+    
     def parse(
         self, component_name, function_name, parameters_definition, is_spatial=False
     ):
@@ -747,12 +817,16 @@ class ShapeParser(object):
                 function_name, parameters_definition["expression"]
             )
 
+            is_composite = True
+            
         else:
 
             try:
 
                 function_instance = function.get_function(function_name)
 
+                is_composite = False
+                
             except function.UnknownFunction:  # pragma: no cover
 
                 log.error( 
@@ -928,6 +1002,51 @@ class ShapeParser(object):
 
                 function_instance.parameters[parameter_name].prior = prior_function
 
+        
+        
+                
+        if function_instance.has_properties:
+
+            # now collect the properties
+            
+            # the properties are stored in the parameters defintion
+            # as well
+            
+            for property_name, _ in function_instance.properties.items():
+
+                try:
+
+                    this_definition = parameters_definition[property_name]
+
+                except KeyError:  # pragma: no cover
+
+                    log.error( 
+                        "Function %s, specified as shape for %s of source %s, lacks "
+                        "the definition for property %s"
+                        % (function_name, component_name, self._source_name, property_name)
+                    )
+
+                    for k,v in parameters_definition.items():
+
+                        log.error((k, v))
+
+                    raise ModelSyntaxError()
+
+
+                if "value" not in this_definition:
+
+                    log.error("The property %s in function %s, specified as shape for %s "
+                              "of source %s, lacks a 'value' attribute"
+                    % (property_name, function_name, component_name, self._source_name))
+                
+                    raise ModelSyntaxError()
+
+
+                function_instance.properties[property_name].value = this_definition['value']
+                    
+                
+
+                
         # Now handle extra_setup if any
         if "extra_setup" in parameters_definition:
 
@@ -944,5 +1063,22 @@ class ShapeParser(object):
                     "extra_setup": parameters_definition["extra_setup"],
                 }
             )
+        if "external_functions" in parameters_definition:
 
+            if is_spatial:
+                path = ".".join([self._source_name, function_name])
+            else:
+                path = ".".join(
+                    [self._source_name, "spectrum", component_name, function_name])
+
+
+            
+            self._external_functions.append(
+                {"function_path": path,                 
+                 "external_functions": parameters_definition["external_functions"],
+                 "is_composite": is_composite
+            }
+            )
+
+            
         return function_instance

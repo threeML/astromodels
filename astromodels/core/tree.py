@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from future import standard_library
 
-from astromodels.core.node_type import _Node
+from astromodels.core.node_type import NodeBase
 from astromodels.utils.io import display
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.valid_variable import is_valid_variable_name
@@ -27,7 +27,7 @@ class NonExistingAttribute(RuntimeWarning):
 
 log = setup_logger(__name__)
 
-class Node(_Node):
+class Node(NodeBase):
 
     # This apparently dumb constructor is needed otherwise pickle will fail
 
@@ -46,7 +46,7 @@ class Node(_Node):
 
             raise AssertionError()
 
-        _Node.__init__(self, name)
+        NodeBase.__init__(self, name)
         
         #########################################################################
 

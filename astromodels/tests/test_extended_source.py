@@ -98,17 +98,24 @@ def test_call():
 
         print("testing %s ..." % name)
 
-        shape = class_type()
-        source = ExtendedSource('test_source_%s' %
-                                name, shape, components=[c1, c2])
 
         if name != "SpatialTemplate_2D":
+
+            shape = class_type()
+            source = ExtendedSource('test_source_%s' %
+                                name, shape, components=[c1, c2])
+
+            
             shape.lon0 = ra*u.degree
             shape.lat0 = dec*u.degree
 
         else:
             make_test_template(ra, dec, "__test.fits")
-            shape.load_file("__test.fits")
+            shape = class_type(fits_file="__test.fits")
+            source = ExtendedSource('test_source_%s' %
+                                name, shape, components=[c1, c2])
+
+            
             shape.K = 1.0
 
         assert np.all(source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
@@ -140,7 +147,11 @@ def test_call():
 
         this_function = _known_functions[key]
 
-        if this_function._n_dim == 2 and not this_function().is_prior:
+        if key in ["SpatialTemplate_2D"]:
+
+            test_one(this_function, key)
+        
+        elif this_function._n_dim == 2 and not this_function().is_prior:
 
             test_one(this_function, key)
 
@@ -166,17 +177,25 @@ def test_call_with_units():
 
         print("testing %s ..." % name)
 
-        shape = class_type()
-        source = ExtendedSource('test_source_%s' %
-                                name, spatial_shape=shape, components=[c1, c2])
-
         if name != "SpatialTemplate_2D":
+
+            shape = class_type()
+            source = ExtendedSource('test_source_%s' %
+                                    name, spatial_shape=shape, components=[c1, c2])
+
+
+            
             shape.lon0 = ra*u.degree
             shape.lat0 = dec*u.degree
 
         else:
             make_test_template(ra, dec, "__test.fits")
-            shape.load_file("__test.fits")
+
+            shape = class_type(fits_file="__test.fits")
+            source = ExtendedSource('test_source_%s' %
+                                name, spatial_shape=shape, components=[c1, c2])
+
+    
             shape.K = 1.0
 
         assert np.all(source.spectrum.component1(
@@ -221,7 +240,11 @@ def test_call_with_units():
 
         this_function = _known_functions[key]
 
-        if this_function._n_dim == 2 and not this_function().is_prior:
+        if key in ["SpatialTemplate_2D"]:
+
+            test_one(this_function, key)
+        
+        elif this_function._n_dim == 2 and not this_function().is_prior:
 
             test_one(this_function, key)
 

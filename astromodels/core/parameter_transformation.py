@@ -37,7 +37,7 @@ class LogarithmicTransformation(ParameterTransformation):
 
         super(LogarithmicTransformation, self).__init__(is_positive=True)
     
-    def forward(self, external_value):
+    def forward(self, external_value, vector=False):
 
         #  Throw an error if taking the logarithm of a negative number (or nan)
 

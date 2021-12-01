@@ -1,3 +1,4 @@
+import collections
 import itertools
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Type
@@ -20,12 +21,12 @@ class NewNodeUnpickler(object):
 
 
 @dataclass(repr=False, unsafe_hash=True)
-class _Node:
+class NodeBase:
     _name: str
-    _parent: Optional[Type["_Node"]] = field(repr=False, default=None)
-    _children: Dict[str, Type["_Node"]] = field(default_factory=dict,
-                                                repr=False,
-                                                compare=False)
+    _parent: Optional[Type["NodeBase"]] = field(repr=False, default=None)
+    _children: Dict[str, Type["NodeBase"]] = field(default_factory=dict,
+                                                   repr=False,
+                                                   compare=False)
     _path: Optional[str] = field(repr=False, default="")
 
     # The next 3 methods are *really* necessary for anything to work
@@ -41,7 +42,7 @@ class _Node:
 
         return NewNodeUnpickler(), (self.__class__, ), state
 
-    def __setstate__(self, state):
+    def __setstate__(self, state) -> None:
 
         self._children = {}
 
@@ -72,9 +73,9 @@ class _Node:
 
         return cPickle.loads(cPickle.dumps(self))
 
-    def _add_child(self, child: Type["_Node"]) -> None:
+    def _add_child(self, child: Type["NodeBase"]) -> None:
 
-        if not isinstance(child, _Node):
+        if not isinstance(child, NodeBase):
 
             log.error(f"{child} is not of type Node")
 
@@ -104,14 +105,14 @@ class _Node:
 
             raise AttributeError()
 
-    def _add_children(self, children: List[Type["_Node"]]) -> None:
+    def _add_children(self, children: List[Type["NodeBase"]]) -> None:
 
         for child in children:
             self._add_child(child)
 
     def _remove_child(self,
                       name: str,
-                      delete: bool = True) -> Optional["_Node"]:
+                      delete: bool = True) -> Optional["NodeBase"]:
         """
         return a child
         """
@@ -157,7 +158,7 @@ class _Node:
         self._update_child_path()
         
         
-    def _set_parent(self, parent: Type["_Node"]) -> None:
+    def _set_parent(self, parent: Type["NodeBase"]) -> None:
         """
         set the parent and update path
         """
@@ -177,7 +178,7 @@ class _Node:
         log.debug(f"path is now: {self._path}")
 
         
-    def _get_child(self, name: str) -> "_Node":
+    def _get_child(self, name: str) -> "NodeBase":
         """
         return a child object
         """
@@ -190,14 +191,14 @@ class _Node:
         """
         return name in self._children
 
-    def _get_children(self) -> Tuple["_Node"]:
+    def _get_children(self) -> Tuple["NodeBase"]:
         """
         return a tuple of children
         """
 
         return tuple(self._children.values())
 
-    def _get_child_from_path(self, path: str) -> "_Node":
+    def _get_child_from_path(self, path: str) -> "NodeBase":
         """
         get a child from a string path
         """
@@ -208,14 +209,38 @@ class _Node:
 
         return _next
 
-    def __getitem__(self, key) -> "_Node":
+    def __getitem__(self, key) -> "NodeBase":
         return self._get_child_from_path(key)
 
+    def _recursively_gather_node_type(self, node, node_type) -> Dict[str, "NodeBase"]:
+
+        instances = collections.OrderedDict()
+
+        for child in node._get_children():
+
+            #log.debug(f"on child {child._name}")
+            
+            if isinstance(child, node_type):
+
+                path = child._get_path()
+
+                #log.debug(f"on child {path}")
+                
+                instances[path] = child
+
+                for sub_child in child._get_children():
+
+                    instances.update(self._recursively_gather_node_type(sub_child, node_type))
+
+            else:
+
+                instances.update(self._recursively_gather_node_type(child, node_type))
+
+        return instances
+
+
     
-    def _get_parent(self) -> "_Node":
-        """
-        returns the parent node of this node
-        """
+    def _get_parent(self) -> "NodeBase":
         return self._parent
 
     def _get_path(self) -> "str":
@@ -228,7 +253,7 @@ class _Node:
         else:
             return self._name
 
-    def _get_root(self, source_only: bool=False) -> "_Node":
+    def _root(self, source_only: bool=False) -> "NodeBase":
         """
         returns the root of the node, will stop at the source
         if source_only is set to True
@@ -321,12 +346,20 @@ class _Node:
     @property
     def name(self) -> str:
         return self._name
-
+  
     def __getattr__(self, name):
         if name in self._children:
+
             return self._children[name]
+
         else:
-            return super().__getattr__(name)
+
+            #log.error(f"Accessing an element {name} of the node that does not exist")
+            
+            raise AttributeError(f"Accessing an element {name} of the node that does not exist")
+
+            
+            #return super(NodeBase).__getattr__(name)
 
     def __setattr__(self, name, value):
 
@@ -356,8 +389,10 @@ class _Node:
 
                     # this is going to be a node which
                     # we are not allowed to erase
-                    log.error("Accessing an element of the node that does not exist")
-                    raise AttributeError()
+
+                    # log.error(f"Accessing an element {name} of the node that does not exist")
+
+                    raise AttributeError(f"Accessing an element {name} of the node that does not exist")
             else:
                 return super().__setattr__(name, value)
         else:

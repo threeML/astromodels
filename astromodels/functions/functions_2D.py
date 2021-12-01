@@ -616,8 +616,27 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                 desc: hash of model map [needed for memoization]
                 initial value: 1
                 fix: yes
+            ihdu:
+                desc: header unit index of fits file
+                initial value: 0
+                fix: True 
+                min: 0
         
-        """
+        properties:
+            fits_file:
+                desc: fits file to load
+                defer: True
+                function: _load_file
+            frame:
+                desc: coordinate frame
+                initial value: icrs
+                allowed values:
+                    - icrs
+                    - galactic
+                    - fk5
+                    - fk4
+                    - fk4_no_e
+    """
     
     def _set_units(self, x_unit, y_unit, z_unit):
         
@@ -626,28 +645,24 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
     # This is optional, and it is only needed if we need more setup after the
     # constructor provided by the meta class
     
-    def _setup(self):
+    # def _setup(self):
         
-        self._frame = "icrs"
-        self._fitsfile = None
-        self._map = None
+        # self._frame = "icrs"
+        # self._fitsfile = None
+        # self._map = None
     
-    
-    def load_file(self,fitsfile, ihdu=0):
+    def _load_file(self):
         
-        if fitsfile is None:
-            
-            raise RuntimeError( "Need to specify a fits file with a template map." )
         
-        self._fitsfile=fitsfile
+        self._fitsfile=self.fits_file.value
         
         with fits.open(self._fitsfile) as f:
     
-            self._wcs = wcs.WCS( header = f[ihdu].header )
-            self._map = f[ihdu].data
+            self._wcs = wcs.WCS( header = f[int(self.ihdu.value)].header )
+            self._map = f[int(self.ihdu.value)].data
               
-            self._nX = f[ihdu].header['NAXIS1']
-            self._nY = f[ihdu].header['NAXIS2']
+            self._nX = f[int(self.ihdu.value)].header['NAXIS1']
+            self._nY = f[int(self.ihdu.value)].header['NAXIS2']
 
             #note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0. 
             #see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
@@ -670,36 +685,32 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             self.hash = int(h.hexdigest(), 16)
             
 
-    def to_dict(self, minimal=False):
+    # def to_dict(self, minimal=False):
 
-         data = super(Function2D, self).to_dict(minimal)
+    #      data = super(Function2D, self).to_dict(minimal)
 
-         if not minimal:
+    #      if not minimal:
          
-            data['extra_setup'] = {"_fitsfile": self._fitsfile, "_frame": self._frame }
+    #         data['extra_setup'] = {"_fitsfile": self._fitsfile, "_frame": self._frame }
   
-         return data
+    #      return data
         
     
-    def set_frame(self, new_frame):
-        """
-            Set a new frame for the coordinates (the default is ICRS J2000)
+    # def set_frame(self, new_frame):
+    #     """
+    #         Set a new frame for the coordinates (the default is ICRS J2000)
             
-            :param new_frame: a coordinate frame from astropy
-            :return: (none)
-            """
-        assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]
+    #         :param new_frame: a coordinate frame from astropy
+    #         :return: (none)
+    #         """
+    #     assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]
                 
-        self._frame = new_frame
+    #     self._frame = new_frame
     
-    def evaluate(self, x, y, K, hash):
-        
-        if self._map is None:
-            
-            self.load_file(self._fitsfile)
-          
+    def evaluate(self, x, y, K, hash, ihdu):
+                  
         # We assume x and y are R.A. and Dec
-        coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+        coord = SkyCoord(ra=x, dec=y, frame=self.frame.value, unit="deg")
         
         #transform input coordinates to pixel coordinates; 
         #SkyCoord takes care of necessary coordinate frame transformations.
@@ -714,13 +725,13 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         out = np.zeros_like(Xpix).astype(float)
         out[iz] = self._map[Ypix[iz], Xpix[iz]]
         
-        return np.multiply(K,out)
+        return np.multiply(K, out)
 
     def get_boundaries(self):
     
-        if self._map is None:
+        # if self._map is None:
             
-            self.load_file(self._fitsfile)
+        #     self.load_file(self._fitsfile)
           
         #We use the max/min RA/Dec of the image corners to define the boundaries.
         #Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
@@ -728,7 +739,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         Xcorners = np.array( [0, 0,        self._nX, self._nX] )
         Ycorners = np.array( [0, self._nY, 0,        self._nY] )
         
-        corners = SkyCoord.from_pixel( Xcorners, Ycorners, wcs=self._wcs, origin = 0).transform_to(self._frame)  
+        corners = SkyCoord.from_pixel( Xcorners, Ycorners, wcs=self._wcs, origin = 0).transform_to(self.frame.value)  
      
         min_lon = min(corners.ra.degree)
         max_lon = max(corners.ra.degree)
