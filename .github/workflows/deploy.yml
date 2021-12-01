@@ -68,8 +68,9 @@ jobs:
           run:
             shell: bash -l {0}
         strategy:
+            fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest]
+                os: [ubuntu-latest, macos-latest, macos-10.15]
                 python-version: [3.7]
 
         steps:
