@@ -199,7 +199,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
-                  conda-build-version: 3.21
+                  #conda-build-version: 3.21
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -243,15 +243,16 @@ jobs:
                   # Build package
 
                   if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-
-                  conda build --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda install conda-build -n base
+                      conda build --python=${{matrix.python-version}} conda-dist/recipe/
 
                   else
                   # there is some strange error about the prefix length
-                  conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda install conda-build=3.21.6=py39h6e9494a_2 -n base
+                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
                   fi
 
-                  #conda install --use-local -c conda-forge astromodels
+                  conda install --use-local -c conda-forge astromodels
 
             - name: Publish to Conda
               shell: bash -l {0}
