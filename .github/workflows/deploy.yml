@@ -97,7 +97,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
-                  conda-build-version: 3.21
+                  #conda-build-version: 3.21
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -112,15 +112,17 @@ jobs:
                   # Make sure we fail in case of error
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
-                  miniconda_os=Linux
-                  compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
+                      
+                      miniconda_os=Linux
+                      compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
                   else  # osx
-                  miniconda_os=MacOSX
-                  compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
+                      
+                      miniconda_os=MacOSX
+                      compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
 
-                  # On macOS we also need the conda libx11 libraries used to build xspec
-                  # We also need to pin down ncurses, for now only on macos.
-                  xorg="xorg-libx11"
+                      # On macOS we also need the conda libx11 libraries used to build xspec
+                      # We also need to pin down ncurses, for now only on macos.
+                      xorg="xorg-libx11"
                   fi
 
                   # Get the version in the __version__ environment variable
@@ -143,12 +145,13 @@ jobs:
                   # Build package
 
                   if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-
-                  conda build --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda install conda-build -n base
+                      conda build --python=${{matrix.python-version}} conda-dist/recipe/
 
                   else
                   # there is some strange error about the prefix length
-                  conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda install conda-build=3.21.6=py39h6e9494a_2 -n base
+                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
                   fi
 
                   conda install --use-local -c conda-forge astromodels
@@ -173,7 +176,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-latest]
+                os: [ubuntu-latest, macos-10.15]
                 python-version: [3.7]
 
         steps:
@@ -255,8 +258,13 @@ jobs:
               run: |
 
                   conda install -c conda-forge anaconda-client
-                  echo "Uploading ${{matrix.os}}"
+                  echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
 
+                  if [[ "${ISDEV}" == "true" ]]; then
+
+                  LABEL="--label dev"
+
+                  fi
 
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
@@ -272,3 +280,4 @@ jobs:
               env:
                   UPLOAD_TOKEN: ${{secrets.CONDA_UPLOAD_TOKEN}}
                   CURRENT_OS: ${{matrix.os}}
+                  ISDEV: ${{endsWith(github.ref, 'dev')}}
