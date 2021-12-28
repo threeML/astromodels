@@ -59,46 +59,46 @@ class AbundanceTable:
         """
         set the current table from AG89, WILM or ASPL
 
-        :param table: 
+        :param table:
         :type table: str
-        :returns: 
+        :returns:
 
         """
-        
-        
-        
+
         old_table = self._current_table
 
         self._current_table = table
-        
-        
+
         if self.current_table not in self.tables:
 
-            log.error(f"{self.name} does not contain {table} choose {','.join(self.table)}")
+            log.error(
+                f"{self.name} does not contain {table} choose {','.join(self.table)}"
+            )
 
             self._current_table = old_table
-            
+
             raise AssertionError()
-            
 
     @property
     def current_table(self) -> str:
 
-        convert= {
-        "AG89": "angr",
-        "ASPL": "aspl",
-        "WILM": "wilm"
-        }
+        convert = {"AG89": "angr", "ASPL": "aspl", "WILM": "wilm"}
 
         return convert[self._current_table]
-        
+
     @property
     def info(self) -> str:
 
         _abund_info = {}
-        _abund_info["WILM"] = "wilms\nfrom Wilms, Allen & McCray (2000), ApJ 542, 914 \n except for elements not listed which are given zero abundance)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html "
-        _abund_info["AG89"] = "angr\nfrom Anders E. & Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
-        _abund_info["ASPL"] = "aspl\nfrom Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)\nhttps://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
+        _abund_info[
+            "WILM"
+        ] = "wilms\nfrom Wilms, Allen & McCray (2000), ApJ 542, 914 \n except for elements not listed which are given zero abundance)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html "
+        _abund_info[
+            "AG89"
+        ] = "angr\nfrom Anders E. & Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
+        _abund_info[
+            "ASPL"
+        ] = "aspl\nfrom Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)\nhttps://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
 
         return _abund_info[self._current_table]
 
@@ -108,11 +108,12 @@ class AbundanceTable:
         """
         returns the XSECT table for the current model
 
-        :returns: 
+        :returns:
 
         """
-        _path: Path = Path(
-        "xsect") / f"xsect_{self.name}_{self.current_table}.fits"
+        _path: Path = (
+            Path("xsect") / f"xsect_{self.name}_{self.current_table}.fits"
+        )
 
         path_to_xsect: Path = _get_data_file_path(_path)
 
@@ -122,15 +123,14 @@ class AbundanceTable:
             xsect_ene = dxs["ENERGY"]
             xsect_val = dxs["SIGMA"]
 
-        return np.array(xsect_ene, dtype=np.float64), np.array(xsect_val,
-                                                           dtype=np.float64)
+        return np.array(xsect_ene, dtype=np.float64), np.array(
+            xsect_val, dtype=np.float64
+        )
 
 
-        
-phabs = AbundanceTable("phabs", ["angr","aspl"], "AG89")
-tbabs = AbundanceTable("tbabs", ["angr","aspl","wilm"], "WILM")
+phabs = AbundanceTable("phabs", ["angr", "aspl"], "AG89")
+tbabs = AbundanceTable("tbabs", ["angr", "aspl", "wilm"], "WILM")
 wabs = AbundanceTable("wabs", ["angr"], "AG89")
-    
 
 
 # PhAbs class
@@ -170,44 +170,45 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             function: _init_xsect
 
     """
+
     def _setup(self):
-        self._fixed_units = (astropy_units.keV,
-                             astropy_units.dimensionless_unscaled)
+        self._fixed_units = (
+            astropy_units.keV,
+            astropy_units.dimensionless_unscaled,
+        )
 
         # # astromodels_config.absorption_models.phabs_table.value
         # self.init_xsect(self.abundance_table.value)
 
     def _set_units(self, x_unit, y_unit):
-        self.NH.unit = astropy_units.cm**(-2)
+        self.NH.unit = astropy_units.cm ** (-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
         """
         Set the abundance table
 
-        :param abund_table: "ASPL", "AG89" 
-        :returns: 
-        :rtype: 
+        :param abund_table: "ASPL", "AG89"
+        :returns:
+        :rtype:
 
         """
 
         # load cross section data
 
-
         phabs.set_table(self.abundance_table.value)
 
         self.xsect_ene, self.xsect_val = phabs.xsect_table
-        
+
     @property
     def abundance_table_info(self):
         print(phabs.info)
 
-        
     def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
+            _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -218,13 +219,14 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(self.xsect_ene, self.xsect_val,
-                              _x * (1 + _redshift))
+        xsect_interp = interp(
+            self.xsect_ene, self.xsect_val, _x * (1 + _redshift)
+        )
 
         # evaluate the exponential with numba
-        
+
         spec = _numba_eval(NH, xsect_interp) * _y_unit
-        
+
         return spec
 
 
@@ -260,7 +262,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             desc: the abundance table for the model
             initial value: WILM
             allowed values:
-             - WILM   
+             - WILM
              - AG89
              - ASPL
             function: _init_xsect
@@ -268,33 +270,35 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
 
     """
+
     def _setup(self):
 
         # self.init_xsect(self.abundance_table)
 
-        self._fixed_units = (astropy_units.keV,
-                             astropy_units.dimensionless_unscaled)
+        self._fixed_units = (
+            astropy_units.keV,
+            astropy_units.dimensionless_unscaled,
+        )
 
     def _set_units(self, x_unit, y_unit):
 
-        self.NH.unit = astropy_units.cm**(-2)
+        self.NH.unit = astropy_units.cm ** (-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
         """
         Set the abundance table
 
-        :param abund_table: "WILM", "ASPL", "AG89" 
-        :returns: 
-        :rtype: 
+        :param abund_table: "WILM", "ASPL", "AG89"
+        :returns:
+        :rtype:
 
         """
-        
 
         tbabs.set_table(self.abundance_table.value)
 
         self.xsect_ene, self.xsect_val = tbabs.xsect_table
-        
+
     @property
     def abundance_table_info(self):
         print(tbabs.info)
@@ -303,7 +307,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
+            _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -314,8 +318,9 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(self.xsect_ene, self.xsect_val,
-                              _x * (1 + _redshift))
+        xsect_interp = interp(
+            self.xsect_ene, self.xsect_val, _x * (1 + _redshift)
+        )
 
         spec = _numba_eval(NH, xsect_interp) * _y_unit
 
@@ -351,12 +356,14 @@ class WAbs(Function1D, metaclass=FunctionMeta):
     """
 
     def _setup(self):
-        self._fixed_units = (astropy_units.keV,
-                             astropy_units.dimensionless_unscaled)
+        self._fixed_units = (
+            astropy_units.keV,
+            astropy_units.dimensionless_unscaled,
+        )
         self._init_xsect()
 
     def _set_units(self, x_unit, y_unit):
-        self.NH.unit = astropy_units.cm**(-2)
+        self.NH.unit = astropy_units.cm ** (-2)
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
@@ -366,21 +373,19 @@ class WAbs(Function1D, metaclass=FunctionMeta):
         :returns:
         :rtype:
 
-        """            
+        """
 
         self.xsect_ene, self.xsect_val = wabs.xsect_table
-
 
     @property
     def abundance_table_info(self):
         print(wabs.info)
 
-
     def evaluate(self, x, NH, redshift):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
+            _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -391,15 +396,13 @@ class WAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(self.xsect_ene, self.xsect_val,
-                              _x * (1 + _redshift))
+        xsect_interp = interp(
+            self.xsect_ene, self.xsect_val, _x * (1 + _redshift)
+        )
 
-        xsect_interp = interp( self.xsect_ene, self.xsect_val, _x * (1+ _redshift))
-
-        spec = _numba_eval(NH,xsect_interp) * _y_unit
+        spec = _numba_eval(NH, xsect_interp) * _y_unit
 
         return spec
-
 
 
 if has_ebltable:
@@ -438,7 +441,7 @@ if has_ebltable:
                  - inuoe
                  - gilmore
               function: _set_ebl_model
-        
+
 
         """
 
@@ -454,7 +457,10 @@ if has_ebltable:
 
         def _set_units(self, x_unit, y_unit):
 
-            if not hasattr(x_unit, "physical_type") or x_unit.physical_type != "energy":
+            if (
+                not hasattr(x_unit, "physical_type")
+                or x_unit.physical_type != "energy"
+            ):
 
                 # x should be energy
                 raise InvalidUsageForFunction(
@@ -469,7 +475,8 @@ if has_ebltable:
                 or y_unit.physical_type != "dimensionless"
             ):
                 raise InvalidUsageForFunction(
-                    "Unit for y is not dimensionless.")
+                    "Unit for y is not dimensionless."
+                )
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
             self.attenuation.unit = astropy_units.dimensionless_unscaled
@@ -487,22 +494,24 @@ if has_ebltable:
             else:
 
                 # otherwise it's in keV
-                eTeV = x/1.e9
+                eTeV = x / 1.0e9
 
-                _unit = 1.
+                _unit = 1.0
                 _redshift = redshift
                 _attenuation = attenuation
-                
-                
-            return _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation) * _unit
 
+            return (
+                _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation)
+                * _unit
+            )
 
 
 @nb.vectorize
 def _exp(x):
     return math.exp(x)
 
+
 @nb.njit(fastmath=True)
 def _numba_eval(nh, xsect_interp):
 
-    return _exp(-nh * xsect_interp )
+    return _exp(-nh * xsect_interp)
