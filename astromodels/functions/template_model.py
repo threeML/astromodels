@@ -713,7 +713,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                 # In more than 2d we can only use linear interpolation
 
                 this_interpolator = GridInterpolate(
-                    tuple([np.array(x) for x in list(self._parameters_grids.values())]),
+                    tuple([np.array(x,dtype='<f8') for x in list(self._parameters_grids.values())]),
                     this_data,
                 )
 
