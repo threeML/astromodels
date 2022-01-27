@@ -811,7 +811,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         del self._interpolators
         gc.collect()
 
-        log.info("You have 'cleaned' the table model at it will no longer be useable")
+        log.info("You have 'cleaned' the table model and it will no longer be useable")
 
     # def __del__(self):
 
@@ -879,7 +879,16 @@ class XSPECTableModel(object):
             energies = f["ENERGIES"]
             ene_lo = energies.data["ENERG_LO"]
             ene_hi = energies.data["ENERG_HI"]
-
+            spectra = f["SPECTRA"]
+            
+            if f[0].header["MODLUNIT"] == 'photons/cm^2/s' :
+               log.info("This table model has flux units of photons/cm^2/s. It will be converted to differential Flux by dividing by the energy bin widths. Logarithmic centers will be turned off. ")
+               delta_ene = ene_hi-ene_lo
+               self._spectrum = spectra.data["INTPSPEC"]/delta_ene
+               self._log_centers = False
+            else:
+               self._spectrum = spectra.data["INTPSPEC"]
+            
             # log centers
 
             if self._log_centers:
@@ -895,7 +904,7 @@ class XSPECTableModel(object):
 
             self._n_params = len(self._names)
 
-            spectra = f["SPECTRA"]
+            
 
             self._spectrum = spectra.data["INTPSPEC"]
 
