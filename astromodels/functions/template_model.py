@@ -904,10 +904,6 @@ class XSPECTableModel(object):
 
             self._n_params = len(self._names)
 
-            
-
-            self._spectrum = spectra.data["INTPSPEC"]
-
             self._params_dict = {}
 
             for i, name in enumerate(self._names):
