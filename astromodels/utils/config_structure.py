@@ -54,7 +54,10 @@ class AbsorptionModels:
 class Modeling:
     use_memoization: bool = True
     use_parameter_transforms: bool = True
-    
+    ignore_parameter_bounds: bool = False
+
+
+
 
 @dataclass
 class Config:

@@ -540,7 +540,7 @@ class ParameterBase(Node):
     def _set_value(self, new_value) -> None:
         """Sets the current value of the parameter, ensuring that it is within the allowed range."""
 
-        if self.min_value is not None and new_value < self.min_value:
+        if (self.min_value is not None) and (new_value < self.min_value) and not astromodels_config.modeling.ignore_parameter_bounds:
 
             log.error(
                 "Trying to set parameter {0} = {1}, which is less than the minimum allowed {2}"
@@ -548,7 +548,7 @@ class ParameterBase(Node):
 
             raise SettingOutOfBounds()
 
-        if self.max_value is not None and new_value > self.max_value:
+        if (self.max_value is not None) and (new_value > self.max_value) and not astromodels_config.modeling.ignore_parameter_bounds:
 
             log.error(
                 "Trying to set parameter {0} = {1}, which is more than the maximum allowed {2}"
