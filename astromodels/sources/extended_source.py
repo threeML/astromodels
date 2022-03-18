@@ -13,7 +13,7 @@ from astromodels.utils.pretty_list import dict_to_list
 
 class ExtendedSource(Source, Node):
 
-    def __init__(self, source_name, spatial_shape, spectral_shape=None, components=None):
+    def __init__(self, source_name, spatial_shape, spectral_shape=None, components=None, polarization=None):
 
         # Check that we have all the required information
         # and set the units
@@ -35,7 +35,7 @@ class ExtendedSource(Source, Node):
 
             if spectral_shape is not None:
 
-                components = [SpectralComponent("main", spectral_shape)]
+                components = [SpectralComponent("main", spectral_shape, polarization)]
 
             # Components in this case have energy as x and differential flux as y
 
@@ -77,7 +77,7 @@ class ExtendedSource(Source, Node):
 
                 if spectral_shape is not None:
 
-                    components = [SpectralComponent("main", spectral_shape)]
+                    components = [SpectralComponent("main", spectral_shape, polarization)]
 
                 # Assign units
                 diff_flux_units = (current_u.energy * current_u.area * current_u.time) ** (-1)
