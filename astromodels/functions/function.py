@@ -397,11 +397,11 @@ class FunctionMeta(type):
                 # now we see if it was a deferred value and fail
                 # if it was no specified in the constructor
 
-                if copy_of_properties[key].is_deferred:
+                if not copy_of_properties[key].is_deferred and copy_of_properties[key].value is None:
 
                     if key not in kwargs:
 
-                        log.error(f"{key} is specified as a deferred parameter, but no value was specfied in the constructor of {type(instance)._name}")
+                        log.error(f"{key} is not specified as a deferred parameter, but no value was specfied in the constructor of {type(instance)._name}")
 
                         raise FunctionInstanceError()
                     
@@ -634,7 +634,6 @@ class FunctionMeta(type):
         # see if we required a value at class construction
         
         deferred = ( False if "defer" not in definition else bool(definition['defer']))
-            
         
         # Enforce the presence of attributes 'value' and 'desc'
 
