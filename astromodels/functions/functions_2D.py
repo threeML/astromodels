@@ -625,6 +625,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             fits_file:
                 desc: fits file to load
                 defer: True
+                function: _load_file
             frame:
                 desc: coordinate frame
                 initial value: icrs
@@ -649,9 +650,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         # self._fitsfile = None
         # self._map = None
     
-    def _load_file(self,fits_file):
-
-        self.fits_file.value=fits_file
+    def _load_file(self):
 
         self._fitsfile=self.fits_file.value
         

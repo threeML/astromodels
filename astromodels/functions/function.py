@@ -397,7 +397,7 @@ class FunctionMeta(type):
                 # now we see if it was a deferred value and fail
                 # if it was no specified in the constructor
 
-                if not copy_of_properties[key].is_deferred and copy_of_properties[key].value is None:
+                if copy_of_properties[key].is_deferred and copy_of_properties[key].value is None:
 
                     if key not in kwargs:
 
