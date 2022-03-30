@@ -1,5 +1,5 @@
-//  Copyright (C) 2007, 2015-2018, 2019, 2020
-//      Smithsonian Astrophysical Observatory
+//  Copyright (C) 2007, 2015-2018, 2019, 2020, 2021, 2022
+//  Smithsonian Astrophysical Observatory
 //
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -100,243 +100,230 @@ int _sherpa_init_xspec_library();
 // gammap
 // gammq
 //
-
-
-#ifdef XSPEC_12_12_0
-
-
-#include "XSFunctions/funcWrappers.h"
-#include "XSFunctions/Utilities/xsFortran.h"
-
-#else
-
-#include "xsFortran.h"
-// C_<model> are declared here; the other models are defined in
+// TODO:: switch to C++ FuntionUtility interface rather than use xsFortran.h
+//
+// funcWrappers: C_<model> are declared here; the other models are defined in
 // functionMap.h but that requires using the XSPEC build location
 // rather than install location.
 //
+#ifdef XSPEC_12_12_0
+#include "XSFunctions/Utilities/xsFortran.h"
+#include "XSFunctions/funcWrappers.h"
+#else
+#include "xsFortran.h"
 #include "funcWrappers.h"
-
 #endif
-
 
 // TODO: is this defined in an XSPEC header file?
 #define ABUND_SIZE (30) // number of elements in Solar Abundance table
 
-
 extern "C" {
 
 #ifdef XSPEC_12_10_1
-void agnsed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void qsosed_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call agnsed_;
+  xsf77Call qsosed_;
 #endif
 
 #ifdef XSPEC_12_11_0
-void agnslim_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call agnslim_;
 #endif
 
 #ifndef XSPEC_12_9_1
-void xsaped_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsbape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsaped_;
+  xsf77Call xsbape_;
 #endif
 
-void xsblbd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsbbrd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsbmc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsbrms_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsblbd_;
+  xsf77Call xsbbrd_;
+  xsf77Call xsbmc_;
+  xsf77Call xsbrms_;
 
 #ifndef XSPEC_12_9_1
-void xsbvpe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsbvpe_;
 #endif
 
 #ifndef XSPEC_12_10_0
-void c6mekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void c6pmekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void c6pvmkl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void c6vmekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call c6mekl_;
+  xsf77Call c6pmekl_;
+  xsf77Call c6pvmkl_;
+  xsf77Call c6vmekl_;
 #endif
 
-void cemekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void compbb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void compls_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void compst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xstitg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void disk_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void diskir_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsdskb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call cemekl_;
+  xsf77Call compbb_;
+  xsf77Call compls_;
+  xsf77Call compst_;
+  xsf77Call xstitg_;
+  xsf77Call disk_;
+  xsf77Call diskir_;
+  xsf77Call xsdskb_;
 #ifndef XSPEC_12_10_1
-void xsdili_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsdili_;
 #endif
-void diskm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void disko_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void diskpbb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsdiskpn_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsxpdec_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void ezdiskbb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call diskm_;
+  xsf77Call disko_;
+  xsf77Call diskpbb_;
+  xsf77Call xsdiskpn_;
+  xsf77Call xsxpdec_;
+  xsf77Call ezdiskbb_;
 
 #ifndef XSPEC_12_9_1
-void xsgaul_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsgaul_;
 #endif
 
-void grad_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call grad_;
 
 #ifdef XSPEC_12_10_0
-// Note: have dropped the leading 'c_' for this model
-void xsgrbcomp(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+  xsccCall xsgrbcomp;
 
-void jet_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call jet_;
 #endif
 
-void xsgrbm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void spin_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsgrbm_;
+  xsf77Call spin_;
 
 #ifdef XSPEC_12_10_1
-void kyrline_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call kyrline_;
 #endif
 
 #ifndef XSPEC_12_9_1
-void xslorz_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsmeka_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsmekl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xslorz_;
+  xsf77Call xsmeka_;
+  xsf77Call xsmekl_;
 #endif
 
-void nsa_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void nsagrav_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void nsatmos_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call nsa_;
+  xsf77Call nsagrav_;
+  xsf77Call nsatmos_;
 
 #ifndef XSPEC_12_10_0
-void nsmax_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call nsmax_;
 #endif
 
-void xspegp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsp1tr_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsposm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xspegp_;
+  xsf77Call xsp1tr_;
+  xsf77Call xsposm_;
 
 #ifndef XSPEC_12_9_1
-void xsrays_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsrays_;
 #endif
 
-void xredge_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsrefsch_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void srcut_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void sresc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xredge_;
+  xsf77Call xsrefsch_;
+  xsf77Call srcut_;
+  xsf77Call sresc_;
 #ifdef XSPEC_12_10_0
-void ssa_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call ssa_;
 #endif
-void xsstep_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsstep_;
 
 #ifndef XSPEC_12_9_1
-void xsvape_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsvape_;
 #endif
 
-void xsbrmv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsbrmv_;
 
 #ifndef XSPEC_12_9_1
-void xsvmek_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsvmkl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsvmek_;
+  xsf77Call xsvmkl_;
 #endif
 
 #ifndef XSPEC_12_9_1
-void xsvrys_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsvrys_;
 #endif
 
-void xszbod_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszbrm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xszbod_;
+  xsf77Call xszbrm_;
 
 #ifndef XSPEC_12_10_0
-void acisabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call acisabs_;
 #endif
 
-void xscnst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xscabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xscycl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsdust_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsedge_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsabsc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsexp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xshecu_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xshrfl_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsntch_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsabsp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsphab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsplab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xscred_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xssmdg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsspln_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xssssi_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xscnst_;
+  xsf77Call xscabs_;
+  xsf77Call xscycl_;
+  xsf77Call xsdust_;
+  xsf77Call xsedge_;
+  xsf77Call xsabsc_;
+  xsf77Call xsexp_;
+  xsf77Call xshecu_;
+  xsf77Call xshrfl_;
+  xsf77Call xsntch_;
+  xsf77Call xsabsp_;
+  xsf77Call xsphab_;
+  xsf77Call xsplab_;
+  xsf77Call xscred_;
+  xsf77Call xssmdg_;
+  xsf77Call xsspln_;
+  xsf77Call xssssi_;
 
 #ifndef XSPEC_12_10_0
-void swind1_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call swind1_;
 #endif
 
-void xsred_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsabsv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsvphb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsabsw_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xswnab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsxirf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void mszdst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszedg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszhcu_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszabp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszphb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsred_;
+  xsf77Call xsabsv_;
+  xsf77Call xsvphb_;
+  xsf77Call xsabsw_;
+  xsf77Call xswnab_;
+  xsf77Call xsxirf_;
+  xsf77Call mszdst_;
+  xsf77Call xszedg_;
+  xsf77Call xszhcu_;
+  xsf77Call xszabp_;
+  xsf77Call xszphb_;
 
 #ifndef XSPEC_12_10_0
-void zxipcf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call zxipcf_;
 #endif
 
-void xszcrd_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void msldst_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszvab_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszvfe_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszvph_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszwnb_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xszcrd_;
+  xsf77Call msldst_;
+  xsf77Call xszvab_;
+  xsf77Call xszvfe_;
+  xsf77Call xszvph_;
+  xsf77Call xszabs_;
+  xsf77Call xszwnb_;
 
 
 #ifndef XSPEC_12_9_1
-void xsbvvp_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xsvvap_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call xsbvvp_;
+  xsf77Call xsvvap_;
 #endif
 
-void zigm_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call zigm_;
 
 #ifndef XSPEC_12_10_1
-void logpar_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call logpar_;
 #endif
-void eplogpar_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void optxagn_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void optxagnf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void pexmon_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call eplogpar_;
+  xsf77Call optxagn_;
+  xsf77Call optxagnf_;
+  xsf77Call pexmon_;
 
 // additive
-void xscompmag(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
-void xscomptb(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+  xsccCall xscompmag;
+  xsccCall xscomptb;
 
 #ifndef XSPEC_12_10_0
-void nsmaxg_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void nsx_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call nsmaxg_;
+  xsf77Call nsx_;
 #endif
 
 //multiplicative
-void xsphei_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xslyman_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void xszbabs(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+  xsf77Call xsphei_;
+  xsf77Call xslyman_;
+  xsccCall xszbabs;
 
 #ifdef XSPEC_12_9_1
-void ismabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-// Note: have dropped the leading 'c_' for this model
-void slimbbmodel(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+  xsf77Call ismabs_;
+  xsccCall slimbbmodel;
 #endif
 
 #ifdef XSPEC_12_11_0
-void ismdust_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-void olivineabs_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
-
-// Note: have dropped the leading 'c_' for this model
-// TODO: should look at whether we want to fix this as now have a
-//       number of c_xxx functions in model.dat
-void beckerwolff(const double* energy, int nFlux, const double* params, int spectrumNumber, double* flux, double* fluxError, const char* initStr);
+  xsf77Call ismdust_;
+  xsf77Call olivineabs_;
+  xsccCall beckerwolff;
 #endif
 
 
@@ -357,14 +344,20 @@ void xsmtbl(float* ear, int ne, float* param, const char* filenm, int ifl,
 // XSPEC convolution models
 //
 
-void rgsxsrc_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call rgsxsrc_;
 
 #ifdef XSPEC_12_10_1
-void kyconv_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call kyconv_;
 #endif
 
 #ifdef XSPEC_12_11_0
-void thcompf_(float* ear, int* ne, float* param, int* ifl, float* photar, float* photer);
+  xsf77Call thcompf_;
+#endif
+
+// XSPEC 12.12.0 changes
+#ifdef XSPEC_12_12_0
+  xsccCall xsgrbjet;
+  xsf77Call zxipab_;
 #endif
 
 }
@@ -375,7 +368,11 @@ void thcompf_(float* ear, int* ne, float* param, int* ifl, float* photar, float*
 // that they call _sherpa_init_xspec_library before calling any
 // XSPEC routine.
 //
-// Sun's C++ compiler complains if this is declared static
+// Sun's C++ compiler complains if this is declared static.
+//
+// TODO: should we expose this so that anyone who wants to use a user-model
+//       can access it?
+//
 int _sherpa_init_xspec_library()
 {
 
@@ -442,8 +439,13 @@ int _sherpa_init_xspec_library()
     fout.clear();
     fout.close();
 
-    // Try to minimize model chatter for normal operation.
-    FPCHAT( 0 );
+    // We used to set the chatter to 0 but this misses useful info
+    // (like XSPEC can't find the data files) that would be reported
+    // by XSPEC, so use the default XSPEC setting. It does not appear
+    // that this value is read in from ~/.xspec/Xspec.init so set
+    // it here so we have repeatable behavior.
+    //
+    FPCHAT( 10 );
 
     // Set cosmology initial values to XSPEC initial values
     csmph0( 70.0 );
@@ -1413,12 +1415,18 @@ static PyMethodDef XSpecMethods[] = {
   XSPECMODELFCT_C(C_log10con, 1),
 #endif
 
+#ifdef XSPEC_12_12_0
+  XSPECMODELFCT_C_NORM( xsgrbjet, 14 ),  // follow xsgrbcomp and drop the leading c_
+  XSPECMODELFCT_C_NORM( C_vvwDem, 37 ),
+  XSPECMODELFCT_C_NORM( C_vwDem, 21 ),
+  XSPECMODELFCT_C_NORM( C_wDem, 8 ),
+
+  XSPECMODELFCT(zxipab, 5),
+#endif
+
   { NULL, NULL, 0, NULL }
 
 };
-
-
-#ifdef PY3
 
 static struct PyModuleDef xspec_module = {
         PyModuleDef_HEAD_INIT,
@@ -1432,12 +1440,3 @@ PyMODINIT_FUNC PyInit__xspec(void) {
   import_array();
   return PyModule_Create(&xspec_module);
 }
-
-#else
-
-PyMODINIT_FUNC
-init_xspec(void) {
-  import_array();
-  Py_InitModule( (char*)"_xspec", XSpecMethods );
-}
-#endif
