@@ -25,11 +25,11 @@ jobs:
             - name: Set up Python 3.7
               uses: actions/setup-python@v1
               with:
-                  python-version: 3.7
+                  python-version: 3.9
             - name: Build package
               run: |
-                  pip install wheel
-                  python setup.py sdist
+                  pip install wheel setuptools -U
+                  python setup.py sdist bdist_wheel
             - name: Publish
               uses: pypa/gh-action-pypi-publish@v1.1.0
               with:
@@ -45,14 +45,16 @@ jobs:
             - uses: actions/checkout@v2
             - uses: actions/setup-python@v2
               with:
-                  python-version: 3.8
+                  python-version: 3.9
 
             - name: Install twine
               run: |
                   python -m pip install twine
             - name: Build package
               run: |
-                  python setup.py sdist
+                pip install wheel setuptools -U
+                python setup.py sdist bdist_wheel
+
             - name: List result
               run: |
                   ls -lh dist

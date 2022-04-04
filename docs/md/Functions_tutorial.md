@@ -5,8 +5,8 @@ jupyter:
     text_representation:
       extension: .md
       format_name: markdown
-      format_version: '1.2'
-      jupytext_version: 1.8.0
+      format_version: '1.3'
+      jupytext_version: 1.11.2
   kernelspec:
     display_name: Python 3
     language: python
@@ -219,6 +219,347 @@ print(len(another_composite2.parameters)) # 9 parameters
 
 ## Creating custom functions
 
+One of the most powerful aspects of astromodels is the ability to quickly build custom functions on the fly. The source code for a function can be pure python, FORTRAN linked via f2py, C++ linked via cython, etc. Anything that provides a python function can be used to fit data. 
+
+To build a custom spectral 1D function in astromodels, we need to import a few things that will allow astromodels to recognize your model.
+
 ```python
+from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
+```
+
+```Function1D``` is the base class for 1D spectral models and ```FunctionMeta``` is a python meta type class that ensures all the needed parts of a model are in the class as well as making the class function as it should.
+
+
+There are three basic parts to declaring a model:
+
+* the docstring
+* the units setter
+* the evaluate function
+
+Let's look at the simple case of the power law already define in astromodels.
+
+
+```python
+class Powerlaw(Function1D, metaclass=FunctionMeta):
+        r"""
+        description :
+            A  power-law
+        latex : $ K~\frac{x}{piv}^{index} $
+        parameters :
+            K :
+                desc : Normalization (differential flux at the pivot value)
+                initial value : 1.0
+                is_normalization : True
+                transformation : log10
+                min : 1e-30
+                max : 1e3
+                delta : 0.1
+            piv :
+                desc : Pivot value
+                initial value : 1
+                fix : yes
+            index :
+                desc : Photon index
+                initial value : -2
+                min : -10
+                max : 10
+        """
+
+
+        def _set_units(self, x_unit, y_unit):
+            # The index is always dimensionless
+            self.index.unit = astropy_units.dimensionless_unscaled
+
+            # The pivot energy has always the same dimension as the x variable
+            self.piv.unit = x_unit
+
+            # The normalization has the same units as the y
+
+            self.K.unit = y_unit
+
+
+        def evaluate(self, x, K, piv, index):
+
+            xx = np.divide(x, piv)
+
+            return K * np.power(xx, index)
+
 
 ```
+
+<!-- #region -->
+### The docstring
+
+We have used the docstring interface to provide a YAML description of the function. This sets up the important information used in the fitting process and record keeping. The docstring has three parts:
+
+- description
+    - The description is a text string that provides readable info about the model. Nothing fancy, but good descriptions help to inform the user.
+- latex
+    - If the model is analytic, a latex formula can be included
+- parameters
+    - For each parameter, a description and initial value must be included. Transformations for fitting, min/max values and fixing the parameter can also be described here.
+
+Optionally, there can be an additional ```properties``` category that we will cover later.
+
+    
+Keep in mind that this is in YAML format.
+
+### Set units
+
+astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy's unit system. Keep in mind that models are fit with a differential photon flux, 
+
+$$\frac{d N_p}{dA dt dE}$$
+
+so your units should reflect this convention. Therefore, proper normalizations should be taken into account.
+
+
+### Evaluate
+This is where the function is evaluated. The first argument **must be called x** and the parameter names and ordering must reflect what is in the docstring. Any number of operations can take place inside the evaluate call, but remember that the return must be in the form of a differential photon flux. For 2D and 3D functions, the functions have **y** and **z** for their first arguments as well. ** x, y, and z  are reserved names in functions**. 
+
+
+A functions is defined in a python session. **If you save the results of a fit to an AnalysisResults file and try to load this file without loading this model, you will get a error** Thus, remember to import any local models you used for an analysis before trying to reload that analysis. 
+
+
+## Custom functions in other langauges
+
+What if your model is built from a C++ function and you want to fit that directly to the data? using Cython, pybind11, f2py, etc, you can wrap these models and call them easily.
+<!-- #endregion -->
+
+```python
+
+def cpp_function_wrapper(a):
+    # we could wrap a c++ function here
+    # with cython, pybind11, etc
+    
+    return a
+
+```
+
+```python
+cpp_function_wrapper(2.)
+```
+
+Now we will define a astromodels function that will handle both the unit and non-unit call.
+
+```python
+import astropy.units as astropy_units
+
+class CppModel(Function1D,metaclass=FunctionMeta):
+        r"""
+        description :
+            A spectral model wrapping a cython function
+        latex : $$
+        parameters :
+            a :
+                desc : Normalization (differential flux)
+                initial value : 1.0
+                is_normalization : True
+                min : 1e-30
+                max : 1e3
+                delta : 0.1
+        """
+
+        def _set_units(self, x_unit, y_unit):
+
+            # The normalization has the same units as the y
+
+            self.a.unit = y_unit
+
+        
+        def evaluate(self, x, a):
+            
+            # check is the function is being called with units
+            
+            if isinstance(a, astropy_units.Quantity):
+                
+                # get the values
+                a_ = a.value
+                
+                # save the unit
+                unit_ = self.y_unit
+                
+            else:
+                
+                # we do not need to do anything here
+                a_ = a
+                
+                # this will basically be ignored
+                unit_ = 1.
+
+            # call the cython function
+            flux = cpp_function_wrapper(a_)
+
+            # add back the unit if needed
+            return flux * unit_
+```
+
+We can check the unit and non-unit call by making a point source and evaluating it
+
+```python
+cpp_spectrum = CppModel()
+
+from astromodels import PointSource
+
+point_source = PointSource('ps',0,0,spectral_shape=cpp_spectrum)
+
+print(point_source(10.))
+point_source(10. * astropy_units.keV)
+```
+
+## Advanced functions
+
+We are not limited to functions that can only take numerical parameters as arguments. We can also link other astromodels function into a function to expand its abilities. 
+### Properties
+
+Let's create a function that uses text based switches to alter its functionality
+
+
+```python
+class SwitchFunction(Function1D,metaclass=FunctionMeta):
+        r"""
+        description :
+            A demo function that can alter its state
+        latex : $$
+        
+        parameters :
+            a :
+                desc : Normalization (differential flux)
+                initial value : 1.0
+                is_normalization : True
+                min : 1e-30
+                max : 1e3
+                delta : 0.1
+        properties:
+            switch:
+                desc: a switch for functions
+                initial value: powerlaw
+                allowed values:
+                    - powerlaw
+                    - cosine
+                function: _say_hello
+        """
+        def _say_hello(self):
+        # called when we set the value of switch
+
+            print(self.switch.value)
+
+
+        def _set_units(self, x_unit, y_unit):
+
+            # The normalization has the same units as the y
+
+            self.a.unit = y_unit
+
+        
+        def evaluate(self, x, a):
+
+            if self.switch.value == "powerlaw":
+
+                return a * np.powerlaw(x,-2)
+
+            elif self.switch.value == "cosine":
+                
+                return a * np.cos(x)
+
+```
+
+We have added a text parameter called switch and specified the allowed values that it can take on. We can of course allow it to take on any value. Additionally, we have specified a function to call whenever we change the value. This allows use to do things like read in a table from a dictionary or load a file, etc. Properties can be set in the constructor of a function. They behave just like parameters except that they do not participate in the function call. Thus, their state is saved whenever you serialize the model to disk. 
+
+```python
+
+
+f = SwitchFunction()
+
+f.switch = 'cosine'
+
+```
+
+
+In the docstring, one can also specify ```defer: True``` which allows you to not set a value until instancing an object. This is useful if you have a model that reads in file at runtime, but the file name is not known until then. Check out the source code of astromodels to see how properties can be used to expand the functionality of your custom models. For example, the absorption models such as ```TbAbs``` take advantage of this to set their abundance tables.
+
+### Linking functions
+
+What if you need to call another astromodels function from inside your custom function? This is achieved by linking functions. For example, let's create a convolutional model that redshifts the energies of and model linked to it:
+
+```python
+class Redshifter(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+        a function that can redshift the energies of any 1D function
+
+    latex: not available
+
+    parameters :
+        redshift :
+            desc : the redshift
+            initial value : 0
+            min : 0
+
+    """
+
+    
+    def _set_units(self, x_unit, y_unit):
+
+        self.redshift.unit = astropy_units.dimensionless_unscaled 
+
+
+    def set_linked_function(self, function):
+	     # this is an optional helper to
+		 # ease in the setting of the function
+
+	
+
+        if "func" in self._external_functions:
+   
+            # since we only want to link one function
+			# we unlink if we have linked before 
+			
+            self.unlink_external_function("func")
+ 
+        # this allows use to link in a function 
+		# with an internal name 'func'
+		
+        self.link_external_function(function, "func")
+        
+        self._linked_function = function
+
+    def get_linked_function(self):
+
+	    # linked functions are stored in a dictionary
+		# but you 
+
+        return self._external_functions["func"]
+        
+
+    linked_function = property(
+        get_linked_function,
+        set_linked_function,
+        doc="""Get/set linked function""",
+    )
+
+
+    def evaluate(self, x, redshift):
+
+
+        # we can call the function here
+        return self._linked_function(x * (1 + redshift))
+
+```
+
+With this function, whenever we set the linked_function property to another astromodels function, its call will return that function redshifted.
+
+```python
+p = Powerlaw()
+rs = Redshifter(redshift=1)
+
+rs.linked_function = p
+
+print(p(10.))
+
+print(rs(10.))
+
+
+```
+
+
+We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members ```f.link_external_function(func, 'internal_name')```  and ```f.unlink_external_function('internal_name')```. You can link as many functions as needed and they are accessed via an internal dictionary ```self._extranal_functions```. As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all the complexity you built. 

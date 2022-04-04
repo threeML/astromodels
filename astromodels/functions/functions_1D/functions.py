@@ -188,58 +188,8 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
 # noinspection PyPep8Naming
 
 
-class Blackbody(Function1D, metaclass=FunctionMeta):
-    r"""
 
-    description :
-        A blackbody function
-
-    latex : $f(x) = K \frac{x^2}{\exp(\frac{x}{kT}) -1}  $
-
-    parameters :
-        K :
-            desc :
-            initial value : 1e-4
-            min : 0.
-            is_normalization : True
-
-        kT :
-            desc : temperature of the blackbody
-            initial value : 30.0
-            min: 0.
-
-    """
-
-    def _set_units(self, x_unit, y_unit):
-        # The normalization has the same units as y
-        self.K.unit = old_div(y_unit, (x_unit ** 2))
-
-        # The break point has always the same dimension as the x variable
-        self.kT.unit = x_unit
-
-    def evaluate(self, x, K, kT):
-
-        if isinstance(x, astropy_units.Quantity):
-
-            K_ = K.value
-            kT_ = kT.value
-
-            x_ = x.value
-
-            unit_ = self.y_unit
-
-        else:
-            unit_ = 1.0
-            K_, kT_, x_, = (
-                K,
-                kT,
-                x,
-            )
-
-        result = nb_func.bb_eval(x_, K_, kT_)
-
-        return result * unit_
-
+    
 
 # noinspection PyPep8Naming
 
@@ -371,6 +321,23 @@ if has_naima:
                 fix : yes
         """
 
+        def _setup(self):
+
+            # this is needed to load from
+            # yaml
+
+            for k,v in self._children.items():
+
+                if k not in self._parameters:
+
+                    # ok, this is probably a
+                    #  particle distribution
+                    self.set_particle_distribution(v)
+
+                    break
+
+
+        
         def _set_units(self, x_unit, y_unit):
 
             # This function can only be used as a spectrum,
@@ -405,7 +372,16 @@ if has_naima:
 
         def set_particle_distribution(self, function):
 
+            if "particle_distribution" in self._external_functions:
+
+                self.unlink_external_function("particle_distribution")
+
+            self.link_external_function(function, "particle_distribution")
+
+            self._particle_distribution_name = function.name
+
             self._particle_distribution = function
+
 
             # Now set the units for the function
 
@@ -423,9 +399,11 @@ if has_naima:
                 function(x.value), current_units.energy
             )
 
+
         def get_particle_distribution(self):
 
-            return self._particle_distribution
+            return self._external_functions["particle_distribution"]
+ 
 
         particle_distribution = property(
             get_particle_distribution,
@@ -478,10 +456,10 @@ if has_naima:
 
             data = super(Function1D, self).to_dict(minimal)
 
-            if not minimal:
-                data["extra_setup"] = {
-                    "particle_distribution": self.particle_distribution.path
-                }
+            # if not minimal:
+            #     data["extra_setup"] = {
+            #         "particle_distribution": self.particle_distribution.path
+            #     }
 
             return data
 
@@ -506,8 +484,21 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
             min : -100
             max : 100
             delta : 0.1
+    
+    properties:
+        file_name: 
+            desc: a file name
+            defer: True 
+        dummy:
+            desc: a dummy property
+            initial value: test
+            allowed values:
+                - test
+                - love
+
     """
 
+    
     def _set_units(self, x_unit, y_unit):
 
         self.A.unit = y_unit
@@ -515,11 +506,20 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
 
     def set_particle_distribution(self, function):
 
+        if "particle_distribution" in self._external_functions:
+
+            self.unlink_external_function("particle_distribution")
+
+        self.link_external_function(function, "particle_distribution")
+
+        self._particle_distribution_name = function.name
+        
         self._particle_distribution = function
 
     def get_particle_distribution(self):
 
-        return self._particle_distribution
+        return self._external_functions["particle_distribution"]
+        
 
     particle_distribution = property(
         get_particle_distribution,
@@ -536,11 +536,11 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
 
         data = super(Function1D, self).to_dict(minimal)
 
-        if not minimal:
+        # if not minimal:
 
-            data["extra_setup"] = {
-                "particle_distribution": self.particle_distribution.path
-            }
+        #     data["extra_setup"] = {
+        #         "particle_distribution": self.particle_distribution.name
+        #     }
 
         return data
 

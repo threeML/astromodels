@@ -58,6 +58,12 @@ jobs:
       - name: Execute the notebooks
         #shell: bash -l {0}
         run: |
+
+          # Download an example file
+          
+          wget https://www.astropy.org/astropy-data/photometry/spitzer_example_image.fits
+
+          mv spitzer_example_image.fits docs/md/
           
           jupytext --to ipynb --execute docs/md/*.md
           mv docs/md/*.ipynb docs/notebooks/

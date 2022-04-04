@@ -1,7 +1,14 @@
 from __future__ import print_function
 
+# this prevent a crash in macos. If does not import threeML first the code crashes
+# with a segmantiation violation (Need to investigate more)s
+try:
+    from threeML import *
+except:
+    pass
 import astropy.io.fits as fits
 import astropy.units as u
+from astropy import wcs
 import numpy as np
 import pytest
 
@@ -19,34 +26,48 @@ __author__ = 'henrikef'
 def make_test_template(ra, dec, fitsfile):
 
     # Test template function: 40 pixel (0.8 deg) wide square centered approximately around a given ra, dec.
+    test_wcs=False
+    if (test_wcs):
+        # this is an alternative way to build the header from WCS:
+        w = wcs.WCS(naxis=2)
+        w.wcs.crpix = [100, 100]
+        w.wcs.cdelt = np.array([-0.02, 0.02])
+        w.wcs.crval = [ra, dec]
+        w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
+        dOmega = (abs(w.wcs.cdelt[0] * w.wcs.cdelt[1]) *
+                 u.degree * u.degree).to(u.steradian).value
+        header=w.to_header()
+    else:
+        cards = {
+            "SIMPLE": "T",
+            "BITPIX": -32,
+            "NAXIS": 2,
+            "NAXIS1": 200,
+            "NAXIS2": 200,
+            "DATE": '2018-11-13',
+            "CUNIT1": 'deg',
+            "CRVAL1":  ra,
+            "CRPIX1": 100,
+            "CDELT1": -0.02,
+            "CUNIT2": 'deg',
+            "CRVAL2": dec,
+            "CRPIX2": 100,
+            "CDELT2": 0.02,
+            "CTYPE1": 'RA---TAN',
+            "CTYPE2": 'DEC--TAN'}
 
-    cards = {
-        "SIMPLE": "T",
-        "BITPIX": -32,
-        "NAXIS": 2,
-        "NAXIS1": 200,
-        "NAXIS2": 200,
-        "DATE": '2018-11-13',
-        "CUNIT1": 'deg',
-        "CRVAL1":  ra,
-        "CRPIX1": 100,
-        "CDELT1": -0.02,
-        "CUNIT2": 'deg',
-        "CRVAL2": dec,
-        "CRPIX2": 100,
-        "CDELT2": 0.02,
-        "CTYPE1": 'RA---TAN',
-        "CTYPE2": 'DEC--TAN'}
+        dOmega = (abs(cards["CDELT1"] * cards["CDELT2"]) *
+                  u.degree*u.degree).to(u.steradian).value
+        header=fits.Header(cards)
 
     data = np.zeros([200, 200])
     data[80:120, 80:120] = 1
 
     total = np.sum(data)
-    dOmega = (abs(cards["CDELT1"] * cards["CDELT2"]) *
-              u.degree*u.degree).to(u.steradian).value
+
     data = data / total / dOmega
 
-    hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
+    hdu = fits.PrimaryHDU(data=data, header=header)
     hdu.writeto(fitsfile, overwrite=True)
 
 
@@ -98,17 +119,24 @@ def test_call():
 
         print("testing %s ..." % name)
 
-        shape = class_type()
-        source = ExtendedSource('test_source_%s' %
-                                name, shape, components=[c1, c2])
 
         if name != "SpatialTemplate_2D":
+
+            shape = class_type()
+            source = ExtendedSource('test_source_%s' %
+                                name, shape, components=[c1, c2])
+
+            
             shape.lon0 = ra*u.degree
             shape.lat0 = dec*u.degree
 
         else:
             make_test_template(ra, dec, "__test.fits")
-            shape.load_file("__test.fits")
+            shape = class_type(fits_file="__test.fits")
+            source = ExtendedSource('test_source_%s' %
+                                name, shape, components=[c1, c2])
+
+            
             shape.K = 1.0
 
         assert np.all(source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
@@ -140,7 +168,11 @@ def test_call():
 
         this_function = _known_functions[key]
 
-        if this_function._n_dim == 2 and not this_function().is_prior:
+        if key in ["SpatialTemplate_2D"]:
+
+            test_one(this_function, key)
+        
+        elif this_function._n_dim == 2 and not this_function().is_prior:
 
             test_one(this_function, key)
 
@@ -166,17 +198,25 @@ def test_call_with_units():
 
         print("testing %s ..." % name)
 
-        shape = class_type()
-        source = ExtendedSource('test_source_%s' %
-                                name, spatial_shape=shape, components=[c1, c2])
-
         if name != "SpatialTemplate_2D":
+
+            shape = class_type()
+            source = ExtendedSource('test_source_%s' %
+                                    name, spatial_shape=shape, components=[c1, c2])
+
+
+            
             shape.lon0 = ra*u.degree
             shape.lat0 = dec*u.degree
 
         else:
             make_test_template(ra, dec, "__test.fits")
-            shape.load_file("__test.fits")
+
+            shape = class_type(fits_file="__test.fits")
+            source = ExtendedSource('test_source_%s' %
+                                name, spatial_shape=shape, components=[c1, c2])
+
+    
             shape.K = 1.0
 
         assert np.all(source.spectrum.component1(
@@ -221,7 +261,11 @@ def test_call_with_units():
 
         this_function = _known_functions[key]
 
-        if this_function._n_dim == 2 and not this_function().is_prior:
+        if key in ["SpatialTemplate_2D"]:
+
+            test_one(this_function, key)
+        
+        elif this_function._n_dim == 2 and not this_function().is_prior:
 
             test_one(this_function, key)
 

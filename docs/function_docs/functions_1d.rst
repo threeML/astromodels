@@ -5,9 +5,12 @@ Here are the one dimensional functions builtin to astromodels
 
 
 .. nbgallery::
+   ../notebooks/Blackbody.ipynb
+   ../notebooks/ModifiedBlackbody.ipynb
+   ../notebooks/NonDissipativePhotosphere.ipynb
+   ../notebooks/NonDissipativePhotosphere_Deep.ipynb
    ../notebooks/StepFunction.ipynb
    ../notebooks/StepFunctionUpper.ipynb
-   ../notebooks/Blackbody.ipynb
    ../notebooks/Sin.ipynb
    ../notebooks/DiracDelta.ipynb
    ../notebooks/Log_parabola.ipynb
@@ -15,6 +18,7 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/PhAbs.ipynb
    ../notebooks/TbAbs.ipynb
    ../notebooks/WAbs.ipynb
+   ../notebooks/ZDust.ipynb
    ../notebooks/EBLattenuation.ipynb
    ../notebooks/Constant.ipynb
    ../notebooks/Line.ipynb
@@ -33,6 +37,7 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/Band.ipynb
    ../notebooks/Band_grbm.ipynb
    ../notebooks/Band_Calderone.ipynb
+   ../notebooks/DoubleSmoothlyBrokenPowerlaw.ipynb
    ../notebooks/DMFitFunction.ipynb
    ../notebooks/DMSpectra.ipynb
    ../notebooks/Gaussian.ipynb

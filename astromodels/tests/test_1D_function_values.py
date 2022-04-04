@@ -5,7 +5,7 @@ import numpy.testing as npt
 
 from astromodels.functions.function import _known_functions
 from astromodels.functions.priors import *
-from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils import _get_data_file_path
 
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC", "EBLattenuation" ]
 
@@ -35,12 +35,19 @@ def test_function_values_have_not_changed():
 
             continue
 
-    #        if key.find("Synchrotron")==0:
+        if key.find("Synchrotron")==0:
 
-            # Naima Synchtron function should have its own test
+        #    Naima Synchtron function should have its own test
 
-    #            continue
+            continue
 
+        if key.find("_ComplexTestFunction")==0:
+
+        #    Naima Synchtron function should have its own test
+
+            continue
+
+        
         if this_function._n_dim == 1:
 
             print("testing %s ..." % key)

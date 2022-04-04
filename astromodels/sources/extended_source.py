@@ -233,7 +233,8 @@ class ExtendedSource(Source, Node):
         # with negative fluxes
 
         return np.squeeze(result)
-              
+
+    @property
     def has_free_parameters(self):
         """
         Returns True or False whether there is any parameter in this source

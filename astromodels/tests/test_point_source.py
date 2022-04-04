@@ -1,14 +1,17 @@
-from __future__ import print_function
-from __future__ import division
+from __future__ import division, print_function
+
 import astropy.units as u
 import numpy as np
 import numpy.testing as npt
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions import Powerlaw, Exponential_cutoff, Log_parabola, Blackbody, Band
+from astromodels.functions import (Band, Blackbody, Exponential_cutoff,
+                                   Log_parabola, Powerlaw)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
+
 try:
-    from astromodels.functions import TbAbs, PhAbs, WAbs
+    from astromodels.functions import PhAbs, TbAbs, WAbs
 
     has_abs_models = True
 
@@ -17,12 +20,10 @@ except:
     has_abs_models = False
 
     
-from astromodels.sources.point_source import PointSource
-from astromodels.sources.particle_source import ParticleSource
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
-
-
+from astromodels.sources.particle_source import ParticleSource
+from astromodels.sources.point_source import PointSource
 
 try:
 
@@ -48,14 +49,14 @@ else:
 
     has_ebl = True
 
-from astromodels.functions.priors import *
 from astromodels.functions.function import _known_functions
+from astromodels.functions.priors import *
 
 __author__ = 'giacomov'
 
 
 
-_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation"]
+_multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation", "ZDust"]
 
 def test_constructor():
 
@@ -187,8 +188,14 @@ def test_call_with_units():
     # Now test all the functions
     def test_one(class_type):
 
-        instance = class_type()
+        if class_type == _ComplexTestFunction:
         
+            instance = class_type(file_name="test.txt")
+            
+        else:
+
+            instance = class_type()
+            
         if not instance.is_prior:
 
             # if we have fixed x_units then we will use those
@@ -206,8 +213,16 @@ def test_call_with_units():
             ps = PointSource("test", 0, 0, instance)
 
             if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
-                particleSource = ParticleSource("particles", Powerlaw())
-                instance.set_particle_distribution(particleSource.spectrum.main.shape)
+
+                # we should not do it this way
+
+                p = Powerlaw()
+
+                particleSource = ParticleSource("particles", p)
+
+                
+
+                instance.set_particle_distribution(p)
 
 
             # elif instance.name in ["PhAbs", "TbAbs"]:
@@ -229,6 +244,8 @@ def test_call_with_units():
             
             if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
               model = Model( particleSource, ps)
+                  
+                  
             else:
               model = Model( ps )
             
@@ -271,11 +288,11 @@ def test_call_with_units():
 
             continue
 
-#        if key.find("Synchrotron")==0:
+        if key.find("Synchrotron")==0:
 
             # Naima Synchtron function should have its own test
 
-#            continue
+            continue
 
         if this_function._n_dim == 1:
 
@@ -303,7 +320,7 @@ def test_call_with_composite_function_with_units():
 
         pts = PointSource("test", ra=0, dec=0, spectral_shape=spectrum)
 
-        res = pts([100, 200] * x_unit_to_use)
+        res = pts(np.array([100., 200.]) * x_unit_to_use)
 
         # This will fail if the units are wrong
         res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
@@ -386,21 +403,26 @@ def test_free_param():
     for param in parameters:
         param.free = False
 
+    assert not source.has_free_parameters
+        
     assert len(source.free_parameters) == 0
 
+    assert len(source.parameters) > len(source.free_parameters)
+    
     for i, param in enumerate(parameters):
         param.free = True
         assert len(source.free_parameters) == i+1
 
 
+    assert source.has_free_parameters
 
 
-    def test_local_deriv():
+def test_local_deriv():
 
-        p = Powerlaw(index=-2.)
+    p = Powerlaw(index=-2.)
 
 
-        npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
+    npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
         
 
         

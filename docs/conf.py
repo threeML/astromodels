@@ -17,7 +17,6 @@
 
 import os
 import sys
-
 from pathlib import Path
 
 import mock
@@ -54,12 +53,10 @@ def run_apidoc(app):
 
     # Add the path to the C extension
     #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-    lib_path = os.path.abspath('%s/core' % astro_path)
-
-    sys.path.insert(2, lib_path)
-
+    # lib_path = os.path.abspath('%s/core' % astro_path)
+    # sys.path.insert(2, lib_path)
     #This must work now
-    import node_ctype
+#    import node_ctype
 
 
     better_apidoc.APP = app
@@ -79,28 +76,27 @@ def run_apidoc(app):
 
 
 # #import astromodels
-import pkgutil
+# import pkgutil
+# astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
-astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+# sys.path.insert(1, os.path.abspath('../astromodels'))
 
-sys.path.insert(1, os.path.abspath('../astromodels'))
+# # Add the path to the C extension
+# #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+# lib_path = os.path.abspath('%s/core' % astro_path)
 
-# Add the path to the C extension
-#lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-lib_path = os.path.abspath('%s/core' % astro_path)
-
-sys.path.insert(2, lib_path)
-
+# sys.path.insert(2, lib_path)
 
 
 
-#This must work now
-import node_ctype
 
-print(f" current dir {os.getcwd()}")
-files = [f for f in os.listdir('.') if os.path.isfile(f)]
-for f in files:
-    print(f)
+# #this must work now
+# import node_ctype
+
+# print(f" current dir {os.getcwd()}")
+# files = [f for f in os.listdir('.') if os.path.isfile(f)]
+# for f in files:
+#     print(f)
     
 # -- General configuration ---------------------------------------------------
 
@@ -178,6 +174,7 @@ pygments_style = 'none'
 # But do not want to depend on some random repository
 from pygments.formatters import HtmlFormatter  # noqa: E402
 from pygments.styles import get_all_styles  # noqa: E402
+
 path = os.path.join('_static', 'pygments')
 if not os.path.isdir(path):
     os.mkdir(path)

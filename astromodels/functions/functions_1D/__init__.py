@@ -1,6 +1,8 @@
-from .functions import (Blackbody, DiracDelta, Exponential_cutoff,
-                        Log_parabola, Sin, StepFunction, StepFunctionUpper,
-                        has_gsl, has_naima)
+from .blackbody import (Blackbody, ModifiedBlackbody,
+                        NonDissipativePhotosphere,
+                        NonDissipativePhotosphere_Deep)
+from .functions import (DiracDelta, Exponential_cutoff, Log_parabola, Sin,
+                        StepFunction, StepFunctionUpper, has_gsl, has_naima)
 
 if has_naima:
     from .functions import Synchrotron
@@ -15,11 +17,14 @@ from .apec import has_atomdb
 if has_ebltable:
     from .absorption import EBLattenuation
 
+from .apec import has_atomdb
+from .extinction import Standard_Rv, ZDust
 from .polynomials import (Constant, Cubic, Line, Quadratic, Quartic,
                           get_polynomial)
 from .powerlaws import (Band, Band_Calderone, Band_grbm, Broken_powerlaw,
-                        Cutoff_powerlaw, Cutoff_powerlaw_Ep, Inverse_cutoff_powerlaw, Powerlaw,
-                        Powerlaw_Eflux, Powerlaw_flux, SmoothlyBrokenPowerLaw,
+                        Cutoff_powerlaw, Cutoff_powerlaw_Ep,
+                        Inverse_cutoff_powerlaw, Powerlaw, Powerlaw_Eflux,
+                        Powerlaw_flux, SmoothlyBrokenPowerLaw,
                         Super_cutoff_powerlaw)
 
 if has_atomdb:
@@ -36,7 +41,8 @@ __all__ = ["Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
            "Quadratic", "Sin", "StepFunction", "StepFunctionUpper",
            "PhAbs", "TbAbs", "WAbs",
            "Log_parabola",
-           "Blackbody","Quartic", "get_polynomial"
+           "Blackbody", "ModifiedBlackbody", "NonDissipativePhotosphere", "NonDissipativePhotosphere_Deep",
+           "Quartic", "get_polynomial", "ZDust", "Standard_Rv"
            ]
 
 if has_atomdb:

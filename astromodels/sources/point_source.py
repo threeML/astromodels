@@ -235,6 +235,7 @@ class PointSource(Source, Node):
 
                 return old_div(integrals, (b - a))
 
+    @property
     def has_free_parameters(self) -> bool:
         """
         Returns True or False whether there is any parameter in this source
