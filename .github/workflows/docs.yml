@@ -45,7 +45,8 @@ jobs:
           eval "$(/usr/libexec/path_helper)"
           #sudo apt-get install texlive
 
-          pip install pip -U
+          python -m pip install --upgrade pip wheel
+
           
           pip install -U  numpy numba jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables healpy
           pip install ebltable
