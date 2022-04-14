@@ -571,8 +571,8 @@ class SourceParser(object):
 
                 except KeyError: # pragma: no cover
 
-                    raise ModelSyntaxError("The component %s of source %s is malformed"
-                                    % (component_name, self._source_name))
+                    raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
+                                    % (self._source_name))
 
             this_polarization = polarization.StokesPolarization(**par_dict)
 
