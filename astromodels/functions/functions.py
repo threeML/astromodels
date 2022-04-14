@@ -1142,6 +1142,52 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
 
         return out
 
+class GenericFunction(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        Return k*f(x)
+
+    latex : $ k $
+
+    parameters :
+
+        k :
+
+            desc : Constant value
+            initial value : 1
+
+    """
+    def set_function(self,f):
+        self._function = f
+
+    def get_function(self):
+        return self._function
+
+    def _set_units(self, x_unit, y_unit):
+        self.k.unit = y_unit
+
+
+    function = property(
+            get_function,
+            set_function,
+            doc="""Get/set function""",
+        )
+
+    def evaluate(self, x, k):
+        return k * self._function(x)
+
+    def to_dict(self, minimal=False):
+
+        data = super(Function1D, self).to_dict(minimal)
+
+        if not minimal:
+
+            data["extra_setup"] = {
+                "function": self._function
+            }
+
+        return data
 
 if has_naima:
 
