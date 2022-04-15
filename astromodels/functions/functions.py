@@ -1156,7 +1156,6 @@ class GenericFunction(Function1D, metaclass=FunctionMeta):
 
             desc : Constant value
             initial value : 1
-
     """
     def set_function(self,f):
         self._function = f
@@ -1175,16 +1174,25 @@ class GenericFunction(Function1D, metaclass=FunctionMeta):
         )
 
     def evaluate(self, x, k):
-        return k * self._function(x)
+        try:
+            return k * self._function(x)
+        except:
+            if isinstance(x, u.Quantity):
+                ones = np.ones_like(x).value
+            else:
+                ones = np.ones_like(x)
+            return k * ones
 
     def to_dict(self, minimal=False):
 
         data = super(Function1D, self).to_dict(minimal)
 
         if not minimal:
-
+            try: f=self._function
+            except:
+                f=None
             data["extra_setup"] = {
-                "function": self._function
+                "function": f
             }
 
         return data
