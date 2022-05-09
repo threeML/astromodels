@@ -65,7 +65,7 @@ class SpectralComponent(Node):
 
     def __call__(self, energies, stokes=None):
         spec = self._spectral_shape(energies)
-        if stokes is not None:
+        if stokes == 'Q' or stokes == 'U':
             spec *= self._polarization(energies, stokes)
         return spec
 
