@@ -60,12 +60,12 @@ class NodeBase:
         self._path = state["path"]
 
         # Set the children
+        # do this manually to avoid recursion
+        # issues for children not yet built
 
         for child, name in zip(state["children"], state["child_names"]):
 
             self._children[name] = child
-
-        # self._add_children(state['children'])
 
         # Restore everything else
 
