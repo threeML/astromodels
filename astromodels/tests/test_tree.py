@@ -9,7 +9,7 @@ import pytest
 
 from astromodels.core.tree import Node
 
-os.environ["ASTROMODELS_DEBUG"] = "debug"
+#os.environ["ASTROMODELS_DEBUG"] = "debug"
 
 #from astromodels.core import node_ctype
 
