@@ -349,8 +349,6 @@ class NodeBase:
 
     def __getattr__(self, name):
 
-        print(name)
-
         if name in self._children:
 
             return self._children[name]
