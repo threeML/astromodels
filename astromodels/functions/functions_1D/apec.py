@@ -1,3 +1,4 @@
+import gc
 import os
 import sys
 from functools import lru_cache, wraps
@@ -5,12 +6,9 @@ from functools import lru_cache, wraps
 import astropy.units as astropy_units
 import numpy as np
 import six
-from astropy.io import fits
-
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils import configuration
-from astromodels.utils import _get_data_file_path
-import gc
+from astromodels.utils import _get_data_file_path, configuration
+from astropy.io import fits
 
 try:
 
@@ -24,7 +22,7 @@ except:
 
 if has_atomdb:
     # APEC class
-    
+
     class APEC(Function1D, metaclass=FunctionMeta):
         r"""
         description :
@@ -87,20 +85,25 @@ if has_atomdb:
 
         def _init_session(self):
             # initialize PyAtomDB session
-            self.session = pyatomdb.spectrum.CIESession(abundset=self.abundance_table)
+
+            self.session = pyatomdb.spectrum.CIESession(
+                abundset=self.abundance_table.value
+            )
 
         def clean(self):
             """
             Clean the current APEC session to avoid having too many open files
-            :returns: 
+            :returns:
             """
-            
+
             self.session = None
             del self.session
             gc.collect()
 
         def evaluate(self, x, K, kT, abund, redshift):
-            assert self.session is not None, "please run init_session(abund)"
+
+
+
 
             sess = self.session
 
@@ -157,7 +160,7 @@ if has_atomdb:
             return K * spec
 
     # VAPEC class
-    
+
     class VAPEC(Function1D, metaclass=FunctionMeta):
         r"""
         description :
@@ -318,17 +321,18 @@ if has_atomdb:
 
             self.K.unit = y_unit
 
-
         def _init_session(self):
             # initialize PyAtomDB session
-            self.session = pyatomdb.spectrum.CIESession(abundset=self.abundance_table)
+            self.session = pyatomdb.spectrum.CIESession(
+                abundset=self.abundance_table.value
+            )
 
         def clean(self):
             """
             Clean the current APEC session to avoid having too many open files
-            :returns: 
+            :returns:
             """
-            
+
             self.session = None
             del self.session
             gc.collect()
@@ -336,9 +340,10 @@ if has_atomdb:
         def evaluate(
             self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift
         ):
-            assert self.session is not None, "please run init_session(abund)"
+
 
             sess = self.session
+
 
             nval = len(x)
 
@@ -359,51 +364,87 @@ if has_atomdb:
             sess.set_response(ebounds, raw=True)
 
             sess.set_abund(
-                [6, ], C,
+                [
+                    6,
+                ],
+                C,
             )
 
             sess.set_abund(
-                [7, ], N,
+                [
+                    7,
+                ],
+                N,
             )
 
             sess.set_abund(
-                [8, ], O,
+                [
+                    8,
+                ],
+                O,
             )
 
             sess.set_abund(
-                [10, ], Ne,
+                [
+                    10,
+                ],
+                Ne,
             )
 
             sess.set_abund(
-                [12, ], Mg,
+                [
+                    12,
+                ],
+                Mg,
             )
 
             sess.set_abund(
-                [13, ], Al,
+                [
+                    13,
+                ],
+                Al,
             )
 
             sess.set_abund(
-                [14, ], Si,
+                [
+                    14,
+                ],
+                Si,
             )
 
             sess.set_abund(
-                [16, ], S,
+                [
+                    16,
+                ],
+                S,
             )
 
             sess.set_abund(
-                [18, ], Ar,
+                [
+                    18,
+                ],
+                Ar,
             )
 
             sess.set_abund(
-                [20, ], Ca,
+                [
+                    20,
+                ],
+                Ca,
             )
 
             sess.set_abund(
-                [26, ], Fe,
+                [
+                    26,
+                ],
+                Fe,
             )
 
             sess.set_abund(
-                [28, ], Ni,
+                [
+                    28,
+                ],
+                Ni,
             )
 
             sess.set_abund(
@@ -413,5 +454,3 @@ if has_atomdb:
             spec = sess.return_spectrum(kT) / binsize / 1e-14
 
             return K * spec
-
-
