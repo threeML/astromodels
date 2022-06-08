@@ -60,6 +60,20 @@ if has_atomdb:
                 delta : 1e-3
                 fix : yes
 
+        properties:
+         abundance_table:
+            desc: the abundance table for the model
+            initial value: AG89
+            allowed values:
+                - Allen
+                - AG89
+                - GA88
+                - Feldman
+                - GA10
+                - Lodd09
+                - AE8
+            function: _init_session
+
         """
 
         def _set_units(self, x_unit, y_unit):
@@ -71,9 +85,9 @@ if has_atomdb:
 
             self.K.unit = y_unit
 
-        def init_session(self, abund_table="AG89"):
+        def _init_session(self):
             # initialize PyAtomDB session
-            self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
+            self.session = pyatomdb.spectrum.CIESession(abundset=self.abundance_table)
 
         def clean(self):
             """
@@ -256,6 +270,23 @@ if has_atomdb:
                 delta : 1e-3
                 fix : yes
 
+
+        properties:
+         abundance_table:
+            desc: the abundance table for the model
+            initial value: AG89
+            allowed values:
+                - Allen
+                - AG89
+                - GA88
+                - Feldman
+                - GA10
+                - Lodd09
+                - AE8
+            function: _init_session
+
+
+
         """
 
         def _set_units(self, x_unit, y_unit):
@@ -287,9 +318,10 @@ if has_atomdb:
 
             self.K.unit = y_unit
 
-        def init_session(self, abund_table="AG89"):
+
+        def _init_session(self):
             # initialize PyAtomDB session
-            self.session = pyatomdb.spectrum.CIESession(abundset=abund_table)
+            self.session = pyatomdb.spectrum.CIESession(abundset=self.abundance_table)
 
         def clean(self):
             """
