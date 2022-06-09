@@ -536,21 +536,27 @@ class SourceParser(object):
 
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
 
-            par_parser = ParameterParser("degree", polarization_definititon["degree"])
+            par_dict = {'degree': None, 'angle': None}
+            par_names = list(polarization_definititon.keys())
 
-            degree = par_parser.get_variable()
+            for par in par_names:
 
-            degree.bounds = (0, 100)
+                try:
+                    function_name = list(polarization_definititon[par].keys())[0]
+                    parameters_definition = polarization_definititon[par][function_name]
 
-            par_parser = ParameterParser("angle", polarization_definititon["angle"])
+                    # parse the function
+                    shape_parser = ShapeParser(self._source_name)
 
-            angle = par_parser.get_variable()
+                    shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                    par_dict[par] = shape
 
-            angle.bounds = (0, 180)
+                except KeyError:  # pragma: no cover
 
-            this_polarization = polarization.LinearPolarization(
-                angle=angle, degree=degree
-            )
+                    raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
+                                           % (self._source_name))
+
+            this_polarization = polarization.LinearPolarization(**par_dict)
 
         elif 'I' in polarization_definititon or 'U' in polarization_definititon or 'Q' in polarization_definititon or 'V' in polarization_definititon:
 

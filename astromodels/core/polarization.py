@@ -52,7 +52,7 @@ class Polarization(Node):
 
 
 # TODO: add transform between polarizations
-
+import numpy as np
 class LinearPolarization(Polarization):
 
     def __init__(self, degree, angle):
@@ -64,12 +64,23 @@ class LinearPolarization(Polarization):
         """
         super(LinearPolarization, self).__init__(polarization_type='linear')
 
-        degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
+        #degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
 
-        angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
+        #angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
 
-        self._add_child(degree)
-        self._add_child(angle)
+        self.degree = LinearParameter('degree', degree)
+        self.angle  = LinearParameter('angle', angle)
+        self._add_child(self.degree)
+        self._add_child(self.angle)
+
+    def __call__(self, energies, stokes):
+
+
+        if stokes == 'Q':
+            return self.degree(energies)/100 * np.cos(2.0 * np.radians(self.angle(energies)))
+        elif stokes == 'U':
+            return self.degree(energies)/100 * np.sin(2.0 * np.radians(self.angle(energies)))
+        return 1
 
 
 class StokesPolarization(Polarization):
@@ -113,5 +124,15 @@ class StokesParameter(Node):
         self._add_child(value)
         self.value = value
     
+    def __call__(self, energies):
+        return self.value(energies)
+
+class LinearParameter(Node):
+    def __init__(self, name, value):
+        assert name in ['degree', 'angle']
+        Node.__init__(self, name)
+        self._add_child(value)
+        self.value = value
+
     def __call__(self, energies):
         return self.value(energies)
