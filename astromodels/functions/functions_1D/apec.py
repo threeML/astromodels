@@ -1,14 +1,8 @@
 import gc
-import os
-import sys
-from functools import lru_cache, wraps
 
 import astropy.units as astropy_units
 import numpy as np
-import six
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils import _get_data_file_path, configuration
-from astropy.io import fits
 
 try:
 
@@ -19,7 +13,6 @@ try:
 except:
 
     has_atomdb = False
-
 if has_atomdb:
     # APEC class
 
@@ -102,16 +95,13 @@ if has_atomdb:
 
         def evaluate(self, x, K, kT, abund, redshift):
 
-
-
-
             sess = self.session
 
             nval = len(x)
 
             xz = x * (1.0 + redshift)
 
-            ebplus = (np.roll(xz, -1) + xz)[: nval - 1] / 2.0
+            ebplus = (np.roll(xz, -1) + xz)[: np.max([nval - 1, 1])] / 2.0
 
             ebounds = np.empty(nval + 1)
 
@@ -341,15 +331,13 @@ if has_atomdb:
             self, x, K, kT, Fe, C, N, O, Ne, Mg, Al, Si, S, Ar, Ca, Ni, redshift
         ):
 
-
             sess = self.session
-
 
             nval = len(x)
 
             xz = x * (1.0 + redshift)
 
-            ebplus = (np.roll(xz, -1) + xz)[: nval - 1] / 2.0
+            ebplus = (np.roll(xz, -1) + xz)[: np.max([nval - 1, 1])] / 2.0
 
             ebounds = np.empty(nval + 1)
 
