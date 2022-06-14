@@ -77,9 +77,9 @@ class LinearPolarization(Polarization):
 
 
         if stokes == 'Q':
-            return self.degree(energies)/100 * np.cos(2.0 * np.radians(self.angle(energies)))
+            return self.degree(energies) * np.cos(2.0 * np.radians(self.angle(energies)))
         elif stokes == 'U':
-            return self.degree(energies)/100 * np.sin(2.0 * np.radians(self.angle(energies)))
+            return self.degree(energies) * np.sin(2.0 * np.radians(self.angle(energies)))
         return 1
 
 
