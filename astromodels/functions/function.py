@@ -580,7 +580,21 @@ class FunctionMeta(type):
 
         else:
 
-            du = u.Unit(definition['unit'])
+            unit = u.Unit(definition['unit'])
+
+            if (u.dimensionless_unscaled.physical_type == unit.physical_type) and (unit.scale != 1):
+
+                # some xpsec models list the unit as a number
+                # but this screws things up
+
+                du = u.dimensionless_unscaled
+
+            else:
+
+                du = u.Unit(definition['unit'])
+
+
+
 
         def _parse_value(val):
 
@@ -1061,12 +1075,17 @@ class Function(Node):
 
                     other_instance._make_dimensionless = True
 
+                    log.debug(f"{other_instance} is not dimensionless")
+
+
                 else:
 
                     # This function has fixed unit, but it is dimensionless (likely a multiplicative XSpec model)
                     # The other function should keep its units, so we flag self instead
 
                     self._make_dimensionless = True
+
+                    log.debug("{self} is now dimensionless")
 
                     # However, if also the other function has fixed dimension and it is dimensionless
                     # (likely another XSpec multiplicative model) we need to flag that as well
@@ -1077,6 +1096,7 @@ class Function(Node):
                         # Now we need to flag the composite function as fixed units and dimensionless
                         c._fixed_units = other_instance.fixed_units
 
+                        log.debug(f"{c} is completely dimensionless")
             else:
 
                 # We need to make the other instance dimensionless so that this function (which is not dimensionless)
@@ -1084,6 +1104,8 @@ class Function(Node):
                 # the results
 
                 other_instance._make_dimensionless = True
+
+                log.debug(f"{other_instance} is not dimensionless")
 
         return c
 
