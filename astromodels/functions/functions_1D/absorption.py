@@ -299,6 +299,8 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         self.xsect_ene, self.xsect_val = tbabs.xsect_table
 
+        log.debug(f"updated the TbAbs table to {self.abundance_table.value}")
+
     @property
     def abundance_table_info(self):
         print(tbabs.info)

@@ -318,7 +318,7 @@ class NodeBase:
 
         if (self._parent is not None) and (not clear_parent):
 
-            #            self._parent._children.pop(self._name)
+
             self._set_parent(self._parent)
 
         # update all the children

@@ -95,11 +95,17 @@ class PropertyBase(Node):
 
                     func_idx = int(self._name.split("_")[-1]) - 1
 
+                    log.debug(f"{self._name} has a composite parent and")
+                    log.debug(f"is being executed on func idx {func_idx}")
+                    log.debug(f"and the parent has {len(self._parent._functions)} functions")
+
                     getattr(self._parent._functions[func_idx], str(self._eval_func))()
 
                 else:
                 
                     getattr(self._parent, str(self._eval_func))()
+
+
 
             # other wise this will run when the parent is set
                 
@@ -110,7 +116,7 @@ class PropertyBase(Node):
         _get_value,
         _set_value,
         doc=
-        "Get and sets the current value for the propert",)
+        "Get and sets the current value for the property",)
 
     def _set_parent(self, parent):
 
