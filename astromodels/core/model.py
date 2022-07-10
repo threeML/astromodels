@@ -11,7 +11,6 @@ from typing import Any, Dict, Iterable, List, Optional, Tuple, Union
 import numpy as np
 import pandas as pd
 import scipy.integrate
-
 from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
@@ -53,6 +52,7 @@ class ModelInternalError(ValueError):
 
     pass
 
+
 @dataclass(frozen=True)
 class _LinkedFunctionContainer:
     function_name: str
@@ -79,7 +79,6 @@ class _LinkedFunctionContainer:
             return output.__repr__()
 
 
-
 class Model(Node):
     def __init__(self, *sources):
 
@@ -93,13 +92,11 @@ class Model(Node):
 
         # Dictionary to keep extended sources
 
-        self._extended_sources: Dict[
-            str, ExtendedSource] = collections.OrderedDict()
+        self._extended_sources: Dict[str, ExtendedSource] = collections.OrderedDict()
 
         # Dictionary to keep particle sources
 
-        self._particle_sources: Dict[
-            str, ParticleSource] = collections.OrderedDict()
+        self._particle_sources: Dict[str, ParticleSource] = collections.OrderedDict()
 
         # Loop over the provided sources and process them
 
@@ -118,8 +115,8 @@ class Model(Node):
         self._independent_variables = {}
 
     def _add_source(
-            self, source: Union[PointSource, ExtendedSource,
-                                ParticleSource]) -> None:
+        self, source: Union[PointSource, ExtendedSource, ParticleSource]
+    ) -> None:
         """
         Remember to call _update_parameters after this!
         :param source:
@@ -136,7 +133,8 @@ class Model(Node):
 
                 log.error(
                     "More than one source with the name '%s'. You cannot use the same name for multiple "
-                    "sources" % source.name)
+                    "sources" % source.name
+                )
 
                 raise DuplicatedNode()
 
@@ -195,19 +193,18 @@ class Model(Node):
         self._remove_child(source_name)
 
     def _find_parameters(self, node) -> Dict[str, Parameter]:
-        
+
         return self._recursively_gather_node_type(self, Parameter)
 
     def _find_properties(self, node) -> Dict[str, FunctionProperty]:
 
         return self._recursively_gather_node_type(self, FunctionProperty)
 
-    
     def _update_parameters(self) -> None:
 
         self._parameters: Dict[str, Parameter] = self._find_parameters(self)
         self._properties: Dict[str, FunctionProperty] = self._find_properties(self)
-        
+
     @property
     def parameters(self) -> Dict[str, Parameter]:
         """
@@ -233,8 +230,7 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        free_parameters_dictionary: Dict[
-            str, Parameter] = collections.OrderedDict()
+        free_parameters_dictionary: Dict[str, Parameter] = collections.OrderedDict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -260,12 +256,11 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        linked_parameter_dictionary: Dict[
-            str, Parameter] = collections.OrderedDict()
+        linked_parameter_dictionary: Dict[str, Parameter] = collections.OrderedDict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
-             if parameter.has_auxiliary_variable:
+            if parameter.has_auxiliary_variable:
 
                 linked_parameter_dictionary[parameter_name] = parameter
 
@@ -282,24 +277,21 @@ class Model(Node):
 
         return self._properties
 
-    
     @property
     def linked_functions(self) -> List[_LinkedFunctionContainer]:
         """
         return a list of containers for the linked functions
-        
+
         """
 
         linked_functions = []
 
         for function in self._get_all_functions():
 
-            
-            
             if "composite" in function._children:
 
-                data = function.to_dict()['composite']
-                
+                data = function.to_dict()["composite"]
+
                 # this is a composite
 
                 if "external_functions" in data:
@@ -310,26 +302,28 @@ class Model(Node):
 
                             for name, path in v.items():
 
-                                tmp = _LinkedFunctionContainer(function_name=function.path,
-                                                               linked_path=path,
-                                                               internal_name=name)
+                                tmp = _LinkedFunctionContainer(
+                                    function_name=function.path,
+                                    linked_path=path,
+                                    internal_name=name,
+                                )
 
                                 linked_functions.append(tmp)
             else:
 
                 data = function.to_dict()[function.shape.name]
-                
+
                 if "external_functions" in data:
 
                     for name, path in data["external_functions"].items():
-                        
-                        tmp = _LinkedFunctionContainer(function_name=function.path,
-                                                       linked_path=path,
-                                                       internal_name=name)
 
-                
+                        tmp = _LinkedFunctionContainer(
+                            function_name=function.path,
+                            linked_path=path,
+                            internal_name=name,
+                        )
+
                         linked_functions.append(tmp)
-
 
         return linked_functions
 
@@ -344,7 +338,6 @@ class Model(Node):
 
         return all_functions
 
-    
     def set_free_parameters(self, values: Iterable[float]) -> None:
         """
         Set the free parameters in the model to the provided values.
@@ -363,8 +356,7 @@ class Model(Node):
 
             raise AssertionError()
 
-        for parameter, this_value in zip(list(self.free_parameters.values()),
-                                         values):
+        for parameter, this_value in zip(list(self.free_parameters.values()), values):
 
             parameter.value = this_value
 
@@ -450,9 +442,7 @@ class Model(Node):
         return self._particle_sources
 
     @property
-    def sources(
-            self
-    ) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
+    def sources(self) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
         """
         Returns a dictionary containing all defined sources (of any kind)
 
@@ -460,19 +450,19 @@ class Model(Node):
 
         """
 
-        sources: Dict[str, Union[PointSource, ExtendedSource,
-                                 ParticleSource]] = collections.OrderedDict()
+        sources: Dict[
+            str, Union[PointSource, ExtendedSource, ParticleSource]
+        ] = collections.OrderedDict()
 
-        for d in (self.point_sources, self.extended_sources,
-                  self.particle_sources):
+        for d in (self.point_sources, self.extended_sources, self.particle_sources):
 
             sources.update(d)
 
         return sources
 
     def add_source(
-        self, new_source: Union[PointSource, ExtendedSource,
-                                 ParticleSource]) -> None:
+        self, new_source: Union[PointSource, ExtendedSource, ParticleSource]
+    ) -> None:
         """
         Add the provided source to the model
 
@@ -498,9 +488,7 @@ class Model(Node):
 
         self._update_parameters()
 
-    def unlink_all_from_source(self,
-                               source_name: str,
-                               warn: bool = False) -> None:
+    def unlink_all_from_source(self, source_name: str, warn: bool = False) -> None:
         """
         Unlink all parameters of the current model that are linked to a parameter of a given source.
         To be called before removing a source from the model.
@@ -514,7 +502,7 @@ class Model(Node):
 
         for par in self.linked_parameters.values():
 
-            target = par._aux_variable['variable']
+            target = par._aux_variable["variable"]
 
             if target.path in tempmodel:
 
@@ -524,10 +512,12 @@ class Model(Node):
         if warn and unlinked_parameters:
 
             log.warning(
-                "The following %d parameters that were linked to source %s have been automatically un-linked: %s"
-                % (len(unlinked_parameters), source_name,
-                   [p.path for p in unlinked_parameters.values()]),
-                RuntimeWarning)
+                f"The following {len(unlinked_parameters)} parameters that were linked to source {source_name}"
+            )
+
+            log.warning(
+                f"have been automatically un-linked: {[p.path for p in unlinked_parameters.values()]}"
+            )
 
     def add_independent_variable(self, variable: IndependentVariable) -> None:
         """
@@ -588,7 +578,8 @@ class Model(Node):
 
                 log.warning(
                     "External parameter %s already exist in the model. Overwriting it..."
-                    % parameter.name)
+                    % parameter.name
+                )
 
                 self._remove_child(parameter.name)
 
@@ -627,16 +618,16 @@ class Model(Node):
         for param_1 in parameter_1_list:
             if not param_1.path in self:
 
-                log.error( "Parameter %s is not contained in this model" % param_1.path )
+                log.error("Parameter %s is not contained in this model" % param_1.path)
 
                 raise AssertionError()
-                
+
         if not parameter_2.path in self:
 
-            log.error( "Parameter %s is not contained in this model" % parameter_2.path )
+            log.error("Parameter %s is not contained in this model" % parameter_2.path)
 
             raise AssertionError()
-            
+
         if link_function is None:
             # Use the Line function by default, with both parameters fixed so that the two
             # parameters to be linked will vary together
@@ -678,12 +669,9 @@ class Model(Node):
 
                     warnings.simplefilter("always", RuntimeWarning)
 
-                    log.warning(
-                        "Parameter %s has no link to be removed." % param.path
-                       
-                    )
+                    log.warning("Parameter %s has no link to be removed." % param.path)
 
-    def display(self, complete: bool=False) -> None:
+    def display(self, complete: bool = False) -> None:
         """
         Display information about the point source.
 
@@ -731,7 +719,7 @@ class Model(Node):
         linked_parameters = self.linked_parameters
         properties = self.properties
         linked_functions = self.linked_functions
-        
+
         # Summary of free parameters
         if len(free_parameters) > 0:
 
@@ -841,8 +829,6 @@ class Model(Node):
 
             pass
 
-        
-        
         empty_frame = "(none)%s" % new_line
 
         # Summary of free parameters
@@ -865,7 +851,7 @@ class Model(Node):
 
                 d = prop.to_dict()
                 property_dict[this_name] = collections.OrderedDict()
-                
+
                 for key in ["value", "allowed values"]:
 
                     property_dict[this_name][key] = d[key]
@@ -873,16 +859,14 @@ class Model(Node):
             properties_summary = pd.DataFrame.from_dict(property_dict).T
 
             # Re-order it
-            properties_summary = properties_summary[
-                ["value", "allowed values"]
-            ]
+            properties_summary = properties_summary[["value", "allowed values"]]
 
         else:
 
             properties_summary = pd.DataFrame()
 
         empty_frame = "(none)%s" % new_line
-        
+
         # Independent variables
 
         independent_v_frames = []
@@ -914,8 +898,6 @@ class Model(Node):
 
             pass
 
-
-        
         if rich_output:
 
             source_summary_representation = sources_summary._repr_html_()
@@ -949,7 +931,6 @@ class Model(Node):
 
                 properties_representation = properties_summary._repr_html_()
 
-                    
             if len(linked_functions) == 0:
 
                 linked_function_summary_representation = empty_frame
@@ -960,11 +941,11 @@ class Model(Node):
 
                 for linked_function in linked_functions:
 
-                    linked_function_summary_representation += linked_function.output(rich=True)
+                    linked_function_summary_representation += linked_function.output(
+                        rich=True
+                    )
                     linked_function_summary_representation += new_line
 
-
-                    
             if len(independent_v_frames) == 0:
 
                 independent_v_representation = empty_frame
@@ -1006,8 +987,6 @@ class Model(Node):
 
                 properties_representation = properties_summary.__repr__()
 
-
-                
             if len(linked_frames) == 0:
 
                 linked_summary_representation = empty_frame
@@ -1031,10 +1010,14 @@ class Model(Node):
 
                 for linked_function in linked_functions:
 
-                    linked_function_summary_representation += linked_function.output(rich=False)
-                    linked_function_summary_representation += "%s%s" % (new_line, new_line)
+                    linked_function_summary_representation += linked_function.output(
+                        rich=False
+                    )
+                    linked_function_summary_representation += "%s%s" % (
+                        new_line,
+                        new_line,
+                    )
 
-                    
             if len(independent_v_frames) == 0:
 
                 independent_v_representation = empty_frame
@@ -1120,7 +1103,7 @@ class Model(Node):
 
         representation += new_line
 
-       # Properties
+        # Properties
 
         representation += "%sProperties (%i):%s" % (
             new_line,
@@ -1140,7 +1123,6 @@ class Model(Node):
 
         representation += new_line
 
-        
         # Linked parameters
 
         representation += "%sLinked parameters (%i):%s" % (
@@ -1191,7 +1173,6 @@ class Model(Node):
 
         representation += linked_function_summary_representation
 
-        
         return representation
 
     def to_dict_with_types(self):
@@ -1235,7 +1216,6 @@ class Model(Node):
 
                 #     data["%s (%s)" % (key, "FunctionProperty")] = data.pop(key)
 
-                    
                 else:  # pragma: no cover
 
                     raise ModelInternalError("Found an unknown class at the top level")
@@ -1280,7 +1260,7 @@ class Model(Node):
                     "report on the free space which follows: " % output_file,
                 )
 
-    def get_number_of_point_sources(self) ->int:
+    def get_number_of_point_sources(self) -> int:
         """
         Return the number of point sources
 
@@ -1300,7 +1280,9 @@ class Model(Node):
 
         return pts.position.get_ra(), pts.position.get_dec()
 
-    def get_point_source_fluxes(self, id: int, energies: np.ndarray, tag=None) -> np.ndarray:
+    def get_point_source_fluxes(
+        self, id: int, energies: np.ndarray, tag=None
+    ) -> np.ndarray:
         """
         Get the fluxes from the id-th point source
 
@@ -1313,7 +1295,7 @@ class Model(Node):
         set to a and the model evaluated in a.
         :return: fluxes
         """
-        
+
         return list(self._point_sources.values())[id](energies, tag=tag)
 
     def get_point_source_name(self, id: int) -> str:
@@ -1328,7 +1310,9 @@ class Model(Node):
         """
         return len(self._extended_sources)
 
-    def get_extended_source_fluxes(self, id: int, j2000_ra: float, j2000_dec: float, energies: np.ndarray) -> np.ndarray:
+    def get_extended_source_fluxes(
+        self, id: int, j2000_ra: float, j2000_dec: float, energies: np.ndarray
+    ) -> np.ndarray:
         """
         Get the flux of the id-th extended sources at the given position at the given energies
 
@@ -1417,4 +1401,3 @@ class Model(Node):
             fluxes.append(self._point_sources[src](energies))
 
         return np.sum(fluxes, axis=0)
-
