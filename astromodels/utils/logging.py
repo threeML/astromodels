@@ -11,7 +11,7 @@ from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
 
-from .file_utils import _get_path_of_data_file
+from .file_utils import _get_data_file_path
 
 
 from astromodels.utils.configuration import astromodels_config
@@ -106,7 +106,7 @@ _console_formatter = logging.Formatter(
     datefmt="%H:%M:%S",
 )
 
-mytheme = Theme().read(_get_path_of_data_file("log_theme.ini"))
+mytheme = Theme().read(_get_data_file_path("log_theme.ini"))
 console = Console(theme=mytheme)
 
 
