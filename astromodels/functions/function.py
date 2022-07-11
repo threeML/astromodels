@@ -1096,7 +1096,7 @@ class Function(Node):
                         # Now we need to flag the composite function as fixed units and dimensionless
                         c._fixed_units = other_instance.fixed_units
 
-                        log.debug(f"{c} is completely dimensionless")
+                        log.debug(f"{c.name} is completely dimensionless")
             else:
 
                 # We need to make the other instance dimensionless so that this function (which is not dimensionless)
