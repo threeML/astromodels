@@ -1041,8 +1041,37 @@ def test_abs_model():
 
             assert phabs._current_table == "AG89"
 
+def test_complex_composites():
 
 
-            
-            
-    
+    # now make sure that we can do some really crazy stuff
+
+    a = astromodels.TbAbs(abundance_table="ASPL")
+    b = astromodels.PhAbs()
+
+    c = astromodels.Powerlaw()
+    d = astromodels.Blackbody()
+
+
+    f = a *(c + b*d)
+
+    assert f.abundance_table_1.value == "ASPL"
+
+    assert tbabs._current_table == "ASPL"
+
+
+    ps = astromodels.PointSource("test",0,0, spectral_shape=f)
+
+    f.abundance_table_1 = "WILM"
+
+
+    assert tbabs._current_table == "WILM"
+
+
+    a = astromodels.TbAbs(abundance_table="ASPL")
+    b = astromodels.PhAbs()
+
+    c = astromodels.TbAbs(abundance_table="ASPL")
+    d = astromodels.TbAbs(abundance_table="WILM")
+
+    a*b + c*d
