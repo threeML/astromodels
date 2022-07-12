@@ -4,19 +4,14 @@
 
 import logging
 import logging.handlers as handlers
-
 from pathlib import Path
 
+from astromodels.utils.configuration import astromodels_config
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
 
 from .file_utils import _get_data_file_path
-
-
-from astromodels.utils.configuration import astromodels_config
-
-
 
 try:
 
