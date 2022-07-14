@@ -83,6 +83,8 @@ if has_atomdb:
                 abundset=self.abundance_table.value
             )
 
+            self._last_spec = None
+
         def clean(self):
             """
             Clean the current APEC session to avoid having too many open files
@@ -95,6 +97,17 @@ if has_atomdb:
 
         def evaluate(self, x, K, kT, abund, redshift):
 
+
+            if self._last_spec is not None:
+
+                if (self.kT.fix) and (self.abund.fix) and (self.redshift.fix):
+
+                    if len(x) == len(self._last_spec):
+
+                        return K * self._last_spec
+
+
+            
             sess = self.session
 
             nval = len(x)
@@ -146,6 +159,9 @@ if has_atomdb:
             )
 
             spec = sess.return_spectrum(kT) / binsize / 1e-14
+
+            self._last_spec = spec
+
 
             return K * spec
 
