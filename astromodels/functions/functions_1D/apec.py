@@ -84,6 +84,9 @@ if has_atomdb:
             )
 
             self._last_spec = None
+            self._last_kT = None
+            self._last_abund = None
+            self._last_redshift = None
 
         def clean(self):
             """
@@ -102,7 +105,7 @@ if has_atomdb:
 
                 if (self.kT.fix) and (self.abund.fix) and (self.redshift.fix):
 
-                    if len(x) == len(self._last_spec):
+                    if len(x) == len(self._last_spec) and (self._last_kT == kT) and (self._last_abund == abund) and (self._last_redshift = redshift):
 
                         return K * self._last_spec
 
