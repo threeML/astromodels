@@ -88,7 +88,7 @@ class NodeBase:
 
             raise TypeError()
 
-        log.debug(f"adding child {child._name}")
+        log.debug_node(f"adding child {child._name}")
 
         if child._name not in self._children:
 
@@ -181,7 +181,7 @@ class NodeBase:
 
             self._path = f"{parent_path}.{self._name}"
 
-        log.debug(f"path is now: {self._path}")
+        log.debug_node(f"path is now: {self._path}")
 
     def _get_child(self, name: str) -> "NodeBase":
         """

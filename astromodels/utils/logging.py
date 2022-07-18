@@ -24,6 +24,18 @@ except ImportError:
     has_threeml = False
 
 
+
+
+DEBUG_NODE_LEVEL = 9
+logging.addLevelName(DEBUG_NODE_LEVEL, "DEBUG_NODE")
+
+def debug_node(self, message, *args, **kws):
+    if self.isEnabledFor(DEBUG_NODE_LEVEL):
+        # Yes, logger takes its '*args' as 'args'.
+        self._log(DEBUG_NODE_LEVEL, message, args, **kws)
+logging.Logger.debug_node = debug_node
+
+
 def get_path_of_log_dir():
 
     # we use the 3ML log path to simplify things
@@ -146,7 +158,7 @@ def setup_logger(name):
     log = logging.getLogger(name)
 
     # this must be set to allow debug messages through
-    log.setLevel(logging.DEBUG)
+    log.setLevel(DEBUG_NODE_LEVEL)
 
     # add the handlers
 
