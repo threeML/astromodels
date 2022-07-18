@@ -426,7 +426,6 @@ class NodeBase:
             out = self.to_dict()
             name = self.name
 
-
         tree = Tree(
             name,
             guide_style="bold medium_orchid",
@@ -488,7 +487,9 @@ def _recurse_dict(
 
                 branch_color = "not bold not blink turquoise2"
 
-            branch = tree.add(k, guide_style="bold not blink grey74", style=color)
+            branch = tree.add(
+                k, guide_style="bold not blink grey74", style=color
+            )
 
             _recurse_dict(v, branch, branch_color=branch_color)
 

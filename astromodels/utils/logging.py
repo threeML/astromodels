@@ -24,15 +24,16 @@ except ImportError:
     has_threeml = False
 
 
-
-
 DEBUG_NODE_LEVEL = 9
 logging.addLevelName(DEBUG_NODE_LEVEL, "DEBUG_NODE")
+
 
 def debug_node(self, message, *args, **kws):
     if self.isEnabledFor(DEBUG_NODE_LEVEL):
         # Yes, logger takes its '*args' as 'args'.
         self._log(DEBUG_NODE_LEVEL, message, args, **kws)
+
+
 logging.Logger.debug_node = debug_node
 
 
