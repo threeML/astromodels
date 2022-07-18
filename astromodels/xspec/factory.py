@@ -15,31 +15,39 @@ from astromodels.utils import get_user_data_path
 class XSpecNotAvailable(ImportWarning):
     pass
 
+
 from astromodels.xspec import _xspec
 
 # When running in a Anaconda environment, the package xspec-modelsonly
 # will install the models data in a specific place, so we set the HEADAS variable to point to the right place for
 # the models to find their data
-if os.environ.get("CONDA_PREFIX") is not None and os.environ.get("HEADAS", None) is None:
+if (
+    os.environ.get("CONDA_PREFIX") is not None
+    and os.environ.get("HEADAS", None) is None
+):
 
     # NOTE: the 'headas' directory doesn't actually exists, but models are looked for (according to Xspec documentation)
     # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
     # the 'spectral' directory is
 
-    os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas')
+    os.environ['HEADAS'] = os.path.join(
+        os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas'
+    )
 
-    #os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
+    # os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
 
     # we need to create the directory otherwise an exception casted:
     if not os.path.exists(os.environ['HEADAS']):
         os.makedirs(os.environ['HEADAS'])
 
 # This list defines all python protected names (names which variables or attributes should not have)
-illegal_variable_names_ = 'and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,' \
-                         'if, import, in, is, lambda, not, or, pass, print, raise, return, try, while, data, ' \
-                         'float, int, numeric, array, close, input, open, range, type, write, zeros, from, global'
+illegal_variable_names_ = (
+    'and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,'
+    'if, import, in, is, lambda, not, or, pass, print, raise, return, try, while, data, '
+    'float, int, numeric, array, close, input, open, range, type, write, zeros, from, global'
+)
 # Make it a list
-illegal_variable_names = illegal_variable_names_.replace(" ","").split(",")
+illegal_variable_names = illegal_variable_names_.replace(" ", "").split(",")
 
 
 def find_model_dat():
@@ -52,15 +60,21 @@ def find_model_dat():
 
     headas_env = os.environ.get("HEADAS")
 
-    assert headas_env is not None, ("You need to setup the HEADAS variable before importing this module."
-                                    " See Heasoft documentation.")
+    assert headas_env is not None, (
+        "You need to setup the HEADAS variable before importing this module."
+        " See Heasoft documentation."
+    )
 
     # Expand all variables and other things like ~
     headas_env = os.path.expandvars(os.path.expanduser(headas_env))
 
     # Lazy check that it exists
 
-    assert os.path.exists(headas_env), "The HEADAS env. variable point to a non-existent directory: %s" % (headas_env)
+    assert os.path.exists(
+        headas_env
+    ), "The HEADAS env. variable point to a non-existent directory: %s" % (
+        headas_env
+    )
 
     # Get one directory above HEADAS (i.e., $HEADAS/..)
 
@@ -72,7 +86,9 @@ def find_model_dat():
 
     # Check that model.dat exists
 
-    assert os.path.exists(final_path), "Cannot find Xspec model definition file %s" % (final_path)
+    assert os.path.exists(
+        final_path
+    ), "Cannot find Xspec model definition file %s" % (final_path)
 
     return os.path.abspath(final_path)
 
@@ -86,7 +102,6 @@ def get_models(model_dat_path):
     """
 
     # Check first if we already have a model data file in the data directory
-
 
     with open(model_dat_path) as f:
 
@@ -123,30 +138,41 @@ def get_models(model_dat_path):
 
             if len(tokens) == 7:
 
-                (model_name, n_parameters,
-                 min_energy, max_energy,
-                 library_function,
-                 model_type,
-                 flag) = line.split()
+                (
+                    model_name,
+                    n_parameters,
+                    min_energy,
+                    max_energy,
+                    library_function,
+                    model_type,
+                    flag,
+                ) = line.split()
 
             else:
 
-                (model_name, n_parameters,
-                 min_energy, max_energy,
-                 library_function,
-                 model_type,
-                 flag,
-                 flag_2) = line.split()
+                (
+                    model_name,
+                    n_parameters,
+                    min_energy,
+                    max_energy,
+                    library_function,
+                    model_type,
+                    flag,
+                    flag_2,
+                ) = line.split()
 
             this_model = collections.OrderedDict()
 
-            this_model['description'] = 'The %s model from XSpec (https://heasarc.gsfc.nasa.gov/xanadu/' \
-                                                   'xspec/manual/XspecModels.html)' % model_name
+            this_model['description'] = (
+                'The %s model from XSpec (https://heasarc.gsfc.nasa.gov/xanadu/'
+                'xspec/manual/XspecModels.html)' % model_name
+            )
 
             this_model['parameters'] = collections.OrderedDict()
 
-            
-            model_definitions[(model_name, library_function, model_type)] = this_model
+            model_definitions[
+                (model_name, library_function, model_type)
+            ] = this_model
 
         else:
 
@@ -177,7 +203,12 @@ def get_models(model_dat_path):
 
                     par_unit = ""
 
-                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1e9, 1e9)
+                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (
+                        0,
+                        0,
+                        1e9,
+                        1e9,
+                    )
 
                 elif len(tokens) == 3:
 
@@ -187,11 +218,18 @@ def get_models(model_dat_path):
 
                     par_unit = ""
 
-                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1e9, 1e9)
+                    hard_minimum, soft_minimum, soft_maximum, hard_maximum = (
+                        0,
+                        0,
+                        1e9,
+                        1e9,
+                    )
 
                 else:
 
-                    match = re.match('(\S+)\s+(\".+\"|[a-zA-Z]+)?(.+)*', line[1:])
+                    match = re.match(
+                        '(\S+)\s+(\".+\"|[a-zA-Z]+)?(.+)*', line[1:]
+                    )
 
                     par_name, par_unit, par_spec = match.groups()
 
@@ -201,17 +239,25 @@ def get_models(model_dat_path):
 
                         default_value = tokens[0]
                         par_unit = ""
-                        hard_minimum, soft_minimum, soft_maximum, hard_maximum = (0, 0, 1e9, 1e9)
+                        (
+                            hard_minimum,
+                            soft_minimum,
+                            soft_maximum,
+                            hard_maximum,
+                        ) = (0, 0, 1e9, 1e9)
 
                     else:
 
                         par_unit = ""
 
-                        (default_value,
-                         hard_minimum, soft_minimum,
-                         soft_maximum, hard_maximum,
-                         delta) = par_spec.split()
-
+                        (
+                            default_value,
+                            hard_minimum,
+                            soft_minimum,
+                            soft_maximum,
+                            hard_maximum,
+                            delta,
+                        ) = par_spec.split()
 
             else:
 
@@ -238,25 +284,37 @@ def get_models(model_dat_path):
                     if len(tokens) == 1:
 
                         default_value = tokens[0]
-                        (hard_minimum, soft_minimum,
-                         soft_maximum, hard_maximum,
-                         delta) = (None, None, None, None, 0.1)
+                        (
+                            hard_minimum,
+                            soft_minimum,
+                            soft_maximum,
+                            hard_maximum,
+                            delta,
+                        ) = (None, None, None, None, 0.1)
 
                     else:
 
-                        (default_value,
-                         hard_minimum, soft_minimum,
-                         soft_maximum, hard_maximum,
-                         delta) = par_spec.split()
+                        (
+                            default_value,
+                            hard_minimum,
+                            soft_minimum,
+                            soft_maximum,
+                            hard_maximum,
+                            delta,
+                        ) = par_spec.split()
 
                         delta = abs(float(delta))
 
                 else:
 
-                    (default_value,
-                     hard_minimum, soft_minimum,
-                     soft_maximum, hard_maximum,
-                     delta) = par_spec.split()
+                    (
+                        default_value,
+                        hard_minimum,
+                        soft_minimum,
+                        soft_maximum,
+                        hard_maximum,
+                        delta,
+                    ) = par_spec.split()
 
                     delta = float(delta)
 
@@ -301,7 +359,7 @@ def get_models(model_dat_path):
             # Sometimes the unit is " " which is not recognized by astropy
             if par_unit:
 
-                par_unit = par_unit.replace("\"",'')
+                par_unit = par_unit.replace("\"", '')
 
             # There are some errors in model.dat , like KeV instead of keV, and ergcm/s instead of erg cm /s
             # Let's correct them
@@ -321,8 +379,6 @@ def get_models(model_dat_path):
 
                 par_unit = ""
 
-
-
             # There are funny units in model.dat, like "Rs" (which means Schwarzschild radius) or other things
             # so let's try to convert the par_unit into an astropy.Unit instance. If that fails, use a unitless unit
             try:
@@ -333,7 +389,7 @@ def get_models(model_dat_path):
 
                 # Unit not recognized
 
-                #warnings.warn("Unit %s is not recognized by astropy." % par_unit)
+                # warnings.warn("Unit %s is not recognized by astropy." % par_unit)
 
                 par_unit = ''
 
@@ -343,12 +399,14 @@ def get_models(model_dat_path):
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
 
-
             if hard_maximum is not None and hard_minimum is not None:
 
-                if (float(hard_maximum) < float(hard_minimum)):
+                if float(hard_maximum) < float(hard_minimum):
 
-                    raise ValueError("Hard maximum (%s) < hard minimum (%s)" %(hard_maximum,hard_minimum))
+                    raise ValueError(
+                        "Hard maximum (%s) < hard minimum (%s)"
+                        % (hard_maximum, hard_minimum)
+                    )
 
                 if float(default_value) > float(hard_maximum):
 
@@ -358,18 +416,19 @@ def get_models(model_dat_path):
 
                     default_value = hard_minimum
 
-
-
-            this_model['parameters'][par_name] = {'initial value': float(default_value),
-                                                  'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
-                                                          'XspecModels.html)',
-                                                  'min': hard_minimum,
-                                                  'max': hard_maximum,
-                                                  'delta': float(delta),
-                                                  'unit': par_unit,
-                                                  'free': free}
+            this_model['parameters'][par_name] = {
+                'initial value': float(default_value),
+                'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
+                'XspecModels.html)',
+                'min': hard_minimum,
+                'max': hard_maximum,
+                'delta': float(delta),
+                'unit': par_unit,
+                'free': free,
+            }
 
     return model_definitions
+
 
 # TODO: gabs is returning all 1.0
 
@@ -578,14 +637,16 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
         if model_type == 'add':
 
-            definition['parameters']['norm'] = {'initial value': 1.0,
-                                                      'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
-                                                              'XspecModels.html)',
-                                                      'min': 0,
-                                                      'max': None,
-                                                      'delta': 0.1,
-                                                      'unit': 'keV / (cm2 s)',
-                                                      'free': True}
+            definition['parameters']['norm'] = {
+                'initial value': 1.0,
+                'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
+                'XspecModels.html)',
+                'min': 0,
+                'max': None,
+                'delta': 0.1,
+                'unit': 'keV / (cm2 s)',
+                'free': True,
+            }
 
         assert model_type != 'con', "Convolution models are not yet supported"
 
@@ -608,9 +669,11 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
         with open(code_file_name, 'w+') as f:
 
-            f.write("# This code has been automatically generated. Do not edit.\n")
+            f.write(
+                "# This code has been automatically generated. Do not edit.\n"
+            )
             f.write("\n\n%s\n" % code)
-        
+
         time.sleep(1)
 
     # Add the path to sys.path if it doesn't
@@ -625,6 +688,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
     # Return the class we just created
     return class_name, locals()[class_name]
+
 
 def setup_xspec_models():
 
@@ -641,7 +705,6 @@ def setup_xspec_models():
             # convolution models are not supported
             continue
 
-
         if not hasattr(_xspec, xspec_function):
 
             # Some function do not exist in the wrapper. Let's ignore them
@@ -654,13 +717,16 @@ def setup_xspec_models():
         # (it happens in the metaclass), so we don't need to do anything special here after the
         # class type is created
 
-        this_class_name, this_class = xspec_model_factory(model_name, xspec_function, model_type, this_model)
+        this_class_name, this_class = xspec_model_factory(
+            model_name, xspec_function, model_type, this_model
+        )
 
         classes.append(this_class_name)
 
     sys.stdout.write("done\n")
 
     return classes
+
 
 # This will either work or issue a warning if XSpec is not available
 

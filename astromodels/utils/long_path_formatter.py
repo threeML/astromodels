@@ -19,7 +19,7 @@ def long_path_formatter(line, max_width=pd.get_option('max_colwidth')):
 
         if len(trial1) > max_width:
 
-            return "...%s" %(tokens[-1][-1:-(max_width-3)])
+            return "...%s" % (tokens[-1][-1 : -(max_width - 3)])
 
         else:
 

@@ -115,7 +115,9 @@ class NodeBase:
         for child in children:
             self._add_child(child)
 
-    def _remove_child(self, name: str, delete: bool = True) -> Optional["NodeBase"]:
+    def _remove_child(
+        self, name: str, delete: bool = True
+    ) -> Optional["NodeBase"]:
         """
         return a child
         """
@@ -213,7 +215,9 @@ class NodeBase:
     def __getitem__(self, key) -> "NodeBase":
         return self._get_child_from_path(key)
 
-    def _recursively_gather_node_type(self, node, node_type) -> Dict[str, "NodeBase"]:
+    def _recursively_gather_node_type(
+        self, node, node_type
+    ) -> Dict[str, "NodeBase"]:
 
         instances = collections.OrderedDict()
 
@@ -237,7 +241,9 @@ class NodeBase:
 
             else:
 
-                instances.update(self._recursively_gather_node_type(child, node_type))
+                instances.update(
+                    self._recursively_gather_node_type(child, node_type)
+                )
 
         return instances
 
@@ -317,7 +323,6 @@ class NodeBase:
         self._name = name
 
         if (self._parent is not None) and (not clear_parent):
-
 
             self._set_parent(self._parent)
 
@@ -417,12 +422,15 @@ class NodeBase:
             return self.name
 
         child_strs = [
-            child._plot_tree_console() for child in list(self._children.values())
+            child._plot_tree_console()
+            for child in list(self._children.values())
         ]
         child_widths = [block_width(s) for s in child_strs]
 
         # How wide is this block?
-        display_width = max(len(self.name), sum(child_widths) + len(child_widths) - 1)
+        display_width = max(
+            len(self.name), sum(child_widths) + len(child_widths) - 1
+        )
 
         # Determines midpoints of child blocks
         child_midpoints = []

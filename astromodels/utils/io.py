@@ -1,4 +1,5 @@
 from __future__ import print_function
+
 __author__ = 'giacomov'
 
 # Import IPython display facility, if available. Otherwise,
@@ -15,6 +16,7 @@ except ImportError:
         Mock version of display, used if there is no ipython installed
         """
         print(args)
+
 
 try:
 
@@ -33,4 +35,6 @@ except ImportError:
 
         def __repr__(self, *args, **kwargs):
 
-            print("[you need to install IPython to see the Latex representation]")
+            print(
+                "[you need to install IPython to see the Latex representation]"
+            )

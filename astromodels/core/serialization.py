@@ -1,4 +1,5 @@
 from future import standard_library
+
 standard_library.install_aliases()
 from astromodels.core.model import Model
 from astromodels.core.model_parser import ModelParser
@@ -9,11 +10,11 @@ __all__ = []
 # copyreg is called copy_reg in python2
 try:
 
-    import copyreg #py3
+    import copyreg  # py3
 
 except ImportError:
 
-    import copyreg as copyreg #py2
+    import copyreg as copyreg  # py2
 
 
 # Model serializer
@@ -27,6 +28,7 @@ def serialize_model(model):
 def unserialize_model(dict_with_types):
 
     return ModelParser(model_dict=dict_with_types).get_model()
+
 
 # Register serialization/unserialization for Model
 copyreg.constructor(unserialize_model)

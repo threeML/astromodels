@@ -44,13 +44,16 @@ def dict_to_table(dictionary, list_of_keys=None):
 
         for column_name in column_names:
 
-            table[column_name] = [x[column_name] for x in list(dictionary.values())]
+            table[column_name] = [
+                x[column_name] for x in list(dictionary.values())
+            ]
 
     return table
 
 
 # A hack on the astropy Table class to make its output
 # more appealing, especially when in the Ipython notebook
+
 
 class Table(astropy.table.Table):
     """
@@ -66,9 +69,15 @@ class Table(astropy.table.Table):
 
         table_id = 'table{id}'.format(id=id(self))
 
-        data_lines, outs = self.formatter._pformat_table(self,
-                                                         tableid=table_id, html=html, max_width=(-1 if html else None),
-                                                         show_name=show_name, show_unit=None, show_dtype=False)
+        data_lines, outs = self.formatter._pformat_table(
+            self,
+            tableid=table_id,
+            html=html,
+            max_width=(-1 if html else None),
+            show_name=show_name,
+            show_unit=None,
+            show_dtype=False,
+        )
 
         out = '\n'.join(data_lines)
 

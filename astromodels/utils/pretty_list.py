@@ -1,4 +1,5 @@
 from builtins import str
+
 __author__ = 'giacomov'
 
 import yaml
@@ -12,14 +13,14 @@ def _process_html(dictionary):
     entry_start = '<li>'
     entry_stop = '</li>\n'
 
-    output=[list_start]
+    output = [list_start]
 
-    for key,value in list(dictionary.items()):
+    for key, value in list(dictionary.items()):
 
         if isinstance(value, dict):
 
             # Check whether the dictionary is empty. In that case, don't print anything
-            if len(value)==0:
+            if len(value) == 0:
 
                 continue
 
@@ -31,11 +32,19 @@ def _process_html(dictionary):
 
             else:
 
-                output.append(entry_start + str(key) + ': ' + str(list(value.values())[0]) + entry_stop)
+                output.append(
+                    entry_start
+                    + str(key)
+                    + ': '
+                    + str(list(value.values())[0])
+                    + entry_stop
+                )
 
         else:
 
-            output.append(entry_start + str(key) + ': ' + str(value) + entry_stop)
+            output.append(
+                entry_start + str(key) + ': ' + str(value) + entry_stop
+            )
 
     output.append(list_stop)
 

@@ -18,6 +18,7 @@ from functools import reduce
 # constructor and in the .to_string method of the Unit and
 # Quantity classes as format='threadsafe' (case insensitive)
 
+
 def _format_one(xxx_todo_changeme):
     # This is for example 'cm-2' if base=cm and power=-2,
     # but only 'cm' if base=cm and power=1
@@ -27,7 +28,6 @@ def _format_one(xxx_todo_changeme):
 
 
 class ThreadSafe(Base):
-
     @classmethod
     def parse(cls, s):
 
@@ -57,14 +57,14 @@ class ThreadSafe(Base):
             # If needed, raise it to the power
             if power != '':
 
-                thisr = thisr**power
+                thisr = thisr ** power
 
             r.append(thisr)
 
         # Now we multiply the units
         # so that we get something like u.m * u.s**(-1)
 
-        return reduce(lambda x, y: x*y, r)
+        return reduce(lambda x, y: x * y, r)
 
     @classmethod
     def to_string(cls, unit):

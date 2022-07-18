@@ -15,7 +15,9 @@ class SpectralComponent(Node):
 
         # Check that we can call the shape (i.e., it is a function)
 
-        assert hasattr(shape, '__call__'), "The shape must be callable (i.e., behave like a function)"
+        assert hasattr(
+            shape, '__call__'
+        ), "The shape must be callable (i.e., behave like a function)"
 
         self._spectral_shape = shape
 
@@ -39,9 +41,11 @@ class SpectralComponent(Node):
 
         except TypeError:
 
-            raise TypeError("Couldn't instance the spectral component. Please verify that you are using an "
-                            "*instance* of a function, and not a class. For example, you need to use "
-                            "'%s()', and not '%s'." % (shape.__name__, shape.__name__))
+            raise TypeError(
+                "Couldn't instance the spectral component. Please verify that you are using an "
+                "*instance* of a function, and not a class. For example, you need to use "
+                "'%s()', and not '%s'." % (shape.__name__, shape.__name__)
+            )
 
     def _repr__base(self, rich_output):
 
@@ -51,7 +55,9 @@ class SpectralComponent(Node):
         # Print the polarization only if it's not None
 
         if self._polarization is not None:
-            representation += "    -polarization: %s\n" % self._polarization.name
+            representation += (
+                "    -polarization: %s\n" % self._polarization.name
+            )
 
         return representation
 

@@ -1,4 +1,3 @@
-
 __author__ = 'giacomov'
 
 from enum import Enum, unique
@@ -10,6 +9,7 @@ from astromodels.core.parameter import Parameter
 import collections
 
 log = setup_logger(__name__)
+
 
 @unique
 class SourceType(Enum):
@@ -26,8 +26,9 @@ class UnknownSourceType(Exception):
 
 
 class Source(object):
-
-    def __init__(self, list_of_components: List[Any], src_type: str, spatial_shape=None):
+    def __init__(
+        self, list_of_components: List[Any], src_type: str, spatial_shape=None
+    ):
 
         # Make the dictionary of components
         self._components: Dict[str, Any] = collections.OrderedDict()
@@ -39,7 +40,7 @@ class Source(object):
         if src_type not in SourceType:
 
             log.error(f"Source of type {src_type} is unknown")
-            
+
             raise UnknownSourceType()
 
         else:

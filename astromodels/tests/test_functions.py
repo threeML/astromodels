@@ -13,17 +13,27 @@ from future.utils import with_metaclass
 import astromodels
 from astromodels import update_logging_level
 from astromodels.core.property import SettingUnknownValue
-from astromodels.functions import (Continuous_injection_diffusion,
-                                   Gaussian_on_sphere, Line, Powerlaw,
-                                   SpatialTemplate_2D)
+from astromodels.functions import (
+    Continuous_injection_diffusion,
+    Gaussian_on_sphere,
+    Line,
+    Powerlaw,
+    SpatialTemplate_2D,
+)
 from astromodels.functions import function as function_module
-from astromodels.functions.function import (DesignViolation, Function1D,
-                                            Function2D,
-                                            FunctionDefinitionError,
-                                            FunctionInstanceError,
-                                            FunctionMeta, UnknownFunction,
-                                            UnknownParameter, get_function,
-                                            get_function_class, list_functions)
+from astromodels.functions.function import (
+    DesignViolation,
+    Function1D,
+    Function2D,
+    FunctionDefinitionError,
+    FunctionInstanceError,
+    FunctionMeta,
+    UnknownFunction,
+    UnknownParameter,
+    get_function,
+    get_function_class,
+    list_functions,
+)
 from astromodels.functions.functions_1D.absorption import phabs, tbabs, wabs
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.utils.configuration import astromodels_config
@@ -573,8 +583,9 @@ def test_function_values():
     my_function.b.value = 1.0
 
     assert np.all(my_function([1, 2, 3]) == np.array([3.0, 5.0, 7.0]))
-    assert np.all(my_function(
-        np.array([3, 4, 5])) == np.array([7.0, 9.0, 11.0]))
+    assert np.all(
+        my_function(np.array([3, 4, 5])) == np.array([7.0, 9.0, 11.0])
+    )
 
 
 def test_function_values_units():
@@ -587,7 +598,7 @@ def test_function_values_units():
     # Try to instance it
     my_function = Test_function()
 
-    diff_flux = 1.0 / (u.keV * u.cm**2 * u.s)
+    diff_flux = 1.0 / (u.keV * u.cm ** 2 * u.s)
 
     my_function.set_units(u.keV, diff_flux)
 
@@ -608,8 +619,9 @@ def test_function_values_units():
     my_function.a.value = 2.0 * diff_flux / u.keV
     my_function.b.value = 1.0 * diff_flux
 
-    assert np.all(my_function([1, 2, 3] * u.keV) ==
-                  np.array([3.0, 5.0, 7.0]) * diff_flux)
+    assert np.all(
+        my_function([1, 2, 3] * u.keV) == np.array([3.0, 5.0, 7.0]) * diff_flux
+    )
 
     # Using one unit for each element will fail
 
@@ -618,8 +630,10 @@ def test_function_values_units():
 
         _ = my_function([1 * u.keV, 2 * u.keV, 3 * u.keV])
 
-    assert np.all(my_function(
-        np.array([3, 4, 5]) * u.keV) == np.array([7.0, 9.0, 11.0]) * diff_flux)
+    assert np.all(
+        my_function(np.array([3, 4, 5]) * u.keV)
+        == np.array([7.0, 9.0, 11.0]) * diff_flux
+    )
 
     # Now test that an error is raised if units are not intelligible
     with pytest.raises(TypeError):
@@ -636,9 +650,14 @@ def test_function_composition():
 
     composite = powerlaw + line
 
-    composite.set_units(u.keV, 1.0 / (u.keV * u.cm**2 * u.s))
+    composite.set_units(u.keV, 1.0 / (u.keV * u.cm ** 2 * u.s))
 
-    for x in ([1, 2, 3, 4], [1, 2, 3, 4] * u.keV, 1.0, np.array([1.0, 2.0, 3.0, 4.0])):
+    for x in (
+        [1, 2, 3, 4],
+        [1, 2, 3, 4] * u.keV,
+        1.0,
+        np.array([1.0, 2.0, 3.0, 4.0]),
+    ):
 
         assert np.all(composite(x) == line(x) + powerlaw(x))
 
@@ -665,9 +684,9 @@ def test_function_composition():
     assert composite(2.25) == po(li(2.25))
 
     # test power
-    composite = po**li
+    composite = po ** li
 
-    assert composite(2.25) == po(2.25)**li(2.25)
+    assert composite(2.25) == po(2.25) ** li(2.25)
 
     # test negation
     neg_po = -po
@@ -684,9 +703,9 @@ def test_function_composition():
     assert abs_new_li(1.0) == abs(new_li(1.0))
 
     # test rpower
-    composite = 2.0**new_li
+    composite = 2.0 ** new_li
 
-    assert composite(2.25) == 2.0**(new_li(2.25))
+    assert composite(2.25) == 2.0 ** (new_li(2.25))
 
     # test multiplication by a number
     composite = 2.0 * po
@@ -699,10 +718,11 @@ def test_function_composition():
     assert composite(2.25) == 1.0 / li(2.25)
 
     # Composite of composite
-    composite = po*li + po - li + 2*po / li
+    composite = po * li + po - li + 2 * po / li
 
-    assert composite(2.25) == po(2.25) * li(2.25) + \
-        po(2.25) - li(2.25) + 2*po(2.25) / li(2.25)
+    assert composite(2.25) == po(2.25) * li(2.25) + po(2.25) - li(
+        2.25
+    ) + 2 * po(2.25) / li(2.25)
 
     print(composite)
 
@@ -754,7 +774,7 @@ def test_pickling_unpickling():
     # composite function
     po2 = Powerlaw()
     li = Line()
-    composite = po2*li + po2 - li + 2*po2 / li  # type: Function1D
+    composite = po2 * li + po2 - li + 2 * po2 / li  # type: Function1D
 
     # Change some parameter
     composite.K_1 = 3.2
@@ -767,13 +787,12 @@ def test_pickling_unpickling():
     assert new_composite.K_1.value == composite.K_1.value
     assert new_composite.a_2.value == composite.a_2.value
 
-
     # now try with previously used function1d
 
     # composite function
     po3 = Powerlaw()
-    
-    composite2 = po3*li
+
+    composite2 = po3 * li
 
     # Change some parameter
     composite2.K_1 = 3.2
@@ -784,7 +803,6 @@ def test_pickling_unpickling():
     new_composite2 = pickle.loads(dump2)
 
 
-    
 def test_get_function():
 
     po = get_function("Powerlaw")
@@ -824,19 +842,20 @@ def test_function2D():
     fa = c(a, a)
     assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
 
-    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
+    c.set_units(u.deg, u.deg, 1.0 / u.deg ** 2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
-    assert np.isclose(f1d.value, 5.17276409 , rtol=1e-10)
-    assert f1d.unit == u.deg**-2
+    assert np.isclose(f1d.value, 5.17276409, rtol=1e-10)
+    assert f1d.unit == u.deg ** -2
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
-    assert c.z_unit == u.deg**-2
+    assert c.z_unit == u.deg ** -2
 
     assert c.get_total_spatial_integral(1) == 1
-    assert np.isclose(c.get_total_spatial_integral(
-        [1, 1]),  [1, 1], rtol=1e-10).all()
+    assert np.isclose(
+        c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10
+    ).all()
 
     with pytest.raises(TypeError):
 
@@ -853,28 +872,34 @@ def test_function3D():
     a = np.array([1.0, 2.0])
 
     fa = c(a, a, a)
-    assert np.isclose(fa,  [[134.95394313, 132.19796573], [
-                      25.40751507, 27.321443]], rtol=1e-10).all()
+    assert np.isclose(
+        fa, [[134.95394313, 132.19796573], [25.40751507, 27.321443]], rtol=1e-10
+    ).all()
 
-    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
+    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg ** 2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
     assert np.isclose(f1d.value, 134.95394313247866, rtol=1e-10)
-    assert f1d.unit == u.deg**-2
+    assert f1d.unit == u.deg ** -2
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
     assert c.z_unit == u.keV
-    assert c.w_unit == u.deg**-2
+    assert c.w_unit == u.deg ** -2
 
     assert c.get_total_spatial_integral(1) == 1
-    assert np.isclose(c.get_total_spatial_integral(
-        [1, 1]),  [1, 1], rtol=1e-10).all()
+    assert np.isclose(
+        c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10
+    ).all()
 
     with pytest.raises(TypeError):
 
-        c.set_units("not existent", u.deg, u.keV, 1.0 /
-                    (u.keV * u.s * u.deg**2 * u.cm**2))
+        c.set_units(
+            "not existent",
+            u.deg,
+            u.keV,
+            1.0 / (u.keV * u.s * u.deg ** 2 * u.cm ** 2),
+        )
 
 
 def test_spatial_template_2D():
@@ -888,7 +913,7 @@ def test_spatial_template_2D():
         "NAXIS2": 360,
         "DATE": '2018-06-15',
         "CUNIT1": 'deg',
-        "CRVAL1":  83,
+        "CRVAL1": 83,
         "CRPIX1": 0,
         "CDELT1": -0.0166667,
         "CUNIT2": 'deg',
@@ -896,7 +921,8 @@ def test_spatial_template_2D():
         "CRPIX2": 0,
         "CDELT2": 0.0166667,
         "CTYPE1": 'GLON-CAR',
-        "CTYPE2": 'GLAT-CAR'}
+        "CTYPE2": 'GLAT-CAR',
+    }
 
     data = np.zeros([400, 400])
     data[0:100, 0:100] = 1
@@ -910,67 +936,69 @@ def test_spatial_template_2D():
 
     # Now load template files and test their evaluation
     shape1 = SpatialTemplate_2D(fits_file="test1.fits")
-    
+
     shape1.K = 1
 
     shape2 = SpatialTemplate_2D(fits_file="test2.fits")
-    
+
     shape2.K = 1
 
     assert shape1.hash != shape2.hash
 
-    assert np.all(shape1.evaluate(
-        [312, 306], [41, 41], [1, 1], [40, 2], 0) == [1., 0.])
-    assert np.all(shape2.evaluate(
-        [312, 306], [41, 41], [1, 1], [40, 2], 0) == [0., 1.])
-    assert np.all(shape1.evaluate(
-        [312, 306], [41, 41], [1, 10], [40, 2], 0) == [1., 0.])
-    assert np.all(shape2.evaluate(
-        [312, 306], [41, 41], [1, 10], [40, 2], 0) == [0., 10.])
+    assert np.all(
+        shape1.evaluate([312, 306], [41, 41], [1, 1], [40, 2], 0) == [1.0, 0.0]
+    )
+    assert np.all(
+        shape2.evaluate([312, 306], [41, 41], [1, 1], [40, 2], 0) == [0.0, 1.0]
+    )
+    assert np.all(
+        shape1.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [1.0, 0.0]
+    )
+    assert np.all(
+        shape2.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0)
+        == [0.0, 10.0]
+    )
 
     shape1.K = 1
     shape2.K = 1
-    assert np.all(shape1([312, 306], [41, 41], 0) == [1., 0.])
-    assert np.all(shape2([312, 306], [41, 41], 0) == [0., 1.])
+    assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
+    assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 1.0])
 
     shape1.K = 1
     shape2.K = 10
-    assert np.all(shape1([312, 306], [41, 41], 0) == [1., 0.])
-    assert np.all(shape2([312, 306], [41, 41], 0) == [0., 10.])
-    
-    
+    assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
+    assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 10.0])
+
     os.remove("test1.fits")
     os.remove("test2.fits")
+
 
 def test_linking_external_functions():
 
     p = Powerlaw()
     p2 = Powerlaw()
 
-
     # nothing there yet
     assert not p.external_functions
-    
+
     p.link_external_function(p2, "p2")
 
     # should be there
-    
+
     assert "p2" in p.external_functions
 
     with pytest.raises(RuntimeError):
 
         p.link_external_function(p2, "p2")
 
-
     p.unlink_external_function("p2")
-    
+
     # nothing there now
     assert not p.external_functions
 
     with pytest.raises(RuntimeError):
 
         p.link_external_function("dummy", "p2")
-
 
     with pytest.raises(RuntimeError):
 
@@ -983,7 +1011,6 @@ def test_linking_external_functions():
     assert not p.external_functions
 
     p.link_external_function(p2, "p2")
-    
 
     assert p2 == p.external_functions["p2"]
 
@@ -991,28 +1018,24 @@ def test_linking_external_functions():
 
     assert "external_functions" in data
 
-
     p3 = Powerlaw()
 
     p4 = p3 + p
 
-    
     data = p4.to_dict(minimal=False)
 
     assert "external_functions" in data
-
 
     assert data["external_functions"][1]["p2"] == p2.path
 
 
 def test_function_properties():
-    
+
     with pytest.raises(FunctionInstanceError):
 
         c = _ComplexTestFunction()
 
     c = _ComplexTestFunction(file_name="lost.txt", dummy="test")
-    
 
     with pytest.raises(SettingUnknownValue):
 
@@ -1021,19 +1044,21 @@ def test_function_properties():
 
 def test_abs_model():
 
-    for i, m in enumerate([astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]):
+    for i, m in enumerate(
+        [astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]
+    ):
 
         instance = m()
 
         instance.info()
 
         instance.abundance_table_info
-        
+
         if i != 1:
-        
+
             instance.abundance_table = "AG89"
 
-        if i ==0:
+        if i == 0:
 
             assert tbabs._current_table == "AG89"
 
@@ -1041,8 +1066,8 @@ def test_abs_model():
 
             assert phabs._current_table == "AG89"
 
-def test_complex_composites():
 
+def test_complex_composites():
 
     # now make sure that we can do some really crazy stuff
 
@@ -1052,21 +1077,17 @@ def test_complex_composites():
     c = astromodels.Powerlaw()
     d = astromodels.Blackbody()
 
-
-    f = a *(c + b*d)
+    f = a * (c + b * d)
 
     assert f.abundance_table_1.value == "ASPL"
 
     assert tbabs._current_table == "ASPL"
 
-
-    ps = astromodels.PointSource("test",0,0, spectral_shape=f)
+    ps = astromodels.PointSource("test", 0, 0, spectral_shape=f)
 
     f.abundance_table_1 = "WILM"
 
-
     assert tbabs._current_table == "WILM"
-
 
     a = astromodels.TbAbs(abundance_table="ASPL")
     b = astromodels.PhAbs()
@@ -1074,4 +1095,4 @@ def test_complex_composites():
     c = astromodels.TbAbs(abundance_table="ASPL")
     d = astromodels.TbAbs(abundance_table="WILM")
 
-    a*b + c*d
+    a * b + c * d

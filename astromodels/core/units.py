@@ -1,4 +1,5 @@
 from builtins import object
+
 __author__ = 'giacomov'
 
 import collections
@@ -15,7 +16,7 @@ from astromodels.utils.pretty_list import dict_to_list
 _ENERGY = u.keV
 _TIME = u.s
 _ANGLE = u.deg
-_AREA = u.cm**2
+_AREA = u.cm ** 2
 
 
 class UnknownUnit(Exception):
@@ -41,25 +42,36 @@ def _check_unit(new_unit, old_unit):
 
     except AttributeError:
 
-        raise UnitMismatch("The provided unit (%s) has no physical type. Was expecting a unit for %s"
-                           % (new_unit, old_unit.physical_type))
+        raise UnitMismatch(
+            "The provided unit (%s) has no physical type. Was expecting a unit for %s"
+            % (new_unit, old_unit.physical_type)
+        )
 
     if new_unit.physical_type != old_unit.physical_type:
 
-        raise UnitMismatch("Physical type mismatch: you provided a unit for %s instead of a unit for %s"
-                           % (new_unit.physical_type, old_unit.physical_type))
+        raise UnitMismatch(
+            "Physical type mismatch: you provided a unit for %s instead of a unit for %s"
+            % (new_unit.physical_type, old_unit.physical_type)
+        )
 
 
 class _AstromodelsUnits(object):
     """
     Store the fundamental units of time, energy, angle and area to be used in astromodels.
     """
-    def __init__(self, energy_unit=None, time_unit=None, angle_unit=None, area_unit=None):
 
-        if energy_unit is None: energy_unit = _ENERGY
-        if time_unit is None: time_unit = _TIME
-        if angle_unit is None: angle_unit = _ANGLE
-        if area_unit is None: area_unit = _AREA
+    def __init__(
+        self, energy_unit=None, time_unit=None, angle_unit=None, area_unit=None
+    ):
+
+        if energy_unit is None:
+            energy_unit = _ENERGY
+        if time_unit is None:
+            time_unit = _TIME
+        if angle_unit is None:
+            angle_unit = _ANGLE
+        if area_unit is None:
+            area_unit = _AREA
 
         self._units = collections.OrderedDict()
 
@@ -95,8 +107,10 @@ class _AstromodelsUnits(object):
 
         except KeyError:
 
-            raise UnknownUnit("You can only assign units for energy, time, angle and area. Don't know "
-                              "anything about %s" % what)
+            raise UnknownUnit(
+                "You can only assign units for energy, time, angle and area. Don't know "
+                "anything about %s" % what
+            )
 
         # This allows to use strings in place of Unit instances as new_unit
 
@@ -126,8 +140,11 @@ class _AstromodelsUnits(object):
     @staticmethod
     def _create_property(what):
 
-        return (lambda self: self._get_unit(what), lambda self, new_unit: self._set_unit(what, new_unit),
-                "Sets or gets the unit for %s" % what)
+        return (
+            lambda self: self._get_unit(what),
+            lambda self, new_unit: self._set_unit(what, new_unit),
+            "Sets or gets the unit for %s" % what,
+        )
 
     # Add the == and != operators
     def __eq__(self, other):
@@ -149,25 +166,26 @@ class _AstromodelsUnits(object):
 
 # This is a factory which will always return the same instance of the _AstromodelsUnits class
 
+
 class _AstromodelsUnitsFactory(object):
 
-        _instance = None
+    _instance = None
 
-        def __call__(self, *args, **kwds):
+    def __call__(self, *args, **kwds):
 
-            if self._instance is None:
+        if self._instance is None:
 
-                # Create and return a new instance
+            # Create and return a new instance
 
-                self._instance = _AstromodelsUnits(*args, **kwds)
+            self._instance = _AstromodelsUnits(*args, **kwds)
 
-                return self._instance
+            return self._instance
 
-            else:
+        else:
 
-                # Use the instance already created
+            # Use the instance already created
 
-                return self._instance
+            return self._instance
 
 
 # Create the factory to be used in the program

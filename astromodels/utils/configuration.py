@@ -13,4 +13,6 @@ for user_config_file in get_path_of_user_config().glob("*.yml"):
 
     _partial_conf = OmegaConf.load(user_config_file)
 
-    astromodels_config: Config = OmegaConf.merge(astromodels_config, _partial_conf)
+    astromodels_config: Config = OmegaConf.merge(
+        astromodels_config, _partial_conf
+    )

@@ -9,9 +9,9 @@ import pytest
 
 from astromodels.core.tree import Node
 
-#os.environ["ASTROMODELS_DEBUG"] = "debug"
+# os.environ["ASTROMODELS_DEBUG"] = "debug"
 
-#from astromodels.core import node_ctype
+# from astromodels.core import node_ctype
 
 
 def clean():
@@ -20,7 +20,6 @@ def clean():
 
 
 class _SimpleInheritance(Node):
-
     def __init__(self, name):
         print("INIT of _SimpleInheritance")
 
@@ -34,7 +33,6 @@ class _SimpleInheritance(Node):
 
 
 class _ComplexInheritance(Node):
-
     def __init__(self, name, min_value, max_value):
 
         super(_ComplexInheritance, self).__init__(name)
@@ -63,7 +61,6 @@ def test_constructor():
 
         n2 = Node()
 
-        
     clean()
 
 
@@ -121,7 +118,6 @@ def test_get_child():
     clean()
 
 
-
 def test_hashing():
 
     node1 = Node('node1')
@@ -129,10 +125,10 @@ def test_hashing():
     node22 = Node('node22')
     node3 = Node('node3')
 
-    d ={}
+    d = {}
 
     # nodes as hashes
-    
+
     d[node1] = 1
     d[node2] = 2
 
@@ -140,12 +136,11 @@ def test_hashing():
     d[node2] == 2
 
     # nodes in dicts
-    
+
     d = {}
-    
+
     d["node1"] = node1
 
-    
     node1._add_child(node2)
     node1._add_child(node22)
     node2._add_child(node3)
@@ -157,20 +152,14 @@ def test_hashing():
 
     d = {}
 
-
-    d ={}
+    d = {}
 
     d[node1] = 1
     d[node1.node2] = 2
 
-    
     d[node1] == 1
     d[node2] == 2
-    
-    
 
-    
-    
 
 def test_get_children():
     node1 = Node('node1')
@@ -232,7 +221,8 @@ def test_remove_child():
         t._get_child("node")
 
     clean()
-    
+
+
 def test_get_path():
     # Make a small tree
 
@@ -333,5 +323,3 @@ def test_pickle():
     print(root2c.min_value)
 
     clean()
-
-

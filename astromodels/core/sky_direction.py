@@ -52,9 +52,13 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a parameter
 
-            ra = self._get_parameter_from_input(ra, 0, 360, 'ra','Right Ascension')
+            ra = self._get_parameter_from_input(
+                ra, 0, 360, 'ra', 'Right Ascension'
+            )
 
-            dec = self._get_parameter_from_input(dec, -90, 90, 'dec','Declination')
+            dec = self._get_parameter_from_input(
+                dec, -90, 90, 'dec', 'Declination'
+            )
 
             self._coord_type = 'equatorial'
 
@@ -68,9 +72,13 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a parameter
 
-            l = self._get_parameter_from_input(l, 0, 360, 'l','Galactic longitude')
+            l = self._get_parameter_from_input(
+                l, 0, 360, 'l', 'Galactic longitude'
+            )
 
-            b = self._get_parameter_from_input(b, -90, 90, 'b','Galactic latitude')
+            b = self._get_parameter_from_input(
+                b, -90, 90, 'b', 'Galactic latitude'
+            )
 
             self._coord_type = 'galactic'
             self._add_child(l)
@@ -78,10 +86,14 @@ class SkyDirection(Node):
 
         else:
 
-            raise WrongCoordinatePair("You have to specify either (ra, dec) or (l, b).")
+            raise WrongCoordinatePair(
+                "You have to specify either (ra, dec) or (l, b)."
+            )
 
     @staticmethod
-    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc):
+    def _get_parameter_from_input(
+        number_or_parameter, minimum, maximum, what, desc
+    ):
 
         # Try to transform it to float, if it works than we transform it to a parameter
 
@@ -91,26 +103,50 @@ class SkyDirection(Node):
 
         except TypeError:
 
-            assert isinstance(number_or_parameter, Parameter), "%s must be either a number or a " \
-                                                               "parameter instance" % what
+            assert isinstance(number_or_parameter, Parameter), (
+                "%s must be either a number or a " "parameter instance" % what
+            )
 
             # So this is a Parameter instance already. Enforce that it has the right maximum and minimum
 
             parameter = number_or_parameter
 
-            assert parameter.min_value >= minimum, "%s must have a minimum greater than or equal to %s" % (what, minimum)
-            assert parameter.max_value <= maximum, "%s must have a maximum less than or equal to %s" % (what, maximum)
+            assert (
+                parameter.min_value >= minimum
+            ), "%s must have a minimum greater than or equal to %s" % (
+                what,
+                minimum,
+            )
+            assert (
+                parameter.max_value <= maximum
+            ), "%s must have a maximum less than or equal to %s" % (
+                what,
+                maximum,
+            )
 
         else:
 
             # This was a float. Enforce that it has a legal value
 
-            assert minimum <= number_or_parameter <= maximum, "%s cannot have a value of %s, " \
-                                                              "it must be %s <= %s <= %s" % (what, number_or_parameter,
-                                                                                             minimum, what, maximum)
+            assert (
+                minimum <= number_or_parameter <= maximum
+            ), "%s cannot have a value of %s, " "it must be %s <= %s <= %s" % (
+                what,
+                number_or_parameter,
+                minimum,
+                what,
+                maximum,
+            )
 
-            parameter = Parameter(what, number_or_parameter,
-                                  desc=desc, min_value=minimum, max_value=maximum, unit='deg', free=False)
+            parameter = Parameter(
+                what,
+                number_or_parameter,
+                desc=desc,
+                min_value=minimum,
+                max_value=maximum,
+                unit='deg',
+                free=False,
+            )
 
         return parameter
 
@@ -189,18 +225,18 @@ class SkyDirection(Node):
             l = self.l.value
             b = self.b.value
 
-            return coordinates.SkyCoord(l=l, b=b,
-                                        frame='galactic', equinox=self._equinox,
-                                        unit="deg")
+            return coordinates.SkyCoord(
+                l=l, b=b, frame='galactic', equinox=self._equinox, unit="deg"
+            )
 
         else:
 
             ra = self.ra.value
             dec = self.dec.value
 
-            return coordinates.SkyCoord(ra=ra, dec=dec,
-                                        frame='icrs', equinox=self._equinox,
-                                        unit="deg")
+            return coordinates.SkyCoord(
+                ra=ra, dec=dec, frame='icrs', equinox=self._equinox, unit="deg"
+            )
 
     @property
     def sky_coord(self):
@@ -259,7 +295,7 @@ class SkyDirection(Node):
         """
         Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class
         has been instanced)
-        
+
         """
 
         if self._coord_type == 'equatorial':
@@ -276,7 +312,7 @@ class SkyDirection(Node):
         """
         Free the parameters with the coordinates (either ra,dec or l,b depending on how the class
         has been instanced)
-        
+
         """
 
         if self._coord_type == 'equatorial':
@@ -298,14 +334,17 @@ class SkyDirection(Node):
 
         if self._coord_type == 'equatorial':
 
-            representation = 'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)' % (self.ra.value,
-                                                                                 self.dec.value,
-                                                                                 self.equinox)
+            representation = (
+                'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)'
+                % (self.ra.value, self.dec.value, self.equinox)
+            )
 
         else:
 
-            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (self.l.value,
-                                                                           self.b.value,
-                                                                           self.equinox)
+            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (
+                self.l.value,
+                self.b.value,
+                self.equinox,
+            )
 
         return representation

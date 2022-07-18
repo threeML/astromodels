@@ -32,7 +32,7 @@ class Logging:
 class AbsTables(Enum):
     WILM = "WILM"
     ASPL = "ASPL"
-    AG89 = "AG89" 
+    AG89 = "AG89"
 
 
 class EBLTable(Enum):
@@ -42,21 +42,19 @@ class EBLTable(Enum):
     inuoe = "inuoe"
     gilmore = "gilmore"
 
-    
-    
+
 @dataclass
 class AbsorptionModels:
     tbabs_table: AbsTables = AbsTables.WILM
     phabs_table: AbsTables = AbsTables.AG89
     ebl_table: EBLTable = EBLTable.dominguez
 
+
 @dataclass
 class Modeling:
     use_memoization: bool = True
     use_parameter_transforms: bool = True
     ignore_parameter_bounds: bool = False
-
-
 
 
 @dataclass
