@@ -341,6 +341,12 @@ def setup_xspec():
     library_dirs = list(set(library_dirs))  
     header_paths = list(set(header_paths))
 
+    print("header paths:")
+    for h in header_paths:
+
+        print(f"h")
+
+
     # Configure the variables to build the external module with the C/C++ wrapper
 
 
