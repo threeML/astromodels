@@ -344,7 +344,7 @@ def setup_xspec():
     print("header paths:")
     for h in header_paths:
 
-        print(f"h")
+        print(f"{h}")
 
 
     # Configure the variables to build the external module with the C/C++ wrapper
