@@ -334,23 +334,17 @@ if has_naima:
             # so let's check that x_unit is a energy and y_unit is
             # differential flux
 
-            if (
-                hasattr(x_unit, "physical_type")
-                and x_unit.physical_type == "energy"
-            ):
+            if hasattr(x_unit, "physical_type") and x_unit.physical_type == "energy":
 
                 # Now check that y is a differential flux
                 current_units = get_units()
                 should_be_unitless = y_unit * (
-                    current_units.energy
-                    * current_units.time
-                    * current_units.area
+                    current_units.energy * current_units.time * current_units.area
                 )
 
                 if (
                     not hasattr(should_be_unitless, "physical_type")
-                    or should_be_unitless.decompose().physical_type
-                    != "dimensionless"
+                    or should_be_unitless.decompose().physical_type != "dimensionless"
                 ):
                     # y is not a differential flux
                     raise InvalidUsageForFunction(
@@ -621,9 +615,7 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
 
         return self.piv.value * pow(
             10,
-            old_div(
-                ((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value)
-            ),
+            old_div(((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value)),
         )
 
 
@@ -694,10 +686,7 @@ if has_gsl:
             this_integral = self._integral(a, b, index, xc)
 
             return (
-                F
-                / this_integral
-                * np.power(x, index)
-                * np.exp(-1 * np.divide(x, xc))
+                F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
             )
 
 

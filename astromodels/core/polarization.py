@@ -1,20 +1,20 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 from astromodels.core.tree import Node
 from astromodels.core.parameter import Parameter
 
 
 class Polarization(Node):
-    def __init__(self, polarization_type='linear'):
+    def __init__(self, polarization_type="linear"):
 
         assert polarization_type in [
-            'linear',
-            'stokes',
-        ], 'polarization must be linear or stokes'
+            "linear",
+            "stokes",
+        ], "polarization must be linear or stokes"
 
         self._polarization_type = polarization_type
 
-        Node.__init__(self, 'polarization')
+        Node.__init__(self, "polarization")
 
     @staticmethod
     def _get_parameter_from_input(
@@ -37,12 +37,14 @@ class Polarization(Node):
 
             parameter = number_or_parameter
 
-            assert (
-                parameter.min_value == minimum
-            ), "%s must have a minimum of %s" % (what, minimum)
-            assert (
-                parameter.max_value == maximum
-            ), "%s must have a maximum of %s" % (what, maximum)
+            assert parameter.min_value == minimum, "%s must have a minimum of %s" % (
+                what,
+                minimum,
+            )
+            assert parameter.max_value == maximum, "%s must have a maximum of %s" % (
+                what,
+                maximum,
+            )
 
         else:
 
@@ -82,19 +84,19 @@ class LinearPolarization(Polarization):
         :param degree: The polarization degree
         :param angle: The polarization angle
         """
-        super(LinearPolarization, self).__init__(polarization_type='linear')
+        super(LinearPolarization, self).__init__(polarization_type="linear")
 
         degree = self._get_parameter_from_input(
             degree,
             0,
             100,
-            'degree',
-            'Polarization degree',
-            'dimensionless_unscaled',
+            "degree",
+            "Polarization degree",
+            "dimensionless_unscaled",
         )
 
         angle = self._get_parameter_from_input(
-            angle, 0, 180, 'angle', 'Polarization angle', 'deg'
+            angle, 0, 180, "angle", "Polarization angle", "deg"
         )
 
         self._add_child(degree)
@@ -111,14 +113,14 @@ class StokesPolarization(Polarization):
         :param U:
         :param V:
         """
-        super(StokesPolarization, self).__init__(polarization_type='stokes')
+        super(StokesPolarization, self).__init__(polarization_type="stokes")
 
         # get the parameters set up
 
-        I = self._get_parameter_from_input(I, 0, 1, 'I', 'Stokes I')
-        Q = self._get_parameter_from_input(Q, 0, 1, 'Q', 'Stokes Q')
-        U = self._get_parameter_from_input(U, 0, 1, 'U', 'Stokes U')
-        V = self._get_parameter_from_input(V, 0, 1, 'V', 'Stokes V')
+        I = self._get_parameter_from_input(I, 0, 1, "I", "Stokes I")
+        Q = self._get_parameter_from_input(Q, 0, 1, "Q", "Stokes Q")
+        U = self._get_parameter_from_input(U, 0, 1, "U", "Stokes U")
+        V = self._get_parameter_from_input(V, 0, 1, "V", "Stokes V")
 
         # add the children
 

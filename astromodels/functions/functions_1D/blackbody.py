@@ -173,9 +173,7 @@ class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
             unit_ = 1.0
             K_, ec_, x_, piv_ = (K, ec, x, piv)
 
-        result = nb_func.non_diss_photoshere_generic(
-            x_, K_, ec_, piv_, 0.4, 0.65
-        )
+        result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.4, 0.65)
 
         return result * unit_
 
@@ -235,8 +233,6 @@ class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
             unit_ = 1.0
             K_, ec_, x_, piv_ = (K, ec, x, piv)
 
-        result = nb_func.non_diss_photoshere_generic(
-            x_, K_, ec_, piv_, 0.66, 1.0
-        )
+        result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.66, 1.0)
 
         return result * unit_

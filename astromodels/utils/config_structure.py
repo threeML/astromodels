@@ -22,11 +22,11 @@ class LoggingLevel(IntEnum):
 class Logging:
 
     path: str = "~/.astromodels/log"
-    developer: bool = 'off'
-    usr: bool = 'on'
-    console: bool = 'on'
+    developer: bool = "off"
+    usr: bool = "on"
+    console: bool = "on"
     level: LoggingLevel = LoggingLevel.INFO
-    startup_warnings: bool = 'on'
+    startup_warnings: bool = "on"
 
 
 class AbsTables(Enum):

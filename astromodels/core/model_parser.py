@@ -74,8 +74,7 @@ class ModelParser(object):
         if not ((model_file is not None) or (model_dict is not None)):
 
             log.error(
-                "You have to provide either a model file or a "
-                "model dictionary"
+                "You have to provide either a model file or a " "model dictionary"
             )
 
             raise AssertionError()
@@ -88,9 +87,7 @@ class ModelParser(object):
 
                 with open(model_file) as f:
 
-                    self._model_dict = my_yaml.load(
-                        f, Loader=my_yaml.FullLoader
-                    )
+                    self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
             except IOError:
 
@@ -103,9 +100,7 @@ class ModelParser(object):
 
             except my_yaml.YAMLError:
 
-                log.error(
-                    "Could not parse file %s. Check your syntax." % model_file
-                )
+                log.error("Could not parse file %s. Check your syntax." % model_file)
 
                 raise ModelYAMLError()
 
@@ -152,9 +147,7 @@ class ModelParser(object):
 
                 var_name = source_or_var_name.split("(")[0].replace(" ", "")
 
-                this_parser = ParameterParser(
-                    var_name, source_or_var_definition
-                )
+                this_parser = ParameterParser(var_name, source_or_var_definition)
 
                 res = this_parser.get_variable()
 
@@ -167,9 +160,7 @@ class ModelParser(object):
 
             else:
 
-                this_parser = SourceParser(
-                    source_or_var_name, source_or_var_definition
-                )
+                this_parser = SourceParser(source_or_var_name, source_or_var_definition)
 
                 res = this_parser.get_source()
 
@@ -582,10 +573,7 @@ class SourceParser(object):
 
         coordinates = {}
 
-        if (
-            "ra" in sky_direction_definition
-            and "dec" in sky_direction_definition
-        ):
+        if "ra" in sky_direction_definition and "dec" in sky_direction_definition:
 
             par_parser = ParameterParser("ra", sky_direction_definition["ra"])
 
@@ -604,9 +592,7 @@ class SourceParser(object):
             coordinates["ra"] = ra
             coordinates["dec"] = dec
 
-        elif (
-            "l" in sky_direction_definition and "b" in sky_direction_definition
-        ):
+        elif "l" in sky_direction_definition and "b" in sky_direction_definition:
 
             par_parser = ParameterParser("l", sky_direction_definition["l"])
 
@@ -659,22 +645,15 @@ class SourceParser(object):
 
         polarization_params = {}
 
-        if (
-            "degree" in polarization_definititon
-            and "angle" in polarization_definititon
-        ):
+        if "degree" in polarization_definititon and "angle" in polarization_definititon:
 
-            par_parser = ParameterParser(
-                "degree", polarization_definititon["degree"]
-            )
+            par_parser = ParameterParser("degree", polarization_definititon["degree"])
 
             degree = par_parser.get_variable()
 
             degree.bounds = (0, 100)
 
-            par_parser = ParameterParser(
-                "angle", polarization_definititon["angle"]
-            )
+            par_parser = ParameterParser("angle", polarization_definititon["angle"])
 
             angle = par_parser.get_variable()
 
@@ -715,9 +694,7 @@ class SourceParser(object):
 
             V.bounds = (0, 1)
 
-            this_polarization = polarization.StokesPolarization(
-                I=I, Q=Q, U=U, V=V
-            )
+            this_polarization = polarization.StokesPolarization(I=I, Q=Q, U=U, V=V)
 
         else:
 
@@ -773,9 +750,7 @@ class SourceParser(object):
 
             polarization_definition = component_definition["polarization"]
 
-            this_polarization = self._parse_polarization(
-                polarization_definition
-            )
+            this_polarization = self._parse_polarization(polarization_definition)
 
         else:
 
@@ -815,8 +790,7 @@ class SourceParser(object):
         except KeyError:  # pragma: no cover
 
             log.error(
-                "Ext. source %s is missing the 'spectrum' attribute"
-                % self._source_name
+                "Ext. source %s is missing the 'spectrum' attribute" % self._source_name
             )
 
             raise ModelSyntaxError()
@@ -970,14 +944,14 @@ class ShapeParser(object):
                     ].max_value = this_definition["max_value"]
 
             if "delta" in this_definition:
-                function_instance.parameters[
-                    parameter_name
-                ].delta = this_definition["delta"]
+                function_instance.parameters[parameter_name].delta = this_definition[
+                    "delta"
+                ]
 
             if "free" in this_definition:
-                function_instance.parameters[
-                    parameter_name
-                ].free = this_definition["free"]
+                function_instance.parameters[parameter_name].free = this_definition[
+                    "free"
+                ]
 
             if "unit" in this_definition:
                 function_instance.parameters[parameter_name].unit = self._fix(
@@ -1040,9 +1014,7 @@ class ShapeParser(object):
                 )
 
                 if is_spatial:
-                    path = ".".join(
-                        [self._source_name, function_name, parameter_name]
-                    )
+                    path = ".".join([self._source_name, function_name, parameter_name])
                 else:
                     path = ".".join(
                         [
@@ -1066,9 +1038,9 @@ class ShapeParser(object):
 
                 # This is a normal (not linked) parameter
 
-                function_instance.parameters[
-                    parameter_name
-                ].value = this_definition["value"]
+                function_instance.parameters[parameter_name].value = this_definition[
+                    "value"
+                ]
 
             # Setup the prior for this parameter, if it exists
             if "prior" in this_definition:
@@ -1077,8 +1049,7 @@ class ShapeParser(object):
                 # A name to display in case of errors
 
                 name_for_errors = (
-                    "prior for %s"
-                    % function_instance.parameters[parameter_name].path
+                    "prior for %s" % function_instance.parameters[parameter_name].path
                 )
 
                 prior_function_name = list(this_definition["prior"].keys())[0]
@@ -1095,9 +1066,7 @@ class ShapeParser(object):
 
                 # Set it as prior for current parameter
 
-                function_instance.parameters[
-                    parameter_name
-                ].prior = prior_function
+                function_instance.parameters[parameter_name].prior = prior_function
 
         if function_instance.has_properties:
 
@@ -1146,9 +1115,9 @@ class ShapeParser(object):
 
                     raise ModelSyntaxError()
 
-                function_instance.properties[
-                    property_name
-                ].value = this_definition['value']
+                function_instance.properties[property_name].value = this_definition[
+                    "value"
+                ]
 
         # Now handle extra_setup if any
         if "extra_setup" in parameters_definition:
@@ -1188,9 +1157,7 @@ class ShapeParser(object):
             self._external_functions.append(
                 {
                     "function_path": path,
-                    "external_functions": parameters_definition[
-                        "external_functions"
-                    ],
+                    "external_functions": parameters_definition["external_functions"],
                     "is_composite": is_composite,
                 }
             )

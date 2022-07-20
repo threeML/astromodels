@@ -36,9 +36,7 @@ class PropertyBase(Node):
 
         if (value is None) and (not self._defer):
 
-            log.error(
-                f"property {name} was given no initial value but is NOT deferred"
-            )
+            log.error(f"property {name} was given no initial value but is NOT deferred")
 
         # now we set the value
 
@@ -107,9 +105,7 @@ class PropertyBase(Node):
                         f"and the parent has {len(self._parent._functions)} functions"
                     )
 
-                    getattr(
-                        self._parent._functions[func_idx], str(self._eval_func)
-                    )()
+                    getattr(self._parent._functions[func_idx], str(self._eval_func))()
 
                 else:
 

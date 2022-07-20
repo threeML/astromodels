@@ -1,4 +1,4 @@
-__author__ = 'Giampaolo Rodola <g.rodola [AT] gmail [DOT] com>'
+__author__ = "Giampaolo Rodola <g.rodola [AT] gmail [DOT] com>"
 
 """
 Return disk usage statistics about the given path as a (total, used, free)
@@ -10,9 +10,9 @@ namedtuple.  Values are expressed in bytes.
 import os
 import collections
 
-_ntuple_diskusage = collections.namedtuple('usage', 'total used free')
+_ntuple_diskusage = collections.namedtuple("usage", "total used free")
 
-if hasattr(os, 'statvfs'):  # POSIX
+if hasattr(os, "statvfs"):  # POSIX
 
     def disk_usage(path):
         st = os.statvfs(path)
@@ -22,7 +22,7 @@ if hasattr(os, 'statvfs'):  # POSIX
         return _ntuple_diskusage(total, used, free)
 
 
-elif os.name == 'nt':  # Windows
+elif os.name == "nt":  # Windows
     import ctypes
     import sys
 
@@ -36,9 +36,7 @@ elif os.name == 'nt':  # Windows
             fun = ctypes.windll.kernel32.GetDiskFreeSpaceExW
         else:
             fun = ctypes.windll.kernel32.GetDiskFreeSpaceExA
-        ret = fun(
-            path, ctypes.byref(_), ctypes.byref(total), ctypes.byref(free)
-        )
+        ret = fun(path, ctypes.byref(_), ctypes.byref(total), ctypes.byref(free))
         if ret == 0:
             raise ctypes.WinError()
         used = total.value - free.value

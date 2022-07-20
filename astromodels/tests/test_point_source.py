@@ -57,7 +57,7 @@ else:
 from astromodels.functions.function import _known_functions
 from astromodels.functions.priors import *
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation", "ZDust"]
@@ -77,7 +77,7 @@ def test_constructor():
 
     # Init with RA, Dec
 
-    point_source1 = PointSource('my_source', ra, dec, Powerlaw())
+    point_source1 = PointSource("my_source", ra, dec, Powerlaw())
 
     assert point_source1.position.get_ra() == ra
     assert point_source1.position.get_dec() == dec
@@ -94,9 +94,7 @@ def test_constructor():
 
     # Init with l,b
 
-    point_source2 = PointSource(
-        'my_source', l=l, b=b, spectral_shape=Powerlaw()
-    )
+    point_source2 = PointSource("my_source", l=l, b=b, spectral_shape=Powerlaw())
 
     assert point_source2.position.get_l() == l
     assert point_source2.position.get_b() == b
@@ -121,12 +119,8 @@ def test_constructor():
 
     point_source3 = PointSource("test_source", ra, dec, components=[c1, c2])
 
-    assert np.all(
-        point_source3.spectrum.component1([1, 2, 3]) == po1([1, 2, 3])
-    )
-    assert np.all(
-        point_source3.spectrum.component2([1, 2, 3]) == po2([1, 2, 3])
-    )
+    assert np.all(point_source3.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
+    assert np.all(point_source3.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
 
     with pytest.raises(AssertionError):
 
@@ -271,7 +265,7 @@ def test_call_with_units():
 
         else:
 
-            print('Skipping prior function')
+            print("Skipping prior function")
 
     for key in _known_functions:
 
@@ -348,9 +342,7 @@ def test_call_with_composite_function_with_units():
 
     one_test(spectrum)
 
-    spectrum = (
-        Powerlaw() * Exponential_cutoff() * Exponential_cutoff() + Blackbody()
-    )
+    spectrum = Powerlaw() * Exponential_cutoff() * Exponential_cutoff() + Blackbody()
 
     one_test(spectrum)
 
@@ -402,9 +394,7 @@ def test_call_with_composite_function_with_units():
 def test_free_param():
 
     spectrum = Log_parabola()
-    source = PointSource(
-        "test_source", ra=123.4, dec=56.7, spectral_shape=spectrum
-    )
+    source = PointSource("test_source", ra=123.4, dec=56.7, spectral_shape=spectrum)
 
     parameters = [
         spectrum.alpha,

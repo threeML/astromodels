@@ -1,4 +1,4 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 import collections
 
@@ -26,7 +26,7 @@ class SkyDirection(Node):
     being serialized and deserialized with YAML.
     """
 
-    def __init__(self, ra=None, dec=None, l=None, b=None, equinox='J2000'):
+    def __init__(self, ra=None, dec=None, l=None, b=None, equinox="J2000"):
         """
 
         :param ra: Right Ascension in degrees
@@ -41,7 +41,7 @@ class SkyDirection(Node):
 
         # Create the node
 
-        Node.__init__(self, 'position')
+        Node.__init__(self, "position")
 
         # Check that we have the right pairs of coordinates
 
@@ -52,15 +52,11 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a parameter
 
-            ra = self._get_parameter_from_input(
-                ra, 0, 360, 'ra', 'Right Ascension'
-            )
+            ra = self._get_parameter_from_input(ra, 0, 360, "ra", "Right Ascension")
 
-            dec = self._get_parameter_from_input(
-                dec, -90, 90, 'dec', 'Declination'
-            )
+            dec = self._get_parameter_from_input(dec, -90, 90, "dec", "Declination")
 
-            self._coord_type = 'equatorial'
+            self._coord_type = "equatorial"
 
             self._add_child(ra)
             self._add_child(dec)
@@ -72,28 +68,20 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a parameter
 
-            l = self._get_parameter_from_input(
-                l, 0, 360, 'l', 'Galactic longitude'
-            )
+            l = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
 
-            b = self._get_parameter_from_input(
-                b, -90, 90, 'b', 'Galactic latitude'
-            )
+            b = self._get_parameter_from_input(b, -90, 90, "b", "Galactic latitude")
 
-            self._coord_type = 'galactic'
+            self._coord_type = "galactic"
             self._add_child(l)
             self._add_child(b)
 
         else:
 
-            raise WrongCoordinatePair(
-                "You have to specify either (ra, dec) or (l, b)."
-            )
+            raise WrongCoordinatePair("You have to specify either (ra, dec) or (l, b).")
 
     @staticmethod
-    def _get_parameter_from_input(
-        number_or_parameter, minimum, maximum, what, desc
-    ):
+    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc):
 
         # Try to transform it to float, if it works than we transform it to a parameter
 
@@ -144,7 +132,7 @@ class SkyDirection(Node):
                 desc=desc,
                 min_value=minimum,
                 max_value=maximum,
-                unit='deg',
+                unit="deg",
                 free=False,
             )
 
@@ -165,7 +153,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('icrs').ra.value
+            return self.sky_coord.transform_to("icrs").ra.value
 
     def get_dec(self):
         """
@@ -182,7 +170,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('icrs').dec.value
+            return self.sky_coord.transform_to("icrs").dec.value
 
     def get_l(self):
         """
@@ -199,7 +187,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('galactic').l.value
+            return self.sky_coord.transform_to("galactic").l.value
 
     def get_b(self):
         """
@@ -216,17 +204,17 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to('galactic').b.value
+            return self.sky_coord.transform_to("galactic").b.value
 
     def _get_sky_coord(self):
 
-        if self._coord_type == 'galactic':
+        if self._coord_type == "galactic":
 
             l = self.l.value
             b = self.b.value
 
             return coordinates.SkyCoord(
-                l=l, b=b, frame='galactic', equinox=self._equinox, unit="deg"
+                l=l, b=b, frame="galactic", equinox=self._equinox, unit="deg"
             )
 
         else:
@@ -235,7 +223,7 @@ class SkyDirection(Node):
             dec = self.dec.value
 
             return coordinates.SkyCoord(
-                ra=ra, dec=dec, frame='icrs', equinox=self._equinox, unit="deg"
+                ra=ra, dec=dec, frame="icrs", equinox=self._equinox, unit="deg"
             )
 
     @property
@@ -256,13 +244,13 @@ class SkyDirection(Node):
         :return: dictionary of parameters
         """
 
-        if self._coord_type == 'galactic':
+        if self._coord_type == "galactic":
 
-            return collections.OrderedDict((('l', self.l), ('b', self.b)))
+            return collections.OrderedDict((("l", self.l), ("b", self.b)))
 
         else:
 
-            return collections.OrderedDict((('ra', self.ra), ('dec', self.dec)))
+            return collections.OrderedDict((("ra", self.ra), ("dec", self.dec)))
 
     @property
     def equinox(self):
@@ -277,17 +265,17 @@ class SkyDirection(Node):
 
         data = collections.OrderedDict()
 
-        if self._coord_type == 'equatorial':
+        if self._coord_type == "equatorial":
 
-            data['ra'] = self.ra.to_dict(minimal)
-            data['dec'] = self.dec.to_dict(minimal)
-            data['equinox'] = self._equinox
+            data["ra"] = self.ra.to_dict(minimal)
+            data["dec"] = self.dec.to_dict(minimal)
+            data["equinox"] = self._equinox
 
         else:
 
-            data['l'] = self.l.to_dict(minimal)
-            data['b'] = self.b.to_dict(minimal)
-            data['equinox'] = self._equinox
+            data["l"] = self.l.to_dict(minimal)
+            data["b"] = self.b.to_dict(minimal)
+            data["equinox"] = self._equinox
 
         return data
 
@@ -298,7 +286,7 @@ class SkyDirection(Node):
 
         """
 
-        if self._coord_type == 'equatorial':
+        if self._coord_type == "equatorial":
 
             self.ra.fix = True
             self.dec.fix = True
@@ -315,7 +303,7 @@ class SkyDirection(Node):
 
         """
 
-        if self._coord_type == 'equatorial':
+        if self._coord_type == "equatorial":
 
             self.ra.fix = False
             self.dec.fix = False
@@ -332,16 +320,17 @@ class SkyDirection(Node):
 
     def _repr__base(self, rich_output):
 
-        if self._coord_type == 'equatorial':
+        if self._coord_type == "equatorial":
 
-            representation = (
-                'Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)'
-                % (self.ra.value, self.dec.value, self.equinox)
+            representation = "Sky direction (R.A., Dec.) = (%.5f, %.5f) (%s)" % (
+                self.ra.value,
+                self.dec.value,
+                self.equinox,
             )
 
         else:
 
-            representation = 'Sky direction (l, b) = (%.5f, %.5f) (%s)' % (
+            representation = "Sky direction (l, b) = (%.5f, %.5f) (%s)" % (
                 self.l.value,
                 self.b.value,
                 self.equinox,

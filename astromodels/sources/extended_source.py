@@ -45,9 +45,9 @@ class ExtendedSource(Source, Node):
 
             # Components in this case have energy as x and differential flux as y
 
-            diff_flux_units = (
-                current_u.energy * current_u.area * current_u.time
-            ) ** (-1)
+            diff_flux_units = (current_u.energy * current_u.area * current_u.time) ** (
+                -1
+            )
 
             # Now set the units of the components
             for component in components:
@@ -90,9 +90,7 @@ class ExtendedSource(Source, Node):
                 # the spectral shape has been given, so this is a case where the spatial template gives an
                 # energy-dependent shape and the spectral components give the spectrum
 
-                if not (
-                    (spectral_shape is not None) ^ (components is not None)
-                ):
+                if not ((spectral_shape is not None) ^ (components is not None)):
 
                     log.error(
                         "You can provide either a single "
@@ -146,7 +144,7 @@ class ExtendedSource(Source, Node):
 
         # Add a node called 'spectrum'
 
-        spectrum_node = Node('spectrum')
+        spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
@@ -220,8 +218,7 @@ class ExtendedSource(Source, Node):
         # Get the differential flux from the spectral components
 
         results = [
-            component.shape(energies)
-            for component in list(self.components.values())
+            component.shape(energies) for component in list(self.components.values())
         ]
 
         if isinstance(energies, u.Quantity):
@@ -253,9 +250,7 @@ class ExtendedSource(Source, Node):
             # The following is a little obscure, but it is 6x faster than doing a for loop
 
             cube = (
-                np.repeat(differential_flux, n_points)
-                .reshape(n_energies, n_points)
-                .T
+                np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T
             )
             result = (cube.T * brightness).T
 
@@ -354,16 +349,14 @@ class ExtendedSource(Source, Node):
 
         repr_dict = collections.OrderedDict()
 
-        key = '%s (extended source)' % self.name
+        key = "%s (extended source)" % self.name
 
         repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]['shape'] = self._spatial_shape.to_dict(minimal=True)
-        repr_dict[key]['spectrum'] = collections.OrderedDict()
+        repr_dict[key]["shape"] = self._spatial_shape.to_dict(minimal=True)
+        repr_dict[key]["spectrum"] = collections.OrderedDict()
 
         for component_name, component in list(self.components.items()):
-            repr_dict[key]['spectrum'][component_name] = component.to_dict(
-                minimal=True
-            )
+            repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
 

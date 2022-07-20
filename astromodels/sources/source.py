@@ -1,4 +1,4 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 from enum import Enum, unique
 from astromodels.utils.logging import setup_logger
@@ -13,9 +13,9 @@ log = setup_logger(__name__)
 
 @unique
 class SourceType(Enum):
-    PARTICLE_SOURCE = 'particle source'
-    POINT_SOURCE = 'point source'
-    EXTENDED_SOURCE = 'extended source'
+    PARTICLE_SOURCE = "particle source"
+    POINT_SOURCE = "point source"
+    EXTENDED_SOURCE = "extended source"
 
     def __str__(self):
         return f"{self.value}"

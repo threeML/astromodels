@@ -20,7 +20,7 @@ from astromodels.sources.source import Source, SourceType
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 __all__ = ["PointSource"]
 
@@ -154,7 +154,7 @@ class PointSource(Source, Node):
 
         # Add a node called 'spectrum'
 
-        spectrum_node = Node('spectrum')
+        spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
@@ -167,9 +167,9 @@ class PointSource(Source, Node):
         # Components in this case have energy as x and differential flux as y
 
         x_unit = current_units.energy
-        y_unit = (
-            current_units.energy * current_units.area * current_units.time
-        ) ** (-1)
+        y_unit = (current_units.energy * current_units.area * current_units.time) ** (
+            -1
+        )
 
         # Now set the units of the components
         for component in list(self._components.values()):
@@ -187,8 +187,7 @@ class PointSource(Source, Node):
                 # Slow version with units
 
                 results = [
-                    component.shape(x)
-                    for component in list(self.components.values())
+                    component.shape(x) for component in list(self.components.values())
                 ]
 
                 # We need to sum like this (slower) because using np.sum will not preserve the units
@@ -202,10 +201,7 @@ class PointSource(Source, Node):
                 # units.get_units()
 
                 results = numpy.array(
-                    [
-                        component.shape(x)
-                        for component in list(self.components.values())
-                    ]
+                    [component.shape(x) for component in list(self.components.values())]
                 )
 
                 return _sum(results)
@@ -343,17 +339,15 @@ class PointSource(Source, Node):
 
         repr_dict = collections.OrderedDict()
 
-        key = '%s (point source)' % self.name
+        key = "%s (point source)" % self.name
 
         repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]['position'] = self._sky_position.to_dict(minimal=True)
-        repr_dict[key]['spectrum'] = collections.OrderedDict()
+        repr_dict[key]["position"] = self._sky_position.to_dict(minimal=True)
+        repr_dict[key]["spectrum"] = collections.OrderedDict()
 
         for component_name, component in list(self.components.items()):
 
-            repr_dict[key]['spectrum'][component_name] = component.to_dict(
-                minimal=True
-            )
+            repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
 

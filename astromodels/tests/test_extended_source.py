@@ -20,7 +20,7 @@ from astromodels.functions import Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
 
-__author__ = 'henrikef'
+__author__ = "henrikef"
 
 
 def make_test_template(ra, dec, fitsfile):
@@ -47,17 +47,17 @@ def make_test_template(ra, dec, fitsfile):
             "NAXIS": 2,
             "NAXIS1": 200,
             "NAXIS2": 200,
-            "DATE": '2018-11-13',
-            "CUNIT1": 'deg',
+            "DATE": "2018-11-13",
+            "CUNIT1": "deg",
             "CRVAL1": ra,
             "CRPIX1": 100,
             "CDELT1": -0.02,
-            "CUNIT2": 'deg',
+            "CUNIT2": "deg",
             "CRVAL2": dec,
             "CRPIX2": 100,
             "CDELT2": 0.02,
-            "CTYPE1": 'RA---TAN',
-            "CTYPE2": 'DEC--TAN',
+            "CTYPE1": "RA---TAN",
+            "CTYPE2": "DEC--TAN",
         }
 
         dOmega = (
@@ -98,7 +98,7 @@ def test_constructor():
     # Init with RA, Dec
 
     shape = Gaussian_on_sphere()
-    source1 = ExtendedSource('my_source', shape, Powerlaw())
+    source1 = ExtendedSource("my_source", shape, Powerlaw())
     shape.lon0 = ra * u.degree
     shape.lat0 = dec * u.degree
 
@@ -129,9 +129,7 @@ def test_call():
         if name != "SpatialTemplate_2D":
 
             shape = class_type()
-            source = ExtendedSource(
-                'test_source_%s' % name, shape, components=[c1, c2]
-            )
+            source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.lon0 = ra * u.degree
             shape.lat0 = dec * u.degree
@@ -139,9 +137,7 @@ def test_call():
         else:
             make_test_template(ra, dec, "__test.fits")
             shape = class_type(fits_file="__test.fits")
-            source = ExtendedSource(
-                'test_source_%s' % name, shape, components=[c1, c2]
-            )
+            source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.K = 1.0
 
@@ -153,8 +149,7 @@ def test_call():
 
         # check spectral components
         assert np.all(
-            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3]))
-            == 0
+            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3])) == 0
         )
 
         # check spectral and spatial components
@@ -212,7 +207,7 @@ def test_call_with_units():
 
             shape = class_type()
             source = ExtendedSource(
-                'test_source_%s' % name,
+                "test_source_%s" % name,
                 spatial_shape=shape,
                 components=[c1, c2],
             )
@@ -225,7 +220,7 @@ def test_call_with_units():
 
             shape = class_type(fits_file="__test.fits")
             source = ExtendedSource(
-                'test_source_%s' % name,
+                "test_source_%s" % name,
                 spatial_shape=shape,
                 components=[c1, c2],
             )
@@ -233,12 +228,10 @@ def test_call_with_units():
             shape.K = 1.0
 
         assert np.all(
-            source.spectrum.component1([1, 2, 3] * u.keV)
-            == po1([1, 2, 3] * u.keV)
+            source.spectrum.component1([1, 2, 3] * u.keV) == po1([1, 2, 3] * u.keV)
         )
         assert np.all(
-            source.spectrum.component2([1, 2, 3] * u.keV)
-            == po2([1, 2, 3] * u.keV)
+            source.spectrum.component2([1, 2, 3] * u.keV) == po2([1, 2, 3] * u.keV)
         )
 
         one = source.spectrum.component1([1, 2, 3] * u.keV)
@@ -246,23 +239,15 @@ def test_call_with_units():
 
         # check spectral components
         assert np.all(
-            np.abs(
-                one
-                + two
-                - source.get_spatially_integrated_flux([1, 2, 3] * u.keV)
-            )
+            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3] * u.keV))
             == 0
         )
 
         # check spectral and spatial components
         # spatial = source.spatial_shape( ra*u.deg,dec*u.deg )
-        spatial = source.spatial_shape(
-            [ra, ra, ra] * u.deg, [dec, dec, dec] * u.deg
-        )
+        spatial = source.spatial_shape([ra, ra, ra] * u.deg, [dec, dec, dec] * u.deg)
 
-        total = source(
-            [ra, ra, ra] * u.deg, [dec, dec, dec] * u.deg, [1, 2, 3] * u.keV
-        )
+        total = source([ra, ra, ra] * u.deg, [dec, dec, dec] * u.deg, [1, 2, 3] * u.keV)
         spectrum = one + two
         assert np.all(np.abs(total - spectrum * spatial) == 0)
 
@@ -278,7 +263,7 @@ def test_call_with_units():
         model = Model(source)
         new_model = clone_model(model)
 
-        new_total = new_model['test_source_%s' % name](
+        new_total = new_model["test_source_%s" % name](
             [ra * 1.01] * 3 * u.deg, [dec * 1.01] * 3 * u.deg, [1, 2, 3] * u.keV
         )
         assert np.all(np.abs(total - new_total) == 0)

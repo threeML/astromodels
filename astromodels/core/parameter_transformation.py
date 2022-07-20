@@ -42,7 +42,7 @@ class LogarithmicTransformation(ParameterTransformation):
 
         #  Throw an error if taking the logarithm of a negative number (or nan)
 
-        with np.errstate(invalid='raise'):
+        with np.errstate(invalid="raise"):
 
             # math is 4 times faster than numpy here
             res = _log10(external_value)
@@ -56,7 +56,7 @@ class LogarithmicTransformation(ParameterTransformation):
         return _pow(10.0, internal_value)
 
 
-_known_transformations = {'log10': LogarithmicTransformation}
+_known_transformations = {"log10": LogarithmicTransformation}
 
 
 def get_transformation(transformation_name):

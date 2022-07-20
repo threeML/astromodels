@@ -79,9 +79,7 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
         return (
             F
             * norm
-            * np.exp(
-                old_div(-np.power(x - mu, 2.0), (2 * np.power(sigma, 2.0)))
-            )
+            * np.exp(old_div(-np.power(x - mu, 2.0), (2 * np.power(sigma, 2.0))))
         )
 
     def from_unit_cube(self, x):
@@ -200,9 +198,7 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
         # the typical gaussian functions
 
         phi[idx] = (
-            np.exp(
-                old_div(-np.power(x[idx] - mu, 2.0), (2 * np.power(sigma, 2.0)))
-            )
+            np.exp(old_div(-np.power(x[idx] - mu, 2.0), (2 * np.power(sigma, 2.0))))
             * F
             * norm
         )
@@ -511,9 +507,7 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
             / (sigma / piv * x[idx] / piv)
             * np.exp(
                 old_div(
-                    -np.power(
-                        np.log(old_div(x[idx], piv)) - old_div(mu, piv), 2.0
-                    ),
+                    -np.power(np.log(old_div(x[idx], piv)) - old_div(mu, piv), 2.0),
                     (2 * np.power(old_div(sigma, piv), 2.0)),
                 )
             )

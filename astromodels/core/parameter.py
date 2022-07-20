@@ -518,9 +518,7 @@ class ParameterBase(Node):
 
         if self._aux_variable:
 
-            return self._aux_variable["law"](
-                self._aux_variable["variable"].value
-            )
+            return self._aux_variable["law"](self._aux_variable["variable"].value)
 
         if self._transformation is None:
 
@@ -610,9 +608,7 @@ class ParameterBase(Node):
 
                 except Exception:
 
-                    log.exception(
-                        f"Could not call callback for parameter {self.name}"
-                    )
+                    log.exception(f"Could not call callback for parameter {self.name}")
 
                     raise NotCallableOrErrorInCall()
 
@@ -872,8 +868,7 @@ class ParameterBase(Node):
     bounds = property(
         _get_bounds,
         _set_bounds,
-        doc="Gets or sets the boundaries (minimum and maximum) for this "
-        "parameter",
+        doc="Gets or sets the boundaries (minimum and maximum) for this " "parameter",
     )
 
     def add_callback(self, callback) -> None:
@@ -1109,12 +1104,8 @@ class Parameter(ParameterBase):
                     if hi_bound_ext < self.max_value:
 
                         # Ok, let's use it
-                        hi_bound_int = self._transformation.forward(
-                            hi_bound_ext
-                        )
-                        delta_int = abs(
-                            hi_bound_int - self._get_internal_value()
-                        )
+                        hi_bound_int = self._transformation.forward(hi_bound_ext)
+                        delta_int = abs(hi_bound_int - self._get_internal_value())
 
                         break
 
@@ -1328,9 +1319,7 @@ class Parameter(ParameterBase):
 
         except Exception:  # pragma: no cover
 
-            log.exception(
-                "The provided law for the auxiliary variable failed on call"
-            )
+            log.exception("The provided law for the auxiliary variable failed on call")
 
             raise NotCallableOrErrorInCall()
 
@@ -1458,9 +1447,7 @@ class Parameter(ParameterBase):
 
                 # Store the function and the auxiliary variable
 
-                data["value"] = (
-                    "f(%s)" % self._aux_variable["variable"]._get_path()
-                )
+                data["value"] = "f(%s)" % self._aux_variable["variable"]._get_path()
 
                 aux_variable_law_data = collections.OrderedDict()
                 aux_variable_law_data[
@@ -1518,9 +1505,7 @@ class Parameter(ParameterBase):
 
                 b = np.inf
 
-            sample = scipy.stats.truncnorm.rvs(
-                a, b, loc=value, scale=std, size=1
-            )
+            sample = scipy.stats.truncnorm.rvs(a, b, loc=value, scale=std, size=1)
 
             if (min_value is not None and sample < min_value) or (
                 max_value is not None and sample > max_value
@@ -1548,9 +1533,7 @@ class IndependentVariable(ParameterBase):
 
     # Override the constructor to make the unit specification mandatory
 
-    def __init__(
-        self, name, value, unit, min_value=None, max_value=None, desc=None
-    ):
+    def __init__(self, name, value, unit, min_value=None, max_value=None, desc=None):
 
         super(IndependentVariable, self).__init__(
             name,
@@ -1563,13 +1546,9 @@ class IndependentVariable(ParameterBase):
 
     def _repr__base(self, rich_output=False):
 
-        return (
-            "IndependentVariable %s = %s\n"
-            "(min_value = %s, max_value = %s)"
-            % (
-                self.name,
-                self.value,
-                self.min_value,
-                self.max_value,
-            )
+        return "IndependentVariable %s = %s\n" "(min_value = %s, max_value = %s)" % (
+            self.name,
+            self.value,
+            self.min_value,
+            self.max_value,
         )

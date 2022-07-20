@@ -30,7 +30,7 @@ from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
 
 erg2keV = 6.24151e8
@@ -900,9 +900,7 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
         out = np.zeros(x.shape) * K * 0
 
         out[idx] = (
-            K
-            * np.power(old_div(x[idx], piv), alpha)
-            * np.exp(old_div(-x[idx], xc))
+            K * np.power(old_div(x[idx], piv), alpha) * np.exp(old_div(-x[idx], xc))
         )
         out[~idx] = (
             K
@@ -1244,8 +1242,6 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
         ) = self._fix_units(x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv)
 
         return (
-            nb_func.dbl_sbpl(
-                x_, K_, alpha1_, alpha2_, beta_, xp_, xb_, n1_, n2_, piv_
-            )
+            nb_func.dbl_sbpl(x_, K_, alpha1_, alpha2_, beta_, xp_, xb_, n1_, n2_, piv_)
             * y_unit
         )

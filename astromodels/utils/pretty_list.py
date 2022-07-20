@@ -1,6 +1,6 @@
 from builtins import str
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 import yaml
 import re
@@ -8,10 +8,10 @@ import re
 
 def _process_html(dictionary):
 
-    list_start = '<ul>\n'
-    list_stop = '</ul>\n'
-    entry_start = '<li>'
-    entry_stop = '</li>\n'
+    list_start = "<ul>\n"
+    list_stop = "</ul>\n"
+    entry_start = "<li>"
+    entry_stop = "</li>\n"
 
     output = [list_start]
 
@@ -26,7 +26,7 @@ def _process_html(dictionary):
 
             if len(value) > 1 or isinstance(list(value.values())[0], dict):
 
-                output.append(entry_start + str(key) + ': ')
+                output.append(entry_start + str(key) + ": ")
                 output.append(_process_html(value))
                 output.append(entry_stop)
 
@@ -35,20 +35,18 @@ def _process_html(dictionary):
                 output.append(
                     entry_start
                     + str(key)
-                    + ': '
+                    + ": "
                     + str(list(value.values())[0])
                     + entry_stop
                 )
 
         else:
 
-            output.append(
-                entry_start + str(key) + ': ' + str(value) + entry_stop
-            )
+            output.append(entry_start + str(key) + ": " + str(value) + entry_stop)
 
     output.append(list_stop)
 
-    final_output = '\n'.join(output)
+    final_output = "\n".join(output)
 
     return final_output
 

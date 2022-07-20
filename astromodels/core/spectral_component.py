@@ -1,4 +1,4 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 from astromodels.core.polarization import Polarization
 from astromodels.core.tree import Node
@@ -16,7 +16,7 @@ class SpectralComponent(Node):
         # Check that we can call the shape (i.e., it is a function)
 
         assert hasattr(
-            shape, '__call__'
+            shape, "__call__"
         ), "The shape must be callable (i.e., behave like a function)"
 
         self._spectral_shape = shape
@@ -55,9 +55,7 @@ class SpectralComponent(Node):
         # Print the polarization only if it's not None
 
         if self._polarization is not None:
-            representation += (
-                "    -polarization: %s\n" % self._polarization.name
-            )
+            representation += "    -polarization: %s\n" % self._polarization.name
 
         return representation
 

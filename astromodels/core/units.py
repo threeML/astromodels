@@ -1,6 +1,6 @@
 from builtins import object
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 import collections
 
@@ -75,10 +75,10 @@ class _AstromodelsUnits(object):
 
         self._units = collections.OrderedDict()
 
-        self._units['energy'] = energy_unit
-        self._units['time'] = time_unit
-        self._units['angle'] = angle_unit
-        self._units['area'] = area_unit
+        self._units["energy"] = energy_unit
+        self._units["time"] = time_unit
+        self._units["angle"] = angle_unit
+        self._units["area"] = area_unit
 
     # This __new__ method add the properties to the class. We could have achieved the same with a metaclass,
     # but this method is more clearer, for a tiny performance penalty. Consider also that under normal circumstances
@@ -86,10 +86,10 @@ class _AstromodelsUnits(object):
 
     def __new__(cls, *args, **kwargs):
 
-        cls.energy = property(*(cls._create_property('energy')))
-        cls.time = property(*(cls._create_property('time')))
-        cls.angle = property(*(cls._create_property('angle')))
-        cls.area = property(*(cls._create_property('area')))
+        cls.energy = property(*(cls._create_property("energy")))
+        cls.time = property(*(cls._create_property("time")))
+        cls.angle = property(*(cls._create_property("angle")))
+        cls.area = property(*(cls._create_property("area")))
 
         obj = super(_AstromodelsUnits, cls).__new__(cls)
 

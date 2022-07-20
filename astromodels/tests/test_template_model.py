@@ -27,7 +27,7 @@ update_logging_level("DEBUG")
 
 update_logging_level("DEBUG")
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 
 def get_comparison_function():
@@ -45,13 +45,13 @@ def test_template_factory_1D():
 
     energies = np.logspace(1, 3, 50)
 
-    t = TemplateModelFactory('__test1D', 'A test template', energies, ['alpha'])
+    t = TemplateModelFactory("__test1D", "A test template", energies, ["alpha"])
 
     alpha_grid = np.linspace(-1.5, 1, 15)
     # beta_grid = np.linspace(-3.5, -1.6, 15)
     # xp_grid = np.logspace(1, 3, 20)
 
-    t.define_parameter_grid('alpha', alpha_grid)
+    t.define_parameter_grid("alpha", alpha_grid)
 
     for a in alpha_grid:
         mo.alpha = a
@@ -73,16 +73,16 @@ def test_template_factory():
     energies = np.logspace(1, 3, 50)
 
     t = TemplateModelFactory(
-        '__test', 'A test template', energies, ['alpha', 'xp', 'beta']
+        "__test", "A test template", energies, ["alpha", "xp", "beta"]
     )
 
     alpha_grid = np.linspace(-1.5, 1, 15)
     beta_grid = np.linspace(-3.5, -1.6, 15)
     xp_grid = np.logspace(1, 3, 20)
 
-    t.define_parameter_grid('alpha', alpha_grid)
-    t.define_parameter_grid('beta', beta_grid)
-    t.define_parameter_grid('xp', xp_grid)
+    t.define_parameter_grid("alpha", alpha_grid)
+    t.define_parameter_grid("beta", beta_grid)
+    t.define_parameter_grid("xp", xp_grid)
 
     for a in alpha_grid:
 
@@ -99,7 +99,7 @@ def test_template_factory():
 
     t.save_data(overwrite=True)
 
-    tm = TemplateModel('__test')
+    tm = TemplateModel("__test")
 
     tm(energies)
 
@@ -110,7 +110,7 @@ def test_template_factory():
 @pytest.mark.slow
 def test_template_function():
 
-    tm = TemplateModel('__test')
+    tm = TemplateModel("__test")
 
     mo = get_comparison_function()
 
@@ -158,7 +158,7 @@ def test_template_function():
 @pytest.mark.slow
 def test_input_output():
 
-    tm = TemplateModel('__test')
+    tm = TemplateModel("__test")
     tm.alpha = -0.95
     tm.beta = -2.23
 
@@ -210,9 +210,7 @@ def test_input_output():
     assert clone3.index_2.value == new_shape.index_2.value
 
     # Now save to disk and reload
-    fake_source2 = PointSource(
-        "test", ra=0.0, dec=0.0, spectral_shape=new_shape
-    )
+    fake_source2 = PointSource("test", ra=0.0, dec=0.0, spectral_shape=new_shape)
 
     fake_model2 = Model(fake_source2)
 
@@ -244,9 +242,7 @@ def test_input_output():
     assert clone3.index_1.value == new_shape2.index_1.value
 
     # Now save to disk and reload
-    fake_source2 = PointSource(
-        "test", ra=0.0, dec=0.0, spectral_shape=new_shape2
-    )
+    fake_source2 = PointSource("test", ra=0.0, dec=0.0, spectral_shape=new_shape2)
 
     fake_model2 = Model(fake_source2)
 
@@ -270,7 +266,7 @@ def test_xspec_table_model():
 
     xtm = XSPECTableModel(test_table)
 
-    xtm.to_table_model('xspectm_test', 'xspec model', overwrite=True)
+    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
 
 
 def test_table_conversion():

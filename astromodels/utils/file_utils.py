@@ -21,7 +21,7 @@ def _get_data_file_path(data_file: str) -> Path:
     try:
 
         file_path: str = pkg_resources.resource_filename(
-            "astromodels", 'data/%s' % data_file
+            "astromodels", "data/%s" % data_file
         )
 
     except KeyError:

@@ -79,17 +79,15 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
-        b = _coord.transform_to('galactic').b.value
-        l = _coord.transform_to('galactic').l.value
+        b = _coord.transform_to("galactic").b.value
+        l = _coord.transform_to("galactic").l.value
 
         return (
             K
             * np.exp(old_div(-(b ** 2), (2 * sigma_b ** 2)))
             * np.logical_or(
                 np.logical_and(l > l_min, l < l_max),
-                np.logical_and(
-                    l_min > l_max, np.logical_or(l > l_min, l < l_max)
-                ),
+                np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
             )
         )
 
@@ -337,26 +335,15 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         sin_2phi = np.sin(2.0 * phi * np.pi / 180.0)
 
-        A = old_div(cos2_phi, (2.0 * b ** 2)) + old_div(
-            sin2_phi, (2.0 * a ** 2)
-        )
+        A = old_div(cos2_phi, (2.0 * b ** 2)) + old_div(sin2_phi, (2.0 * a ** 2))
 
-        B = old_div(-sin_2phi, (4.0 * b ** 2)) + old_div(
-            sin_2phi, (4.0 * a ** 2)
-        )
+        B = old_div(-sin_2phi, (4.0 * b ** 2)) + old_div(sin_2phi, (4.0 * a ** 2))
 
-        C = old_div(sin2_phi, (2.0 * b ** 2)) + old_div(
-            cos2_phi, (2.0 * a ** 2)
-        )
+        C = old_div(sin2_phi, (2.0 * b ** 2)) + old_div(cos2_phi, (2.0 * a ** 2))
 
         E = -A * np.power(dX, 2) + 2.0 * B * dX * dY - C * np.power(dY, 2)
 
-        return (
-            np.power(old_div(180, np.pi), 2)
-            * 1.0
-            / (2 * np.pi * a * b)
-            * np.exp(E)
-        )
+        return np.power(old_div(180, np.pi), 2) * 1.0 / (2 * np.pi * a * b) * np.exp(E)
 
     def get_boundaries(self):
 
@@ -369,8 +356,7 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.0)
-            >= 180.0
+            or 2 * self.a.max_value / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_lon = 0.0
@@ -616,10 +602,7 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
         angsep = angsep1 + angsep2
 
         return (
-            np.power(old_div(180, np.pi), 2)
-            * 1.0
-            / (np.pi * a * b)
-            * (angsep <= 2 * a)
+            np.power(old_div(180, np.pi), 2) * 1.0 / (np.pi * a * b) * (angsep <= 2 * a)
         )
 
     def get_boundaries(self):
@@ -737,8 +720,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             self._wcs = wcs.WCS(header=f[int(self.ihdu.value)].header)
             self._map = f[int(self.ihdu.value)].data
 
-            self._nX = f[int(self.ihdu.value)].header['NAXIS1']
-            self._nY = f[int(self.ihdu.value)].header['NAXIS2']
+            self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
+            self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
 
             # note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0.
             # see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
@@ -771,7 +754,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             # this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
             h = hashlib.sha224()
             h.update(self._map)
-            h.update(repr(self._wcs).encode('utf-8'))
+            h.update(repr(self._wcs).encode("utf-8"))
             self.hash = int(h.hexdigest(), 16)
 
     # def to_dict(self, minimal=False):
@@ -918,17 +901,14 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 
         if maxr <= minr:
             norm = (
-                np.power(np.pi / 180.0, 2.0 + index)
-                * np.pi
-                * maxr ** 2
-                * minr ** index
+                np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr ** 2 * minr ** index
             )
         elif self.index.value == -2.0:
             norm = np.pi * (1.0 + 2.0 * np.log(maxr / minr))
         else:
-            norm = np.power(
-                minr * np.pi / 180.0, 2.0 + index
-            ) * np.pi + 2.0 * np.pi / (2.0 + index) * (
+            norm = np.power(minr * np.pi / 180.0, 2.0 + index) * np.pi + 2.0 * np.pi / (
+                2.0 + index
+            ) * (
                 np.power(maxr * np.pi / 180.0, index + 2.0)
                 - np.power(minr * np.pi / 180.0, index + 2.0)
             )

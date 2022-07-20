@@ -40,7 +40,7 @@ from astromodels.utils.configuration import astromodels_config
 
 update_logging_level("DEBUG")
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 
 def get_a_function_class():
@@ -583,9 +583,7 @@ def test_function_values():
     my_function.b.value = 1.0
 
     assert np.all(my_function([1, 2, 3]) == np.array([3.0, 5.0, 7.0]))
-    assert np.all(
-        my_function(np.array([3, 4, 5])) == np.array([7.0, 9.0, 11.0])
-    )
+    assert np.all(my_function(np.array([3, 4, 5])) == np.array([7.0, 9.0, 11.0]))
 
 
 def test_function_values_units():
@@ -720,9 +718,9 @@ def test_function_composition():
     # Composite of composite
     composite = po * li + po - li + 2 * po / li
 
-    assert composite(2.25) == po(2.25) * li(2.25) + po(2.25) - li(
+    assert composite(2.25) == po(2.25) * li(2.25) + po(2.25) - li(2.25) + 2 * po(
         2.25
-    ) + 2 * po(2.25) / li(2.25)
+    ) / li(2.25)
 
     print(composite)
 
@@ -853,9 +851,7 @@ def test_function2D():
     assert c.z_unit == u.deg ** -2
 
     assert c.get_total_spatial_integral(1) == 1
-    assert np.isclose(
-        c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10
-    ).all()
+    assert np.isclose(c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10).all()
 
     with pytest.raises(TypeError):
 
@@ -888,9 +884,7 @@ def test_function3D():
     assert c.w_unit == u.deg ** -2
 
     assert c.get_total_spatial_integral(1) == 1
-    assert np.isclose(
-        c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10
-    ).all()
+    assert np.isclose(c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10).all()
 
     with pytest.raises(TypeError):
 
@@ -911,17 +905,17 @@ def test_spatial_template_2D():
         "NAXIS": 2,
         "NAXIS1": 360,
         "NAXIS2": 360,
-        "DATE": '2018-06-15',
-        "CUNIT1": 'deg',
+        "DATE": "2018-06-15",
+        "CUNIT1": "deg",
         "CRVAL1": 83,
         "CRPIX1": 0,
         "CDELT1": -0.0166667,
-        "CUNIT2": 'deg',
+        "CUNIT2": "deg",
         "CRVAL2": -2.0,
         "CRPIX2": 0,
         "CDELT2": 0.0166667,
-        "CTYPE1": 'GLON-CAR',
-        "CTYPE2": 'GLAT-CAR',
+        "CTYPE1": "GLON-CAR",
+        "CTYPE2": "GLAT-CAR",
     }
 
     data = np.zeros([400, 400])
@@ -955,8 +949,7 @@ def test_spatial_template_2D():
         shape1.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [1.0, 0.0]
     )
     assert np.all(
-        shape2.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0)
-        == [0.0, 10.0]
+        shape2.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [0.0, 10.0]
     )
 
     shape1.K = 1
@@ -1044,9 +1037,7 @@ def test_function_properties():
 
 def test_abs_model():
 
-    for i, m in enumerate(
-        [astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]
-    ):
+    for i, m in enumerate([astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]):
 
         instance = m()
 

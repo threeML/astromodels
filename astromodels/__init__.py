@@ -125,5 +125,5 @@ import astropy.units as u
 
 log = setup_logger(__name__)
 
-__version__ = get_versions()['version']
+__version__ = get_versions()["version"]
 del get_versions

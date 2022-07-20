@@ -104,7 +104,7 @@ class ZDust(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _x = np.array(x.to('keV').value, ndmin=1, copy=False, dtype=float)
+            _x = np.array(x.to("keV").value, ndmin=1, copy=False, dtype=float)
 
             _unit = astropy_units.cm ** 2
             _y_unit = astropy_units.dimensionless_unscaled

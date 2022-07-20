@@ -178,9 +178,7 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
         pcosh_piv = Mbs * (arg_piv - log2)
     else:
 
-        pcosh_piv = Mbs * math.log(
-            (math.exp(arg_piv) + math.exp(-arg_piv)) / 2.0
-        )
+        pcosh_piv = Mbs * math.log((math.exp(arg_piv) + math.exp(-arg_piv)) / 2.0)
 
     ten_pcosh_piv = math.pow(10.0, pcosh_piv)
 
@@ -200,12 +198,7 @@ def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 
             pcosh = Mbs * np.log(0.5 * ((np.exp(arg) + np.exp(-arg))))
 
-        out[idx] = (
-            K
-            * math.pow(x[idx] / piv, B)
-            * math.pow(10.0, pcosh)
-            / ten_pcosh_piv
-        )
+        out[idx] = K * math.pow(x[idx] / piv, B) * math.pow(10.0, pcosh) / ten_pcosh_piv
 
     return out
 

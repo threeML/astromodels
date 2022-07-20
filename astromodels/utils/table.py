@@ -1,4 +1,4 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 import astropy.table
 
@@ -24,7 +24,7 @@ def dict_to_table(dictionary, list_of_keys=None):
 
         # Add the names as first column
 
-        table['name'] = list(dictionary.keys())
+        table["name"] = list(dictionary.keys())
 
         # Now add all other properties
 
@@ -44,9 +44,7 @@ def dict_to_table(dictionary, list_of_keys=None):
 
         for column_name in column_names:
 
-            table[column_name] = [
-                x[column_name] for x in list(dictionary.values())
-            ]
+            table[column_name] = [x[column_name] for x in list(dictionary.values())]
 
     return table
 
@@ -67,7 +65,7 @@ class Table(astropy.table.Table):
         of the columns
         """
 
-        table_id = 'table{id}'.format(id=id(self))
+        table_id = "table{id}".format(id=id(self))
 
         data_lines, outs = self.formatter._pformat_table(
             self,
@@ -79,7 +77,7 @@ class Table(astropy.table.Table):
             show_dtype=False,
         )
 
-        out = '\n'.join(data_lines)
+        out = "\n".join(data_lines)
 
         # if astropy.table.six.PY2 and isinstance(out, astropy.table.six.text_type):
         #    out = out.encode('utf-8')

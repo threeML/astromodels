@@ -13,9 +13,7 @@ from astromodels.functions.function import Function3D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance_fast
 
 
-class Continuous_injection_diffusion_ellipse(
-    Function3D, metaclass=FunctionMeta
-):
+class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -162,10 +160,7 @@ class Continuous_injection_diffusion_ellipse(
             rdiff_a = (
                 np.array(
                     [
-                        (
-                            rdiff0
-                            * np.power(old_div(e_energy_piv2, e_piv_piv2), x)
-                        ).value
+                        (rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value
                         for x in (delta - 1.0)
                         / 2.0
                         * np.sqrt(
@@ -174,8 +169,7 @@ class Continuous_injection_diffusion_ellipse(
                         )
                         / np.sqrt(
                             b * b / 8.0 / np.pi * 0.624
-                            + 0.26
-                            * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5)
+                            + 0.26 * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5)
                         )
                     ]
                 )
@@ -187,9 +181,7 @@ class Continuous_injection_diffusion_ellipse(
         pi = np.pi
 
         angsep = angular_distance_fast(lon, lat, lon0, lat0)
-        ang = np.arctan2(
-            lat - lat0, (lon - lon0) * np.cos(lat0 * np.pi / 180.0)
-        )
+        ang = np.arctan2(lat - lat0, (lon - lon0) * np.cos(lat0 * np.pi / 180.0))
 
         theta = np.arctan2(
             old_div(np.sin(ang - incl * np.pi / 180.0), elongation),
@@ -200,8 +192,7 @@ class Continuous_injection_diffusion_ellipse(
         rdiffs_b, angseps = np.meshgrid(rdiff_b, angsep)
 
         rdiffs = np.sqrt(
-            rdiffs_a ** 2 * np.cos(thetas) ** 2
-            + rdiffs_b ** 2 * np.sin(thetas) ** 2
+            rdiffs_a ** 2 * np.cos(thetas) ** 2 + rdiffs_b ** 2 * np.sin(thetas) ** 2
         )
 
         results = (
@@ -232,8 +223,7 @@ class Continuous_injection_diffusion_ellipse(
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0))
-            >= 180.0
+            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -381,9 +371,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         rdiff_c = (
             rdiff0
-            * np.power(
-                old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.0), 2.0)
-            )
+            * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.0), 2.0))
             * np.sqrt(
                 b * b / 8.0 / np.pi * 0.624
                 + 0.26 * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5)
@@ -428,8 +416,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0))
-            >= 180.0
+            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -574,12 +561,8 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
                     old_div(e_energy_piv2, e_piv_piv2),
                     old_div((delta - 1.0), 2.0),
                 )
-                * np.sqrt(
-                    1.0 + uratio * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5)
-                )
-                / np.sqrt(
-                    1.0 + uratio * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5)
-                )
+                * np.sqrt(1.0 + uratio * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5))
+                / np.sqrt(1.0 + uratio * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5))
             )
 
         except ValueError:
@@ -592,20 +575,14 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
             rdiff = (
                 np.array(
                     [
-                        (
-                            rdiff0
-                            * np.power(old_div(e_energy_piv2, e_piv_piv2), x)
-                        ).value
+                        (rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value
                         for x in (delta - 1.0)
                         / 2.0
                         * np.sqrt(
-                            1.0
-                            + uratio * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5)
+                            1.0 + uratio * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5)
                         )
                         / np.sqrt(
-                            1.0
-                            + uratio
-                            * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5)
+                            1.0 + uratio * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5)
                         )
                     ]
                 )
@@ -638,8 +615,7 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0))
-            >= 180.0
+            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -727,19 +703,13 @@ class GalPropTemplate_3D(Function3D):
 
         self._frame = new_frame
 
-    def load_file(
-        self, fitsfile, phi1, phi2, theta1, theta2, galactic=False, ihdu=0
-    ):
+    def load_file(self, fitsfile, phi1, phi2, theta1, theta2, galactic=False, ihdu=0):
 
         if fitsfile is None:
-            raise RuntimeError(
-                "Need to specify a fits file with a template map."
-            )
+            raise RuntimeError("Need to specify a fits file with a template map.")
 
         self._fitsfile = fitsfile
-        p1, p2, t1, t2 = self.define_region(
-            phi1, phi2, theta1, theta2, galactic
-        )
+        p1, p2, t1, t2 = self.define_region(phi1, phi2, theta1, theta2, galactic)
         self.ramin = p1
         self.ramax = p2
         self.decmin = t1
@@ -747,16 +717,16 @@ class GalPropTemplate_3D(Function3D):
 
         with fits.open(self._fitsfile) as f:
 
-            self._delLon = f[ihdu].header['CDELT1']
-            self._delLat = f[ihdu].header['CDELT2']
-            self._delEn = f[ihdu].header['CDELT3']
-            self._refLon = f[ihdu].header['CRVAL1']
-            self._refLat = f[ihdu].header['CRVAL2']
-            self._refEn = f[ihdu].header['CRVAL3']  # values in log10
+            self._delLon = f[ihdu].header["CDELT1"]
+            self._delLat = f[ihdu].header["CDELT2"]
+            self._delEn = f[ihdu].header["CDELT3"]
+            self._refLon = f[ihdu].header["CRVAL1"]
+            self._refLat = f[ihdu].header["CRVAL2"]
+            self._refEn = f[ihdu].header["CRVAL3"]  # values in log10
             self._map = f[ihdu].data
-            self._nl = f[ihdu].header['NAXIS1']  # longitude
-            self._nb = f[ihdu].header['NAXIS2']  # latitude
-            self._ne = f[ihdu].header['NAXIS3']  # energy
+            self._nl = f[ihdu].header["NAXIS1"]  # longitude
+            self._nb = f[ihdu].header["NAXIS2"]  # latitude
+            self._ne = f[ihdu].header["NAXIS3"]  # energy
 
             # Create the function for the interpolation
             self._L = np.linspace(
@@ -794,7 +764,7 @@ class GalPropTemplate_3D(Function3D):
 
         if not minimal:
 
-            data['extra_setup'] = {
+            data["extra_setup"] = {
                 "_fitsfile": self._fitsfile,
                 "_frame": self._frame,
                 "ramin": self.ramin,
@@ -827,13 +797,13 @@ class GalPropTemplate_3D(Function3D):
 
             # We assume x and y are R.A. and Dec
             _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
-            b = _coord.transform_to('galactic').b.value
-            l = _coord.transform_to('galactic').l.value
+            b = _coord.transform_to("galactic").b.value
+            l = _coord.transform_to("galactic").l.value
             lon = l
             lat = b
 
             # transform energy from keV to MeV. Galprop Model starts at 100 MeV
-            energy = np.log10(z) - np.log10((u.MeV.to('keV') / u.keV).value)
+            energy = np.log10(z) - np.log10((u.MeV.to("keV") / u.keV).value)
 
             if lon.size != lat.size:
                 raise AttributeError("Lon and Lat should be the same size")
@@ -872,14 +842,14 @@ class GalPropTemplate_3D(Function3D):
             _coord = SkyCoord(
                 l=[lmin, lmin, lmax, lmax],
                 b=[bmin, bmax, bmax, bmin],
-                frame='galactic',
-                unit='deg',
+                frame="galactic",
+                unit="deg",
             )
 
-            ramin = min(_coord.transform_to('icrs').ra.value)
-            ramax = max(_coord.transform_to('icrs').ra.value)
-            decmin = min(_coord.transform_to('icrs').dec.value)
-            decmax = max(_coord.transform_to('icrs').dec.value)
+            ramin = min(_coord.transform_to("icrs").ra.value)
+            ramax = max(_coord.transform_to("icrs").ra.value)
+            decmin = min(_coord.transform_to("icrs").dec.value)
+            decmax = max(_coord.transform_to("icrs").dec.value)
 
         else:
             ramin = a

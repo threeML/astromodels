@@ -30,21 +30,21 @@ if (
     # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
     # the 'spectral' directory is
 
-    os.environ['HEADAS'] = os.path.join(
-        os.environ.get("CONDA_PREFIX"), 'lib', 'Xspec', 'headas'
+    os.environ["HEADAS"] = os.path.join(
+        os.environ.get("CONDA_PREFIX"), "lib", "Xspec", "headas"
     )
 
     # os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
 
     # we need to create the directory otherwise an exception casted:
-    if not os.path.exists(os.environ['HEADAS']):
-        os.makedirs(os.environ['HEADAS'])
+    if not os.path.exists(os.environ["HEADAS"]):
+        os.makedirs(os.environ["HEADAS"])
 
 # This list defines all python protected names (names which variables or attributes should not have)
 illegal_variable_names_ = (
-    'and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,'
-    'if, import, in, is, lambda, not, or, pass, print, raise, return, try, while, data, '
-    'float, int, numeric, array, close, input, open, range, type, write, zeros, from, global'
+    "and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,"
+    "if, import, in, is, lambda, not, or, pass, print, raise, return, try, while, data, "
+    "float, int, numeric, array, close, input, open, range, type, write, zeros, from, global"
 )
 # Make it a list
 illegal_variable_names = illegal_variable_names_.replace(" ", "").split(",")
@@ -72,9 +72,7 @@ def find_model_dat():
 
     assert os.path.exists(
         headas_env
-    ), "The HEADAS env. variable point to a non-existent directory: %s" % (
-        headas_env
-    )
+    ), "The HEADAS env. variable point to a non-existent directory: %s" % (headas_env)
 
     # Get one directory above HEADAS (i.e., $HEADAS/..)
 
@@ -82,13 +80,13 @@ def find_model_dat():
 
     # Now model.dat should be in $HEADAS/../spectral/manager
 
-    final_path = os.path.join(inferred_path, 'spectral', 'manager', 'model.dat')
+    final_path = os.path.join(inferred_path, "spectral", "manager", "model.dat")
 
     # Check that model.dat exists
 
-    assert os.path.exists(
+    assert os.path.exists(final_path), "Cannot find Xspec model definition file %s" % (
         final_path
-    ), "Cannot find Xspec model definition file %s" % (final_path)
+    )
 
     return os.path.abspath(final_path)
 
@@ -128,7 +126,7 @@ def get_models(model_dat_path):
 
     for line in lines:
 
-        match = re.match('''(.+(add|mul|con|acn).+)''', line)
+        match = re.match("""(.+(add|mul|con|acn).+)""", line)
 
         if match is not None:
 
@@ -163,16 +161,14 @@ def get_models(model_dat_path):
 
             this_model = collections.OrderedDict()
 
-            this_model['description'] = (
-                'The %s model from XSpec (https://heasarc.gsfc.nasa.gov/xanadu/'
-                'xspec/manual/XspecModels.html)' % model_name
+            this_model["description"] = (
+                "The %s model from XSpec (https://heasarc.gsfc.nasa.gov/xanadu/"
+                "xspec/manual/XspecModels.html)" % model_name
             )
 
-            this_model['parameters'] = collections.OrderedDict()
+            this_model["parameters"] = collections.OrderedDict()
 
-            model_definitions[
-                (model_name, library_function, model_type)
-            ] = this_model
+            model_definitions[(model_name, library_function, model_type)] = this_model
 
         else:
 
@@ -187,7 +183,7 @@ def get_models(model_dat_path):
 
             free = True
 
-            if line[0] == '$':
+            if line[0] == "$":
 
                 # Probably a switch parameter
 
@@ -227,9 +223,7 @@ def get_models(model_dat_path):
 
                 else:
 
-                    match = re.match(
-                        '(\S+)\s+(\".+\"|[a-zA-Z]+)?(.+)*', line[1:]
-                    )
+                    match = re.match('(\S+)\s+(".+"|[a-zA-Z]+)?(.+)*', line[1:])
 
                     par_name, par_unit, par_spec = match.groups()
 
@@ -263,7 +257,7 @@ def get_models(model_dat_path):
 
                 # A normal parameter
 
-                match = re.match('(\S+)\s+(\".+\"|\S+)(.+)', line)
+                match = re.match('(\S+)\s+(".+"|\S+)(.+)', line)
 
                 if match is None:
 
@@ -271,7 +265,7 @@ def get_models(model_dat_path):
 
                 par_name, par_unit, par_spec = match.groups()
 
-                if par_name[0] == '*':
+                if par_name[0] == "*":
 
                     # Scale parameter (always frozen)
 
@@ -326,20 +320,20 @@ def get_models(model_dat_path):
             # Now fix the parameter name removing illegal characters
             # (for example 'log(A)' is not a legal name)
 
-            par_name = re.sub('[\(,\)]', '_', par_name)
-            par_name = re.sub('<', '_less_', par_name)
-            par_name = re.sub('>', '_more_', par_name)
-            par_name = re.sub('/', '_div_', par_name)
-            par_name = re.sub('\-', '_minus_', par_name)
-            par_name = re.sub('\+', '_plus_', par_name)
-            par_name = re.sub('\.', '_dot_', par_name)
-            par_name = re.sub('@', '_at_', par_name)
+            par_name = re.sub("[\(,\)]", "_", par_name)
+            par_name = re.sub("<", "_less_", par_name)
+            par_name = re.sub(">", "_more_", par_name)
+            par_name = re.sub("/", "_div_", par_name)
+            par_name = re.sub("\-", "_minus_", par_name)
+            par_name = re.sub("\+", "_plus_", par_name)
+            par_name = re.sub("\.", "_dot_", par_name)
+            par_name = re.sub("@", "_at_", par_name)
 
             # Parameter names must be lower case
             par_name = par_name.lower()
 
             # Some parameters are enclosed between ", like "z"
-            par_name = par_name.replace('"', '')
+            par_name = par_name.replace('"', "")
 
             # "z" is a protected name in astromodels.
             if par_name == "z":
@@ -347,9 +341,9 @@ def get_models(model_dat_path):
                 par_name = "redshift"
 
                 # this is illegal because of the 2D functions
-            if par_name == 'y':
+            if par_name == "y":
 
-                par_name = 'y1'
+                par_name = "y1"
 
             # Check that the parameter name is not an illegal Python name
             if par_name in illegal_variable_names:
@@ -359,7 +353,7 @@ def get_models(model_dat_path):
             # Sometimes the unit is " " which is not recognized by astropy
             if par_unit:
 
-                par_unit = par_unit.replace("\"", '')
+                par_unit = par_unit.replace('"', "")
 
             # There are some errors in model.dat , like KeV instead of keV, and ergcm/s instead of erg cm /s
             # Let's correct them
@@ -391,11 +385,11 @@ def get_models(model_dat_path):
 
                 # warnings.warn("Unit %s is not recognized by astropy." % par_unit)
 
-                par_unit = ''
+                par_unit = ""
 
             # Make sure that this is a valid python identifier
             # by matching it with the relative regexp
-            if re.match('([a-zA-Z_][a-zA-Z0-9_]*)$', par_name) is None:
+            if re.match("([a-zA-Z_][a-zA-Z0-9_]*)$", par_name) is None:
 
                 raise ValueError("Illegal identifier name %s" % (par_name))
 
@@ -416,15 +410,15 @@ def get_models(model_dat_path):
 
                     default_value = hard_minimum
 
-            this_model['parameters'][par_name] = {
-                'initial value': float(default_value),
-                'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
-                'XspecModels.html)',
-                'min': hard_minimum,
-                'max': hard_maximum,
-                'delta': float(delta),
-                'unit': par_unit,
-                'free': free,
+            this_model["parameters"][par_name] = {
+                "initial value": float(default_value),
+                "desc": "(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/"
+                "XspecModels.html)",
+                "min": hard_minimum,
+                "max": hard_maximum,
+                "delta": float(delta),
+                "unit": par_unit,
+                "free": free,
             }
 
     return model_definitions
@@ -614,14 +608,14 @@ $DOCSTRING$
 
 def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
-    class_name = 'XS_%s' % model_name
+    class_name = "XS_%s" % model_name
 
     # Get the path to the user data directory
     user_data_path = str(get_user_data_path())
 
     # Check if the code for this function already exists
 
-    code_file_name = os.path.join(user_data_path, '%s.py' % class_name)
+    code_file_name = os.path.join(user_data_path, "%s.py" % class_name)
 
     if os.path.exists(code_file_name):
 
@@ -635,23 +629,23 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         # If this is an additive model (model_type == 'add') we need to add
         # one more parameter (normalization)
 
-        if model_type == 'add':
+        if model_type == "add":
 
-            definition['parameters']['norm'] = {
-                'initial value': 1.0,
-                'desc': '(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/'
-                'XspecModels.html)',
-                'min': 0,
-                'max': None,
-                'delta': 0.1,
-                'unit': 'keV / (cm2 s)',
-                'free': True,
+            definition["parameters"]["norm"] = {
+                "initial value": 1.0,
+                "desc": "(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/"
+                "XspecModels.html)",
+                "min": 0,
+                "max": None,
+                "delta": 0.1,
+                "unit": "keV / (cm2 s)",
+                "free": True,
             }
 
-        assert model_type != 'con', "Convolution models are not yet supported"
+        assert model_type != "con", "Convolution models are not yet supported"
 
         # Get a list of the parameter names
-        parameters_names = ", ".join(list(definition['parameters'].keys()))
+        parameters_names = ", ".join(list(definition["parameters"].keys()))
 
         # Create the docstring
         docstring = my_yaml.dump(definition, default_flow_style=False)
@@ -659,19 +653,17 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
         # Create the class by substituting in the class_definition_code the
         # relevant things for this model
 
-        code = class_definition_code.replace('$MODEL_NAME$', model_name)
-        code = code.replace('$DOCSTRING$', docstring)
-        code = code.replace('$PARAMETERS_NAMES$', parameters_names)
-        code = code.replace('$XSPEC_FUNCTION$', xspec_function)
-        code = code.replace('$MODEL_TYPE$', model_type)
+        code = class_definition_code.replace("$MODEL_NAME$", model_name)
+        code = code.replace("$DOCSTRING$", docstring)
+        code = code.replace("$PARAMETERS_NAMES$", parameters_names)
+        code = code.replace("$XSPEC_FUNCTION$", xspec_function)
+        code = code.replace("$MODEL_TYPE$", model_type)
 
         # Write to the file
 
-        with open(code_file_name, 'w+') as f:
+        with open(code_file_name, "w+") as f:
 
-            f.write(
-                "# This code has been automatically generated. Do not edit.\n"
-            )
+            f.write("# This code has been automatically generated. Do not edit.\n")
             f.write("\n\n%s\n" % code)
 
         time.sleep(1)
@@ -684,7 +676,7 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     # Import the class in the current namespace (locals)
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        exec('from %s import %s' % (class_name, class_name))
+        exec("from %s import %s" % (class_name, class_name))
 
     # Return the class we just created
     return class_name, locals()[class_name]
@@ -700,7 +692,7 @@ def setup_xspec_models():
 
     for (model_name, xspec_function, model_type) in all_models:
 
-        if model_type == 'con':
+        if model_type == "con":
 
             # convolution models are not supported
             continue

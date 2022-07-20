@@ -117,9 +117,7 @@ class NodeBase:
         for child in children:
             self._add_child(child)
 
-    def _remove_child(
-        self, name: str, delete: bool = True
-    ) -> Optional["NodeBase"]:
+    def _remove_child(self, name: str, delete: bool = True) -> Optional["NodeBase"]:
         """
         return a child
         """
@@ -217,9 +215,7 @@ class NodeBase:
     def __getitem__(self, key) -> "NodeBase":
         return self._get_child_from_path(key)
 
-    def _recursively_gather_node_type(
-        self, node, node_type
-    ) -> Dict[str, "NodeBase"]:
+    def _recursively_gather_node_type(self, node, node_type) -> Dict[str, "NodeBase"]:
 
         instances = collections.OrderedDict()
 
@@ -243,9 +239,7 @@ class NodeBase:
 
             else:
 
-                instances.update(
-                    self._recursively_gather_node_type(child, node_type)
-                )
+                instances.update(self._recursively_gather_node_type(child, node_type))
 
         return instances
 
@@ -438,9 +432,7 @@ class NodeBase:
         return tree
 
 
-def _recurse_dict(
-    d: Dict[str, Any], tree: Tree, branch_color: Optional[str] = None
-):
+def _recurse_dict(d: Dict[str, Any], tree: Tree, branch_color: Optional[str] = None):
 
     for k, v in d.items():
 
@@ -487,9 +479,7 @@ def _recurse_dict(
 
                 branch_color = "not bold not blink turquoise2"
 
-            branch = tree.add(
-                k, guide_style="bold not blink grey74", style=color
-            )
+            branch = tree.add(k, guide_style="bold not blink grey74", style=color)
 
             _recurse_dict(v, branch, branch_color=branch_color)
 

@@ -136,9 +136,7 @@ class TemplateModelFactory(object):
 
         self._spline_smoothing_factor: int = int(spline_smoothing_factor)
 
-    def define_parameter_grid(
-        self, parameter_name: str, grid: np.ndarray
-    ) -> None:
+    def define_parameter_grid(self, parameter_name: str, grid: np.ndarray) -> None:
         """
         Define the parameter grid for this parameter.
         Pass the name of the parameter and the array of values that it will take in the grid
@@ -154,9 +152,7 @@ class TemplateModelFactory(object):
 
         if not (grid_.shape[0] > 1):
 
-            log.error(
-                "A grid for a parameter must contain at least two elements"
-            )
+            log.error("A grid for a parameter must contain at least two elements")
 
             raise AssertionError()
 
@@ -164,9 +160,7 @@ class TemplateModelFactory(object):
 
         if not np.all(np.unique(grid_) == grid_):
 
-            log.error(
-                f"Non-unique elements in grid for parameter {parameter_name}"
-            )
+            log.error(f"Non-unique elements in grid for parameter {parameter_name}")
 
             raise AssertionError()
 
@@ -237,9 +231,7 @@ class TemplateModelFactory(object):
 
                 raise AssertionError()
 
-            parameter_idx.append(
-                int(np.where(v == parameters_values_input[k])[0][0])
-            )
+            parameter_idx.append(int(np.where(v == parameters_values_input[k])[0][0]))
 
         log.debug(f" have index {parameter_idx}")
 
@@ -281,9 +273,7 @@ class TemplateModelFactory(object):
         # log space)
         if not np.all(np.isfinite(differential_fluxes)):
 
-            log.error(
-                "You have invalid values in the differential flux (nan or inf)"
-            )
+            log.error("You have invalid values in the differential flux (nan or inf)")
 
             raise AssertionError()
 
@@ -300,8 +290,7 @@ class TemplateModelFactory(object):
 
             log.warning(
                 "You have zeros in the differential flux. Since the interpolation happens in the log space, "
-                "this cannot be accepted. We will substitute zeros with %g"
-                % _TINY_
+                "this cannot be accepted. We will substitute zeros with %g" % _TINY_
             )
 
             idx = differential_fluxes == 0  # type: np.ndarray
@@ -311,9 +300,7 @@ class TemplateModelFactory(object):
 
         # Now set the values in the data frame
 
-        self._data_frame[tuple(parameter_idx)] = np.atleast_2d(
-            differential_fluxes
-        )
+        self._data_frame[tuple(parameter_idx)] = np.atleast_2d(differential_fluxes)
 
     def save_data(self, overwrite: bool = False):
 
@@ -411,9 +398,7 @@ class RectBivariateSplineWrapper(object):
 
         # We can use interp2, which features spline interpolation instead of linear interpolation
 
-        self._interpolator = scipy.interpolate.RectBivariateSpline(
-            *args, **kwargs
-        )
+        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
 
     def __call__(self, x):
 
@@ -463,13 +448,11 @@ class TemplateFile:
             # store the parameter order
             dt = h5py.special_dtype(vlen=str)
             po = np.array(self.parameter_order, dtype=dt)
-            f.create_dataset('parameter_order', data=po)
+            f.create_dataset("parameter_order", data=po)
             par_group = f.create_group("parameters")
             for k in self.parameter_order:
 
-                par_group.create_dataset(
-                    k, data=self.parameters[k], compression="gzip"
-                )
+                par_group.create_dataset(k, data=self.parameters[k], compression="gzip")
 
     @classmethod
     def from_file(cls, file_name: str):
@@ -635,9 +618,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if other_name is None:
 
-            super(TemplateModel, self).__init__(
-                name, function_definition, parameters
-            )
+            super(TemplateModel, self).__init__(name, function_definition, parameters)
 
         else:
 
@@ -741,7 +722,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                 this_interpolator = GridInterpolate(
                     tuple(
                         [
-                            np.array(x, dtype='<f8')
+                            np.array(x, dtype="<f8")
                             for x in list(self._parameters_grids.values())
                         ]
                     ),
@@ -809,9 +790,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if self._is_log10:
 
-            interpolator = UnivariateSpline(
-                np.log10(e_tilde), log_interpolations
-            )
+            interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
 
             values = np.power(10.0, interpolator(log_energies))
 
@@ -844,9 +823,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         del self._interpolators
         gc.collect()
 
-        log.info(
-            "You have 'cleaned' the table model and it will no longer be useable"
-        )
+        log.info("You have 'cleaned' the table model and it will no longer be useable")
 
     # def __del__(self):
 
@@ -915,7 +892,7 @@ class XSPECTableModel(object):
             ene_hi = energies.data["ENERG_HI"]
             spectra = f["SPECTRA"]
 
-            if f[0].header["MODLUNIT"] == 'photons/cm^2/s':
+            if f[0].header["MODLUNIT"] == "photons/cm^2/s":
                 log.info(
                     "This table model has flux units of photons/cm^2/s. It will be converted to differential Flux by dividing by the energy bin widths. Logarithmic centers will be turned off. "
                 )
