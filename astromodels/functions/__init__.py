@@ -7,9 +7,9 @@ from .functions_1D import (Band, Band_Calderone, Band_grbm, Blackbody,
                            Powerlaw_Eflux, Powerlaw_flux, Quadratic, Quartic,
                            Sin, SmoothlyBrokenPowerLaw, Standard_Rv,
                            StepFunction, StepFunctionUpper,
-                           Super_cutoff_powerlaw, TbAbs, WAbs, ZDust,
-                           get_polynomial, has_atomdb, has_ebltable, has_gsl,
-                           has_naima)
+                           Super_cutoff_powerlaw, Super_cutoff_powerlaw_fermi,
+                           TbAbs, WAbs, ZDust, get_polynomial, has_atomdb,
+                           has_ebltable, has_gsl, has_naima)
 
 if has_naima:
     from .functions_1D import Synchrotron
@@ -45,6 +45,7 @@ __all__ = [
     "Band", "Band_Calderone", "Band_grbm", "Broken_powerlaw",
     "Cutoff_powerlaw", "Cutoff_powerlaw_Ep", "Inverse_cutoff_powerlaw", "Powerlaw", "Powerlaw_Eflux",
     "Powerlaw_flux", "SmoothlyBrokenPowerLaw", "Super_cutoff_powerlaw",
+    "Super_cutoff_powerlaw_fermi",
     "Constant", "Cubic", "DiracDelta", "Exponential_cutoff", "Line",
     "Quadratic", "Sin", "StepFunction", "StepFunctionUpper", "PhAbs", "TbAbs",
     "WAbs", "Asymm_Gaussian_on_sphere", "Disk_on_sphere", "Ellipse_on_sphere",

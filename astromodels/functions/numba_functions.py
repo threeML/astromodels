@@ -111,6 +111,29 @@ def super_cplaw_eval(x, K, piv, index, xc, gamma):
 
 
 @nb.njit(fastmath=True, cache=_cache_functions)
+def super_cplawf_eval(x, K, piv, gamma, d, b):
+
+    n = x.shape[0]
+    out = np.empty(n)
+
+    for i in range(n):
+
+        L = np.log( x[i] / piv )
+        
+        if np.abs( b * L ) < np.exp(-2):
+
+            log_v = gamma * L - d * L**2 / 2 - d * b * L**3 / 6 - d * b**2 * L**4 / 24
+            
+        else:
+    
+            log_v = ( gamma + d/b ) * L + ( d / b**2 * (1 - L**b ) )
+
+        out[i] = K * np.exp(log_v)
+
+    return out
+
+
+@nb.njit(fastmath=True, cache=_cache_functions)
 def band_eval(x, K, alpha, beta, E0, piv):
 
     n = x.shape[0]

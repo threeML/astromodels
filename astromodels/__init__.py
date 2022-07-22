@@ -41,7 +41,8 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
                             Powerlaw_flux, Quadratic, Quartic, Sin,
                             SmoothlyBrokenPowerLaw, SpatialTemplate_2D,
                             Standard_Rv, StepFunction, StepFunctionUpper,
-                            Super_cutoff_powerlaw, TbAbs, TemplateModel,
+                            Super_cutoff_powerlaw, Super_cutoff_powerlaw_fermi,
+                            TbAbs, TemplateModel,
                             TemplateModelFactory, Truncated_gaussian,
                             Uniform_prior, WAbs, XSPECTableModel, ZDust,
                             get_polynomial, has_ebltable, has_gsl, has_naima, has_atomdb)
