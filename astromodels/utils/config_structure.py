@@ -27,12 +27,19 @@ class Logging:
     console: bool = 'on'
     level: LoggingLevel = LoggingLevel.INFO
     startup_warnings: bool = 'on'
+    info_style: str = "medium_spring_green"
+    warn_style: str = "medium_orchid"
+    error_style: str = "blink bold bright_red"
+    debug_style: str = "blue_violet"
+    message_style: str = "bold grey78"
+
+
 
 
 class AbsTables(Enum):
     WILM = "WILM"
     ASPL = "ASPL"
-    AG89 = "AG89" 
+    AG89 = "AG89"
 
 
 class EBLTable(Enum):
@@ -42,8 +49,8 @@ class EBLTable(Enum):
     inuoe = "inuoe"
     gilmore = "gilmore"
 
-    
-    
+
+
 @dataclass
 class AbsorptionModels:
     tbabs_table: AbsTables = AbsTables.WILM
