@@ -136,7 +136,7 @@ _theme["logging.level.debug"] = f"{astromodels_config.logging.debug_style}"
 _theme["logging.level.error"] = f"{astromodels_config.logging.error_style}"
 _theme["logging.level.info"] = f"{astromodels_config.logging.info_style}"
 _theme["logging.level.warning"] = f"{astromodels_config.logging.warn_style}"
-
+_theme["logging.level.degub_node"] = "light_goldenrod1"
 
 
 #mytheme = Theme().read(_get_data_file_path("log_theme.ini"))
