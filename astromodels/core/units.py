@@ -16,7 +16,7 @@ from astromodels.utils.pretty_list import dict_to_list
 _ENERGY = u.keV
 _TIME = u.s
 _ANGLE = u.deg
-_AREA = u.cm ** 2
+_AREA = u.cm**2
 
 
 class UnknownUnit(Exception):

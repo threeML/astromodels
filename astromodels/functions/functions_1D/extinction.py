@@ -106,7 +106,7 @@ class ZDust(Function1D, metaclass=FunctionMeta):
 
             _x = np.array(x.to("keV").value, ndmin=1, copy=False, dtype=float)
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
 
             _e_bmv = e_bmv.value

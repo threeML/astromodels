@@ -84,7 +84,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
         return (
             K
-            * np.exp(old_div(-(b ** 2), (2 * sigma_b ** 2)))
+            * np.exp(old_div(-(b**2), (2 * sigma_b**2)))
             * np.logical_or(
                 np.logical_and(l > l_min, l < l_max),
                 np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
@@ -184,13 +184,13 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        s2 = sigma ** 2
+        s2 = sigma**2
 
         return (
             (old_div(180, np.pi)) ** 2
             * 1
             / (2.0 * np.pi * s2)
-            * np.exp(-0.5 * angsep ** 2 / s2)
+            * np.exp(-0.5 * angsep**2 / s2)
         )
 
     def get_boundaries(self):
@@ -307,7 +307,7 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         lon, lat = x, y
 
-        b = a * np.sqrt(1.0 - e ** 2)
+        b = a * np.sqrt(1.0 - e**2)
 
         dX = np.atleast_1d(angular_distance(lon0, lat0, lon, lat0))
         dY = np.atleast_1d(angular_distance(lon0, lat0, lon0, lat))
@@ -335,11 +335,11 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         sin_2phi = np.sin(2.0 * phi * np.pi / 180.0)
 
-        A = old_div(cos2_phi, (2.0 * b ** 2)) + old_div(sin2_phi, (2.0 * a ** 2))
+        A = old_div(cos2_phi, (2.0 * b**2)) + old_div(sin2_phi, (2.0 * a**2))
 
-        B = old_div(-sin_2phi, (4.0 * b ** 2)) + old_div(sin_2phi, (4.0 * a ** 2))
+        B = old_div(-sin_2phi, (4.0 * b**2)) + old_div(sin_2phi, (4.0 * a**2))
 
-        C = old_div(sin2_phi, (2.0 * b ** 2)) + old_div(cos2_phi, (2.0 * a ** 2))
+        C = old_div(sin2_phi, (2.0 * b**2)) + old_div(cos2_phi, (2.0 * a**2))
 
         E = -A * np.power(dX, 2) + 2.0 * B * dX * dY - C * np.power(dY, 2)
 
@@ -446,7 +446,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         return (
             np.power(old_div(180, np.pi), 2)
             * 1.0
-            / (np.pi * radius ** 2)
+            / (np.pi * radius**2)
             * (angsep <= radius)
         )
 
@@ -569,7 +569,7 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
 
     def calc_focal_pts(self, lon0, lat0, a, b, theta):
         # focal distance
-        f = np.sqrt(a ** 2 - b ** 2)
+        f = np.sqrt(a**2 - b**2)
 
         if isinstance(theta, u.Quantity):
             bearing = 90.0 - (theta.to(u.degree)).value
@@ -584,7 +584,7 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
 
     def evaluate(self, x, y, lon0, lat0, a, e, theta):
 
-        b = a * np.sqrt(1.0 - e ** 2)
+        b = a * np.sqrt(1.0 - e**2)
 
         # calculate focal points
 
@@ -901,7 +901,7 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 
         if maxr <= minr:
             norm = (
-                np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr ** 2 * minr ** index
+                np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr**2 * minr**index
             )
         elif self.index.value == -2.0:
             norm = np.pi * (1.0 + 2.0 * np.log(maxr / minr))

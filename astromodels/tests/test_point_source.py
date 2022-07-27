@@ -324,7 +324,7 @@ def test_call_with_composite_function_with_units():
         res = pts(np.array([100.0, 200.0]) * x_unit_to_use)
 
         # This will fail if the units are wrong
-        res.to(old_div(1, (u.keV * u.cm ** 2 * u.s)))
+        res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
 
     # Test a simple composition
 

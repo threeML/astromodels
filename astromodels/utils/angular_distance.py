@@ -60,7 +60,7 @@ def angular_distance(ra1, dec1, ra2, dec2):
     num2 = clat1 * slat2 - slat1 * clat2 * cdlon
     denominator = slat1 * slat2 + clat1 * clat2 * cdlon
 
-    return np.rad2deg(np.arctan2(np.sqrt(num1 ** 2 + num2 ** 2), denominator))
+    return np.rad2deg(np.arctan2(np.sqrt(num1**2 + num2**2), denominator))
 
 
 def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):

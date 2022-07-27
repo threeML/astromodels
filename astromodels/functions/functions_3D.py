@@ -192,7 +192,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         rdiffs_b, angseps = np.meshgrid(rdiff_b, angsep)
 
         rdiffs = np.sqrt(
-            rdiffs_a ** 2 * np.cos(thetas) ** 2 + rdiffs_b ** 2 * np.sin(thetas) ** 2
+            rdiffs_a**2 * np.cos(thetas) ** 2 + rdiffs_b**2 * np.sin(thetas) ** 2
         )
 
         results = (
@@ -205,7 +205,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
                 * np.sqrt(elongation)
                 * (angseps + 0.06 * rdiffs)
             )
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs ** 2))
+            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
         )
 
         return results
@@ -400,7 +400,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
             np.power(old_div(180.0, pi), 2)
             * 1.2154
             / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs))
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs ** 2))
+            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
         )
 
     def get_boundaries(self):
@@ -599,7 +599,7 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
             np.power(old_div(180.0, pi), 2)
             * 1.2154
             / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs))
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs ** 2))
+            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
         )
 
     def get_boundaries(self):
@@ -683,7 +683,7 @@ class GalPropTemplate_3D(Function3D):
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 
-        self.K.unit = (u.MeV * u.cm ** 2 * u.s * u.sr) ** (-1)
+        self.K.unit = (u.MeV * u.cm**2 * u.s * u.sr) ** (-1)
 
     def _setup(self):
 

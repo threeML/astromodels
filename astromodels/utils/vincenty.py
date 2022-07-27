@@ -24,7 +24,7 @@ def vincenty(lon0, lat0, a1, s):
 
     num1 = np.sin(lat0) * np.cos(s) + np.cos(lat0) * np.sin(s) * np.cos(a1)
     den1 = np.sqrt(
-        sina ** 2 + (np.sin(lat0) * np.sin(s) - np.cos(lat0) * np.cos(a1)) ** 2
+        sina**2 + (np.sin(lat0) * np.sin(s) - np.cos(lat0) * np.cos(a1)) ** 2
     )
     lat = np.rad2deg(np.arctan2(num1, den1))
 

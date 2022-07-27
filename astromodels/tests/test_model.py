@@ -1038,7 +1038,7 @@ def test_time_domain_integration():
 
     # Compare with analytical result
     def F(x):
-        return line2.b.value / 2.0 * x ** 2 + line2.a.value * x
+        return line2.b.value / 2.0 * x**2 + line2.a.value * x
 
     effective_norm = old_div((F(10) - F(0)), 10.0)
 

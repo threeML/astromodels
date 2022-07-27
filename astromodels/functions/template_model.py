@@ -249,13 +249,13 @@ class TemplateModelFactory(object):
         if not isinstance(differential_fluxes, u.Quantity):
 
             differential_fluxes = (
-                np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm ** 2)
+                np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm**2)
             )  # type: u.Quantity
 
         # Then we transform it in the right units and we cast it back to a pure np.array
 
         differential_fluxes = np.array(
-            differential_fluxes.to(1 / (u.keV * u.s * u.cm ** 2)).value
+            differential_fluxes.to(1 / (u.keV * u.s * u.cm**2)).value
         )
 
         # Now let's check for valid inputs

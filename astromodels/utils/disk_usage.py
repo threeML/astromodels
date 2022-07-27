@@ -21,7 +21,6 @@ if hasattr(os, "statvfs"):  # POSIX
         used = (st.f_blocks - st.f_bfree) * st.f_frsize
         return _ntuple_diskusage(total, used, free)
 
-
 elif os.name == "nt":  # Windows
     import ctypes
     import sys
@@ -41,7 +40,6 @@ elif os.name == "nt":  # Windows
             raise ctypes.WinError()
         used = total.value - free.value
         return _ntuple_diskusage(total.value, used, free.value)
-
 
 else:
     raise NotImplementedError("platform not supported")

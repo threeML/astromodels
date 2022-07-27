@@ -720,7 +720,7 @@ def test_prior():
 
     assert my_prior == p1.prior
 
-    custom_prior = lambda x: x ** 2
+    custom_prior = lambda x: x**2
 
     with pytest.raises(NotCallableOrErrorInCall):
 

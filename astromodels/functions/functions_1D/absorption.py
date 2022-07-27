@@ -206,7 +206,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -305,7 +305,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -381,7 +381,7 @@ class WAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value

@@ -76,7 +76,7 @@ class ExtendedSource(Source, Node):
                     current_u.energy
                     * current_u.area
                     * current_u.time
-                    * current_u.angle ** 2
+                    * current_u.angle**2
                 ) ** (-1)
                 spatial_shape.set_units(
                     current_u.angle,

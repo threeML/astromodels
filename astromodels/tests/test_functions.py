@@ -596,7 +596,7 @@ def test_function_values_units():
     # Try to instance it
     my_function = Test_function()
 
-    diff_flux = 1.0 / (u.keV * u.cm ** 2 * u.s)
+    diff_flux = 1.0 / (u.keV * u.cm**2 * u.s)
 
     my_function.set_units(u.keV, diff_flux)
 
@@ -648,7 +648,7 @@ def test_function_composition():
 
     composite = powerlaw + line
 
-    composite.set_units(u.keV, 1.0 / (u.keV * u.cm ** 2 * u.s))
+    composite.set_units(u.keV, 1.0 / (u.keV * u.cm**2 * u.s))
 
     for x in (
         [1, 2, 3, 4],
@@ -682,7 +682,7 @@ def test_function_composition():
     assert composite(2.25) == po(li(2.25))
 
     # test power
-    composite = po ** li
+    composite = po**li
 
     assert composite(2.25) == po(2.25) ** li(2.25)
 
@@ -701,7 +701,7 @@ def test_function_composition():
     assert abs_new_li(1.0) == abs(new_li(1.0))
 
     # test rpower
-    composite = 2.0 ** new_li
+    composite = 2.0**new_li
 
     assert composite(2.25) == 2.0 ** (new_li(2.25))
 
@@ -840,15 +840,15 @@ def test_function2D():
     fa = c(a, a)
     assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
 
-    c.set_units(u.deg, u.deg, 1.0 / u.deg ** 2)
+    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
     assert np.isclose(f1d.value, 5.17276409, rtol=1e-10)
-    assert f1d.unit == u.deg ** -2
+    assert f1d.unit == u.deg**-2
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
-    assert c.z_unit == u.deg ** -2
+    assert c.z_unit == u.deg**-2
 
     assert c.get_total_spatial_integral(1) == 1
     assert np.isclose(c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10).all()
@@ -872,16 +872,16 @@ def test_function3D():
         fa, [[134.95394313, 132.19796573], [25.40751507, 27.321443]], rtol=1e-10
     ).all()
 
-    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg ** 2)
+    c.set_units(u.deg, u.deg, u.keV, 1.0 / u.deg**2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg, 1.0 * u.keV)
     assert np.isclose(f1d.value, 134.95394313247866, rtol=1e-10)
-    assert f1d.unit == u.deg ** -2
+    assert f1d.unit == u.deg**-2
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
     assert c.z_unit == u.keV
-    assert c.w_unit == u.deg ** -2
+    assert c.w_unit == u.deg**-2
 
     assert c.get_total_spatial_integral(1) == 1
     assert np.isclose(c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10).all()
@@ -892,7 +892,7 @@ def test_function3D():
             "not existent",
             u.deg,
             u.keV,
-            1.0 / (u.keV * u.s * u.deg ** 2 * u.cm ** 2),
+            1.0 / (u.keV * u.s * u.deg**2 * u.cm**2),
         )
 
 

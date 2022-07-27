@@ -57,7 +57,7 @@ class ThreadSafe(Base):
             # If needed, raise it to the power
             if power != "":
 
-                thisr = thisr ** power
+                thisr = thisr**power
 
             r.append(thisr)
 
