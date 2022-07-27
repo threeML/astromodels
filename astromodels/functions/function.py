@@ -2485,9 +2485,8 @@ def _parse_function_expression(function_specification):
     # Use regular expressions to extract the set of functions like function_name{number},
     # then build the set of unique functions by using the constructor set()
 
-    unique_functions = set(
-        re.findall(r"\b([a-zA-Z0-9_]+)\{([0-9]?)\}", function_specification)
-    )
+    unique_functions = set(re.findall(
+        r'\b([a-zA-Z0-9_]+)\{([0-9]?[0-9]?[0-9]?)\}', function_specification))
 
     # NB: unique functions is a set like:
     # {('powerlaw', '1'), ('sin', '2')}
