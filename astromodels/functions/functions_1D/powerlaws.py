@@ -500,6 +500,7 @@ class Super_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
             is_normalization : True
+            transformation : log10
 
         piv :
 
@@ -519,6 +520,7 @@ class Super_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
             desc : Cutoff energy
             initial value : 10.0
             min : 1.0
+            transformation : log10
 
         gamma :
 
@@ -580,8 +582,9 @@ class SmoothlyBrokenPowerLaw(Function1D, metaclass=FunctionMeta):
 
             desc : normalization
             initial value : 1
-            min : 0
+            min : 1e-50
             is_normalization : True
+            transformation : log10
 
 
         alpha :
@@ -597,6 +600,7 @@ class SmoothlyBrokenPowerLaw(Function1D, metaclass=FunctionMeta):
             initial value : 300
             fix : no
             min : 10
+            transformation : log10
 
         break_scale :
 
@@ -682,12 +686,14 @@ class Broken_powerlaw(Function1D, metaclass=FunctionMeta):
             desc : Normalization (differential flux at x_b)
             initial value : 1.0
             is_normalization : True
+            transformation : log10
 
         xb :
 
             desc : Break point
             initial value : 10
             min : 1.0
+            transformation : log10
 
         alpha :
 
@@ -764,6 +770,7 @@ class Band(Function1D, metaclass=FunctionMeta):
             desc : Differential flux at the pivot energy
             initial value : 1e-4
             is_normalization : True
+            transformation : log10
 
         alpha :
 
@@ -777,6 +784,7 @@ class Band(Function1D, metaclass=FunctionMeta):
             desc : peak in the x * x * N (nuFnu if x is a energy)
             initial value : 500
             min : 10
+            transformation : log10
 
         beta :
 
@@ -843,6 +851,7 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
             desc : Differential flux at the pivot energy
             initial value : 1e-4
             is_normalization : True
+            transformation : log10
 
         alpha :
 
@@ -856,6 +865,7 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
             desc : cutoff of exp
             initial value : 500
             min : 10
+            transformation : log10
 
         beta :
 
@@ -939,13 +949,15 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
             desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)
             initial value : 200.0
-            min : 0
+            min : 1e-10
+            transformation : log10
 
         F :
 
             desc : integral in the band defined by a and b
             initial value : 1e-6
             is_normalization : True
+            transformation : log10
 
         a:
 
@@ -1104,6 +1116,7 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
             desc : Differential flux at the pivot energy
             initial value : 1e-4
             is_normalization : True
+            transformation : log10
 
         alpha1 :
 
@@ -1114,7 +1127,8 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
 
             desc : break energy below xp
             initial value : 100
-            min : 0
+            min : 1e-10
+            transformation : log10
 
         n1 :
 
@@ -1132,7 +1146,8 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
 
             desc : nuFnu peak
             initial value : 300
-            min : 0
+            min : 1e-10
+            transformation : log10
 
         n2 :
 
