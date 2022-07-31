@@ -23,7 +23,7 @@ if has_ebltable:
 
 if has_atomdb:
 
-    from .apec import APEC, VAPEC
+    from .functions_1D import APEC, VAPEC
 
 from .dark_matter.dm_models import DMFitFunction, DMSpectra
 from .function import (Function1D, Function2D, Function3D, FunctionMeta,
