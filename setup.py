@@ -73,33 +73,30 @@ def find_library(library_root, additional_places=None):
 
     first_guess = ctypes.util.find_library(library_root)
 
-    # if first_guess is not None:
+    if first_guess is not None and library_root == "gfortran":
 
-    #     # Found in one of the system paths
+        # Found in one of the system paths
 
-    #     if sys.platform.lower().find("linux") >= 0:
+        if sys.platform.lower().find("linux") >= 0:
 
-    #         # On linux the linker already knows about these paths, so we
-    #         # can return None as path
+            # On linux the linker already knows about these paths, so we
+            # can return None as path
 
-    #         return sanitize_lib_name(first_guess), None
+            return sanitize_lib_name(first_guess), None
 
-    #     elif sys.platform.lower().find("darwin") >= 0:
+        elif sys.platform.lower().find("darwin") >= 0:
 
-    #         # On Mac we still need to return the path, because the linker sometimes
-    #         # does not look into it
+            # On Mac we still need to return the path, because the linker sometimes
+            # does not look into it
 
-    #         return sanitize_lib_name(first_guess), os.path.dirname(first_guess)
+            return sanitize_lib_name(first_guess), os.path.dirname(first_guess)
 
-    #     else:
+        else:
 
-    #         # Windows is not supported
+            # Windows is not supported
 
-    #         raise NotImplementedError("Platform %s is not supported" % sys.platform)
+            raise NotImplementedError("Platform %s is not supported" % sys.platform)
 
-    if False:
-
-        pass
 
     else:
 
