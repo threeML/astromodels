@@ -136,7 +136,13 @@ def find_library(library_root, additional_places=None):
 
                 continue
 
+
+
+            print(library_root)
+
             results = glob.glob(os.path.join(search_path, f"lib{library_root}*"))
+
+            print(results)
 
             if len(results) >= 1:
 
@@ -145,7 +151,6 @@ def find_library(library_root, additional_places=None):
 
                 for result in results:
 
-                    print(results)
 
                     if re.match(f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*", os.path.basename(result)) is None:
 
