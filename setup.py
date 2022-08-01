@@ -73,6 +73,8 @@ def find_library(library_root, additional_places=None):
 
     first_guess = ctypes.util.find_library(library_root)
 
+    print(first_guess)
+
     if first_guess is not None:
 
         # Found in one of the system paths
