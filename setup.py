@@ -139,11 +139,10 @@ def find_library(library_root, additional_places=None):
 
 
 
-            print(library_root)
 
             results = glob.glob(os.path.join(search_path, f"lib{library_root}*"))
 
-            print(results)
+
 
             if len(results) >= 1:
 
