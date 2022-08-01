@@ -50,7 +50,7 @@ def sanitize_lib_name(library_path):
     tokens = re.findall("lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
 
     if not tokens:
-        raise RuntimeError('Attempting to find %s in directory %s but there are no libraries in this directory'%(lib_name,library_path))
+        raise RuntimeError(f'Attempting to find {lib_name} in directory {library_path} but there are no libraries in this directory')
 
 
     return tokens[0][0]
@@ -71,7 +71,7 @@ def find_library(library_root, additional_places=None):
 
     first_guess = ctypes.util.find_library(library_root)
 
-    if first_guess is not None:
+    if first_guess is not None and library_root == "gfortran":
 
         # Found in one of the system paths
 
@@ -94,6 +94,7 @@ def find_library(library_root, additional_places=None):
             # Windows is not supported
 
             raise NotImplementedError("Platform %s is not supported" % sys.platform)
+
 
     else:
 
@@ -134,7 +135,12 @@ def find_library(library_root, additional_places=None):
 
                 continue
 
-            results = glob.glob(os.path.join(search_path, "lib%s*" % library_root))
+
+
+
+            results = glob.glob(os.path.join(search_path, f"lib{library_root}*"))
+
+
 
             if len(results) >= 1:
 
@@ -143,7 +149,8 @@ def find_library(library_root, additional_places=None):
 
                 for result in results:
 
-                    if re.match("lib%s[\-_\.]" % library_root, os.path.basename(result)) is None:
+
+                    if re.match(f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*", os.path.basename(result)) is None:
 
                         continue
 
