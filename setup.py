@@ -136,7 +136,7 @@ def find_library(library_root, additional_places=None):
 
                 continue
 
-            results = glob.glob(os.path.join(search_path, "lib%s*" % library_root))
+            results = glob.glob(os.path.join(search_path, f"lib{library_root}*"))
 
             if len(results) >= 1:
 
@@ -144,6 +144,8 @@ def find_library(library_root, additional_places=None):
                 # If we are looking for libXS.so, we need to make sure that we get the right one!
 
                 for result in results:
+
+                    print(results)
 
                     if re.match(f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*", os.path.basename(result)) is None:
 
