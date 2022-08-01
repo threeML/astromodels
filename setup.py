@@ -145,7 +145,7 @@ def find_library(library_root, additional_places=None):
 
                 for result in results:
 
-                    if re.match("lib%s[\-_\.][0-9]\d*(\.[0-9]\d*)*" % library_root, os.path.basename(result)) is None:
+                    if re.match(f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*", os.path.basename(result)) is None:
 
                         continue
 
