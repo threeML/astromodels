@@ -91,14 +91,14 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Cache conda
-              uses: actions/cache@v2
-              env:
-                # Increase this value to reset cache if etc/example-environment.yml has not changed
-                CACHE_NUMBER: 0
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
+            # - name: Cache conda
+            #   uses: actions/cache@v2
+            #   env:
+            #     # Increase this value to reset cache if etc/example-environment.yml has not changed
+            #     CACHE_NUMBER: 0
+            #   with:
+            #       path: ~/conda_pkgs_dir
+            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v2
               with:
@@ -110,7 +110,7 @@ jobs:
                   auto-update-conda: true
                   environment-file: ci/environment.yml
                   use-only-tar-bz2: true
-                  channel-priority: flexible
+                  channel-priority: strict
                   channels: conda-forge, xspecmodels
               
 
