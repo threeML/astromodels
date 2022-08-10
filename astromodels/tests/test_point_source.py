@@ -6,8 +6,13 @@ import numpy.testing as npt
 import pytest
 
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions import (Band, Blackbody, Exponential_cutoff,
-                                   Log_parabola, Powerlaw)
+from astromodels.functions import (
+    Band,
+    Blackbody,
+    Exponential_cutoff,
+    Log_parabola,
+    Powerlaw,
+)
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 try:
@@ -19,7 +24,7 @@ except:
 
     has_abs_models = False
 
-    
+
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
 from astromodels.sources.particle_source import ParticleSource
@@ -52,11 +57,11 @@ else:
 from astromodels.functions.function import _known_functions
 from astromodels.functions.priors import *
 
-__author__ = 'giacomov'
-
+__author__ = "giacomov"
 
 
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "EBLattenuation", "ZDust"]
+
 
 def test_constructor():
 
@@ -72,7 +77,7 @@ def test_constructor():
 
     # Init with RA, Dec
 
-    point_source1 = PointSource('my_source',ra, dec, Powerlaw())
+    point_source1 = PointSource("my_source", ra, dec, Powerlaw())
 
     assert point_source1.position.get_ra() == ra
     assert point_source1.position.get_dec() == dec
@@ -89,7 +94,7 @@ def test_constructor():
 
     # Init with l,b
 
-    point_source2 = PointSource('my_source', l=l, b=b, spectral_shape=Powerlaw())
+    point_source2 = PointSource("my_source", l=l, b=b, spectral_shape=Powerlaw())
 
     assert point_source2.position.get_l() == l
     assert point_source2.position.get_b() == b
@@ -114,14 +119,14 @@ def test_constructor():
 
     point_source3 = PointSource("test_source", ra, dec, components=[c1, c2])
 
-    assert np.all(point_source3.spectrum.component1([1,2,3]) == po1([1,2,3]))
-    assert np.all(point_source3.spectrum.component2([1,2,3]) == po2([1,2,3]))
+    assert np.all(point_source3.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
+    assert np.all(point_source3.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
 
     with pytest.raises(AssertionError):
 
         # Illegal RA
 
-        _ = PointSource("test",720.0, -15.0, components=[c1,c2])
+        _ = PointSource("test", 720.0, -15.0, components=[c1, c2])
 
     with pytest.raises(AssertionError):
         # Illegal Dec
@@ -157,7 +162,7 @@ def test_call():
     one = point_source.spectrum.component1([1, 2, 3])
     two = point_source.spectrum.component2([1, 2, 3])
 
-    assert np.all( np.abs(one + two - point_source([1,2,3])) == 0 )
+    assert np.all(np.abs(one + two - point_source([1, 2, 3])) == 0)
 
 
 def test_call_with_units():
@@ -175,13 +180,13 @@ def test_call_with_units():
         _ = po(1.0 * u.keV)
 
     # Use the function as a spectrum
-    ps = PointSource("test",0,0,po)
+    ps = PointSource("test", 0, 0, po)
 
     result = po(1.0 * u.keV)
 
     assert isinstance(result, u.Quantity)
 
-    result = po(np.array([1,2,3])* u.keV)
+    result = po(np.array([1, 2, 3]) * u.keV)
 
     assert isinstance(result, u.Quantity)
 
@@ -189,13 +194,13 @@ def test_call_with_units():
     def test_one(class_type):
 
         if class_type == _ComplexTestFunction:
-        
+
             instance = class_type(file_name="test.txt")
-            
+
         else:
 
             instance = class_type()
-            
+
         if not instance.is_prior:
 
             # if we have fixed x_units then we will use those
@@ -208,11 +213,11 @@ def test_call_with_units():
             else:
 
                 x_unit_to_use = u.keV
-                
+
             # Use the function as a spectrum
             ps = PointSource("test", 0, 0, instance)
 
-            if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
+            if instance.name in ["Synchrotron", "_ComplexTestFunction"]:
 
                 # we should not do it this way
 
@@ -220,15 +225,11 @@ def test_call_with_units():
 
                 particleSource = ParticleSource("particles", p)
 
-                
-
                 instance.set_particle_distribution(p)
-
 
             # elif instance.name in ["PhAbs", "TbAbs"]:
 
             #     instance
-                
 
             result = ps(1.0)
 
@@ -241,33 +242,30 @@ def test_call_with_units():
             result = ps(np.array([1, 2, 3]) * x_unit_to_use)
 
             assert isinstance(result, u.Quantity)
-            
-            if instance.name in [ "Synchrotron", "_ComplexTestFunction" ]:
-              model = Model( particleSource, ps)
-                  
-                  
+
+            if instance.name in ["Synchrotron", "_ComplexTestFunction"]:
+                model = Model(particleSource, ps)
+
             else:
-              model = Model( ps )
-            
-            new_model = clone_model( model )
-            
-            new_result =  new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
-            
-            assert np.all(new_result==result)
+                model = Model(ps)
+
+            new_model = clone_model(model)
+
+            new_result = new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
+
+            assert np.all(new_result == result)
 
             model.save("__test.yml", overwrite=True)
-            
+
             new_model = load_model("__test.yml")
 
-            new_result =  new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
-            
-            assert np.all(new_result==result)
+            new_result = new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
+
+            assert np.all(new_result == result)
 
         else:
 
-            print ('Skipping prior function')
-
-
+            print("Skipping prior function")
 
     for key in _known_functions:
 
@@ -275,20 +273,24 @@ def test_call_with_units():
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
-        if key.find("XS")==0 and key != "XS_powerlaw" or (key in _multiplicative_models):
+        if (
+            key.find("XS") == 0
+            and key != "XS_powerlaw"
+            or (key in _multiplicative_models)
+        ):
 
             # An XSpec model. Test it only if it's a power law (the others might need other parameters during
             # initialization)
 
             continue
 
-        if key.find("TemplateModel")==0:
+        if key.find("TemplateModel") == 0:
 
             # The TemplateModel function has its own test
 
             continue
 
-        if key.find("Synchrotron")==0:
+        if key.find("Synchrotron") == 0:
 
             # Naima Synchtron function should have its own test
 
@@ -302,7 +304,6 @@ def test_call_with_units():
 
 
 def test_call_with_composite_function_with_units():
-
     def one_test(spectrum):
 
         print("Testing %s" % spectrum.expression)
@@ -320,7 +321,7 @@ def test_call_with_composite_function_with_units():
 
         pts = PointSource("test", ra=0, dec=0, spectral_shape=spectrum)
 
-        res = pts(np.array([100., 200.]) * x_unit_to_use)
+        res = pts(np.array([100.0, 200.0]) * x_unit_to_use)
 
         # This will fail if the units are wrong
         res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
@@ -348,9 +349,8 @@ def test_call_with_composite_function_with_units():
     # test the absorption models
 
     if has_abs_models:
-    
-        spectrum = PhAbs() * Powerlaw()
 
+        spectrum = PhAbs() * Powerlaw()
 
         one_test(spectrum)
 
@@ -358,12 +358,10 @@ def test_call_with_composite_function_with_units():
 
         one_test(spectrum)
 
-
         spectrum = WAbs() * Powerlaw()
 
         one_test(spectrum)
 
-    
     if has_xspec:
 
         spectrum = XS_phabs() * Powerlaw()
@@ -385,11 +383,11 @@ def test_call_with_composite_function_with_units():
         spectrum = XS_phabs() * XS_powerlaw() * XS_phabs() + XS_powerlaw()
 
         one_test(spectrum)
-        
+
     if has_ebl:
-    
+
         spectrum = Powerlaw() * EBLattenuation()
-        
+
         one_test(spectrum)
 
 
@@ -398,31 +396,33 @@ def test_free_param():
     spectrum = Log_parabola()
     source = PointSource("test_source", ra=123.4, dec=56.7, spectral_shape=spectrum)
 
-    parameters = [spectrum.alpha, spectrum.beta, spectrum.piv, spectrum.K, source.position.ra, source.position.dec]
+    parameters = [
+        spectrum.alpha,
+        spectrum.beta,
+        spectrum.piv,
+        spectrum.K,
+        source.position.ra,
+        source.position.dec,
+    ]
 
     for param in parameters:
         param.free = False
 
     assert not source.has_free_parameters
-        
+
     assert len(source.free_parameters) == 0
 
     assert len(source.parameters) > len(source.free_parameters)
-    
+
     for i, param in enumerate(parameters):
         param.free = True
-        assert len(source.free_parameters) == i+1
-
+        assert len(source.free_parameters) == i + 1
 
     assert source.has_free_parameters
 
 
 def test_local_deriv():
 
-    p = Powerlaw(index=-2.)
+    p = Powerlaw(index=-2.0)
 
-
-    npt.assert_allclose(-2., p.local_spectral_index(np.logspace(1,3,10)))
-        
-
-        
+    npt.assert_allclose(-2.0, p.local_spectral_index(np.logspace(1, 3, 10)))

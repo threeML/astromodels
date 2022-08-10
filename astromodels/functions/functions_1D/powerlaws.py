@@ -10,8 +10,11 @@ from scipy.special import erfcinv, gamma, gammaincc
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
-from astromodels.functions.function import (Function1D, FunctionMeta,
-                                            ModelAssertionViolation)
+from astromodels.functions.function import (
+    Function1D,
+    FunctionMeta,
+    ModelAssertionViolation,
+)
 
 try:
     from threeML.config.config import threeML_config
@@ -27,7 +30,7 @@ from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
 
 erg2keV = 6.24151e8
@@ -177,13 +180,13 @@ class Powerlaw_flux(Function1D, metaclass=FunctionMeta):
         else:
             yunit_ = 1.0
             xunit_ = 1.0
-            F_,  x_, index_, a_, b_ = F, x, index, a, b
+            F_, x_, index_, a_, b_ = F, x, index, a, b
 
         gp1 = index_ + 1
 
-        norm = F_ * gp1 / (((b_)**gp1 - (a_)**gp1))
+        norm = F_ * gp1 / (((b_) ** gp1 - (a_) ** gp1))
 
-        return nb_func.plaw_eval(x_, norm, index_, 1.) * yunit_
+        return nb_func.plaw_eval(x_, norm, index_, 1.0) * yunit_
 
 
 class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
@@ -263,7 +266,7 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
 
         norm = (F_ / (intflux)) * erg2keV
 
-        out = nb_func.plaw_eval(x_, 1., index_, piv_)
+        out = nb_func.plaw_eval(x_, 1.0, index_, piv_)
 
         return norm * out * yunit_
 
@@ -416,7 +419,7 @@ class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
             unit_ = 1.0
             K_, piv_, x_, index_, xp_ = K, piv, x, index, xp
 
-        xc = xp / (2+index)
+        xc = xp / (2 + index)
 
         result = nb_func.cplaw_eval(x_, K_, xc, index_, piv_)
 
@@ -907,8 +910,7 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
         out = np.zeros(x.shape) * K * 0
 
         out[idx] = (
-            K * np.power(old_div(x[idx], piv), alpha) *
-            np.exp(old_div(-x[idx], xc))
+            K * np.power(old_div(x[idx], piv), alpha) * np.exp(old_div(-x[idx], xc))
         )
         out[~idx] = (
             K
@@ -1053,7 +1055,15 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
         else:
 
-            alpha_, Ec_, a_, b_, Esplit_, beta_, x_ = alpha, Ec, a, b, Esplit, beta, x
+            alpha_, Ec_, a_, b_, Esplit_, beta_, x_ = (
+                alpha,
+                Ec,
+                a,
+                b,
+                Esplit,
+                beta,
+                x,
+            )
             unit_ = 1.0
 
         if opt == 0:
@@ -1100,7 +1110,6 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
             flux = nb_func.band_eval(x_, 1.0, alpha_, beta_, Ec_, Ec_)
 
         return norm * flux
-
 
 
 class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
@@ -1181,86 +1190,73 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
 
         # alpha and beta are dimensionless
         self.alpha1.unit = astropy_units.dimensionless_unscaled
-        self.alpha2.unit = astropy_units.dimensionless_unscaled                
+        self.alpha2.unit = astropy_units.dimensionless_unscaled
         self.beta.unit = astropy_units.dimensionless_unscaled
 
         self.n1.unit = astropy_units.dimensionless_unscaled
-        self.n2.unit = astropy_units.dimensionless_unscaled                
-   
+        self.n2.unit = astropy_units.dimensionless_unscaled
 
     def _fix_units(self, x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv):
 
-            if isinstance(x, astropy_units.Quantity):
+        if isinstance(x, astropy_units.Quantity):
 
-                return ( x.value,
-                         K.value,
-                         alpha1.value,
-                         xb.value,
-                         n1.value,
-                         alpha2.value,
-                         xp.value,
-                         n2.value,
-                         beta.value,
-                         piv.value,
-                         self.y_unit
-                )
-            
-            else:
+            return (
+                x.value,
+                K.value,
+                alpha1.value,
+                xb.value,
+                n1.value,
+                alpha2.value,
+                xp.value,
+                n2.value,
+                beta.value,
+                piv.value,
+                self.y_unit,
+            )
 
-                return ( x,
-                         K,
-                         alpha1,
-                         xb,
-                         n1,
-                         alpha2,
-                         xp,
-                         n2,
-                         beta,
-                         piv,
-                         1.
-                )
+        else:
 
+            return (x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv, 1.0)
 
-        
     def free_curvature(self) -> None:
 
         """
         free the two curvature parameters n1, n2
 
-        :returns: 
+        :returns:
 
         """
         self.n1.free = True
         self.n2.free = True
-
 
     def fix_curvature(self) -> None:
 
         """
         fix the two curvature parameters n1, n2
 
-        :returns: 
+        :returns:
 
         """
         self.n1.fix = True
         self.n2.fix = True
 
-        
     def evaluate(self, x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv):
 
-        x_, K_, alpha1_, xb_, n1_, alpha2_, xp_, n2_, beta_, piv_, y_unit = self._fix_units(x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv)
+        (
+            x_,
+            K_,
+            alpha1_,
+            xb_,
+            n1_,
+            alpha2_,
+            xp_,
+            n2_,
+            beta_,
+            piv_,
+            y_unit,
+        ) = self._fix_units(x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv)
 
-        return nb_func.dbl_sbpl(x_,
-                        K_,
-                        alpha1_,
-                        alpha2_,
-                        beta_,
-                        xp_,
-                        xb_,
-                        n1_,
-                        n2_,
-                        piv_) * y_unit
-        
-
-
-    
+        return (
+            nb_func.dbl_sbpl(x_, K_, alpha1_, alpha2_, beta_, xp_, xb_, n1_, n2_, piv_)
+            * y_unit
+        )

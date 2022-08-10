@@ -10,9 +10,10 @@ try:
 
     has_atomdb = True
 
-except:
+except ImportError:
 
     has_atomdb = False
+
 if has_atomdb:
     # APEC class
 

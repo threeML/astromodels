@@ -11,7 +11,7 @@ def is_valid_variable_name(string_to_check):
 
     try:
 
-        parse('{} = None'.format(string_to_check))
+        parse("{} = None".format(string_to_check))
         return True
 
     except (SyntaxError, ValueError, TypeError):

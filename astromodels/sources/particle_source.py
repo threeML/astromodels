@@ -1,6 +1,7 @@
 from __future__ import division
 from past.utils import old_div
-__author__ = 'giacomov'
+
+__author__ = "giacomov"
 
 import collections
 
@@ -15,6 +16,7 @@ from astromodels.utils.logging import setup_logger
 
 
 log = setup_logger(__name__)
+
 
 class ParticleSource(Source, Node):
     """
@@ -37,8 +39,10 @@ class ParticleSource(Source, Node):
 
             if distribution_shape is None:
 
-                log.error("You have to either provied a list of components, or a " \
-                                                   "distribution shape")
+                log.error(
+                    "You have to either provied a list of components, or a "
+                    "distribution shape"
+                )
 
                 raise AssertionError()
 
@@ -48,7 +52,7 @@ class ParticleSource(Source, Node):
 
         # Add a node called 'spectrum'
 
-        spectrum_node = Node('spectrum')
+        spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
@@ -72,7 +76,9 @@ class ParticleSource(Source, Node):
 
         """Get the total flux of this particle source at the given energies (summed over the components)"""
 
-        results = [component.shape(energies) for component in list(self.components.values())]
+        results = [
+            component.shape(energies) for component in list(self.components.values())
+        ]
 
         return numpy.sum(results, 0)
 
@@ -88,14 +94,14 @@ class ParticleSource(Source, Node):
 
         repr_dict = collections.OrderedDict()
 
-        key = '%s (particle source)' % self.name
+        key = "%s (particle source)" % self.name
 
         repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]['spectrum'] = collections.OrderedDict()
+        repr_dict[key]["spectrum"] = collections.OrderedDict()
 
         for component_name, component in list(self.components.items()):
 
-            repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
+            repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
 
@@ -103,7 +109,7 @@ class ParticleSource(Source, Node):
     def free_parameters(self):
         """
         Returns a dictionary of free parameters for this source.
-        We use the parameter path as the key because it's 
+        We use the parameter path as the key because it's
         guaranteed to be unique, unlike the parameter name.
 
         :return:
@@ -124,7 +130,7 @@ class ParticleSource(Source, Node):
     def parameters(self):
         """
         Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's 
+        We use the parameter path as the key because it's
         guaranteed to be unique, unlike the parameter name.
 
         :return:
@@ -138,5 +144,3 @@ class ParticleSource(Source, Node):
                 all_parameters[par.path] = par
 
         return all_parameters
-
-

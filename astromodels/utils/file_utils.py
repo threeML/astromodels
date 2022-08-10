@@ -8,6 +8,7 @@ import pkg_resources
 
 _custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
 
+
 def _get_data_file_path(data_file: str) -> Path:
     """
     Returns the absolute path to the required data files.
@@ -19,17 +20,20 @@ def _get_data_file_path(data_file: str) -> Path:
 
     try:
 
-        file_path: str = pkg_resources.resource_filename("astromodels", 'data/%s' % data_file)
+        file_path: str = pkg_resources.resource_filename(
+            "astromodels", "data/%s" % data_file
+        )
 
     except KeyError:
 
-        raise IOError("Could not read or find data file %s. Try reinstalling astromodels. If this does not fix your "
-                      "problem, open an issue on github." % (data_file))
+        raise IOError(
+            "Could not read or find data file %s. Try reinstalling astromodels. If this does not fix your "
+            "problem, open an issue on github." % (data_file)
+        )
 
     else:
 
         return Path(file_path).absolute()
-
 
 
 def get_user_path() -> Path:
@@ -41,8 +45,8 @@ def get_user_path() -> Path:
         user_path.mkdir(parents=True)
 
     return user_path
-        
-    
+
+
 def get_user_data_path() -> Path:
 
     user_data: Path = get_user_path() / "data"
@@ -51,7 +55,6 @@ def get_user_data_path() -> Path:
     if not user_data.exists():
 
         user_data.mkdir(parents=True)
-
 
     return user_data
 
@@ -69,4 +72,3 @@ def get_path_of_user_config() -> Path:
         config_path.mkdir(parents=True)
 
     return config_path
-

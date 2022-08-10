@@ -29,7 +29,7 @@ jobs:
             - name: Build package
               run: |
                   pip install wheel setuptools -U
-                  python setup.py sdist bdist_wheel
+                  python setup.py sdist
             - name: Publish
               uses: pypa/gh-action-pypi-publish@v1.1.0
               with:
@@ -53,7 +53,7 @@ jobs:
             - name: Build package
               run: |
                 pip install wheel setuptools -U
-                python setup.py sdist bdist_wheel
+                python setup.py sdist
 
             - name: List result
               run: |
@@ -84,27 +84,27 @@ jobs:
             #   uses: actions/setup-python@v2
             #   with:
             #       python-version: ${{ matrix.python-version }}
-            - name: Cache conda
-              uses: actions/cache@v2
-              env:
-                # Increase this value to reset cache if etc/example-environment.yml has not changed
-                CACHE_NUMBER: 0
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
+            # - name: Cache conda
+            #   uses: actions/cache@v2
+            #   env:
+            #     # Increase this value to reset cache if etc/example-environment.yml has not changed
+            #     CACHE_NUMBER: 0
+            #   with:
+            #       path: ~/conda_pkgs_dir
+            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v2
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
                   architecture: "x64"
-                  #mamba-version: "*"
+                  mamba-version: "*"
                   #conda-build-version: 3.21
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
                   use-only-tar-bz2: true
-                  channel-priority: flexible
+                  channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
 
             - name: Init Env

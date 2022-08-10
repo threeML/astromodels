@@ -20,23 +20,26 @@ from astromodels.functions import Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
 
-__author__ = 'henrikef'
+__author__ = "henrikef"
 
 
 def make_test_template(ra, dec, fitsfile):
 
     # Test template function: 40 pixel (0.8 deg) wide square centered approximately around a given ra, dec.
-    test_wcs=False
-    if (test_wcs):
+    test_wcs = False
+    if test_wcs:
         # this is an alternative way to build the header from WCS:
         w = wcs.WCS(naxis=2)
         w.wcs.crpix = [100, 100]
         w.wcs.cdelt = np.array([-0.02, 0.02])
         w.wcs.crval = [ra, dec]
         w.wcs.ctype = ["RA---TAN", "DEC--TAN"]
-        dOmega = (abs(w.wcs.cdelt[0] * w.wcs.cdelt[1]) *
-                 u.degree * u.degree).to(u.steradian).value
-        header=w.to_header()
+        dOmega = (
+            (abs(w.wcs.cdelt[0] * w.wcs.cdelt[1]) * u.degree * u.degree)
+            .to(u.steradian)
+            .value
+        )
+        header = w.to_header()
     else:
         cards = {
             "SIMPLE": "T",
@@ -44,21 +47,25 @@ def make_test_template(ra, dec, fitsfile):
             "NAXIS": 2,
             "NAXIS1": 200,
             "NAXIS2": 200,
-            "DATE": '2018-11-13',
-            "CUNIT1": 'deg',
-            "CRVAL1":  ra,
+            "DATE": "2018-11-13",
+            "CUNIT1": "deg",
+            "CRVAL1": ra,
             "CRPIX1": 100,
             "CDELT1": -0.02,
-            "CUNIT2": 'deg',
+            "CUNIT2": "deg",
             "CRVAL2": dec,
             "CRPIX2": 100,
             "CDELT2": 0.02,
-            "CTYPE1": 'RA---TAN',
-            "CTYPE2": 'DEC--TAN'}
+            "CTYPE1": "RA---TAN",
+            "CTYPE2": "DEC--TAN",
+        }
 
-        dOmega = (abs(cards["CDELT1"] * cards["CDELT2"]) *
-                  u.degree*u.degree).to(u.steradian).value
-        header=fits.Header(cards)
+        dOmega = (
+            (abs(cards["CDELT1"] * cards["CDELT2"]) * u.degree * u.degree)
+            .to(u.steradian)
+            .value
+        )
+        header = fits.Header(cards)
 
     data = np.zeros([200, 200])
     data[80:120, 80:120] = 1
@@ -91,9 +98,9 @@ def test_constructor():
     # Init with RA, Dec
 
     shape = Gaussian_on_sphere()
-    source1 = ExtendedSource('my_source', shape, Powerlaw())
-    shape.lon0 = ra*u.degree
-    shape.lat0 = dec*u.degree
+    source1 = ExtendedSource("my_source", shape, Powerlaw())
+    shape.lon0 = ra * u.degree
+    shape.lat0 = dec * u.degree
 
     assert source1.spatial_shape.lon0.value == ra
     assert source1.spatial_shape.lat0.value == dec
@@ -119,24 +126,19 @@ def test_call():
 
         print("testing %s ..." % name)
 
-
         if name != "SpatialTemplate_2D":
 
             shape = class_type()
-            source = ExtendedSource('test_source_%s' %
-                                name, shape, components=[c1, c2])
+            source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
-            
-            shape.lon0 = ra*u.degree
-            shape.lat0 = dec*u.degree
+            shape.lon0 = ra * u.degree
+            shape.lat0 = dec * u.degree
 
         else:
             make_test_template(ra, dec, "__test.fits")
             shape = class_type(fits_file="__test.fits")
-            source = ExtendedSource('test_source_%s' %
-                                name, shape, components=[c1, c2])
+            source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
-            
             shape.K = 1.0
 
         assert np.all(source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
@@ -147,18 +149,19 @@ def test_call():
 
         # check spectral components
         assert np.all(
-            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3])) == 0)
+            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3])) == 0
+        )
 
         # check spectral and spatial components
         total = source([ra, ra, ra], [dec, dec, dec], [1, 2, 3])
         spectrum = one + two
         spatial = source.spatial_shape([ra, ra, ra], [dec, dec, dec])
-        assert np.all(np.abs(total - spectrum*spatial) == 0)
+        assert np.all(np.abs(total - spectrum * spatial) == 0)
 
-        total = source([ra*1.01]*3, [dec*1.01]*3, [1, 2, 3])
+        total = source([ra * 1.01] * 3, [dec * 1.01] * 3, [1, 2, 3])
         spectrum = one + two
-        spatial = source.spatial_shape([ra*1.01]*3, [dec*1.01]*3)
-        assert np.all(np.abs(total - spectrum*spatial) == 0)
+        spatial = source.spatial_shape([ra * 1.01] * 3, [dec * 1.01] * 3)
+        assert np.all(np.abs(total - spectrum * spatial) == 0)
 
     for key in _known_functions:
 
@@ -171,7 +174,7 @@ def test_call():
         if key in ["SpatialTemplate_2D"]:
 
             test_one(this_function, key)
-        
+
         elif this_function._n_dim == 2 and not this_function().is_prior:
 
             test_one(this_function, key)
@@ -179,7 +182,9 @@ def test_call():
     with pytest.raises(AssertionError):
         # this will fail because the Latitude_galactic_diffuse function isn't normalized.
         test_one(
-            _known_functions["Latitude_galactic_diffuse"], "Latitude_galactic_diffuse")
+            _known_functions["Latitude_galactic_diffuse"],
+            "Latitude_galactic_diffuse",
+        )
 
 
 def test_call_with_units():
@@ -201,56 +206,66 @@ def test_call_with_units():
         if name != "SpatialTemplate_2D":
 
             shape = class_type()
-            source = ExtendedSource('test_source_%s' %
-                                    name, spatial_shape=shape, components=[c1, c2])
+            source = ExtendedSource(
+                "test_source_%s" % name,
+                spatial_shape=shape,
+                components=[c1, c2],
+            )
 
-
-            
-            shape.lon0 = ra*u.degree
-            shape.lat0 = dec*u.degree
+            shape.lon0 = ra * u.degree
+            shape.lat0 = dec * u.degree
 
         else:
             make_test_template(ra, dec, "__test.fits")
 
             shape = class_type(fits_file="__test.fits")
-            source = ExtendedSource('test_source_%s' %
-                                name, spatial_shape=shape, components=[c1, c2])
+            source = ExtendedSource(
+                "test_source_%s" % name,
+                spatial_shape=shape,
+                components=[c1, c2],
+            )
 
-    
             shape.K = 1.0
 
-        assert np.all(source.spectrum.component1(
-            [1, 2, 3]*u.keV) == po1([1, 2, 3]*u.keV))
-        assert np.all(source.spectrum.component2(
-            [1, 2, 3]*u.keV) == po2([1, 2, 3]*u.keV))
+        assert np.all(
+            source.spectrum.component1([1, 2, 3] * u.keV) == po1([1, 2, 3] * u.keV)
+        )
+        assert np.all(
+            source.spectrum.component2([1, 2, 3] * u.keV) == po2([1, 2, 3] * u.keV)
+        )
 
-        one = source.spectrum.component1([1, 2, 3]*u.keV)
-        two = source.spectrum.component2([1, 2, 3]*u.keV)
+        one = source.spectrum.component1([1, 2, 3] * u.keV)
+        two = source.spectrum.component2([1, 2, 3] * u.keV)
 
         # check spectral components
         assert np.all(
-            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3]*u.keV)) == 0)
+            np.abs(one + two - source.get_spatially_integrated_flux([1, 2, 3] * u.keV))
+            == 0
+        )
 
         # check spectral and spatial components
-        #spatial = source.spatial_shape( ra*u.deg,dec*u.deg )
+        # spatial = source.spatial_shape( ra*u.deg,dec*u.deg )
+        spatial = source.spatial_shape([ra, ra, ra] * u.deg, [dec, dec, dec] * u.deg)
+
+        total = source([ra, ra, ra] * u.deg, [dec, dec, dec] * u.deg, [1, 2, 3] * u.keV)
+        spectrum = one + two
+        assert np.all(np.abs(total - spectrum * spatial) == 0)
+
+        total = source(
+            [ra * 1.01] * 3 * u.deg, [dec * 1.01] * 3 * u.deg, [1, 2, 3] * u.keV
+        )
+        spectrum = one + two
         spatial = source.spatial_shape(
-            [ra, ra, ra]*u.deg, [dec, dec, dec]*u.deg)
-
-        total = source([ra, ra, ra]*u.deg, [dec, dec, dec]
-                       * u.deg, [1, 2, 3]*u.keV)
-        spectrum = one + two
-        assert np.all(np.abs(total - spectrum*spatial) == 0)
-
-        total = source([ra*1.01]*3*u.deg, [dec*1.01]*3*u.deg, [1, 2, 3]*u.keV)
-        spectrum = one + two
-        spatial = source.spatial_shape([ra*1.01]*3*u.deg, [dec*1.01]*3*u.deg)
-        assert np.all(np.abs(total - spectrum*spatial) == 0)
+            [ra * 1.01] * 3 * u.deg, [dec * 1.01] * 3 * u.deg
+        )
+        assert np.all(np.abs(total - spectrum * spatial) == 0)
 
         model = Model(source)
         new_model = clone_model(model)
 
-        new_total = new_model['test_source_%s' % name](
-            [ra*1.01]*3*u.deg, [dec*1.01]*3*u.deg, [1, 2, 3]*u.keV)
+        new_total = new_model["test_source_%s" % name](
+            [ra * 1.01] * 3 * u.deg, [dec * 1.01] * 3 * u.deg, [1, 2, 3] * u.keV
+        )
         assert np.all(np.abs(total - new_total) == 0)
 
     for key in _known_functions:
@@ -264,7 +279,7 @@ def test_call_with_units():
         if key in ["SpatialTemplate_2D"]:
 
             test_one(this_function, key)
-        
+
         elif this_function._n_dim == 2 and not this_function().is_prior:
 
             test_one(this_function, key)
@@ -272,17 +287,29 @@ def test_call_with_units():
     with pytest.raises(AssertionError):
         # this will fail because the Latitude_galactic_diffuse function isn't normalized.
         test_one(
-            _known_functions["Latitude_galactic_diffuse"], "Latitude_galactic_diffuse")
+            _known_functions["Latitude_galactic_diffuse"],
+            "Latitude_galactic_diffuse",
+        )
 
 
 def test_free_param():
 
     spectrum = Log_parabola()
     source = ExtendedSource(
-        "test_source", spatial_shape=Gaussian_on_sphere(), spectral_shape=spectrum)
+        "test_source",
+        spatial_shape=Gaussian_on_sphere(),
+        spectral_shape=spectrum,
+    )
 
-    parameters = [spectrum.alpha, spectrum.beta, spectrum.piv, spectrum.K,
-                  source.spatial_shape.lat0, source.spatial_shape.lon0, source.spatial_shape.sigma]
+    parameters = [
+        spectrum.alpha,
+        spectrum.beta,
+        spectrum.piv,
+        spectrum.K,
+        source.spatial_shape.lat0,
+        source.spatial_shape.lon0,
+        source.spatial_shape.sigma,
+    ]
 
     for param in parameters:
         param.free = False
@@ -291,4 +318,4 @@ def test_free_param():
 
     for i, param in enumerate(parameters):
         param.free = True
-        assert len(source.free_parameters) == i+1
+        assert len(source.free_parameters) == i + 1
