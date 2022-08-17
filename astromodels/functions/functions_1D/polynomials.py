@@ -4,8 +4,11 @@ from past.utils import old_div
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
-from astromodels.functions.function import (Function1D, FunctionMeta,
-                                            ModelAssertionViolation)
+from astromodels.functions.function import (
+    Function1D,
+    FunctionMeta,
+    ModelAssertionViolation,
+)
 
 
 def get_polynomial(order: int) -> Function1D:
@@ -14,14 +17,10 @@ def get_polynomial(order: int) -> Function1D:
 
     :param order: the order of the polynomical
     :type order: int
-    :returns: 
+    :returns:
 
     """
-    return [Constant(), Line(),Quadratic(), Cubic(), Quartic()][order]
-    
-    
-    
-    
+    return [Constant(), Line(), Quadratic(), Cubic(), Quartic()][order]
 
 
 class Constant(Function1D, metaclass=FunctionMeta):
@@ -40,6 +39,7 @@ class Constant(Function1D, metaclass=FunctionMeta):
             initial value : 0
 
     """
+
     def _set_units(self, x_unit, y_unit):
         self.k.unit = y_unit
 
@@ -69,6 +69,7 @@ class Line(Function1D, metaclass=FunctionMeta):
             initial value : 1
 
     """
+
     def _set_units(self, x_unit, y_unit):
         # a has units of y_unit / x_unit, so that a*x has units of y_unit
         self.a.unit = y_unit
@@ -107,6 +108,7 @@ class Quadratic(Function1D, metaclass=FunctionMeta):
 
 
     """
+
     def _set_units(self, x_unit, y_unit):
         # a has units of y_unit / x_unit, so that a*x has units of y_unit
         self.a.unit = y_unit

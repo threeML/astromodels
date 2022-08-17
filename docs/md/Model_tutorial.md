@@ -41,6 +41,10 @@ pts1 = PointSource('source_1', ra=125.6, dec=-75.3,
 
 # Get some info about what we just created
 pts1.display()
+
+# Have a quicker look
+pts1.plot_tree()
+
 ```
 
 Now let’s define another source, this time at Galactic Coordinates l = 11.25, b = -22.5, and with two spectral components:
@@ -79,6 +83,12 @@ Using the ```.display()``` method we can see all free parameters currently in th
 
 ```python
 my_model.display()
+```
+
+The model tree can be shown as:
+
+```python
+my_model.plot_tree()
 ```
 
 A dictionary of free parameters can be obtained like this:

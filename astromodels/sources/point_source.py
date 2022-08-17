@@ -20,11 +20,12 @@ from astromodels.sources.source import Source, SourceType
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 __all__ = ["PointSource"]
 
 log = setup_logger(__name__)
+
 
 class PointSource(Source, Node):
     """
@@ -48,9 +49,9 @@ class PointSource(Source, Node):
         Or with Galactic position:
 
         >>> point_source = PointSource("test_source",l=15.67, b=80.75,components=[c1,c2])
-    
+
     NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)
-    
+
     :param source_name: name for the source
     :param ra: Equatorial J2000 Right Ascension (ICRS)
     :param dec: Equatorial J2000 Declination (ICRS)
@@ -61,15 +62,18 @@ class PointSource(Source, Node):
     :param sky_position: an instance of SkyDirection
     :return:
     """
-    def __init__(self,
-                 source_name: str,
-                 ra: Optional[float] = None,
-                 dec: Optional[float] = None,
-                 spectral_shape: Optional[Function1D] = None,
-                 l: Optional[float] = None,
-                 b: Optional[float] = None,
-                 components=None,
-                 sky_position: Optional[SkyDirection]=None):
+
+    def __init__(
+        self,
+        source_name: str,
+        ra: Optional[float] = None,
+        dec: Optional[float] = None,
+        spectral_shape: Optional[Function1D] = None,
+        l: Optional[float] = None,
+        b: Optional[float] = None,
+        components=None,
+        sky_position: Optional[SkyDirection] = None,
+    ):
 
         # Check that we have all the required information
 
@@ -77,9 +81,11 @@ class PointSource(Source, Node):
 
         # Check that we have one and only one specification of the position
 
-        if not ((ra is not None and dec is not None) ^
-                (l is not None and b is not None) ^
-                (sky_position is not None)):
+        if not (
+            (ra is not None and dec is not None)
+            ^ (l is not None and b is not None)
+            ^ (sky_position is not None)
+        ):
 
             log.error(
                 "You have to provide one and only one specification for the position"
@@ -102,9 +108,11 @@ class PointSource(Source, Node):
 
                 except (TypeError, ValueError):
 
-                    log.error("RA and Dec must be numbers. If you are confused by this message, you "
-                                         "are likely using the constructor in the wrong way. Check the documentation.")
-                    
+                    log.error(
+                        "RA and Dec must be numbers. If you are confused by this message, you "
+                        "are likely using the constructor in the wrong way. Check the documentation."
+                    )
+
                     raise AssertionError()
 
                 sky_position = SkyDirection(ra=ra, dec=dec)
@@ -122,7 +130,9 @@ class PointSource(Source, Node):
 
         if not (spectral_shape is not None) ^ (components is not None):
 
-            log.error("You have to provide either a single component, or a list of components (but not both).")
+            log.error(
+                "You have to provide either a single component, or a list of components (but not both)."
+            )
 
             raise AssertionError()
 
@@ -144,7 +154,7 @@ class PointSource(Source, Node):
 
         # Add a node called 'spectrum'
 
-        spectrum_node = Node('spectrum')
+        spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
@@ -157,7 +167,9 @@ class PointSource(Source, Node):
         # Components in this case have energy as x and differential flux as y
 
         x_unit = current_units.energy
-        y_unit = (current_units.energy * current_units.area * current_units.time) ** (-1)
+        y_unit = (current_units.energy * current_units.area * current_units.time) ** (
+            -1
+        )
 
         # Now set the units of the components
         for component in list(self._components.values()):
@@ -174,7 +186,9 @@ class PointSource(Source, Node):
 
                 # Slow version with units
 
-                results = [component.shape(x) for component in list(self.components.values())]
+                results = [
+                    component.shape(x) for component in list(self.components.values())
+                ]
 
                 # We need to sum like this (slower) because using np.sum will not preserve the units
                 # (thanks astropy.units)
@@ -186,7 +200,9 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same units as currently defined in
                 # units.get_units()
 
-                results = numpy.array([component.shape(x) for component in list(self.components.values())])
+                results = numpy.array(
+                    [component.shape(x) for component in list(self.components.values())]
+                )
 
                 return _sum(results)
 
@@ -231,7 +247,9 @@ class PointSource(Source, Node):
                             return reentrant_call(e, tag=None)
 
                         # Now integrate
-                        integrals[i] = scipy.integrate.quad(integral, a, b, epsrel=1e-5)[0]
+                        integrals[i] = scipy.integrate.quad(
+                            integral, a, b, epsrel=1e-5
+                        )[0]
 
                 return old_div(integrals, (b - a))
 
@@ -263,7 +281,7 @@ class PointSource(Source, Node):
     def free_parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of free parameters for this source.
-        We use the parameter path as the key because it's 
+        We use the parameter path as the key because it's
         guaranteed to be unique, unlike the parameter name.
 
         :return:
@@ -290,7 +308,7 @@ class PointSource(Source, Node):
     def parameters(self) -> Dict[str, Parameter]:
         """
         Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's 
+        We use the parameter path as the key because it's
         guaranteed to be unique, unlike the parameter name.
 
         :return:
@@ -321,21 +339,19 @@ class PointSource(Source, Node):
 
         repr_dict = collections.OrderedDict()
 
-        key = '%s (point source)' % self.name
+        key = "%s (point source)" % self.name
 
         repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]['position'] = self._sky_position.to_dict(minimal=True)
-        repr_dict[key]['spectrum'] = collections.OrderedDict()
+        repr_dict[key]["position"] = self._sky_position.to_dict(minimal=True)
+        repr_dict[key]["spectrum"] = collections.OrderedDict()
 
         for component_name, component in list(self.components.items()):
 
-            repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
+            repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
-
 
 
 @nb.njit(fastmath=True)
 def _sum(x):
     return numpy.sum(x, axis=0)
-    

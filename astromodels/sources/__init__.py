@@ -1,4 +1,4 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 from .point_source import PointSource
 from .extended_source import ExtendedSource

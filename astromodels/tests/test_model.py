@@ -13,20 +13,26 @@ import copy
 import numpy as np
 
 from astromodels import u, update_logging_level
-from astromodels.core.model import (CannotWriteModel, DuplicatedNode, Model,
-                                    ModelFileExists)
+from astromodels.core.model import (
+    CannotWriteModel,
+    DuplicatedNode,
+    Model,
+    ModelFileExists,
+)
 from astromodels.core.model_parser import *
 from astromodels.core.parameter import IndependentVariable, Parameter
-from astromodels.functions import (Gaussian_on_sphere, Line, Powerlaw,
-                                   Uniform_prior)
+from astromodels.functions import (
+    Gaussian_on_sphere,
+    Line,
+    Powerlaw,
+    Uniform_prior,
+)
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
 
 update_logging_level("DEBUG")
-
-
 
 
 def _get_point_source(name="test"):
@@ -186,8 +192,7 @@ def test_constructor_with_many_point_sources():
 
     # Test with 200 point sources
 
-    many_p_sources = [_get_point_source(
-        "pts_source%i" % x) for x in range(200)]
+    many_p_sources = [_get_point_source("pts_source%i" % x) for x in range(200)]
 
     m = Model(*many_p_sources)
 
@@ -202,8 +207,7 @@ def test_constructor_with_many_extended_sources():
     _ = Model(ext)
 
     # Test with 200 extended sources
-    many_e_sources = [_get_extended_source(
-        "ext_source%i" % x) for x in range(200)]
+    many_e_sources = [_get_extended_source("ext_source%i" % x) for x in range(200)]
 
     m = Model(*many_e_sources)
 
@@ -212,14 +216,11 @@ def test_constructor_with_many_extended_sources():
 
 def test_constructor_with_mix():
 
-    many_p_sources = [_get_point_source(
-        "pts_source%i" % x) for x in range(200)]
+    many_p_sources = [_get_point_source("pts_source%i" % x) for x in range(200)]
 
-    many_e_sources = [_get_extended_source(
-        "ext_source%i" % x) for x in range(200)]
+    many_e_sources = [_get_extended_source("ext_source%i" % x) for x in range(200)]
 
-    many_part_sources = [_get_particle_source(
-        "part_source%i" % x) for x in range(200)]
+    many_part_sources = [_get_particle_source("part_source%i" % x) for x in range(200)]
 
     all_sources = []
     all_sources.extend(many_p_sources)
@@ -329,14 +330,12 @@ def test_links():
     # Now test the link
 
     # This should print a warning, as trying to change the value of a linked parameters does not have any effect
-    
+
     old_value = m.one.spectrum.main.Powerlaw.K
-    
-    
+
     m.one.spectrum.main.Powerlaw.K = 1.23456
 
     assert old_value == m.one.spectrum.main.Powerlaw.K
-    
 
     # This instead should work
     new_value = 1.23456
@@ -364,8 +363,7 @@ def test_links():
 
     n_free_before_link = len(m.free_parameters)
 
-    m.link(m.one.spectrum.main.Powerlaw.K,
-           m.two.spectrum.main.Powerlaw.K, link_law)
+    m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K, link_law)
 
     # The power law adds two parameters, but the link removes one, so
     assert len(m.free_parameters) - 1 == n_free_before_link
@@ -399,8 +397,7 @@ def test_links():
     assert m.ext_one.spectrum.main.Powerlaw.K.value == new_value
     # Remove the links at once
 
-    m.unlink([m.one.spectrum.main.Powerlaw.K,
-              m.ext_one.spectrum.main.Powerlaw.K])
+    m.unlink([m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K])
 
 
 def test_auto_unlink():
@@ -413,8 +410,7 @@ def test_auto_unlink():
 
     # Link as equal (default)
     m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K)
-    m.link(m.one.spectrum.main.Powerlaw.index,
-           m.two.spectrum.main.Powerlaw.index)
+    m.link(m.one.spectrum.main.Powerlaw.index, m.two.spectrum.main.Powerlaw.index)
 
     n_free_source2 = len(m.two.free_parameters)
 
@@ -436,10 +432,7 @@ def test_auto_unlink():
     link_law.K.value = 1.0
     link_law.index.value = -1.0
 
-    m.link(m.one.spectrum.main.Powerlaw.K,
-           m.two.spectrum.main.Powerlaw.K, link_law)
-
-    
+    m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K, link_law)
 
     m.remove_source(m.two.name)
 
@@ -451,17 +444,18 @@ def test_auto_unlink():
 
     m = mg.model
 
-    m.link([m.one.spectrum.main.Powerlaw.K,
-            m.ext_one.spectrum.main.Powerlaw.K], m.two.spectrum.main.Powerlaw.K)
+    m.link(
+        [m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K],
+        m.two.spectrum.main.Powerlaw.K,
+    )
 
-    #with pytest.warns(RuntimeWarning):
+    # with pytest.warns(RuntimeWarning):
 
     m.remove_source(m.two.name)
 
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
-    m.unlink([m.one.spectrum.main.Powerlaw.K,
-              m.ext_one.spectrum.main.Powerlaw.K])
+    m.unlink([m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K])
 
 
 def test_external_parameters():
@@ -650,15 +644,14 @@ def test_input_output_with_complex_functions():
 
     my_particle_distribution.index = -1.52
 
-    electrons = ParticleSource(
-        "electrons", distribution_shape=my_particle_distribution)
+    electrons = ParticleSource("electrons", distribution_shape=my_particle_distribution)
 
     # Now set up the synch. spectrum for our source and the source itself
 
     synch_spectrum = _ComplexTestFunction(file_name="test.txt")
 
     synch_spectrum.dummy = "love"
-    
+
     # Use the particle distribution we created as source for the electrons
     # producing synch. emission
 
@@ -668,9 +661,6 @@ def test_input_output_with_complex_functions():
         "synch_source", ra=12.6, dec=-13.5, spectral_shape=synch_spectrum
     )
 
-
-    
-    
     my_model = Model(electrons, synch_source)
 
     my_model.display()
@@ -689,9 +679,9 @@ def test_input_output_with_complex_functions():
     assert new_model.synch_source.spectrum.main.shape.file_name.value == "test.txt"
 
     assert new_model.synch_source.spectrum.main.shape.dummy.value == "love"
-    
-    
+
     os.remove("__test.yml")
+
 
 def test_input_output_with_complex_functions_as_composites():
 
@@ -699,14 +689,12 @@ def test_input_output_with_complex_functions_as_composites():
 
     my_particle_distribution.index = -1.52
 
-    electrons = ParticleSource(
-        "electrons", distribution_shape=my_particle_distribution)
+    electrons = ParticleSource("electrons", distribution_shape=my_particle_distribution)
 
     # Now set up the synch. spectrum for our source and the source itself
 
     synch_spectrum = _ComplexTestFunction(file_name="test.txt")
-    
-    
+
     # Use the particle distribution we created as source for the electrons
     # producing synch. emission
 
@@ -715,7 +703,7 @@ def test_input_output_with_complex_functions_as_composites():
     photon_spec = synch_spectrum + Powerlaw()
 
     photon_spec.dummy_1 = "love"
-    
+
     synch_source = PointSource(
         "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
     )
@@ -735,14 +723,12 @@ def test_input_output_with_complex_functions_as_composites():
         == new_model.electrons.spectrum.main.shape.index.value
     )
 
-
     assert new_model.synch_source.spectrum.main.shape.file_name_1.value == "test.txt"
 
     assert new_model.synch_source.spectrum.main.shape.dummy_1.value == "love"
 
-    
     os.remove("__test.yml")
-    
+
 
 def test_add_remove_sources():
 
@@ -888,11 +874,9 @@ def test_3ML_interface():
     energies = np.logspace(3, 4, 100)
     fluxes = m.get_extended_source_fluxes(0, ra, dec, energies)
 
-    assert np.all(fluxes == list(m.extended_sources.values())
-                  [0](ra, dec, energies))
+    assert np.all(fluxes == list(m.extended_sources.values())[0](ra, dec, energies))
 
-    assert m.get_extended_source_name(0) == list(
-        m.extended_sources.values())[0].name
+    assert m.get_extended_source_name(0) == list(m.extended_sources.values())[0].name
 
     res = m.get_extended_source_boundaries(0)
 
@@ -910,8 +894,7 @@ def test_3ML_interface():
 
     assert np.all(fluxes == list(m.particle_sources.values())[0](energies))
 
-    assert m.get_particle_source_name(0) == list(
-        m.particle_sources.values())[0].name
+    assert m.get_particle_source_name(0) == list(m.particle_sources.values())[0].name
 
 
 def test_clone_model():
@@ -1055,12 +1038,11 @@ def test_time_domain_integration():
 
     # Compare with analytical result
     def F(x):
-        return line2.b.value / 2.0 * x ** 2 + line2.a.value * x
+        return line2.b.value / 2.0 * x**2 + line2.a.value * x
 
     effective_norm = old_div((F(10) - F(0)), 10.0)
 
-    expected_results = default_powerlaw(
-        energies) * effective_norm  # type: np.ndarray
+    expected_results = default_powerlaw(energies) * effective_norm  # type: np.ndarray
 
     assert np.allclose(expected_results, results)
 

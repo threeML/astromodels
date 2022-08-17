@@ -146,9 +146,9 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
 
         self.channel.unit = astropy_units.dimensionless_unscaled
 
-        self.sigmav.unit = astropy_units.cm ** 3 / astropy_units.s
+        self.sigmav.unit = astropy_units.cm**3 / astropy_units.s
 
-        self.J.unit = astropy_units.GeV ** 2 / astropy_units.cm ** 5
+        self.J.unit = astropy_units.GeV**2 / astropy_units.cm**5
 
     def print_channel_mapping(self):
 
@@ -403,8 +403,8 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
 
         self.mass.unit = astropy_units.GeV
         self.channel.unit = astropy_units.dimensionless_unscaled
-        self.sigmav.unit = astropy_units.cm ** 3 / astropy_units.s
-        self.J.unit = astropy_units.GeV ** 2 / astropy_units.cm ** 5
+        self.sigmav.unit = astropy_units.cm**3 / astropy_units.s
+        self.J.unit = astropy_units.GeV**2 / astropy_units.cm**5
 
     def print_channel_mapping(self):
         channel_mapping = {

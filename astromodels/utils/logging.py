@@ -19,9 +19,22 @@ try:
 
     has_threeml = True
 
-except:
+except ImportError:
 
     has_threeml = False
+
+
+DEBUG_NODE_LEVEL = 9
+logging.addLevelName(DEBUG_NODE_LEVEL, "DEBUG_NODE")
+
+
+def debug_node(self, message, *args, **kws):
+    if self.isEnabledFor(DEBUG_NODE_LEVEL):
+        # Yes, logger takes its '*args' as 'args'.
+        self._log(DEBUG_NODE_LEVEL, message, args, **kws)
+
+
+logging.Logger.debug_node = debug_node
 
 
 def get_path_of_log_dir():
@@ -52,7 +65,9 @@ def get_path_of_log_file(log_file: str) -> Path:
     """
     returns the path of the log files
     """
-    assert log_file in _log_file_names, f"{log_file} is not one of {_log_file_names}"
+    assert (
+        log_file in _log_file_names
+    ), f"{log_file} is not one of {_log_file_names}"
 
     return get_path_of_log_dir() / log_file
 
@@ -102,9 +117,6 @@ _console_formatter = logging.Formatter(
 )
 
 
-
-
-
 _theme = {}
 
 # Banner
@@ -123,10 +135,10 @@ _theme["logging.level.debug"] = f"{astromodels_config.logging.debug_style}"
 _theme["logging.level.error"] = f"{astromodels_config.logging.error_style}"
 _theme["logging.level.info"] = f"{astromodels_config.logging.info_style}"
 _theme["logging.level.warning"] = f"{astromodels_config.logging.warn_style}"
+_theme["logging.level.degub_node"] = "light_goldenrod1"
 
 
-
-#mytheme = Theme().read(_get_data_file_path("log_theme.ini"))
+# mytheme = Theme().read(_get_data_file_path("log_theme.ini"))
 mytheme = Theme(_theme)
 console = Console(theme=mytheme)
 
@@ -170,7 +182,7 @@ def setup_logger(name):
     log = logging.getLogger(name)
 
     # this must be set to allow debug messages through
-    log.setLevel(logging.DEBUG)
+    log.setLevel(DEBUG_NODE_LEVEL)
 
     # add the handlers
 

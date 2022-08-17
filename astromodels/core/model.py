@@ -17,8 +17,13 @@ from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import DuplicatedNode, Node
 from astromodels.functions.function import Function, get_function
-from astromodels.sources import (ExtendedSource, ParticleSource, PointSource,
-                                 Source, SourceType)
+from astromodels.sources import (
+    ExtendedSource,
+    ParticleSource,
+    PointSource,
+    Source,
+    SourceType,
+)
 from astromodels.utils.disk_usage import disk_usage
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.long_path_formatter import long_path_formatter
@@ -170,7 +175,7 @@ class Model(Node):
         :return:
         """
 
-        if not source_name in self.sources:
+        if source_name not in self.sources:
 
             log.error(f"Source {source_name} is not part of the current model")
 
@@ -442,7 +447,9 @@ class Model(Node):
         return self._particle_sources
 
     @property
-    def sources(self) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
+    def sources(
+        self,
+    ) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
         """
         Returns a dictionary containing all defined sources (of any kind)
 
@@ -454,7 +461,11 @@ class Model(Node):
             str, Union[PointSource, ExtendedSource, ParticleSource]
         ] = collections.OrderedDict()
 
-        for d in (self.point_sources, self.extended_sources, self.particle_sources):
+        for d in (
+            self.point_sources,
+            self.extended_sources,
+            self.particle_sources,
+        ):
 
             sources.update(d)
 
@@ -616,17 +627,21 @@ class Model(Node):
             parameter_1_list = list(parameter_1)
 
         for param_1 in parameter_1_list:
-            if not param_1.path in self:
+            if param_1.path not in self:
 
-                log.error("Parameter %s is not contained in this model" % param_1.path)
+                msg = f"Parameter {param_1.path} is not contained in this model"
 
-                raise AssertionError()
+                log.error(msg)
 
-        if not parameter_2.path in self:
+                raise AssertionError(msg)
 
-            log.error("Parameter %s is not contained in this model" % parameter_2.path)
+        if parameter_2.path not in self:
 
-            raise AssertionError()
+            msg = f"Parameter{parameter_2.path} is not contained in this model"
+
+            log.error(msg)
+
+            raise AssertionError(msg)
 
         if link_function is None:
             # Use the Line function by default, with both parameters fixed so that the two
@@ -705,8 +720,14 @@ class Model(Node):
             collections.OrderedDict(
                 [
                     ("Point sources", [self.get_number_of_point_sources()]),
-                    ("Extended sources", [self.get_number_of_extended_sources()]),
-                    ("Particle sources", [self.get_number_of_particle_sources()]),
+                    (
+                        "Extended sources",
+                        [self.get_number_of_extended_sources()],
+                    ),
+                    (
+                        "Particle sources",
+                        [self.get_number_of_particle_sources()],
+                    ),
                 ]
             ),
             columns=["N"],
@@ -998,7 +1019,10 @@ class Model(Node):
                 for linked_frame in linked_frames:
 
                     linked_summary_representation += linked_frame.__repr__()
-                    linked_summary_representation += "%s%s" % (new_line, new_line)
+                    linked_summary_representation += "%s%s" % (
+                        new_line,
+                        new_line,
+                    )
 
             if len(linked_functions) == 0:
 
@@ -1029,7 +1053,10 @@ class Model(Node):
                 for v_frame in independent_v_frames:
 
                     independent_v_representation += v_frame.__repr__()
-                    independent_v_representation += "%s%s" % (new_line, new_line)
+                    independent_v_representation += "%s%s" % (
+                        new_line,
+                        new_line,
+                    )
 
             if fixed_parameters_summary.empty:
 
@@ -1081,13 +1108,20 @@ class Model(Node):
 
         n_fix = len(parameters) - len(free_parameters) - len(linked_parameters)
 
-        representation += "%sFixed parameters (%i):%s" % (new_line, n_fix, new_line)
+        representation += "%sFixed parameters (%i):%s" % (
+            new_line,
+            n_fix,
+            new_line,
+        )
 
         if self._complete_display:
 
             if not rich_output:
 
-                representation += "---------------------%s%s" % (new_line, new_line)
+                representation += "---------------------%s%s" % (
+                    new_line,
+                    new_line,
+                )
 
             else:
 
@@ -1133,7 +1167,10 @@ class Model(Node):
 
         if not rich_output:
 
-            representation += "----------------------%s%s" % (new_line, new_line)
+            representation += "----------------------%s%s" % (
+                new_line,
+                new_line,
+            )
 
         else:
 
@@ -1147,7 +1184,10 @@ class Model(Node):
 
         if not rich_output:
 
-            representation += "----------------------%s%s" % (new_line, new_line)
+            representation += "----------------------%s%s" % (
+                new_line,
+                new_line,
+            )
 
         else:
 
@@ -1165,7 +1205,10 @@ class Model(Node):
 
         if not rich_output:
 
-            representation += "----------------------%s%s" % (new_line, new_line)
+            representation += "----------------------%s%s" % (
+                new_line,
+                new_line,
+            )
 
         else:
 

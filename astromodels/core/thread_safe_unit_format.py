@@ -18,16 +18,16 @@ from functools import reduce
 # constructor and in the .to_string method of the Unit and
 # Quantity classes as format='threadsafe' (case insensitive)
 
+
 def _format_one(xxx_todo_changeme):
     # This is for example 'cm-2' if base=cm and power=-2,
     # but only 'cm' if base=cm and power=1
 
     (base, power) = xxx_todo_changeme
-    return "%s%s" % (base.to_string(), power if power != 1 else '')
+    return "%s%s" % (base.to_string(), power if power != 1 else "")
 
 
 class ThreadSafe(Base):
-
     @classmethod
     def parse(cls, s):
 
@@ -43,7 +43,7 @@ class ThreadSafe(Base):
         # This is of course the format that is the output of
         # our to_string method(). See there for details
 
-        tokens = re.findall('([a-zA-z]+)(-?\+?[0-9]+)?', s)
+        tokens = re.findall("([a-zA-z]+)(-?\+?[0-9]+)?", s)
 
         # tokens is a list of tuples of the type [(unit name, power), ...]
         # Here we build a list like [u.m, u.s**(-1), ...]
@@ -55,7 +55,7 @@ class ThreadSafe(Base):
             thisr = getattr(u, unit)
 
             # If needed, raise it to the power
-            if power != '':
+            if power != "":
 
                 thisr = thisr**power
 
@@ -64,7 +64,7 @@ class ThreadSafe(Base):
         # Now we multiply the units
         # so that we get something like u.m * u.s**(-1)
 
-        return reduce(lambda x, y: x*y, r)
+        return reduce(lambda x, y: x * y, r)
 
     @classmethod
     def to_string(cls, unit):

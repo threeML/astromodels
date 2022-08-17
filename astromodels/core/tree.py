@@ -27,6 +27,7 @@ class NonExistingAttribute(RuntimeWarning):
 
 log = setup_logger(__name__)
 
+
 class Node(NodeBase):
 
     # This apparently dumb constructor is needed otherwise pickle will fail
@@ -35,8 +36,10 @@ class Node(NodeBase):
 
         if not is_valid_variable_name(name):
 
-            log.error("Illegal characters in name %s. You can only use letters and numbers, " \
-                                             "and _" % name)
+            log.error(
+                "Illegal characters in name %s. You can only use letters and numbers, "
+                "and _" % name
+            )
 
             raise AssertionError()
 
@@ -47,7 +50,7 @@ class Node(NodeBase):
             raise AssertionError()
 
         NodeBase.__init__(self, name)
-        
+
         #########################################################################
 
     def __hash__(self):
@@ -56,14 +59,11 @@ class Node(NodeBase):
         # anytime we need a hash should
         # be after a model is finalized
         # so it should be static
-        
-        return hash(self._get_path())
-        
-        
-    def to_dict(self, minimal: bool=False) -> Dict[str, Any]:
-        """
 
-        """    
+        return hash(self._get_path())
+
+    def to_dict(self, minimal: bool = False) -> Dict[str, Any]:
+        """ """
         this_dict: Dict[str, Any] = collections.OrderedDict()
 
         for child in self._get_children():
