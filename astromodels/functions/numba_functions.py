@@ -103,7 +103,7 @@ def super_cplaw_eval(x, K, piv, index, xc, gamma):
 
     for i in range(n):
 
-        log_v = index * np.log(x[i] / piv) - (x[i] / xc)**gamma
+        log_v = index * np.log(x[i] / piv) - np.power(x[i]/xc, gamma)
 
         out[i] = K * np.exp(log_v)
 
