@@ -9,20 +9,22 @@ from .tree import Node
 log = setup_logger(__name__)
 
 # Exception for when a parameter is out of its bounds
+
+
 class SettingUnknownValue(RuntimeError):
     pass
 
 
 class PropertyBase(Node):
-
-    def __init__(self,
-                 name: str,
-                 desc: str,
-                 value: Optional[str] = None,
-                 allowed_values: Optional[List[str]] = None,
-                 defer: bool = False,
-                 eval_func: Optional[str] = None
-                 ):
+    def __init__(
+        self,
+        name: str,
+        desc: str,
+        value: Optional[str] = None,
+        allowed_values: Optional[List[str]] = None,
+        defer: bool = False,
+        eval_func: Optional[str] = None,
+    ):
 
         # Make this a node
 
@@ -31,7 +33,7 @@ class PropertyBase(Node):
         self._allowed_values: Optional[List[str]] = allowed_values
         self._defer: bool = defer
         self._eval_func: Optional[str] = eval_func
-        
+
         if (value is None) and (not self._defer):
 
             log.error(f"property {name} was given no initial value but is NOT deferred")
@@ -49,10 +51,11 @@ class PropertyBase(Node):
         Return current parameter value
         """
 
-        log.debug(f"accessing the property {self.name} with value {self._internal_value}")
-        
+        log.debug(
+            f"accessing the property {self.name} with value {self._internal_value}"
+        )
+
         return self._internal_value
-    
 
     def _set_value(self, new_value) -> None:
         """
@@ -61,20 +64,21 @@ class PropertyBase(Node):
 
         if (self._defer) and (new_value is None):
 
-                # this is ok
-                pass
+            # this is ok
+            pass
 
         elif self._allowed_values is not None:
 
-            if not new_value in self._allowed_values:
+            if new_value not in self._allowed_values:
 
-                log.error(f"{self.name} can only take the values {','.join(self._allowed_values)} not {new_value}")
+                log.error(
+                    f"{self.name} can only take the values {','.join(self._allowed_values)} not {new_value}"
+                )
 
                 raise SettingUnknownValue()
-                
 
         self._internal_value = new_value
-                                       
+
         # if there is an eval func value
         # then we need to execute the function
         # on the parent
@@ -82,8 +86,8 @@ class PropertyBase(Node):
         if (self._internal_value == "_tmp") and self._defer:
 
             # do not execute in this mode
-            
-            return 
+
+            return
 
         if self._eval_func is not None:
 
@@ -95,35 +99,36 @@ class PropertyBase(Node):
 
                     func_idx = int(self._name.split("_")[-1]) - 1
 
+                    log.debug(f"{self._name} has a composite parent and")
+                    log.debug(f"is being executed on func idx {func_idx}")
+                    log.debug(
+                        f"and the parent has {len(self._parent._functions)} functions"
+                    )
+
                     getattr(self._parent._functions[func_idx], str(self._eval_func))()
 
                 else:
-                
+
                     getattr(self._parent, str(self._eval_func))()
 
             # other wise this will run when the parent is set
-                
-        
-        
 
     value = property(
         _get_value,
         _set_value,
-        doc=
-        "Get and sets the current value for the propert",)
+        doc="Get and sets the current value for the property",
+    )
 
     def _set_parent(self, parent):
 
         # we intecept here becuase we want
         # to make sure the eval works
-        
+
         super(PropertyBase, self)._set_parent(parent)
 
         # now we want to update because we have a parent
         self.value = self._internal_value
-        
 
-    
     @property
     def is_deferred(self) -> bool:
         return self._defer
@@ -136,7 +141,7 @@ class PropertyBase(Node):
         :return: a string cointaining a description of the meaning of this parameter
         """
         return self._desc
-    
+
     def duplicate(self) -> "FunctionProperty":
         """
         Returns an exact copy of the current property
@@ -151,8 +156,8 @@ class PropertyBase(Node):
     def _repr__base(self, rich_output):  # pragma: no cover
 
         raise NotImplementedError(
-            "You need to implement this for the actual Property class")
-
+            "You need to implement this for the actual Property class"
+        )
 
     @staticmethod
     def _to_python_type(variable):
@@ -173,7 +178,6 @@ class PropertyBase(Node):
 
             return variable
 
-    
     def to_dict(self, minimal=False) -> Dict[str, Any]:
         """Returns the representation for serialization"""
 
@@ -197,32 +201,32 @@ class PropertyBase(Node):
 
         return data
 
-    
-        
+
 class FunctionProperty(PropertyBase):
+    def __init__(
+        self,
+        name: str,
+        desc: str,
+        value: Optional[str] = None,
+        allowed_values: Optional[List[Any]] = None,
+        defer: bool = False,
+        eval_func: Optional[str] = None,
+    ):
 
-        def __init__(self,
-                     name: str,
-                     desc: str,
-                     value: Optional[str] = None,
-                     allowed_values: Optional[List[Any]] = None,
-                     defer: bool = False,
-                     eval_func: Optional[str] = None
-                     
-                     ):
+        super(FunctionProperty, self).__init__(
+            name=name,
+            desc=desc,
+            value=value,
+            allowed_values=allowed_values,
+            defer=defer,
+            eval_func=eval_func,
+        )
 
-            super(FunctionProperty, self).__init__(name=name,desc=desc,
-                                                   value=value,
-                                                   allowed_values=allowed_values,
-                                                   defer=defer,
-                                                   eval_func=eval_func)
+    def _repr__base(self, rich_output=False):
 
-            
-        def _repr__base(self, rich_output=False):
+        representation = (
+            f"Property {self.name} = {self.value}\n"
+            f"(allowed values = {'all' if self._allowed_values is None else ' ,'.join(self._allowed_values)})"
+        )
 
-            representation = (
-                f"Property {self.name} = {self.value}\n"
-                f"(allowed values = {'all' if self._allowed_values is None else ' ,'.join(self._allowed_values)})")
-                
-            return representation
-            
+        return representation

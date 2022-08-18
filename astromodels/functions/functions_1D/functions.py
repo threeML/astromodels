@@ -26,7 +26,6 @@ class NaimaNotAvailable(ImportWarning):
     pass
 
 
-
 class InvalidUsageForFunction(Exception):
     pass
 
@@ -39,7 +38,6 @@ try:
 
     # Naima is for numerical computation of Synch. and Inverse compton spectra in randomly oriented
     # magnetic fields
-
 
     import naima
 
@@ -78,7 +76,6 @@ except ImportError:
 else:
 
     has_gsl = True
-
 
 
 class StepFunction(Function1D, metaclass=FunctionMeta):
@@ -188,9 +185,6 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
 # noinspection PyPep8Naming
 
 
-
-    
-
 # noinspection PyPep8Naming
 
 
@@ -245,8 +239,6 @@ class Sin(Function1D, metaclass=FunctionMeta):
     # noinspection PyPep8Naming
     def evaluate(self, x, K, f, phi):
         return K * np.sin(2 * np.pi * f * x + phi)
-
-
 
 
 class DiracDelta(Function1D, metaclass=FunctionMeta):
@@ -326,7 +318,7 @@ if has_naima:
             # this is needed to load from
             # yaml
 
-            for k,v in self._children.items():
+            for k, v in self._children.items():
 
                 if k not in self._parameters:
 
@@ -336,8 +328,6 @@ if has_naima:
 
                     break
 
-
-        
         def _set_units(self, x_unit, y_unit):
 
             # This function can only be used as a spectrum,
@@ -382,7 +372,6 @@ if has_naima:
 
             self._particle_distribution = function
 
-
             # Now set the units for the function
 
             current_units = get_units()
@@ -399,11 +388,9 @@ if has_naima:
                 function(x.value), current_units.energy
             )
 
-
         def get_particle_distribution(self):
 
             return self._external_functions["particle_distribution"]
- 
 
         particle_distribution = property(
             get_particle_distribution,
@@ -484,11 +471,11 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
             min : -100
             max : 100
             delta : 0.1
-    
+
     properties:
-        file_name: 
+        file_name:
             desc: a file name
-            defer: True 
+            defer: True
         dummy:
             desc: a dummy property
             initial value: test
@@ -498,7 +485,6 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
 
     """
 
-    
     def _set_units(self, x_unit, y_unit):
 
         self.A.unit = y_unit
@@ -513,13 +499,12 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
         self.link_external_function(function, "particle_distribution")
 
         self._particle_distribution_name = function.name
-        
+
         self._particle_distribution = function
 
     def get_particle_distribution(self):
 
         return self._external_functions["particle_distribution"]
-        
 
     particle_distribution = property(
         get_particle_distribution,
@@ -629,8 +614,8 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
         # (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)
 
         return self.piv.value * pow(
-            10, old_div(((2 + self.alpha.value) * np.log(10)),
-                        (2 * self.beta.value))
+            10,
+            old_div(((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value)),
         )
 
 
@@ -701,8 +686,7 @@ if has_gsl:
             this_integral = self._integral(a, b, index, xc)
 
             return (
-                F / this_integral *
-                np.power(x, index) * np.exp(-1 * np.divide(x, xc))
+                F / this_integral * np.power(x, index) * np.exp(-1 * np.divide(x, xc))
             )
 
 

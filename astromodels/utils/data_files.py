@@ -13,12 +13,16 @@ def _get_data_file_path(data_file):
 
     try:
 
-        file_path = pkg_resources.resource_filename("astromodels", 'data/%s' % data_file)
+        file_path = pkg_resources.resource_filename(
+            "astromodels", "data/%s" % data_file
+        )
 
     except KeyError:
 
-        raise IOError("Could not read or find data file %s. Try reinstalling astromodels. If this does not fix your "
-                      "problem, open an issue on github." % (data_file))
+        raise IOError(
+            "Could not read or find data file %s. Try reinstalling astromodels. If this does not fix your "
+            "problem, open an issue on github." % (data_file)
+        )
 
     else:
 

@@ -9,9 +9,9 @@ import pytest
 
 from astromodels.core.tree import Node
 
-#os.environ["ASTROMODELS_DEBUG"] = "debug"
+# os.environ["ASTROMODELS_DEBUG"] = "debug"
 
-#from astromodels.core import node_ctype
+# from astromodels.core import node_ctype
 
 
 def clean():
@@ -20,7 +20,6 @@ def clean():
 
 
 class _SimpleInheritance(Node):
-
     def __init__(self, name):
         print("INIT of _SimpleInheritance")
 
@@ -34,7 +33,6 @@ class _SimpleInheritance(Node):
 
 
 class _ComplexInheritance(Node):
-
     def __init__(self, name, min_value, max_value):
 
         super(_ComplexInheritance, self).__init__(name)
@@ -55,29 +53,28 @@ class _ComplexInheritance(Node):
 
 def test_constructor():
 
-    n = Node(name='node1')
+    n = Node(name="node1")
 
-    assert n.name == 'node1'
+    assert n.name == "node1"
 
     with pytest.raises(TypeError):
 
         n2 = Node()
 
-        
     clean()
 
 
 def test_inheritance():
-    t = _SimpleInheritance('test1')
+    t = _SimpleInheritance("test1")
 
-    assert t.name == 'test1'
+    assert t.name == "test1"
 
     clean()
 
 
 def test_add_child():
 
-    t = _SimpleInheritance('test_add_child')
+    t = _SimpleInheritance("test_add_child")
 
     with pytest.raises(TypeError):
         t._add_child("clara")
@@ -91,7 +88,7 @@ def test_add_child():
     assert t.clara == clara
 
     with pytest.raises(AttributeError):
-        t.clara = 'argh'
+        t.clara = "argh"
 
     assert t.clara == clara
 
@@ -121,18 +118,17 @@ def test_get_child():
     clean()
 
 
-
 def test_hashing():
 
-    node1 = Node('node1')
-    node2 = Node('node2')
-    node22 = Node('node22')
-    node3 = Node('node3')
+    node1 = Node("node1")
+    node2 = Node("node2")
+    node22 = Node("node22")
+    node3 = Node("node3")
 
-    d ={}
+    d = {}
 
     # nodes as hashes
-    
+
     d[node1] = 1
     d[node2] = 2
 
@@ -140,12 +136,11 @@ def test_hashing():
     d[node2] == 2
 
     # nodes in dicts
-    
+
     d = {}
-    
+
     d["node1"] = node1
 
-    
     node1._add_child(node2)
     node1._add_child(node22)
     node2._add_child(node3)
@@ -157,26 +152,20 @@ def test_hashing():
 
     d = {}
 
-
-    d ={}
+    d = {}
 
     d[node1] = 1
     d[node1.node2] = 2
 
-    
     d[node1] == 1
     d[node2] == 2
-    
-    
 
-    
-    
 
 def test_get_children():
-    node1 = Node('node1')
-    node2 = Node('node2')
-    node22 = Node('node22')
-    node3 = Node('node3')
+    node1 = Node("node1")
+    node2 = Node("node2")
+    node22 = Node("node22")
+    node3 = Node("node3")
 
     node1._add_child(node2)
     node1._add_child(node22)
@@ -232,13 +221,14 @@ def test_remove_child():
         t._get_child("node")
 
     clean()
-    
+
+
 def test_get_path():
     # Make a small tree
 
-    node1 = Node('node1')
-    node2 = Node('node2')
-    node3 = Node('node3')
+    node1 = Node("node1")
+    node2 = Node("node2")
+    node3 = Node("node3")
 
     node1._add_child(node2)
     node2._add_child(node3)
@@ -253,9 +243,9 @@ def test_get_path():
 def test_get_child_from_path():
     # Make a small tree
 
-    node1 = Node('node1')
-    node2 = Node('node2')
-    node3 = Node('node3')
+    node1 = Node("node1")
+    node2 = Node("node2")
+    node3 = Node("node3")
 
     node1._add_child(node2)
     node2._add_child(node3)
@@ -297,8 +287,8 @@ def test_pickle():
 
     root2 = pickle.loads(d)
 
-    assert root2.node.path == 'root.node'
-    assert root2.node.name == 'node'
+    assert root2.node.path == "root.node"
+    assert root2.node.name == "node"
 
     # Now test pickling a subclass of Node
 
@@ -314,8 +304,8 @@ def test_pickle():
 
     root2 = pickle.loads(d)
 
-    assert root2.node.path == 'root.node'
-    assert root2.node.name == 'node'
+    assert root2.node.path == "root.node"
+    assert root2.node.name == "node"
 
     print(root.placeholder)
 
@@ -333,5 +323,3 @@ def test_pickle():
     print(root2c.min_value)
 
     clean()
-
-

@@ -52,9 +52,7 @@ jobs:
             - name: Lint with flake8
               run: |
                   # stop the build if there are Python syntax errors or undefined names
-                  flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-                  # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-                  flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+                  flake8
 
             - name: Test pip on ${{ matrix.python-version }}
               run: |
@@ -91,26 +89,26 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Cache conda
-              uses: actions/cache@v2
-              env:
-                # Increase this value to reset cache if etc/example-environment.yml has not changed
-                CACHE_NUMBER: 0
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
+            # - name: Cache conda
+            #   uses: actions/cache@v2
+            #   env:
+            #     # Increase this value to reset cache if etc/example-environment.yml has not changed
+            #     CACHE_NUMBER: 0
+            #   with:
+            #       path: ~/conda_pkgs_dir
+            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v2
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
                   architecture: "x64"
-                  #mamba-version: "*"
+                  mamba-version: "*"
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
                   use-only-tar-bz2: true
-                  channel-priority: flexible
+                  channel-priority: strict
                   channels: conda-forge, xspecmodels
               
 
@@ -134,7 +132,7 @@ jobs:
 
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
 
-                  conda install ${PKG} codecov pytest-cov git flake8
+                  mamba install ${PKG} codecov pytest-cov git flake8
 
             - name: Conda list
               shell: bash -l {0}
@@ -148,9 +146,7 @@ jobs:
               shell: bash -l {0}
               run: |
                   # stop the build if there are Python syntax errors or undefined names
-                  flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-                  # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-                  flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+                  flake8
 
             - name: Test conda install
               shell: bash -l {0}

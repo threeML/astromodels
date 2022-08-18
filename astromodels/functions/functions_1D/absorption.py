@@ -111,9 +111,7 @@ class AbundanceTable:
         :returns:
 
         """
-        _path: Path = (
-            Path("xsect") / f"xsect_{self.name}_{self.current_table}.fits"
-        )
+        _path: Path = Path("xsect") / f"xsect_{self.name}_{self.current_table}.fits"
 
         path_to_xsect: Path = _get_data_file_path(_path)
 
@@ -208,7 +206,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -219,9 +217,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(
-            self.xsect_ene, self.xsect_val, _x * (1 + _redshift)
-        )
+        xsect_interp = interp(self.xsect_ene, self.xsect_val, _x * (1 + _redshift))
 
         # evaluate the exponential with numba
 
@@ -299,6 +295,8 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         self.xsect_ene, self.xsect_val = tbabs.xsect_table
 
+        log.debug(f"updated the TbAbs table to {self.abundance_table.value}")
+
     @property
     def abundance_table_info(self):
         print(tbabs.info)
@@ -307,7 +305,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -318,9 +316,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(
-            self.xsect_ene, self.xsect_val, _x * (1 + _redshift)
-        )
+        xsect_interp = interp(self.xsect_ene, self.xsect_val, _x * (1 + _redshift))
 
         spec = _numba_eval(NH, xsect_interp) * _y_unit
 
@@ -385,7 +381,7 @@ class WAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm ** 2
+            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
@@ -396,9 +392,7 @@ class WAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(
-            self.xsect_ene, self.xsect_val, _x * (1 + _redshift)
-        )
+        xsect_interp = interp(self.xsect_ene, self.xsect_val, _x * (1 + _redshift))
 
         spec = _numba_eval(NH, xsect_interp) * _y_unit
 
@@ -457,10 +451,7 @@ if has_ebltable:
 
         def _set_units(self, x_unit, y_unit):
 
-            if (
-                not hasattr(x_unit, "physical_type")
-                or x_unit.physical_type != "energy"
-            ):
+            if not hasattr(x_unit, "physical_type") or x_unit.physical_type != "energy":
 
                 # x should be energy
                 raise InvalidUsageForFunction(
@@ -474,9 +465,7 @@ if has_ebltable:
                 not hasattr(y_unit, "physical_type")
                 or y_unit.physical_type != "dimensionless"
             ):
-                raise InvalidUsageForFunction(
-                    "Unit for y is not dimensionless."
-                )
+                raise InvalidUsageForFunction("Unit for y is not dimensionless.")
 
             self.redshift.unit = astropy_units.dimensionless_unscaled
             self.attenuation.unit = astropy_units.dimensionless_unscaled
@@ -501,8 +490,7 @@ if has_ebltable:
                 _attenuation = attenuation
 
             return (
-                _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation)
-                * _unit
+                _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation) * _unit
             )
 
 

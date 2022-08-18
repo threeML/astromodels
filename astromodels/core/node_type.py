@@ -1,7 +1,9 @@
 import collections
 import itertools
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Type
+from typing import Dict, List, Optional, Tuple, Type, Any
+from rich.tree import Tree
+
 
 from astromodels.utils.logging import setup_logger
 
@@ -86,7 +88,7 @@ class NodeBase:
 
             raise TypeError()
 
-        log.debug(f"adding child {child._name}")
+        log.debug_node(f"adding child {child._name}")
 
         if child._name not in self._children:
 
@@ -177,7 +179,7 @@ class NodeBase:
 
             self._path = f"{parent_path}.{self._name}"
 
-        log.debug(f"path is now: {self._path}")
+        log.debug_node(f"path is now: {self._path}")
 
     def _get_child(self, name: str) -> "NodeBase":
         """
@@ -318,7 +320,6 @@ class NodeBase:
 
         if (self._parent is not None) and (not clear_parent):
 
-            #            self._parent._children.pop(self._name)
             self._set_parent(self._parent)
 
         # update all the children
@@ -403,82 +404,87 @@ class NodeBase:
 
             return super().__setattr__(name, value)
 
-    def plot_tree(self) -> None:
+    def plot_tree(self) -> Tree:
         """
         this plots the tree to the
         screen
         """
 
-        print(self._plot_tree_console())
+        try:
 
-    def _plot_tree_console(self):
+            out = self.to_dict_with_types()
+            name = "model"
 
-        if self.is_leaf:
-            return self.name
+        except AttributeError:
 
-        child_strs = [
-            child._plot_tree_console() for child in list(self._children.values())
-        ]
-        child_widths = [block_width(s) for s in child_strs]
+            out = self.to_dict()
+            name = self.name
 
-        # How wide is this block?
-        display_width = max(len(self.name), sum(child_widths) + len(child_widths) - 1)
+        tree = Tree(
+            name,
+            guide_style="bold medium_orchid",
+            style="bold medium_orchid",
+            highlight=True,
+        )
 
-        # Determines midpoints of child blocks
-        child_midpoints = []
-        child_end = 0
-        for width in child_widths:
-            child_midpoints.append(child_end + (width // 2))
-            child_end += width + 1
+        _recurse_dict(out, tree)
 
-        # Builds up the brace, using the child midpoints
-        brace_builder = []
-        for i in range(display_width):
-            if i < child_midpoints[0] or i > child_midpoints[-1]:
-                brace_builder.append(" ")
-            elif i in child_midpoints:
-                brace_builder.append("+")
+        return tree
+
+
+def _recurse_dict(d: Dict[str, Any], tree: Tree, branch_color: Optional[str] = None):
+
+    for k, v in d.items():
+
+        if isinstance(v, collections.OrderedDict):
+
+            if branch_color is not None:
+
+                color = branch_color
+
             else:
-                brace_builder.append("-")
-        brace = "".join(brace_builder)
 
-        name_str = "{:^{}}".format(self.name, display_width)
-        below = stack_str_blocks(child_strs)
+                color = "not bold not blink medium_spring_green"
 
-        return name_str + "\n" + brace + "\n" + below
+            if "position" in k:
 
+                k = f"🔭 {k}"
+                color = "bold not blink medium_spring_green"
 
-def block_width(block) -> int:
-    try:
-        return block.index("\n")
-    except ValueError:
-        return len(block)
+            if "(point source)" in k:
 
+                k = k.replace("(point source)", "")
 
-def stack_str_blocks(blocks) -> str:
-    """Takes a list of multiline strings, and stacks them horizontally.
+                color = "bold blink medium_orchid"
 
-    For example, given 'aaa\naaa' and 'bbbb\nbbbb', it returns
-    'aaa bbbb\naaa bbbb'.  As in:
+                k = f"✨ {k}"
 
-    'aaa  +  'bbbb   =  'aaa bbbb
-     aaa'     bbbb'      aaa bbbb'
+            if "(extended source)" in k:
 
-    Each block must be rectangular (all lines are the same length), but blocks
-    can be different sizes.
-    """
-    builder = []
-    block_lens = [block_width(bl) for bl in blocks]
-    split_blocks = [bl.split("\n") for bl in blocks]
+                k = k.replace("(extended source)", "")
 
-    for line_list in itertools.zip_longest(*split_blocks, fillvalue=None):
-        for i, line in enumerate(line_list):
-            if line is None:
-                builder.append(" " * block_lens[i])
-            else:
-                builder.append(line)
-            if i != len(line_list) - 1:
-                builder.append(" ")  # Padding
-        builder.append("\n")
+                color = "bold blink medium_orchid"
 
-    return "".join(builder[:-1])
+                k = f"🌌 {k}"
+
+            if "spectrum" in k:
+
+                color = "bold not blink light_goldenrod1"
+
+                k = f"🌈 {k}"
+
+                branch_color = "not bold not blink light_goldenrod1"
+
+            if "main" in k:
+
+                branch_color = "not bold not blink turquoise2"
+
+            branch = tree.add(k, guide_style="bold not blink grey74", style=color)
+
+            _recurse_dict(v, branch, branch_color=branch_color)
+
+        else:
+
+            pass
+
+    return

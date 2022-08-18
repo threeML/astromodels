@@ -23,8 +23,6 @@ jobs:
         run: |
           
           brew update
-          brew outdated
-          brew upgrade
           brew install --cask basictex
 
           eval "$(/usr/libexec/path_helper)"
@@ -32,7 +30,6 @@ jobs:
       - name: Setup base pkgs
         #shell: bash -l {0}
         run: |
-
 
           python -m pip install --upgrade pip wheel
 

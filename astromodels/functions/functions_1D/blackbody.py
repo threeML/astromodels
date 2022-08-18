@@ -6,8 +6,11 @@ from past.utils import old_div
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.core.units import get_units
-from astromodels.functions.function import (Function1D, FunctionMeta,
-                                            ModelAssertionViolation)
+from astromodels.functions.function import (
+    Function1D,
+    FunctionMeta,
+    ModelAssertionViolation,
+)
 
 
 class Blackbody(Function1D, metaclass=FunctionMeta):
@@ -34,7 +37,7 @@ class Blackbody(Function1D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
-        self.K.unit = old_div(y_unit, (x_unit ** 2))
+        self.K.unit = old_div(y_unit, (x_unit**2))
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
@@ -136,10 +139,10 @@ class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
             desc : peak energy
             initial value : 200.0
             min: 0.
-       
+
         piv :
             desc : the pivot energy
-            initial value: 100. 
+            initial value: 100.
             fix: True
 
 
@@ -153,7 +156,7 @@ class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
         self.ec.unit = x_unit
 
         self.piv.unit = x_unit
-        
+
     def evaluate(self, x, K, ec, piv):
 
         if isinstance(x, astropy_units.Quantity):
@@ -168,26 +171,21 @@ class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
 
         else:
             unit_ = 1.0
-            K_, ec_, x_, piv_ = (
-                K,
-                ec,
-                x,
-                piv
-            )
+            K_, ec_, x_, piv_ = (K, ec, x, piv)
 
         result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.4, 0.65)
 
         return result * unit_
 
-    
+
 class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
     r"""
 
     description :
         Non-dissipative photosphere of a GRB occuring BELOW the saturation radius.
         Acuner, Z., Ryde, F. & Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).
-   
-    
+
+
     latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.66} e^{-\left(\frac{E}{E_{c}}\right)}$
 
     parameters :
@@ -201,10 +199,10 @@ class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
             desc : peak energy
             initial value : 200.0
             min: 0.
-       
+
         piv :
             desc : the pivot energy
-            initial value: 100. 
+            initial value: 100.
             fix: True
 
 
@@ -218,7 +216,7 @@ class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
         self.ec.unit = x_unit
 
         self.piv.unit = x_unit
-        
+
     def evaluate(self, x, K, ec, piv):
 
         if isinstance(x, astropy_units.Quantity):
@@ -233,15 +231,8 @@ class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
 
         else:
             unit_ = 1.0
-            K_, ec_, x_, piv_ = (
-                K,
-                ec,
-                x,
-                piv
-            )
+            K_, ec_, x_, piv_ = (K, ec, x, piv)
 
-        result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.66, 1.)
+        result = nb_func.non_diss_photoshere_generic(x_, K_, ec_, piv_, 0.66, 1.0)
 
         return result * unit_
-
-    
