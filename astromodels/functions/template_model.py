@@ -1,10 +1,7 @@
-from __future__ import division
-
 import collections
 import gc
 import os
 import re
-from builtins import object, range, str
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
@@ -14,14 +11,13 @@ import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
-from future.utils import with_metaclass
-from interpolation import interp
-from interpolation.splines import eval_linear
-
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
 from astromodels.utils.logging import setup_logger
+from future.utils import with_metaclass
+from interpolation import interp
+from interpolation.splines import eval_linear
 
 log = setup_logger(__name__)
 
@@ -136,7 +132,9 @@ class TemplateModelFactory(object):
 
         self._spline_smoothing_factor: int = int(spline_smoothing_factor)
 
-    def define_parameter_grid(self, parameter_name: str, grid: np.ndarray) -> None:
+    def define_parameter_grid(
+        self, parameter_name: str, grid: np.ndarray
+    ) -> None:
         """
         Define the parameter grid for this parameter.
         Pass the name of the parameter and the array of values that it will take in the grid
@@ -152,7 +150,9 @@ class TemplateModelFactory(object):
 
         if not (grid_.shape[0] > 1):
 
-            log.error("A grid for a parameter must contain at least two elements")
+            log.error(
+                "A grid for a parameter must contain at least two elements"
+            )
 
             raise AssertionError()
 
@@ -160,7 +160,9 @@ class TemplateModelFactory(object):
 
         if not np.all(np.unique(grid_) == grid_):
 
-            log.error(f"Non-unique elements in grid for parameter {parameter_name}")
+            log.error(
+                f"Non-unique elements in grid for parameter {parameter_name}"
+            )
 
             raise AssertionError()
 
@@ -231,7 +233,9 @@ class TemplateModelFactory(object):
 
                 raise AssertionError()
 
-            parameter_idx.append(int(np.where(v == parameters_values_input[k])[0][0]))
+            parameter_idx.append(
+                int(np.where(v == parameters_values_input[k])[0][0])
+            )
 
         log.debug(f" have index {parameter_idx}")
 
@@ -249,13 +253,13 @@ class TemplateModelFactory(object):
         if not isinstance(differential_fluxes, u.Quantity):
 
             differential_fluxes = (
-                np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm**2)
+                np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm ** 2)
             )  # type: u.Quantity
 
         # Then we transform it in the right units and we cast it back to a pure np.array
 
         differential_fluxes = np.array(
-            differential_fluxes.to(1 / (u.keV * u.s * u.cm**2)).value
+            differential_fluxes.to(1 / (u.keV * u.s * u.cm ** 2)).value
         )
 
         # Now let's check for valid inputs
@@ -290,7 +294,8 @@ class TemplateModelFactory(object):
 
             log.warning(
                 "You have zeros in the differential flux. Since the interpolation happens in the log space, "
-                "this cannot be accepted. We will substitute zeros with %g" % _TINY_
+                "this cannot be accepted. We will substitute zeros with %g"
+                % _TINY_
             )
 
             idx = differential_fluxes == 0  # type: np.ndarray
@@ -300,7 +305,9 @@ class TemplateModelFactory(object):
 
         # Now set the values in the data frame
 
-        self._data_frame[tuple(parameter_idx)] = np.atleast_2d(differential_fluxes)
+        self._data_frame[tuple(parameter_idx)] = np.atleast_2d(
+            differential_fluxes
+        )
 
     def save_data(self, overwrite: bool = False):
 
@@ -338,8 +345,8 @@ class TemplateModelFactory(object):
                 except IOError:
 
                     log.error(
-                        f"The file {filename_sanitized} already exists and cannot be removed (maybe you do not have "
-                        "permissions to do so?). "
+                        "The file %s already exists and cannot be removed (maybe you do not have "
+                        "permissions to do so?). " % filename_sanitized
                     )
 
                     raise IOError(
@@ -350,8 +357,8 @@ class TemplateModelFactory(object):
             else:
 
                 log.error(
-                    f"The file {filename_sanitized} already exists! You cannot call two different "
-                    "template models with the same name"
+                    "The file %s already exists! You cannot call two different "
+                    "template models with the same name" % filename_sanitized
                 )
 
                 raise IOError(
@@ -398,7 +405,9 @@ class RectBivariateSplineWrapper(object):
 
         # We can use interp2, which features spline interpolation instead of linear interpolation
 
-        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
+        self._interpolator = scipy.interpolate.RectBivariateSpline(
+            *args, **kwargs
+        )
 
     def __call__(self, x):
 
@@ -452,7 +461,9 @@ class TemplateFile:
             par_group = f.create_group("parameters")
             for k in self.parameter_order:
 
-                par_group.create_dataset(k, data=self.parameters[k], compression="gzip")
+                par_group.create_dataset(
+                    k, data=self.parameters[k], compression="gzip"
+                )
 
     @classmethod
     def from_file(cls, file_name: str):
@@ -618,7 +629,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if other_name is None:
 
-            super(TemplateModel, self).__init__(name, function_definition, parameters)
+            super(TemplateModel, self).__init__(
+                name, function_definition, parameters
+            )
 
         else:
 
@@ -790,7 +803,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         if self._is_log10:
 
-            interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
+            interpolator = UnivariateSpline(
+                np.log10(e_tilde), log_interpolations
+            )
 
             values = np.power(10.0, interpolator(log_energies))
 
@@ -823,7 +838,9 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         del self._interpolators
         gc.collect()
 
-        log.info("You have 'cleaned' the table model and it will no longer be useable")
+        log.info(
+            "You have 'cleaned' the table model and it will no longer be useable"
+        )
 
     # def __del__(self):
 
