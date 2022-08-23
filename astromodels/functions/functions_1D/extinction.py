@@ -150,7 +150,7 @@ def ms_dust(x, e_bmv, rv, a, lamb, b, n):
 
     # extinction at B (a_b)
 
-    a_b = rv * (1 + e_bmv)
+    a_b = e_bmv * (1 + rv)
 
     ne = len(x)
 
