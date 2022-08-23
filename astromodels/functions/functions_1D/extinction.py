@@ -41,6 +41,7 @@ class ZDust(Function1D, metaclass=FunctionMeta):
         e_bmv :
             desc : color excess
             initial value : 1.0
+            min: 0
             is_normalization : False
             delta : 0.1
 
