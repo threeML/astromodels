@@ -87,20 +87,11 @@ class ZDust(Function1D, metaclass=FunctionMeta):
         self.e_bmv.unit = astropy_units.dimensionless_unscaled
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def _set_extinction_law(self, extinction_law: str = "MW") -> None:
-
-        if extinction_law.lower() not in _extinctions_laws:
-
-            log.error(
-                f"{extinction_law} must be one of {'.'.join(list(_extinctions_laws.keys()))}"
-            )
-
-            raise AssertionError()
+    def _set_extinction_law(self) -> None:
 
         self._extinction_law: _ExtinctionCurve = _extinctions_laws[
-            extinction_law.lower()
+            self.extinction_law.value
         ]
-
 
     def evaluate(self, x, e_bmv, rv, redshift):
 
