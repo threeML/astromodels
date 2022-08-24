@@ -61,6 +61,18 @@ class ZDust(Function1D, metaclass=FunctionMeta):
             delta : 0.1
             fix: True
 
+    properties:
+        extinction_law:
+            desc: the abundance table for the model
+            initial value: mw
+            allowed values:
+              - mw
+              - lmc
+              - smc
+
+            function: _set_extinction_law
+
+
 
     """
 
@@ -70,14 +82,12 @@ class ZDust(Function1D, metaclass=FunctionMeta):
             astropy_units.dimensionless_unscaled,
         )
 
-        self.set_extinction_law("mw")
-
     def _set_units(self, x_unit, y_unit):
         self.rv.unit = astropy_units.dimensionless_unscaled
         self.e_bmv.unit = astropy_units.dimensionless_unscaled
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
-    def set_extinction_law(self, extinction_law: str = "MW") -> None:
+    def _set_extinction_law(self, extinction_law: str = "MW") -> None:
 
         if extinction_law.lower() not in _extinctions_laws:
 
@@ -91,15 +101,6 @@ class ZDust(Function1D, metaclass=FunctionMeta):
             extinction_law.lower()
         ]
 
-    def get_extinction_law(self) -> _ExtinctionCurve:
-
-        return self._extinction_law
-
-    extinction_law = property(
-        get_extinction_law,
-        set_extinction_law,
-        doc="""Get/set extinction law""",
-    )
 
     def evaluate(self, x, e_bmv, rv, redshift):
 
