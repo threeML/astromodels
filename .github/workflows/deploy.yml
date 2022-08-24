@@ -144,16 +144,20 @@ jobs:
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
+                  # Install conda build:
+                  conda install conda-build -n base
+                  # Install mambabuild (boa):
+                  conda install -c conda-forge boa -n base
                   # Build package
-
                   if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-                      conda install conda-build -n base
-                      conda build --python=${{matrix.python-version}} conda-dist/recipe/
+                      #conda build --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
                   else
                   # there is some strange error about the prefix length
-                      conda install conda-build -n base
-                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      #conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
+
                   fi
 
                   conda install --use-local -c conda-forge astromodels
@@ -242,16 +246,20 @@ jobs:
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
+                  # Install conda build:
+                  conda install conda-build -n base
+                  # Install mambabuild (boa):
+                  conda install -c conda-forge boa -n base
                   # Build package
-
                   if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-                      conda install conda-build -n base
-                      conda build --python=${{matrix.python-version}} conda-dist/recipe/
+                      #conda build --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
                   else
                   # there is some strange error about the prefix length
-                      conda install conda-build -n base
-                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      #conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
+
                   fi
 
                   conda install --use-local -c conda-forge astromodels
