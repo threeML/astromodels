@@ -82,6 +82,7 @@ jobs:
         needs: skip_duplicate
         if: ${{ needs.skip_duplicate.outputs.should_skip == 'false' }}
         strategy:
+            fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest"]
                 python-version: [3.7, 3.9]
