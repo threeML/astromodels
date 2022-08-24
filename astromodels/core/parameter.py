@@ -1086,7 +1086,7 @@ class Parameter(ParameterBase):
 
                 # Make sure we are within the margins
 
-                if low_bound_ext > self.min_value:
+                if (self.min_value is None) or (low_bound_ext > self.min_value):
 
                     # Ok, let's use that for the delta
                     low_bound_int = self._transformation.forward(low_bound_ext)
@@ -1101,7 +1101,7 @@ class Parameter(ParameterBase):
 
                     hi_bound_ext = self.value + self._delta
 
-                    if hi_bound_ext < self.max_value:
+                    if (self.max_value is None) or hi_bound_ext < self.max_value:
 
                         # Ok, let's use it
                         hi_bound_int = self._transformation.forward(hi_bound_ext)
