@@ -99,7 +99,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   mamba-version: "*"
-                  conda-build-version: 3.22
+                  conda-build-version: 3.21.6
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -155,8 +155,8 @@ jobs:
 
                   else
                   # there is some strange error about the prefix length
-                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
-                      #conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
+                      #conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
 
                   fi
 
@@ -205,7 +205,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
-                  conda-build-version: 3.22
+                  conda-build-version: 3.21.6
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -257,8 +257,8 @@ jobs:
 
                   else
                   # there is some strange error about the prefix length
-                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
-                      #conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
+                      #conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
+                      conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
 
                   fi
 
