@@ -46,7 +46,7 @@ if has_atomdb:
                 fix : yes
             redshift :
                 desc : Source redshift
-                initial value : 0.1
+                initial value : 0.0
                 min : 0.0
                 max : 10.0
                 delta : 1e-3
