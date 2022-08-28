@@ -99,7 +99,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   mamba-version: "*"
-                  conda-build-version: 3.21.6
+                  #conda-build-version: 3.21.6
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -149,17 +149,8 @@ jobs:
                   # Install mambabuild (boa):
                   conda install -c conda-forge boa -n base
                   # Build package
-                  if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-                      #conda build --python=${{matrix.python-version}} conda-dist/recipe/
-                      conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
-
-                  else
-                  # there is some strange error about the prefix length
-                      #conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
-                      conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
-
-                  fi
-
+                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
+                  # Install the package
                   conda install --use-local -c conda-forge astromodels
             
             - name: Test conda build

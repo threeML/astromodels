@@ -107,7 +107,8 @@ conda config --add channels conda-forge
 echo "Activate test environment..."
 
 #source $CONDA_PREFIX/etc/profile.d/conda.sh
-source /home/ndilalla/work/miniconda3/etc/profile.d/conda.sh
+#source /home/ndilalla/work/miniconda3/etc/profile.d/conda.sh
+source /Users/omodei/miniconda3/etc/profile.d/conda.sh
 conda activate $ENVNAME
 
 # Build package
@@ -122,7 +123,7 @@ if $TEST_WITH_XSPEC ; then
         conda mambabuild --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
     else
     	# there is some strange error about the prefix length
-        conda mambabuild --no-build-id --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
+        conda mambabuild --python=$TRAVIS_PYTHON_VERSION conda-dist/recipe
         #conda install -c conda-forge/label/cf201901 ccfits=2.5
     fi
 else
@@ -131,7 +132,7 @@ else
 	    conda mambabuild --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
     else
     	# there is some strange error about the prefix length
-	    conda mambabuild --no-build-id  --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
+	    conda mambabuild --python=$TRAVIS_PYTHON_VERSION conda-dist/no_xspec_recipe
     fi
 fi
 
