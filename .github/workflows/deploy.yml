@@ -151,7 +151,7 @@ jobs:
                   # Build package
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
-                  conda install --use-local -c conda-forge astromodels
+                  conda install --use-local astromodels
             
             - name: Test conda build
               shell: bash -l {0}
