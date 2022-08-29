@@ -147,9 +147,9 @@ jobs:
                   # Install conda build:
                   conda install conda-build -n base
                   # Install mambabuild (boa):
-                  conda install -c conda-forge boa -n base
+                  # conda install -c conda-forge boa -n base
                   # Build package
-                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
+                  conda build --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
                   conda install --use-local astromodels
             
