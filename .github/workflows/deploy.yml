@@ -146,7 +146,7 @@ jobs:
               run: |
                   # Install conda build:
                   conda install conda-build -n base
-                  conda update conda-build
+                  #conda update conda-build
                   # Install mambabuild (boa):
                   # conda install -c conda-forge boa -n base
                   # Build package
@@ -200,7 +200,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
-                  conda-build-version: 3.21.6
+                  #conda-build-version: 3.21.6
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
