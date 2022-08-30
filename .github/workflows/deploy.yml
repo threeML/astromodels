@@ -153,7 +153,10 @@ jobs:
                   conda build --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
                   conda install astromodels --use-local
-            
+                  echo "=================== conda list ================================="
+                  conda list
+                  echo "===================================================="
+
             - name: Test conda build
               shell: bash -l {0}
               run: |
@@ -255,6 +258,9 @@ jobs:
                   fi
 
                   conda install --use-local -c conda-forge astromodels
+                  echo "=================== conda list ================================="
+                  conda list
+                  echo "===================================================="
 
             - name: Publish to Conda
               shell: bash -l {0}
