@@ -152,7 +152,7 @@ jobs:
                   # Build package
                   conda build --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
-                  conda install astromodels='2.3.9.dev2*' --use-local
+                  conda install astromodels --use-local
                   echo "=================== conda list ================================="
                   conda list
                   echo "===================================================="
@@ -243,25 +243,16 @@ jobs:
               run: |
                   # Install conda build:
                   conda install conda-build -n base
+                  #conda update conda-build
                   # Install mambabuild (boa):
-                  conda install -c conda-forge boa -n base
+                  # conda install -c conda-forge boa -n base
                   # Build package
-                  if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-                      #conda build --python=${{matrix.python-version}} conda-dist/recipe/
-                      conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
-
-                  else
-                  # there is some strange error about the prefix length
-                      #conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
-                      conda mambabuild --no-build-id --python=${{matrix.python-version}} conda-dist/recipe
-
-                  fi
-
-                  conda install --use-local -c conda-forge astromodels
+                  conda build --python=${{matrix.python-version}} conda-dist/recipe
+                  # Install the package
+                  conda install astromodels --use-local
                   echo "=================== conda list ================================="
                   conda list
                   echo "===================================================="
-
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
