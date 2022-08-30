@@ -152,7 +152,7 @@ jobs:
                   # Build package
                   conda build --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
-                  conda install astromodels --use-local
+                  conda install astromodels='2.3.9.dev2*' --use-local
                   echo "=================== conda list ================================="
                   conda list
                   echo "===================================================="
