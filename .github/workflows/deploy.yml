@@ -151,7 +151,7 @@ jobs:
                   # Build package
                   conda build --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
-                  conda install --use-local astromodels
+                  conda install -c file://${CONDA_PREFIX}/conda-bld/ astromodels
             
             - name: Test conda build
               shell: bash -l {0}
