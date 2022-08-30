@@ -146,12 +146,14 @@ jobs:
               run: |
                   # Install conda build:
                   conda install conda-build -n base
+                  conda update conda
+                  conda update conda-build
                   # Install mambabuild (boa):
                   # conda install -c conda-forge boa -n base
                   # Build package
                   conda build --python=${{matrix.python-version}} conda-dist/recipe
                   # Install the package
-                  conda install -c file://${CONDA_PREFIX}/conda-bld/ astromodels
+                  conda install astromodels --use-local
             
             - name: Test conda build
               shell: bash -l {0}
