@@ -18,7 +18,7 @@ Even though it has been designed having in mind analysis in the spectral domain,
 toolbox containing functions of any variable.
 
 Astromodels is *not* a modeling package, it only gives you the tools to build a model as complex as you need.
-You then need a separate package (such as `3ML<github.com/threeML/threeML>`_) to fit that model to the data.
+You then need a separate package (such as `3ML<github.com/threeML/threeML>`) to fit that model to the data.
 
 Some of the features which distinguish astromodels from other similar packages are:
 

@@ -66,9 +66,9 @@ class ZDust(Function1D, metaclass=FunctionMeta):
             desc: the abundance table for the model
             initial value: mw
             allowed values:
-              - mw
-              - lmc
-              - smc
+            - mw
+            - lmc
+            - smc
 
             function: _set_extinction_law
 

@@ -37,7 +37,7 @@ fi
 echo " ===> Running on ${TRAVIS_OS_NAME}"
 
 TEST_WITH_XSPEC=true
-USE_LOCAL=true
+USE_LOCAL=false
 TRAVIS_PYTHON_VERSION=3.9
 ENVNAME=astromodels_test_$TRAVIS_PYTHON_VERSION
 UPDATE_CONDA=false
@@ -108,7 +108,8 @@ echo "Activate test environment..."
 
 #source $CONDA_PREFIX/etc/profile.d/conda.sh
 #source /home/ndilalla/work/miniconda3/etc/profile.d/conda.sh
-source /Users/omodei/miniconda3/etc/profile.d/conda.sh
+#source /Users/omodei/miniconda3/etc/profile.d/conda.sh
+source /opt/miniconda3/etc/profile.d/conda.sh
 conda activate $ENVNAME
 
 # Build package
