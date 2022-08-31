@@ -12,4 +12,4 @@ Contents:
 
     functions_1d.rst
     functions_2d.rst
- 
+

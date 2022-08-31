@@ -3,8 +3,7 @@ One-dimensional Functions
 
 Here are the one dimensional functions builtin to astromodels
 
-
-.. nbgallery::
+.. toctree::
    ../notebooks/Blackbody.ipynb
    ../notebooks/ModifiedBlackbody.ipynb
    ../notebooks/NonDissipativePhotosphere.ipynb

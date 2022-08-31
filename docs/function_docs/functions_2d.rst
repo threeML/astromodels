@@ -3,8 +3,7 @@ Two-dimensional Functions
 
 Here are the two dimensional functions builtin to astromodels
 
-
-.. nbgallery::
+.. toctree::
    ../notebooks/Latitude_galactic_diffuse.ipynb
    ../notebooks/Gaussian_on_sphere.ipynb
    ../notebooks/Asymm_Gaussian_on_sphere.ipynb

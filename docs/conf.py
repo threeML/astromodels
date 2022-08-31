@@ -113,10 +113,27 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx_gallery.load_style',
+    'sphinx_math_dollar'
     
 ]
+mathjax_config = {
+    'tex2jax': {
+        'inlineMath': [ ["\\(","\\)"] ],
+        'displayMath': [["\\[","\\]"] ],
+    },
+}
 
+mathjax3_config = {
+  "tex": {
+    "inlineMath": [['\\(', '\\)']],
+    "displayMath": [["\\[", "\\]"]],
+  }
+}
+from sphinx_math_dollar import NODE_BLACKLIST
 
+#from docutils.nodes import GalleryToc
+
+#math_dollar_node_blacklist = NODE_BLACKLIST + (GalleryToc,)
 
 napoleon_google_docstring = True
 napoleon_use_param = False
@@ -154,7 +171,7 @@ master_doc = 'index'
 # -- Project information -----------------------------------------------------
 
 project = u'Astromodels'
-copyright = u'2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack'
+copyright = u'2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack'
 author = u'G.Vianello'
 
 

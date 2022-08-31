@@ -163,8 +163,8 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             desc: the abundance table for the model
             initial value: AG89
             allowed values:
-              - AG89
-              - ASPL
+            - AG89
+            - ASPL
             function: _init_xsect
 
     """
@@ -258,9 +258,9 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             desc: the abundance table for the model
             initial value: WILM
             allowed values:
-             - WILM
-             - AG89
-             - ASPL
+            - WILM
+            - AG89
+            - ASPL
             function: _init_xsect
 
 

@@ -15,7 +15,7 @@ import versioneer
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-_default_xspec_version = "12.10.1"
+_default_xspec_version = "12.12.1"
 
 
 class My_build_ext(_build_ext):
@@ -191,7 +191,6 @@ def setup_xspec():
     headas_root = os.environ.get("HEADAS")
     conda_prefix = os.environ.get("CONDA_PREFIX")
     xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
-
 
     # thanks to the sherpa team for this
     

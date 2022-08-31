@@ -22,7 +22,7 @@ jobs:
         steps:
             - name: Checkout source
               uses: actions/checkout@v2
-            - name: Set up Python 3.7
+            - name: Set up Python 3.9
               uses: actions/setup-python@v1
               with:
                   python-version: 3.9
@@ -72,8 +72,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-10.15]
-                python-version: [3.7]
+                os: [ubuntu-latest, macos-latest]
+                python-version: [3.7, 3.9]
 
         steps:
             - name: Checkout
@@ -99,7 +99,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   mamba-version: "*"
-                  #conda-build-version: 3.21
+                  #conda-build-version: 3.21.6
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -144,20 +144,19 @@ jobs:
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
+                  # Install conda build:
+                  conda install conda-build -n base
+                  #conda update conda-build
+                  # Install mambabuild (boa):
+                  # conda install -c conda-forge boa -n base
                   # Build package
+                  conda build --python=${{matrix.python-version}} conda-dist/recipe
+                  # Install the package
+                  conda install astromodels --use-local
+                  echo "=================== conda list ================================="
+                  conda list
+                  echo "===================================================="
 
-                  if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-                      conda install conda-build -n base
-                      conda build --python=${{matrix.python-version}} conda-dist/recipe/
-
-                  else
-                  # there is some strange error about the prefix length
-                      conda install conda-build=3.21.6=py39h6e9494a_2 -n base
-                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
-                  fi
-
-                  conda install --use-local -c conda-forge astromodels
-            
             - name: Test conda build
               shell: bash -l {0}
               run: |
@@ -178,8 +177,8 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-10.15]
-                python-version: [3.7]
+                os: [ubuntu-latest, macos-latest]
+                python-version: [3.7, 3.9]
 
         steps:
             - name: Checkout
@@ -201,7 +200,7 @@ jobs:
                   auto-activate-base: false
                   architecture: "x64"
                   #mamba-version: "*"
-                  #conda-build-version: 3.21
+                  #conda-build-version: 3.21.6
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -242,20 +241,18 @@ jobs:
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
+                  # Install conda build:
+                  conda install conda-build -n base
+                  #conda update conda-build
+                  # Install mambabuild (boa):
+                  # conda install -c conda-forge boa -n base
                   # Build package
-
-                  if [[ "${{matrix.os}}" == "ubuntu-latest" ]]; then
-                      conda install conda-build -n base
-                      conda build --python=${{matrix.python-version}} conda-dist/recipe/
-
-                  else
-                  # there is some strange error about the prefix length
-                      conda install conda-build=3.21.6=py39h6e9494a_2 -n base
-                      conda build --no-build-id --python=${{matrix.python-version}} conda-dist/recipe/
-                  fi
-
-                  conda install --use-local -c conda-forge astromodels
-
+                  conda build --python=${{matrix.python-version}} conda-dist/recipe
+                  # Install the package
+                  conda install astromodels --use-local
+                  echo "=================== conda list ================================="
+                  conda list
+                  echo "===================================================="
             - name: Publish to Conda
               shell: bash -l {0}
               run: |

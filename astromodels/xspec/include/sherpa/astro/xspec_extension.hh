@@ -80,18 +80,18 @@ extern "C" {
 
 
 #ifdef XSPEC_12_12_1
- void tabint(const float* ear, const int ne, const float* param,
-	      const int npar, const char* filenm, int ifl,
-	      const char* tabtyp, float* photar, float* photer);
+  void tabint(const float* ear, const int ne, const float* param,
+          const int npar, const char* filenm, int ifl,
+          const char* tabtyp, float* photar, float* photer);
   /* Interface for tableInterpolate passing xflt information instead of
      spectrum number */
   void tabintxflt(const float* ear, const int ne, const float* param,
-		  const int npar, const char* filenm,
-		  const char **xfltname, const float *xfltvalue,
-		  const int nxflt,
-		  const char* tabtyp, float* photar, float* photer);
+	  const int npar, const char* filenm,
+	  const char **xfltname, const float *xfltvalue,
+	  const int nxflt,
+	  const char* tabtyp, float* photar, float* photer);
 
- #else
+#else
   void tabint(float* ear, int ne, float* param, int npar, const char* filenm, int ifl,
 	      const char* tabtyp, float* photar, float* photer);
 

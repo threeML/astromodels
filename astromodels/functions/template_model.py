@@ -514,7 +514,8 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
     r"""
     description :
         A template model
-    latex : $n.a.$
+    latex :
+        $n.a.$
     parameters :
         K :
             desc : Normalization (freeze this to 1 if the template provides the normalization by itself)
