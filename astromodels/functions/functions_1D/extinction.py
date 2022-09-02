@@ -1,21 +1,13 @@
 import math
-import os
-import sys
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
-from typing import Dict, List
+from typing import Dict
 
 import astropy.units as astropy_units
 import numba as nb
 import numpy as np
-import six
-from astropy.io import fits
-from interpolation import interp
 
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils import configuration
-from astromodels.utils.data_files import _get_data_file_path
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
