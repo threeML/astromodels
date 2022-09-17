@@ -152,6 +152,26 @@ astromodels_console_log_handler.setLevel("INFO")
 warning_filter = LogFilter(logging.WARNING)
 
 
+@contextmanager
+def silence_console_log():
+    """
+    temporarily silence the console and progress bars
+    """
+    current_console_logging_level = astromodels_console_log_handler.level
+    current_usr_logging_level = astromodels_usr_log_handler.level
+
+    astromodels_console_log_handler.setLevel(logging.CRITICAL)
+    astromodels_usr_log_handler.setLevel(logging.CRITICAL)
+
+    try:
+        yield
+
+    finally:
+
+        astromodels_console_log_handler.setLevel(current_console_logging_level)
+        astromodels_usr_log_handler.setLevel(current_usr_logging_level)
+
+
 def silence_warnings():
     """
     supress warning messages in console and file usr logs
