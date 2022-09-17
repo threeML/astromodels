@@ -1,15 +1,16 @@
 # If threeml is not installed, we create our own log,
 # otherwise, just print to the 3ML one!
 
-
 import logging
 import logging.handlers as handlers
+from contextlib import contextmanager
 from pathlib import Path
 
-from astromodels.utils.configuration import astromodels_config
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
+
+from astromodels.utils.configuration import astromodels_config
 
 from .file_utils import _get_data_file_path
 
