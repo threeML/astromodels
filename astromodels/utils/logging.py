@@ -1,15 +1,16 @@
 # If threeml is not installed, we create our own log,
 # otherwise, just print to the 3ML one!
 
-
 import logging
 import logging.handlers as handlers
+from contextlib import contextmanager
 from pathlib import Path
 
-from astromodels.utils.configuration import astromodels_config
 from rich.console import Console
 from rich.logging import RichHandler
 from rich.theme import Theme
+
+from astromodels.utils.configuration import astromodels_config
 
 from .file_utils import _get_data_file_path
 
@@ -150,6 +151,26 @@ astromodels_console_log_handler.setFormatter(_console_formatter)
 astromodels_console_log_handler.setLevel("INFO")
 
 warning_filter = LogFilter(logging.WARNING)
+
+
+@contextmanager
+def silence_console_log():
+    """
+    temporarily silence the console and progress bars
+    """
+    current_console_logging_level = astromodels_console_log_handler.level
+    current_usr_logging_level = astromodels_usr_log_handler.level
+
+    astromodels_console_log_handler.setLevel(logging.CRITICAL)
+    astromodels_usr_log_handler.setLevel(logging.CRITICAL)
+
+    try:
+        yield
+
+    finally:
+
+        astromodels_console_log_handler.setLevel(current_console_logging_level)
+        astromodels_usr_log_handler.setLevel(current_usr_logging_level)
 
 
 def silence_warnings():
