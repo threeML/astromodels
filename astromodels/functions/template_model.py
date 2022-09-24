@@ -527,6 +527,13 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                    observer frame energy. Fix this to 1 to neutralize its effect.
             initial value : 1.0
             min : 1e-5
+
+        redshift:
+            desc: redshift the energies
+            initial value: 0.
+            min: 0
+            fix: yes
+
     """
 
     def _custom_init_(
@@ -753,13 +760,15 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
         self.K.unit = y_unit
 
         self.scale.unit = 1 / x_unit
+        self.redshift.unit = u.dimensionless_unscaled
+
 
     # This function will be substituted during construction by another version with
     # all the parameters of this template
 
-    def evaluate(self, x, K, scale, *args):
+    def evaluate(self, x, K, scale, redshift, *args):
 
-        return K * self._interpolate(x, scale, args)
+        return K * self._interpolate(x*(1+redshift), scale, args)
 
     def _interpolate(self, energies, scale, parameters_values):
 
