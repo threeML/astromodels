@@ -165,6 +165,7 @@ def silence_console_log():
     astromodels_usr_log_handler.setLevel(logging.CRITICAL)
 
     try:
+
         yield
 
     finally:
