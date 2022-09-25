@@ -17,7 +17,6 @@ jupyter:
 ```astromodels``` includes a configuration that allows users to set certain variables from the beginning
 
 ```python
-%%capture
 from astromodels import astromodels_config, show_configuration
 ```
 
