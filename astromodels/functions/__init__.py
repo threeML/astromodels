@@ -83,6 +83,11 @@ from .priors import (
     Log_uniform_prior,
     Truncated_gaussian,
     Uniform_prior,
+    Beta,
+    Gamma,
+    Exponential,
+    Powerlaw_Prior
+
 )
 from .template_model import (
     MissingDataFile,
@@ -136,6 +141,10 @@ __all__ = [
     "Log_uniform_prior",
     "Truncated_gaussian",
     "Uniform_prior",
+    "Beta",
+    "Gamma",
+    "Exponential",
+    "Powerlaw_Prior",
     "TemplateModel",
     "TemplateModelFactory",
     "XSPECTableModel",
