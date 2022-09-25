@@ -608,6 +608,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
 
         parameters["K"] = Parameter("K", 1.0)
         parameters["scale"] = Parameter("scale", 1.0)
+        parameters["redshift"] = Parameter("redshift", 0.0)
 
         for parameter_name in list(self._parameters_grids.keys()):
 
