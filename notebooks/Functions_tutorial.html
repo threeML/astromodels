@@ -385,8 +385,8 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%%capture
-from astromodels import *
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 </div>
@@ -394,7 +394,7 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>list_functions()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">list_functions</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -403,7 +403,7 @@ from astromodels import *
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div><table id="table4481875488">
+<div><table id="table4587842720">
 <thead><tr><th>name</th><th>Description</th></tr></thead>
 <tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates)\nsee https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>
 <tr><td>Band</td><td>Band model from Band et al., 1993, parametrized with the peak energy</td></tr>
@@ -434,7 +434,7 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>Gaussian.info()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gaussian</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -534,7 +534,7 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance = Powerlaw()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -543,7 +543,7 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance = Powerlaw(K=0.01, index=-2.2)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">(</span><span class="n">K</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">index</span><span class="o">=-</span><span class="mf">2.2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -556,7 +556,7 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance.display()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -653,7 +653,7 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(powerlaw_instance)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -706,38 +706,38 @@ from astromodels import *
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Modify current value
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Modify current value</span>
 
-powerlaw_instance.K = 1.2
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="mf">1.2</span>
 
-# Modify minimum
-powerlaw_instance.K.min_value = 0.5
+<span class="c1"># Modify minimum</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">min_value</span> <span class="o">=</span> <span class="mf">0.5</span>
 
-# Modify maximum
-powerlaw_instance.K.max_value = 15
+<span class="c1"># Modify maximum</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="mi">15</span>
 
-# We can also modify minimum and maximum at the same time
-powerlaw_instance.K.bounds = (0.5, 15)
+<span class="c1"># We can also modify minimum and maximum at the same time</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
 
-# Modifying the delta for the parameter
-# (which can be used by downstream software for fitting, for example)
-powerlaw_instance.K.delta = 0.25
+<span class="c1"># Modifying the delta for the parameter</span>
+<span class="c1"># (which can be used by downstream software for fitting, for example)</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">delta</span> <span class="o">=</span> <span class="mf">0.25</span>
 
-# Fix the parameter
-powerlaw_instance.K.fix = True
+<span class="c1"># Fix the parameter</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
 
-# or equivalently
-powerlaw_instance.K.free = False
+<span class="c1"># or equivalently</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">False</span>
 
-# Free it again
-powerlaw_instance.K.fix = False
+<span class="c1"># Free it again</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
 
-# or equivalently
-powerlaw_instance.K.free = True
+<span class="c1"># or equivalently</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
 
-# We can verify what we just did by printing again the whole function as shown above,
-# or simply printing the parameter:
-powerlaw_instance.K.display()
+<span class="c1"># We can verify what we just did by printing again the whole function as shown above,</span>
+<span class="c1"># or simply printing the parameter:</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -745,7 +745,7 @@ powerlaw_instance.K.display()
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of Powerlaw.K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive    </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.ga92cf6a-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.ga92cf6a-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of Powerlaw.K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive    </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g5c801a9-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g5c801a9-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">transform                                                                        </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                </span>
 </pre></div>
 </div>
@@ -764,9 +764,9 @@ Parameter K = 1.2 []
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance = Powerlaw()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
 
-point_source = PointSource(&quot;my_point_source&quot;,ra=0,dec=0, spectral_shape=powerlaw_instance)
+<span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">&quot;my_point_source&quot;</span><span class="p">,</span><span class="n">ra</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">dec</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">powerlaw_instance</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -775,7 +775,7 @@ point_source = PointSource(&quot;my_point_source&quot;,ra=0,dec=0, spectral_shap
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance.display()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -871,7 +871,7 @@ point_source = PointSource(&quot;my_point_source&quot;,ra=0,dec=0, spectral_shap
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance.x_unit
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">x_unit</span>
 </pre></div>
 </div>
 </div>
@@ -887,7 +887,7 @@ $\mathrm{keV}$</div></div>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>powerlaw_instance.y_unit
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">y_unit</span>
 </pre></div>
 </div>
 </div>
@@ -903,19 +903,19 @@ $\mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import astropy.units as u
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
 
-# Express the differential flux at the pivot energy in 1 / (MeV cm2 s)
+<span class="c1"># Express the differential flux at the pivot energy in 1 / (MeV cm2 s)</span>
 
-powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">122.3</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
 
-print(powerlaw_instance.K)
+<span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
 
-# Express the differential flux at the pivot energy in 1 / (GeV m2 s)
-powerlaw_instance.K = (122.3 / (u.GeV * u.m * u.m * u.s))
+<span class="c1"># Express the differential flux at the pivot energy in 1 / (GeV m2 s)</span>
+<span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="p">(</span><span class="mf">122.3</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">GeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
 
 
-print(powerlaw_instance.K)
+<span class="nb">print</span><span class="p">(</span><span class="n">powerlaw_instance</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -936,7 +936,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%timeit powerlaw_instance.K = 1
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> powerlaw_instance.K = 1
 </pre></div>
 </div>
 </div>
@@ -945,14 +945,14 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-20.4 µs ± 921 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+20.4 µs ± 1.03 µs per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>%timeit powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">timeit</span> powerlaw_instance.K = (122.3 / (u.MeV * u.cm * u.cm * u.s))
 </pre></div>
 </div>
 </div>
@@ -961,7 +961,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-357 µs ± 8.86 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
+328 µs ± 21.3 µs per loop (mean ± std. dev. of 7 runs, 1,000 loops each)
 </pre></div></div>
 </div>
 <p>As you can see using <strong>astropy.units requires about 10x more than using a plain assignment</strong>. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. <strong>Note that this is a feature of astropy.units, not of astromodels.</strong></p>
@@ -973,11 +973,11 @@ Parameter K = 1.2230000000000013e-08 [1 / (cm2 keV s)]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>composite = Gaussian() + Powerlaw()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">composite</span> <span class="o">=</span> <span class="n">Gaussian</span><span class="p">()</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">()</span>
 
-# Instead of the usual .display(), which would print all the many parameters,
-# let&#39;s print just the description of the new composite functions:
-print(composite.description)
+<span class="c1"># Instead of the usual .display(), which would print all the many parameters,</span>
+<span class="c1"># let&#39;s print just the description of the new composite functions:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">composite</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -994,9 +994,9 @@ print(composite.description)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>crazy_function = 3 * Sin() + Powerlaw()**2 * (5+Gaussian()) / 3.0
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">crazy_function</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">Sin</span><span class="p">()</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">5</span><span class="o">+</span><span class="n">Gaussian</span><span class="p">())</span> <span class="o">/</span> <span class="mf">3.0</span>
 
-print(crazy_function.description)
+<span class="nb">print</span><span class="p">(</span><span class="n">crazy_function</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1013,12 +1013,12 @@ print(crazy_function.description)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>a_powerlaw = Powerlaw()
-a_sin = Sin()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a_powerlaw</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+<span class="n">a_sin</span> <span class="o">=</span> <span class="n">Sin</span><span class="p">()</span>
 
-another_composite = 2 * a_powerlaw + (3 + a_powerlaw) * a_sin
+<span class="n">another_composite</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">a_powerlaw</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">a_powerlaw</span><span class="p">)</span> <span class="o">*</span> <span class="n">a_sin</span>
 
-print(another_composite.description)
+<span class="nb">print</span><span class="p">(</span><span class="n">another_composite</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1035,9 +1035,9 @@ print(another_composite.description)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>another_composite2 = 2 * Powerlaw() + (3 + Powerlaw()) * Sin()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">another_composite2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Powerlaw</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="mi">3</span> <span class="o">+</span> <span class="n">Powerlaw</span><span class="p">())</span> <span class="o">*</span> <span class="n">Sin</span><span class="p">()</span>
 
-print(another_composite2.description)
+<span class="nb">print</span><span class="p">(</span><span class="n">another_composite2</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1054,8 +1054,8 @@ print(another_composite2.description)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(len(another_composite.parameters)) # 6 parameters
-print(len(another_composite2.parameters)) # 9 parameters
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">another_composite</span><span class="o">.</span><span class="n">parameters</span><span class="p">))</span> <span class="c1"># 6 parameters</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">another_composite2</span><span class="o">.</span><span class="n">parameters</span><span class="p">))</span> <span class="c1"># 9 parameters</span>
 </pre></div>
 </div>
 </div>
@@ -1077,7 +1077,7 @@ print(len(another_composite2.parameters)) # 9 parameters
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span><span class="p">,</span> <span class="n">ModelAssertionViolation</span>
 </pre></div>
 </div>
 </div>
@@ -1177,11 +1177,11 @@ print(len(another_composite2.parameters)) # 9 parameters
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span>def cpp_function_wrapper(a):
-    # we could wrap a c++ function here
-    # with cython, pybind11, etc
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span> <span class="nf">cpp_function_wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="c1"># we could wrap a c++ function here</span>
+    <span class="c1"># with cython, pybind11, etc</span>
 
-    return a
+    <span class="k">return</span> <span class="n">a</span>
 <br/></pre></div>
 </div>
 </div>
@@ -1189,7 +1189,7 @@ print(len(another_composite2.parameters)) # 9 parameters
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cpp_function_wrapper(2.)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpp_function_wrapper</span><span class="p">(</span><span class="mf">2.</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1207,55 +1207,55 @@ print(len(another_composite2.parameters)) # 9 parameters
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import astropy.units as astropy_units
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
 
-class CppModel(Function1D,metaclass=FunctionMeta):
-        r&quot;&quot;&quot;
-        description :
-            A spectral model wrapping a cython function
-        latex : $$
-        parameters :
-            a :
-                desc : Normalization (differential flux)
-                initial value : 1.0
-                is_normalization : True
-                min : 1e-30
-                max : 1e3
-                delta : 0.1
-        &quot;&quot;&quot;
+<span class="k">class</span> <span class="nc">CppModel</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        description :</span>
+<span class="sd">            A spectral model wrapping a cython function</span>
+<span class="sd">        latex : $$</span>
+<span class="sd">        parameters :</span>
+<span class="sd">            a :</span>
+<span class="sd">                desc : Normalization (differential flux)</span>
+<span class="sd">                initial value : 1.0</span>
+<span class="sd">                is_normalization : True</span>
+<span class="sd">                min : 1e-30</span>
+<span class="sd">                max : 1e3</span>
+<span class="sd">                delta : 0.1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-        def _set_units(self, x_unit, y_unit):
+        <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
-            # The normalization has the same units as the y
+            <span class="c1"># The normalization has the same units as the y</span>
 
-            self.a.unit = y_unit
+            <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
 
-        def evaluate(self, x, a):
+        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
 
-            # check is the function is being called with units
+            <span class="c1"># check is the function is being called with units</span>
 
-            if isinstance(a, astropy_units.Quantity):
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
-                # get the values
-                a_ = a.value
+                <span class="c1"># get the values</span>
+                <span class="n">a_</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span>
 
-                # save the unit
-                unit_ = self.y_unit
+                <span class="c1"># save the unit</span>
+                <span class="n">unit_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_unit</span>
 
-            else:
+            <span class="k">else</span><span class="p">:</span>
 
-                # we do not need to do anything here
-                a_ = a
+                <span class="c1"># we do not need to do anything here</span>
+                <span class="n">a_</span> <span class="o">=</span> <span class="n">a</span>
 
-                # this will basically be ignored
-                unit_ = 1.
+                <span class="c1"># this will basically be ignored</span>
+                <span class="n">unit_</span> <span class="o">=</span> <span class="mf">1.</span>
 
-            # call the cython function
-            flux = cpp_function_wrapper(a_)
+            <span class="c1"># call the cython function</span>
+            <span class="n">flux</span> <span class="o">=</span> <span class="n">cpp_function_wrapper</span><span class="p">(</span><span class="n">a_</span><span class="p">)</span>
 
-            # add back the unit if needed
-            return flux * unit_
+            <span class="c1"># add back the unit if needed</span>
+            <span class="k">return</span> <span class="n">flux</span> <span class="o">*</span> <span class="n">unit_</span>
 </pre></div>
 </div>
 </div>
@@ -1264,14 +1264,14 @@ class CppModel(Function1D,metaclass=FunctionMeta):
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>cpp_spectrum = CppModel()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpp_spectrum</span> <span class="o">=</span> <span class="n">CppModel</span><span class="p">()</span>
 
-from astromodels import PointSource
+<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="n">PointSource</span>
 
-point_source = PointSource(&#39;ps&#39;,0,0,spectral_shape=cpp_spectrum)
+<span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;ps&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">spectral_shape</span><span class="o">=</span><span class="n">cpp_spectrum</span><span class="p">)</span>
 
-print(point_source(10.))
-point_source(10. * astropy_units.keV)
+<span class="nb">print</span><span class="p">(</span><span class="n">point_source</span><span class="p">(</span><span class="mf">10.</span><span class="p">))</span>
+<span class="n">point_source</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">keV</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1300,51 +1300,51 @@ $1 \; \mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>class SwitchFunction(Function1D,metaclass=FunctionMeta):
-        r&quot;&quot;&quot;
-        description :
-            A demo function that can alter its state
-        latex : $$
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SwitchFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        description :</span>
+<span class="sd">            A demo function that can alter its state</span>
+<span class="sd">        latex : $$</span>
 
-        parameters :
-            a :
-                desc : Normalization (differential flux)
-                initial value : 1.0
-                is_normalization : True
-                min : 1e-30
-                max : 1e3
-                delta : 0.1
-        properties:
-            switch:
-                desc: a switch for functions
-                initial value: powerlaw
-                allowed values:
-                    - powerlaw
-                    - cosine
-                function: _say_hello
-        &quot;&quot;&quot;
-        def _say_hello(self):
-        # called when we set the value of switch
+<span class="sd">        parameters :</span>
+<span class="sd">            a :</span>
+<span class="sd">                desc : Normalization (differential flux)</span>
+<span class="sd">                initial value : 1.0</span>
+<span class="sd">                is_normalization : True</span>
+<span class="sd">                min : 1e-30</span>
+<span class="sd">                max : 1e3</span>
+<span class="sd">                delta : 0.1</span>
+<span class="sd">        properties:</span>
+<span class="sd">            switch:</span>
+<span class="sd">                desc: a switch for functions</span>
+<span class="sd">                initial value: powerlaw</span>
+<span class="sd">                allowed values:</span>
+<span class="sd">                    - powerlaw</span>
+<span class="sd">                    - cosine</span>
+<span class="sd">                function: _say_hello</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">_say_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># called when we set the value of switch</span>
 
-            print(self.switch.value)
-
-
-        def _set_units(self, x_unit, y_unit):
-
-            # The normalization has the same units as the y
-
-            self.a.unit = y_unit
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 
-        def evaluate(self, x, a):
+        <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
-            if self.switch.value == &quot;powerlaw&quot;:
+            <span class="c1"># The normalization has the same units as the y</span>
 
-                return a * np.powerlaw(x,-2)
+            <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
-            elif self.switch.value == &quot;cosine&quot;:
 
-                return a * np.cos(x)
+        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;powerlaw&quot;</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">powerlaw</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;cosine&quot;</span><span class="p">:</span>
+
+                <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 <br/></pre></div>
 </div>
 </div>
@@ -1354,9 +1354,9 @@ you serialize the model to disk.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span>f = SwitchFunction()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">SwitchFunction</span><span class="p">()</span>
 
-f.switch = &#39;cosine&#39;
+<span class="n">f</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="s1">&#39;cosine&#39;</span>
 <br/></pre></div>
 </div>
 </div>
@@ -1377,67 +1377,67 @@ cosine
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>class Redshifter(Function1D, metaclass=FunctionMeta):
-    r&quot;&quot;&quot;
-    description :
-        a function that can redshift the energies of any 1D function
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Redshifter</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        a function that can redshift the energies of any 1D function</span>
 
-    latex: not available
+<span class="sd">    latex: not available</span>
 
-    parameters :
-        redshift :
-            desc : the redshift
-            initial value : 0
-            min : 0
+<span class="sd">    parameters :</span>
+<span class="sd">        redshift :</span>
+<span class="sd">            desc : the redshift</span>
+<span class="sd">            initial value : 0</span>
+<span class="sd">            min : 0</span>
 
-    &quot;&quot;&quot;
-
-
-    def _set_units(self, x_unit, y_unit):
-
-        self.redshift.unit = astropy_units.dimensionless_unscaled
+<span class="sd">    &quot;&quot;&quot;</span>
 
 
-    def set_linked_function(self, function):
-         # this is an optional helper to
-             # ease in the setting of the function
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+
+    <span class="k">def</span> <span class="nf">set_linked_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+         <span class="c1"># this is an optional helper to</span>
+             <span class="c1"># ease in the setting of the function</span>
 
 
 
-        if &quot;func&quot; in self._external_functions:
+        <span class="k">if</span> <span class="s2">&quot;func&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span>
 
-            # since we only want to link one function
-                    # we unlink if we have linked before
+            <span class="c1"># since we only want to link one function</span>
+                    <span class="c1"># we unlink if we have linked before</span>
 
-            self.unlink_external_function(&quot;func&quot;)
+            <span class="bp">self</span><span class="o">.</span><span class="n">unlink_external_function</span><span class="p">(</span><span class="s2">&quot;func&quot;</span><span class="p">)</span>
 
-        # this allows use to link in a function
-            # with an internal name &#39;func&#39;
+        <span class="c1"># this allows use to link in a function</span>
+            <span class="c1"># with an internal name &#39;func&#39;</span>
 
-        self.link_external_function(function, &quot;func&quot;)
+        <span class="bp">self</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s2">&quot;func&quot;</span><span class="p">)</span>
 
-        self._linked_function = function
+        <span class="bp">self</span><span class="o">.</span><span class="n">_linked_function</span> <span class="o">=</span> <span class="n">function</span>
 
-    def get_linked_function(self):
+    <span class="k">def</span> <span class="nf">get_linked_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        # linked functions are stored in a dictionary
-            # but you
+        <span class="c1"># linked functions are stored in a dictionary</span>
+            <span class="c1"># but you</span>
 
-        return self._external_functions[&quot;func&quot;]
-
-
-    linked_function = property(
-        get_linked_function,
-        set_linked_function,
-        doc=&quot;&quot;&quot;Get/set linked function&quot;&quot;&quot;,
-    )
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">[</span><span class="s2">&quot;func&quot;</span><span class="p">]</span>
 
 
-    def evaluate(self, x, redshift):
+    <span class="n">linked_function</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
+        <span class="n">get_linked_function</span><span class="p">,</span>
+        <span class="n">set_linked_function</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get/set linked function&quot;&quot;&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
 
-        # we can call the function here
-        return self._linked_function(x * (1 + redshift))
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+
+
+        <span class="c1"># we can call the function here</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linked_function</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">redshift</span><span class="p">))</span>
 <br/></pre></div>
 </div>
 </div>
@@ -1446,14 +1446,14 @@ cosine
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>p = Powerlaw()
-rs = Redshifter(redshift=1)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
+<span class="n">rs</span> <span class="o">=</span> <span class="n">Redshifter</span><span class="p">(</span><span class="n">redshift</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-rs.linked_function = p
+<span class="n">rs</span><span class="o">.</span><span class="n">linked_function</span> <span class="o">=</span> <span class="n">p</span>
 
-print(p(10.))
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="mf">10.</span><span class="p">))</span>
 
-print(rs(10.))
+<span class="nb">print</span><span class="p">(</span><span class="n">rs</span><span class="p">(</span><span class="mf">10.</span><span class="p">))</span>
 <br/><br/></pre></div>
 </div>
 </div>
