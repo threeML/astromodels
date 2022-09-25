@@ -158,7 +158,7 @@ rtds_action_error_if_missing = True
 
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+#templates_path = ['_templates']
 
 
 # see https://github.com/spatialaudio/nbsphinx/issues/595
@@ -211,7 +211,7 @@ pygments_style = 'none'
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', '**.ipynb_checkpoints', 'md/*.md']
 
-pygments_style = 'sphinx'
+# pygments_style = 'sphinx'
 
 html_theme = 'sphinx_rtd_dark_mode'
 
@@ -231,7 +231,7 @@ html_favicon = "media/favicon.ico"
 
 autosectionlabel_prefix_document = True
 
-html_static_path = ['_static']
+# html_static_path = ['_static']
 
 version = 'latest'
 # The full version, including alpha/beta/rc tags.
