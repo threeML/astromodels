@@ -165,12 +165,15 @@ jobs:
 
           pip3 install wheel
           pip3 install mock recommonmark
-          pip3 install sphinx-rtd-dark-mode
+          pip3 install sphinx-rtd-dark-mode sphinx-math-dollar
           pip3 install -U sphinx nbsphinx sphinx-gallery
+          pip3 install -r docs/requirements.txt
 
           python3 setup.py develop
 
           rm -rf docs/md/*
+
+
 
       - uses: actions/download-artifact@master
         with:
