@@ -113,7 +113,8 @@ extensions = [
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
     'sphinx_gallery.load_style',
-    'sphinx_math_dollar'
+    'sphinx_math_dollar',
+    'sphinx_rtd_dark_mode'
     
 ]
 mathjax_config = {
@@ -137,7 +138,7 @@ from sphinx_math_dollar import NODE_BLACKLIST
 
 napoleon_google_docstring = True
 napoleon_use_param = False
-
+default_dark_mode = True
 
 # The path where the artifact should be extracted
 # Note: this is relative to the conf.py file!
@@ -189,18 +190,18 @@ pygments_style = 'none'
 # Create local pygments copies
 # Previously used: https://github.com/richleland/pygments-css
 # But do not want to depend on some random repository
-from pygments.formatters import HtmlFormatter  # noqa: E402
-from pygments.styles import get_all_styles  # noqa: E402
+# from pygments.formatters import HtmlFormatter  # noqa: E402
+# from pygments.styles import get_all_styles  # noqa: E402
 
-path = os.path.join('_static', 'pygments')
-if not os.path.isdir(path):
-    os.mkdir(path)
-for style in get_all_styles():
-    path = os.path.join('_static', 'pygments', style + '.css')
-    if os.path.isfile(path):
-        continue
-    with open(path, 'w') as f:
-        f.write(HtmlFormatter(style=style).get_style_defs('.highlight'))
+# path = os.path.join('_static', 'pygments')
+# if not os.path.isdir(path):
+#     os.mkdir(path)
+# for style in get_all_styles():
+#     path = os.path.join('_static', 'pygments', style + '.css')
+#     if os.path.isfile(path):
+#         continue
+#     with open(path, 'w') as f:
+#         f.write(HtmlFormatter(style=style).get_style_defs('.highlight'))
 
 
 
@@ -212,7 +213,7 @@ exclude_patterns = ['_build', '**.ipynb_checkpoints', 'md/*.md']
 
 pygments_style = 'sphinx'
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'sphinx_rtd_dark_mode'
 
 
 html_theme_options = {
