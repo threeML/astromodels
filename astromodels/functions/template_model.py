@@ -975,6 +975,7 @@ class XSPECTableModel(object):
 
 
 def convert_old_table_model(model_name: str):
+
     from pandas import HDFStore
 
     # Get the data directory
