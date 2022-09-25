@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.functions.functions_1D package &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area", "displayMath": [["\\[", "\\]"]]}})</script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="astromodels.functions.functions_1D.absorption module" href="astromodels.functions.functions_1D.absorption.html" />
+    <link rel="prev" title="astromodels.functions.dark_matter.dm_models module" href="astromodels.functions.dark_matter.dm_models.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Astromodels
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="API.html">API</a> &raquo;</li>
+          <li><a href="astromodels.functions.html">astromodels.functions package</a> &raquo;</li>
+      <li>astromodels.functions.functions_1D package</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="astromodels-functions-functions-1d-package">
+<h1>astromodels.functions.functions_1D package<a class="headerlink" href="#astromodels-functions-functions-1d-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.absorption.html">astromodels.functions.functions_1D.absorption module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.apec.html">astromodels.functions.functions_1D.apec module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.blackbody.html">astromodels.functions.functions_1D.blackbody module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.extinction.html">astromodels.functions.functions_1D.extinction module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.functions.html">astromodels.functions.functions_1D.functions module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.polynomials.html">astromodels.functions.functions_1D.polynomials module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="astromodels.functions.functions_1D.powerlaws.html">astromodels.functions.functions_1D.powerlaws module</a></li>
+</ul>
+</div>
+</section>
+<section id="module-astromodels.functions.functions_1D">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-astromodels.functions.functions_1D" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Band</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Band model from Band et al., 1993, parametrized with the peak energy</p>
+</div></blockquote>
+<p>latex : <span class="math notranslate nohighlight">\(K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} \)</span></p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Differential flux at the pivot energy
+initial value : 1e-4
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>alpha :</p>
+<blockquote>
+<div><p>desc : low-energy photon index
+initial value : -1.0
+min : -1.5
+max : 3</p>
+</div></blockquote>
+<p>xp :</p>
+<blockquote>
+<div><p>desc : peak in the x * x * N (nuFnu if x is a energy)
+initial value : 500
+min : 10
+transformation : log10</p>
+</div></blockquote>
+<p>beta :</p>
+<blockquote>
+<div><p>desc : high-energy photon index
+initial value : -2.0
+min : -5.0
+max : -1.6</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : pivot energy
+initial value : 100.0
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Band.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_Calderone">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Band_Calderone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band_Calderone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band_Calderone" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>The Band model from Band et al. 1993, implemented however in a way which reduces the covariances between
+the parameters (Calderone et al., MNRAS, 448, 403C, 2015)</p>
+</div></blockquote>
+<p>latex : $ text{(Calderone et al., MNRAS, 448, 403C, 2015)} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>alpha :</dt><dd><p>desc : The index for x smaller than the x peak
+initial value : -1
+min : -10
+max : 10</p>
+</dd>
+</dl>
+<p>beta :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>desc<span class="classifier">index for x greater than the x peak (only if opt=1, i.e., for the</span></dt><dd><p>Band model)</p>
+</dd>
+</dl>
+<p>initial value : -2.2
+min : -7
+max : -1</p>
+</div></blockquote>
+<p>xp :</p>
+<blockquote>
+<div><p>desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)
+initial value : 200.0
+min : 1e-10
+transformation : log10</p>
+</div></blockquote>
+<p>F :</p>
+<blockquote>
+<div><p>desc : integral in the band defined by a and b
+initial value : 1e-6
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>a:</p>
+<blockquote>
+<div><p>desc : lower limit of the band in which the integral will be computed
+initial value : 1.0
+min : 0
+fix : yes</p>
+</div></blockquote>
+<p>b:</p>
+<blockquote>
+<div><p>desc : upper limit of the band in which the integral will be computed
+initial value : 10000.0
+min : 0
+fix : yes</p>
+</div></blockquote>
+<p>opt :</p>
+<blockquote>
+<div><p>desc : option to select the spectral model (0 corresponds to a cutoff power law, 1 to the Band model)
+initial value : 1
+min : 0
+max : 1
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_Calderone.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band_Calderone.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band_Calderone.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_Calderone.ggrb_int_cpl">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ggrb_int_cpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Emin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Emax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band_Calderone.ggrb_int_cpl"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band_Calderone.ggrb_int_cpl" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_Calderone.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Band_Calderone.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_grbm">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Band_grbm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band_grbm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band_grbm" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Band model from Band et al., 1993, parametrized with the cutoff energy</p>
+</div></blockquote>
+<p>latex : $  $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Differential flux at the pivot energy
+initial value : 1e-4
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>alpha :</p>
+<blockquote>
+<div><p>desc : low-energy photon index
+initial value : -1.0
+min : -1.5
+max : 3</p>
+</div></blockquote>
+<p>xc :</p>
+<blockquote>
+<div><p>desc : cutoff of exp
+initial value : 500
+min : 10
+transformation : log10</p>
+</div></blockquote>
+<p>beta :</p>
+<blockquote>
+<div><p>desc : high-energy photon index
+initial value : -2.0
+min : -5.0
+max : -1.6</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : pivot energy
+initial value : 100.0
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_grbm.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Band_grbm.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Band_grbm.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Band_grbm.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Band_grbm.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Blackbody">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Blackbody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#Blackbody"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Blackbody" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>A blackbody function</p>
+</dd>
+</dl>
+<p>latex : <span class="math notranslate nohighlight">\(f(x) = K \frac{x^2}{\exp(\frac{x}{kT}) -1}  \)</span></p>
+<dl class="simple">
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>K :</dt><dd><p>desc :
+initial value : 1e-4
+min : 0.
+is_normalization : True</p>
+</dd>
+<dt>kT :</dt><dd><p>desc : temperature of the blackbody
+initial value : 30.0
+min: 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Blackbody.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kT</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#Blackbody.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Blackbody.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Blackbody.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Blackbody.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Broken_powerlaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Broken_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Broken_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Broken_powerlaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A broken power law function</p>
+</div></blockquote>
+<p>latex : $ f(x)= K~begin{cases}left( frac{x}{x_{b}} right)^{alpha} &amp; x &lt; x_{b} \ left( frac{x}{x_{b}} right)^{beta} &amp; x ge x_{b} end{cases} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization (differential flux at x_b)
+initial value : 1.0
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>xb :</p>
+<blockquote>
+<div><p>desc : Break point
+initial value : 10
+min : 1.0
+transformation : log10</p>
+</div></blockquote>
+<p>alpha :</p>
+<blockquote>
+<div><p>desc : Index before the break xb
+initial value : -1.5
+min : -10
+max : 10</p>
+</div></blockquote>
+<p>beta :</p>
+<blockquote>
+<div><p>desc : Index after the break xb
+initial value : -2.5
+min : -10
+max : 10</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot energy
+initial value : 1.0
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Broken_powerlaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Broken_powerlaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Broken_powerlaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Broken_powerlaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Broken_powerlaw.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Constant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Constant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Constant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Constant" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Return k</p>
+</div></blockquote>
+<p>latex : $ k $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>k :</p>
+<blockquote>
+<div><p>desc : Constant value
+initial value : 0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Constant.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Constant.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Constant.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Constant.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Constant.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cubic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Cubic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Cubic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Cubic" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A cubic function</p>
+</div></blockquote>
+<p>latex : $ a + b cdot x + c cdot x^2 + d cdot x^3$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>a :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>c :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>d :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cubic.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Cubic.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Cubic.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cubic.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Cubic.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cutoff_powerlaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Cutoff_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Cutoff_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Cutoff_powerlaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A power law multiplied by an exponential cutoff</p>
+</div></blockquote>
+<p>latex : $ K~frac{x}{piv}^{index}~exp{-x/xc} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization (differential flux at the pivot value)
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e3
+delta : 0.1</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot value
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>index :</p>
+<blockquote>
+<div><p>desc : Photon index
+initial value : -2
+min : -10
+max : 10</p>
+</div></blockquote>
+<p>xc :</p>
+<blockquote>
+<div><p>desc : Cutoff energy
+initial value : 10.0
+transformation : log10
+min: 1.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cutoff_powerlaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Cutoff_powerlaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Cutoff_powerlaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cutoff_powerlaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Cutoff_powerlaw.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cutoff_powerlaw_Ep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Cutoff_powerlaw_Ep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Cutoff_powerlaw_Ep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Cutoff_powerlaw_Ep" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A power law multiplied by an exponential cutoff parametrized with Ep</p>
+</div></blockquote>
+<p>latex : $ K~frac{x}{piv}^{index}~exp{-x(2+index)/xp} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization (differential flux at the pivot value)
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e3
+delta : 0.1</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot value
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>index :</p>
+<blockquote>
+<div><p>desc : Photon index
+initial value : -2
+min : -10
+max : 10</p>
+</div></blockquote>
+<p>xp :</p>
+<blockquote>
+<div><p>desc : peak in the x * x * N (nuFnu if x is a energy)
+initial value : 500
+min : 10
+max : 1e4
+transformation : log10</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cutoff_powerlaw_Ep.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Cutoff_powerlaw_Ep.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Cutoff_powerlaw_Ep.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Cutoff_powerlaw_Ep.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Cutoff_powerlaw_Ep.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.DiracDelta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">DiracDelta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#DiracDelta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.DiracDelta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>return  at zero_point</p>
+</div></blockquote>
+<p>latex : $ value $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>value :</p>
+<blockquote>
+<div><p>desc : Constant value
+initial value : 0</p>
+</div></blockquote>
+<p>zero_point:</p>
+<blockquote>
+<div><p>desc: value at which function is non-zero
+initial value : 0
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.DiracDelta.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#DiracDelta.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.DiracDelta.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.DiracDelta.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.DiracDelta.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Exponential_cutoff">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Exponential_cutoff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#Exponential_cutoff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Exponential_cutoff" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>An exponential cutoff</p>
+</div></blockquote>
+<p>latex : $ K exp{(-x/xc)} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization
+initial value : 1.0
+fix : no
+is_normalization : True</p>
+</div></blockquote>
+<dl class="simple">
+<dt>xc :</dt><dd><p>desc : cutoff
+initial value : 100
+min : 1</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Exponential_cutoff.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#Exponential_cutoff.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Exponential_cutoff.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Exponential_cutoff.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Exponential_cutoff.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Inverse_cutoff_powerlaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Inverse_cutoff_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Inverse_cutoff_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Inverse_cutoff_powerlaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</p>
+</dd>
+</dl>
+<p>latex : <span class="math notranslate nohighlight">\(K \frac{x}{piv}^{index}\exp{(-x~b)} \)</span>
+parameters :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>K :</dt><dd><p>desc : Normalization (differential flux at the pivot value)
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e3
+delta : 0.1</p>
+</dd>
+<dt>piv :</dt><dd><p>desc : Pivot value
+initial value : 1
+fix : yes</p>
+</dd>
+<dt>index :</dt><dd><p>desc : Photon index
+initial value : -2
+min : -10
+max : 10</p>
+</dd>
+<dt>b :</dt><dd><p>desc : inverse cutoff energy i.e 1/xc
+initial value : 1</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Inverse_cutoff_powerlaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Inverse_cutoff_powerlaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Inverse_cutoff_powerlaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Inverse_cutoff_powerlaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Inverse_cutoff_powerlaw.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Line">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Line" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A linear function</p>
+</div></blockquote>
+<p>latex : $ b * x + a $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>a :</p>
+<blockquote>
+<div><p>desc :  intercept
+initial value : 0</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : coeff
+initial value : 1</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Line.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Line.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Line.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Line.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Line.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Log_parabola">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Log_parabola</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#Log_parabola"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Log_parabola" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A log-parabolic function. NOTE that we use the high-energy convention of using the natural log in place of the
+base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
+using the other convention.</p>
+</div></blockquote>
+<p>latex : $ K left( frac{x}{piv} right)^{alpha -beta log{left( frac{x}{piv} right)}} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e5</p>
+</div></blockquote>
+<dl class="simple">
+<dt>piv :</dt><dd><p>desc : Pivot (keep this fixed)
+initial value : 1
+fix : yes</p>
+</dd>
+</dl>
+<p>alpha :</p>
+<blockquote>
+<div><p>desc : index
+initial value : -2.0</p>
+</div></blockquote>
+<p>beta :</p>
+<blockquote>
+<div><p>desc : curvature (positive is concave, negative is convex)
+initial value : 1.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Log_parabola.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#Log_parabola.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Log_parabola.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Log_parabola.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Log_parabola.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Log_parabola.peak_energy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peak_energy</span></span><a class="headerlink" href="#astromodels.functions.functions_1D.Log_parabola.peak_energy" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the peak energy in the nuFnu spectrum</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>peak energy in keV</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.ModifiedBlackbody">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">ModifiedBlackbody</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#ModifiedBlackbody"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.ModifiedBlackbody" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>A blackbody function</p>
+</dd>
+</dl>
+<p>latex : <span class="math notranslate nohighlight">\(f(x) = K \frac{x^2}{\exp(\frac{x}{kT}) -1}  \)</span></p>
+<dl class="simple">
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>K :</dt><dd><p>desc :
+initial value : 1e-4
+min : 0.
+is_normalization : True</p>
+</dd>
+<dt>kT :</dt><dd><p>desc : temperature of the blackbody
+initial value : 30.0
+min: 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.ModifiedBlackbody.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kT</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#ModifiedBlackbody.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.ModifiedBlackbody.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.ModifiedBlackbody.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.ModifiedBlackbody.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.NonDissipativePhotosphere">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">NonDissipativePhotosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#NonDissipativePhotosphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.NonDissipativePhotosphere" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>Non-dissipative photosphere of a GRB occuring above the saturation radius
+Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</p>
+</dd>
+</dl>
+<p>latex : <span class="math notranslate nohighlight">\(N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.4} e^{-\left(\frac{E}{E_{c}}\right)^{0.65}}\)</span></p>
+<dl class="simple">
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>K :</dt><dd><p>desc :
+initial value : 1e-4
+min : 0.
+is_normalization : True</p>
+</dd>
+<dt>ec :</dt><dd><p>desc : peak energy
+initial value : 200.0
+min: 0.</p>
+</dd>
+<dt>piv :</dt><dd><p>desc : the pivot energy
+initial value: 100.
+fix: True</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.NonDissipativePhotosphere.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#NonDissipativePhotosphere.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.NonDissipativePhotosphere.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.NonDissipativePhotosphere.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.NonDissipativePhotosphere.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.NonDissipativePhotosphere_Deep">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">NonDissipativePhotosphere_Deep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#NonDissipativePhotosphere_Deep"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.NonDissipativePhotosphere_Deep" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>Non-dissipative photosphere of a GRB occuring BELOW the saturation radius.
+Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</p>
+</dd>
+</dl>
+<p>latex : <span class="math notranslate nohighlight">\(N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.66} e^{-\left(\frac{E}{E_{c}}\right)}\)</span></p>
+<dl class="simple">
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>K :</dt><dd><p>desc :
+initial value : 1e-4
+min : 0.
+is_normalization : True</p>
+</dd>
+<dt>ec :</dt><dd><p>desc : peak energy
+initial value : 200.0
+min: 0.</p>
+</dd>
+<dt>piv :</dt><dd><p>desc : the pivot energy
+initial value: 100.
+fix: True</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.NonDissipativePhotosphere_Deep.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/blackbody.html#NonDissipativePhotosphere_Deep.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.NonDissipativePhotosphere_Deep.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.NonDissipativePhotosphere_Deep.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.NonDissipativePhotosphere_Deep.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.PhAbs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">PhAbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/absorption.html#PhAbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.PhAbs" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>Photometric absorption (phabs implementation), f(E) = exp(- NH * sigma(E))
+contributed by Dominique Eckert</p>
+</dd>
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>NH :</dt><dd><p>desc : absorbing column density in units of 1e22 particles per cm^2
+initial value : 1.0
+is_normalization : False
+transformation : log10
+min : 1e-4
+max : 1e4
+delta : 0.1</p>
+</dd>
+<dt>redshift :</dt><dd><p>desc : the redshift of the source
+initial value : 0.
+is_normalization : False
+min : 0
+max : 15
+delta : 0.1
+fix: True</p>
+</dd>
+</dl>
+</dd>
+<dt>properties:</dt><dd><dl class="simple">
+<dt>abundance_table:</dt><dd><p>desc: the abundance table for the model
+initial value: AG89
+allowed values:
+- AG89
+- ASPL
+function: _init_xsect</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.PhAbs.abundance_table_info">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abundance_table_info</span></span><a class="headerlink" href="#astromodels.functions.functions_1D.PhAbs.abundance_table_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.PhAbs.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/absorption.html#PhAbs.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.PhAbs.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.PhAbs.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.PhAbs.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A simple power-law</p>
+</div></blockquote>
+<p>latex : $ K~frac{x}{piv}^{index} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization (differential flux at the pivot value)
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e3
+delta : 0.1</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot value
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>index :</p>
+<blockquote>
+<div><p>desc : Photon index
+initial value : -2.01
+min : -10
+max : 10</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 10, function value: 0.01, tolerance: 1e-20}</p></li>
+<li><p>{ x : 100, function value: 0.0001, tolerance: 1e-20}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Powerlaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw_Eflux">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Powerlaw_Eflux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Powerlaw_Eflux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw_Eflux" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>A  power-law where the normalization is the energy flux defined between a and b</p>
+</dd>
+</dl>
+<p>latex : <span class="math notranslate nohighlight">\(F~\frac{x}{piv}^{index} \)</span>
+parameters :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>F :</dt><dd><p>desc : Normalization (energy flux at the between a and b) erg /cm2 s
+initial value : 1.e-5
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e3
+delta : 0.1</p>
+</dd>
+<dt>piv :</dt><dd><p>desc : Pivot value
+initial value : 1
+fix : yes</p>
+</dd>
+<dt>index :</dt><dd><p>desc : Photon index
+initial value : -2
+min : -10
+max : 10</p>
+</dd>
+<dt>a :</dt><dd><p>desc : lower energy integral bound (keV)
+initial value : 1
+min : 0
+fix: yes</p>
+</dd>
+<dt>b :</dt><dd><p>desc : upper energy integral bound (keV)
+initial value : 100
+min : 0
+fix: yes</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw_Eflux.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Powerlaw_Eflux.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw_Eflux.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw_Eflux.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw_Eflux.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw_flux">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Powerlaw_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Powerlaw_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw_flux" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation
+between the index and the normalization.</p>
+</div></blockquote>
+<p>latex : $ frac{F(gamma+1)} {b^{gamma+1} - a^{gamma+1}} (x)^{gamma}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>F :</p>
+<blockquote>
+<div><p>desc : Integral between a and b
+initial value : 1
+is_normalization : True
+transformation : log10
+min : 1e-30
+max : 1e3
+delta : 0.1</p>
+</div></blockquote>
+<p>index :</p>
+<blockquote>
+<div><p>desc : Photon index
+initial value : -2
+min : -10
+max : 10</p>
+</div></blockquote>
+<p>a :</p>
+<blockquote>
+<div><p>desc : lower bound for the band in which computing the integral F
+initial value : 1.0
+fix : yes</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : upper bound for the band in which computing the integral F
+initial value : 100.0
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw_flux.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Powerlaw_flux.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw_flux.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Powerlaw_flux.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Powerlaw_flux.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Quadratic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Quadratic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Quadratic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Quadratic" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A Quadratic function</p>
+</div></blockquote>
+<p>latex : $ a + b cdot x + c cdot x^2 $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>a :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>c :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Quadratic.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Quadratic.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Quadratic.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Quadratic.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Quadratic.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Quartic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Quartic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Quartic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Quartic" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A quartic function</p>
+</div></blockquote>
+<p>latex : $ a + b cdot x + c cdot x^2 + d cdot x^3 + e cdot x^4$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>a :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>c :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>d :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+<p>e :</p>
+<blockquote>
+<div><p>desc : coefficient
+initial value : 1</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Quartic.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#Quartic.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Quartic.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Quartic.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Quartic.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Sin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Sin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#Sin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Sin" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A sinusodial function</p>
+</div></blockquote>
+<p>latex : $ K~sin{(2pi f x + phi)} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization
+initial value : 1
+is_normalization : True</p>
+</div></blockquote>
+<p>f :</p>
+<blockquote>
+<div><p>desc : frequency
+initial value : 1.0 / (2 * np.pi)
+min : 0</p>
+</div></blockquote>
+<p>phi :</p>
+<blockquote>
+<div><p>desc : phase
+initial value : 0
+min : -np.pi
+max : +np.pi
+unit: rad</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.0, function value: 0.0, tolerance: 1e-10}</p></li>
+<li><p>{ x : 1.5707963267948966, function value: 1.0, tolerance: 1e-10}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Sin.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#Sin.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Sin.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Sin.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Sin.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.SmoothlyBrokenPowerLaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">SmoothlyBrokenPowerLaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#SmoothlyBrokenPowerLaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.SmoothlyBrokenPowerLaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A Smoothly Broken Power Law</p>
+</div></blockquote>
+<p>Latex : $  $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : normalization
+initial value : 1
+min : 1e-50
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>alpha :</p>
+<blockquote>
+<div><p>desc : power law index below the break
+initial value : -1
+min : -1.5
+max : 2</p>
+</div></blockquote>
+<p>break_energy:</p>
+<blockquote>
+<div><p>desc: location of the peak
+initial value : 300
+fix : no
+min : 10
+transformation : log10</p>
+</div></blockquote>
+<p>break_scale :</p>
+<blockquote>
+<div><p>desc: smoothness of the break
+initial value : 0.5
+min : 0.
+max : 10.
+fix : yes</p>
+</div></blockquote>
+<p>beta:</p>
+<blockquote>
+<div><p>desc : power law index above the break
+initial value : -2.
+min : -5.0
+max : -1.6</p>
+</div></blockquote>
+<p>pivot:</p>
+<blockquote>
+<div><p>desc: where the spectrum is normalized
+initial value : 100.
+fix: yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.SmoothlyBrokenPowerLaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_energy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">break_scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pivot</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#SmoothlyBrokenPowerLaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.SmoothlyBrokenPowerLaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.SmoothlyBrokenPowerLaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.SmoothlyBrokenPowerLaw.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Standard_Rv">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Standard_Rv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#Standard_Rv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Standard_Rv" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Standard_Rv.LMC">
+<span class="sig-name descname"><span class="pre">LMC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.16</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.Standard_Rv.LMC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Standard_Rv.MW">
+<span class="sig-name descname"><span class="pre">MW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.08</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.Standard_Rv.MW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Standard_Rv.SMC">
+<span class="sig-name descname"><span class="pre">SMC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.93</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.Standard_Rv.SMC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.StepFunction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">StepFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#StepFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.StepFunction" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
+extremes of the interval are counted as part of the interval.</p>
+</div></blockquote>
+<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lower_bound :</p>
+<blockquote>
+<div><p>desc : Lower bound for the interval
+initial value : 0</p>
+</div></blockquote>
+<p>upper_bound :</p>
+<blockquote>
+<div><p>desc : Upper bound for the interval
+initial value : 1</p>
+</div></blockquote>
+<p>value :</p>
+<blockquote>
+<div><p>desc : Value in the interval
+initial value : 1.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.5, function value: 1.0, tolerance: 1e-20}</p></li>
+<li><p>{ x : -0.5, function value: 0, tolerance: 1e-20}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.StepFunction.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#StepFunction.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.StepFunction.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.StepFunction.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.StepFunction.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.StepFunctionUpper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">StepFunctionUpper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#StepFunctionUpper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.StepFunctionUpper" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
+upper interval is open.</p>
+</div></blockquote>
+<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lower_bound :</p>
+<blockquote>
+<div><p>desc : Lower bound for the interval
+initial value : 0
+fix : yes</p>
+</div></blockquote>
+<p>upper_bound :</p>
+<blockquote>
+<div><p>desc : Upper bound for the interval
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>value :</p>
+<blockquote>
+<div><p>desc : Value in the interval
+initial value : 1.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.5, function value: 1.0, tolerance: 1e-20}</p></li>
+<li><p>{ x : -0.5, function value: 0, tolerance: 1e-20}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.StepFunctionUpper.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#StepFunctionUpper.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.StepFunctionUpper.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.StepFunctionUpper.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.StepFunctionUpper.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Super_cutoff_powerlaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Super_cutoff_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Super_cutoff_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Super_cutoff_powerlaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A power law with a super-exponential cutoff</p>
+</div></blockquote>
+<p>latex : $ K~frac{x}{piv}^{index}~exp{(-x/xc)^{gamma}} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Normalization (differential flux at the pivot value)
+initial value : 1.0
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot value
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>index :</p>
+<blockquote>
+<div><p>desc : Photon index
+initial value : -2
+min : -10
+max : 10</p>
+</div></blockquote>
+<p>xc :</p>
+<blockquote>
+<div><p>desc : Cutoff energy
+initial value : 10.0
+min : 1.0
+transformation : log10</p>
+</div></blockquote>
+<p>gamma :</p>
+<blockquote>
+<div><p>desc : Index of the super-exponential cutoff
+initial value : 1.0
+min : 0.1
+max : 10.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Super_cutoff_powerlaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#Super_cutoff_powerlaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Super_cutoff_powerlaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.Super_cutoff_powerlaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.Super_cutoff_powerlaw.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.TbAbs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">TbAbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/absorption.html#TbAbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.TbAbs" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>Photometric absorption (Tbabs implementation), f(E) = exp(- NH * sigma(E))
+contributed by Dominique Eckert</p>
+</dd>
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>NH :</dt><dd><p>desc : absorbing column density in units of 1e22 particles per cm^2
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-4
+max : 1e4
+delta : 0.1</p>
+</dd>
+<dt>redshift :</dt><dd><p>desc : the redshift of the source
+initial value : 0.
+is_normalization : False
+min : 0
+max : 15
+delta : 0.1
+fix: True</p>
+</dd>
+</dl>
+</dd>
+<dt>properties:</dt><dd><dl class="simple">
+<dt>abundance_table:</dt><dd><p>desc: the abundance table for the model
+initial value: WILM
+allowed values:
+- WILM
+- AG89
+- ASPL
+function: _init_xsect</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.TbAbs.abundance_table_info">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abundance_table_info</span></span><a class="headerlink" href="#astromodels.functions.functions_1D.TbAbs.abundance_table_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.TbAbs.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/absorption.html#TbAbs.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.TbAbs.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.TbAbs.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.TbAbs.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.WAbs">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">WAbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/absorption.html#WAbs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.WAbs" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E))
+contributed by Dominique Eckert</p>
+</dd>
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>NH :</dt><dd><p>desc : absorbing column density in units of 1e22 particles per cm^2
+initial value : 1.0
+is_normalization : True
+transformation : log10
+min : 1e-4
+max : 1e4
+delta : 0.1</p>
+</dd>
+<dt>redshift :</dt><dd><p>desc : the redshift of the source
+initial value : 0.
+is_normalization : False
+min : 0
+max : 15
+delta : 0.1
+fix: True</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.WAbs.abundance_table_info">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abundance_table_info</span></span><a class="headerlink" href="#astromodels.functions.functions_1D.WAbs.abundance_table_info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.WAbs.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/absorption.html#WAbs.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.WAbs.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.WAbs.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.WAbs.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.ZDust">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">ZDust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#ZDust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.ZDust" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl>
+<dt>description :</dt><dd><p>Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.</p>
+</dd>
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>e_bmv :</dt><dd><p>desc : color excess
+initial value : 1.0
+min: 0
+is_normalization : False
+delta : 0.1</p>
+</dd>
+<dt>rv :</dt><dd><p>desc :  ratio of total to selective extinction
+initial value : 3.08
+is_normalization : False
+delta : 0.1
+fix: True</p>
+</dd>
+<dt>redshift :</dt><dd><p>desc : the redshift of the source
+initial value : 0.
+is_normalization : False
+min : 0
+max : 15
+delta : 0.1
+fix: True</p>
+</dd>
+</dl>
+</dd>
+<dt>properties:</dt><dd><dl>
+<dt>extinction_law:</dt><dd><p>desc: the abundance table for the model
+initial value: mw
+allowed values:
+- mw
+- lmc
+- smc</p>
+<p>function: _set_extinction_law</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.ZDust.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_bmv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#ZDust.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.ZDust.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.ZDust.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.ZDust.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.get_polynomial">
+<span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">get_polynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><span class="pre">Function1D</span></a></span></span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#get_polynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.get_polynomial" title="Permalink to this definition"></a></dt>
+<dd><p>get a polynomial function of order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – the order of the polynomical</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="astromodels.functions.dark_matter.dm_models.html" class="btn btn-neutral float-left" title="astromodels.functions.dark_matter.dm_models module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="astromodels.functions.functions_1D.absorption.html" class="btn btn-neutral float-right" title="astromodels.functions.functions_1D.absorption module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.functions.functions_1D.extinction module &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="astromodels.functions.functions_1D.functions module" href="astromodels.functions.functions_1D.functions.html" />
+    <link rel="prev" title="astromodels.functions.functions_1D.blackbody module" href="astromodels.functions.functions_1D.blackbody.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Astromodels
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="API.html">API</a> &raquo;</li>
+          <li><a href="astromodels.functions.html">astromodels.functions package</a> &raquo;</li>
+          <li><a href="astromodels.functions.functions_1D.html">astromodels.functions.functions_1D package</a> &raquo;</li>
+      <li>astromodels.functions.functions_1D.extinction module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-astromodels.functions.functions_1D.extinction">
+<span id="astromodels-functions-functions-1d-extinction-module"></span><h1>astromodels.functions.functions_1D.extinction module<a class="headerlink" href="#module-astromodels.functions.functions_1D.extinction" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.Standard_Rv">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">Standard_Rv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#Standard_Rv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.Standard_Rv" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.Standard_Rv.LMC">
+<span class="sig-name descname"><span class="pre">LMC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.16</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.Standard_Rv.LMC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.Standard_Rv.MW">
+<span class="sig-name descname"><span class="pre">MW</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3.08</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.Standard_Rv.MW" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.Standard_Rv.SMC">
+<span class="sig-name descname"><span class="pre">SMC</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2.93</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.Standard_Rv.SMC" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.ZDust">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">ZDust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#ZDust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.ZDust" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<dl>
+<dt>description :</dt><dd><p>Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.</p>
+</dd>
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>e_bmv :</dt><dd><p>desc : color excess
+initial value : 1.0
+min: 0
+is_normalization : False
+delta : 0.1</p>
+</dd>
+<dt>rv :</dt><dd><p>desc :  ratio of total to selective extinction
+initial value : 3.08
+is_normalization : False
+delta : 0.1
+fix: True</p>
+</dd>
+<dt>redshift :</dt><dd><p>desc : the redshift of the source
+initial value : 0.
+is_normalization : False
+min : 0
+max : 15
+delta : 0.1
+fix: True</p>
+</dd>
+</dl>
+</dd>
+<dt>properties:</dt><dd><dl>
+<dt>extinction_law:</dt><dd><p>desc: the abundance table for the model
+initial value: mw
+allowed values:
+- mw
+- lmc
+- smc</p>
+<p>function: _set_extinction_law</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.ZDust.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_bmv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#ZDust.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.ZDust.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.ZDust.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.ZDust.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.ms_dust">
+<span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">ms_dust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_bmv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lamb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#ms_dust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.ms_dust" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.ms_dust_xspec">
+<span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">ms_dust_xspec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_bmv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lamb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#ms_dust_xspec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.ms_dust_xspec" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.pei">
+<span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">pei</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rlambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lamb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/extinction.html#pei"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.pei" title="Permalink to this definition"></a></dt>
+<dd><p>ported from XSPEC originally by
+<a class="reference external" href="mailto:Martin&#46;Still&#37;&#52;&#48;gsfc&#46;nasa&#46;gov">Martin<span>&#46;</span>Still<span>&#64;</span>gsfc<span>&#46;</span>nasa<span>&#46;</span>gov</a></p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="astromodels.functions.functions_1D.blackbody.html" class="btn btn-neutral float-left" title="astromodels.functions.functions_1D.blackbody module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="astromodels.functions.functions_1D.functions.html" class="btn btn-neutral float-right" title="astromodels.functions.functions_1D.functions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,79 +1,40 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>astromodels.core.tree &mdash; Astromodels latest documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/dark_mode_css/dark.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
-  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
-   
-
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../index.html" class="icon icon-home"> Astromodels
-          
-
-          
-            
             <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -81,18 +42,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
@@ -106,102 +56,48 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">Astromodels</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-  <!--
-  <div class="admonition note">
-    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
-    </p>
-  </div>
-  -->
-  <li id="lightdark-li">
-    <label for="lightdark-checkbox" id="lightdark-label">
-      <input type="checkbox" id="lightdark-checkbox"/>
-      <div class="btn-neutral"></div>
-    </label>
-  </li>
-  
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
       <li>astromodels.core.tree</li>
-    
-
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-  <script type="text/javascript" src=../../../_static/custom.js></script>
-  
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for astromodels.core.tree</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">future</span> <span class="kn">import</span> <span class="n">standard_library</span>
-
-<span class="n">standard_library</span><span class="o">.</span><span class="n">install_aliases</span><span class="p">()</span>
-<span class="kn">import</span> <span class="nn">collections</span>
+<span></span><span class="kn">import</span> <span class="nn">collections</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">object</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.core.node_ctype</span> <span class="kn">import</span> <span class="n">_Node</span>
+<span class="kn">from</span> <span class="nn">future</span> <span class="kn">import</span> <span class="n">standard_library</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.core.node_type</span> <span class="kn">import</span> <span class="n">NodeBase</span>
 <span class="kn">from</span> <span class="nn">astromodels.utils.io</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
 <span class="kn">from</span> <span class="nn">astromodels.utils.valid_variable</span> <span class="kn">import</span> <span class="n">is_valid_variable_name</span>
 
-<span class="kn">from</span> <span class="nn">.cpickle_compatibility_layer</span> <span class="kn">import</span> <span class="n">cPickle</span>
+<span class="n">standard_library</span><span class="o">.</span><span class="n">install_aliases</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="DuplicatedNode"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.DuplicatedNode">[docs]</a><span class="k">class</span> <span class="nc">DuplicatedNode</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -216,66 +112,55 @@
     <span class="k">pass</span></div>
 
 
-<span class="c1"># This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)</span>
-<span class="c1"># during unpickling</span>
-<div class="viewcode-block" id="NewNodeUnpickler"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.NewNodeUnpickler">[docs]</a><span class="k">class</span> <span class="nc">NewNodeUnpickler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
-
-        <span class="n">instance</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">instance</span></div>
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Node"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node">[docs]</a><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="n">_Node</span><span class="p">):</span>
+<div class="viewcode-block" id="Node"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node">[docs]</a><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="n">NodeBase</span><span class="p">):</span>
 
     <span class="c1"># This apparently dumb constructor is needed otherwise pickle will fail</span>
 
-<div class="viewcode-block" id="Node.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">is_valid_variable_name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;Illegal characters in name </span><span class="si">%s</span><span class="s2">. You can only use letters and numbers, &quot;</span> \
-                                             <span class="s2">&quot;and _&quot;</span> <span class="o">%</span> <span class="n">name</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid_variable_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;You cannot call a node &#39;name&#39;, it is reserved.&quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Illegal characters in name </span><span class="si">%s</span><span class="s2">. You can only use letters and numbers, &quot;</span>
+                <span class="s2">&quot;and _&quot;</span> <span class="o">%</span> <span class="n">name</span>
+            <span class="p">)</span>
 
-        <span class="n">_Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span></div>
-        
-    <span class="c1">#########################################################################</span>
-    <span class="c1"># The next 3 methods are *really* necessary for anything to work</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span> <span class="o">!=</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span>
 
-        <span class="n">state</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">()</span>
-        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">state</span><span class="p">[</span><span class="s1">&#39;__dict__&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You cannot call a node &#39;name&#39;, it is reserved.&quot;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">NewNodeUnpickler</span><span class="p">(),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,),</span> <span class="n">state</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="n">NodeBase</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="c1"># Set the children</span>
+        <span class="c1">#########################################################################</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_add_children</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;children&#39;</span><span class="p">])</span>
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="c1"># Set the name of this node</span>
+        <span class="c1"># return the hash of the path</span>
+        <span class="c1"># anytime we need a hash should</span>
+        <span class="c1"># be after a model is finalized</span>
+        <span class="c1"># so it should be static</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_change_name</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_path</span><span class="p">())</span>
 
-        <span class="c1"># Restore everything else</span>
-        
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;__dict__&#39;</span><span class="p">]:</span>
+<div class="viewcode-block" id="Node.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">this_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;__dict__&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">():</span>
 
-    <span class="c1"># This is necessary for copy.deepcopy to work</span>
-    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memodict</span><span class="o">=</span><span class="p">{}):</span>
+            <span class="n">this_dict</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cPickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
-
-    <span class="c1">#########################################################################</span>
+        <span class="k">return</span> <span class="n">this_dict</span></div>
 
     <span class="c1"># This is used by dir() and by the autocompletion in Ipython</span>
+
     <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Get the names of the attributes of the class</span>
@@ -286,19 +171,9 @@
 
         <span class="k">return</span> <span class="n">l</span>
 
-<div class="viewcode-block" id="Node.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-        <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">():</span>
-
-            <span class="n">this_dict</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">this_dict</span></div>
-
     <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="s2">&quot;Node with name </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Node with name </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -309,14 +184,14 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Node._repr_html_"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node._repr_html_">[docs]</a>    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        HTML representation for the IPython notebook</span>
 
 <span class="sd">        :return: HTML representation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Node.display"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -328,247 +203,33 @@
         <span class="c1"># This will automatically choose the best representation among repr and repr_html</span>
 
         <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
-
-
-<div class="viewcode-block" id="OldNode"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode">[docs]</a><span class="k">class</span> <span class="nc">OldNode</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-<div class="viewcode-block" id="OldNode.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_children</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="kc">None</span>
-
-        <span class="k">assert</span> <span class="n">is_valid_variable_name</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;Illegal characters in name </span><span class="si">%s</span><span class="s2">. You can only use letters and numbers, &quot;</span> \
-                                             <span class="s2">&quot;and _&quot;</span> <span class="o">%</span> <span class="n">name</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span></div>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the name of the node</span>
-
-<span class="sd">        :return: a string containing the name</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="k">return</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_path</span><span class="p">())</span>
-
-    <span class="k">def</span> <span class="nf">_add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">):</span>
-
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_child</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">add_attribute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-
-        <span class="n">new_child</span><span class="o">.</span><span class="n">_set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-
-            <span class="n">name</span> <span class="o">=</span> <span class="n">new_child</span><span class="o">.</span><span class="n">name</span>
-
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
-
-            <span class="k">raise</span> <span class="n">DuplicatedNode</span><span class="p">(</span><span class="s2">&quot;You cannot use the same name (</span><span class="si">%s</span><span class="s2">) for different nodes&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_child</span>
-
-        <span class="k">if</span> <span class="n">add_attribute</span><span class="p">:</span>
-
-            <span class="c1"># Add also an attribute with the name of the new child, to allow access with a syntax like</span>
-            <span class="c1"># node.child</span>
-
-            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">new_child</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_name</span><span class="p">):</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">child_name</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_remove_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_name</span><span class="p">):</span>
-
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child_name</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">child_name</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
-
-        <span class="c1"># We need to use directly the __setattr__ method because the normal self._children = ... will trigger</span>
-        <span class="c1"># an exception, because of the __setattr__ method of the DualAccessClass which forbids changing</span>
-        <span class="c1"># nodes. However, this might reassign the parent to a class</span>
-
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_parent&quot;</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
-
-<div class="viewcode-block" id="OldNode._get_child_from_path"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode._get_child_from_path">[docs]</a>    <span class="k">def</span> <span class="nf">_get_child_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a children below this level, starting from a path of the kind &quot;this_level.something.something.name&quot;</span>
-
-<span class="sd">        :param path: the key</span>
-<span class="sd">        :return: the child</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">keys</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-
-        <span class="n">this_child</span> <span class="o">=</span> <span class="bp">self</span>
-
-        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
-
-            <span class="k">try</span><span class="p">:</span>
-
-                <span class="n">this_child</span> <span class="o">=</span> <span class="n">this_child</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-
-            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-
-                <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s2">&quot;Child </span><span class="si">%s</span><span class="s2"> not found&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">this_child</span></div>
-
-    <span class="k">def</span> <span class="nf">_get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="n">parent_names</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="n">current_node</span> <span class="o">=</span> <span class="bp">self</span>
-
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-
-            <span class="n">this_parent</span> <span class="o">=</span> <span class="n">current_node</span><span class="o">.</span><span class="n">_get_parent</span><span class="p">()</span>
-
-            <span class="k">if</span> <span class="n">this_parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-
-                <span class="k">break</span>
-
-            <span class="k">else</span><span class="p">:</span>
-
-                <span class="n">parent_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_node</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-
-                <span class="n">current_node</span> <span class="o">=</span> <span class="n">this_parent</span>
-
-        <span class="k">return</span> <span class="n">parent_names</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-<div class="viewcode-block" id="OldNode.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-        <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-
-            <span class="n">this_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">this_dict</span></div>
-
-    <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
-
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You should implement the __repr__base method for each class&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Textual representation for console</span>
-
-<span class="sd">        :return: representation</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<div class="viewcode-block" id="OldNode._repr_html_"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode._repr_html_">[docs]</a>    <span class="k">def</span> <span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        HTML representation for the IPython notebook</span>
-
-<span class="sd">        :return: HTML representation</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="OldNode.display"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode.display">[docs]</a>    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Display information about the point source.</span>
-
-<span class="sd">        :return: (none)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># This will automatically choose the best representation among repr and repr_html</span>
-
-        <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="OldNode._find_instances"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.OldNode._find_instances">[docs]</a>    <span class="k">def</span> <span class="nf">_find_instances</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Find all the instances of cls below this node.</span>
-
-<span class="sd">        :return: a dictionary of instances of cls</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">instances</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-
-        <span class="k">for</span> <span class="n">child_name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
-
-                <span class="n">key_name</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_get_path</span><span class="p">())</span>
-
-                <span class="n">instances</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
-
-                <span class="c1"># Now check if the instance has children,</span>
-                <span class="c1"># and if it does go deeper in the tree</span>
-
-                <span class="c1"># NOTE: an empty dictionary evaluate as False</span>
-
-                <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
-
-                    <span class="n">instances</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_find_instances</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
-
-            <span class="k">else</span><span class="p">:</span>
-
-                <span class="n">instances</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">_find_instances</span><span class="p">(</span><span class="bp">cls</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">instances</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
-
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
-
-    </p>
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

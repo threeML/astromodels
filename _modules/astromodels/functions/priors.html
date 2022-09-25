@@ -1,79 +1,40 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>astromodels.functions.priors &mdash; Astromodels latest documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/dark_mode_css/dark.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
-  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
-   
-
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../index.html" class="icon icon-home"> Astromodels
-          
-
-          
-            
             <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -81,18 +42,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
@@ -106,88 +56,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">Astromodels</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-  <!--
-  <div class="admonition note">
-    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
-    </p>
-  </div>
-  -->
-  <li id="lightdark-li">
-    <label for="lightdark-checkbox" id="lightdark-label">
-      <input type="checkbox" id="lightdark-checkbox"/>
-      <div class="btn-neutral"></div>
-    </label>
-  </li>
-  
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
       <li>astromodels.functions.priors</li>
-    
-
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-  <script type="text/javascript" src=../../../_static/custom.js></script>
-  
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for astromodels.functions.priors</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 <span class="kn">from</span> <span class="nn">past.utils</span> <span class="kn">import</span> <span class="n">old_div</span>
@@ -195,17 +91,22 @@
 
 <span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span>  <span class="n">erfcinv</span><span class="p">,</span> <span class="n">erf</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="kn">import</span> <span class="n">erfcinv</span><span class="p">,</span> <span class="n">erf</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span><span class="p">,</span> <span class="n">ModelAssertionViolation</span>
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Function1D</span><span class="p">,</span>
+    <span class="n">FunctionMeta</span><span class="p">,</span>
+    <span class="n">ModelAssertionViolation</span><span class="p">,</span>
+<span class="p">)</span>
 
 
-
-<span class="n">deg2rad</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mf">180.</span><span class="p">)</span>
-<span class="n">rad2deg</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="mf">180.</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">deg2rad</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">)</span>
+<span class="n">rad2deg</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="mf">180.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
 
 <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Gaussian"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Gaussian">[docs]</a><span class="k">class</span> <span class="nc">Gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+
+
+<div class="viewcode-block" id="Gaussian"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian">[docs]</a><span class="k">class</span> <span class="nc">Gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -258,13 +159,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Gaussian.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Gaussian.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<div class="viewcode-block" id="Gaussian.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
 
         <span class="n">norm</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__norm_const</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">F</span> <span class="o">*</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">2.</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">2.</span><span class="p">))))</span></div>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">F</span>
+            <span class="o">*</span> <span class="n">norm</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))))</span>
+        <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Gaussian.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Gaussian.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Gaussian.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used by multinest</span>
 
@@ -289,7 +194,8 @@
 
         <span class="k">return</span> <span class="n">res</span></div></div>
 
-<div class="viewcode-block" id="Truncated_gaussian"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Truncated_gaussian">[docs]</a><span class="k">class</span> <span class="nc">Truncated_gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Truncated_gaussian"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Truncated_gaussian">[docs]</a><span class="k">class</span> <span class="nc">Truncated_gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -358,17 +264,15 @@
         <span class="c1"># sigma has the same dimensions as x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
-
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Truncated_gaussian.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Truncated_gaussian.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">):</span>
-
+<div class="viewcode-block" id="Truncated_gaussian.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Truncated_gaussian.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">):</span>
 
         <span class="c1"># phi is in unitless, so we need to do this trick</span>
         <span class="c1"># to keep the units right</span>
 
         <span class="n">norm</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__norm_const</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
 
-        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">F</span> <span class="o">*</span> <span class="n">norm</span> <span class="o">*</span> <span class="mf">0.</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">F</span> <span class="o">*</span> <span class="n">norm</span> <span class="o">*</span> <span class="mf">0.0</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)</span>
 
         <span class="n">sqrt_two</span> <span class="o">=</span> <span class="mf">1.414213562</span>
@@ -378,14 +282,15 @@
         <span class="n">lower_arg</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">((</span><span class="n">lower_bound</span> <span class="o">-</span> <span class="n">mu</span><span class="p">),</span> <span class="n">sigma</span><span class="p">)</span>
         <span class="n">upper_arg</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">((</span><span class="n">upper_bound</span> <span class="o">-</span> <span class="n">mu</span><span class="p">),</span> <span class="n">sigma</span><span class="p">)</span>
 
-
-
         <span class="c1"># the typical gaussian functions</span>
 
-        <span class="n">phi</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">2.</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">2.</span><span class="p">))))</span> <span class="o">*</span> <span class="n">F</span> <span class="o">*</span> <span class="n">norm</span>
+        <span class="n">phi</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">mu</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">))))</span>
+            <span class="o">*</span> <span class="n">F</span>
+            <span class="o">*</span> <span class="n">norm</span>
+        <span class="p">)</span>
 
         <span class="c1"># the denominator is a function of the CDF</span>
-
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="c1"># erf cannot accept units</span>
@@ -397,12 +302,9 @@
 
         <span class="n">theta_upper</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">erf</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">upper_arg</span><span class="p">,</span> <span class="n">sqrt_two</span><span class="p">))</span>
 
-
-
-
         <span class="k">return</span> <span class="n">old_div</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="p">(</span><span class="n">theta_upper</span> <span class="o">-</span> <span class="n">theta_lower</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="Truncated_gaussian.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Truncated_gaussian.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Truncated_gaussian.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Truncated_gaussian.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">value</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">value</span>
@@ -428,10 +330,11 @@
         <span class="n">arg</span> <span class="o">=</span> <span class="n">theta_lower</span> <span class="o">+</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">theta_upper</span> <span class="o">-</span> <span class="n">theta_lower</span><span class="p">)</span>
 
         <span class="n">out</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sqrt_two</span> <span class="o">*</span> <span class="n">erfcinv</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">arg</span><span class="p">))</span>
-        
+
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">)</span></div></div>
 
-<div class="viewcode-block" id="Cauchy"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cauchy">[docs]</a><span class="k">class</span> <span class="nc">Cauchy</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Cauchy"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cauchy">[docs]</a><span class="k">class</span> <span class="nc">Cauchy</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -482,14 +385,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Cauchy.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cauchy.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+<div class="viewcode-block" id="Cauchy.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cauchy.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
         <span class="n">norm</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
 
         <span class="n">gamma2</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">gamma</span>
 
         <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">gamma2</span> <span class="o">/</span> <span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">+</span> <span class="n">gamma2</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Cauchy.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cauchy.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Cauchy.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cauchy.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used by multinest</span>
 
@@ -509,7 +412,7 @@
         <span class="k">return</span> <span class="n">res</span></div></div>
 
 
-<div class="viewcode-block" id="Cosine_Prior"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior">[docs]</a><span class="k">class</span> <span class="nc">Cosine_Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Cosine_Prior"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cosine_Prior">[docs]</a><span class="k">class</span> <span class="nc">Cosine_Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -543,15 +446,16 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-
     <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_units</span> <span class="o">=</span> <span class="p">(</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">,</span><span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_units</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">,</span>
+            <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_prior</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
-
 
         <span class="c1"># this prior needs to use the fixed units and</span>
         <span class="c1"># they do not need to be converted as they have no</span>
@@ -568,26 +472,26 @@
         <span class="c1"># value has the same unit as y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
-<div class="viewcode-block" id="Cosine_Prior.has_fixed_units"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior.has_fixed_units">[docs]</a>    <span class="k">def</span> <span class="nf">has_fixed_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Cosine_Prior.has_fixed_units"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cosine_Prior.has_fixed_units">[docs]</a>    <span class="k">def</span> <span class="nf">has_fixed_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="kc">True</span></div>
 
-<div class="viewcode-block" id="Cosine_Prior.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span><span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Cosine_Prior.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cosine_Prior.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># The value * 0 is to keep the units right</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">0</span>
 
         <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)</span>
 
-        <span class="n">norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">deg2rad</span><span class="o">*</span><span class="p">(</span><span class="n">upper_bound</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">deg2rad</span><span class="o">*</span><span class="p">(</span><span class="n">lower_bound</span><span class="p">)))</span> <span class="o">*</span> <span class="mf">57.29577795</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="n">upper_bound</span><span class="p">))</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="n">lower_bound</span><span class="p">))</span>
+        <span class="p">)</span> <span class="o">*</span> <span class="mf">57.29577795</span>
 
-
-        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span><span class="o">*</span><span class="p">(</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="p">))</span> <span class="o">/</span> <span class="n">norm</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span> <span class="o">/</span> <span class="n">norm</span>
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-
-<div class="viewcode-block" id="Cosine_Prior.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Cosine_Prior.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cosine_Prior.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used by multinest</span>
 
@@ -596,8 +500,8 @@
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cosdec_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span><span class="o">*</span><span class="p">(</span><span class="mf">90.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
-        <span class="n">cosdec_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span><span class="o">*</span><span class="p">(</span><span class="mf">90.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="n">cosdec_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="mf">90.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+        <span class="n">cosdec_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="mf">90.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
 
         <span class="n">v</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">cosdec_max</span> <span class="o">-</span> <span class="n">cosdec_min</span><span class="p">)</span>
         <span class="n">v</span> <span class="o">+=</span> <span class="n">cosdec_min</span>
@@ -614,41 +518,41 @@
         <span class="k">return</span> <span class="n">dec</span></div></div>
 
 
-<div class="viewcode-block" id="Log_normal"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Log_normal">[docs]</a><span class="k">class</span> <span class="nc">Log_normal</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Log_normal"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_normal">[docs]</a><span class="k">class</span> <span class="nc">Log_normal</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">       description :</span>
+<span class="sd">    description :</span>
 
-<span class="sd">           A log normal function</span>
+<span class="sd">        A log normal function</span>
 
-<span class="sd">       latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x/piv - \mu/piv)^2}{2~(\sigma)^2}} $</span>
+<span class="sd">    latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x/piv - \mu/piv)^2}{2~(\sigma)^2}} $</span>
 
-<span class="sd">       parameters :</span>
+<span class="sd">    parameters :</span>
 
-<span class="sd">           F :</span>
-<span class="sd">               desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution</span>
-<span class="sd">               initial value : 1</span>
+<span class="sd">        F :</span>
+<span class="sd">            desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution</span>
+<span class="sd">            initial value : 1</span>
 
-<span class="sd">           mu :</span>
+<span class="sd">        mu :</span>
 
-<span class="sd">               desc : Central value</span>
-<span class="sd">               initial value : 0.0</span>
+<span class="sd">            desc : Central value</span>
+<span class="sd">            initial value : 0.0</span>
 
-<span class="sd">           sigma :</span>
+<span class="sd">        sigma :</span>
 
-<span class="sd">               desc : standard deviation</span>
-<span class="sd">               initial value : 1.0</span>
-<span class="sd">               min : 1e-12</span>
+<span class="sd">            desc : standard deviation</span>
+<span class="sd">            initial value : 1.0</span>
+<span class="sd">            min : 1e-12</span>
 
-<span class="sd">           piv :</span>
-<span class="sd">               desc : pivot. Leave this to 1 for a proper log normal distribution</span>
-<span class="sd">               initial value : 1.0</span>
-<span class="sd">               fix : yes</span>
+<span class="sd">        piv :</span>
+<span class="sd">            desc : pivot. Leave this to 1 for a proper log normal distribution</span>
+<span class="sd">            initial value : 1.0</span>
+<span class="sd">            fix : yes</span>
 
-<span class="sd">       tests :</span>
-<span class="sd">           - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</span>
-<span class="sd">           - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</span>
+<span class="sd">    tests :</span>
+<span class="sd">        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</span>
+<span class="sd">        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</span>
 
-<span class="sd">       &quot;&quot;&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Place this here to avoid recomputing it all the time</span>
 
@@ -674,7 +578,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
-<div class="viewcode-block" id="Log_normal.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Log_normal.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+<div class="viewcode-block" id="Log_normal.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_normal.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
         <span class="c1"># The value * 0 is to keep the units right</span>
 
@@ -682,14 +586,23 @@
 
         <span class="c1"># The log normal is not defined if x &lt; 0. The &quot;0 * x&quot; part is to conserve the units if</span>
         <span class="c1"># x has them, because 0 * x will be a Quantity with the same units as x</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span>
 
-        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">F</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__norm_const</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="n">piv</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
-            <span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">piv</span><span class="p">))</span> <span class="o">-</span> <span class="n">old_div</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">piv</span><span class="p">),</span> <span class="mf">2.</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">piv</span><span class="p">),</span> <span class="mf">2.</span><span class="p">))))</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">F</span>
+            <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">__norm_const</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">/</span> <span class="n">piv</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+                <span class="n">old_div</span><span class="p">(</span>
+                    <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">piv</span><span class="p">))</span> <span class="o">-</span> <span class="n">old_div</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">piv</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">),</span>
+                    <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">piv</span><span class="p">),</span> <span class="mf">2.0</span><span class="p">)),</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-<div class="viewcode-block" id="Log_normal.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Log_normal.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Log_normal.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_normal.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used by multinest</span>
 
@@ -715,7 +628,7 @@
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="Uniform_prior"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior">[docs]</a><span class="k">class</span> <span class="nc">Uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Uniform_prior"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Uniform_prior">[docs]</a><span class="k">class</span> <span class="nc">Uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -762,7 +675,7 @@
         <span class="c1"># value has the same unit as y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
-<div class="viewcode-block" id="Uniform_prior.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Uniform_prior.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Uniform_prior.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># The value * 0 is to keep the units right</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">0</span>
@@ -772,8 +685,7 @@
 
         <span class="k">return</span> <span class="n">result</span></div>
 
-
-<div class="viewcode-block" id="Uniform_prior.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Uniform_prior.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Uniform_prior.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used by multinest</span>
 
@@ -793,7 +705,8 @@
 
         <span class="k">return</span> <span class="n">par</span></div></div>
 
-<div class="viewcode-block" id="Log_uniform_prior"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Log_uniform_prior">[docs]</a><span class="k">class</span> <span class="nc">Log_uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Log_uniform_prior"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_uniform_prior">[docs]</a><span class="k">class</span> <span class="nc">Log_uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -837,7 +750,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">*</span> <span class="n">x_unit</span>
 
-<div class="viewcode-block" id="Log_uniform_prior.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Log_uniform_prior.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
+<div class="viewcode-block" id="Log_uniform_prior.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_uniform_prior.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
         <span class="c1"># This makes the prior proper because it is the integral between lower_bound and upper_bound</span>
 
         <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">upper_bound</span><span class="p">),</span> <span class="n">old_div</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
@@ -850,7 +763,7 @@
 
             <span class="k">return</span> <span class="n">res</span></div>
 
-<div class="viewcode-block" id="Log_uniform_prior.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.priors.Log_uniform_prior.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<div class="viewcode-block" id="Log_uniform_prior.from_unit_cube"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_uniform_prior.from_unit_cube">[docs]</a>    <span class="k">def</span> <span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used by multinest</span>
 
@@ -870,47 +783,30 @@
 </pre></div>
 
            </div>
-           
           </div>
-
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
-
-    </p>
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

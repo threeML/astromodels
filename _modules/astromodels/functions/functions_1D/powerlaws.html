@@ -1,79 +1,40 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>astromodels.functions.functions_1D.powerlaws &mdash; Astromodels latest documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../../_static/gallery.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/dark_mode_css/dark.css" type="text/css" />
     <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../../../../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../../search.html" />
-  <link rel="stylesheet" href="../../../../_static/pygments/default.css" type="text/css" id="pygments-style">
-  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css">
-   
-
+    <link rel="search" title="Search" href="../../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../../index.html" class="icon icon-home"> Astromodels
-          
-
-          
-            
             <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -81,18 +42,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html">Builtin Models</a></li>
@@ -106,88 +56,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../release_notes.html">Release Notes</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../../index.html">Astromodels</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-  <!--
-  <div class="admonition note">
-    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
-    </p>
-  </div>
-  -->
-  <li id="lightdark-li">
-    <label for="lightdark-checkbox" id="lightdark-label">
-      <input type="checkbox" id="lightdark-checkbox"/>
-      <div class="btn-neutral"></div>
-    </label>
-  </li>
-  
       <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
-        
       <li>astromodels.functions.functions_1D.powerlaws</li>
-    
-
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-  <script type="text/javascript" src=../../../../_static/custom.js></script>
-  
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for astromodels.functions.functions_1D.powerlaws</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
@@ -201,8 +97,11 @@
 
 <span class="kn">import</span> <span class="nn">astromodels.functions.numba_functions</span> <span class="k">as</span> <span class="nn">nb_func</span>
 <span class="kn">from</span> <span class="nn">astromodels.core.units</span> <span class="kn">import</span> <span class="n">get_units</span>
-<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span><span class="p">,</span>
-                                            <span class="n">ModelAssertionViolation</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Function1D</span><span class="p">,</span>
+    <span class="n">FunctionMeta</span><span class="p">,</span>
+    <span class="n">ModelAssertionViolation</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">threeML.config.config</span> <span class="kn">import</span> <span class="n">threeML_config</span>
@@ -218,7 +117,7 @@
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s1">&#39;giacomov&#39;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 <span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016</span>
 
 <span class="n">erg2keV</span> <span class="o">=</span> <span class="mf">6.24151e8</span>
@@ -368,20 +267,20 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">yunit_</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">xunit_</span> <span class="o">=</span> <span class="mf">1.0</span>
-            <span class="n">F_</span><span class="p">,</span>  <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
+            <span class="n">F_</span><span class="p">,</span> <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 
         <span class="n">gp1</span> <span class="o">=</span> <span class="n">index_</span> <span class="o">+</span> <span class="mi">1</span>
 
-        <span class="n">norm</span> <span class="o">=</span> <span class="n">F_</span> <span class="o">*</span> <span class="n">gp1</span> <span class="o">/</span> <span class="p">(((</span><span class="n">b_</span><span class="p">)</span><span class="o">**</span><span class="n">gp1</span> <span class="o">-</span> <span class="p">(</span><span class="n">a_</span><span class="p">)</span><span class="o">**</span><span class="n">gp1</span><span class="p">))</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">F_</span> <span class="o">*</span> <span class="n">gp1</span> <span class="o">/</span> <span class="p">(((</span><span class="n">b_</span><span class="p">)</span> <span class="o">**</span> <span class="n">gp1</span> <span class="o">-</span> <span class="p">(</span><span class="n">a_</span><span class="p">)</span> <span class="o">**</span> <span class="n">gp1</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">*</span> <span class="n">yunit_</span></div></div>
+        <span class="k">return</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">norm</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">yunit_</span></div></div>
 
 
 <div class="viewcode-block" id="Powerlaw_Eflux"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_Eflux">[docs]</a><span class="k">class</span> <span class="nc">Powerlaw_Eflux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        A  power-law where the normalization is the energy flux defined between a and b</span>
-<span class="sd">    latex : $ F~\frac{x}{piv}^{index} $</span>
+<span class="sd">    latex : $F~\frac{x}{piv}^{index} $</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        F :</span>
 <span class="sd">            desc : Normalization (energy flux at the between a and b) erg /cm2 s</span>
@@ -454,7 +353,7 @@
 
         <span class="n">norm</span> <span class="o">=</span> <span class="p">(</span><span class="n">F_</span> <span class="o">/</span> <span class="p">(</span><span class="n">intflux</span><span class="p">))</span> <span class="o">*</span> <span class="n">erg2keV</span>
 
-        <span class="n">out</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">out</span> <span class="o">*</span> <span class="n">yunit_</span></div></div>
 
@@ -607,7 +506,7 @@
             <span class="n">unit_</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">K_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">,</span> <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">xp_</span> <span class="o">=</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xp</span>
 
-        <span class="n">xc</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">+</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">xc</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">cplaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
 
@@ -618,7 +517,7 @@
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</span>
-<span class="sd">    latex : $ K~\frac{x}{piv}^{index}~\exp{-x~\b} $</span>
+<span class="sd">    latex : $K \frac{x}{piv}^{index}\exp{(-x~b)} $</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        K :</span>
 <span class="sd">            desc : Normalization (differential flux at the pivot value)</span>
@@ -691,6 +590,7 @@
 <span class="sd">            desc : Normalization (differential flux at the pivot value)</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        piv :</span>
 
@@ -710,6 +610,7 @@
 <span class="sd">            desc : Cutoff energy</span>
 <span class="sd">            initial value : 10.0</span>
 <span class="sd">            min : 1.0</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        gamma :</span>
 
@@ -771,8 +672,9 @@
 
 <span class="sd">            desc : normalization</span>
 <span class="sd">            initial value : 1</span>
-<span class="sd">            min : 0</span>
+<span class="sd">            min : 1e-50</span>
 <span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
 
 
 <span class="sd">        alpha :</span>
@@ -788,6 +690,7 @@
 <span class="sd">            initial value : 300</span>
 <span class="sd">            fix : no</span>
 <span class="sd">            min : 10</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        break_scale :</span>
 
@@ -873,12 +776,14 @@
 <span class="sd">            desc : Normalization (differential flux at x_b)</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        xb :</span>
 
 <span class="sd">            desc : Break point</span>
 <span class="sd">            initial value : 10</span>
 <span class="sd">            min : 1.0</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        alpha :</span>
 
@@ -946,7 +851,7 @@
 
 <span class="sd">        Band model from Band et al., 1993, parametrized with the peak energy</span>
 
-<span class="sd">    latex : $ K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $</span>
+<span class="sd">    latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -955,6 +860,7 @@
 <span class="sd">            desc : Differential flux at the pivot energy</span>
 <span class="sd">            initial value : 1e-4</span>
 <span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        alpha :</span>
 
@@ -968,6 +874,7 @@
 <span class="sd">            desc : peak in the x * x * N (nuFnu if x is a energy)</span>
 <span class="sd">            initial value : 500</span>
 <span class="sd">            min : 10</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        beta :</span>
 
@@ -1034,6 +941,7 @@
 <span class="sd">            desc : Differential flux at the pivot energy</span>
 <span class="sd">            initial value : 1e-4</span>
 <span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        alpha :</span>
 
@@ -1047,6 +955,7 @@
 <span class="sd">            desc : cutoff of exp</span>
 <span class="sd">            initial value : 500</span>
 <span class="sd">            min : 10</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        beta :</span>
 
@@ -1088,8 +997,7 @@
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">K</span> <span class="o">*</span> <span class="mi">0</span>
 
         <span class="n">out</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">piv</span><span class="p">),</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">xc</span><span class="p">))</span>
+            <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">piv</span><span class="p">),</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">xc</span><span class="p">))</span>
         <span class="p">)</span>
         <span class="n">out</span><span class="p">[</span><span class="o">~</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">K</span>
@@ -1130,13 +1038,15 @@
 
 <span class="sd">            desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)</span>
 <span class="sd">            initial value : 200.0</span>
-<span class="sd">            min : 0</span>
+<span class="sd">            min : 1e-10</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        F :</span>
 
 <span class="sd">            desc : integral in the band defined by a and b</span>
 <span class="sd">            initial value : 1e-6</span>
 <span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
 
 <span class="sd">        a:</span>
 
@@ -1232,7 +1142,15 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">alpha_</span><span class="p">,</span> <span class="n">Ec_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span><span class="p">,</span> <span class="n">Esplit_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">x_</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">Ec</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Esplit</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">x</span>
+            <span class="n">alpha_</span><span class="p">,</span> <span class="n">Ec_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span><span class="p">,</span> <span class="n">Esplit_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">x_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">alpha</span><span class="p">,</span>
+                <span class="n">Ec</span><span class="p">,</span>
+                <span class="n">a</span><span class="p">,</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="n">Esplit</span><span class="p">,</span>
+                <span class="n">beta</span><span class="p">,</span>
+                <span class="n">x</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="n">unit_</span> <span class="o">=</span> <span class="mf">1.0</span>
 
         <span class="k">if</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -1279,50 +1197,183 @@
             <span class="n">flux</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">band_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">alpha_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">Ec_</span><span class="p">,</span> <span class="n">Ec_</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">norm</span> <span class="o">*</span> <span class="n">flux</span></div></div>
+
+
+<div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw">[docs]</a><span class="k">class</span> <span class="nc">DoubleSmoothlyBrokenPowerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</span>
+
+<span class="sd">    latex : $\begin{array}{l}\begin{aligned}f(x)=&amp; A x_{\mathrm{b}}^{\alpha_{1}}\left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right.\\&amp;\left.+\left(\frac{x}{x_{\mathrm{j}}}\right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}{n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot\left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}\right) n_{2}}}\end{array}$</span>
+
+<span class="sd">    parameters :</span>
+
+<span class="sd">        K :</span>
+
+<span class="sd">            desc : Differential flux at the pivot energy</span>
+<span class="sd">            initial value : 1e-4</span>
+<span class="sd">            is_normalization : True</span>
+<span class="sd">            transformation : log10</span>
+
+<span class="sd">        alpha1 :</span>
+
+<span class="sd">            desc : photon index below xb</span>
+<span class="sd">            initial value : -0.66</span>
+
+<span class="sd">        xb :</span>
+
+<span class="sd">            desc : break energy below xp</span>
+<span class="sd">            initial value : 100</span>
+<span class="sd">            min : 1e-10</span>
+<span class="sd">            transformation : log10</span>
+
+<span class="sd">        n1 :</span>
+
+<span class="sd">            desc : curvature of the first break</span>
+<span class="sd">            initial value : 2.0</span>
+<span class="sd">            min : 0</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">        alpha2 :</span>
+
+<span class="sd">            desc : photon index between xb and xp</span>
+<span class="sd">            initial value : -1.5</span>
+
+<span class="sd">        xp :</span>
+
+<span class="sd">            desc : nuFnu peak</span>
+<span class="sd">            initial value : 300</span>
+<span class="sd">            min : 1e-10</span>
+<span class="sd">            transformation : log10</span>
+
+<span class="sd">        n2 :</span>
+
+<span class="sd">            desc : curvature of the break at xp</span>
+<span class="sd">            initial value : 2.0</span>
+<span class="sd">            min : 0</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">        beta :</span>
+
+<span class="sd">            desc : photon index above xp</span>
+<span class="sd">            initial value : -2.5</span>
+<span class="sd">            max : 2</span>
+
+
+<span class="sd">        piv :</span>
+
+<span class="sd">            desc : pivot energy</span>
+<span class="sd">            initial value : 1.</span>
+<span class="sd">            fix : yes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="c1"># The normalization has the same units as y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+        <span class="c1"># The break point has always the same dimension as the x variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xp</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xb</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
+
+        <span class="c1"># alpha and beta are dimensionless</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha1</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha2</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+    <span class="k">def</span> <span class="nf">_fix_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="k">return</span> <span class="p">(</span>
+                <span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">K</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">alpha1</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">xb</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">n1</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">alpha2</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">xp</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">n2</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">beta</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">piv</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_unit</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.free_curvature"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.free_curvature">[docs]</a>    <span class="k">def</span> <span class="nf">free_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        free the two curvature parameters n1, n2</span>
+
+<span class="sd">        :returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.fix_curvature"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.fix_curvature">[docs]</a>    <span class="k">def</span> <span class="nf">fix_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fix the two curvature parameters n1, n2</span>
+
+<span class="sd">        :returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+        <span class="p">(</span>
+            <span class="n">x_</span><span class="p">,</span>
+            <span class="n">K_</span><span class="p">,</span>
+            <span class="n">alpha1_</span><span class="p">,</span>
+            <span class="n">xb_</span><span class="p">,</span>
+            <span class="n">n1_</span><span class="p">,</span>
+            <span class="n">alpha2_</span><span class="p">,</span>
+            <span class="n">xp_</span><span class="p">,</span>
+            <span class="n">n2_</span><span class="p">,</span>
+            <span class="n">beta_</span><span class="p">,</span>
+            <span class="n">piv_</span><span class="p">,</span>
+            <span class="n">y_unit</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fix_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha1</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">alpha2</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">nb_func</span><span class="o">.</span><span class="n">dbl_sbpl</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">alpha1_</span><span class="p">,</span> <span class="n">alpha2_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">xp_</span><span class="p">,</span> <span class="n">xb_</span><span class="p">,</span> <span class="n">n1_</span><span class="p">,</span> <span class="n">n2_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
+            <span class="o">*</span> <span class="n">y_unit</span>
+        <span class="p">)</span></div></div>
 </pre></div>
 
            </div>
-           
           </div>
-
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
-
-    </p>
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

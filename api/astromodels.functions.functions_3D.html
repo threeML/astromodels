@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.functions.functions_3D module &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area", "displayMath": [["\\[", "\\]"]]}})</script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="astromodels.functions.numba_functions module" href="astromodels.functions.numba_functions.html" />
+    <link rel="prev" title="astromodels.functions.functions_2D module" href="astromodels.functions.functions_2D.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Astromodels
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="API.html">API</a> &raquo;</li>
+          <li><a href="astromodels.functions.html">astromodels.functions package</a> &raquo;</li>
+      <li>astromodels.functions.functions_3D module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-astromodels.functions.functions_3D">
+<span id="astromodels-functions-functions-3d-module"></span><h1>astromodels.functions.functions_3D module<a class="headerlink" href="#module-astromodels.functions.functions_3D" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_3D.</span></span><span class="sig-name descname"><span class="pre">Continuous_injection_diffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Positron and electrons diffusing away from the accelerator</p>
+</div></blockquote>
+<p>latex : <span class="math notranslate nohighlight">\(\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)\)</span></p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lon0 :</p>
+<blockquote>
+<div><p>desc : Longitude of the center of the source
+initial value : 0.0
+min : 0.0
+max : 360.0</p>
+</div></blockquote>
+<p>lat0 :</p>
+<blockquote>
+<div><p>desc : Latitude of the center of the source
+initial value : 0.0
+min : -90.0
+max : 90.0</p>
+</div></blockquote>
+<p>rdiff0 :</p>
+<blockquote>
+<div><p>desc : Projected diffusion radius limited by the cooling time. The maximum allowed value is used to define the truncation radius.
+initial value : 1.0
+min : 0
+max : 20</p>
+</div></blockquote>
+<p>rinj :</p>
+<blockquote>
+<div><p>desc : Ratio of diffusion radius limited by the injection time over rdiff0. The maximum allowed value is used to define the truncation radius.
+initial value : 100.0
+min : 0
+max : 200
+fix : yes</p>
+</div></blockquote>
+<p>delta :</p>
+<blockquote>
+<div><p>desc : index for the diffusion coefficient
+initial value : 0.5
+min : 0.3
+max : 0.6
+fix : yes</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : b field strength in uG
+initial value : 3
+min : 1
+max : 10.
+fix : yes</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot for the diffusion radius
+initial value : 2e10
+min : 0
+fix : yes</p>
+</div></blockquote>
+<dl class="simple">
+<dt>piv2 :</dt><dd><p>desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+initial value : 1e9
+min : 0
+fix : yes</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdiff0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rinj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion.get_boundaries" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
+override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion.get_total_spatial_integral" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+needs to be implemented in subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_3D.</span></span><span class="sig-name descname"><span class="pre">Continuous_injection_diffusion_ellipse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_ellipse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Positron and electrons diffusing away from the accelerator</p>
+</div></blockquote>
+<p>latex : <span class="math notranslate nohighlight">\(\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)\)</span></p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lon0 :</p>
+<blockquote>
+<div><p>desc : Longitude of the center of the source
+initial value : 0.0
+min : 0.0
+max : 360.0</p>
+</div></blockquote>
+<p>lat0 :</p>
+<blockquote>
+<div><p>desc : Latitude of the center of the source
+initial value : 0.0
+min : -90.0
+max : 90.0</p>
+</div></blockquote>
+<p>rdiff0 :</p>
+<blockquote>
+<div><p>desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
+initial value : 1.0
+min : 0
+max : 20</p>
+</div></blockquote>
+<p>delta :</p>
+<blockquote>
+<div><p>desc : index for the diffusion coefficient
+initial value : 0.5
+min : 0.3
+max : 0.6
+fix : yes</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : b field strength in uG
+initial value : 3
+min : 1
+max : 10.
+fix : yes</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot for the diffusion radius
+initial value : 2e10
+min : 0
+fix : yes</p>
+</div></blockquote>
+<p>piv2 :</p>
+<blockquote>
+<div><p>desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+initial value : 1e9
+min : 0
+fix : yes</p>
+</div></blockquote>
+<p>incl :</p>
+<blockquote>
+<div><p>desc : inclination of semimajoraxis to a line of constant latitude
+initial value : 0.0
+min : -90.0
+max : 90.0
+fix : yes</p>
+</div></blockquote>
+<p>elongation :</p>
+<blockquote>
+<div><p>desc : elongation of the ellipse (b/a)
+initial value : 1.
+min : 0.1
+max : 10.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdiff0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">incl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elongation</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_ellipse.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_ellipse.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_boundaries" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
+override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_ellipse.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_total_spatial_integral" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+needs to be implemented in subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_3D.</span></span><span class="sig-name descname"><span class="pre">Continuous_injection_diffusion_legacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_legacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Positron and electrons diffusing away from the accelerator</p>
+</div></blockquote>
+<p>latex : <span class="math notranslate nohighlight">\(\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)\)</span></p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lon0 :</p>
+<blockquote>
+<div><p>desc : Longitude of the center of the source
+initial value : 0.0
+min : 0.0
+max : 360.0</p>
+</div></blockquote>
+<p>lat0 :</p>
+<blockquote>
+<div><p>desc : Latitude of the center of the source
+initial value : 0.0
+min : -90.0
+max : 90.0</p>
+</div></blockquote>
+<p>rdiff0 :</p>
+<blockquote>
+<div><p>desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
+initial value : 1.0
+min : 0
+max : 20</p>
+</div></blockquote>
+<p>delta :</p>
+<blockquote>
+<div><p>desc : index for the diffusion coefficient
+initial value : 0.5
+min : 0.3
+max : 0.6
+fix : yes</p>
+</div></blockquote>
+<p>uratio :</p>
+<blockquote>
+<div><p>desc : ratio between u_cmb and u_B
+initial value : 0.5
+min : 0.01
+max : 100.
+fix : yes</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : Pivot for the diffusion radius
+initial value : 2e10
+min : 0
+fix : yes</p>
+</div></blockquote>
+<dl class="simple">
+<dt>piv2 :</dt><dd><p>desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+initial value : 1e9
+min : 0
+fix : yes</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rdiff0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uratio</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_legacy.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_legacy.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_boundaries" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
+override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_legacy.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_total_spatial_integral" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
+needs to be implemented in subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_3D.</span></span><span class="sig-name descname"><span class="pre">GalPropTemplate_3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_definition</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.property.FunctionProperty" title="astromodels.core.property.FunctionProperty"><span class="pre">FunctionProperty</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Use a 3D template that has morphology and flux information.
+GalProp, DRAGON or a similar model in fits format would work.
+Only parameter is a normalization factor.</p>
+</div></blockquote>
+<p>latex : $ K $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : normalization
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>hash :</p>
+<blockquote>
+<div><p>desc : hash of model map [needed for memoization]
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.define_region">
+<span class="sig-name descname"><span class="pre">define_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">galactic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.define_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.define_region" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.get_boundaries" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
+override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.load_file">
+<span class="sig-name descname"><span class="pre">load_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fitsfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">theta2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">galactic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ihdu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.load_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.load_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.set_frame">
+<span class="sig-name descname"><span class="pre">set_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.set_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.set_frame" title="Permalink to this definition"></a></dt>
+<dd><p>Set a new frame for the coordinates (the default is ICRS J2000)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_frame</strong> – a coordinate frame from astropy</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>(none)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.to_dict" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.which_model_file">
+<span class="sig-name descname"><span class="pre">which_model_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.which_model_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.which_model_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="astromodels.functions.functions_2D.html" class="btn btn-neutral float-left" title="astromodels.functions.functions_2D module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="astromodels.functions.numba_functions.html" class="btn btn-neutral float-right" title="astromodels.functions.numba_functions module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

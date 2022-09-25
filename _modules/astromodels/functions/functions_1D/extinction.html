@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.functions.functions_1D.extinction &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../../../../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../../../../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> Astromodels
+            <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">Module code</a> &raquo;</li>
+      <li>astromodels.functions.functions_1D.extinction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astromodels.functions.functions_1D.extinction</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+
+<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
+<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">_ExtinctionCurve</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    simple extinction container</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">lamb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">b</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">n</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+
+
+<div class="viewcode-block" id="ZDust"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ZDust">[docs]</a><span class="k">class</span> <span class="nc">ZDust</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.</span>
+<span class="sd">    parameters :</span>
+<span class="sd">        e_bmv :</span>
+<span class="sd">            desc : color excess</span>
+<span class="sd">            initial value : 1.0</span>
+<span class="sd">            min: 0</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            delta : 0.1</span>
+
+<span class="sd">        rv :</span>
+<span class="sd">            desc :  ratio of total to selective extinction</span>
+<span class="sd">            initial value : 3.08</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            delta : 0.1</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">        redshift :</span>
+<span class="sd">            desc : the redshift of the source</span>
+<span class="sd">            initial value : 0.</span>
+<span class="sd">            is_normalization : False</span>
+<span class="sd">            min : 0</span>
+<span class="sd">            max : 15</span>
+<span class="sd">            delta : 0.1</span>
+<span class="sd">            fix: True</span>
+
+<span class="sd">    properties:</span>
+<span class="sd">        extinction_law:</span>
+<span class="sd">            desc: the abundance table for the model</span>
+<span class="sd">            initial value: mw</span>
+<span class="sd">            allowed values:</span>
+<span class="sd">            - mw</span>
+<span class="sd">            - lmc</span>
+<span class="sd">            - smc</span>
+
+<span class="sd">            function: _set_extinction_law</span>
+
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fixed_units</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">astropy_units</span><span class="o">.</span><span class="n">keV</span><span class="p">,</span>
+            <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">e_bmv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+    <span class="k">def</span> <span class="nf">_set_extinction_law</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extinction_law</span><span class="p">:</span> <span class="n">_ExtinctionCurve</span> <span class="o">=</span> <span class="n">_extinctions_laws</span><span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">extinction_law</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="ZDust.evaluate"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ZDust.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">e_bmv</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;keV&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
+
+            <span class="n">_e_bmv</span> <span class="o">=</span> <span class="n">e_bmv</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_rv</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
+            <span class="n">_e_bmv</span> <span class="o">=</span> <span class="n">e_bmv</span>
+            <span class="n">_rv</span> <span class="o">=</span> <span class="n">rv</span>
+            <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="c1"># _x = np.append(_x, _x[-1]* 1.01)</span>
+
+        <span class="n">zfac</span> <span class="o">=</span> <span class="n">_redshift</span> <span class="o">+</span> <span class="mf">1.0</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">ms_dust</span><span class="p">(</span>
+                <span class="n">_x</span> <span class="o">*</span> <span class="n">zfac</span><span class="p">,</span>
+                <span class="n">_e_bmv</span><span class="p">,</span>
+                <span class="n">_rv</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extinction_law</span><span class="o">.</span><span class="n">a</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extinction_law</span><span class="o">.</span><span class="n">lamb</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extinction_law</span><span class="o">.</span><span class="n">b</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_extinction_law</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="o">*</span> <span class="n">_y_unit</span>
+        <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ms_dust"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ms_dust">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ms_dust</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">e_bmv</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+
+    <span class="c1"># conversion constant in keV*\AA</span>
+
+    <span class="n">hc</span> <span class="o">=</span> <span class="mf">12.3963</span>
+
+    <span class="c1"># extinction at B (a_b)</span>
+
+    <span class="n">a_b</span> <span class="o">=</span> <span class="n">e_bmv</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">rv</span><span class="p">)</span>
+
+    <span class="n">ne</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">hc</span> <span class="o">/</span> <span class="n">x</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ne</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ne</span><span class="p">):</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pei</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a_b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="ms_dust_xspec"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ms_dust_xspec">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">ms_dust_xspec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">e_bmv</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+
+    <span class="c1"># conversion constant in keV*\AA</span>
+
+    <span class="n">hc</span> <span class="o">=</span> <span class="mf">12.3963</span>
+
+    <span class="c1">#  photon index of the base power law function</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mf">2.0</span>
+
+    <span class="c1"># extinction at B (a_b)</span>
+
+    <span class="n">a_b</span> <span class="o">=</span> <span class="n">rv</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">e_bmv</span><span class="p">)</span>
+
+    <span class="n">ne</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ne</span><span class="p">)</span>
+
+    <span class="n">xx</span> <span class="o">=</span> <span class="n">hc</span> <span class="o">/</span> <span class="n">x</span>
+
+    <span class="n">xl</span> <span class="o">=</span> <span class="n">xx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">sl</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">xl</span><span class="p">,</span> <span class="o">-</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">fl</span> <span class="o">=</span> <span class="n">pei</span><span class="p">(</span><span class="n">xl</span><span class="p">,</span> <span class="n">a_b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ne</span><span class="p">):</span>
+        <span class="n">xh</span> <span class="o">=</span> <span class="n">xx</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">sh</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">xh</span><span class="p">,</span> <span class="o">-</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">fh</span> <span class="o">=</span> <span class="n">pei</span><span class="p">(</span><span class="n">xh</span><span class="p">,</span> <span class="n">a_b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+        <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sl</span> <span class="o">*</span> <span class="n">fl</span> <span class="o">+</span> <span class="n">sh</span> <span class="o">*</span> <span class="n">fh</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">sl</span> <span class="o">+</span> <span class="n">sh</span><span class="p">)</span>
+
+        <span class="n">xl</span> <span class="o">=</span> <span class="n">xh</span>
+        <span class="n">sl</span> <span class="o">=</span> <span class="n">sh</span>
+        <span class="n">fl</span> <span class="o">=</span> <span class="n">fh</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="pei"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.pei">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">pei</span><span class="p">(</span><span class="n">rlambda</span><span class="p">,</span> <span class="n">a_b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ported from XSPEC originally by</span>
+<span class="sd">    Martin.Still@gsfc.nasa.gov</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">rlambda</span> <span class="o">&lt;</span> <span class="mf">800.0</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="mf">1.0</span>
+
+    <span class="c1"># convert angstroms to microns</span>
+
+    <span class="n">lambda_mu</span> <span class="o">=</span> <span class="n">rlambda</span> <span class="o">/</span> <span class="mf">1.0e4</span>
+
+    <span class="c1"># compute terms of sum</span>
+
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">lambda_mu</span> <span class="o">/</span> <span class="n">lamb</span>
+
+    <span class="n">term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="n">inv_term</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">term</span>
+
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">term</span> <span class="o">+</span> <span class="n">inv_term</span> <span class="o">+</span> <span class="n">b</span>
+
+    <span class="n">xi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">a</span> <span class="o">/</span> <span class="n">bottom</span><span class="p">)</span>
+
+    <span class="c1"># remove a_b normalization on the extinction curve</span>
+
+    <span class="n">a_lambda</span> <span class="o">=</span> <span class="n">a_b</span> <span class="o">*</span> <span class="n">xi</span>
+
+    <span class="c1"># linearize extinction factor</span>
+
+    <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="o">-</span><span class="n">a_lambda</span> <span class="o">/</span> <span class="mf">2.512</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Standard_Rv"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Standard_Rv">[docs]</a><span class="k">class</span> <span class="nc">Standard_Rv</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+
+    <span class="n">MW</span> <span class="o">=</span> <span class="mf">3.08</span>
+    <span class="n">LMC</span> <span class="o">=</span> <span class="mf">3.16</span>
+    <span class="n">SMC</span> <span class="o">=</span> <span class="mf">2.93</span></div>
+
+
+<span class="c1"># create some frozen data classes to hold the extinction curves</span>
+
+
+<span class="n">_mw_extinction</span> <span class="o">=</span> <span class="n">_ExtinctionCurve</span><span class="p">(</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">165.0</span><span class="p">,</span> <span class="mf">14.0</span><span class="p">,</span> <span class="mf">0.045</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.012</span><span class="p">]),</span>
+    <span class="n">lamb</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.047</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">,</span> <span class="mf">9.7</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">]),</span>
+    <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span>
+<span class="p">)</span>
+
+<span class="n">_lmc_extinction</span> <span class="o">=</span> <span class="n">_ExtinctionCurve</span><span class="p">(</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">175.0</span><span class="p">,</span> <span class="mf">19.0</span><span class="p">,</span> <span class="mf">0.023</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.062</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]),</span>
+    <span class="n">lamb</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.046</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">,</span> <span class="mf">9.7</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">]),</span>
+    <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span>
+<span class="p">)</span>
+
+
+<span class="n">_smc_extinction</span> <span class="o">=</span> <span class="n">_ExtinctionCurve</span><span class="p">(</span>
+    <span class="n">a</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">185.0</span><span class="p">,</span> <span class="mf">27.0</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.012</span><span class="p">,</span> <span class="mf">0.03</span><span class="p">]),</span>
+    <span class="n">lamb</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.042</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.22</span><span class="p">,</span> <span class="mf">9.7</span><span class="p">,</span> <span class="mf">18.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">]),</span>
+    <span class="n">b</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">5.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.95</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]),</span>
+<span class="p">)</span>
+
+
+<span class="n">_extinctions_laws</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_ExtinctionCurve</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+    <span class="n">mw</span><span class="o">=</span><span class="n">_mw_extinction</span><span class="p">,</span> <span class="n">lmc</span><span class="o">=</span><span class="n">_lmc_extinction</span><span class="p">,</span> <span class="n">smc</span><span class="o">=</span><span class="n">_smc_extinction</span>
+<span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.functions.priors module &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area", "displayMath": [["\\[", "\\]"]]}})</script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="astromodels.functions.template_model module" href="astromodels.functions.template_model.html" />
+    <link rel="prev" title="astromodels.functions.numba_functions module" href="astromodels.functions.numba_functions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Astromodels
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html">Builtin Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../function_docs/functions.html#contents">Contents:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="API.html">API</a> &raquo;</li>
+          <li><a href="astromodels.functions.html">astromodels.functions package</a> &raquo;</li>
+      <li>astromodels.functions.priors module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-astromodels.functions.priors">
+<span id="astromodels-functions-priors-module"></span><h1>astromodels.functions.priors module<a class="headerlink" href="#module-astromodels.functions.priors" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cauchy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Cauchy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cauchy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cauchy" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>The Cauchy distribution</p>
+</div></blockquote>
+<p>latex : $ K frac{1}{ gamma pi} left[ frac{gamma^2}{(x-x_0)^2 + gamma^2}  right] $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy distribution
+initial value : 1</p>
+</div></blockquote>
+<p>x0 :</p>
+<blockquote>
+<div><p>desc : Central value
+initial value : 0.0</p>
+</div></blockquote>
+<p>gamma :</p>
+<blockquote>
+<div><p>desc : standard deviation
+initial value : 1.0
+min : 1e-12</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</p></li>
+<li><p>{ x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cauchy.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cauchy.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cauchy.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cauchy.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cauchy.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cauchy.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cauchy.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Cauchy.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Cosine_Prior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A function which is constant on the interval angular interval of cosine</p>
+</div></blockquote>
+<p>latex : <span class="math notranslate nohighlight">\(\cos(x)\)</span></p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lower_bound :</p>
+<blockquote>
+<div><p>desc : Lower bound for the interval
+initial value : -90
+min : -np.inf
+max : np.inf</p>
+</div></blockquote>
+<p>upper_bound :</p>
+<blockquote>
+<div><p>desc : Upper bound for the interval
+initial value : 90
+min : -np.inf
+max : np.inf</p>
+</div></blockquote>
+<p>value :</p>
+<blockquote>
+<div><p>desc : Value in the interval
+initial value : 1.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior.has_fixed_units">
+<span class="sig-name descname"><span class="pre">has_fixed_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior.has_fixed_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior.has_fixed_units" title="Permalink to this definition"></a></dt>
+<dd><p>Returns True if this function cannot change units, which is the case only for very specific functions (like
+models from foreign libraries like Xspec)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Gaussian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Gaussian" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A Gaussian function</p>
+</div></blockquote>
+<p>latex : $ K frac{1}{sigma sqrt{2 pi}}exp{frac{(x-mu)^2}{2~(sigma)^2}} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>F :</p>
+<blockquote>
+<div><p>desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+initial value : 1</p>
+</div></blockquote>
+<p>mu :</p>
+<blockquote>
+<div><p>desc : Central value
+initial value : 0.0</p>
+</div></blockquote>
+<p>sigma :</p>
+<blockquote>
+<div><p>desc : standard deviation
+initial value : 1.0
+min : 1e-12</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</p></li>
+<li><p>{ x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Gaussian.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gaussian.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Gaussian.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Gaussian.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gaussian.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Gaussian.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Gaussian.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Gaussian.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_normal">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Log_normal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_normal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_normal" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A log normal function</p>
+</div></blockquote>
+<p>latex : $ K frac{1}{ x sigma sqrt{2 pi}}exp{frac{(log x/piv - mu/piv)^2}{2~(sigma)^2}} $</p>
+<p>parameters :</p>
+<blockquote>
+<div><dl class="simple">
+<dt>F :</dt><dd><p>desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution
+initial value : 1</p>
+</dd>
+</dl>
+<p>mu :</p>
+<blockquote>
+<div><p>desc : Central value
+initial value : 0.0</p>
+</div></blockquote>
+<p>sigma :</p>
+<blockquote>
+<div><p>desc : standard deviation
+initial value : 1.0
+min : 1e-12</p>
+</div></blockquote>
+<dl class="simple">
+<dt>piv :</dt><dd><p>desc : pivot. Leave this to 1 for a proper log normal distribution
+initial value : 1.0
+fix : yes</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</p></li>
+<li><p>{ x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_normal.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_normal.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_normal.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_normal.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_normal.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_normal.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_normal.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Log_normal.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_uniform_prior">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Log_uniform_prior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_uniform_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_uniform_prior" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A function which is K/x on the interval lower_bound - upper_bound and 0 outside the interval. The
+extremes of the interval are NOT counted as part of the interval. Lower_bound must be &gt;= 0.</p>
+</div></blockquote>
+<p>latex : $ f(x)=K~begin{cases}0 &amp; x le text{lower_bound} \frac{1}{x} &amp; text{lower_bound} &lt; x &lt; text{upper_bound} \ 0 &amp; x ge text{upper_bound} end{cases}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lower_bound :</p>
+<blockquote>
+<div><p>desc : Lower bound for the interval
+initial value : 1e-20
+min : 1e-30
+max : np.inf</p>
+</div></blockquote>
+<p>upper_bound :</p>
+<blockquote>
+<div><p>desc : Upper bound for the interval
+initial value : 100
+min : 1e-30
+max : np.inf</p>
+</div></blockquote>
+<p>K :</p>
+<blockquote>
+<div><p>desc : Normalization
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_uniform_prior.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_uniform_prior.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_uniform_prior.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_uniform_prior.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_uniform_prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_uniform_prior.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Log_uniform_prior.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Log_uniform_prior.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Truncated_gaussian">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Truncated_gaussian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Truncated_gaussian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Truncated_gaussian" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A  truncated Gaussian function defined on the interval between the lower_bound (a) and upper_bound (b)</p>
+</div></blockquote>
+<p>latex : <span class="math notranslate nohighlight">\(\begin{split}f(x;\mu,\sigma,a,b)=\frac{\frac{1}{\sigma} \phi\left( \frac{x-\mu}{\sigma} \right)}{\Phi\left( \frac{b-\mu}{\sigma} \right) - \Phi\left( \frac{a-\mu}{\sigma} \right)}\\\phi\left(z\right)=\frac{1}{\sqrt{2 \pi}}\exp\left(-\frac{1}{2}z^2\right)\\\Phi\left(z\right)=\frac{1}{2}\left(1+erf\left(\frac{z}{\sqrt(2)}\right)\right)\end{split}\)</span></p>
+<p>parameters :</p>
+<blockquote>
+<div><p>F :</p>
+<blockquote>
+<div><p>desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+initial value : 1</p>
+</div></blockquote>
+<p>mu :</p>
+<blockquote>
+<div><p>desc : Central value
+initial value : 0.0</p>
+</div></blockquote>
+<p>sigma :</p>
+<blockquote>
+<div><p>desc : standard deviation
+initial value : 1.0
+min : 1e-12</p>
+</div></blockquote>
+<p>lower_bound :</p>
+<blockquote>
+<div><p>desc: lower bound of gaussian, setting to -np.inf results in half normal distribution
+initial value : -1.</p>
+</div></blockquote>
+<p>upper_bound :</p>
+<blockquote>
+<div><p>desc: upper bound of gaussian  setting to np.inf results in half normal distribution
+initial value : 1.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</p></li>
+<li><p>{ x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Truncated_gaussian.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Truncated_gaussian.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Truncated_gaussian.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Truncated_gaussian.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Truncated_gaussian.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Truncated_gaussian.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Truncated_gaussian.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Truncated_gaussian.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Uniform_prior">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.priors.</span></span><span class="sig-name descname"><span class="pre">Uniform_prior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Uniform_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Uniform_prior" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
+extremes of the interval are counted as part of the interval.</p>
+</div></blockquote>
+<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>lower_bound :</p>
+<blockquote>
+<div><p>desc : Lower bound for the interval
+initial value : 0
+min : -np.inf
+max : np.inf</p>
+</div></blockquote>
+<p>upper_bound :</p>
+<blockquote>
+<div><p>desc : Upper bound for the interval
+initial value : 1
+min : -np.inf
+max : np.inf</p>
+</div></blockquote>
+<p>value :</p>
+<blockquote>
+<div><p>desc : Value in the interval
+initial value : 1.0</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="simple">
+<dt>tests :</dt><dd><ul class="simple">
+<li><p>{ x : 0.5, function value: 1.0, tolerance: 1e-20}</p></li>
+<li><p>{ x : -0.5, function value: 0, tolerance: 1e-20}</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Uniform_prior.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Uniform_prior.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Uniform_prior.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Uniform_prior.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Uniform_prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Uniform_prior.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.priors.Uniform_prior.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.priors.Uniform_prior.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="astromodels.functions.numba_functions.html" class="btn btn-neutral float-left" title="astromodels.functions.numba_functions module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="astromodels.functions.template_model.html" class="btn btn-neutral float-right" title="astromodels.functions.template_model module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

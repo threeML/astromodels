@@ -1,79 +1,40 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
   <title>astromodels.core.model_parser &mdash; Astromodels latest documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
-
-  
-  
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/dark_mode_css/dark.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    
-    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
-
-    
+        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-  <link rel="stylesheet" href="../../../_static/pygments/default.css" type="text/css" id="pygments-style">
-  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css">
-   
-
+    <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../../../index.html" class="icon icon-home"> Astromodels
-          
-
-          
-            
             <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -81,18 +42,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../function_docs/functions.html">Builtin Models</a></li>
@@ -106,88 +56,34 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release Notes</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../../index.html">Astromodels</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
-  <!--
-  <div class="admonition note">
-    <p><a href="https://github.com/lukelbd">ProPlot author here</a>: Due to my day job as a graduate student, certain <a href="https://github.com/lukelbd/proplot/pulls?q=is%3Aopen+is%3Apr">feature additions</a> may be delayed to the summer of 2020. In the meantime, if you are interested in contributing to ProPlot, please see the <a href="https://proplot.readthedocs.io/en/latest/contributions.html">contribution guide</a>. Any amount of help is welcome!
-    </p>
-  </div>
-  -->
-  <li id="lightdark-li">
-    <label for="lightdark-checkbox" id="lightdark-label">
-      <input type="checkbox" id="lightdark-checkbox"/>
-      <div class="btn-neutral"></div>
-    </label>
-  </li>
-  
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../../index.html">Module code</a> &raquo;</li>
-        
       <li>astromodels.core.model_parser</li>
-    
-
-    
       <li class="wy-breadcrumbs-aside">
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-  <script type="text/javascript" src=../../../_static/custom.js></script>
-  
            <div itemprop="articleBody">
-            
+             
   <h1>Source code for astromodels.core.model_parser</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">str</span>
 
@@ -195,9 +91,15 @@
 
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.core</span> <span class="kn">import</span> <span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">polarization</span><span class="p">,</span> <span class="n">sky_direction</span><span class="p">,</span>
-                              <span class="n">spectral_component</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">astromodels.core</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">parameter</span><span class="p">,</span>
+    <span class="n">polarization</span><span class="p">,</span>
+    <span class="n">sky_direction</span><span class="p">,</span>
+    <span class="n">spectral_component</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">astromodels.core.my_yaml</span> <span class="kn">import</span> <span class="n">my_yaml</span>
 <span class="kn">from</span> <span class="nn">astromodels.functions</span> <span class="kn">import</span> <span class="n">function</span>
 <span class="kn">from</span> <span class="nn">astromodels.sources</span> <span class="kn">import</span> <span class="n">extended_source</span><span class="p">,</span> <span class="n">particle_source</span><span class="p">,</span> <span class="n">point_source</span>
@@ -254,11 +156,15 @@
 
 
 <div class="viewcode-block" id="ModelParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser">[docs]</a><span class="k">class</span> <span class="nc">ModelParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ModelParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="p">(</span><span class="n">model_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span>
-            <span class="s2">&quot;You have to provide either a model file or a&quot;</span> <span class="s2">&quot;model dictionary&quot;</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">model_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)):</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;You have to provide either a model file or a &quot;</span> <span class="s2">&quot;model dictionary&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">model_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -272,22 +178,24 @@
 
             <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
 
-                <span class="k">raise</span> <span class="n">ModelIOError</span><span class="p">(</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">&quot;File </span><span class="si">%s</span><span class="s2"> cannot be read. Check path and permissions for current user.&quot;</span>
                     <span class="o">%</span> <span class="n">model_file</span>
                 <span class="p">)</span>
 
+                <span class="k">raise</span> <span class="n">ModelIOError</span><span class="p">()</span>
+
             <span class="k">except</span> <span class="n">my_yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">:</span>
 
-                <span class="k">raise</span> <span class="n">ModelYAMLError</span><span class="p">(</span>
-                    <span class="s2">&quot;Could not parse file </span><span class="si">%s</span><span class="s2">. Check your syntax.&quot;</span> <span class="o">%</span> <span class="n">model_file</span>
-                <span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Could not parse file </span><span class="si">%s</span><span class="s2">. Check your syntax.&quot;</span> <span class="o">%</span> <span class="n">model_file</span><span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">ModelYAMLError</span><span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span> <span class="o">=</span> <span class="n">model_dict</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parse</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parse</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -301,10 +209,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_parameter_links</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span> <span class="o">=</span> <span class="p">[]</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">source_or_var_name</span><span class="p">,</span> <span class="n">source_or_var_definition</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">):</span>
+
+            <span class="c1"># first look for independent variable</span>
 
             <span class="k">if</span> <span class="n">source_or_var_name</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;(IndependentVariable)&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
@@ -353,6 +263,8 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">this_parser</span><span class="o">.</span><span class="n">extra_setups</span><span class="p">)</span>
 
+                <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">this_parser</span><span class="o">.</span><span class="n">external_functions</span><span class="p">)</span>
+
 <div class="viewcode-block" id="ModelParser.get_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Instance the model with all the parsed sources</span>
@@ -366,9 +278,9 @@
             <span class="n">new_model</span><span class="o">.</span><span class="n">add_independent_variable</span><span class="p">(</span><span class="n">independent_variable</span><span class="p">)</span>
 
         <span class="c1"># Now set up external parameters (if any)</span>
-        <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_parameters</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_parameters</span><span class="p">:</span>
 
-            <span class="n">new_model</span><span class="o">.</span><span class="n">add_external_parameter</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span>
+            <span class="n">new_model</span><span class="o">.</span><span class="n">add_external_parameter</span><span class="p">(</span><span class="n">par</span><span class="p">)</span>
 
         <span class="c1"># Now set up the links</span>
 
@@ -380,13 +292,15 @@
 
             <span class="n">new_model</span><span class="p">[</span><span class="n">path</span><span class="p">]</span><span class="o">.</span><span class="n">add_auxiliary_variable</span><span class="p">(</span><span class="n">new_model</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">law</span><span class="p">)</span>
 
-        <span class="c1"># Finally the extra_setups (if any)</span>
+        <span class="c1"># the extra_setups (if any)</span>
 
         <span class="k">for</span> <span class="n">extra_setup</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span><span class="p">:</span>
 
             <span class="n">path</span> <span class="o">=</span> <span class="n">extra_setup</span><span class="p">[</span><span class="s2">&quot;function_path&quot;</span><span class="p">]</span>
 
             <span class="k">for</span> <span class="nb">property</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">extra_setup</span><span class="p">[</span><span class="s2">&quot;extra_setup&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;adding </span><span class="si">{</span><span class="nb">property</span><span class="si">}</span><span class="s2"> with </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="c1"># First, check to see if the we have a valid path in the new model.</span>
                 <span class="c1"># If we aren&#39;t given a path, interpret it as being given a value.</span>
@@ -395,13 +309,54 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">new_model</span><span class="p">[</span><span class="n">path</span><span class="p">]</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="nb">property</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
+        <span class="c1"># finally the external functions if any</span>
+        <span class="k">for</span> <span class="n">external_function</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span>
+
+            <span class="n">path</span> <span class="o">=</span> <span class="n">external_function</span><span class="p">[</span><span class="s2">&quot;function_path&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">external_function</span><span class="p">[</span><span class="s2">&quot;is_composite&quot;</span><span class="p">]:</span>
+
+                <span class="c1"># we need to loop through the sub functions</span>
+                <span class="c1"># can link them</span>
+
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">primary_func</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_model</span><span class="p">[</span><span class="n">path</span><span class="p">]</span><span class="o">.</span><span class="n">_functions</span><span class="p">):</span>
+
+                    <span class="n">this_ef</span> <span class="o">=</span> <span class="n">external_function</span><span class="p">[</span><span class="s2">&quot;external_functions&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+
+                    <span class="c1"># for each function</span>
+
+                    <span class="k">if</span> <span class="n">this_ef</span><span class="p">:</span>
+
+                        <span class="c1"># if there are extrenal linked functions</span>
+
+                        <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">linked_function</span> <span class="ow">in</span> <span class="n">this_ef</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                            <span class="c1"># relink them</span>
+
+                            <span class="n">primary_func</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span>
+                                <span class="n">function</span><span class="o">=</span><span class="n">new_model</span><span class="p">[</span><span class="n">linked_function</span><span class="p">],</span>
+                                <span class="n">internal_name</span><span class="o">=</span><span class="n">fname</span><span class="p">,</span>
+                            <span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># do the same if it is not composite</span>
+
+                <span class="k">for</span> <span class="n">fname</span><span class="p">,</span> <span class="n">linked_function</span> <span class="ow">in</span> <span class="n">external_function</span><span class="p">[</span>
+                    <span class="s2">&quot;external_functions&quot;</span>
+                <span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                    <span class="n">new_model</span><span class="p">[</span><span class="n">path</span><span class="p">]</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span>
+                        <span class="n">function</span><span class="o">=</span><span class="n">new_model</span><span class="p">[</span><span class="n">linked_function</span><span class="p">],</span> <span class="n">internal_name</span><span class="o">=</span><span class="n">fname</span>
+                    <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">new_model</span></div></div>
 
 
 <div class="viewcode-block" id="IndependentVariableParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser">[docs]</a><span class="k">class</span> <span class="nc">IndependentVariableParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="IndependentVariableParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">IndependentVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">IndependentVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span>
 
 <div class="viewcode-block" id="IndependentVariableParser.get_variable"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -409,7 +364,7 @@
 
 
 <div class="viewcode-block" id="ParameterParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser">[docs]</a><span class="k">class</span> <span class="nc">ParameterParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ParameterParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -426,7 +381,9 @@
 
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span><span class="s2">&quot;The prior for parameter </span><span class="si">%s</span><span class="s2"> is malformed&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The prior for parameter </span><span class="si">%s</span><span class="s2"> is malformed&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
             <span class="c1"># parse the function</span>
 
@@ -454,11 +411,14 @@
             <span class="c1"># Now get the law</span>
 
             <span class="k">if</span> <span class="s2">&quot;law&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">&quot;The parameter </span><span class="si">%s</span><span class="s2"> in function </span><span class="si">%s</span><span class="s2"> &quot;</span>
                     <span class="s2">&quot; is linked to </span><span class="si">%s</span><span class="s2"> but lacks a &#39;law&#39; attribute&quot;</span>
                     <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">linked_variable</span><span class="p">)</span>
                 <span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
             <span class="n">link_function_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -487,7 +447,7 @@
 
             <span class="n">definition</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ParameterParser.get_variable"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -500,7 +460,7 @@
 
 
 <div class="viewcode-block" id="SourceParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser">[docs]</a><span class="k">class</span> <span class="nc">SourceParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="SourceParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
 
         <span class="c1"># Get the type of the source</span>
 
@@ -509,18 +469,28 @@
             <span class="c1"># Point source or extended source?</span>
 
             <span class="n">source_type</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
-                <span class="s2">&quot;\((</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">)\)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">,</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">EXTENDED_SOURCE</span><span class="p">,</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">),</span>
+                <span class="s2">&quot;\((</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">|</span><span class="si">%s</span><span class="s2">)\)&quot;</span>
+                <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">,</span>
+                    <span class="n">SourceType</span><span class="o">.</span><span class="n">EXTENDED_SOURCE</span><span class="p">,</span>
+                    <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">,</span>
+                <span class="p">),</span>
                 <span class="n">source_name</span><span class="p">,</span>
             <span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-            
-            
         <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Don&#39;t recognize type for source &#39;</span><span class="si">%s</span><span class="s2">&#39;. &quot;</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;Don&#39;t recognize type for source &#39;</span><span class="si">%s</span><span class="s2">&#39;. &quot;</span>
                 <span class="s2">&quot;Valid types are &#39;</span><span class="si">%s</span><span class="s2">&#39;, &#39;</span><span class="si">%s</span><span class="s2">&#39; or &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span>
-                <span class="o">%</span> <span class="p">(</span><span class="n">source_name</span><span class="p">,</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">,</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">EXTENDED_SOURCE</span><span class="p">,</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">))</span>
-            
+                <span class="o">%</span> <span class="p">(</span>
+                    <span class="n">source_name</span><span class="p">,</span>
+                    <span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">,</span>
+                    <span class="n">SourceType</span><span class="o">.</span><span class="n">EXTENDED_SOURCE</span><span class="p">,</span>
+                    <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
             <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -538,6 +508,9 @@
         <span class="c1"># to make a synchrotron spectrum uses this to save and set up the particle distribution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span> <span class="o">=</span> <span class="p">[]</span>
 
+        <span class="c1"># this will store any externally linked functions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span> <span class="o">=</span> <span class="p">[]</span>
+
         <span class="k">if</span> <span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_point_source</span><span class="p">(</span><span class="n">source_definition</span><span class="p">)</span>
@@ -548,12 +521,17 @@
 
         <span class="k">elif</span> <span class="n">source_type</span> <span class="o">==</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_particle_source</span><span class="p">(</span><span class="n">source_definition</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_particle_source</span><span class="p">(</span><span class="n">source_definition</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">extra_setups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -574,10 +552,12 @@
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Point source </span><span class="si">%s</span><span class="s2"> is missing the &#39;spectrum&#39; attribute&quot;</span>
                 <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span>
             <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="n">components</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -607,10 +587,12 @@
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Point source </span><span class="si">%s</span><span class="s2"> is missing the &#39;position&#39; attribute&quot;</span>
                 <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span>
             <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="n">this_sky_direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_sky_direction</span><span class="p">(</span><span class="n">position_definition</span><span class="p">)</span>
 
@@ -618,44 +600,57 @@
 
         <span class="k">try</span><span class="p">:</span>
 
-            <span class="n">spectrum</span> <span class="o">=</span> <span class="n">pts_source_definition</span><span class="p">[</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span>
+            <span class="n">_</span> <span class="o">=</span> <span class="n">pts_source_definition</span><span class="p">[</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span>
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Point source </span><span class="si">%s</span><span class="s2"> is missing the &#39;spectrum&#39; attribute&quot;</span>
                 <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span>
             <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="n">components</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component_definition</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
             <span class="n">pts_source_definition</span><span class="p">[</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="p">):</span>
-
-            <span class="k">try</span><span class="p">:</span>
-
-                <span class="n">this_component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_spectral_component</span><span class="p">(</span>
-                    <span class="n">component_name</span><span class="p">,</span> <span class="n">component_definition</span>
-                <span class="p">)</span>
-
-                <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_component</span><span class="p">)</span>
-
-            <span class="k">except</span><span class="p">:</span>
-
-                <span class="k">raise</span>
-
-        <span class="k">try</span><span class="p">:</span>
-
-            <span class="n">this_point_source</span> <span class="o">=</span> <span class="n">point_source</span><span class="o">.</span><span class="n">PointSource</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
-                <span class="n">sky_position</span><span class="o">=</span><span class="n">this_sky_direction</span><span class="p">,</span>
-                <span class="n">components</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
+            <span class="n">this_component</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_spectral_component</span><span class="p">(</span>
+                <span class="n">component_name</span><span class="p">,</span> <span class="n">component_definition</span>
             <span class="p">)</span>
 
-        <span class="k">except</span><span class="p">:</span>
+            <span class="n">components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_component</span><span class="p">)</span>
 
-            <span class="k">raise</span>
+            <span class="c1"># try:</span>
+
+            <span class="c1">#     this_component = self._parse_spectral_component(</span>
+            <span class="c1">#         component_name, component_definition</span>
+            <span class="c1">#     )</span>
+
+            <span class="c1">#     components.append(this_component)</span>
+
+            <span class="c1"># except:</span>
+
+            <span class="c1">#     raise</span>
+
+        <span class="n">this_point_source</span> <span class="o">=</span> <span class="n">point_source</span><span class="o">.</span><span class="n">PointSource</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+            <span class="n">sky_position</span><span class="o">=</span><span class="n">this_sky_direction</span><span class="p">,</span>
+            <span class="n">components</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># try:</span>
+
+        <span class="c1">#     this_point_source = point_source.PointSource(</span>
+        <span class="c1">#         self._source_name,</span>
+        <span class="c1">#         sky_position=this_sky_direction,</span>
+        <span class="c1">#         components=components,</span>
+        <span class="c1">#     )</span>
+
+        <span class="c1"># except:</span>
+
+        <span class="c1">#     raise</span>
 
         <span class="k">return</span> <span class="n">this_point_source</span>
 
@@ -672,14 +667,14 @@
             <span class="n">ra</span> <span class="o">=</span> <span class="n">par_parser</span><span class="o">.</span><span class="n">get_variable</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">ra</span><span class="o">.</span><span class="n">bounds</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-              <span class="n">ra</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+                <span class="n">ra</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
 
             <span class="n">par_parser</span> <span class="o">=</span> <span class="n">ParameterParser</span><span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="n">sky_direction_definition</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">])</span>
 
             <span class="n">dec</span> <span class="o">=</span> <span class="n">par_parser</span><span class="o">.</span><span class="n">get_variable</span><span class="p">()</span>
-            
+
             <span class="k">if</span> <span class="n">dec</span><span class="o">.</span><span class="n">bounds</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-              <span class="n">dec</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+                <span class="n">dec</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
 
             <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;ra&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ra</span>
             <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;dec&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dec</span>
@@ -689,27 +684,29 @@
             <span class="n">par_parser</span> <span class="o">=</span> <span class="n">ParameterParser</span><span class="p">(</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="n">sky_direction_definition</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">])</span>
 
             <span class="n">l</span> <span class="o">=</span> <span class="n">par_parser</span><span class="o">.</span><span class="n">get_variable</span><span class="p">()</span>
-            
+
             <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">bounds</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-              <span class="n">l</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+                <span class="n">l</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
 
             <span class="n">par_parser</span> <span class="o">=</span> <span class="n">ParameterParser</span><span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="n">sky_direction_definition</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">])</span>
 
             <span class="n">b</span> <span class="o">=</span> <span class="n">par_parser</span><span class="o">.</span><span class="n">get_variable</span><span class="p">()</span>
-            
+
             <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">bounds</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-              <span class="n">b</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+                <span class="n">b</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
 
             <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;l&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span>
             <span class="n">coordinates</span><span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span>
 
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Position specification for source </span><span class="si">%s</span><span class="s2"> has an invalid coordinate pair. &quot;</span>
                 <span class="s2">&quot; You need to specify either &#39;ra&#39; and &#39;dec&#39;, or &#39;l&#39; and &#39;b&#39;.&quot;</span>
                 <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span>
             <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="c1"># Check if there is a equinox specification</span>
 
@@ -722,10 +719,12 @@
 
         <span class="k">except</span> <span class="n">sky_direction</span><span class="o">.</span><span class="n">WrongCoordinatePair</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Position specification for source </span><span class="si">%s</span><span class="s2"> has an invalid coordinate pair&quot;</span>
                 <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span>
             <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">this_sky_direction</span>
 
@@ -806,23 +805,31 @@
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;The component </span><span class="si">%s</span><span class="s2"> of source </span><span class="si">%s</span><span class="s2"> is malformed&quot;</span>
                 <span class="o">%</span> <span class="p">(</span><span class="n">component_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">)</span>
             <span class="p">)</span>
 
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
+
         <span class="c1"># parse the function</span>
+
+        <span class="c1"># now split the parameters and the properties</span>
 
         <span class="n">shape_parser</span> <span class="o">=</span> <span class="n">ShapeParser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">)</span>
 
         <span class="n">shape</span> <span class="o">=</span> <span class="n">shape_parser</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
-            <span class="n">component_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">parameters_definition</span><span class="p">,</span> <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span>
+            <span class="n">component_name</span><span class="p">,</span>
+            <span class="n">function_name</span><span class="p">,</span>
+            <span class="n">parameters_definition</span><span class="p">,</span>
+            <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Get the links and extra setups, if any</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shape_parser</span><span class="o">.</span><span class="n">links</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shape_parser</span><span class="o">.</span><span class="n">extra_setups</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">shape_parser</span><span class="o">.</span><span class="n">external_functions</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="s2">&quot;polarization&quot;</span> <span class="ow">in</span> <span class="n">component_definition</span><span class="p">:</span>
 
@@ -860,7 +867,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">spatial_shape_parser</span><span class="o">.</span><span class="n">links</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">spatial_shape_parser</span><span class="o">.</span><span class="n">extra_setups</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">spatial_shape_parser</span><span class="o">.</span><span class="n">external_functions</span><span class="p">)</span>
         <span class="c1"># Parse the spectral information</span>
 
         <span class="k">try</span><span class="p">:</span>
@@ -869,9 +876,11 @@
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                 <span class="s2">&quot;Ext. source </span><span class="si">%s</span><span class="s2"> is missing the &#39;spectrum&#39; attribute&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span>
             <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="n">components</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -892,11 +901,12 @@
 
 
 <div class="viewcode-block" id="ShapeParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser">[docs]</a><span class="k">class</span> <span class="nc">ShapeParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<div class="viewcode-block" id="ShapeParser.__init__"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span> <span class="o">=</span> <span class="n">source_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -908,8 +918,17 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span>
+
 <div class="viewcode-block" id="ShapeParser.parse"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">parameters_definition</span><span class="p">,</span> <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">component_name</span><span class="p">,</span>
+        <span class="n">function_name</span><span class="p">,</span>
+        <span class="n">parameters_definition</span><span class="p">,</span>
+        <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_shape_definition</span><span class="p">(</span>
@@ -924,7 +943,11 @@
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_parse_shape_definition</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">parameters_definition</span><span class="p">,</span> <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">component_name</span><span class="p">,</span>
+        <span class="n">function_name</span><span class="p">,</span>
+        <span class="n">parameters_definition</span><span class="p">,</span>
+        <span class="n">is_spatial</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="c1"># Get the function</span>
@@ -936,19 +959,25 @@
                 <span class="n">function_name</span><span class="p">,</span> <span class="n">parameters_definition</span><span class="p">[</span><span class="s2">&quot;expression&quot;</span><span class="p">]</span>
             <span class="p">)</span>
 
+            <span class="n">is_composite</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="k">else</span><span class="p">:</span>
 
             <span class="k">try</span><span class="p">:</span>
 
                 <span class="n">function_instance</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">get_function</span><span class="p">(</span><span class="n">function_name</span><span class="p">)</span>
 
+                <span class="n">is_composite</span> <span class="o">=</span> <span class="kc">False</span>
+
             <span class="k">except</span> <span class="n">function</span><span class="o">.</span><span class="n">UnknownFunction</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">&quot;Function </span><span class="si">%s</span><span class="s2">, specified as shape for </span><span class="si">%s</span><span class="s2"> of source </span><span class="si">%s</span><span class="s2">, is not a &quot;</span>
                     <span class="s2">&quot;known function&quot;</span>
                     <span class="o">%</span> <span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">)</span>
                 <span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
         <span class="c1"># Loop over the parameters of the function instance, instead of the specification,</span>
         <span class="c1"># so we can understand if there are parameters missing from the specification</span>
@@ -961,11 +990,22 @@
 
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">&quot;Function </span><span class="si">%s</span><span class="s2">, specified as shape for </span><span class="si">%s</span><span class="s2"> of source </span><span class="si">%s</span><span class="s2">, lacks &quot;</span>
                     <span class="s2">&quot;the definition for parameter </span><span class="si">%s</span><span class="s2">&quot;</span>
-                    <span class="o">%</span> <span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">)</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">function_name</span><span class="p">,</span>
+                        <span class="n">component_name</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+                        <span class="n">parameter_name</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">parameters_definition</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
             <span class="c1"># Update the parameter. Note that the order is important, because trying to set the value before the</span>
             <span class="c1"># minimum and maximum could result in a error.</span>
@@ -1008,11 +1048,19 @@
             <span class="c1"># Now set the value, which must be present</span>
 
             <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">this_definition</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                     <span class="s2">&quot;The parameter </span><span class="si">%s</span><span class="s2"> in function </span><span class="si">%s</span><span class="s2">, specified as shape for </span><span class="si">%s</span><span class="s2"> &quot;</span>
                     <span class="s2">&quot;of source </span><span class="si">%s</span><span class="s2">, lacks a &#39;value&#39; attribute&quot;</span>
-                    <span class="o">%</span> <span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">)</span>
+                    <span class="o">%</span> <span class="p">(</span>
+                        <span class="n">parameter_name</span><span class="p">,</span>
+                        <span class="n">function_name</span><span class="p">,</span>
+                        <span class="n">component_name</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
             <span class="c1"># Check if this is a linked parameter, i.e., if &#39;value&#39; is something like f(source.spectrum.powerlaw.index)</span>
 
@@ -1029,7 +1077,8 @@
                 <span class="c1"># Now get the law</span>
 
                 <span class="k">if</span> <span class="s2">&quot;law&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">this_definition</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-                    <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">(</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                         <span class="s2">&quot;The parameter </span><span class="si">%s</span><span class="s2"> in function </span><span class="si">%s</span><span class="s2">, specified as shape for </span><span class="si">%s</span><span class="s2"> &quot;</span>
                         <span class="s2">&quot;of source </span><span class="si">%s</span><span class="s2">, is linked to </span><span class="si">%s</span><span class="s2"> but lacks a &#39;law&#39; attribute&quot;</span>
                         <span class="o">%</span> <span class="p">(</span>
@@ -1040,6 +1089,8 @@
                             <span class="n">linked_variable</span><span class="p">,</span>
                         <span class="p">)</span>
                     <span class="p">)</span>
+
+                    <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
 
                 <span class="n">link_function_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">this_definition</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -1095,12 +1146,65 @@
                 <span class="p">]</span>
 
                 <span class="n">prior_function</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_shape_definition</span><span class="p">(</span>
-                    <span class="n">name_for_errors</span><span class="p">,</span> <span class="n">prior_function_name</span><span class="p">,</span> <span class="n">prior_function_definition</span>
+                    <span class="n">name_for_errors</span><span class="p">,</span>
+                    <span class="n">prior_function_name</span><span class="p">,</span>
+                    <span class="n">prior_function_definition</span><span class="p">,</span>
                 <span class="p">)</span>
 
                 <span class="c1"># Set it as prior for current parameter</span>
 
                 <span class="n">function_instance</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span><span class="o">.</span><span class="n">prior</span> <span class="o">=</span> <span class="n">prior_function</span>
+
+        <span class="k">if</span> <span class="n">function_instance</span><span class="o">.</span><span class="n">has_properties</span><span class="p">:</span>
+
+            <span class="c1"># now collect the properties</span>
+
+            <span class="c1"># the properties are stored in the parameters defintion</span>
+            <span class="c1"># as well</span>
+
+            <span class="k">for</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">function_instance</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="n">this_definition</span> <span class="o">=</span> <span class="n">parameters_definition</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span>
+
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="s2">&quot;Function </span><span class="si">%s</span><span class="s2">, specified as shape for </span><span class="si">%s</span><span class="s2"> of source </span><span class="si">%s</span><span class="s2">, lacks &quot;</span>
+                        <span class="s2">&quot;the definition for property </span><span class="si">%s</span><span class="s2">&quot;</span>
+                        <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">function_name</span><span class="p">,</span>
+                            <span class="n">component_name</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+                            <span class="n">property_name</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">parameters_definition</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+                        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+                    <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="s2">&quot;value&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">this_definition</span><span class="p">:</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="s2">&quot;The property </span><span class="si">%s</span><span class="s2"> in function </span><span class="si">%s</span><span class="s2">, specified as shape for </span><span class="si">%s</span><span class="s2"> &quot;</span>
+                        <span class="s2">&quot;of source </span><span class="si">%s</span><span class="s2">, lacks a &#39;value&#39; attribute&quot;</span>
+                        <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">property_name</span><span class="p">,</span>
+                            <span class="n">function_name</span><span class="p">,</span>
+                            <span class="n">component_name</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                    <span class="k">raise</span> <span class="n">ModelSyntaxError</span><span class="p">()</span>
+
+                <span class="n">function_instance</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">this_definition</span><span class="p">[</span>
+                    <span class="s2">&quot;value&quot;</span>
+                <span class="p">]</span>
 
         <span class="c1"># Now handle extra_setup if any</span>
         <span class="k">if</span> <span class="s2">&quot;extra_setup&quot;</span> <span class="ow">in</span> <span class="n">parameters_definition</span><span class="p">:</span>
@@ -1109,7 +1213,12 @@
                 <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                    <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span> <span class="s2">&quot;spectrum&quot;</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">]</span>
+                    <span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+                        <span class="s2">&quot;spectrum&quot;</span><span class="p">,</span>
+                        <span class="n">component_name</span><span class="p">,</span>
+                        <span class="n">function_name</span><span class="p">,</span>
+                    <span class="p">]</span>
                 <span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -1118,52 +1227,56 @@
                     <span class="s2">&quot;extra_setup&quot;</span><span class="p">:</span> <span class="n">parameters_definition</span><span class="p">[</span><span class="s2">&quot;extra_setup&quot;</span><span class="p">],</span>
                 <span class="p">}</span>
             <span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;external_functions&quot;</span> <span class="ow">in</span> <span class="n">parameters_definition</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">is_spatial</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span><span class="p">,</span>
+                        <span class="s2">&quot;spectrum&quot;</span><span class="p">,</span>
+                        <span class="n">component_name</span><span class="p">,</span>
+                        <span class="n">function_name</span><span class="p">,</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;function_path&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
+                    <span class="s2">&quot;external_functions&quot;</span><span class="p">:</span> <span class="n">parameters_definition</span><span class="p">[</span><span class="s2">&quot;external_functions&quot;</span><span class="p">],</span>
+                    <span class="s2">&quot;is_composite&quot;</span><span class="p">:</span> <span class="n">is_composite</span><span class="p">,</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">function_instance</span></div>
 </pre></div>
 
            </div>
-           
           </div>
-
           <footer>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2016--2021, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.
-
-    </p>
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
