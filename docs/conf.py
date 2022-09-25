@@ -142,19 +142,21 @@ default_dark_mode = True
 
 # The path where the artifact should be extracted
 # Note: this is relative to the conf.py file!
-
-rtds_action_path = "notebooks"
-
-# # The "prefix" used in the `upload-artifact` step of the action
-rtds_action_artifact_prefix = "notebooks-for-"
+if "GITHUB_TOKEN" in os.environ:
 
 
-rtds_action_github_repo = "threeML/astromodels"
+   rtds_action_path = "notebooks"
 
-# # A GitHub personal access token is required, more info below
-rtds_action_github_token = os.environ["GITHUB_TOKEN"]
+   # # The "prefix" used in the `upload-artifact` step of the action
+   rtds_action_artifact_prefix = "notebooks-for-"
 
-rtds_action_error_if_missing = True
+
+   rtds_action_github_repo = "threeML/astromodels"
+
+   # # A GitHub personal access token is required, more info below
+   rtds_action_github_token = os.environ["GITHUB_TOKEN"]
+
+   rtds_action_error_if_missing = True
 
 
 # Add any paths that contain templates here, relative to this directory.
