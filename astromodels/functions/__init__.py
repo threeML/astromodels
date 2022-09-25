@@ -86,8 +86,7 @@ from .priors import (
     Beta,
     Gamma,
     Exponential,
-    Powerlaw_Prior
-
+    Powerlaw_Prior,
 )
 from .template_model import (
     MissingDataFile,
