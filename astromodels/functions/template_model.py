@@ -512,6 +512,7 @@ class TemplateModel(with_metaclass(FunctionMeta, Function1D)):
                    observer frame energy. Fix this to 1 to neutralize its effect.
             initial value : 1.0
             min : 1e-5
+
     """
 
     def _custom_init_(

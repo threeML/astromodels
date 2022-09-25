@@ -3,7 +3,8 @@ One-dimensional Functions
 
 Here are the one dimensional functions builtin to astromodels
 
-.. toctree::
+
+.. nbgallery::
    ../notebooks/Blackbody.ipynb
    ../notebooks/ModifiedBlackbody.ipynb
    ../notebooks/NonDissipativePhotosphere.ipynb
@@ -18,7 +19,6 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/TbAbs.ipynb
    ../notebooks/WAbs.ipynb
    ../notebooks/ZDust.ipynb
-   ../notebooks/EBLattenuation.ipynb
    ../notebooks/Constant.ipynb
    ../notebooks/Line.ipynb
    ../notebooks/Quadratic.ipynb
@@ -46,3 +46,7 @@ Here are the one dimensional functions builtin to astromodels
    ../notebooks/Log_normal.ipynb
    ../notebooks/Uniform_prior.ipynb
    ../notebooks/Log_uniform_prior.ipynb
+   ../notebooks/Beta.ipynb
+   ../notebooks/Gamma.ipynb
+   ../notebooks/Exponential.ipynb
+   ../notebooks/Powerlaw_Prior.ipynb
