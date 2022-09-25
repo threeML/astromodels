@@ -129,12 +129,10 @@ mathjax3_config = {
 }
 from sphinx_math_dollar import NODE_BLACKLIST
 
-# from docutils.nodes import GalleryToc
-
-# math_dollar_node_blacklist = NODE_BLACKLIST + (GalleryToc,)
 
 napoleon_google_docstring = True
 napoleon_use_param = False
+
 default_dark_mode = True
 
 # The path where the artifact should be extracted
@@ -181,7 +179,6 @@ author = "G.Vianello"
 #
 language = None
 
-pygments_style = "none"
 
 
 # List of patterns, relative to source directory, that match files and
@@ -206,8 +203,6 @@ html_show_sourcelink = False
 html_favicon = "media/favicon.ico"
 
 autosectionlabel_prefix_document = True
-
-# html_static_path = ['_static']
 
 version = "latest"
 # The full version, including alpha/beta/rc tags.
