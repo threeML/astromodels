@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "0360c569",
+   "id": "1e2e22c9",
    "metadata": {},
    "source": [
     "# Model tutorial\n",
@@ -15,13 +15,13 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "02749587",
+   "id": "c8b3bdee",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:47.377117Z",
-     "iopub.status.busy": "2022-09-25T17:32:47.376719Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.246203Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.245144Z"
+     "iopub.execute_input": "2022-09-26T13:16:20.691810Z",
+     "iopub.status.busy": "2022-09-26T13:16:20.691361Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.183579Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.182457Z"
     }
    },
    "outputs": [],
@@ -36,7 +36,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "032a8b34",
+   "id": "216f6027",
    "metadata": {},
    "source": [
     "## Define sources\n",
@@ -47,13 +47,13 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "ed849615",
+   "id": "91216b00",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.254950Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.254397Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.282939Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.280832Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.189106Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.188723Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.208327Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.207305Z"
     }
    },
    "outputs": [
@@ -295,7 +295,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "a3d00219",
+   "id": "ce53e596",
    "metadata": {},
    "source": [
     "Now let’s define another source, this time at Galactic Coordinates l = 11.25, b = -22.5, and with two spectral components:"
@@ -304,13 +304,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "fe64d96b",
+   "id": "849336de",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.290277Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.289851Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.314978Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.313356Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.213573Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.213179Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.233778Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.232696Z"
     }
    },
    "outputs": [
@@ -615,7 +615,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "b8174671",
+   "id": "f9dc8d65",
    "metadata": {},
    "source": [
     "## Create a model\n",
@@ -626,13 +626,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "c6fe59c1",
+   "id": "9d26f8cf",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.320599Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.320205Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.325577Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.324254Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.239048Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.238646Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.247818Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.246752Z"
     }
    },
    "outputs": [],
@@ -644,7 +644,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "473ba3ee",
+   "id": "058c2688",
    "metadata": {},
    "source": [
     "Of course you can use as many sources as needed, like my_model = Model(pts1, pts2, pts3…)\n",
@@ -657,13 +657,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "30dc6b14",
+   "id": "3e0eee45",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.331812Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.331056Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.364610Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.363510Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.253082Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.252663Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.286807Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.285798Z"
     }
    },
    "outputs": [
@@ -841,7 +841,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "a18b8ac8",
+   "id": "2afd8565",
    "metadata": {},
    "source": [
     "The model tree can be shown as:"
@@ -850,13 +850,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "d74ed71b",
+   "id": "877656d7",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.369880Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.369348Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.383451Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.382017Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.292019Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.291623Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.308954Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.307840Z"
     }
    },
    "outputs": [
@@ -937,7 +937,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "64a4b073",
+   "id": "92f23a44",
    "metadata": {},
    "source": [
     "A dictionary of free parameters can be obtained like this:"
@@ -946,13 +946,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "57e3ce58",
+   "id": "97213949",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.389542Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.388598Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.397543Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.396454Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.314059Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.313662Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.322600Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.321505Z"
     }
    },
    "outputs": [],
@@ -962,7 +962,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "608d501f",
+   "id": "7d29b91f",
    "metadata": {},
    "source": [
     "We can use such dictionary to loop over all free parameters:"
@@ -971,13 +971,13 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "4212e302",
+   "id": "5efbc5af",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.404064Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.403233Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.409701Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.408182Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.327745Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.327337Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.337214Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.336017Z"
     }
    },
    "outputs": [
@@ -1002,7 +1002,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "b12af8d9",
+   "id": "7d6fff79",
    "metadata": {},
    "source": [
     "More information on a particular source can be obtained like:"
@@ -1011,13 +1011,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "2907524f",
+   "id": "42effb8f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.414925Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.414539Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.426866Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.425454Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.342427Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.342005Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.356990Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.355941Z"
     }
    },
    "outputs": [
@@ -1215,7 +1215,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "853f4c23",
+   "id": "3ec2cddd",
    "metadata": {},
    "source": [
     "More information about a particular instance of a function can be obtained like:"
@@ -1224,13 +1224,13 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "210fce74",
+   "id": "62f79f7e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.433237Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.432795Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.444246Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.442721Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.362196Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.361792Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.371610Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.370530Z"
     }
    },
    "outputs": [
@@ -1364,7 +1364,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ff5e33b7",
+   "id": "8a45c816",
    "metadata": {},
    "source": [
     "## Accessing and modifying sources and parameters from the model instance\n",
@@ -1377,13 +1377,13 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "4aa9d2ff",
+   "id": "3ee2c3fe",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.451154Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.450743Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.514651Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.500307Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.376497Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.376122Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.403411Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.402354Z"
     }
    },
    "outputs": [
@@ -1562,13 +1562,13 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "2983878a",
+   "id": "6432b8e9",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.541917Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.531674Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.546537Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.545506Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.408079Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.407705Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.416893Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.415812Z"
     }
    },
    "outputs": [],
@@ -1584,7 +1584,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "68028858",
+   "id": "d3308972",
    "metadata": {},
    "source": [
     "The structure of these paths is easy to understand. The model is a tree-like structure. The root of the tree is always the model instance itself. The second level is constituted by the various sources. The structure within a source can be understood by calling the ```.display``` method:"
@@ -1593,13 +1593,13 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "fc84ba2e",
+   "id": "4fc0163c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.551749Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.551333Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.562634Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.561654Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.422127Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.421728Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.437255Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.435993Z"
     }
    },
    "outputs": [
@@ -1797,7 +1797,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c0e76d2e",
+   "id": "7d5d9024",
    "metadata": {},
    "source": [
     "Each indentation represents one level, so to access the “ra” element we can follow the levels shown by the ```.display()``` method:"
@@ -1806,13 +1806,13 @@
   {
    "cell_type": "code",
    "execution_count": 14,
-   "id": "45a82734",
+   "id": "06f27730",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.567656Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.567282Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.574177Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.573224Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.442611Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.442200Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.449284Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.448093Z"
     }
    },
    "outputs": [
@@ -1839,7 +1839,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "73c31e4b",
+   "id": "7e8a4e7b",
    "metadata": {},
    "source": [
     "<div class=\"alert alert-info\">\n",
@@ -1853,7 +1853,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "f312c8f8",
+   "id": "f03eb759",
    "metadata": {},
    "source": [
     "while to access the index parameter of the power law function we can do"
@@ -1862,13 +1862,13 @@
   {
    "cell_type": "code",
    "execution_count": 15,
-   "id": "20adffd5",
+   "id": "cb1f292a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.579402Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.579057Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.585744Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.584833Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.454685Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.454282Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.463516Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.462464Z"
     }
    },
    "outputs": [
@@ -1895,7 +1895,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "43c1a66b",
+   "id": "805778f3",
    "metadata": {},
    "source": [
     "You can find much more information in the document “Additional features for scripts and applications”.\n",
@@ -1910,13 +1910,13 @@
   {
    "cell_type": "code",
    "execution_count": 16,
-   "id": "3d4c46e4",
+   "id": "26a31d07",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.590617Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.590253Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.596119Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.595159Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.468795Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.468363Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.477992Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.476867Z"
     }
    },
    "outputs": [],
@@ -1939,7 +1939,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "a8438eaf",
+   "id": "42dd5fe5",
    "metadata": {},
    "source": [
     "<div class=\"alert alert-info\">\n",
@@ -1959,7 +1959,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4baf563d",
+   "id": "0ccf6794",
    "metadata": {},
    "source": [
     "Shortcut can point at any point of the tree:\n"
@@ -1968,13 +1968,13 @@
   {
    "cell_type": "code",
    "execution_count": 17,
-   "id": "f5ecb45e",
+   "id": "f7822d80",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.601625Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.601253Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.607187Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.606003Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.486098Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.485682Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.492088Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.491102Z"
     }
    },
    "outputs": [],
@@ -1995,7 +1995,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "dc3d4809",
+   "id": "33126e5a",
    "metadata": {},
    "source": [
     "If you are ever in doubt of what a particular shortcut stands for, you can always retrieve the full path of the element the shortcut is pointing to like this:"
@@ -2004,13 +2004,13 @@
   {
    "cell_type": "code",
    "execution_count": 18,
-   "id": "9896c8fb",
+   "id": "27c1921a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.612603Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.612128Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.617915Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.616905Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.497218Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.496832Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.502234Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.501254Z"
     }
    },
    "outputs": [
@@ -2028,7 +2028,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "5263ecb5",
+   "id": "d29f1c1e",
    "metadata": {},
    "source": [
     "## Saving a model to file\n",
@@ -2039,13 +2039,13 @@
   {
    "cell_type": "code",
    "execution_count": 19,
-   "id": "0f21fc33",
+   "id": "ef5322aa",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.623023Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.622646Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.639900Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.638839Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.507376Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.506951Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.527075Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.525949Z"
     }
    },
    "outputs": [],
@@ -2057,7 +2057,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "667770b8",
+   "id": "703874be",
    "metadata": {},
    "source": [
     "The content of the file is YAML code, which is human-readable and very easy to understand. Let’s have a look:"
@@ -2066,13 +2066,13 @@
   {
    "cell_type": "code",
    "execution_count": 20,
-   "id": "294b5150",
+   "id": "9ec893eb",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.645067Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.644697Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.650495Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.649432Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.532539Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.532129Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.542099Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.540972Z"
     }
    },
    "outputs": [
@@ -2360,7 +2360,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "83c6c12b",
+   "id": "7e053834",
    "metadata": {},
    "source": [
     "## Load a model from a file\n",
@@ -2371,13 +2371,13 @@
   {
    "cell_type": "code",
    "execution_count": 21,
-   "id": "1ec89ac8",
+   "id": "775349ce",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.655298Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.654959Z",
-     "iopub.status.idle": "2022-09-25T17:32:51.711666Z",
-     "shell.execute_reply": "2022-09-25T17:32:51.710292Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.547209Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.546826Z",
+     "iopub.status.idle": "2022-09-26T13:16:24.605668Z",
+     "shell.execute_reply": "2022-09-26T13:16:24.604337Z"
     }
    },
    "outputs": [
@@ -2560,13 +2560,13 @@
   {
    "cell_type": "code",
    "execution_count": 22,
-   "id": "2753da3a",
+   "id": "42b37c44",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:51.718393Z",
-     "iopub.status.busy": "2022-09-25T17:32:51.717960Z",
-     "iopub.status.idle": "2022-09-25T17:32:53.848863Z",
-     "shell.execute_reply": "2022-09-25T17:32:53.847366Z"
+     "iopub.execute_input": "2022-09-26T13:16:24.610591Z",
+     "iopub.status.busy": "2022-09-26T13:16:24.610210Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.638610Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.637325Z"
     }
    },
    "outputs": [
@@ -2636,7 +2636,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ea16116f",
+   "id": "e85bc965",
    "metadata": {},
    "source": [
     "## Linking parameters\n",
@@ -2647,13 +2647,13 @@
   {
    "cell_type": "code",
    "execution_count": 23,
-   "id": "e0410df1",
+   "id": "639176fd",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:53.856269Z",
-     "iopub.status.busy": "2022-09-25T17:32:53.854859Z",
-     "iopub.status.idle": "2022-09-25T17:32:53.899205Z",
-     "shell.execute_reply": "2022-09-25T17:32:53.898039Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.644437Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.643852Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.680843Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.679694Z"
     }
    },
    "outputs": [
@@ -2873,7 +2873,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "33b5520f",
+   "id": "77c8b15d",
    "metadata": {},
    "source": [
     "### Advanced use of linking: arbitrary functions\n",
@@ -2884,13 +2884,13 @@
   {
    "cell_type": "code",
    "execution_count": 24,
-   "id": "b48b01d4",
+   "id": "3f0ac018",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:53.905650Z",
-     "iopub.status.busy": "2022-09-25T17:32:53.904627Z",
-     "iopub.status.idle": "2022-09-25T17:32:53.958930Z",
-     "shell.execute_reply": "2022-09-25T17:32:53.957944Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.686127Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.685727Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.718170Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.717182Z"
     }
    },
    "outputs": [
@@ -3130,7 +3130,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "505e36fd",
+   "id": "b4750583",
    "metadata": {},
    "source": [
     "If we want to fix say $p2 = p1 - 1.2$, we can fix k to that:"
@@ -3139,13 +3139,13 @@
   {
    "cell_type": "code",
    "execution_count": 25,
-   "id": "989621ee",
+   "id": "905bb2ef",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:53.965779Z",
-     "iopub.status.busy": "2022-09-25T17:32:53.965339Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.002865Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.001847Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.723157Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.722764Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.757893Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.756795Z"
     }
    },
    "outputs": [
@@ -3362,7 +3362,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "7c99b4b4",
+   "id": "d8541cdf",
    "metadata": {},
    "source": [
     "As another example, we might link the two parameters using a power law function:"
@@ -3371,13 +3371,13 @@
   {
    "cell_type": "code",
    "execution_count": 26,
-   "id": "36e02c82",
+   "id": "5153ccb3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.009749Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.008913Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.093419Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.092429Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.763156Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.762751Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.800004Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.798906Z"
     }
    },
    "outputs": [
@@ -3611,7 +3611,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "a9ab0c72",
+   "id": "7081a667",
    "metadata": {},
    "source": [
     "We can use arbitrarily complex functions as link function, if needed (see “Creating and modifying functions” for more info on how to create composite functions):"
@@ -3620,13 +3620,13 @@
   {
    "cell_type": "code",
    "execution_count": 27,
-   "id": "1cb67102",
+   "id": "ba43aa65",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.100246Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.099708Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.158172Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.155908Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.805291Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.804885Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.847214Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.846000Z"
     }
    },
    "outputs": [
@@ -3908,7 +3908,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "098ef537",
+   "id": "b38ad8fd",
    "metadata": {},
    "source": [
     "## Time-varying models and other independent variables\n",
@@ -3919,13 +3919,13 @@
   {
    "cell_type": "code",
    "execution_count": 28,
-   "id": "40448f55",
+   "id": "cd7edb88",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.165259Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.164748Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.169558Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.168682Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.853359Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.852919Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.859144Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.857841Z"
     }
    },
    "outputs": [],
@@ -3939,7 +3939,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9cdc98f1",
+   "id": "2abdc768",
    "metadata": {},
    "source": [
     "The IndependentVariable instance is inserted at the root of the model tree. In this case, can be accessed as:"
@@ -3948,13 +3948,13 @@
   {
    "cell_type": "code",
    "execution_count": 29,
-   "id": "7604b606",
+   "id": "118925f4",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.174294Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.173834Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.180112Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.178999Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.865107Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.864670Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.871838Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.870650Z"
     }
    },
    "outputs": [
@@ -3979,7 +3979,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "391e8e01",
+   "id": "2eb85771",
    "metadata": {},
    "source": [
     "We can now link any parameter to be a function of time, like this:"
@@ -3988,13 +3988,13 @@
   {
    "cell_type": "code",
    "execution_count": 30,
-   "id": "41ac4fde",
+   "id": "0292dfe9",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.184858Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.184509Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.189392Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.188513Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.877598Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.877174Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.886546Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.885380Z"
     }
    },
    "outputs": [],
@@ -4005,7 +4005,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "04c1bcef",
+   "id": "24e65559",
    "metadata": {},
    "source": [
     "Now link the index of the sync. component of source_2 to be law(t)\n",
@@ -4015,13 +4015,13 @@
   {
    "cell_type": "code",
    "execution_count": 31,
-   "id": "d4401481",
+   "id": "920932a7",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.194068Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.193732Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.198991Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.198073Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.891943Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.891537Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.901153Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.900043Z"
     }
    },
    "outputs": [],
@@ -4034,13 +4034,13 @@
   {
    "cell_type": "code",
    "execution_count": 32,
-   "id": "6a5e9505",
+   "id": "84430718",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.203462Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.203137Z",
-     "iopub.status.idle": "2022-09-25T17:32:54.268777Z",
-     "shell.execute_reply": "2022-09-25T17:32:54.267611Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.905933Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.905549Z",
+     "iopub.status.idle": "2022-09-26T13:16:26.979037Z",
+     "shell.execute_reply": "2022-09-26T13:16:26.977849Z"
     }
    },
    "outputs": [],
@@ -4052,7 +4052,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "eaf916a7",
+   "id": "9d71ae5c",
    "metadata": {},
    "source": [
     "This would show the link:\n",
@@ -4082,13 +4082,13 @@
   {
    "cell_type": "code",
    "execution_count": 33,
-   "id": "5f718d2e",
+   "id": "a1899849",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-25T17:32:54.273683Z",
-     "iopub.status.busy": "2022-09-25T17:32:54.273331Z",
-     "iopub.status.idle": "2022-09-25T17:32:55.328772Z",
-     "shell.execute_reply": "2022-09-25T17:32:55.327792Z"
+     "iopub.execute_input": "2022-09-26T13:16:26.984539Z",
+     "iopub.status.busy": "2022-09-26T13:16:26.984120Z",
+     "iopub.status.idle": "2022-09-26T13:16:27.958290Z",
+     "shell.execute_reply": "2022-09-26T13:16:27.957165Z"
     }
    },
    "outputs": [
@@ -4138,7 +4138,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "d8b4ec17",
+   "id": "3898cd50",
    "metadata": {},
    "outputs": [],
    "source": []
