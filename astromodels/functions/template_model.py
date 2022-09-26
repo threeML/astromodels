@@ -82,6 +82,24 @@ class TemplateModelFactory(object):
         spline_smoothing_factor: int = 0,
     ):
 
+        """
+        Creates a template model from inputs
+
+        :param name:
+        :type name: str
+        :param description:
+        :type description: str
+        :param energies:
+        :type energies: np.ndarray
+        :param names_of_parameters:
+        :type names_of_parameters: List[str]
+        :param interpolation_degree:
+        :type interpolation_degree: int
+        :param spline_smoothing_factor:
+        :type spline_smoothing_factor: int
+        :returns:
+
+        """
         # Store model name
 
         # Enforce that it does not contain spaces nor strange characters
