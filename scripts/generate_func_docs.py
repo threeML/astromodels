@@ -78,7 +78,7 @@ for k, v in _known_functions.items():
 
         pm.execute_notebook(
             ntbk_file_name,
-            f'../docs/notebooks/{ntbk_file_name}',
+            f'oned_functions/{ntbk_file_name}',
 
             parameters=dict(func_name=k,
                             wide_energy_range=wide_energy_range,
@@ -110,37 +110,34 @@ for k, v in _known_functions.items():
 
         pm.execute_notebook(
             ntbk_file_name,
-            f'../docs/notebooks/{ntbk_file_name}',
+            f'twod_functions/{ntbk_file_name}',
 
             parameters=dict(func_name=k,
                             ))
 
         
 
-p = Path("../docs/function_docs/functions_1d.rst").absolute()
+# p = Path("../docs/function_docs/functions_1d.rst").absolute()
 
-with p.open("r") as f:
+# with p.open("r") as f:
 
-    rst_1d = f.read()
+#     rst_1d = f.read()
 
-for name in one_d_func_list:
+# for name in one_d_func_list:
 
-    if f"{name}.ipynb" not in rst_1d:
+#     if f"{name}.ipynb" not in rst_1d:
 
-        raise RuntimeError(f"{name} is not in the RST! Run the generation script")
-        
+#         raise RuntimeError(f"{name} is not in the RST! Run the generation script")
 
-p = Path("../docs/function_docs/functions_2d.rst").absolute()
 
-with p.open("r") as f:
+# p = Path("../docs/function_docs/functions_2d.rst").absolute()
 
-    rst_2d = f.read()
+# with p.open("r") as f:
 
-for name in two_d_func_list:
+#     rst_2d = f.read()
 
-    if f"{name}.ipynb" not in rst_2d:
+# for name in two_d_func_list:
 
-        raise RuntimeError(f"{name} is not in the RST! Run the generation script")
-        
+#     if f"{name}.ipynb" not in rst_2d:
 
-        
+#         raise RuntimeError(f"{name} is not in the RST! Run the generation script")

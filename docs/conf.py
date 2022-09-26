@@ -111,6 +111,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "sphinx_gallery.load_style",
+    'sphinx_gallery.gen_gallery',
     "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
 ]
@@ -134,6 +135,19 @@ napoleon_google_docstring = True
 napoleon_use_param = False
 
 default_dark_mode = True
+
+
+
+
+# SPHINX gallery
+
+sphinx_gallery_conf = {
+     'examples_dirs': ['../scripts/oned_functions', '../scripts/twod_functions'] ,
+
+     'gallery_dirs': ["functions_1D", "functions_2D"],
+}
+
+
 
 # The path where the artifact should be extracted
 # Note: this is relative to the conf.py file!
