@@ -64,16 +64,14 @@ jobs:
       - name: Create function gallery
         #shell: bash -l {0}
         run: |
-
-
-
-
           # move to the scripts directory
           cd scripts
 
           mkdir oned_functions
           mkdir twod_functions
 
+          cp README.rst oned_functions
+          cp README.rst twod_functions
 
           # now generate the function docs
           python generate_func_docs.py
