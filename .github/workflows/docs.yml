@@ -85,6 +85,18 @@ jobs:
           name: notebooks-for-${{ github.sha }}
           path: docs/notebooks
 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gallery1-for-${{ github.sha }}
+          path: scripts/oned_functions
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: gallery2-for-${{ github.sha }}
+          path: scripts/twod_functions
+
+
+
       - name: Sleep for 5 min
         uses: juliangruber/sleep-action@v1
         with:
@@ -109,7 +121,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Build the API doc
         run: |
@@ -155,7 +167,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8
+          python-version: 3.9
 
       - name: Install package
         run: |
@@ -178,6 +190,11 @@ jobs:
 
           rm -rf docs/md/*
 
+          cd scripts
+
+          mkdir oned_functions
+          mkdir twod_functions
+
 
 
       - uses: actions/download-artifact@master
@@ -190,6 +207,17 @@ jobs:
         with:
           name: api-stubs-for-${{ github.sha }}
           path: docs/notebooks/api
+
+      - uses: actions/download-artifact@master
+        with:
+          name: gallery1-for-${{ github.sha }}
+          path: scripts/oned_functions
+
+      - uses: actions/download-artifact@master
+        with:
+          name: gallery2-for-${{ github.sha }}
+          path: scripts/twod_functions
+
 
 
       - name: Build and Commit
