@@ -25,7 +25,7 @@ More functions can be included by either making your own or installing optional 
 ## 2D Functions
 <!-- #endregion -->
 
-<!-- #region tags=[] -->
+<!-- #region tags=["nbsphinx-gallery"] -->
 ## Priors
 <!-- #endregion -->
 
