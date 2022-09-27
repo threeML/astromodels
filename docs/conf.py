@@ -111,23 +111,24 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "sphinx_gallery.load_style",
-    "sphinx_math_dollar",
+#    "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
 ]
-mathjax_config = {
-    "tex2jax": {
-        "inlineMath": [["\\(", "\\)"]],
-        "displayMath": [["\\[", "\\]"]],
-    },
-}
 
-mathjax3_config = {
-    "tex": {
-        "inlineMath": [["\\(", "\\)"]],
-        "displayMath": [["\\[", "\\]"]],
-    }
-}
-from sphinx_math_dollar import NODE_BLACKLIST
+# mathjax_config = {
+#     "tex2jax": {
+#         "inlineMath": [["\\(", "\\)"]],
+#         "displayMath": [["\\[", "\\]"]],
+#     },
+# }
+
+# mathjax3_config = {
+#     "tex": {
+#         "inlineMath": [["\\(", "\\)"]],
+#         "displayMath": [["\\[", "\\]"]],
+#     }
+# }
+# from sphinx_math_dollar import NODE_BLACKLIST
 
 
 napoleon_google_docstring = True
