@@ -90,7 +90,7 @@ This is how we can generate random numbers from the prior.
 
 u = np.random.uniform(0,1, size=5000)
 
-draws = func.from_unit_cube(u)
+draws = [func.from_unit_cube(x) for x in u]
 
 
 fig, ax = plt.subplots()
