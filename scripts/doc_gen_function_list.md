@@ -1,0 +1,34 @@
+---
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .md
+      format_name: markdown
+      format_version: '1.3'
+      jupytext_version: 1.14.1
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+# Available Functions
+
+The galleries below display the available functions which are included in `astromodels`.
+More functions can be included by either making your own or installing optional packages. 
+
+<!-- #region tags=["nbsphinx-gallery"] -->
+## 1D Functions
+<!-- #endregion -->
+
+<!-- #region tags=["nbsphinx-gallery"] -->
+## 2D Functions
+<!-- #endregion -->
+
+<!-- #region tags=[] -->
+## Priors
+<!-- #endregion -->
+
+```python tags=["nbsphinx-gallery"]
+
+```
