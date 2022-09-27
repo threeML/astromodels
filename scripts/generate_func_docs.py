@@ -238,4 +238,4 @@ for cell in cells:
 func_list_file_name = "function_list.ipynb"
 
 
-jupytext.write(func_nb, f" {base_path / func_list_file_name }  ")
+jupytext.write(func_nb, f"{base_path / func_list_file_name }")
