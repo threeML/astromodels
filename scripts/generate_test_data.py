@@ -80,8 +80,10 @@ with h5py.File(file_path, flag) as f:
         if this_function._n_dim == 1:
 
             print("testing %s ..." % key)
-
-            func = this_function()
+            if key =='_ComplexTestFunction':
+                func = this_function(file_name="lost.txt", dummy="test")
+            else:
+                func = this_function()
 
             data=func(eval_x)
             
