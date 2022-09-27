@@ -28,7 +28,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Gaussian" href="Gaussian.html" />
+    <link rel="next" title="Blackbody" href="Blackbody.html" />
     <link rel="prev" title="Quick start" href="Quick_start.html" /> 
 </head>
 
@@ -51,13 +51,63 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Available Functions</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Gaussian.html">Gaussian</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Truncated_gaussian.html">Truncated_gaussian</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Cauchy.html">Cauchy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Cosine_Prior.html">Cosine_Prior</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Log_normal.html">Log_normal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Uniform_prior.html">Uniform_prior</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Log_uniform_prior.html">Log_uniform_prior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Included-1D-Functions">Included 1D Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Blackbody.html">Blackbody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ModifiedBlackbody.html">ModifiedBlackbody</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonDissipativePhotosphere.html">NonDissipativePhotosphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonDissipativePhotosphere_Deep.html">NonDissipativePhotosphere_Deep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StepFunction.html">StepFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StepFunctionUpper.html">StepFunctionUpper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Sin.html">Sin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DiracDelta.html">DiracDelta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_parabola.html">Log_parabola</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Exponential_cutoff.html">Exponential_cutoff</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PhAbs.html">PhAbs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TbAbs.html">TbAbs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="WAbs.html">WAbs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EBLattenuation.html">EBLattenuation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ZDust.html">ZDust</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Constant.html">Constant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Line.html">Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Quadratic.html">Quadratic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Cubic.html">Cubic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Quartic.html">Quartic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Powerlaw.html">Powerlaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Powerlaw_flux.html">Powerlaw_flux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Powerlaw_Eflux.html">Powerlaw_Eflux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Cutoff_powerlaw.html">Cutoff_powerlaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Cutoff_powerlaw_Ep.html">Cutoff_powerlaw_Ep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inverse_cutoff_powerlaw.html">Inverse_cutoff_powerlaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Super_cutoff_powerlaw.html">Super_cutoff_powerlaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SmoothlyBrokenPowerLaw.html">SmoothlyBrokenPowerLaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Broken_powerlaw.html">Broken_powerlaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Band.html">Band</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Band_grbm.html">Band_grbm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Band_Calderone.html">Band_Calderone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleSmoothlyBrokenPowerlaw.html">DoubleSmoothlyBrokenPowerlaw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DMFitFunction.html">DMFitFunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DMSpectra.html">DMSpectra</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Included-2D-Functions">Included 2D Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Latitude_galactic_diffuse.html">Latitude_galactic_diffuse</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Gaussian_on_sphere.html">Gaussian_on_sphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Asymm_Gaussian_on_sphere.html">Asymm_Gaussian_on_sphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Disk_on_sphere.html">Disk_on_sphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Ellipse_on_sphere.html">Ellipse_on_sphere</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Power_law_on_sphere.html">Power_law_on_sphere</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#Included-Prior-Functions">Included Prior Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Gaussian.html">Gaussian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Truncated_gaussian.html">Truncated_gaussian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Cauchy.html">Cauchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Cosine_Prior.html">Cosine_Prior</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_normal.html">Log_normal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Uniform_prior.html">Uniform_prior</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_uniform_prior.html">Log_uniform_prior</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Functions_tutorial.html">Functions tutorial</a></li>
@@ -377,11 +427,512 @@ div.rendered_html tbody tr:hover {
 <section id="Available-Functions">
 <h1>Available Functions<a class="headerlink" href="#Available-Functions" title="Permalink to this heading"></a></h1>
 <p>The galleries below display the available functions which are included in <code class="docutils literal notranslate"><span class="pre">astromodels</span></code>. More functions can be included by either making your own or installing optional packages.</p>
+<section id="Included-1D-Functions">
+<h2>Included 1D Functions<a class="headerlink" href="#Included-1D-Functions" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 </div>
-<div class="sphx-glr-clear"></div><div class="toctree-wrapper compound">
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Blackbody_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Blackbody.html">
+          <span class="std std-ref">Blackbody</span>
+        </a>
+      </span>
+    </p>
+  </div>
 </div>
-<div class="sphx-glr-clear"></div><div class="toctree-wrapper compound">
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_ModifiedBlackbody_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="ModifiedBlackbody.html">
+          <span class="std std-ref">ModifiedBlackbody</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_NonDissipativePhotosphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="NonDissipativePhotosphere.html">
+          <span class="std std-ref">NonDissipativePhotosphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_NonDissipativePhotosphere_Deep_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="NonDissipativePhotosphere_Deep.html">
+          <span class="std std-ref">NonDissipativePhotosphere_Deep</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_StepFunction_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="StepFunction.html">
+          <span class="std std-ref">StepFunction</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_StepFunctionUpper_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="StepFunctionUpper.html">
+          <span class="std std-ref">StepFunctionUpper</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Sin_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Sin.html">
+          <span class="std std-ref">Sin</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DiracDelta_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="DiracDelta.html">
+          <span class="std std-ref">DiracDelta</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Log_parabola_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Log_parabola.html">
+          <span class="std std-ref">Log_parabola</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Exponential_cutoff_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Exponential_cutoff.html">
+          <span class="std std-ref">Exponential_cutoff</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_PhAbs_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="PhAbs.html">
+          <span class="std std-ref">PhAbs</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_TbAbs_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="TbAbs.html">
+          <span class="std std-ref">TbAbs</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_WAbs_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="WAbs.html">
+          <span class="std std-ref">WAbs</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_EBLattenuation_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="EBLattenuation.html">
+          <span class="std std-ref">EBLattenuation</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_ZDust_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="ZDust.html">
+          <span class="std std-ref">ZDust</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Constant_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Constant.html">
+          <span class="std std-ref">Constant</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Line_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Line.html">
+          <span class="std std-ref">Line</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Quadratic_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Quadratic.html">
+          <span class="std std-ref">Quadratic</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cubic_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Cubic.html">
+          <span class="std std-ref">Cubic</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Quartic_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Quartic.html">
+          <span class="std std-ref">Quartic</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Powerlaw.html">
+          <span class="std std-ref">Powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_flux_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Powerlaw_flux.html">
+          <span class="std std-ref">Powerlaw_flux</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_Eflux_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Powerlaw_Eflux.html">
+          <span class="std std-ref">Powerlaw_Eflux</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cutoff_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Cutoff_powerlaw.html">
+          <span class="std std-ref">Cutoff_powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cutoff_powerlaw_Ep_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Cutoff_powerlaw_Ep.html">
+          <span class="std std-ref">Cutoff_powerlaw_Ep</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Inverse_cutoff_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Inverse_cutoff_powerlaw.html">
+          <span class="std std-ref">Inverse_cutoff_powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Super_cutoff_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Super_cutoff_powerlaw.html">
+          <span class="std std-ref">Super_cutoff_powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_SmoothlyBrokenPowerLaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="SmoothlyBrokenPowerLaw.html">
+          <span class="std std-ref">SmoothlyBrokenPowerLaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Broken_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Broken_powerlaw.html">
+          <span class="std std-ref">Broken_powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Band_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Band.html">
+          <span class="std std-ref">Band</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Band_grbm_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Band_grbm.html">
+          <span class="std std-ref">Band_grbm</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Band_Calderone_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Band_Calderone.html">
+          <span class="std std-ref">Band_Calderone</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DoubleSmoothlyBrokenPowerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="DoubleSmoothlyBrokenPowerlaw.html">
+          <span class="std std-ref">DoubleSmoothlyBrokenPowerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DMFitFunction_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="DMFitFunction.html">
+          <span class="std std-ref">DMFitFunction</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DMSpectra_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="DMSpectra.html">
+          <span class="std std-ref">DMSpectra</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-clear"></div></section>
+<section id="Included-2D-Functions">
+<h2>Included 2D Functions<a class="headerlink" href="#Included-2D-Functions" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Latitude_galactic_diffuse_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Latitude_galactic_diffuse.html">
+          <span class="std std-ref">Latitude_galactic_diffuse</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Gaussian_on_sphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Gaussian_on_sphere.html">
+          <span class="std std-ref">Gaussian_on_sphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Asymm_Gaussian_on_sphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Asymm_Gaussian_on_sphere.html">
+          <span class="std std-ref">Asymm_Gaussian_on_sphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Disk_on_sphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Disk_on_sphere.html">
+          <span class="std std-ref">Disk_on_sphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Ellipse_on_sphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Ellipse_on_sphere.html">
+          <span class="std std-ref">Ellipse_on_sphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Power_law_on_sphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="Power_law_on_sphere.html">
+          <span class="std std-ref">Power_law_on_sphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-clear"></div></section>
+<section id="Included-Prior-Functions">
+<h2>Included Prior Functions<a class="headerlink" href="#Included-Prior-Functions" title="Permalink to this heading"></a></h2>
+<p>Priors can be used as regular functions but have special properties that enable them to be used with various sampling algorithms.</p>
+<div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-thumbcontainer">
   <div class="figure align-center">
@@ -476,13 +1027,14 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 </section>
+</section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="Quick_start.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Gaussian.html" class="btn btn-neutral float-right" title="Gaussian" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Blackbody.html" class="btn btn-neutral float-right" title="Blackbody" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
