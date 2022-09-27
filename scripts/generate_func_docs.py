@@ -13,7 +13,7 @@ models_to_exclude = [
     "SpatialTemplate_2D",
 ]
 
-positive_priors = ["Log_uniform"]
+positive_priors = ["Log_uniform", "Log_normal"]
 
 linear_models = [
     "Constant",
@@ -188,7 +188,7 @@ for k, v in _known_functions.items():
 
 with Path("doc_gen_function_list.md").open("r") as f:
 
-    func_nb = jupytext.read(f.read(), fmt="md")
+    func_nb = jupytext.reads(f.read(), fmt="md")
 
 
 cells = func_nb["cells"]
