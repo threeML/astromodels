@@ -228,7 +228,7 @@ for cell in cells:
 
         for func_name in prior_func_list:
 
-            line = f"* [{func_name}](notebooks/{func_name}.ipynb)\n"
+            line = f"* [{func_name}]({func_name}.ipynb)\n"
 
             new_source.append(line)
 
