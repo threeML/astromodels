@@ -204,7 +204,7 @@ for cell in cells:
 
         for func_name in one_d_func_list:
 
-            line = f"* [{func_name}](notebooks/{func_name}.ipynb)\n"
+            line = f"* [{func_name}]({func_name}.ipynb)\n"
 
             new_source.append(line)
 
@@ -216,7 +216,7 @@ for cell in cells:
 
         for func_name in two_d_func_list:
 
-            line = f"* [{func_name}](notebooks/{func_name}.ipynb)\n"
+            line = f"* [{func_name}]({func_name}.ipynb)\n"
 
             new_source.append(line)
 

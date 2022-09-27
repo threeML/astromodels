@@ -17,13 +17,21 @@ jupyter:
 The galleries below display the available functions which are included in `astromodels`.
 More functions can be included by either making your own or installing optional packages. 
 
+## Included 1D Functions
+
 <!-- #region tags=["nbsphinx-gallery"] -->
 ## 1D Functions
 <!-- #endregion -->
 
+## Included 2D Functions
+
 <!-- #region tags=["nbsphinx-gallery"] -->
 ## 2D Functions
 <!-- #endregion -->
+
+## Included Prior Functions
+Priors can be used as regular functions but have special properties that enable
+them to be used with various sampling algorithms.
 
 <!-- #region tags=["nbsphinx-gallery"] -->
 ## Priors
