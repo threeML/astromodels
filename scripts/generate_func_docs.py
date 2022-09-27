@@ -13,7 +13,7 @@ models_to_exclude = [
     "SpatialTemplate_2D",
 ]
 
-positive_priors = []
+positive_priors = ["Log_uniform"]
 
 linear_models = [
     "Constant",
@@ -111,8 +111,6 @@ for k, v in _known_functions.items():
                 ),
             )
 
-
-
         else:
 
             prior_func_list.append(k)
@@ -174,14 +172,17 @@ for k, v in _known_functions.items():
             ),
         )
 
+    path = Path(ntbk_file_name)
 
-    Path(ntbk_file_name).unlink()
+    if path.exists():
 
-    del nb
+        path.unlink()
 
-    del ntbk
+        del nb
 
-    del out
+        del ntbk
+
+        del out
 
 # Now we generate the gallery notebook
 
