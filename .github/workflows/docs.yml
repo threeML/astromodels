@@ -67,11 +67,6 @@ jobs:
           # move to the scripts directory
           cd scripts
 
-          mkdir oned_functions
-          mkdir twod_functions
-
-          cp README1.rst oned_functions/README.rst
-          cp README2.rst twod_functions/README.rst
 
           # now generate the function docs
           python generate_func_docs.py
@@ -84,17 +79,6 @@ jobs:
         with:
           name: notebooks-for-${{ github.sha }}
           path: docs/notebooks
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: gallery1-for-${{ github.sha }}
-          path: scripts/oned_functions
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: gallery2-for-${{ github.sha }}
-          path: scripts/twod_functions
-
 
 
       - name: Sleep for 5 min
@@ -191,11 +175,6 @@ jobs:
 
           rm -rf docs/md/*
 
-          cd scripts
-
-          mkdir oned_functions
-          mkdir twod_functions
-
 
 
       - uses: actions/download-artifact@master
@@ -208,18 +187,6 @@ jobs:
         with:
           name: api-stubs-for-${{ github.sha }}
           path: docs/notebooks/api
-
-      - uses: actions/download-artifact@master
-        with:
-          name: gallery1-for-${{ github.sha }}
-          path: scripts/oned_functions
-
-      - uses: actions/download-artifact@master
-        with:
-          name: gallery2-for-${{ github.sha }}
-          path: scripts/twod_functions
-
-
 
       - name: Build and Commit
         uses: sphinx-notes/pages@v2
