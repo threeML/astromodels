@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "199f2851",
+   "id": "f14e5946",
    "metadata": {},
    "source": [
     "# Point sources #\n",
@@ -19,25 +19,25 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "0f5ce98f",
+   "id": "63e1c787",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:35.730043Z",
-     "iopub.status.busy": "2022-09-26T13:16:35.729552Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.020464Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.019347Z"
+     "iopub.execute_input": "2022-09-27T10:36:05.253049Z",
+     "iopub.status.busy": "2022-09-27T10:36:05.252649Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.577765Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.576645Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">13:16:38 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py#48\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">48</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">10:36:07 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py#48\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">48</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">available                                                                         </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m13:16:38\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=695603;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=651584;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py#48\u001b\\\u001b[2m48\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m10:36:07\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=944529;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=856644;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py#48\u001b\\\u001b[2m48\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mavailable                                                                        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -47,12 +47,12 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it  </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py#69\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">69</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it  </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py#69\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">69</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">will not be available.                                                            </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=712838;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=870493;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/functions/functions_1D/functions.py#69\u001b\\\u001b[2m69\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=360770;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=215607;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/functions/functions_1D/functions.py#69\u001b\\\u001b[2m69\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mwill not be available.                                                           \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -62,11 +62,11 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">10:36:08 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=152992;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=197836;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
+       "\u001b[38;5;46m10:36:08\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=333661;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=43841;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
       ]
      },
      "metadata": {},
@@ -75,11 +75,11 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=35060;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=647200;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=501704;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=227746;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
       ]
      },
      "metadata": {},
@@ -88,11 +88,11 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=758947;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=744786;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=233281;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=621498;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
       ]
      },
      "metadata": {},
@@ -101,11 +101,11 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=127856;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=801910;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=788848;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=454043;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
       ]
      },
      "metadata": {},
@@ -114,11 +114,11 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of F to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of F to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of F to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=55192;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=858838;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of F to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=177131;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=381771;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
       ]
      },
      "metadata": {},
@@ -127,11 +127,11 @@
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive transform   </span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">704</span></a>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=220636;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=660913;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g660e9f2-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive transform  \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=894998;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=973962;file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g31f4260-py3.9.egg/astromodels/core/parameter.py#704\u001b\\\u001b[2m704\u001b[0m\u001b]8;;\u001b\\\n"
       ]
      },
      "metadata": {},
@@ -145,7 +145,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "e4bf56f3",
+   "id": "6faab717",
    "metadata": {},
    "source": [
     "We can also use Galactic coordinates:"
@@ -154,13 +154,13 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "9cdca5a8",
+   "id": "aab66566",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.026457Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.025994Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.035202Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.034052Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.583417Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.583029Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.590221Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.589165Z"
     }
    },
    "outputs": [],
@@ -170,7 +170,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "341cd55e",
+   "id": "c0d06195",
    "metadata": {},
    "source": [
     "As spectral shape we can use any function or any composite function (see\n",
@@ -179,7 +179,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "63452973",
+   "id": "5a4f1e31",
    "metadata": {},
    "source": [
     "## Getting info about a point source\n",
@@ -192,13 +192,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "7a68881e",
+   "id": "2a055c36",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.040693Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.040293Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.052130Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.051066Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.596239Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.595810Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.607287Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.606457Z"
     }
    },
    "outputs": [
@@ -397,13 +397,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "8ef93472",
+   "id": "88950f93",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.056933Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.056527Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.069926Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.068811Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.611904Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.611559Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.620311Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.619190Z"
     }
    },
    "outputs": [
@@ -463,7 +463,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "51894e39",
+   "id": "09ded544",
    "metadata": {},
    "source": [
     "As you can see we have created a point source with one component automatically named \"main\", with a power law spectrum, at the\n",
@@ -472,7 +472,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ca104edc",
+   "id": "00694aa0",
    "metadata": {},
    "source": [
     "## Converting between coordinate systems\n",
@@ -485,13 +485,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "28563939",
+   "id": "acacd8e3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.075281Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.074886Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.115520Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.114369Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.626554Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.626156Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.668601Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.667118Z"
     }
    },
    "outputs": [
@@ -548,7 +548,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "6b9c3832",
+   "id": "350aac93",
    "metadata": {},
    "source": [
     "For more control on the output and many more options, such as transform\n",
@@ -560,13 +560,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "9d4134e8",
+   "id": "6a1761d1",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.120516Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.120136Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.136425Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.135434Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.674345Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.673925Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.687514Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.686345Z"
     }
    },
    "outputs": [
@@ -587,7 +587,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "b50495a8",
+   "id": "9b5990b9",
    "metadata": {},
    "source": [
     "## Gotcha while accessing coordinates\n",
@@ -602,13 +602,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "ecad130c",
+   "id": "0f84b935",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.141565Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.141163Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.154439Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.153403Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.693707Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.693329Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.704627Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.703371Z"
     }
    },
    "outputs": [
@@ -659,7 +659,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "343f3e6b",
+   "id": "7e5a51e6",
    "metadata": {},
    "source": [
     "The following would instead throw `AttributeError`, since `simple_source_icrs` was instanced using R.A. and Dec. and hence does not have the `l`, `b` parameters:"
@@ -668,13 +668,13 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "689dbe5c",
+   "id": "582ad42e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.159629Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.159216Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.164681Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.163552Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.709497Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.709120Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.714559Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.713603Z"
     }
    },
    "outputs": [
@@ -695,7 +695,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "55d5bce3",
+   "id": "a8a81548",
    "metadata": {},
    "source": [
     "In all cases, independently on how the source was instanced, you can obtain the *values* of coordinates in degrees\n",
@@ -705,13 +705,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "e4f557d0",
+   "id": "c37a1466",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.169723Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.169325Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.182348Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.181291Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.719824Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.719351Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.728063Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.727030Z"
     }
    },
    "outputs": [
@@ -749,7 +749,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "e0e0fd41",
+   "id": "4e8f7b2f",
    "metadata": {},
    "source": [
     "## Fitting the source position\n",
@@ -760,13 +760,13 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "587ae2e6",
+   "id": "98a13794",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.187583Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.187178Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.197594Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.196310Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.732991Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.732556Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.738757Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.737762Z"
     }
    },
    "outputs": [
@@ -788,7 +788,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "efa7fb07",
+   "id": "ce3c6413",
    "metadata": {},
    "source": [
     "For a source created in Galactic coordinates, instead use the following:"
@@ -797,13 +797,13 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "b9538d6a",
+   "id": "4993142e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.202850Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.202469Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.212676Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.211538Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.744710Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.744258Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.750823Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.749748Z"
     }
    },
    "outputs": [
@@ -825,7 +825,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4b17b75d",
+   "id": "c2dc2619",
    "metadata": {},
    "source": [
     "By default, the allowed range for the Right Ascension is from 0˚ to 360˚ and allowed declination values range from -90˚ to 90˚. **If fitting the source position, it is strongly recommended to restrict the coordinates to be inside the region of interest (ROI) at all times.** The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting \"stuck\" due to the likelihood surface being flat. For example:"
@@ -834,13 +834,13 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "8bb8c6b9",
+   "id": "441654f3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.217888Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.217476Z",
-     "iopub.status.idle": "2022-09-26T13:16:39.227655Z",
-     "shell.execute_reply": "2022-09-26T13:16:39.226518Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.755832Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.755465Z",
+     "iopub.status.idle": "2022-09-27T10:36:08.766072Z",
+     "shell.execute_reply": "2022-09-27T10:36:08.764895Z"
     }
    },
    "outputs": [
@@ -882,7 +882,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "6a56ed87",
+   "id": "a1733c7e",
    "metadata": {},
    "source": [
     "## \"Calling\" a point source\n",
@@ -893,13 +893,13 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "304ebe29",
+   "id": "23ec5c4a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2022-09-26T13:16:39.232749Z",
-     "iopub.status.busy": "2022-09-26T13:16:39.232341Z",
-     "iopub.status.idle": "2022-09-26T13:16:40.790599Z",
-     "shell.execute_reply": "2022-09-26T13:16:40.789461Z"
+     "iopub.execute_input": "2022-09-27T10:36:08.771219Z",
+     "iopub.status.busy": "2022-09-27T10:36:08.770825Z",
+     "iopub.status.idle": "2022-09-27T10:36:10.297943Z",
+     "shell.execute_reply": "2022-09-27T10:36:10.296999Z"
     }
    },
    "outputs": [
@@ -956,7 +956,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "e5568a0d",
+   "id": "c3cb0139",
    "metadata": {},
    "outputs": [],
    "source": []

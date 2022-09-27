@@ -8,10 +8,6 @@
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-binder.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-dataframe.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/sg_gallery-rendered-html.css" type="text/css" />
       <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
       <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
@@ -25,9 +21,6 @@
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "tex2jax_ignore|mathjax_ignore|document", "processClass": "tex2jax_process|mathjax_process|math|output_area", "displayMath": [["\\[", "\\]"]]}})</script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
         <script src="../_static/dark_mode_js/default_dark.js"></script>
         <script src="../_static/dark_mode_js/theme_switcher.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -55,8 +48,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../functions_1D/index.html">1D Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../functions_2D/index.html">2D Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
@@ -130,7 +121,7 @@
 <blockquote>
 <div><p>Band model from Band et al., 1993, parametrized with the peak energy</p>
 </div></blockquote>
-<p>latex : <span class="math notranslate nohighlight">\(K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} \)</span></p>
+<p>latex : $K begin{cases} left(frac{x}{piv}right)^{alpha} exp left(-frac{(2+alpha) x}{x_{p}}right) &amp; x leq (alpha-beta) frac{x_{p}}{(alpha+2)} \ left(frac{x}{piv}right)^{beta} exp (beta-alpha)left[frac{(alpha-beta) x_{p}}{piv(2+alpha)}right]^{alpha-beta} &amp;x&gt;(alpha-beta) frac{x_{p}}{(alpha+2)} end{cases} $</p>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -493,7 +484,7 @@ transformation : log10</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.powerlaws.</span></span><span class="sig-name descname"><span class="pre">DoubleSmoothlyBrokenPowerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</p>
-<p>latex : <span class="math notranslate nohighlight">\(\begin{array}{l}\begin{aligned}f(x)=&amp; A x_{\mathrm{b}}^{\alpha_{1}}\left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right.\\&amp;\left.+\left(\frac{x}{x_{\mathrm{j}}}\right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}{n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot\left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}\right) n_{2}}}\end{array}\)</span></p>
+<p>latex : $begin{array}{l}begin{aligned}f(x)=&amp; A x_{mathrm{b}}^{alpha_{1}}left[left[left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right.\&amp;left.+left(frac{x}{x_{mathrm{j}}}right)^{-beta n_{2}} cdotleft[left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right]^{-frac{1}{n_{2}}}end{aligned}\text { where }\x_{mathrm{j}}=x_{mathrm{p}} cdotleft(-frac{alpha_{2}+2}{beta+2}right)^{frac{1}{left.beta-alpha_{2}right) n_{2}}}end{array}$</p>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -596,7 +587,7 @@ fix : yes</p>
 <dt>description :</dt><dd><p>A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</p>
 </dd>
 </dl>
-<p>latex : <span class="math notranslate nohighlight">\(K \frac{x}{piv}^{index}\exp{(-x~b)} \)</span>
+<p>latex : $K frac{x}{piv}^{index}exp{(-x~b)} $
 parameters :</p>
 <blockquote>
 <div><dl class="simple">
@@ -696,7 +687,7 @@ max : 10</p>
 <dt>description :</dt><dd><p>A  power-law where the normalization is the energy flux defined between a and b</p>
 </dd>
 </dl>
-<p>latex : <span class="math notranslate nohighlight">\(F~\frac{x}{piv}^{index} \)</span>
+<p>latex : $F~frac{x}{piv}^{index} $
 parameters :</p>
 <blockquote>
 <div><dl class="simple">
