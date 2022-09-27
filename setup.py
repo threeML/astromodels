@@ -1,19 +1,22 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
 import ctypes.util
 import glob
-import sys
-
 import os
 import re
-from setuptools import setup, Extension
+import sys
+from distutils.version import LooseVersion
+
+from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext as _build_ext
 
 import versioneer
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
+
+_default_xspec_version = "12.12.1"
+
 
 class My_build_ext(_build_ext):
 
@@ -51,7 +54,7 @@ def sanitize_lib_name(library_path):
     tokens = re.findall("lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
 
     if not tokens:
-        raise RuntimeError('Attempting to find %s in directory %s but there are no libraries in this directory'%(lib_name,library_path))
+        raise RuntimeError(f'Attempting to find {lib_name} in directory {library_path} but there are no libraries in this directory')
 
 
     return tokens[0][0]
@@ -72,7 +75,7 @@ def find_library(library_root, additional_places=None):
 
     first_guess = ctypes.util.find_library(library_root)
 
-    if first_guess is not None:
+    if first_guess is not None and library_root == "gfortran":
 
         # Found in one of the system paths
 
@@ -95,6 +98,7 @@ def find_library(library_root, additional_places=None):
             # Windows is not supported
 
             raise NotImplementedError("Platform %s is not supported" % sys.platform)
+
 
     else:
 
@@ -135,7 +139,12 @@ def find_library(library_root, additional_places=None):
 
                 continue
 
-            results = glob.glob(os.path.join(search_path, "lib%s*" % library_root))
+
+
+
+            results = glob.glob(os.path.join(search_path, f"lib{library_root}*"))
+
+
 
             if len(results) >= 1:
 
@@ -144,7 +153,8 @@ def find_library(library_root, additional_places=None):
 
                 for result in results:
 
-                    if re.match("lib%s[\-_\.]" % library_root, os.path.basename(result)) is None:
+
+                    if re.match(f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*", os.path.basename(result)) is None:
 
                         continue
 
@@ -184,7 +194,49 @@ def setup_xspec():
 
     headas_root = os.environ.get("HEADAS")
     conda_prefix = os.environ.get("CONDA_PREFIX")
+    xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
 
+    # thanks to the sherpa team for this
+    
+    if xspec_version is None:
+
+        print("WARN: You have not specified and XSPEC version with the ")
+        print("WARN: environment variable ASTRO_XSPEC_VERSION")
+        print(f"WARN: we will assume you have {_default_xspec_version}")
+
+        xspec_raw_version = _default_xspec_version 
+
+    else:
+
+        print(f"WARN: you have specified you have XSPEC version {xspec_version}")
+
+        xspec_raw_version = xspec_version
+
+
+    xspec_version = LooseVersion(xspec_raw_version)
+
+    macros = []
+
+    if xspec_version < LooseVersion("12.9.0"):
+        print("WARN: XSPEC Version is less than 12.9.0, which is the minimal supported version for astromodels")
+
+        # I am not sure what the naming of the XSPEC components are,
+        # but let's stick with major, minor, and patch.
+        #
+    for major, minor, patch in [(12, 9, 0), (12, 9, 1),
+                                (12, 10, 0), (12, 10, 1),
+                                (12, 11, 0), (12, 11, 1),
+                                (12, 12, 0), (12, 12, 1)]:
+
+        version = '{}.{}.{}'.format(major, minor, patch)
+
+        macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
+
+        if xspec_version >= LooseVersion(version):
+            macros += [(macro, None)]
+                        
+    print(macros)
+                
     if headas_root is None:
 
         # See, maybe we are running in Conda
@@ -299,6 +351,12 @@ def setup_xspec():
     library_dirs = list(set(library_dirs))  
     header_paths = list(set(header_paths))
 
+    print("header paths:")
+    for h in header_paths:
+
+        print(f"{h}")
+
+
     # Configure the variables to build the external module with the C/C++ wrapper
 
 
@@ -311,7 +369,8 @@ def setup_xspec():
                   libraries=libraries,
                   library_dirs=library_dirs,
                   runtime_library_dirs=library_dirs,
-                  extra_compile_args=[])]
+                  extra_compile_args=[], define_macros=macros),
+    ]
 
     return ext_modules_configuration
 
@@ -321,6 +380,7 @@ def setup_xspec():
 packages = ['astromodels',
             'astromodels/core',
             'astromodels/functions',
+            'astromodels/functions/functions_1D',
             'astromodels/functions/dark_matter',
             'astromodels/sources',
             'astromodels/utils',
@@ -332,21 +392,6 @@ packages = ['astromodels',
 ext_modules_configuration = setup_xspec()
 
 # Add the node_ctype module
-
-# This defines the external module
-node_ctype_ext = Extension('astromodels.core.node_ctype',
-                           sources = ['astromodels/core/node_ctype/node_ctype.cxx'],
-                           extra_compile_args=[]) # '-UNDEBUG' for debugging
-
-
-if ext_modules_configuration is None:
-
-    # No Xspec
-    ext_modules_configuration = [node_ctype_ext]
-
-else:
-
-    ext_modules_configuration.append(node_ctype_ext)
 
 
 setup(
@@ -376,8 +421,7 @@ setup(
     ext_modules=ext_modules_configuration,
 
     package_data={
-        'astromodels': ['data/dark_matter/*', 'data/xsect/*', 'data/past_1D_values.h5'],
+        'astromodels': ['data/dark_matter/*', 'data/xsect/*', 'data/past_1D_values.h5', 'data/log_theme.ini'],
     },
-
 
 )

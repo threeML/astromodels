@@ -14,13 +14,9 @@ requirements:
     - {{ compiler('cxx') }} # [linux]
     - {{ compiler('fortran') }} # [linux]
     - xspec-modelsonly
-    #- cfitsio
-    - cfitsio==3.470
+    - cfitsio
     - ccfits
-    - wcslib==5.20
-    #- wcslib
-    #- krb5==1.14.6 # [py2k]
-    #- readline==6.2 # [py2k]
+    - wcslib
 
   host:
     - python
@@ -28,49 +24,35 @@ requirements:
     - pip
     - numpy
     - pyyaml>=5.1
-    #- astropy
-    #- scipy
-#    - numdifftools
-    #- hdf5
-    #- pytables
     - pandas>=0.23
-    #- cfitsio==3.410 # [py2k]
-    - cfitsio==3.470
+    - cfitsio
     - ccfits
-    - wcslib==5.20
-    #- wcslib
+    - wcslib
     - xspec-modelsonly
     - future
-    #- krb5==1.14.6 # [py2k]
-    #- readline==6.2 # [py2k]
-    - numba
+    - numba>=0.54
     - h5py
-
+    - omegaconf
+    
   run:
     - python
-  #  - libgfortran
     - numpy
     - pyyaml>=5.1
     - astropy
-    #- scipy
-#    - numdifftools
-    #- hdf5
     - pytables
     - pandas>=0.23
     - dill
-    #- cfitsio
-    - cfitsio==3.470
+    - cfitsio
     - ccfits
-    - wcslib==5.20
-    #- wcslib
+    - wcslib
     - future
-    #- krb5==1.14.6 # [py2k]
-    #- readline==6.2 # [py2k]
-    - numba
+    - numba>=0.54
     - h5py
-    - interpolation>=2.1.5 # [py3k]
+    - interpolation>=2.2.2
     - colorama
-
+    - omegaconf
+    - rich
+    
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]

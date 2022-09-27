@@ -21,12 +21,12 @@ def xspec_abund(command_string=None):
         _xspec.set_xsabund(command_string)
 
 
-def xspec_cosmo(H0=None,q0=None,lambda_0=None):
+def xspec_cosmo(H0=None, q0=None, lambda_0=None):
     """
     Define the Cosmology in use within the XSpec models. See Xspec manual for help:
 
     http://heasarc.nasa.gov/xanadu/xspec/manual/XScosmo.html
-    
+
     All parameters can be modified or just a single parameter
 
     :param H0: the hubble constant
@@ -40,7 +40,6 @@ def xspec_cosmo(H0=None,q0=None,lambda_0=None):
     if (H0 is None) and (q0 is None) and (lambda_0 is None):
 
         return current_settings
-
 
     else:
 
@@ -56,7 +55,6 @@ def xspec_cosmo(H0=None,q0=None,lambda_0=None):
                 # so lets keep what was already set
 
                 user_inputs[i] = current_setting
-
 
         # pass this to xspec
 

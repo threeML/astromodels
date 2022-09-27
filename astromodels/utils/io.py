@@ -1,5 +1,6 @@
 from __future__ import print_function
-__author__ = 'giacomov'
+
+__author__ = "giacomov"
 
 # Import IPython display facility, if available. Otherwise,
 # create a wrapper which just uses print
@@ -15,6 +16,7 @@ except ImportError:
         Mock version of display, used if there is no ipython installed
         """
         print(args)
+
 
 try:
 

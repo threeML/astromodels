@@ -6,15 +6,18 @@ import numpy as np
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
-from astromodels.functions.functions import Constant
-from astromodels.sources.source import Source, EXTENDED_SOURCE
+from astromodels.functions import Constant
+from astromodels.sources.source import Source, SourceType
 from astromodels.utils.pretty_list import dict_to_list
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 
 class ExtendedSource(Source, Node):
-
-    def __init__(self, source_name, spatial_shape, spectral_shape=None, components=None, polarization=None):
-
+    def __init__(
+        self, source_name, spatial_shape, spectral_shape=None, components=None, polarization=None
+    ):
         # Check that we have all the required information
         # and set the units
 
@@ -27,9 +30,11 @@ class ExtendedSource(Source, Node):
             # We need either a single component, or a list of components, but not both
             # (that's the ^ symbol)
 
-            assert (spectral_shape is not None) ^ (components is not None), "You have to provide either a single " \
-                                                                            "component, or a list of components " \
-                                                                            "(but not both)."
+            assert (spectral_shape is not None) ^ (components is not None), (
+                "You have to provide either a single "
+                "component, or a list of components "
+                "(but not both)."
+            )
 
             # If the user specified only one component, make a list of one element with a default name ("main")
 
@@ -39,7 +44,9 @@ class ExtendedSource(Source, Node):
 
             # Components in this case have energy as x and differential flux as y
 
-            diff_flux_units = (current_u.energy * current_u.area * current_u.time) ** (-1)
+            diff_flux_units = (current_u.energy * current_u.area * current_u.time) ** (
+                -1
+            )
 
             # Now set the units of the components
             for component in components:
@@ -47,7 +54,9 @@ class ExtendedSource(Source, Node):
                 component.shape.set_units(current_u.energy, diff_flux_units)
 
             # Set the units of the brightness
-            spatial_shape.set_units(current_u.angle, current_u.angle, current_u.angle**(-2))
+            spatial_shape.set_units(
+                current_u.angle, current_u.angle, current_u.angle ** (-2)
+            )
 
         elif spatial_shape.n_dim == 3:
 
@@ -62,40 +71,64 @@ class ExtendedSource(Source, Node):
                 components = [SpectralComponent("main", spectral_shape)]
 
                 # set the units
-                diff_flux_units = (current_u.energy * current_u.area * current_u.time *
-                                   current_u.angle**2) ** (-1)
-                spatial_shape.set_units(current_u.angle, current_u.angle, current_u.energy, diff_flux_units)
+                diff_flux_units = (
+                    current_u.energy
+                    * current_u.area
+                    * current_u.time
+                    * current_u.angle**2
+                ) ** (-1)
+                spatial_shape.set_units(
+                    current_u.angle,
+                    current_u.angle,
+                    current_u.energy,
+                    diff_flux_units,
+                )
 
             else:
 
                 # the spectral shape has been given, so this is a case where the spatial template gives an
                 # energy-dependent shape and the spectral components give the spectrum
 
-                assert (spectral_shape is not None) ^ (components is not None), "You can provide either a single " \
-                                                                                "component, or a list of components " \
-                                                                                "(but not both)."
+                if not ((spectral_shape is not None) ^ (components is not None)):
+
+                    log.error(
+                        "You can provide either a single "
+                        "component, or a list of components "
+                        "(but not both)."
+                    )
+
+                    raise AssertionError()
 
                 if spectral_shape is not None:
 
                     components = [SpectralComponent("main", spectral_shape, polarization)]
 
                 # Assign units
-                diff_flux_units = (current_u.energy * current_u.area * current_u.time) ** (-1)
+                diff_flux_units = (
+                    current_u.energy * current_u.area * current_u.time
+                ) ** (-1)
 
                 # Now set the units of the components
                 for component in components:
                     component.shape.set_units(current_u.energy, diff_flux_units)
 
                 # Set the unit of the spatial template
-                spatial_shape.set_units(current_u.angle, current_u.angle, current_u.energy, current_u.angle**(-2))
+                spatial_shape.set_units(
+                    current_u.angle,
+                    current_u.angle,
+                    current_u.energy,
+                    current_u.angle ** (-2),
+                )
 
         else:
 
-            raise RuntimeError("The spatial shape must have either 2 or 3 dimensions.")
+            log.error("The spatial shape must have either 2 or 3 dimensions.")
+
+            raise RuntimeError()
 
         # Here we have a list of components
 
-        Source.__init__(self, components, EXTENDED_SOURCE)
+        Source.__init__(self, components, SourceType.EXTENDED_SOURCE)
 
         # A source is also a Node in the tree
 
@@ -106,11 +139,11 @@ class ExtendedSource(Source, Node):
         self._add_child(self._spatial_shape)
 
         # Add the same node also with the name of the function
-        #self._add_child(self._shape, self._shape.__name__)
+        # self._add_child(self._shape, self._shape.__name__)
 
         # Add a node called 'spectrum'
 
-        spectrum_node = Node('spectrum')
+        spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 
         self._add_child(spectrum_node)
@@ -125,20 +158,24 @@ class ExtendedSource(Source, Node):
 
         return self._spatial_shape
 
-    def get_spatially_integrated_flux( self, energies):
-    
+    def get_spatially_integrated_flux(self, energies):
+
         """
         Returns total flux of source at the given energy
         :param energies: energies (array or float)
         :return: differential flux at given energy
         """
-       
+
         if not isinstance(energies, np.ndarray):
             energies = np.array(energies, ndmin=1)
 
         # Get the differential flux from the spectral components
 
-        results = [self.spatial_shape.get_total_spatial_integral(energies) * component.shape(energies) for component in self.components.values()]
+        results = [
+            self.spatial_shape.get_total_spatial_integral(energies)
+            * component.shape(energies)
+            for component in self.components.values()
+        ]
 
         if isinstance(energies, u.Quantity):
 
@@ -158,7 +195,6 @@ class ExtendedSource(Source, Node):
 
         return differential_flux
 
-
     def __call__(self, lon, lat, energies):
         """
         Returns brightness of source at the given position and energy
@@ -168,7 +204,9 @@ class ExtendedSource(Source, Node):
         :return: differential flux at given position and energy
         """
 
-        assert type(lat) == type(lon) and type(lon) == type(energies), "Type mismatch in input of call"
+        assert type(lat) == type(lon) and type(lon) == type(
+            energies
+        ), "Type mismatch in input of call"
 
         if not isinstance(lat, np.ndarray):
 
@@ -178,7 +216,9 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        results = [component.shape(energies) for component in list(self.components.values())]
+        results = [
+            component.shape(energies) for component in list(self.components.values())
+        ]
 
         if isinstance(energies, u.Quantity):
 
@@ -208,7 +248,9 @@ class ExtendedSource(Source, Node):
 
             # The following is a little obscure, but it is 6x faster than doing a for loop
 
-            cube = np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T
+            cube = (
+                np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T
+            )
             result = (cube.T * brightness).T
 
         else:
@@ -219,7 +261,8 @@ class ExtendedSource(Source, Node):
         # with negative fluxes
 
         return np.squeeze(result)
-              
+
+    @property
     def has_free_parameters(self):
         """
         Returns True or False whether there is any parameter in this source
@@ -247,7 +290,7 @@ class ExtendedSource(Source, Node):
     def free_parameters(self):
         """
         Returns a dictionary of free parameters for this source
-        We use the parameter path as the key because it's 
+        We use the parameter path as the key because it's
         guaranteed to be unique, unlike the parameter name.
 
         :return:
@@ -274,7 +317,7 @@ class ExtendedSource(Source, Node):
     def parameters(self):
         """
         Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's 
+        We use the parameter path as the key because it's
         guaranteed to be unique, unlike the parameter name.
 
         :return:
@@ -305,14 +348,14 @@ class ExtendedSource(Source, Node):
 
         repr_dict = collections.OrderedDict()
 
-        key = '%s (extended source)' % self.name
+        key = "%s (extended source)" % self.name
 
         repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]['shape'] = self._spatial_shape.to_dict(minimal=True)
-        repr_dict[key]['spectrum'] = collections.OrderedDict()
+        repr_dict[key]["shape"] = self._spatial_shape.to_dict(minimal=True)
+        repr_dict[key]["spectrum"] = collections.OrderedDict()
 
         for component_name, component in list(self.components.items()):
-            repr_dict[key]['spectrum'][component_name] = component.to_dict(minimal=True)
+            repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
 

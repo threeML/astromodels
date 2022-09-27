@@ -1,23 +1,25 @@
-__author__ = 'giacomov'
+__author__ = "giacomov"
 
 from astromodels.core.tree import Node
 from astromodels.core.parameter import Parameter
-
+import numpy as np
 
 class Polarization(Node):
+    def __init__(self, polarization_type="linear"):
 
-    def __init__(self, polarization_type='linear'):
-
-        assert polarization_type in ['linear', 'stokes'], 'polarization must be linear or stokes'
+        assert polarization_type in [
+            "linear",
+            "stokes",
+        ], "polarization must be linear or stokes"
 
         self._polarization_type = polarization_type
 
-
-        Node.__init__(self, 'polarization')
-
+        Node.__init__(self, "polarization")
 
     @staticmethod
-    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc, unit):
+    def _get_parameter_from_input(
+        number_or_parameter, minimum, maximum, what, desc, unit
+    ):
 
         # Try to transform it to float, if it works than we transform it to a parameter
 
@@ -27,34 +29,53 @@ class Polarization(Node):
 
         except TypeError:
 
-            assert isinstance(number_or_parameter, Parameter), "%s must be either a number or a " \
-                                                               "parameter instance" % what
+            assert isinstance(number_or_parameter, Parameter), (
+                "%s must be either a number or a " "parameter instance" % what
+            )
 
             # So this is a Parameter instance already. Enforce that it has the right maximum and minimum
 
             parameter = number_or_parameter
 
-            assert parameter.min_value == minimum, "%s must have a minimum of %s" % (what, minimum)
-            assert parameter.max_value == maximum, "%s must have a maximum of %s" % (what, maximum)
+            assert parameter.min_value == minimum, "%s must have a minimum of %s" % (
+                what,
+                minimum,
+            )
+            assert parameter.max_value == maximum, "%s must have a maximum of %s" % (
+                what,
+                maximum,
+            )
 
         else:
 
             # This was a float. Enforce that it has a legal value
 
-            assert minimum <= number_or_parameter <= maximum, "%s cannot have a value of %s, " \
-                                                              "it must be %s <= %s <= %s" % (what, number_or_parameter,
-                                                                                             minimum, what, maximum)
+            assert (
+                minimum <= number_or_parameter <= maximum
+            ), "%s cannot have a value of %s, " "it must be %s <= %s <= %s" % (
+                what,
+                number_or_parameter,
+                minimum,
+                what,
+                maximum,
+            )
 
-            parameter = Parameter(what, number_or_parameter,
-                                  desc=desc, min_value=minimum, max_value=maximum, unit=unit, free=True)
+            parameter = Parameter(
+                what,
+                number_or_parameter,
+                desc=desc,
+                min_value=minimum,
+                max_value=maximum,
+                unit=unit,
+                free=True,
+            )
 
         return parameter
 
 
 # TODO: add transform between polarizations
-import numpy as np
-class LinearPolarization(Polarization):
 
+class LinearPolarization(Polarization):
     def __init__(self, degree, angle):
         """
         Linear parameterization of polarization
@@ -62,19 +83,22 @@ class LinearPolarization(Polarization):
         :param degree: The polarization degree
         :param angle: The polarization angle
         """
-        super(LinearPolarization, self).__init__(polarization_type='linear')
+        super(LinearPolarization, self).__init__(polarization_type="linear")
 
-        #degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
+        if isinstance(degree, float) or isinstance(degree, int):
+            self.degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
+        else:
+            self.degree = LinearParameter('degree', degree)
 
-        #angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
+        if isinstance(angle, float) or isinstance(angle, int):
+            self.angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
+        else:
+            self.angle  = LinearParameter('angle', angle)
 
-        self.degree = LinearParameter('degree', degree)
-        self.angle  = LinearParameter('angle', angle)
         self._add_child(self.degree)
         self._add_child(self.angle)
 
     def __call__(self, energies, stokes):
-
 
         if stokes == 'Q':
             return self.degree(energies) * np.cos(2.0 * np.radians(self.angle(energies)))
@@ -84,7 +108,6 @@ class LinearPolarization(Polarization):
 
 
 class StokesPolarization(Polarization):
-
     def __init__(self, I=None, Q=None, U=None, V=None):
         """
         Stokes parameterization of polarization

@@ -23,7 +23,10 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
     dlon = lon2 - lon1
     dlat = lat2 - lat1
 
-    a = np.sin(old_div(dlat,2.0))**2 + np.cos(lat1) * np.cos(lat2) * np.sin(old_div(dlon,2.0))**2
+    a = (
+        np.sin(old_div(dlat, 2.0)) ** 2
+        + np.cos(lat1) * np.cos(lat2) * np.sin(old_div(dlon, 2.0)) ** 2
+    )
     c = 2 * np.arcsin(np.sqrt(a))
     return np.rad2deg(c)
 
@@ -57,10 +60,10 @@ def angular_distance(ra1, dec1, ra2, dec2):
     num2 = clat1 * slat2 - slat1 * clat2 * cdlon
     denominator = slat1 * slat2 + clat1 * clat2 * cdlon
 
-    return np.rad2deg(np.arctan2(np.sqrt(num1 ** 2 + num2 ** 2), denominator))
+    return np.rad2deg(np.arctan2(np.sqrt(num1**2 + num2**2), denominator))
 
 
-def spherical_angle( ra0, dec0, ra1, dec1, ra2, dec2 ):
+def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):
     """
     Returns the spherical angle distance between two sets of great circles defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)
 
@@ -72,14 +75,18 @@ def spherical_angle( ra0, dec0, ra1, dec1, ra2, dec2 ):
     :param dec2: array or float, latitude of second point(s)
     :return: spherical angle in degrees
     """
-    
-    a = np.deg2rad( angular_distance(ra0, dec0, ra1, dec1))
-    b = np.deg2rad( angular_distance(ra0, dec0, ra2, dec2))
-    c = np.deg2rad( angular_distance(ra2, dec2, ra1, dec1))
-    
-    #use the spherical law of cosines: https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements
-    
-    numerator = np.atleast_1d( np.cos(c) - np.cos(a) * np.cos(b) )
-    denominator = np.atleast_1d( np.sin(a)*np.sin(b) )
-    
-    return np.where( denominator == 0 , np.zeros( len(denominator)), np.rad2deg( np.arccos( old_div(numerator,denominator))) )
+
+    a = np.deg2rad(angular_distance(ra0, dec0, ra1, dec1))
+    b = np.deg2rad(angular_distance(ra0, dec0, ra2, dec2))
+    c = np.deg2rad(angular_distance(ra2, dec2, ra1, dec1))
+
+    # use the spherical law of cosines: https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements
+
+    numerator = np.atleast_1d(np.cos(c) - np.cos(a) * np.cos(b))
+    denominator = np.atleast_1d(np.sin(a) * np.sin(b))
+
+    return np.where(
+        denominator == 0,
+        np.zeros(len(denominator)),
+        np.rad2deg(np.arccos(old_div(numerator, denominator))),
+    )

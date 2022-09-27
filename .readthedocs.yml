@@ -1,9 +1,12 @@
+version: 2
+
 python:
-
-   version: 2.7
-
-   pip_install: true
-
-   extra_requirements:
-
+  version: 3.7
+  install:
+    - requirements: docs/requirements.txt
+    - method: pip
+      path: .
+      extra_requirements:
         - docs
+        
+

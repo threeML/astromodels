@@ -12,18 +12,27 @@ import copy
 
 import numpy as np
 
-from astromodels import u
-from astromodels.core.model import (CannotWriteModel, DuplicatedNode, Model,
-                                    ModelFileExists)
+from astromodels import u, update_logging_level
+from astromodels.core.model import (
+    CannotWriteModel,
+    DuplicatedNode,
+    Model,
+    ModelFileExists,
+)
 from astromodels.core.model_parser import *
 from astromodels.core.parameter import IndependentVariable, Parameter
-from astromodels.functions.functions import (Line, Powerlaw,
-                                             _ComplexTestFunction)
-from astromodels.functions.functions_2D import Gaussian_on_sphere
-from astromodels.functions.priors import Uniform_prior
+from astromodels.functions import (
+    Gaussian_on_sphere,
+    Line,
+    Powerlaw,
+    Uniform_prior,
+)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
+
+update_logging_level("DEBUG")
 
 
 def _get_point_source(name="test"):
@@ -320,10 +329,13 @@ def test_links():
 
     # Now test the link
 
-    # # This should print a warning, as trying to change the value of a linked parameters does not have any effect
-    # with pytest.warns(RuntimeWarning):
+    # This should print a warning, as trying to change the value of a linked parameters does not have any effect
 
-    #     m.one.spectrum.main.Powerlaw.K = 1.23456
+    old_value = m.one.spectrum.main.Powerlaw.K
+
+    m.one.spectrum.main.Powerlaw.K = 1.23456
+
+    assert old_value == m.one.spectrum.main.Powerlaw.K
 
     # This instead should work
     new_value = 1.23456
@@ -333,10 +345,9 @@ def test_links():
 
     # Now try to remove the link
 
-    # First we remove it from the wrong parameters, which should issue a warning
-    # with pytest.warns(RuntimeWarning):
+    #    First we remove it from the wrong parameters, which should issue a warning
 
-    #     m.unlink(m.two.spectrum.main.Powerlaw.K)
+    m.unlink(m.two.spectrum.main.Powerlaw.K)
 
     # Remove it from the right parameter
 
@@ -386,10 +397,9 @@ def test_links():
     assert m.ext_one.spectrum.main.Powerlaw.K.value == new_value
     # Remove the links at once
 
-    
-    m.unlink([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K])
-  
-  
+    m.unlink([m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K])
+
+
 def test_auto_unlink():
 
     mg = ModelGetter()
@@ -404,20 +414,19 @@ def test_auto_unlink():
 
     n_free_source2 = len(m.two.free_parameters)
 
-    #This should give a warning about automatically unlinking 2 parameters
-    with pytest.warns(RuntimeWarning):
-        
-        m.remove_source(m.two.name)
-    
+    # # This should give a warning about automatically unlinking 2 parameters
+    # with pytest.warns(RuntimeWarning):
+
+    m.remove_source(m.two.name)
+
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
-    
 
     # Redo the same, but with a powerlaw law
 
     mg = ModelGetter()
-    
+
     m = mg.model
-    
+
     link_law = Powerlaw()
 
     link_law.K.value = 1.0
@@ -425,34 +434,28 @@ def test_auto_unlink():
 
     m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K, link_law)
 
-    with pytest.warns(RuntimeWarning):
-        
-        m.remove_source(m.two.name)
-    
-    assert len(m.free_parameters) == n_free_before_link - n_free_source2
+    m.remove_source(m.two.name)
 
+    assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
     # Redo the same, but with two linked parameters
 
     mg = ModelGetter()
-    
-    m = mg.model
-    
-    m.link([m.one.spectrum.main.Powerlaw.K,m.ext_one.spectrum.main.Powerlaw.K],m.two.spectrum.main.Powerlaw.K)
 
-    with pytest.warns(RuntimeWarning):
-        
-        m.remove_source(m.two.name)
-    
+    m = mg.model
+
+    m.link(
+        [m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K],
+        m.two.spectrum.main.Powerlaw.K,
+    )
+
+    # with pytest.warns(RuntimeWarning):
+
+    m.remove_source(m.two.name)
+
     assert len(m.free_parameters) == n_free_before_link - n_free_source2
 
-    
-    
-    
-
-
     m.unlink([m.one.spectrum.main.Powerlaw.K, m.ext_one.spectrum.main.Powerlaw.K])
-
 
 
 def test_external_parameters():
@@ -645,7 +648,9 @@ def test_input_output_with_complex_functions():
 
     # Now set up the synch. spectrum for our source and the source itself
 
-    synch_spectrum = _ComplexTestFunction()
+    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
+
+    synch_spectrum.dummy = "love"
 
     # Use the particle distribution we created as source for the electrons
     # producing synch. emission
@@ -670,6 +675,59 @@ def test_input_output_with_complex_functions():
         my_particle_distribution.index.value
         == new_model.electrons.spectrum.main.shape.index.value
     )
+
+    assert new_model.synch_source.spectrum.main.shape.file_name.value == "test.txt"
+
+    assert new_model.synch_source.spectrum.main.shape.dummy.value == "love"
+
+    os.remove("__test.yml")
+
+
+def test_input_output_with_complex_functions_as_composites():
+
+    my_particle_distribution = Powerlaw()
+
+    my_particle_distribution.index = -1.52
+
+    electrons = ParticleSource("electrons", distribution_shape=my_particle_distribution)
+
+    # Now set up the synch. spectrum for our source and the source itself
+
+    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
+
+    # Use the particle distribution we created as source for the electrons
+    # producing synch. emission
+
+    synch_spectrum.particle_distribution = my_particle_distribution
+
+    photon_spec = synch_spectrum + Powerlaw()
+
+    photon_spec.dummy_1 = "love"
+
+    synch_source = PointSource(
+        "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
+    )
+
+    my_model = Model(electrons, synch_source)
+
+    my_model.display()
+
+    my_model.save("__test.yml")
+
+    new_model = load_model("__test.yml")
+
+    assert len(new_model.sources) == len(my_model.sources)
+
+    assert (
+        my_particle_distribution.index.value
+        == new_model.electrons.spectrum.main.shape.index.value
+    )
+
+    assert new_model.synch_source.spectrum.main.shape.file_name_1.value == "test.txt"
+
+    assert new_model.synch_source.spectrum.main.shape.dummy_1.value == "love"
+
+    os.remove("__test.yml")
 
 
 def test_add_remove_sources():
@@ -980,7 +1038,7 @@ def test_time_domain_integration():
 
     # Compare with analytical result
     def F(x):
-        return line2.b.value / 2.0 * x ** 2 + line2.a.value * x
+        return line2.b.value / 2.0 * x**2 + line2.a.value * x
 
     effective_norm = old_div((F(10) - F(0)), 10.0)
 

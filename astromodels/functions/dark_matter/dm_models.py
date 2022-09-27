@@ -1,50 +1,53 @@
 from __future__ import print_function
-import six
-import numpy as np
-from scipy.interpolate import RegularGridInterpolator
+
 import astropy.units as astropy_units
+import numpy as np
 import six
+from scipy.interpolate import RegularGridInterpolator
+
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.data_files import _get_data_file_path
+from astromodels.utils import _get_data_file_path
+from astromodels.utils.logging import setup_logger
 
-@six.add_metaclass(FunctionMeta)
-class DMFitFunction(Function1D):
+log = setup_logger(__name__)
+
+
+class DMFitFunction(Function1D, metaclass=FunctionMeta):
     r"""
-        description :
+    description :
 
-            Class that evaluates the spectrum for a DM particle of a given
-            mass, channel, cross section, and J-factor. Based on standard
-            Fermi Science Tools function DMFitFunction. Note input table only
-            calculated spectra up to m_DM of 10 TeV
+        Class that evaluates the spectrum for a DM particle of a given
+        mass, channel, cross section, and J-factor. Based on standard
+        Fermi Science Tools function DMFitFunction. Note input table only
+        calculated spectra up to m_DM of 10 TeV
 
-            The parameterization is given by
+        The parameterization is given by
 
-            F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)
+        F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)
 
-        latex : $$
+    latex : $$
 
-        parameters :
+    parameters :
 
-            mass :
-                desc : DM mass (GeV)
-                initial value : 10
-                fix : yes
+        mass :
+            desc : DM mass (GeV)
+            initial value : 10
+            fix : yes
 
-            channel :
-                desc : DM annihilation channel
-                initial value : 4
-                fix : yes
+        channel :
+            desc : DM annihilation channel
+            initial value : 4
+            fix : yes
 
-            sigmav :
-                desc : DM annihilation cross section (cm^3/s)
-                initial value : 1.e-26
+        sigmav :
+            desc : DM annihilation cross section (cm^3/s)
+            initial value : 1.e-26
 
-            J :
-                desc : Target total J-factor (GeV^2 cm^-5)
-                initial value : 1.e20
-                fix : yes
-        """
-
+        J :
+            desc : Target total J-factor (GeV^2 cm^-5)
+            initial value : 1.e20
+            fix : yes
+    """
 
     def _setup(self):
 
@@ -92,16 +95,42 @@ class DMFitFunction(Function1D):
         ichan = channel_index_mapping[int(self.channel.value)]
 
         # These are the mass points
-        self._mass = np.array([2.0, 4.0, 6.0, 8.0, 10.0,
-                               25.0, 50.0, 80.3, 91.2, 100.0,
-                               150.0, 176.0, 200.0, 250.0, 350.0, 500.0, 750.0,
-                               1000.0, 1500.0, 2000.0, 3000.0, 5000.0, 7000.0, 1E4])
+        self._mass = np.array(
+            [
+                2.0,
+                4.0,
+                6.0,
+                8.0,
+                10.0,
+                25.0,
+                50.0,
+                80.3,
+                91.2,
+                100.0,
+                150.0,
+                176.0,
+                200.0,
+                250.0,
+                350.0,
+                500.0,
+                750.0,
+                1000.0,
+                1500.0,
+                2000.0,
+                3000.0,
+                5000.0,
+                7000.0,
+                1e4,
+            ]
+        )
         self._dn = self._data.reshape((12, 24, 250))
 
-        self._dn_interp = RegularGridInterpolator([self._mass, self._x],
-                                                  self._dn[ichan, :, :],
-                                                  bounds_error=False,
-                                                  fill_value=None)
+        self._dn_interp = RegularGridInterpolator(
+            [self._mass, self._x],
+            self._dn[ichan, :, :],
+            bounds_error=False,
+            fill_value=None,
+        )
 
         if self.mass.value > 10000:
 
@@ -117,25 +146,25 @@ class DMFitFunction(Function1D):
 
         self.channel.unit = astropy_units.dimensionless_unscaled
 
-        self.sigmav.unit = astropy_units.cm ** 3 / astropy_units.s
+        self.sigmav.unit = astropy_units.cm**3 / astropy_units.s
 
-        self.J.unit = astropy_units.GeV ** 2 / astropy_units.cm ** 5
+        self.J.unit = astropy_units.GeV**2 / astropy_units.cm**5
 
     def print_channel_mapping(self):
 
         channel_mapping = {
-            1: 'ee',
-            2: 'mumu',
-            3: 'tautau',
-            4: 'bb',
-            5: 'tt',
-            6: 'gg',
-            7: 'ww',
-            8: 'zz',
-            9: 'cc',
-            10: 'uu',
-            11: 'dd',
-            12: 'ss',
+            1: "ee",
+            2: "mumu",
+            3: "tautau",
+            4: "bb",
+            5: "tt",
+            6: "gg",
+            7: "ww",
+            8: "zz",
+            9: "cc",
+            10: "uu",
+            11: "dd",
+            12: "ss",
         }
 
         print(channel_mapping)
@@ -156,56 +185,57 @@ class DMFitFunction(Function1D):
 
             keVtoGeV = 1e-6
 
-            xx = np.multiply(x, keVtoGeV)  # xm expects gamma ray energies in MeV
+            # xm expects gamma ray energies in MeV
+            xx = np.multiply(x, keVtoGeV)
 
         xm = np.log10(np.divide(xx, mass))
-        phip = 1. / (8. * np.pi) * np.power(mass, -2) * (sigmav * J)  # units of this should be 1 / cm**2 / s
+        phip = (
+            1.0 / (8.0 * np.pi) * np.power(mass, -2) * (sigmav * J)
+        )  # units of this should be 1 / cm**2 / s
         dn = self._dn_interp((mass, xm))
         dn[xm > 0] = 0
 
         return np.multiply(phip, np.divide(dn, x))
 
-@six.add_metaclass(FunctionMeta)
-class DMSpectra(Function1D):
+
+class DMSpectra(Function1D, metaclass=FunctionMeta):
     r"""
-        description :
+    description :
 
-            Class that evaluates the spectrum for a DM particle of a given
-            mass, channel, cross section, and J-factor. Combines Pythia-based tables
-            from both Fermi (2 GeV < m_DM < 10 TeV) and HAWC (10 TeV < m_dm < 1 PeV)
+        Class that evaluates the spectrum for a DM particle of a given
+        mass, channel, cross section, and J-factor. Combines Pythia-based tables
+        from both Fermi (2 GeV < m_DM < 10 TeV) and HAWC (10 TeV < m_dm < 1 PeV)
 
-            The parameterization is given by
+        The parameterization is given by
 
-            F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)
+        F(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)
 
-            Note that this class assumes that mass and J-factor are provided
-            in units of GeV and GeV^2 cm^-5
+        Note that this class assumes that mass and J-factor are provided
+        in units of GeV and GeV^2 cm^-5
 
-        latex : $$
+    latex : $$
 
-        parameters :
+    parameters :
 
-            mass :
-                desc : DM mass (GeV)
-                initial value : 10
-                fix : yes
+        mass :
+            desc : DM mass (GeV)
+            initial value : 10
+            fix : yes
 
-            channel :
-                desc : DM annihilation channel
-                initial value : 4
-                fix : yes
+        channel :
+            desc : DM annihilation channel
+            initial value : 4
+            fix : yes
 
-            sigmav :
-                desc : DM annihilation cross section (cm^3/s)
-                initial value : 1.e-26
+        sigmav :
+            desc : DM annihilation cross section (cm^3/s)
+            initial value : 1.e-26
 
-            J :
-                desc : Target total J-factor (GeV^2 cm^-5)
-                initial value : 1.e20
-                fix : yes
-        """
-
- 
+        J :
+            desc : Target total J-factor (GeV^2 cm^-5)
+            initial value : 1.e20
+            fix : yes
+    """
 
     def _setup(self):
 
@@ -258,18 +288,90 @@ class DMSpectra(Function1D):
         ichan = channel_index_mapping[int(self.channel.value)]
 
         # These are the mass points in GeV
-        self._mass_h = np.array([50., 61.2, 74.91, 91.69, 112.22, 137.36, 168.12, 205.78, 251.87, 308.29,
-                                 377.34, 461.86, 565.31, 691.93, 846.91, 1036.6, 1268.78, 1552.97, 1900.82,
-                                 2326.57, 2847.69, 3485.53, 4266.23, 5221.81, 6391.41, 7823.0, 9575.23,
-                                 11719.94, 14345.03, 17558.1, 21490.85, 26304.48, 32196.3, 39407.79, 48234.54,
-                                 59038.36, 72262.07, 88447.7, 108258.66, 132506.99, 162186.57, 198513.95,
-                                 242978.11, 297401.58, 364015.09, 445549.04, 545345.37, 667494.6, 817003.43, 1000000.])
+        self._mass_h = np.array(
+            [
+                50.0,
+                61.2,
+                74.91,
+                91.69,
+                112.22,
+                137.36,
+                168.12,
+                205.78,
+                251.87,
+                308.29,
+                377.34,
+                461.86,
+                565.31,
+                691.93,
+                846.91,
+                1036.6,
+                1268.78,
+                1552.97,
+                1900.82,
+                2326.57,
+                2847.69,
+                3485.53,
+                4266.23,
+                5221.81,
+                6391.41,
+                7823.0,
+                9575.23,
+                11719.94,
+                14345.03,
+                17558.1,
+                21490.85,
+                26304.48,
+                32196.3,
+                39407.79,
+                48234.54,
+                59038.36,
+                72262.07,
+                88447.7,
+                108258.66,
+                132506.99,
+                162186.57,
+                198513.95,
+                242978.11,
+                297401.58,
+                364015.09,
+                445549.04,
+                545345.37,
+                667494.6,
+                817003.43,
+                1000000.0,
+            ]
+        )
 
         # These are the mass points in GeV
-        self._mass_f = np.array([2.0, 4.0, 6.0, 8.0, 10.0,
-                                 25.0, 50.0, 80.3, 91.2, 100.0,
-                                 150.0, 176.0, 200.0, 250.0, 350.0, 500.0, 750.0,
-                                 1000.0, 1500.0, 2000.0, 3000.0, 5000.0, 7000.0, 1E4])
+        self._mass_f = np.array(
+            [
+                2.0,
+                4.0,
+                6.0,
+                8.0,
+                10.0,
+                25.0,
+                50.0,
+                80.3,
+                91.2,
+                100.0,
+                150.0,
+                176.0,
+                200.0,
+                250.0,
+                350.0,
+                500.0,
+                750.0,
+                1000.0,
+                1500.0,
+                2000.0,
+                3000.0,
+                5000.0,
+                7000.0,
+                1e4,
+            ]
+        )
 
         self._mass = np.append(self._mass_f, self._mass_h[27:])
 
@@ -282,36 +384,42 @@ class DMSpectra(Function1D):
         self._dn[:, 0:24, :] = self._dn_f
         self._dn[:, 24:, :] = self._dn_h[:, 27:, :]
 
-        self._dn_interp = RegularGridInterpolator([self._mass, self._x],
-                                                  self._dn[ichan, :, :],
-                                                  bounds_error=False,
-                                                  fill_value=None)
+        self._dn_interp = RegularGridInterpolator(
+            [self._mass, self._x],
+            self._dn[ichan, :, :],
+            bounds_error=False,
+            fill_value=None,
+        )
 
-        if self.channel.value in [1, 6, 7] and self.mass.value > 10000.:
-            print("ERROR: currently spectra for selected channel and mass not implemented.")
-            print("Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV")
+        if self.channel.value in [1, 6, 7] and self.mass.value > 10000.0:
+            log.error(
+                "currently spectra for selected channel and mass not implemented."
+            )
+            log.error(
+                "Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV"
+            )
 
     def _set_units(self, x_unit, y_unit):
 
         self.mass.unit = astropy_units.GeV
         self.channel.unit = astropy_units.dimensionless_unscaled
-        self.sigmav.unit = astropy_units.cm ** 3 / astropy_units.s
-        self.J.unit = astropy_units.GeV ** 2 / astropy_units.cm ** 5
+        self.sigmav.unit = astropy_units.cm**3 / astropy_units.s
+        self.J.unit = astropy_units.GeV**2 / astropy_units.cm**5
 
     def print_channel_mapping(self):
         channel_mapping = {
-            1: 'ee',
-            2: 'mumu',
-            3: 'tautau',
-            4: 'bb',
-            5: 'tt',
-            6: 'gg',
-            7: 'ww',
-            8: 'zz',
-            9: 'cc',
-            10: 'uu',
-            11: 'dd',
-            12: 'ss',
+            1: "ee",
+            2: "mumu",
+            3: "tautau",
+            4: "bb",
+            5: "tt",
+            6: "gg",
+            7: "ww",
+            8: "zz",
+            9: "cc",
+            10: "uu",
+            11: "dd",
+            12: "ss",
         }
 
         print(channel_mapping)
@@ -330,13 +438,16 @@ class DMSpectra(Function1D):
 
             # We can assume that the input is in keV
 
-            keVtoGeV = 1E-6
+            keVtoGeV = 1e-6
 
-            xx = np.multiply(x, keVtoGeV)  # xm expects gamma ray energies in MeV
+            # xm expects gamma ray energies in MeV
+            xx = np.multiply(x, keVtoGeV)
 
         xm = np.log10(np.divide(xx, mass))
 
-        phip = 1. / (8. * np.pi) * np.power(mass, -2) * (sigmav * J)  # units of this should be 1 / cm**2
+        phip = (
+            1.0 / (8.0 * np.pi) * np.power(mass, -2) * (sigmav * J)
+        )  # units of this should be 1 / cm**2
         dn = self._dn_interp((mass, xm))  # note this is unitless (dx = d(xm))
         dn[xm > 0] = 0
 
