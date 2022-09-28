@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>One-dimensional Functions &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Astromodels
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/function_list.html">Available Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>One-dimensional Functions</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="one-dimensional-functions">
+<h1>One-dimensional Functions<a class="headerlink" href="#one-dimensional-functions" title="Permalink to this heading"></a></h1>
+<p>Here are the one dimensional functions builtin to astromodels</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Blackbody_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Blackbody.html">
+          <span class="std std-ref">Blackbody</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_ModifiedBlackbody_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/ModifiedBlackbody.html">
+          <span class="std std-ref">ModifiedBlackbody</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_NonDissipativePhotosphere_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/NonDissipativePhotosphere.html">
+          <span class="std std-ref">NonDissipativePhotosphere</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_NonDissipativePhotosphere_Deep_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/NonDissipativePhotosphere_Deep.html">
+          <span class="std std-ref">NonDissipativePhotosphere Deep</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_StepFunction_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/StepFunction.html">
+          <span class="std std-ref">StepFunction</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_StepFunctionUpper_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/StepFunctionUpper.html">
+          <span class="std std-ref">StepFunctionUpper</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Sin_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Sin.html">
+          <span class="std std-ref">Sin</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DiracDelta_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/DiracDelta.html">
+          <span class="std std-ref">DiracDelta</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Log_parabola_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Log_parabola.html">
+          <span class="std std-ref">Log parabola</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Exponential_cutoff_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Exponential_cutoff.html">
+          <span class="std std-ref">Exponential cutoff</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_PhAbs_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/PhAbs.html">
+          <span class="std std-ref">PhAbs</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_TbAbs_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/TbAbs.html">
+          <span class="std std-ref">TbAbs</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_WAbs_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/WAbs.html">
+          <span class="std std-ref">WAbs</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_ZDust_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/ZDust.html">
+          <span class="std std-ref">ZDust</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Constant_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Constant.html">
+          <span class="std std-ref">Constant</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Line_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Line.html">
+          <span class="std std-ref">Line</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Quadratic_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Quadratic.html">
+          <span class="std std-ref">Quadratic</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cubic_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Cubic.html">
+          <span class="std std-ref">Cubic</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Quartic_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Quartic.html">
+          <span class="std std-ref">Quartic</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Powerlaw.html">
+          <span class="std std-ref">Powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_flux_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Powerlaw_flux.html">
+          <span class="std std-ref">Powerlaw flux</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_Eflux_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Powerlaw_Eflux.html">
+          <span class="std std-ref">Powerlaw Eflux</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cutoff_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Cutoff_powerlaw.html">
+          <span class="std std-ref">Cutoff powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cutoff_powerlaw_Ep_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Cutoff_powerlaw_Ep.html">
+          <span class="std std-ref">Cutoff powerlaw Ep</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Inverse_cutoff_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Inverse_cutoff_powerlaw.html">
+          <span class="std std-ref">Inverse cutoff powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Super_cutoff_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Super_cutoff_powerlaw.html">
+          <span class="std std-ref">Super cutoff powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_SmoothlyBrokenPowerLaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/SmoothlyBrokenPowerLaw.html">
+          <span class="std std-ref">SmoothlyBrokenPowerLaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Broken_powerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Broken_powerlaw.html">
+          <span class="std std-ref">Broken powerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Band_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Band.html">
+          <span class="std std-ref">Band</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Band_grbm_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Band_grbm.html">
+          <span class="std std-ref">Band grbm</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Band_Calderone_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Band_Calderone.html">
+          <span class="std std-ref">Band Calderone</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DoubleSmoothlyBrokenPowerlaw_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/DoubleSmoothlyBrokenPowerlaw.html">
+          <span class="std std-ref">DoubleSmoothlyBrokenPowerlaw</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DMFitFunction_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/DMFitFunction.html">
+          <span class="std std-ref">DMFitFunction</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_DMSpectra_8_0.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/DMSpectra.html">
+          <span class="std std-ref">DMSpectra</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Gaussian_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Gaussian.html">
+          <span class="std std-ref">Gaussian</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Truncated_gaussian_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Truncated_gaussian.html">
+          <span class="std std-ref">Truncated gaussian</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cauchy_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Cauchy.html">
+          <span class="std std-ref">Cauchy</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Cosine_Prior_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Cosine_Prior.html">
+          <span class="std std-ref">Cosine Prior</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Log_normal_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Log_normal.html">
+          <span class="std std-ref">Log normal</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Uniform_prior_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Uniform_prior.html">
+          <span class="std std-ref">Uniform prior</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Log_uniform_prior_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Log_uniform_prior.html">
+          <span class="std std-ref">Log uniform prior</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Beta_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Beta.html">
+          <span class="std std-ref">Beta</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Gamma_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Gamma.html">
+          <span class="std std-ref">Gamma</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Exponential_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Exponential.html">
+          <span class="std std-ref">Exponential</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-thumbcontainer">
+  <div class="figure align-center">
+    <img alt="thumbnail" src="../_images/notebooks_Powerlaw_Prior_8_1.png" />
+    <p class="caption">
+      <span class="caption-text">
+        <a class="reference internal" href="../notebooks/Powerlaw_Prior.html">
+          <span class="std std-ref">Powerlaw Prior</span>
+        </a>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="sphx-glr-clear"></div></section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
