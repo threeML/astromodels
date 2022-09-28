@@ -36,7 +36,6 @@ class SpectralComponent(Node):
         Node.__init__(self, name)
 
         try:
-
             self._add_children([self._spectral_shape, self._polarization])
 
         except TypeError:
@@ -68,6 +67,8 @@ class SpectralComponent(Node):
         """
         return self._spectral_shape
 
-    def __call__(self, energies):
-
-        return self._spectral_shape(energies)
+    def __call__(self, energies, stokes=None):
+        spec = self.shape(energies)
+        if stokes == 'Q' or stokes == 'U':
+            spec *= self._polarization(energies, stokes)
+        return spec

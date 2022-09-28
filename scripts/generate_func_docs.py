@@ -53,7 +53,6 @@ with open("doc_gen_priors.md") as f:
 
 base_path = Path("../docs/notebooks").resolve()
 
-
 # we will loop through all the functions and generate docs for them
 
 for k, v in _known_functions.items():

@@ -53,11 +53,18 @@ def test_function_values_have_not_changed():
 
             continue
 
+
         if this_function._n_dim == 1:
 
             print("testing %s ..." % key)
 
             func = this_function()
+            if key == "GenericFunction":
+
+                def _f(x):
+                    return x**2
+
+                func.set_function(_f)
 
             new_values = np.atleast_1d(func(eval_x))
 

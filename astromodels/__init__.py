@@ -78,6 +78,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         Standard_Rv,
         StepFunction,
         StepFunctionUpper,
+        GenericFunction,
         Super_cutoff_powerlaw,
         TbAbs,
         TemplateModel,
