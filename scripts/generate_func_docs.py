@@ -13,7 +13,14 @@ models_to_exclude = [
     "SpatialTemplate_2D",
 ]
 
-positive_priors = ["Log_uniform_prior", "Log_normal"]
+positive_priors = [
+    "Log_uniform_prior",
+    "Log_normal",
+    "Gamma",
+    "Beta",
+    "Exponential",
+    "Powerlaw_Prior",
+]
 
 linear_models = [
     "Constant",
