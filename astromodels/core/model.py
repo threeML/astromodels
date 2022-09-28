@@ -32,6 +32,7 @@ log = setup_logger(__name__)
 
 pd.options.display.float_format = '{:.6g}'.format
 
+
 class ModelFileExists(IOError):
     pass
 

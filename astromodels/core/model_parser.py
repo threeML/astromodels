@@ -624,6 +624,7 @@ class SourceParser(object):
         # Check if there is a equinox specification
 
         if "equinox" in sky_direction_definition:
+
             coordinates["equinox"] = sky_direction_definition["equinox"]
 
         try:
@@ -673,23 +674,23 @@ class SourceParser(object):
 
             par_dict = {'I': None, 'Q':None, 'U':None, 'V':None}
             par_names = list(polarization_definititon.keys())
-            
+
             for par in par_names:
-                
+
                 try:
                     function_name = list(polarization_definititon[par].keys())[0]
                     parameters_definition = polarization_definititon[par][function_name]
-                    
+
                     # parse the function
                     shape_parser = ShapeParser(self._source_name)
 
                     shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
                     par_dict[par] = shape
 
-                except KeyError: # pragma: no cover
+                except KeyError:  # pragma: no cover
 
                     raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
-                                    % (self._source_name))
+                                           % (self._source_name))
 
             this_polarization = polarization.StokesPolarization(**par_dict)
 

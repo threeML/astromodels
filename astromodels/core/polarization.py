@@ -1,8 +1,10 @@
 __author__ = "giacomov"
 
+
 from astromodels.core.tree import Node
 from astromodels.core.parameter import Parameter
 import numpy as np
+
 
 class Polarization(Node):
     def __init__(self, polarization_type="linear"):
@@ -93,7 +95,7 @@ class LinearPolarization(Polarization):
         if isinstance(angle, float) or isinstance(angle, int):
             self.angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
         else:
-            self.angle  = LinearParameter('angle', angle)
+            self.angle = LinearParameter('angle', angle)
 
         self._add_child(self.degree)
         self._add_child(self.angle)
@@ -117,7 +119,7 @@ class StokesPolarization(Polarization):
         self._add_child(self._Q)
         self._U = StokesParameter('U', U)
         self._add_child(self._U)
-    
+
     def __call__(self, energies, stokes):
         if stokes == 'Q':
             return self._Q(energies)
@@ -138,6 +140,7 @@ class StokesPolarization(Polarization):
 #
 #
 
+
 class StokesParameter(Node):
 
     def __init__(self, name, value):
@@ -146,9 +149,10 @@ class StokesParameter(Node):
         Node.__init__(self, name)
         self._add_child(value)
         self.value = value
-    
+
     def __call__(self, energies):
         return self.value(energies)
+
 
 class LinearParameter(Node):
     def __init__(self, name, value):

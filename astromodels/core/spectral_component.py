@@ -30,7 +30,7 @@ class SpectralComponent(Node):
         else:
 
             self._polarization = polarization
-        
+
         # Add shape and polarization as children
 
         Node.__init__(self, name)
@@ -72,4 +72,3 @@ class SpectralComponent(Node):
         if stokes == 'Q' or stokes == 'U':
             spec *= self._polarization(energies, stokes)
         return spec
-
