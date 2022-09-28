@@ -37,6 +37,3 @@ them to be used with various sampling algorithms.
 ## Priors
 <!-- #endregion -->
 
-```python tags=["nbsphinx-gallery"]
-
-```
