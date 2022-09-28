@@ -218,7 +218,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">spline_smoothing_factor</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TemplateModelFactory.define_parameter_grid"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.define_parameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">define_parameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="TemplateModelFactory.define_parameter_grid"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.define_parameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">define_parameter_grid</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Define the parameter grid for this parameter.</span>
 <span class="sd">        Pass the name of the parameter and the array of values that it will take in the grid</span>
@@ -234,7 +236,9 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">grid_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;A grid for a parameter must contain at least two elements&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;A grid for a parameter must contain at least two elements&quot;</span>
+            <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
@@ -242,7 +246,9 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grid_</span><span class="p">)</span> <span class="o">==</span> <span class="n">grid_</span><span class="p">):</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Non-unique elements in grid for parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Non-unique elements in grid for parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
@@ -313,7 +319,9 @@
 
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-            <span class="n">parameter_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">parameters_values_input</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">parameter_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">parameters_values_input</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">)</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; have index </span><span class="si">{</span><span class="n">parameter_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -331,13 +339,13 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
             <span class="n">differential_fluxes</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
             <span class="p">)</span>  <span class="c1"># type: u.Quantity</span>
 
         <span class="c1"># Then we transform it in the right units and we cast it back to a pure np.array</span>
 
         <span class="n">differential_fluxes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-            <span class="n">differential_fluxes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">differential_fluxes</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">value</span>
         <span class="p">)</span>
 
         <span class="c1"># Now let&#39;s check for valid inputs</span>
@@ -372,7 +380,8 @@
 
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">&quot;You have zeros in the differential flux. Since the interpolation happens in the log space, &quot;</span>
-                <span class="s2">&quot;this cannot be accepted. We will substitute zeros with </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">_TINY_</span>
+                <span class="s2">&quot;this cannot be accepted. We will substitute zeros with </span><span class="si">%g</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="n">_TINY_</span>
             <span class="p">)</span>
 
             <span class="n">idx</span> <span class="o">=</span> <span class="n">differential_fluxes</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># type: np.ndarray</span>
@@ -382,7 +391,9 @@
 
         <span class="c1"># Now set the values in the data frame</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span>
+            <span class="n">differential_fluxes</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="TemplateModelFactory.save_data"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.save_data">[docs]</a>    <span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 
@@ -480,7 +491,9 @@
 
         <span class="c1"># We can use interp2, which features spline interpolation instead of linear interpolation</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 
@@ -534,7 +547,9 @@
             <span class="n">par_group</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_order</span><span class="p">:</span>
 
-                <span class="n">par_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+                <span class="n">par_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
+                    <span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span>
+                <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -598,7 +613,6 @@
 <span class="sd">                   observer frame energy. Fix this to 1 to neutralize its effect.</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            min : 1e-5</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_custom_init_</span><span class="p">(</span>
@@ -702,7 +716,9 @@
 
         <span class="k">if</span> <span class="n">other_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="nb">super</span><span class="p">(</span><span class="n">TemplateModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">TemplateModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span>
+            <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
@@ -874,7 +890,9 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_log10</span><span class="p">:</span>
 
-            <span class="n">interpolator</span> <span class="o">=</span> <span class="n">UnivariateSpline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e_tilde</span><span class="p">),</span> <span class="n">log_interpolations</span><span class="p">)</span>
+            <span class="n">interpolator</span> <span class="o">=</span> <span class="n">UnivariateSpline</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e_tilde</span><span class="p">),</span> <span class="n">log_interpolations</span>
+            <span class="p">)</span>
 
             <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">log_energies</span><span class="p">))</span>
 
@@ -907,7 +925,9 @@
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span>
         <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;You have &#39;cleaned&#39; the table model and it will no longer be useable&quot;</span><span class="p">)</span></div>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;You have &#39;cleaned&#39; the table model and it will no longer be useable&quot;</span>
+        <span class="p">)</span></div>
 
     <span class="c1"># def __del__(self):</span>
 
@@ -1062,7 +1082,6 @@
 
 
 <span class="k">def</span> <span class="nf">convert_old_table_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-
     <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">HDFStore</span>
 
     <span class="c1"># Get the data directory</span>
