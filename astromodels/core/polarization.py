@@ -87,15 +87,15 @@ class LinearPolarization(Polarization):
         """
         super(LinearPolarization, self).__init__(polarization_type="linear")
 
-        if isinstance(degree, float) or isinstance(degree, int):
-            self.degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
-        else:
+        if callable(degree):
             self.degree = LinearParameter('degree', degree)
-
-        if isinstance(angle, float) or isinstance(angle, int):
-            self.angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
         else:
+            self.degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
+
+        if callable(angle):
             self.angle = LinearParameter('angle', angle)
+        else:
+            self.angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
 
         self._add_child(self.degree)
         self._add_child(self.angle)

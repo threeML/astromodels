@@ -647,26 +647,37 @@ class SourceParser(object):
         polarization_params = {}
 
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
-
             par_dict = {'degree': None, 'angle': None}
             par_names = list(polarization_definititon.keys())
+            par_bounds = {'degree':(0,100),'angle':(0,180)}
 
             for par in par_names:
 
-                try:
-                    function_name = list(polarization_definititon[par].keys())[0]
-                    parameters_definition = polarization_definititon[par][function_name]
+                if list(polarization_definititon[par].keys())[0] == 'value':
 
-                    # parse the function
-                    shape_parser = ShapeParser(self._source_name)
+                    par_parser = ParameterParser(par, polarization_definititon[par])
 
-                    shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
-                    par_dict[par] = shape
+                    par_dict[par] = par_parser.get_variable()
 
-                except KeyError:  # pragma: no cover
+                    par_dict[par].bounds = par_bounds[par]
 
-                    raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
-                                           % (self._source_name))
+                else:
+
+                    try:
+
+                        function_name = list(polarization_definititon[par].keys())[0]
+                        parameters_definition = polarization_definititon[par][function_name]
+
+                        # parse the function
+                        shape_parser = ShapeParser(self._source_name)
+
+                        shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                        par_dict[par] = shape
+
+                    except KeyError:  # pragma: no cover
+
+                        raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
+                                               % (self._source_name))
 
             this_polarization = polarization.LinearPolarization(**par_dict)
 
