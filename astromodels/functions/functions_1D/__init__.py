@@ -13,6 +13,7 @@ from .functions import (
     StepFunctionUpper,
     has_gsl,
     has_naima,
+    GenericFunction
 )
 
 if has_naima:
@@ -80,6 +81,7 @@ __all__ = [
     "Sin",
     "StepFunction",
     "StepFunctionUpper",
+    "GenericFunction",
     "PhAbs",
     "TbAbs",
     "WAbs",

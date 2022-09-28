@@ -7,10 +7,20 @@ from astromodels.functions.function import _known_functions
 
 narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]
 
-models_to_exclude = ["_ComplexTestFunction","TemplateModel", "SpatialTemplate_2D"]
+models_to_exclude = ["_ComplexTestFunction", "TemplateModel", "SpatialTemplate_2D"]
 
 
-linear_models = ["Constant", "Cubic", "DiracDelta", "Line", "Quadratic", "Quartic", "StepFunction", "StepFunctionUpper", "Sin"]
+linear_models = [
+    "Constant",
+    "Cubic",
+    "DiracDelta",
+    "Line",
+    "Quadratic",
+    "Quartic",
+    "StepFunction",
+    "StepFunctionUpper",
+    "Sin",
+]
 
 one_d_func_list = []
 two_d_func_list = []
@@ -25,20 +35,18 @@ with open("doc_gen_2d.md") as f:
     base_2d_md_str = f.read()
 
 
-
 # we will loop through all the functions and generate docs for them
-    
+
 for k, v in _known_functions.items():
 
     if k in models_to_exclude:
 
         continue
 
-
     instance = v()
 
     ntbk_file_name = f"{k}.ipynb"
-    
+
     if instance.n_dim == 1:
 
         print(f"generating {k}")
@@ -50,9 +58,9 @@ for k, v in _known_functions.items():
         this_md_str = base_1d_md_str.replace("func_title", k.replace("_", " "))
 
         # create
-        
-        ntbk = jupytext.reads(this_md_str, fmt='md')
-        
+
+        ntbk = jupytext.reads(this_md_str, fmt="md")
+
         wide_energy_range = True
 
         if k in narrow_energy_funcs:
@@ -63,7 +71,7 @@ for k, v in _known_functions.items():
         y_scale = "log"
 
         linear_range = False
-        
+
         if k in linear_models or instance.is_prior:
 
             linear_range = True
@@ -71,51 +79,48 @@ for k, v in _known_functions.items():
             x_scale = "linear"
             y_scale = "linear"
 
-            
         jupytext.write(ntbk, ntbk_file_name)
 
         print(f"excecuting {ntbk_file_name}")
 
         pm.execute_notebook(
             ntbk_file_name,
-            f'../docs/notebooks/{ntbk_file_name}',
+            f"../docs/notebooks/{ntbk_file_name}",
+            parameters=dict(
+                func_name=k,
+                wide_energy_range=wide_energy_range,
+                x_scale=x_scale,
+                y_scale=y_scale,
+                linear_range=linear_range,
+            ),
+        )
 
-            parameters=dict(func_name=k,
-                            wide_energy_range=wide_energy_range,
-                            x_scale=x_scale,
-                            y_scale=y_scale,
-                            linear_range=linear_range
-
-                            ))
-
-        
     if instance.n_dim == 2:
 
         print(f"generating {k}")
-        
-        two_d_func_list.append(k)
 
+        two_d_func_list.append(k)
 
         # inject the func name into the markdown
 
         this_md_str = base_2d_md_str.replace("func_title", k.replace("_", " "))
 
         # create
-        
-        ntbk = jupytext.reads(this_md_str, fmt='md')
-            
+
+        ntbk = jupytext.reads(this_md_str, fmt="md")
+
         jupytext.write(ntbk, ntbk_file_name)
 
         print(f"excecuting {ntbk_file_name}")
 
         pm.execute_notebook(
             ntbk_file_name,
-            f'../docs/notebooks/{ntbk_file_name}',
+            f"../docs/notebooks/{ntbk_file_name}",
+            parameters=dict(
+                func_name=k,
+            ),
+        )
 
-            parameters=dict(func_name=k,
-                            ))
-
-        
 
 p = Path("../docs/function_docs/functions_1d.rst").absolute()
 
@@ -128,7 +133,7 @@ for name in one_d_func_list:
     if f"{name}.ipynb" not in rst_1d:
 
         raise RuntimeError(f"{name} is not in the RST! Run the generation script")
-        
+
 
 p = Path("../docs/function_docs/functions_2d.rst").absolute()
 
@@ -141,6 +146,3 @@ for name in two_d_func_list:
     if f"{name}.ipynb" not in rst_2d:
 
         raise RuntimeError(f"{name} is not in the RST! Run the generation script")
-        
-
-        
