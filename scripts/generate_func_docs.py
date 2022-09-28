@@ -7,14 +7,29 @@ from astromodels.functions.function import _known_functions
 
 narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]
 
-models_to_exclude = ["_ComplexTestFunction","TemplateModel", "SpatialTemplate_2D"]
+models_to_exclude = [
+    "_ComplexTestFunction",
+    "TemplateModel",
+    "SpatialTemplate_2D",
+]
 
+positive_priors = ["Log_uniform_prior", "Log_normal"]
 
-linear_models = ["Constant", "Cubic", "DiracDelta", "Line", "Quadratic", "Quartic", "StepFunction", "StepFunctionUpper", "Sin"]
+linear_models = [
+    "Constant",
+    "Cubic",
+    "DiracDelta",
+    "Line",
+    "Quadratic",
+    "Quartic",
+    "StepFunction",
+    "StepFunctionUpper",
+    "Sin",
+]
 
 one_d_func_list = []
 two_d_func_list = []
-
+prior_func_list = []
 
 with open("doc_gen_1d.md") as f:
 
@@ -24,123 +39,203 @@ with open("doc_gen_2d.md") as f:
 
     base_2d_md_str = f.read()
 
+with open("doc_gen_priors.md") as f:
+
+    base_prior_md_str = f.read()
+
+
+base_path = Path("../docs/notebooks").resolve()
 
 
 # we will loop through all the functions and generate docs for them
-    
+
 for k, v in _known_functions.items():
 
     if k in models_to_exclude:
 
         continue
 
-
     instance = v()
 
     ntbk_file_name = f"{k}.ipynb"
-    
+
     if instance.n_dim == 1:
 
-        print(f"generating {k}")
+        if not instance.is_prior:
 
-        one_d_func_list.append(k)
+            print(f"generating {k}")
 
-        # inject the func name into the markdown
+            one_d_func_list.append(k)
 
-        this_md_str = base_1d_md_str.replace("func_title", k.replace("_", " "))
+            # inject the func name into the markdown
 
-        # create
-        
-        ntbk = jupytext.reads(this_md_str, fmt='md')
-        
-        wide_energy_range = True
+            this_md_str = base_1d_md_str.replace(
+                "func_title", k.replace("_", " ")
+            )
 
-        if k in narrow_energy_funcs:
+            # create
 
-            wide_energy_range = False
+            ntbk = jupytext.reads(this_md_str, fmt="md")
 
-        x_scale = "log"
-        y_scale = "log"
+            wide_energy_range = True
 
-        linear_range = False
-        
-        if k in linear_models or instance.is_prior:
+            if k in narrow_energy_funcs:
 
-            linear_range = True
+                wide_energy_range = False
 
-            x_scale = "linear"
-            y_scale = "linear"
+            x_scale = "log"
+            y_scale = "log"
 
-            
-        jupytext.write(ntbk, ntbk_file_name)
+            linear_range = False
 
-        print(f"excecuting {ntbk_file_name}")
+            if k in linear_models or instance.is_prior:
 
-        pm.execute_notebook(
-            ntbk_file_name,
-            f'../docs/notebooks/{ntbk_file_name}',
+                linear_range = True
 
-            parameters=dict(func_name=k,
-                            wide_energy_range=wide_energy_range,
-                            x_scale=x_scale,
-                            y_scale=y_scale,
-                            linear_range=linear_range
+                x_scale = "linear"
+                y_scale = "linear"
 
-                            ))
+            out = jupytext.write(ntbk, ntbk_file_name)
 
-        
+            print(f"excecuting {ntbk_file_name}")
+
+            nb = pm.execute_notebook(
+                ntbk_file_name,
+                f"{base_path / ntbk_file_name}",
+                parameters=dict(
+                    func_name=k,
+                    wide_energy_range=wide_energy_range,
+                    x_scale=x_scale,
+                    y_scale=y_scale,
+                    linear_range=linear_range,
+                ),
+            )
+
+        else:
+
+            prior_func_list.append(k)
+
+            print(f"generating {k}")
+
+            # inject the func name into the markdown
+
+            this_md_str = base_prior_md_str.replace(
+                "func_title", k.replace("_", " ")
+            )
+
+            # create
+
+            ntbk = jupytext.reads(this_md_str, fmt="md")
+
+            out = jupytext.write(ntbk, ntbk_file_name)
+
+            positive_prior = False
+
+            if k in positive_priors:
+
+                positive_prior = True
+
+            print(f"excecuting {ntbk_file_name}")
+
+            nb = pm.execute_notebook(
+                ntbk_file_name,
+                f"{base_path / ntbk_file_name}",
+                parameters=dict(
+                    func_name=k,
+                    positive_prior=positive_prior,
+                ),
+            )
+
     if instance.n_dim == 2:
 
         print(f"generating {k}")
-        
-        two_d_func_list.append(k)
 
+        two_d_func_list.append(k)
 
         # inject the func name into the markdown
 
         this_md_str = base_2d_md_str.replace("func_title", k.replace("_", " "))
 
         # create
-        
-        ntbk = jupytext.reads(this_md_str, fmt='md')
-            
-        jupytext.write(ntbk, ntbk_file_name)
+
+        ntbk = jupytext.reads(this_md_str, fmt="md")
+
+        out = jupytext.write(ntbk, ntbk_file_name)
 
         print(f"excecuting {ntbk_file_name}")
 
-        pm.execute_notebook(
+        nb = pm.execute_notebook(
             ntbk_file_name,
-            f'../docs/notebooks/{ntbk_file_name}',
+            f"{base_path / ntbk_file_name}",
+            parameters=dict(
+                func_name=k,
+            ),
+        )
 
-            parameters=dict(func_name=k,
-                            ))
+    path = Path(ntbk_file_name)
 
-        
+    if path.exists():
 
-p = Path("../docs/function_docs/functions_1d.rst").absolute()
+        path.unlink()
 
-with p.open("r") as f:
+        del nb
 
-    rst_1d = f.read()
+        del ntbk
 
-for name in one_d_func_list:
+        del out
 
-    if f"{name}.ipynb" not in rst_1d:
+# Now we generate the gallery notebook
 
-        raise RuntimeError(f"{name} is not in the RST! Run the generation script")
-        
+with Path("doc_gen_function_list.md").open("r") as f:
 
-p = Path("../docs/function_docs/functions_2d.rst").absolute()
+    func_nb = jupytext.reads(f.read(), fmt="md")
 
-with p.open("r") as f:
 
-    rst_2d = f.read()
+cells = func_nb["cells"]
 
-for name in two_d_func_list:
 
-    if f"{name}.ipynb" not in rst_2d:
+for cell in cells:
 
-        raise RuntimeError(f"{name} is not in the RST! Run the generation script")
-        
+    source = cell["source"]
 
-        
+    if source == "## 1D Functions":
+
+        new_source = ["## 1D Functions", "\n"]
+
+        for func_name in one_d_func_list:
+
+            line = f"* [{func_name}]({func_name}.ipynb)\n"
+
+            new_source.append(line)
+
+        cell["source"] = new_source
+
+    elif source == "## 2D Functions":
+
+        new_source = ["## 2D Functions", "\n"]
+
+        for func_name in two_d_func_list:
+
+            line = f"* [{func_name}]({func_name}.ipynb)\n"
+
+            new_source.append(line)
+
+        cell["source"] = new_source
+
+    elif source == "## Priors":
+
+        new_source = ["## Priors", "\n"]
+
+        for func_name in prior_func_list:
+
+            line = f"* [{func_name}]({func_name}.ipynb)\n"
+
+            new_source.append(line)
+
+        cell["source"] = new_source
+
+
+func_list_file_name = "function_list.ipynb"
+
+
+jupytext.write(func_nb, f"{base_path / func_list_file_name }")
