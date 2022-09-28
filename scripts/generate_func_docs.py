@@ -11,6 +11,7 @@ models_to_exclude = [
     "_ComplexTestFunction",
     "TemplateModel",
     "SpatialTemplate_2D",
+    "GenericFunction"
 ]
 
 positive_priors = ["Log_uniform_prior", "Log_normal"]
