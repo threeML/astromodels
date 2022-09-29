@@ -102,9 +102,8 @@
 
 <div class="viewcode-block" id="ExtendedSource"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.ExtendedSource">[docs]</a><span class="k">class</span> <span class="nc">ExtendedSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">spatial_shape</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="kc">None</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">spatial_shape</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">polarization</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
-
         <span class="c1"># Check that we have all the required information</span>
         <span class="c1"># and set the units</span>
 
@@ -127,7 +126,7 @@
 
             <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-                <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
+                <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)]</span>
 
             <span class="c1"># Components in this case have energy as x and differential flux as y</span>
 
@@ -188,7 +187,7 @@
 
                 <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-                    <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
+                    <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)]</span>
 
                 <span class="c1"># Assign units</span>
                 <span class="n">diff_flux_units</span> <span class="o">=</span> <span class="p">(</span>

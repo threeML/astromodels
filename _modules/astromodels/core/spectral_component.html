@@ -122,7 +122,6 @@
         <span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="k">try</span><span class="p">:</span>
-
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_children</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span><span class="p">])</span>
 
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
@@ -154,9 +153,11 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s1">&#39;Q&#39;</span> <span class="ow">or</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span>
+            <span class="n">spec</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">spec</span></div>
 </pre></div>
 
            </div>
