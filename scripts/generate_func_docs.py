@@ -14,7 +14,14 @@ models_to_exclude = [
     "GenericFunction"
 ]
 
-positive_priors = ["Log_uniform_prior", "Log_normal"]
+positive_priors = [
+    "Log_uniform_prior",
+    "Log_normal",
+    "Gamma",
+    "Beta",
+    "Exponential",
+    "Powerlaw_Prior",
+]
 
 linear_models = [
     "Constant",

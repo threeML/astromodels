@@ -66,9 +66,7 @@ def get_path_of_log_file(log_file: str) -> Path:
     """
     returns the path of the log files
     """
-    assert (
-        log_file in _log_file_names
-    ), f"{log_file} is not one of {_log_file_names}"
+    assert log_file in _log_file_names, f"{log_file} is not one of {_log_file_names}"
 
     return get_path_of_log_dir() / log_file
 
@@ -165,6 +163,7 @@ def silence_console_log():
     astromodels_usr_log_handler.setLevel(logging.CRITICAL)
 
     try:
+
         yield
 
     finally:

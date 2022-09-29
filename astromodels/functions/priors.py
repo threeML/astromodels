@@ -5,12 +5,8 @@ import math
 import astropy.units as astropy_units
 import numpy as np
 from scipy.special import erfcinv, erf
-
-from astromodels.functions.function import (
-    Function1D,
-    FunctionMeta,
-    ModelAssertionViolation,
-)
+import scipy.stats as stats
+from astromodels.functions.function import Function1D, FunctionMeta
 
 
 deg2rad = old_div(np.pi, 180.0)
@@ -693,3 +689,213 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
         par = 10 ** (x * spread + low)
 
         return par
+
+
+class Beta(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        A beta distribution function
+
+    latex : $ f(x, a, b)=\frac{\Gamma(a+b) x^{a-1}(1-x)^{b-1}}{\Gamma(a) \Gamma(b)}$
+
+    parameters :
+
+        a :
+
+            desc : first shape parameter
+            initial value : 0.5
+            min: 0.
+
+        b :
+
+            desc : second shape parameter
+            initial value : 0.5
+            min: 0.
+
+    """
+
+    def _setup(self):
+
+        self._is_prior = True
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.a.unit = astropy_units.dimensionless_unscaled
+        self.b.unit = astropy_units.dimensionless_unscaled
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, a, b):
+
+        return stats.beta.pdf(x, a, b)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        a = self.a.value
+        b = self.b.value
+
+        return stats.beta.ppf(x, a, b)
+
+
+class Gamma(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        A gamma distribution function
+
+    latex : $ f(x, \alpha, \beta)=\frac{\beta^\alpha x^{\alpha-1} e^{-\beta x}}{\Gamma(\alpha)}$
+
+    parameters :
+
+        alpha :
+
+            desc : first shape parameter
+            initial value : 0.5
+            min: 0.
+
+        beta :
+
+            desc : second shape parameter
+            initial value : 1.
+            min: 0.
+
+    """
+
+    def _setup(self):
+
+        self._is_prior = True
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.beta.unit = astropy_units.dimensionless_unscaled
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, alpha, beta):
+
+        return stats.gamma.pdf(x, alpha, scale=1.0 / beta)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        alpha = self.alpha.value
+        beta = self.beta.value
+
+        return stats.gamma.ppf(x, alpha, scale=1.0 / beta)
+
+
+class Exponential(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        An exponential distribution function
+
+    latex : $ f(x, \alpha) = \alpha\exp(-\alpha x)$
+
+    parameters :
+
+        alpha :
+
+            desc : first shape parameter
+            initial value : 1
+            min: 0.
+
+    """
+
+    def _setup(self):
+
+        self._is_prior = True
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, alpha):
+
+        return stats.expon.pdf(x, scale=1.0 / alpha)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        return stats.expon.ppf(x, scale=1.0 / self.alpha.value)
+
+
+class Powerlaw_Prior(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        An power law distribution function between a-b
+
+    latex : $ f(x, \alpha) = \alpha x^{\alpha-1)$
+
+    parameters :
+
+        alpha :
+
+            desc : slope parameter
+            initial value : 1
+            min: 0.
+        a :
+            desc: lower bound of distribution
+            initial value : 0.
+            min: 0.
+        b:
+            desc: upper bound of distribution
+            initial value: 1
+            min: 0.
+
+    """
+
+    def _setup(self):
+
+        self._is_prior = True
+
+    def _set_units(self, x_unit, y_unit):
+
+        self.alpha.unit = astropy_units.dimensionless_unscaled
+        self.a.unit = astropy_units.dimensionless_unscaled
+        self.b.unit = astropy_units.dimensionless_unscaled
+
+    # noinspection PyPep8Naming
+    def evaluate(self, x, alpha, a, b):
+
+        d = b - a
+
+        return stats.powerlaw.pdf(x, alpha, loc=a, scale=d)
+
+    def from_unit_cube(self, x):
+        """
+        Used by multinest
+
+        :param x: 0 < x < 1
+        :param lower_bound:
+        :param upper_bound:
+        :return:
+        """
+
+        d = self.b.value - self.a.value
+
+        return stats.powerlaw.ppf(x, self.alpha.value, loc=self.a.value, scale=d)
