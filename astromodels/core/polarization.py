@@ -1,7 +1,9 @@
 __author__ = "giacomov"
 
+
 from astromodels.core.tree import Node
 from astromodels.core.parameter import Parameter
+import numpy as np
 
 
 class Polarization(Node):
@@ -75,7 +77,6 @@ class Polarization(Node):
 
 # TODO: add transform between polarizations
 
-
 class LinearPolarization(Polarization):
     def __init__(self, degree, angle):
         """
@@ -86,49 +87,45 @@ class LinearPolarization(Polarization):
         """
         super(LinearPolarization, self).__init__(polarization_type="linear")
 
-        degree = self._get_parameter_from_input(
-            degree,
-            0,
-            100,
-            "degree",
-            "Polarization degree",
-            "dimensionless_unscaled",
-        )
+        if callable(degree):
+            self.degree = LinearParameter('degree', degree)
+        else:
+            self.degree = self._get_parameter_from_input(degree, 0, 100, 'degree', 'Polarization degree', 'dimensionless_unscaled')
 
-        angle = self._get_parameter_from_input(
-            angle, 0, 180, "angle", "Polarization angle", "deg"
-        )
+        if callable(angle):
+            self.angle = LinearParameter('angle', angle)
+        else:
+            self.angle = self._get_parameter_from_input(angle, 0, 180, 'angle', 'Polarization angle', 'deg')
 
-        self._add_child(degree)
-        self._add_child(angle)
+        self._add_child(self.degree)
+        self._add_child(self.angle)
+
+    def __call__(self, energies, stokes):
+
+        if stokes == 'Q':
+            return self.degree(energies) * np.cos(2.0 * np.radians(self.angle(energies)))
+        elif stokes == 'U':
+            return self.degree(energies) * np.sin(2.0 * np.radians(self.angle(energies)))
+        return 1
 
 
 class StokesPolarization(Polarization):
-    def __init__(self, I, Q, U, V):
+    def __init__(self, I=None, Q=None, U=None, V=None):
         """
         Stokes parameterization of polarization
-
-        :param I:
-        :param Q:
-        :param U:
-        :param V:
         """
-        super(StokesPolarization, self).__init__(polarization_type="stokes")
+        super(StokesPolarization, self).__init__(polarization_type='stokes')
+        self._Q = StokesParameter('Q', Q)
+        self._add_child(self._Q)
+        self._U = StokesParameter('U', U)
+        self._add_child(self._U)
 
-        # get the parameters set up
-
-        I = self._get_parameter_from_input(I, 0, 1, "I", "Stokes I")
-        Q = self._get_parameter_from_input(Q, 0, 1, "Q", "Stokes Q")
-        U = self._get_parameter_from_input(U, 0, 1, "U", "Stokes U")
-        V = self._get_parameter_from_input(V, 0, 1, "V", "Stokes V")
-
-        # add the children
-
-        self._add_child(I)
-        self._add_child(Q)
-        self._add_child(U)
-        self._add_child(V)
-
+    def __call__(self, energies, stokes):
+        if stokes == 'Q':
+            return self._Q(energies)
+        elif stokes == 'U':
+            return self._U(energies)
+        return 1
 
 #     def to_linear_polarization(self):
 #         # polarization angle
@@ -142,3 +139,27 @@ class StokesPolarization(Polarization):
 #         #angle = 0.5 * np.arctan2(se)
 #
 #
+
+
+class StokesParameter(Node):
+
+    def __init__(self, name, value):
+
+        assert name in ['I', 'Q', 'U', 'V']
+        Node.__init__(self, name)
+        self._add_child(value)
+        self.value = value
+
+    def __call__(self, energies):
+        return self.value(energies)
+
+
+class LinearParameter(Node):
+    def __init__(self, name, value):
+        assert name in ['degree', 'angle']
+        Node.__init__(self, name)
+        self._add_child(value)
+        self.value = value
+
+    def __call__(self, energies):
+        return self.value(energies)

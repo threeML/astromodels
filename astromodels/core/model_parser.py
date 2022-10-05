@@ -624,6 +624,7 @@ class SourceParser(object):
         # Check if there is a equinox specification
 
         if "equinox" in sky_direction_definition:
+
             coordinates["equinox"] = sky_direction_definition["equinox"]
 
         try:
@@ -646,55 +647,63 @@ class SourceParser(object):
         polarization_params = {}
 
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
+            par_dict = {'degree': None, 'angle': None}
+            par_names = list(polarization_definititon.keys())
+            par_bounds = {'degree':(0,100),'angle':(0,180)}
 
-            par_parser = ParameterParser("degree", polarization_definititon["degree"])
+            for par in par_names:
 
-            degree = par_parser.get_variable()
+                if list(polarization_definititon[par].keys())[0] == 'value':
 
-            degree.bounds = (0, 100)
+                    par_parser = ParameterParser(par, polarization_definititon[par])
 
-            par_parser = ParameterParser("angle", polarization_definititon["angle"])
+                    par_dict[par] = par_parser.get_variable()
 
-            angle = par_parser.get_variable()
+                    par_dict[par].bounds = par_bounds[par]
 
-            angle.bounds = (0, 180)
+                else:
 
-            this_polarization = polarization.LinearPolarization(
-                angle=angle, degree=degree
-            )
+                    try:
 
-        elif (
-            "I" in polarization_definititon
-            and "U" in polarization_definititon
-            and "Q" in polarization_definititon
-            and "V" in polarization_definititon
-        ):
+                        function_name = list(polarization_definititon[par].keys())[0]
+                        parameters_definition = polarization_definititon[par][function_name]
 
-            par_parser = ParameterParser("I", polarization_definititon["I"])
+                        # parse the function
+                        shape_parser = ShapeParser(self._source_name)
 
-            I = par_parser.get_variable()
+                        shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                        par_dict[par] = shape
 
-            I.bounds = (0, 1)
+                    except KeyError:  # pragma: no cover
 
-            par_parser = ParameterParser("U", polarization_definititon["U"])
+                        raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
+                                               % (self._source_name))
 
-            U = par_parser.get_variable()
+            this_polarization = polarization.LinearPolarization(**par_dict)
 
-            U.bounds = (0, 1)
+        elif 'I' in polarization_definititon or 'U' in polarization_definititon or 'Q' in polarization_definititon or 'V' in polarization_definititon:
 
-            par_parser = ParameterParser("Q", polarization_definititon["Q"])
+            par_dict = {'I': None, 'Q':None, 'U':None, 'V':None}
+            par_names = list(polarization_definititon.keys())
 
-            Q = par_parser.get_variable()
+            for par in par_names:
 
-            Q.bounds = (0, 1)
+                try:
+                    function_name = list(polarization_definititon[par].keys())[0]
+                    parameters_definition = polarization_definititon[par][function_name]
 
-            par_parser = ParameterParser("V", polarization_definititon["V"])
+                    # parse the function
+                    shape_parser = ShapeParser(self._source_name)
 
-            V = par_parser.get_variable()
+                    shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                    par_dict[par] = shape
 
-            V.bounds = (0, 1)
+                except KeyError:  # pragma: no cover
 
-            this_polarization = polarization.StokesPolarization(I=I, Q=Q, U=U, V=V)
+                    raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
+                                           % (self._source_name))
+
+            this_polarization = polarization.StokesPolarization(**par_dict)
 
         else:
 

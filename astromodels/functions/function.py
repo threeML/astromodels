@@ -867,7 +867,7 @@ class Function(Node):
 
         self._fixed_units = None
 
-        self._is_prior = False
+        self._is_prior: bool = False
 
         # stores any extrernally linked functions
 

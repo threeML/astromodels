@@ -30,6 +30,8 @@ from astromodels.utils.long_path_formatter import long_path_formatter
 
 log = setup_logger(__name__)
 
+pd.options.display.float_format = '{:.6g}'.format
+
 
 class ModelFileExists(IOError):
     pass
@@ -768,7 +770,6 @@ class Model(Node):
                     parameter_dict[this_name][key] = d[key]
 
             free_parameters_summary = pd.DataFrame.from_dict(parameter_dict).T
-
             # Re-order it
             free_parameters_summary = free_parameters_summary[
                 ["value", "min_value", "max_value", "unit"]
@@ -1324,7 +1325,7 @@ class Model(Node):
         return pts.position.get_ra(), pts.position.get_dec()
 
     def get_point_source_fluxes(
-        self, id: int, energies: np.ndarray, tag=None
+        self, id: int, energies: np.ndarray, tag=None, stokes=None
     ) -> np.ndarray:
         """
         Get the fluxes from the id-th point source
@@ -1336,10 +1337,11 @@ class Model(Node):
         between a and b over the integration variable divided by (b-a). The integration variable must be an independent
         variable contained in the model. If b is None, then instead of integrating the integration variable will be
         set to a and the model evaluated in a.
+        :param stokes: can be I, Q, U, V
         :return: fluxes
         """
 
-        return list(self._point_sources.values())[id](energies, tag=tag)
+        return list(self._point_sources.values())[id](energies, tag=tag, stokes=stokes)
 
     def get_point_source_name(self, id: int) -> str:
 
