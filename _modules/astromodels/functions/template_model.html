@@ -45,6 +45,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -104,6 +105,9 @@
 <span class="kn">from</span> <span class="nn">future.utils</span> <span class="kn">import</span> <span class="n">with_metaclass</span>
 <span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">interpolation.splines</span> <span class="kn">import</span> <span class="n">eval_linear</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -168,6 +172,24 @@
         <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
 
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a template model from inputs</span>
+
+<span class="sd">        :param name:</span>
+<span class="sd">        :type name: str</span>
+<span class="sd">        :param description:</span>
+<span class="sd">        :type description: str</span>
+<span class="sd">        :param energies:</span>
+<span class="sd">        :type energies: np.ndarray</span>
+<span class="sd">        :param names_of_parameters:</span>
+<span class="sd">        :type names_of_parameters: List[str]</span>
+<span class="sd">        :param interpolation_degree:</span>
+<span class="sd">        :type interpolation_degree: int</span>
+<span class="sd">        :param spline_smoothing_factor:</span>
+<span class="sd">        :type spline_smoothing_factor: int</span>
+<span class="sd">        :returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Store model name</span>
 
         <span class="c1"># Enforce that it does not contain spaces nor strange characters</span>
@@ -355,7 +377,9 @@
         <span class="c1"># log space)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">)):</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You have invalid values in the differential flux (nan or inf)&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;You have invalid values in the differential flux (nan or inf)&quot;</span>
+            <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
@@ -580,7 +604,7 @@
         <span class="p">)</span>
 
 
-<div class="viewcode-block" id="TemplateModel"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel">[docs]</a><span class="k">class</span> <span class="nc">TemplateModel</span><span class="p">(</span><span class="n">with_metaclass</span><span class="p">(</span><span class="n">FunctionMeta</span><span class="p">,</span> <span class="n">Function1D</span><span class="p">)):</span>
+<div class="viewcode-block" id="TemplateModel"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel">[docs]</a><span class="k">class</span> <span class="nc">TemplateModel</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -598,6 +622,12 @@
 <span class="sd">                   observer frame energy. Fix this to 1 to neutralize its effect.</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            min : 1e-5</span>
+
+<span class="sd">        redshift:</span>
+<span class="sd">            desc: redshift the energies</span>
+<span class="sd">            initial value: 0.</span>
+<span class="sd">            min: 0</span>
+<span class="sd">            fix: True</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -688,6 +718,7 @@
 
         <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
         <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;scale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;redshift&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;redshift&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">free</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
 
@@ -712,7 +743,14 @@
 
         <span class="c1"># Finally prepare the interpolators</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_interpolators</span><span class="p">(</span><span class="n">log_interp</span><span class="p">,</span> <span class="n">template_file</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+
+
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_interpolators</span><span class="p">(</span><span class="n">log_interp</span><span class="p">,</span> <span class="n">template_file</span><span class="o">.</span><span class="n">grid</span><span class="p">)</span>
 
         <span class="c1"># try can clean up the file</span>
 
@@ -823,13 +861,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">x_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="c1"># This function will be substituted during construction by another version with</span>
     <span class="c1"># all the parameters of this template</span>
 
-<div class="viewcode-block" id="TemplateModel.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="TemplateModel.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">redshift</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolate</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">redshift</span><span class="p">),</span> <span class="n">scale</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">parameters_values</span><span class="p">):</span>
 

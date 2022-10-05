@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../_static/dark_mode_js/default_dark.js"></script>
+        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Available Functions" href="function_list.html" />
+    <link rel="prev" title="Quick start" href="Quick_start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Astromodels
+            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#use_memoization">use_memoization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use_parameter_transforms">use_parameter_transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ignore_parameter_bounds">ignore_parameter_bounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="function_list.html">Available Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Configuration">
+<h1>Configuration<a class="headerlink" href="#Configuration" title="Permalink to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">astromodels</span></code> includes a configuration that allows users to set certain variables from the beginning</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="n">astromodels_config</span><span class="p">,</span> <span class="n">show_configuration</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">19:15:26 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/functions/functions_1D/functions.py#48" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">48</span></a>
+<span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">available                                                                         </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it  </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/functions/functions_1D/functions.py#69" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">69</span></a>
+<span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">will not be available.                                                            </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">19:15:27 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of F to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g9154dd1-py3.9.egg/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_configuration</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">config</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┣━━ </span><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">logging</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">path: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">~/.astromodels/log</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">developer: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">False</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">usr: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">console: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">level: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">20</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">startup_warnings: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">info_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">medium_spring_green</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">warn_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">medium_orchid</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">error_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">blink bold bright_red</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">debug_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">blue_violet</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┗━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">message_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">bold grey78</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┣━━ </span><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">absorption_models</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">tbabs_table: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">AbsTables.WILM</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">phabs_table: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">AbsTables.AG89</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┗━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">ebl_table: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">EBLTable.dominguez</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┗━━ </span><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">modeling</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">    ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">use_memoization: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">    ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">use_parameter_transforms: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">    ┗━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">ignore_parameter_bounds: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">False</span>
+</pre></div>
+</div>
+<p>The configuration can be accessed and altered during runtime:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">astromodels_config</span><span class="o">.</span><span class="n">modeling</span><span class="o">.</span><span class="n">use_memoization</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">show_configuration</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">config</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┣━━ </span><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">logging</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">path: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">~/.astromodels/log</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">developer: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">False</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">usr: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">console: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">level: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">20</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">startup_warnings: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">info_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">medium_spring_green</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">warn_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">medium_orchid</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">error_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">blink bold bright_red</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">debug_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">blue_violet</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┗━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">message_style: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">bold grey78</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┣━━ </span><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">absorption_models</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">tbabs_table: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">AbsTables.WILM</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">phabs_table: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">AbsTables.AG89</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┃   ┗━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">ebl_table: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">EBLTable.dominguez</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">┗━━ </span><span style="color: #af5fd7; text-decoration-color: #af5fd7; font-weight: bold">modeling</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">    ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">use_memoization: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">False</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">    ┣━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">use_parameter_transforms: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">True</span>
+<span style="color: #af5fd7; text-decoration-color: #af5fd7">    ┗━━ </span><span style="color: #00ffaf; text-decoration-color: #00ffaf; font-weight: bold">ignore_parameter_bounds: </span><span style="color: #5f87ff; text-decoration-color: #5f87ff; font-weight: bold">False</span>
+</pre></div>
+</div>
+<p>The user can create a configuration YAML file with any name and the extension <code class="docutils literal notranslate"><span class="pre">.yml</span></code> and place it in the <code class="docutils literal notranslate"><span class="pre">~/.config/astromodels/</span></code> folder. An example file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logging</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">developer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1"># do not store debug log file</span><span class="w"></span>
+<span class="w">    </span><span class="nt">usr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"> </span><span class="c1"># store a log file</span><span class="w"></span>
+<span class="w">    </span><span class="nt">console</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span><span class="w"> </span><span class="c1"># print logs to screen</span><span class="w"></span>
+<span class="w">    </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEBUG</span><span class="w"> </span><span class="c1"># turn on debug message</span><span class="w"></span>
+
+
+<span class="nt">modeling</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">use_parameter_transforms</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">no</span><span class="w"> </span><span class="c1"># turn off parameter transforms</span><span class="w"></span>
+<span class="w">    </span><span class="nt">ignore_parameter_bounds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span><span class="w"> </span><span class="c1"># ignore parameter bounds</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Not all options are required to be set and the defaults will be applied to anything not set.</p>
+<section id="Configuration-options">
+<h2>Configuration options<a class="headerlink" href="#Configuration-options" title="Permalink to this heading"></a></h2>
+<p>There are a few special configuration options</p>
+<section id="use_memoization">
+<h3>use_memoization<a class="headerlink" href="#use_memoization" title="Permalink to this heading"></a></h3>
+<p>By default, astromodels functions <em>memoize</em> or cache their output. This is useful for various processes like optimization as speeds of the evaluation of repeated function calls with the same values. However, there is a slight overhead when caching values and when performing Bayesian fits, this can slow down the evaluation as chance of hitting the exact same values more than once should be low. Thus, it is possible to turn of memoization directly in the configuration.</p>
+</section>
+<section id="use_parameter_transforms">
+<h3>use_parameter_transforms<a class="headerlink" href="#use_parameter_transforms" title="Permalink to this heading"></a></h3>
+<p>Parameters can have transforms assigned to them. These transforms are used during optimization to transform the parameter into a different space, such as log10. However, this may not be desirable and is not needed (or used) during Bayesian fits. There is also a small overhead in computing these transforms. Thus, this can be turned off via the configuration.</p>
+</section>
+<section id="ignore_parameter_bounds">
+<h3>ignore_parameter_bounds<a class="headerlink" href="#ignore_parameter_bounds" title="Permalink to this heading"></a></h3>
+<p>The bounds of parameters can be used in during optimization but are not used during Bayesian fits (<em>the prior on a parameter controls its bounds if any</em>). Thus, it is possible to turn off errors occuring from trying to set parameters outside of thier bounds in the configuration.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Quick_start.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="function_list.html" class="btn btn-neutral float-right" title="Available Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
