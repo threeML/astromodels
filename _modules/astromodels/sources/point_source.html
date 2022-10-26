@@ -45,7 +45,6 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -160,7 +159,6 @@
         <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sky_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SkyDirection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">polarization</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 
         <span class="c1"># Check that we have all the required information</span>
@@ -228,7 +226,7 @@
 
         <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)]</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
 
         <span class="n">Source</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">src_type</span><span class="o">=</span><span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">)</span>
 
@@ -264,7 +262,7 @@
 
             <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -275,8 +273,9 @@
                 <span class="c1"># Slow version with units</span>
 
                 <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                    <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
                 <span class="p">]</span>
+
                 <span class="c1"># We need to sum like this (slower) because using np.sum will not preserve the units</span>
                 <span class="c1"># (thanks astropy.units)</span>
 
@@ -287,8 +286,9 @@
                 <span class="c1"># Fast version without units, where x is supposed to be in the same units as currently defined in</span>
                 <span class="c1"># units.get_units()</span>
 
-                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
-                                      <span class="p">)</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+                <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">_sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 
