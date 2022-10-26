@@ -824,7 +824,7 @@ class Band(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
             alpha_ = alpha.value
-            beta_ = alpha.value
+            beta_ = beta.value
             K_ = K.value
             E0_ = E0.value
             piv_ = piv.value
