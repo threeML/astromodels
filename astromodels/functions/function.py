@@ -511,7 +511,7 @@ class FunctionMeta(type):
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
 
-            log.debug(f"running setup of {instance._name}")
+            log.debug_node(f"running setup of {instance._name}")
 
             instance._setup()
 
@@ -1176,7 +1176,7 @@ class Function(Node):
 
                 other_instance._make_dimensionless = True
 
-                log.debug(f"{other_instance} is not dimensionless")
+                log.debug(f"{other_instance.name} is not dimensionless")
 
         return c
 
@@ -1243,7 +1243,7 @@ class Function(Node):
 
     def __eq__(self, o):
 
-        log.debug(f"checking equality of {self._uuid} and {o.uuid}")
+        log.debug_node(f"checking equality of {self._uuid} and {o.uuid}")
 
         return self._uuid == o.uuid
 
@@ -1954,7 +1954,7 @@ class CompositeFunction(Function):
             operation, function_or_scalar_1, function_or_scalar_2
         )
 
-        log.debug(f"UUID of composite {self._uuid_expression}")
+        log.debug_node(f"UUID of composite {self._uuid_expression}")
 
         # Makes the list of unique functions which compose this composite function.
 
@@ -1967,15 +1967,15 @@ class CompositeFunction(Function):
 
             if isinstance(function, CompositeFunction):
 
-                log.debug(f"{function.name} is a composite function")
+                log.debug_node(f"{function.name} is a composite function")
 
                 for sub_function in function.functions:
 
-                    log.debug(f"checking sub function {sub_function.name}")
+                    log.debug_node(f"checking sub function {sub_function.name}")
 
                     if sub_function not in self._functions:
 
-                        log.debug(f"now adding {sub_function.name}")
+                        log.debug_node(f"now adding {sub_function.name}")
 
                         self._functions.append(sub_function)
 
@@ -1986,13 +1986,13 @@ class CompositeFunction(Function):
 
                 if function not in self._functions:
 
-                    log.debug(f"{function.name} is being added")
+                    log.debug_node(f"{function.name} is being added")
 
                     self._functions.append(function)
 
                 else:
 
-                    log.debug(f"{function.name} is a duplicate")
+                    log.debug_node(f"{function.name} is a duplicate")
 
             else:
 
@@ -2000,9 +2000,9 @@ class CompositeFunction(Function):
 
                 pass
 
-            log.debug(f"comp now has {len(self._functions)} functions")
+            log.debug_node(f"comp now has {len(self._functions)} functions")
 
-        log.debug(f"added functions are now {[f.name for f in self._functions]}")
+        log.debug_node(f"added functions are now {[f.name for f in self._functions]}")
 
         # Make sure all functions have the same dimension, and store it so that the property .n_dim of
         # the Function class will work
@@ -2044,7 +2044,7 @@ class CompositeFunction(Function):
         # Save the expression
         self._expression = expression
 
-        log.debug(f"function expression: {self._expression}")
+        log.debug_node(f"function expression: {self._expression}")
 
         # Build the parameters dictionary assigning a new name to each parameter to account for possible
         # duplicates.
@@ -2055,11 +2055,11 @@ class CompositeFunction(Function):
 
         self._sub_children = collections.OrderedDict()
 
-        log.debug(f"we now have {len(self._functions)}")
+        log.debug_node(f"we now have {len(self._functions)}")
 
         for i, function in enumerate(self._functions):
 
-            log.debug(f"func path before comp: {function.path}")
+            log.debug_node(f"func path before comp: {function.path}")
 
             for parameter_name, parameter in function.parameters.items():
 
@@ -2077,7 +2077,7 @@ class CompositeFunction(Function):
 
                 new_name = f"{original_name}_{i+1}"
 
-                log.debug(f"rename {original_name} -> {new_name}")
+                log.debug_node(f"rename {original_name} -> {new_name}")
 
                 # Store the parameter under the new name (obviously this is a reference to the
                 # parameter, not a copy, as always in python)
@@ -2107,7 +2107,7 @@ class CompositeFunction(Function):
 
                     new_name = f"{original_name}_{i+1}"
 
-                    log.debug(f"rename {original_name} -> {new_name}")
+                    log.debug_node(f"rename {original_name} -> {new_name}")
 
                     # Store the parameter under the new name (obviously this is a reference to the
                     # parameter, not a copy, as always in python)
@@ -2116,7 +2116,7 @@ class CompositeFunction(Function):
 
                     function_property._change_name(new_name, clear_parent=True)
 
-                    log.debug("function property name has changed")
+                    log.debug_node("function property name has changed")
 
             # now, some functions may have children and we want to keep track of those
 
@@ -2126,7 +2126,7 @@ class CompositeFunction(Function):
 
                 if child_name not in function.parameters:
 
-                    log.debug(f"{function.name} has child {child_name}")
+                    log.debug_node(f"{function.name} has child {child_name}")
 
                     self._sub_children[function.name][child_name] = child.to_dict(
                         minimal=False
@@ -2147,7 +2147,7 @@ class CompositeFunction(Function):
 
                 function = function._parent._remove_child(function.name, delete=False)
 
-            log.debug(f"func path after comp: {function.path}")
+            log.debug_node(f"func path after comp: {function.path}")
 
         # reset properties if there were none
 
@@ -2610,7 +2610,7 @@ def _parse_function_expression(function_specification):
 
     string_for_literal_eval = function_specification
 
-    log.debug(string_for_literal_eval)
+    log.debug_node(string_for_literal_eval)
 
     # Remove from the function_specification all the known operators and function_expressions, and substitute them
     # with a 0 and a space
@@ -2619,13 +2619,13 @@ def _parse_function_expression(function_specification):
 
     for function_expression in list(instances.keys()):
 
-        log.debug(function_expression)
+        log.debug_node(function_expression)
 
         string_for_literal_eval = string_for_literal_eval.replace(
             function_expression, "0 "
         )
 
-    log.debug(string_for_literal_eval)
+    log.debug_node(string_for_literal_eval)
 
     # Now remove all the known operators
 
@@ -2633,7 +2633,7 @@ def _parse_function_expression(function_specification):
 
         string_for_literal_eval = string_for_literal_eval.replace(operator, "0 ")
 
-    log.debug(string_for_literal_eval)
+    log.debug_node(string_for_literal_eval)
 
     # The string at this point should contains only numbers and parenthesis separated by one or more spaces
 

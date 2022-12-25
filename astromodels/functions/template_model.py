@@ -2,6 +2,7 @@ import collections
 import gc
 import os
 import re
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
@@ -11,16 +12,15 @@ import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
+from future.utils import with_metaclass
+from interpolation import interp
+from interpolation.splines import eval_linear
+from joblib import Parallel, delayed
+
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
 from astromodels.utils.logging import setup_logger
-from future.utils import with_metaclass
-from interpolation import interp
-from interpolation.splines import eval_linear
-
-import warnings
-
 
 log = setup_logger(__name__)
 
@@ -153,7 +153,9 @@ class TemplateModelFactory(object):
 
         self._spline_smoothing_factor: int = int(spline_smoothing_factor)
 
-    def define_parameter_grid(self, parameter_name: str, grid: np.ndarray) -> None:
+    def define_parameter_grid(
+        self, parameter_name: str, grid: np.ndarray
+    ) -> None:
         """
         Define the parameter grid for this parameter.
         Pass the name of the parameter and the array of values that it will take in the grid
@@ -169,7 +171,9 @@ class TemplateModelFactory(object):
 
         if not (grid_.shape[0] > 1):
 
-            log.error("A grid for a parameter must contain at least two elements")
+            log.error(
+                "A grid for a parameter must contain at least two elements"
+            )
 
             raise AssertionError()
 
@@ -177,7 +181,9 @@ class TemplateModelFactory(object):
 
         if not np.all(np.unique(grid_) == grid_):
 
-            log.error(f"Non-unique elements in grid for parameter {parameter_name}")
+            log.error(
+                f"Non-unique elements in grid for parameter {parameter_name}"
+            )
 
             raise AssertionError()
 
@@ -248,7 +254,9 @@ class TemplateModelFactory(object):
 
                 raise AssertionError()
 
-            parameter_idx.append(int(np.where(v == parameters_values_input[k])[0][0]))
+            parameter_idx.append(
+                int(np.where(v == parameters_values_input[k])[0][0])
+            )
 
         log.debug(f" have index {parameter_idx}")
 
@@ -309,7 +317,8 @@ class TemplateModelFactory(object):
 
             log.warning(
                 "You have zeros in the differential flux. Since the interpolation happens in the log space, "
-                "this cannot be accepted. We will substitute zeros with %g" % _TINY_
+                "this cannot be accepted. We will substitute zeros with %g"
+                % _TINY_
             )
 
             idx = differential_fluxes == 0  # type: np.ndarray
@@ -319,7 +328,9 @@ class TemplateModelFactory(object):
 
         # Now set the values in the data frame
 
-        self._data_frame[tuple(parameter_idx)] = np.atleast_2d(differential_fluxes)
+        self._data_frame[tuple(parameter_idx)] = np.atleast_2d(
+            differential_fluxes
+        )
 
     def save_data(self, overwrite: bool = False):
 
@@ -417,7 +428,9 @@ class RectBivariateSplineWrapper(object):
 
         # We can use interp2, which features spline interpolation instead of linear interpolation
 
-        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
+        self._interpolator = scipy.interpolate.RectBivariateSpline(
+            *args, **kwargs
+        )
 
     def __call__(self, x):
 
@@ -471,7 +484,9 @@ class TemplateFile:
             par_group = f.create_group("parameters")
             for k in self.parameter_order:
 
-                par_group.create_dataset(k, data=self.parameters[k], compression="gzip")
+                par_group.create_dataset(
+                    k, data=self.parameters[k], compression="gzip"
+                )
 
     @classmethod
     def from_file(cls, file_name: str):
@@ -646,7 +661,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         if other_name is None:
 
-            super(TemplateModel, self).__init__(name, function_definition, parameters)
+            super(TemplateModel, self).__init__(
+                name, function_definition, parameters
+            )
 
         else:
 
@@ -658,10 +675,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         with warnings.catch_warnings():
 
+            warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-            warnings.filterwarnings('ignore', category=RuntimeWarning)
-
-            with np.errstate(all='ignore'):
+            with np.errstate(all="ignore"):
 
                 self._prepare_interpolators(log_interp, template_file.grid)
 
@@ -671,100 +687,106 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         gc.collect()
 
-    def _prepare_interpolators(self, log_interp, data_frame):
+    def _prepare_interpolators(self, log_interp: bool, data_frame):
 
         # Figure out the shape of the data matrices
         data_shape = [x.shape[0] for x in list(self._parameters_grids.values())]
 
-        self._interpolators = []
+        def _construct_element(i):
 
-        for i, energy in enumerate(self._energies):
+            with warnings.catch_warnings():
 
-            # Make interpolator for this energy
-            # NOTE: we interpolate on the logarithm
-            # unless specified
+                warnings.filterwarnings("ignore", category=RuntimeWarning)
 
-            if log_interp:
+                with np.errstate(all="ignore"):
 
-                this_data = np.array(
-                    np.log10(data_frame[..., i]).reshape(*data_shape),
-                    dtype=float,
-                )
+                    if log_interp:
 
-                self._is_log10 = True
-
-            else:
-
-                # work in linear space
-                this_data = np.array(
-                    data_frame[..., i].reshape(*data_shape), dtype=float
-                )
-
-                self._is_log10 = False
-
-            if len(list(self._parameters_grids.values())) == 2:
-
-                x, y = list(self._parameters_grids.values())
-
-                # Make sure that the requested polynomial degree is less than the number of data sets in
-                # both directions
-
-                msg = (
-                    "You cannot use an interpolation degree of %s if you don't provide at least %s points "
-                    "in the %s direction. Increase the number of templates or decrease the interpolation "
-                    "degree."
-                )
-
-                if len(x) <= self._interpolation_degree:
-
-                    log.error(
-                        msg
-                        % (
-                            self._interpolation_degree,
-                            self._interpolation_degree + 1,
-                            "x",
+                        this_data = np.array(
+                            np.log10(data_frame[..., i]).reshape(*data_shape),
+                            dtype=float,
                         )
-                    )
 
-                    raise RuntimeError()
+                        self._is_log10 = True
 
-                if len(y) <= self._interpolation_degree:
+                    else:
 
-                    log.error(
-                        msg
-                        % (
-                            self._interpolation_degree,
-                            self._interpolation_degree + 1,
-                            "y",
+                        # work in linear space
+                        this_data = np.array(
+                            data_frame[..., i].reshape(*data_shape), dtype=float
                         )
-                    )
 
-                    raise RuntimeError()
+                        self._is_log10 = False
 
-                this_interpolator = RectBivariateSplineWrapper(
-                    x,
-                    y,
-                    this_data,
-                    kx=self._interpolation_degree,
-                    ky=self._interpolation_degree,
-                    s=self._spline_smoothing_factor,
-                )
+                    if len(list(self._parameters_grids.values())) == 2:
 
-            else:
+                        x, y = list(self._parameters_grids.values())
 
-                # In more than 2d we can only use linear interpolation
+                        # Make sure that the requested polynomial degree is less than the number of data sets in
+                        # both directions
 
-                this_interpolator = GridInterpolate(
-                    tuple(
-                        [
-                            np.array(x, dtype="<f8")
-                            for x in list(self._parameters_grids.values())
-                        ]
-                    ),
-                    this_data,
-                )
+                        msg = (
+                            "You cannot use an interpolation degree of %s if you don't provide at least %s points "
+                            "in the %s direction. Increase the number of templates or decrease the interpolation "
+                            "degree."
+                        )
 
-            self._interpolators.append(this_interpolator)
+                        if len(x) <= self._interpolation_degree:
+
+                            log.error(
+                                msg
+                                % (
+                                    self._interpolation_degree,
+                                    self._interpolation_degree + 1,
+                                    "x",
+                                )
+                            )
+
+                            raise RuntimeError()
+
+                        if len(y) <= self._interpolation_degree:
+
+                            log.error(
+                                msg
+                                % (
+                                    self._interpolation_degree,
+                                    self._interpolation_degree + 1,
+                                    "y",
+                                )
+                            )
+
+                            raise RuntimeError()
+
+                        this_interpolator = RectBivariateSplineWrapper(
+                            x,
+                            y,
+                            this_data,
+                            kx=self._interpolation_degree,
+                            ky=self._interpolation_degree,
+                            s=self._spline_smoothing_factor,
+                        )
+
+                    else:
+
+                        # In more than 2d we can only use linear interpolation
+
+                        this_interpolator = GridInterpolate(
+                            tuple(
+                                [
+                                    np.array(x, dtype="<f8")
+                                    for x in list(
+                                        self._parameters_grids.values()
+                                    )
+                                ]
+                            ),
+                            this_data,
+                        )
+
+                    return this_interpolator
+
+        self._interpolators = [
+            _construct_element(i) for i in range(len(self._energies))
+        ]
 
         # clear the data
         self._data_frame = None
@@ -826,7 +848,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         if self._is_log10:
 
-            interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
+            interpolator = UnivariateSpline(
+                np.log10(e_tilde), log_interpolations
+            )
 
             values = np.power(10.0, interpolator(log_energies))
 
@@ -859,7 +883,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         del self._interpolators
         gc.collect()
 
-        log.info("You have 'cleaned' the table model and it will no longer be useable")
+        log.info(
+            "You have 'cleaned' the table model and it will no longer be useable"
+        )
 
     # def __del__(self):
 

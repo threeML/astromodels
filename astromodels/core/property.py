@@ -51,7 +51,7 @@ class PropertyBase(Node):
         Return current parameter value
         """
 
-        log.debug(
+        log.debug_node(
             f"accessing the property {self.name} with value {self._internal_value}"
         )
 
@@ -99,9 +99,9 @@ class PropertyBase(Node):
 
                     func_idx = int(self._name.split("_")[-1]) - 1
 
-                    log.debug(f"{self._name} has a composite parent and")
-                    log.debug(f"is being executed on func idx {func_idx}")
-                    log.debug(
+                    log.debug_node(f"{self._name} has a composite parent and")
+                    log.debug_node(f"is being executed on func idx {func_idx}")
+                    log.debug_node(
                         f"and the parent has {len(self._parent._functions)} functions"
                     )
 
