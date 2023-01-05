@@ -66,6 +66,14 @@ if has_atomdb:
                 - AE8
             function: _init_session
 
+         thermal_broadening:
+            desc: turn on or off thermal broadening
+            initial value: off
+            allowed values:
+                - on
+                - off
+            function: _set_thermal_broadening
+
         """
 
         def _set_units(self, x_unit, y_unit):
@@ -83,6 +91,12 @@ if has_atomdb:
             self.session = pyatomdb.spectrum.CIESession(
                 abundset=self.abundance_table.value
             )
+
+        def _set_thermal_broadening(self):
+
+            val = dict("on"=True, "off"=False)
+
+            self.session.set_broadening(val[self.thermal_broadening.value])
 
         def clean(self):
             """
