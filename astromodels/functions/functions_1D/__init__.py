@@ -52,6 +52,7 @@ from .powerlaws import (
     Powerlaw_flux,
     SmoothlyBrokenPowerLaw,
     Super_cutoff_powerlaw,
+    DoubleSmoothlyBrokenPowerlaw,
 )
 
 if has_atomdb:
@@ -71,6 +72,7 @@ __all__ = [
     "Powerlaw_Eflux",
     "Powerlaw_flux",
     "SmoothlyBrokenPowerLaw",
+    "DoubleSmoothlyBrokenPowerlaw",
     "Super_cutoff_powerlaw",
     "Constant",
     "Cubic",

@@ -284,9 +284,9 @@ def dbl_sbpl(x, K, a1, a2, b1, xp, xb, n1, n2, xpiv):
     arg2 = x / xb
     arg3 = x / xj
 
-    inner1 = _pow(arg2, -a1 * n1) + _pow(arg2, -a2 * n2)
+    inner1 = _pow(arg2, -a1 * n1) + _pow(arg2, -a2 * n1)
 
-    inner2 = _pow(arg1, -a1 * n1) + _pow(arg1, -a2 * n2)
+    inner2 = _pow(arg1, -a1 * n1) + _pow(arg1, -a2 * n1)
 
     out = _pow(xb / xpiv, a1) * _pow(
         _pow(inner1, n2 / n1) + _pow(arg3, -b1 * n2) * _pow(inner2, n2 / n1),
