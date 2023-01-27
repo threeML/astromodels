@@ -30,7 +30,7 @@ from astromodels.utils.long_path_formatter import long_path_formatter
 
 log = setup_logger(__name__)
 
-pd.options.display.float_format = '{:.6g}'.format
+pd.options.display.float_format = "{:.6g}".format
 
 
 class ModelFileExists(IOError):
@@ -47,9 +47,12 @@ class CannotWriteModel(IOError):
 
         free_space = disk_usage(directory).free
 
-        message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (
-            directory,
-            free_space / 1024.0 / 1024.0,
+        message += (
+            "\nFree space on the file system hosting %s was %.2f Mbytes"
+            % (
+                directory,
+                free_space / 1024.0 / 1024.0,
+            )
         )
 
         super(CannotWriteModel, self).__init__(message)
@@ -99,11 +102,15 @@ class Model(Node):
 
         # Dictionary to keep extended sources
 
-        self._extended_sources: Dict[str, ExtendedSource] = collections.OrderedDict()
+        self._extended_sources: Dict[
+            str, ExtendedSource
+        ] = collections.OrderedDict()
 
         # Dictionary to keep particle sources
 
-        self._particle_sources: Dict[str, ParticleSource] = collections.OrderedDict()
+        self._particle_sources: Dict[
+            str, ParticleSource
+        ] = collections.OrderedDict()
 
         # Loop over the provided sources and process them
 
@@ -210,7 +217,9 @@ class Model(Node):
     def _update_parameters(self) -> None:
 
         self._parameters: Dict[str, Parameter] = self._find_parameters(self)
-        self._properties: Dict[str, FunctionProperty] = self._find_properties(self)
+        self._properties: Dict[str, FunctionProperty] = self._find_properties(
+            self
+        )
 
     @property
     def parameters(self) -> Dict[str, Parameter]:
@@ -237,7 +246,9 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        free_parameters_dictionary: Dict[str, Parameter] = collections.OrderedDict()
+        free_parameters_dictionary: Dict[
+            str, Parameter
+        ] = collections.OrderedDict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -246,6 +257,19 @@ class Model(Node):
                 free_parameters_dictionary[parameter_name] = parameter
 
         return free_parameters_dictionary
+
+    @property
+    def has_free_parameters(self) -> bool:
+        """
+        Returns True or False depending on if any parameters are free
+        """
+
+        self._update_parameters()
+
+        for p in self.parameters.values():
+            if p.free:
+                return True
+        return False
 
     @property
     def linked_parameters(self) -> Dict[str, Parameter]:
@@ -263,7 +287,9 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        linked_parameter_dictionary: Dict[str, Parameter] = collections.OrderedDict()
+        linked_parameter_dictionary: Dict[
+            str, Parameter
+        ] = collections.OrderedDict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -363,7 +389,9 @@ class Model(Node):
 
             raise AssertionError()
 
-        for parameter, this_value in zip(list(self.free_parameters.values()), values):
+        for parameter, this_value in zip(
+            list(self.free_parameters.values()), values
+        ):
 
             parameter.value = this_value
 
@@ -501,7 +529,9 @@ class Model(Node):
 
         self._update_parameters()
 
-    def unlink_all_from_source(self, source_name: str, warn: bool = False) -> None:
+    def unlink_all_from_source(
+        self, source_name: str, warn: bool = False
+    ) -> None:
         """
         Unlink all parameters of the current model that are linked to a parameter of a given source.
         To be called before removing a source from the model.
@@ -686,7 +716,9 @@ class Model(Node):
 
                     warnings.simplefilter("always", RuntimeWarning)
 
-                    log.warning("Parameter %s has no link to be removed." % param.path)
+                    log.warning(
+                        "Parameter %s has no link to be removed." % param.path
+                    )
 
     def display(self, complete: bool = False) -> None:
         """
@@ -807,7 +839,9 @@ class Model(Node):
 
                     fixed_parameter_dict[this_name][key] = d[key]
 
-            fixed_parameters_summary = pd.DataFrame.from_dict(fixed_parameter_dict).T
+            fixed_parameters_summary = pd.DataFrame.from_dict(
+                fixed_parameter_dict
+            ).T
 
             # Re-order it
             fixed_parameters_summary = fixed_parameters_summary[
@@ -930,7 +964,9 @@ class Model(Node):
 
             else:
 
-                free_parameters_representation = free_parameters_summary._repr_html_()
+                free_parameters_representation = (
+                    free_parameters_summary._repr_html_()
+                )
 
             if len(linked_frames) == 0:
 
@@ -963,8 +999,8 @@ class Model(Node):
 
                 for linked_function in linked_functions:
 
-                    linked_function_summary_representation += linked_function.output(
-                        rich=True
+                    linked_function_summary_representation += (
+                        linked_function.output(rich=True)
                     )
                     linked_function_summary_representation += new_line
 
@@ -987,7 +1023,9 @@ class Model(Node):
 
             else:
 
-                fixed_parameters_representation = fixed_parameters_summary._repr_html_()
+                fixed_parameters_representation = (
+                    fixed_parameters_summary._repr_html_()
+                )
 
         else:
 
@@ -999,7 +1037,9 @@ class Model(Node):
 
             else:
 
-                free_parameters_representation = free_parameters_summary.__repr__()
+                free_parameters_representation = (
+                    free_parameters_summary.__repr__()
+                )
 
             if properties_summary.empty:
 
@@ -1035,8 +1075,8 @@ class Model(Node):
 
                 for linked_function in linked_functions:
 
-                    linked_function_summary_representation += linked_function.output(
-                        rich=False
+                    linked_function_summary_representation += (
+                        linked_function.output(rich=False)
                     )
                     linked_function_summary_representation += "%s%s" % (
                         new_line,
@@ -1065,7 +1105,9 @@ class Model(Node):
 
             else:
 
-                fixed_parameters_representation = fixed_parameters_summary.__repr__()
+                fixed_parameters_representation = (
+                    fixed_parameters_summary.__repr__()
+                )
 
         # Build the representation
 
@@ -1133,7 +1175,8 @@ class Model(Node):
         else:
 
             representation += (
-                "(abridged. Use complete=True to see all fixed parameters)%s" % new_line
+                "(abridged. Use complete=True to see all fixed parameters)%s"
+                % new_line
             )
 
         representation += new_line
@@ -1250,7 +1293,9 @@ class Model(Node):
 
                 elif isinstance(element, IndependentVariable):
 
-                    data["%s (%s)" % (key, "IndependentVariable")] = data.pop(key)
+                    data["%s (%s)" % (key, "IndependentVariable")] = data.pop(
+                        key
+                    )
 
                 elif isinstance(element, Parameter):
 
@@ -1262,7 +1307,9 @@ class Model(Node):
 
                 else:  # pragma: no cover
 
-                    raise ModelInternalError("Found an unknown class at the top level")
+                    raise ModelInternalError(
+                        "Found an unknown class at the top level"
+                    )
 
         return data
 
@@ -1341,7 +1388,9 @@ class Model(Node):
         :return: fluxes
         """
 
-        return list(self._point_sources.values())[id](energies, tag=tag, stokes=stokes)
+        return list(self._point_sources.values())[id](
+            energies, tag=tag, stokes=stokes
+        )
 
     def get_point_source_name(self, id: int) -> str:
 
@@ -1368,7 +1417,9 @@ class Model(Node):
         :return: flux array
         """
 
-        return list(self._extended_sources.values())[id](j2000_ra, j2000_dec, energies)
+        return list(self._extended_sources.values())[id](
+            j2000_ra, j2000_dec, energies
+        )
 
     def get_extended_source_name(self, id: int) -> str:
         """
@@ -1382,13 +1433,15 @@ class Model(Node):
 
     def get_extended_source_boundaries(self, id: int):
 
-        (ra_min, ra_max), (dec_min, dec_max) = list(self._extended_sources.values())[
-            id
-        ].get_boundaries()
+        (ra_min, ra_max), (dec_min, dec_max) = list(
+            self._extended_sources.values()
+        )[id].get_boundaries()
 
         return ra_min, ra_max, dec_min, dec_max
 
-    def is_inside_any_extended_source(self, j2000_ra: float, j2000_dec: float) -> bool:
+    def is_inside_any_extended_source(
+        self, j2000_ra: float, j2000_dec: float
+    ) -> bool:
 
         for ext_source in list(self.extended_sources.values()):
 
@@ -1417,7 +1470,9 @@ class Model(Node):
 
         return len(self._particle_sources)
 
-    def get_particle_source_fluxes(self, id: int, energies: np.ndarray) -> np.ndarray:
+    def get_particle_source_fluxes(
+        self, id: int, energies: np.ndarray
+    ) -> np.ndarray:
         """
         Get the fluxes from the id-th point source
 
