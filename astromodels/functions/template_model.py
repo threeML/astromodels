@@ -48,6 +48,10 @@ class ValuesNotInGrid(ValueError):
 class MissingDataFile(RuntimeError):
     pass
 
+class InvalidTemplateModelFile(RuntimeError):
+    pass
+
+
 
 # This dictionary will keep track of the new classes already created in the current session
 _classes_cache = {}
@@ -597,7 +601,14 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         # use the file shadow to read
 
-        template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
+        try:
+
+            template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
+
+        except Exception:
+
+            raise InvalidTemplateModelFile()
+
 
         self._parameters_grids = collections.OrderedDict()
 
