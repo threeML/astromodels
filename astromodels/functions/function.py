@@ -2477,7 +2477,6 @@ def get_function(function_name, composite_function_expression=None):
 
                     instance = EmulatorModel(function_name)
 
-
                 except Exception as e:
 
                     log.debug(e)
@@ -2495,7 +2494,6 @@ def get_function(function_name, composite_function_expression=None):
                 else:
 
                     return instance
-
 
             else:
 
@@ -2672,6 +2670,28 @@ def _parse_function_expression(function_specification):
                     "probably missing the data file"
                     % (unique_function, function_specification)
                 )
+
+            except astromodels.functions.template_model.InvalidTemplateModelFile:
+
+                # It's not a template
+
+                try:
+
+                    import netspec
+
+                    instance = netspec.EmulatorModel(unique_function)
+
+                except Exception:
+
+                    raise UnknownFunction(
+                        "Function %s in expression %s is unknown. If this is a template model, you are "
+                        "probably missing the data file"
+                        % (unique_function, function_specification)
+                    )
+
+                else:
+
+                    instances[complete_function_specification] = instance
 
             else:
 
