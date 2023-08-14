@@ -12,7 +12,7 @@ import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
-from future.utils import with_metaclass
+
 from interpolation import interp
 from interpolation.splines import eval_linear
 from joblib import Parallel, delayed
@@ -48,9 +48,9 @@ class ValuesNotInGrid(ValueError):
 class MissingDataFile(RuntimeError):
     pass
 
+
 class InvalidTemplateModelFile(RuntimeError):
     pass
-
 
 
 # This dictionary will keep track of the new classes already created in the current session
@@ -63,18 +63,15 @@ class GridInterpolate(object):
         self._values = np.ascontiguousarray(values)
 
     def __call__(self, v):
-
         return eval_linear(self._grid, self._values, v)
 
 
 class UnivariateSpline(object):
     def __init__(self, x, y):
-
         self._x = x
         self._y = y
 
     def __call__(self, v):
-
         return interp(self._x, self._y, v)
 
 
@@ -88,7 +85,6 @@ class TemplateModelFactory(object):
         interpolation_degree: int = 1,
         spline_smoothing_factor: int = 0,
     ):
-
         """
         Creates a template model from inputs
 
@@ -127,7 +123,6 @@ class TemplateModelFactory(object):
         # Store energy grid
 
         if not isinstance(energies, u.Quantity):
-
             log.warning(
                 "Energy unit is not a Quantity instance, so units has not been provided. Using keV."
             )
@@ -146,7 +141,6 @@ class TemplateModelFactory(object):
         ] = collections.OrderedDict()
 
         for parameter_name in names_of_parameters:
-
             self._parameters_grids[parameter_name] = None
 
         self._data_frame = None
@@ -166,7 +160,6 @@ class TemplateModelFactory(object):
         """
 
         if parameter_name not in self._parameters_grids:
-
             log.error(f"Parameter {parameter_name} is not part of this model")
 
             raise AssertionError()
@@ -174,7 +167,6 @@ class TemplateModelFactory(object):
         grid_ = np.array(grid)
 
         if not (grid_.shape[0] > 1):
-
             log.error(
                 "A grid for a parameter must contain at least two elements"
             )
@@ -184,7 +176,6 @@ class TemplateModelFactory(object):
         # Assert that elements are unique
 
         if not np.all(np.unique(grid_) == grid_):
-
             log.error(
                 f"Non-unique elements in grid for parameter {parameter_name}"
             )
@@ -198,13 +189,10 @@ class TemplateModelFactory(object):
         differential_fluxes: np.ndarray,
         **parameters_values_input: Dict[str, float],
     ):
-
         # Verify that the grid has been defined for all parameters
 
         for grid in list(self._parameters_grids.values()):
-
             if grid is None:
-
                 log.error(
                     "You need to define a grid for all parameters, by using the "
                     "define_parameter_grid method."
@@ -217,11 +205,9 @@ class TemplateModelFactory(object):
         # n_par,..., n_energies matrix
 
         if self._data_frame is None:
-
             shape = []
 
             for k, v in self._parameters_grids.items():
-
                 shape.append(len(v))
 
             shape.append(self._energies.shape[0])
@@ -251,9 +237,7 @@ class TemplateModelFactory(object):
         parameter_idx = []
 
         for i, (k, v) in enumerate(self._parameters_grids.items()):
-
             if k not in parameters_values_input:
-
                 log.error(f"Parameter {k} is not in input")
 
                 raise AssertionError()
@@ -267,7 +251,6 @@ class TemplateModelFactory(object):
         # If the user did not specify one of the parameters, then the parameters_values array will contain nan
 
         if not len(parameter_idx) == len(self._parameters_grids):
-
             log.error("You didn't specify all parameters' values.")
 
             raise AssertionError()
@@ -276,7 +259,6 @@ class TemplateModelFactory(object):
         # First we transform the input into a u.Quantity (if it's not already)
 
         if not isinstance(differential_fluxes, u.Quantity):
-
             differential_fluxes = (
                 np.array(differential_fluxes) * 1 / (u.keV * u.s * u.cm**2)
             )  # type: u.Quantity
@@ -290,7 +272,6 @@ class TemplateModelFactory(object):
         # Now let's check for valid inputs
 
         if not self._energies.shape[0] == differential_fluxes.shape[0]:
-
             log.error(
                 "Differential fluxes and energies must have "
                 "the same number of elements"
@@ -301,7 +282,6 @@ class TemplateModelFactory(object):
         # Check that the provided value does not contains nan, inf nor zero (as the interpolation happens in the
         # log space)
         if not np.all(np.isfinite(differential_fluxes)):
-
             log.error(
                 "You have invalid values in the differential flux (nan or inf)"
             )
@@ -309,7 +289,6 @@ class TemplateModelFactory(object):
             raise AssertionError()
 
         if not np.all(differential_fluxes >= 0):
-
             log.error(
                 "You have negative values in the differential flux (which is of "
                 "course impossible)"
@@ -318,7 +297,6 @@ class TemplateModelFactory(object):
             raise AssertionError()
 
         if not np.all(differential_fluxes > 0):
-
             log.warning(
                 "You have zeros in the differential flux. Since the interpolation happens in the log space, "
                 "this cannot be accepted. We will substitute zeros with %g"
@@ -337,11 +315,9 @@ class TemplateModelFactory(object):
         )
 
     def save_data(self, overwrite: bool = False):
-
         # First make sure that the whole data matrix has been filled
 
         if np.any(np.isnan(self._data_frame)):
-
             log.error(
                 "You have NaNs in the data matrix. Usually this means "
                 "that you didn't fill it up completely, or that some of "
@@ -362,15 +338,11 @@ class TemplateModelFactory(object):
 
         # Check that it does not exists
         if filename_sanitized.exists():
-
             if overwrite:
-
                 try:
-
                     os.remove(filename_sanitized)
 
                 except IOError:
-
                     log.error(
                         "The file %s already exists and cannot be removed (maybe you do not have "
                         "permissions to do so?). " % filename_sanitized
@@ -382,7 +354,6 @@ class TemplateModelFactory(object):
                     )
 
             else:
-
                 log.error(
                     "The file %s already exists! You cannot call two different "
                     "template models with the same name" % filename_sanitized
@@ -413,9 +384,7 @@ class TemplateModelFactory(object):
 
 
 def add_method(self, method, name=None):
-
     if name is None:
-
         name = method.__name__
 
     setattr(self.__class__, name, method)
@@ -429,7 +398,6 @@ class RectBivariateSplineWrapper(object):
     """
 
     def __init__(self, *args, **kwargs):
-
         # We can use interp2, which features spline interpolation instead of linear interpolation
 
         self._interpolator = scipy.interpolate.RectBivariateSpline(
@@ -437,7 +405,6 @@ class RectBivariateSplineWrapper(object):
         )
 
     def __call__(self, x):
-
         res = self._interpolator(*x)
 
         return res[0][0]
@@ -461,7 +428,6 @@ class TemplateFile:
     spline_smoothing_factor: float
 
     def save(self, file_name: str):
-
         """
         serialize the contents to a file
 
@@ -471,7 +437,6 @@ class TemplateFile:
 
         """
         with h5py.File(file_name, "w") as f:
-
             f.attrs["name"] = self.name
             f.attrs["description"] = self.description
             f.attrs["interpolation_degree"] = self.interpolation_degree
@@ -487,14 +452,12 @@ class TemplateFile:
             f.create_dataset("parameter_order", data=po)
             par_group = f.create_group("parameters")
             for k in self.parameter_order:
-
                 par_group.create_dataset(
                     k, data=self.parameters[k], compression="gzip"
                 )
 
     @classmethod
     def from_file(cls, file_name: str):
-
         """
         read contents from a file
 
@@ -507,7 +470,6 @@ class TemplateFile:
         """
 
         with h5py.File(file_name, "r") as f:
-
             name = f.attrs["name"]
             description = f.attrs["description"]
             interpolation_degree = f.attrs["interpolation_degree"]
@@ -521,7 +483,6 @@ class TemplateFile:
             parameters = collections.OrderedDict()
 
             for k in parameter_order:
-
                 parameters[k] = f["parameters"][k][()]
 
         return cls(
@@ -537,7 +498,6 @@ class TemplateFile:
 
 
 class TemplateModel(Function1D, metaclass=FunctionMeta):
-
     r"""
     description :
         A template model
@@ -587,7 +547,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         filename_sanitized = data_dir_path.absolute() / f"{model_name}.h5"
 
         if not filename_sanitized.exists():
-
             log.error(
                 f"The data file {filename_sanitized} does not exists. Did you use the "
                 "TemplateFactory?"
@@ -602,27 +561,23 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # use the file shadow to read
 
         try:
-
-            template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
+            template_file: TemplateFile = TemplateFile.from_file(
+                filename_sanitized
+            )
 
         except Exception:
-
             raise InvalidTemplateModelFile()
-
 
         self._parameters_grids = collections.OrderedDict()
 
         for key in template_file.parameter_order:
-
             try:
-
                 # sometimes this is
                 # stored binary
 
                 k = key.decode()
 
-            except (AttributeError):
-
+            except AttributeError:
                 # if not, then we
                 # load as a normal str
 
@@ -660,7 +615,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         parameters["redshift"] = Parameter("redshift", 0.0, free=False)
 
         for parameter_name in list(self._parameters_grids.keys()):
-
             grid = self._parameters_grids[parameter_name]
 
             parameters[parameter_name] = Parameter(
@@ -671,13 +625,11 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             )
 
         if other_name is None:
-
             super(TemplateModel, self).__init__(
                 name, function_definition, parameters
             )
 
         else:
-
             super(TemplateModel, self).__init__(
                 other_name, function_definition, parameters
             )
@@ -685,11 +637,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # Finally prepare the interpolators
 
         with warnings.catch_warnings():
-
             warnings.filterwarnings("ignore", category=RuntimeWarning)
 
             with np.errstate(all="ignore"):
-
                 self._prepare_interpolators(log_interp, template_file.grid)
 
         # try can clean up the file
@@ -699,20 +649,15 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         gc.collect()
 
     def _prepare_interpolators(self, log_interp: bool, data_frame):
-
         # Figure out the shape of the data matrices
         data_shape = [x.shape[0] for x in list(self._parameters_grids.values())]
 
         def _construct_element(i):
-
             with warnings.catch_warnings():
-
                 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
                 with np.errstate(all="ignore"):
-
                     if log_interp:
-
                         this_data = np.array(
                             np.log10(data_frame[..., i]).reshape(*data_shape),
                             dtype=float,
@@ -721,7 +666,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                         self._is_log10 = True
 
                     else:
-
                         # work in linear space
                         this_data = np.array(
                             data_frame[..., i].reshape(*data_shape), dtype=float
@@ -730,7 +674,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                         self._is_log10 = False
 
                     if len(list(self._parameters_grids.values())) == 2:
-
                         x, y = list(self._parameters_grids.values())
 
                         # Make sure that the requested polynomial degree is less than the number of data sets in
@@ -743,7 +686,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                         )
 
                         if len(x) <= self._interpolation_degree:
-
                             log.error(
                                 msg
                                 % (
@@ -756,7 +698,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                             raise RuntimeError()
 
                         if len(y) <= self._interpolation_degree:
-
                             log.error(
                                 msg
                                 % (
@@ -778,7 +719,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                         )
 
                     else:
-
                         # In more than 2d we can only use linear interpolation
 
                         this_interpolator = GridInterpolate(
@@ -803,7 +743,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         self._data_frame = None
 
     def _set_units(self, x_unit, y_unit):
-
         self.K.unit = y_unit
 
         self.scale.unit = 1 / x_unit
@@ -813,13 +752,10 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
     # all the parameters of this template
 
     def evaluate(self, x, K, scale, redshift, *args):
-
         return K * self._interpolate(x * (1 + redshift), scale, args)
 
     def _interpolate(self, energies, scale, parameters_values):
-
         if isinstance(energies, u.Quantity):
-
             # Templates are always saved with energy in keV. We need to transform it to
             # a dimensionless quantity (actually we take the .value property) because otherwise
             # the logarithm below will fail.
@@ -833,11 +769,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             scale = scale.to(1 / u.keV).value
 
         if self._is_log10:
-
             log_energies = np.log10(energies)
 
         else:
-
             log_energies = energies
 
         e_tilde = self._energies * scale
@@ -858,7 +792,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # NOTE: the variable "interpolations" contains already the log10 of the values,
 
         if self._is_log10:
-
             interpolator = UnivariateSpline(
                 np.log10(e_tilde), log_interpolations
             )
@@ -866,7 +799,6 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             values = np.power(10.0, interpolator(log_energies))
 
         else:
-
             interpolator = UnivariateSpline(e_tilde, log_interpolations)
 
             values = interpolator(log_energies)
@@ -904,11 +836,9 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
     @property
     def data_file(self):
-
         return self._data_file
 
     def to_dict(self, minimal=False):
-
         data = super(Function1D, self).to_dict(minimal)
 
         # if not minimal:
@@ -955,9 +885,7 @@ class XSPECTableModel(object):
         self._extract_model()
 
     def _extract_model(self):
-
         with fits.open(self._xspec_file_name) as f:
-
             # get the energies
 
             energies = f["ENERGIES"]
@@ -981,7 +909,6 @@ class XSPECTableModel(object):
                 self._energy = np.sqrt(ene_lo * ene_hi)
 
             else:
-
                 self._energy = (ene_hi + ene_lo) / 2.0
 
             params = f["PARAMETERS"]
@@ -993,23 +920,18 @@ class XSPECTableModel(object):
             self._params_dict = {}
 
             for i, name in enumerate(self._names):
-
                 this_dict = {}
 
                 this_dict["pmin"] = params.data["MINIMUM"][i]
                 this_dict["pmax"] = params.data["MAXIMUM"][i]
                 if self._n_params > 1:
-
                     try:
-
                         this_dict["values"] = spectra.data[f"PARAMVAL{i}"]
 
                     except KeyError:
-
                         this_dict["values"] = spectra.data["PARAMVAL"][:, i]
 
                 else:
-
                     this_dict["values"] = spectra.data["PARAMVAL"]
 
                 self._params_dict[name] = this_dict
@@ -1036,11 +958,9 @@ class XSPECTableModel(object):
         )
 
         for name, param_table in self._params_dict.items():
-
             tmf.define_parameter_grid(name, np.unique(param_table["values"]))
 
         for i in range(self._spectrum.shape[0]):
-
             input_dict = {}
             for k, v in self._params_dict.items():
                 input_dict[k] = v["values"][i]
@@ -1051,7 +971,6 @@ class XSPECTableModel(object):
 
 
 def convert_old_table_model(model_name: str):
-
     from pandas import HDFStore
 
     # Get the data directory
@@ -1063,7 +982,6 @@ def convert_old_table_model(model_name: str):
     filename_sanitized = data_dir_path / f"{model_name}.h5"
 
     if not filename_sanitized.exists():
-
         log.error(
             "The data file %s does not exists. Did you use the "
             "TemplateFactory?" % (filename_sanitized)
@@ -1072,7 +990,6 @@ def convert_old_table_model(model_name: str):
         raise MissingDataFile()
 
     with HDFStore(filename_sanitized) as store:
-
         data_frame = store["data_frame"]
 
         parameters_grids = collections.OrderedDict()
@@ -1080,22 +997,18 @@ def convert_old_table_model(model_name: str):
         processed_parameters = 0
 
         for key in list(store.keys()):
-
             match = re.search("p_([0-9]+)_(.+)", key)
 
             if match is None:
-
                 continue
 
             else:
-
                 tokens = match.groups()
 
                 this_parameter_number = int(tokens[0])
                 this_parameter_name = str(tokens[1])
 
                 if not this_parameter_number == processed_parameters:
-
                     log.error("Parameters out of order!")
 
                     raise AssertionError()
@@ -1113,7 +1026,6 @@ def convert_old_table_model(model_name: str):
         grid = np.zeros(shape)
 
         for i, e in enumerate(energies):
-
             data = data_frame[e].values.reshape(*shape[:-1])
 
             grid[..., i] = data
