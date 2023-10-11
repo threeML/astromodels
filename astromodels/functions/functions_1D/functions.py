@@ -600,7 +600,6 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
     parameters :
 
         K :
-
             desc : Normalization
             initial value : 1.0
             is_normalization : True
