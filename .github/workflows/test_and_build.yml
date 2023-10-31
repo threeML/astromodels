@@ -47,7 +47,7 @@ jobs:
             - name: Install dependencies
               run: |
                   python -m pip install --upgrade pip wheel
-                  pip install --upgrade flake8  coverage pytest-cov cython
+                  pip install --upgrade flake8 coverage pytest-cov cython
                   pip install -e .
             - name: Lint with flake8
               run: |
@@ -104,7 +104,8 @@ jobs:
                   activate-environment: "test_env"
                   auto-activate-base: false
                   architecture: "x64"
-                  mamba-version: "*"
+                  #mamba-version: "*"
+                  miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
