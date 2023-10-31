@@ -204,7 +204,7 @@ class ExtendedSource(Source, Node):
         :return: differential flux at given position and energy
         """
 
-        assert type(lat) == type(lon) and type(lon) == type(
+        assert type(lat) is type(lon) and type(lon) is type(
             energies
         ), "Type mismatch in input of call"
 

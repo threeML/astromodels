@@ -183,7 +183,7 @@ class PropertyBase(Node):
             # In the complete representation we output everything is needed to re-build the object
 
             data["value"] = (
-                self.value if type(self.value) == bool else str(self.value)
+                self.value if type(self.value) is bool else str(self.value)
             )
             data["desc"] = str(self._desc)
             data["allowed values"] = self._to_python_type(self._allowed_values)

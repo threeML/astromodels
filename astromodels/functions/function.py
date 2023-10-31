@@ -1678,7 +1678,7 @@ class Function2D(Function):
         # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
         # this transformation only when strictly required
 
-        assert type(x) == type(y), "You have to use the same type for x and y"
+        assert type(x) is type(y), "You have to use the same type for x and y"
 
         if isinstance(x, np.ndarray):
 
@@ -1847,7 +1847,7 @@ class Function3D(Function):
         # which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform
         # this transformation only when strictly required
 
-        assert type(x) == type(y) and type(y) == type(
+        assert type(x) is type(y) and type(y) is type(
             z
         ), "You have to use the same type for x, y and z"
 
