@@ -914,7 +914,9 @@
         <span class="n">E0</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">alpha</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="n">beta</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">&quot;Alpha cannot be less than beta&quot;</span><span class="p">)</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">beta</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Alpha is currently less than beta. Setting alpha = beta.&quot;</span><span class="p">)</span>
+            <span class="c1">#raise ModelAssertionViolation(&quot;Alpha cannot be less than beta&quot;)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
