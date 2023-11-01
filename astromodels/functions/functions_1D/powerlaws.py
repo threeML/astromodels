@@ -825,7 +825,7 @@ class Band(Function1D, metaclass=FunctionMeta):
         if alpha < beta:
             alpha = beta
             log.warning("Alpha is currently less than beta. Setting alpha = beta.")
-            #raise ModelAssertionViolation("Alpha cannot be less than beta")
+            # raise ModelAssertionViolation("Alpha cannot be less than beta")
 
         if isinstance(x, astropy_units.Quantity):
             alpha_ = alpha.value
