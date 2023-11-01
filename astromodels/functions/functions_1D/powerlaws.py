@@ -502,6 +502,7 @@ class Super_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
 
             desc : Normalization (differential flux at the pivot value)
             initial value : 1.0
+            min : 1e-50
             is_normalization : True
             transformation : log10
 
@@ -688,6 +689,7 @@ class Broken_powerlaw(Function1D, metaclass=FunctionMeta):
 
             desc : Normalization (differential flux at x_b)
             initial value : 1.0
+            min : 1e-50
             is_normalization : True
             transformation : log10
 
@@ -772,6 +774,7 @@ class Band(Function1D, metaclass=FunctionMeta):
 
             desc : Differential flux at the pivot energy
             initial value : 1e-4
+            min : 1e-50
             is_normalization : True
             transformation : log10
 
@@ -824,7 +827,7 @@ class Band(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
             alpha_ = alpha.value
-            beta_ = alpha.value
+            beta_ = beta.value
             K_ = K.value
             E0_ = E0.value
             piv_ = piv.value
@@ -853,6 +856,7 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
 
             desc : Differential flux at the pivot energy
             initial value : 1e-4
+            min : 1e-50
             is_normalization : True
             transformation : log10
 
@@ -958,6 +962,7 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
             desc : integral in the band defined by a and b
             initial value : 1e-6
+            min: 1e-50
             is_normalization : True
             transformation : log10
 
@@ -1124,6 +1129,7 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
 
             desc : Differential flux at the pivot energy
             initial value : 1e-4
+            min : 1e-50
             is_normalization : True
             transformation : log10
 
