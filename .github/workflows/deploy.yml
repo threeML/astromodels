@@ -131,7 +131,8 @@ jobs:
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
                   echo "HOME= ${HOME}"
-                  echo "Building ${PKG_VERSION} ..."
+                  echo "Conda installation path ${CONDA}"
+                  echo "Building ${PKG_VERSION}"
                   
                   #echo "Python version: ${{matrix.python-version}}"
 
@@ -151,7 +152,8 @@ jobs:
                   #conda build --python=${{matrix.python-version}} conda-dist/recipe
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
-                  conda install --use-local astromodels=${PKG_VERSION}
+                  #conda install --use-local astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ astromodels
             - name: Test conda build
               shell: bash -l {0}
               run: |
@@ -159,18 +161,6 @@ jobs:
                   echo "======>  importing XSPEC..."
                   python -c "import astromodels.xspec"
                   python -m pytest -vv --cov=astromodels --cov-report=xml
-
-                  if [[ ${{matrix.os}} == ubuntu-latest ]];
-                  then
-
-                  ls ${CONDA}/envs/test_env/conda-bld/linux-64/*.tar.bz2
-
-                  else
-
-                  ls ${CONDA}/envs/test_env/conda-bld/osx-64/*.tar.bz2
-
-                  fi
-                  
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
