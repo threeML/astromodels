@@ -593,6 +593,7 @@
 
 <span class="sd">            desc : Normalization (differential flux at the pivot value)</span>
 <span class="sd">            initial value : 1.0</span>
+<span class="sd">            min : 1e-50</span>
 <span class="sd">            is_normalization : True</span>
 <span class="sd">            transformation : log10</span>
 
@@ -779,6 +780,7 @@
 
 <span class="sd">            desc : Normalization (differential flux at x_b)</span>
 <span class="sd">            initial value : 1.0</span>
+<span class="sd">            min : 1e-50</span>
 <span class="sd">            is_normalization : True</span>
 <span class="sd">            transformation : log10</span>
 
@@ -863,6 +865,7 @@
 
 <span class="sd">            desc : Differential flux at the pivot energy</span>
 <span class="sd">            initial value : 1e-4</span>
+<span class="sd">            min : 1e-50</span>
 <span class="sd">            is_normalization : True</span>
 <span class="sd">            transformation : log10</span>
 
@@ -915,7 +918,7 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">beta_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">beta_</span> <span class="o">=</span> <span class="n">beta</span><span class="o">.</span><span class="n">value</span>
             <span class="n">K_</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">value</span>
             <span class="n">E0_</span> <span class="o">=</span> <span class="n">E0</span><span class="o">.</span><span class="n">value</span>
             <span class="n">piv_</span> <span class="o">=</span> <span class="n">piv</span><span class="o">.</span><span class="n">value</span>
@@ -944,6 +947,7 @@
 
 <span class="sd">            desc : Differential flux at the pivot energy</span>
 <span class="sd">            initial value : 1e-4</span>
+<span class="sd">            min : 1e-50</span>
 <span class="sd">            is_normalization : True</span>
 <span class="sd">            transformation : log10</span>
 
@@ -1049,6 +1053,7 @@
 
 <span class="sd">            desc : integral in the band defined by a and b</span>
 <span class="sd">            initial value : 1e-6</span>
+<span class="sd">            min: 1e-50</span>
 <span class="sd">            is_normalization : True</span>
 <span class="sd">            transformation : log10</span>
 
@@ -1215,6 +1220,7 @@
 
 <span class="sd">            desc : Differential flux at the pivot energy</span>
 <span class="sd">            initial value : 1e-4</span>
+<span class="sd">            min : 1e-50</span>
 <span class="sd">            is_normalization : True</span>
 <span class="sd">            transformation : log10</span>
 
