@@ -34,7 +34,7 @@ jobs:
           python -m pip install --upgrade pip wheel
 
           python -m pip install numpy numba tempita jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables healpy
-          python -m pip install ebltable black cython
+          python -m pip install ebltable black cython pkgconfig
 
           
       - name: Install the package
@@ -113,15 +113,15 @@ jobs:
           brew install c-blosc
           brew install hdf5
 
-          pip3 install tempita
+          pip3 install tempita tables
           pip3 install cython blosc2
           pip3 install numpy scipy numba astropy
+          pip3 install wheel pkgconfig
 
           python setup.py develop
 
           brew install sphinx-doc pandoc
 
-          pip3 install wheel
           pip3 install mock recommonmark
           pip3 install sphinx-rtd-dark-mode
           pip3 install -U sphinx
@@ -159,13 +159,13 @@ jobs:
           brew install c-blosc
           brew install hdf5
 
-
           pip3 install tempita
+          pip3 install cython blosc2
           pip3 install numpy scipy numba astropy
 
           brew install sphinx-doc pandoc
 
-          pip3 install wheel
+          pip3 install wheel pkgconfig
           pip3 install mock recommonmark
           pip3 install sphinx-rtd-dark-mode sphinx-math-dollar
           pip3 install -r docs/requirements.txt
