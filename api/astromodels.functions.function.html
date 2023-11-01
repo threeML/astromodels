@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.functions.function module &mdash; Astromodels latest documentation</title>
@@ -35,12 +35,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Astromodels
-            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -48,6 +52,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -75,10 +80,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="API.html">API</a> &raquo;</li>
-          <li><a href="astromodels.functions.html">astromodels.functions package</a> &raquo;</li>
-      <li>astromodels.functions.function module</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="API.html">API</a></li>
+          <li class="breadcrumb-item"><a href="astromodels.functions.html">astromodels.functions package</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.function module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,31 +92,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-astromodels.functions.function">
+  <section id="module-astromodels.functions.function">
 <span id="astromodels-functions-function-module"></span><h1>astromodels.functions.function module<a class="headerlink" href="#module-astromodels.functions.function" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="astromodels.functions.function.CompositeFunction">
@@ -179,7 +160,7 @@
 <span class="sig-name descname"><span class="pre">duplicate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/function.html#Function.duplicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.function.Function.duplicate" title="Permalink to this definition"></a></dt>
 <dd><p>Create a copy of the current function with all the parameters equal to the current value</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a new copy of the function</p>
 </dd>
 </dl>
@@ -191,13 +172,13 @@
 <dd><p>Evaluate the function at the given x(,y,z) for the provided parameters, explicitly provided as part of the
 parameter_specification keywords.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>*args</strong> – </p></li>
 <li><p><strong>**parameter_specification</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -218,7 +199,7 @@ parameter_specification keywords.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fixed_units</span></span><a class="headerlink" href="#astromodels.functions.function.Function.fixed_units" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the fixed units if has_fixed_units is True (see has_fixed_units)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None, or a tuple (x_unit, y_unit)</p>
 </dd>
 </dl>
@@ -229,7 +210,7 @@ parameter_specification keywords.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.functions.function.Function.free_parameters" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a dictionary of free parameters for this function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary of free parameters</p>
 </dd>
 </dl>
@@ -241,7 +222,7 @@ parameter_specification keywords.</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -253,7 +234,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -265,7 +246,7 @@ needs to be implemented in subclasses.</p>
 <dd><p>Returns True if this function cannot change units, which is the case only for very specific functions (like
 models from foreign libraries like Xspec)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
 </dd>
 </dl>
@@ -287,7 +268,7 @@ models from foreign libraries like Xspec)</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_prior</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#astromodels.functions.function.Function.is_prior" title="Permalink to this definition"></a></dt>
 <dd><p>Returns False by default and must be overrided in the prior functions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
 </dd>
 </dl>
@@ -306,13 +287,13 @@ models from foreign libraries like Xspec)</p>
 the function can be from another source</p>
 <p>the linked function can be accessed via self.external_functions[internal_name]</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>function</strong> (<em>&quot;Function&quot;</em>) – the function to link.</p></li>
 <li><p><strong>internal_name</strong> (<em>str</em>) – the internal name used to access this in the external_functions dict</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -323,7 +304,7 @@ the function can be from another source</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_dim</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#astromodels.functions.function.Function.n_dim" title="Permalink to this definition"></a></dt>
 <dd><p>number of dimensions for this function (1, 2 or 3)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>return</p>
 </dd>
 </dl>
@@ -348,7 +329,7 @@ the function can be from another source</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">properties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.property.FunctionProperty" title="astromodels.core.property.FunctionProperty"><span class="pre">FunctionProperty</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.functions.function.Function.properties" title="Permalink to this definition"></a></dt>
 <dd><p>return the properties of the function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -364,7 +345,7 @@ the function can be from another source</p>
 <span class="sig-name descname"><span class="pre">unlink_all_external_functions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/function.html#Function.unlink_all_external_functions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.function.Function.unlink_all_external_functions" title="Permalink to this definition"></a></dt>
 <dd><p>unlinks all external functions from this function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -375,10 +356,10 @@ the function can be from another source</p>
 <span class="sig-name descname"><span class="pre">unlink_external_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">internal_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/function.html#Function.unlink_external_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.function.Function.unlink_external_function" title="Permalink to this definition"></a></dt>
 <dd><p>unlink an external function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>internal_name</strong> (<em>str</em>) – </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -390,7 +371,7 @@ the function can be from another source</p>
 <dd><p>Returns the ID of the current function. The ID is used by the CompositeFunction class to keep track of the
 unique instances of each function. It should not be used by the user for any specific purpose.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(none)</p>
 </dd>
 </dl>
@@ -418,7 +399,7 @@ unique instances of each function. It should not be used by the user for any spe
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -430,13 +411,13 @@ override this.</p>
 <dd><p>compute the local spectral index of the model at
 a given set of energies</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – </p></li>
 <li><p><strong>epsilon</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -556,13 +537,13 @@ One or more of the variables can be in the calling sequence. Note that the
 order of the variables will be enforced.
 It will also enforce that the first parameter in the calling sequence is called ‘self’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>function</strong> – the function to check</p></li>
 <li><p><strong>possible_variables</strong> – a list of variables to check, The order is important, and will be enforced</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a tuple containing the list of found variables, and the name of the other parameters in the calling</p>
 </dd>
 </dl>
@@ -633,7 +614,7 @@ It will also enforce that the first parameter in the calling sequence is called 
 <span class="sig-prename descclassname"><span class="pre">astromodels.functions.function.</span></span><span class="sig-name descname"><span class="pre">get_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">composite_function_expression</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/function.html#get_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.function.get_function" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the function “name”, which must be among the known functions or a composite function.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>function_name</strong> – the name of the function (use ‘composite’ if the function is a composite function)</p></li>
 <li><p><strong>composite_function_expression</strong> – composite function specification such as</p></li>
@@ -649,10 +630,10 @@ It will also enforce that the first parameter in the calling sequence is called 
 <span class="sig-prename descclassname"><span class="pre">astromodels.functions.function.</span></span><span class="sig-name descname"><span class="pre">get_function_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/function.html#get_function_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.function.get_function_class" title="Permalink to this definition"></a></dt>
 <dd><p>Return the type for the requested function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>function_name</strong> – the function to return</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the type for that function (i.e., this is a class, not an instance)</p>
 </dd>
 </dl>

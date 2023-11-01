@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome to Astromodels’s documentation! &mdash; Astromodels latest documentation</title>
@@ -34,12 +34,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> Astromodels
-            <img src="_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Astromodels
+              <img src="_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -47,6 +51,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -74,8 +79,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>Welcome to Astromodels’s documentation!</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to Astromodels’s documentation!</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -84,31 +89,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="welcome-to-astromodels-s-documentation">
+  <section id="welcome-to-astromodels-s-documentation">
 <h1>Welcome to Astromodels’s documentation!<a class="headerlink" href="#welcome-to-astromodels-s-documentation" title="Permalink to this heading"></a></h1>
 <section id="about-astromodels">
 <h2>About astromodels<a class="headerlink" href="#about-astromodels" title="Permalink to this heading"></a></h2>
@@ -144,6 +125,15 @@ astropy.modeling and the modeling part of sherpa.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Configuration.html#Configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Configuration.html#use_memoization">use_memoization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Configuration.html#use_parameter_transforms">use_parameter_transforms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Configuration.html#ignore_parameter_bounds">ignore_parameter_bounds</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/function_list.html">Available Functions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/function_list.html#Included-1D-Functions">Included 1D Functions</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Blackbody.html">Blackbody</a></li>
@@ -200,6 +190,10 @@ astropy.modeling and the modeling part of sherpa.</p>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Log_normal.html">Log_normal</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Uniform_prior.html">Uniform_prior</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Log_uniform_prior.html">Log_uniform_prior</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Beta.html">Beta</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Gamma.html">Gamma</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Exponential.html">Exponential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Powerlaw_Prior.html">Powerlaw_Prior</a></li>
 </ul>
 </li>
 </ul>
@@ -229,17 +223,17 @@ astropy.modeling and the modeling part of sherpa.</p>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Point_source_tutorial.html#Converting-between-coordinate-systems">Converting between coordinate systems</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Point_source_tutorial.html#Gotcha-while-accessing-coordinates">Gotcha while accessing coordinates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Point_source_tutorial.html#Fitting-the-source-position">Fitting the source position</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/Point_source_tutorial.html#“Calling”-a-point-source">“Calling” a point source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Point_source_tutorial.html#%22Calling%22-a-point-source">“Calling” a point source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html">Extended source tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#Introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#Available-shapes">Available shapes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#“Moveable”-Functions">“Moveable” Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#%22Moveable%22-Functions">“Moveable” Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#Fixed-position-Functions">Fixed-position Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#“Calling”-extended-sources">“Calling” extended sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#%22Calling%22-extended-sources">“Calling” extended sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#Caveats-and-gotchas">Caveats and gotchas</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#Large-extended-sources">Large extended sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html#Small-extended-sources">Small extended sources</a></li>

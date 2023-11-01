@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.functions.functions_1D.absorption</li>
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.functions_1D.absorption</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -139,7 +144,7 @@
 
 <div class="viewcode-block" id="AbundanceTable.set_table"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>    <span class="k">def</span> <span class="nf">set_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        set the current table from AG89, WILM or ASPL</span>
 
 <span class="sd">        :param table:</span>
@@ -188,7 +193,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">xsect_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        returns the XSECT table for the current model</span>
 
 <span class="sd">        :returns:</span>
@@ -218,7 +223,7 @@
 
 
 <div class="viewcode-block" id="PhAbs"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs">[docs]</a><span class="k">class</span> <span class="nc">PhAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        Photometric absorption (phabs implementation), f(E) = exp(- NH * sigma(E))</span>
 <span class="sd">        contributed by Dominique Eckert</span>
@@ -266,7 +271,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="k">def</span> <span class="nf">_init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the abundance table</span>
 
 <span class="sd">        :param abund_table: &quot;ASPL&quot;, &quot;AG89&quot;</span>
@@ -313,7 +318,7 @@
 
 
 <div class="viewcode-block" id="TbAbs"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs">[docs]</a><span class="k">class</span> <span class="nc">TbAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        Photometric absorption (Tbabs implementation), f(E) = exp(- NH * sigma(E))</span>
 <span class="sd">        contributed by Dominique Eckert</span>
@@ -346,8 +351,6 @@
 <span class="sd">            - ASPL</span>
 <span class="sd">            function: _init_xsect</span>
 
-
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -365,7 +368,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="k">def</span> <span class="nf">_init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the abundance table</span>
 
 <span class="sd">        :param abund_table: &quot;WILM&quot;, &quot;ASPL&quot;, &quot;AG89&quot;</span>
@@ -410,7 +413,7 @@
 
 
 <div class="viewcode-block" id="WAbs"><a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs">[docs]</a><span class="k">class</span> <span class="nc">WAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        Photometric absorption (Wabs implementation), f(E) = exp(- NH * sigma(E))</span>
 <span class="sd">        contributed by Dominique Eckert</span>
@@ -446,7 +449,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="k">def</span> <span class="nf">_init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the abundance table</span>
 
 <span class="sd">        :returns:</span>
@@ -485,7 +488,7 @@
 <span class="k">if</span> <span class="n">has_ebltable</span><span class="p">:</span>
 
     <span class="k">class</span> <span class="nc">EBLattenuation</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 <span class="sd">            Attenuation factor for absorption in the extragalactic background light (EBL) ,</span>
 <span class="sd">            to be used for extragalactic source spectra. Based on package &quot;ebltable&quot; by</span>

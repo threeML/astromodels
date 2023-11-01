@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.utils.angular_distance</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.utils.angular_distance</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -90,7 +95,7 @@
 
 
 <div class="viewcode-block" id="angular_distance_fast"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance_fast">[docs]</a><span class="k">def</span> <span class="nf">angular_distance_fast</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute angular distance using the Haversine formula. Use this one when you know you will never ask for points at</span>
 <span class="sd">    their antipodes. If this is not the case, use the angular_distance function which is slower, but works also for</span>
 <span class="sd">    antipodes.</span>
@@ -118,7 +123,7 @@
 
 
 <div class="viewcode-block" id="angular_distance"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance">[docs]</a><span class="k">def</span> <span class="nf">angular_distance</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the angular distance between two points, two sets of points, or a set of points and one point.</span>
 
 <span class="sd">    :param ra1: array or float, longitude of first point(s)</span>
@@ -150,7 +155,7 @@
 
 
 <div class="viewcode-block" id="spherical_angle"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.spherical_angle">[docs]</a><span class="k">def</span> <span class="nf">spherical_angle</span><span class="p">(</span><span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the spherical angle distance between two sets of great circles defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)</span>
 
 <span class="sd">    :param ra0: array or float, longitude of intersection point(s)</span>

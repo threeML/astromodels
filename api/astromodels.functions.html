@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.functions package &mdash; Astromodels latest documentation</title>
@@ -35,12 +35,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Astromodels
-            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -48,6 +52,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -75,9 +80,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="API.html">API</a> &raquo;</li>
-      <li>astromodels.functions package</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="API.html">API</a></li>
+      <li class="breadcrumb-item active">astromodels.functions package</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -86,31 +91,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="astromodels-functions-package">
+  <section id="astromodels-functions-package">
 <h1>astromodels.functions package<a class="headerlink" href="#astromodels-functions-package" title="Permalink to this heading"></a></h1>
 <section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
@@ -214,7 +195,7 @@ max : 90.0</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -226,7 +207,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -254,7 +235,6 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>desc : Differential flux at the pivot energy
 initial value : 1e-4
-min : 1e-50
 is_normalization : True
 transformation : log10</p>
 </div></blockquote>
@@ -338,7 +318,6 @@ transformation : log10</p>
 <blockquote>
 <div><p>desc : integral in the band defined by a and b
 initial value : 1e-6
-min: 1e-50
 is_normalization : True
 transformation : log10</p>
 </div></blockquote>
@@ -397,7 +376,6 @@ fix : yes</p>
 <blockquote>
 <div><p>desc : Differential flux at the pivot energy
 initial value : 1e-4
-min : 1e-50
 is_normalization : True
 transformation : log10</p>
 </div></blockquote>
@@ -437,6 +415,60 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.Band_grbm.info">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Band_grbm.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.Beta">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">Beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Beta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Beta" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A beta distribution function</p>
+</div></blockquote>
+<p>latex : $ f(x, a, b)=frac{Gamma(a+b) x^{a-1}(1-x)^{b-1}}{Gamma(a) Gamma(b)}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>a :</p>
+<blockquote>
+<div><p>desc : first shape parameter
+initial value : 0.5
+min: 0.</p>
+</div></blockquote>
+<p>b :</p>
+<blockquote>
+<div><p>desc : second shape parameter
+initial value : 0.5
+min: 0.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Beta.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Beta.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Beta.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Beta.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Beta.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Beta.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Beta.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Beta.info" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -491,7 +523,6 @@ min: 0.</p>
 <blockquote>
 <div><p>desc : Normalization (differential flux at x_b)
 initial value : 1.0
-min : 1e-50
 is_normalization : True
 transformation : log10</p>
 </div></blockquote>
@@ -580,14 +611,14 @@ min : 1e-12</p>
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cauchy.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Cauchy.from_unit_cube" title="Permalink to this definition"></a></dt>
 <dd><p>Used by multinest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
 <li><p><strong>lower_bound</strong> – </p></li>
 <li><p><strong>upper_bound</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -711,7 +742,7 @@ fix : yes</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -723,7 +754,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -825,7 +856,7 @@ max : 10.</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -837,7 +868,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -924,7 +955,7 @@ fix : yes</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -936,7 +967,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -990,14 +1021,14 @@ initial value : 1.0</p>
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Cosine_Prior.from_unit_cube" title="Permalink to this definition"></a></dt>
 <dd><p>Used by multinest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
 <li><p><strong>lower_bound</strong> – </p></li>
 <li><p><strong>upper_bound</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -1009,7 +1040,7 @@ initial value : 1.0</p>
 <dd><p>Returns True if this function cannot change units, which is the case only for very specific functions (like
 models from foreign libraries like Xspec)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
 </dd>
 </dl>
@@ -1357,7 +1388,7 @@ max : 20</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -1369,7 +1400,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -1378,6 +1409,106 @@ needs to be implemented in subclasses.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.Disk_on_sphere.info">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Disk_on_sphere.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.DoubleSmoothlyBrokenPowerlaw">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">DoubleSmoothlyBrokenPowerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.DoubleSmoothlyBrokenPowerlaw" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</p>
+<p>latex : $begin{array}{l}begin{aligned}f(x)=&amp; A x_{mathrm{b}}^{alpha_{1}}left[left[left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right.\&amp;left.+left(frac{x}{x_{mathrm{j}}}right)^{-beta n_{2}} cdotleft[left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right]^{-frac{1}{n_{2}}}end{aligned}\text { where }\x_{mathrm{j}}=x_{mathrm{p}} cdotleft(-frac{alpha_{2}+2}{beta+2}right)^{frac{1}{left.beta-alpha_{2}right) n_{2}}}end{array}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>K :</p>
+<blockquote>
+<div><p>desc : Differential flux at the pivot energy
+initial value : 1e-4
+is_normalization : True
+transformation : log10</p>
+</div></blockquote>
+<p>alpha1 :</p>
+<blockquote>
+<div><p>desc : photon index below xb
+initial value : -0.66</p>
+</div></blockquote>
+<p>xb :</p>
+<blockquote>
+<div><p>desc : break energy below xp
+initial value : 100
+min : 1e-10
+transformation : log10</p>
+</div></blockquote>
+<p>n1 :</p>
+<blockquote>
+<div><p>desc : curvature of the first break
+initial value : 2.0
+min : 0
+fix: True</p>
+</div></blockquote>
+<p>alpha2 :</p>
+<blockquote>
+<div><p>desc : photon index between xb and xp
+initial value : -1.5</p>
+</div></blockquote>
+<p>xp :</p>
+<blockquote>
+<div><p>desc : nuFnu peak
+initial value : 300
+min : 1e-10
+transformation : log10</p>
+</div></blockquote>
+<p>n2 :</p>
+<blockquote>
+<div><p>desc : curvature of the break at xp
+initial value : 2.0
+min : 0
+fix: True</p>
+</div></blockquote>
+<p>beta :</p>
+<blockquote>
+<div><p>desc : photon index above xp
+initial value : -2.5
+max : 2</p>
+</div></blockquote>
+<p>piv :</p>
+<blockquote>
+<div><p>desc : pivot energy
+initial value : 1.
+fix : yes</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.DoubleSmoothlyBrokenPowerlaw.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">piv</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.DoubleSmoothlyBrokenPowerlaw.fix_curvature">
+<span class="sig-name descname"><span class="pre">fix_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.fix_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.fix_curvature" title="Permalink to this definition"></a></dt>
+<dd><p>fix the two curvature parameters n1, n2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.DoubleSmoothlyBrokenPowerlaw.free_curvature">
+<span class="sig-name descname"><span class="pre">free_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.free_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.free_curvature" title="Permalink to this definition"></a></dt>
+<dd><p>free the two curvature parameters n1, n2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.DoubleSmoothlyBrokenPowerlaw.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.info" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1450,7 +1581,7 @@ max : 90.0</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -1462,7 +1593,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -1491,6 +1622,54 @@ needs to be implemented in subclasses.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="astromodels.functions.Ellipse_on_sphere.lon2">
 <span class="sig-name descname"><span class="pre">lon2</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#astromodels.functions.Ellipse_on_sphere.lon2" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.Exponential">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">Exponential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Exponential"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Exponential" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>An exponential distribution function</p>
+</div></blockquote>
+<p>latex : $ f(x, alpha) = alphaexp(-alpha x)$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>alpha :</p>
+<blockquote>
+<div><p>desc : first shape parameter
+initial value : 1
+min: 0.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Exponential.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Exponential.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Exponential.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Exponential.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Exponential.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Exponential.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Exponential.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Exponential.info" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1552,7 +1731,7 @@ min : 1</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -1564,13 +1743,13 @@ override this.</p>
 <dd><p>compute the local spectral index of the model at
 a given set of energies</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – </p></li>
 <li><p><strong>epsilon</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -1678,13 +1857,13 @@ One or more of the variables can be in the calling sequence. Note that the
 order of the variables will be enforced.
 It will also enforce that the first parameter in the calling sequence is called ‘self’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>function</strong> – the function to check</p></li>
 <li><p><strong>possible_variables</strong> – a list of variables to check, The order is important, and will be enforced</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a tuple containing the list of found variables, and the name of the other parameters in the calling</p>
 </dd>
 </dl>
@@ -1750,7 +1929,7 @@ fix : yes</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -1766,10 +1945,10 @@ override this.</p>
 <span class="sig-name descname"><span class="pre">set_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.set_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GalPropTemplate_3D.set_frame" title="Permalink to this definition"></a></dt>
 <dd><p>Set a new frame for the coordinates (the default is ICRS J2000)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_frame</strong> – a coordinate frame from astropy</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>(none)</p>
 </dd>
 </dl>
@@ -1783,6 +1962,60 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.GalPropTemplate_3D.which_model_file">
 <span class="sig-name descname"><span class="pre">which_model_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.which_model_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GalPropTemplate_3D.which_model_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.Gamma">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">Gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Gamma" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>A gamma distribution function</p>
+</div></blockquote>
+<p>latex : $ f(x, alpha, beta)=frac{beta^alpha x^{alpha-1} e^{-beta x}}{Gamma(alpha)}$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>alpha :</p>
+<blockquote>
+<div><p>desc : first shape parameter
+initial value : 0.5
+min: 0.</p>
+</div></blockquote>
+<p>beta :</p>
+<blockquote>
+<div><p>desc : second shape parameter
+initial value : 1.
+min: 0.</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Gamma.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gamma.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Gamma.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Gamma.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gamma.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Gamma.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Gamma.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Gamma.info" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1832,14 +2065,14 @@ min : 1e-12</p>
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gaussian.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Gaussian.from_unit_cube" title="Permalink to this definition"></a></dt>
 <dd><p>Used by multinest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
 <li><p><strong>lower_bound</strong> – </p></li>
 <li><p><strong>upper_bound</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -1896,7 +2129,7 @@ max : 20</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -1908,7 +2141,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -1917,6 +2150,56 @@ needs to be implemented in subclasses.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.Gaussian_on_sphere.info">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Gaussian_on_sphere.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">GenericFunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#GenericFunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GenericFunction" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Return k*f(x)</p>
+</div></blockquote>
+<p>latex : $ k $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>k :</p>
+<blockquote>
+<div><p>desc : Constant value
+initial value : 1</p>
+</div></blockquote>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#GenericFunction.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GenericFunction.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction.function">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">function</span></span><a class="headerlink" href="#astromodels.functions.GenericFunction.function" title="Permalink to this definition"></a></dt>
+<dd><p>Get/set function</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction.get_function">
+<span class="sig-name descname"><span class="pre">get_function</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#GenericFunction.get_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GenericFunction.get_function" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.GenericFunction.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction.set_function">
+<span class="sig-name descname"><span class="pre">set_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#GenericFunction.set_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GenericFunction.set_function" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.GenericFunction.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/functions.html#GenericFunction.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GenericFunction.to_dict" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2010,7 +2293,7 @@ initial value : 30</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -2022,7 +2305,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -2038,10 +2321,10 @@ needs to be implemented in subclasses.</p>
 <span class="sig-name descname"><span class="pre">set_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Latitude_galactic_diffuse.set_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Latitude_galactic_diffuse.set_frame" title="Permalink to this definition"></a></dt>
 <dd><p>Set a new frame for the coordinates (the default is ICRS J2000)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_frame</strong> – a coordinate frame from astropy</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>(none)</p>
 </dd>
 </dl>
@@ -2134,14 +2417,14 @@ fix : yes</p>
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_normal.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Log_normal.from_unit_cube" title="Permalink to this definition"></a></dt>
 <dd><p>Used by multinest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
 <li><p><strong>lower_bound</strong> – </p></li>
 <li><p><strong>upper_bound</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -2167,16 +2450,14 @@ using the other convention.</p>
 <p>latex : $ K left( frac{x}{piv} right)^{alpha -beta log{left( frac{x}{piv} right)}} $</p>
 <p>parameters :</p>
 <blockquote>
-<div><p>K :</p>
-<blockquote>
-<div><p>desc : Normalization
+<div><dl class="simple">
+<dt>K :</dt><dd><p>desc : Normalization
 initial value : 1.0
 is_normalization : True
 transformation : log10
 min : 1e-30
 max : 1e5</p>
-</div></blockquote>
-<dl class="simple">
+</dd>
 <dt>piv :</dt><dd><p>desc : Pivot (keep this fixed)
 initial value : 1
 fix : yes</p>
@@ -2208,7 +2489,7 @@ initial value : 1.0</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peak_energy</span></span><a class="headerlink" href="#astromodels.functions.Log_parabola.peak_energy" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the peak energy in the nuFnu spectrum</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>peak energy in keV</p>
 </dd>
 </dl>
@@ -2259,14 +2540,14 @@ fix : yes</p>
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_uniform_prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Log_uniform_prior.from_unit_cube" title="Permalink to this definition"></a></dt>
 <dd><p>Used by multinest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
 <li><p><strong>lower_bound</strong> – </p></li>
 <li><p><strong>upper_bound</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -2517,7 +2798,7 @@ fix : yes</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -2529,7 +2810,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -2645,6 +2926,64 @@ fix: yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.Powerlaw_Eflux.info">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Powerlaw_Eflux.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.Powerlaw_Prior">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">Powerlaw_Prior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Powerlaw_Prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Powerlaw_Prior" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>An power law distribution function between a-b</p>
+</div></blockquote>
+<p>latex : $ f(x, alpha) = alpha x^{alpha-1)$</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>alpha :</p>
+<blockquote>
+<div><p>desc : slope parameter
+initial value : 1
+min: 0.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>a :</dt><dd><p>desc: lower bound of distribution
+initial value : 0.
+min: 0.</p>
+</dd>
+<dt>b:</dt><dd><p>desc: upper bound of distribution
+initial value: 1
+min: 0.</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Powerlaw_Prior.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Powerlaw_Prior.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Powerlaw_Prior.evaluate" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Powerlaw_Prior.from_unit_cube">
+<span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Powerlaw_Prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Powerlaw_Prior.from_unit_cube" title="Permalink to this definition"></a></dt>
+<dd><p>Used by multinest</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
+<li><p><strong>lower_bound</strong> – </p></li>
+<li><p><strong>upper_bound</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Powerlaw_Prior.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Powerlaw_Prior.info" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -2970,7 +3309,7 @@ allowed values:
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -2982,7 +3321,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -3128,7 +3467,6 @@ initial value : 1.0</p>
 <blockquote>
 <div><p>desc : Normalization (differential flux at the pivot value)
 initial value : 1.0
-min : 1e-50
 is_normalization : True
 transformation : log10</p>
 </div></blockquote>
@@ -3250,6 +3588,11 @@ observer frame energy. Fix this to 1 to neutralize its effect.</p>
 <p>initial value : 1.0
 min : 1e-5</p>
 </dd>
+<dt>redshift:</dt><dd><p>desc: redshift the energies
+initial value: 0.
+min: 0
+fix: True</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -3260,7 +3603,7 @@ min : 1e-5</p>
 table models in memory for simulations, you may want to call
 clean on the model try and remove some of the memory consumed by the models</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -3273,7 +3616,7 @@ clean on the model try and remove some of the memory consumed by the models</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.TemplateModel.evaluate">
-<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#TemplateModel.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.TemplateModel.evaluate" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">redshift</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#TemplateModel.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.TemplateModel.evaluate" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3422,14 +3765,14 @@ initial value : 1.0</p>
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Uniform_prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Uniform_prior.from_unit_cube" title="Permalink to this definition"></a></dt>
 <dd><p>Used by multinest</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>x</strong> – 0 &lt; x &lt; 1</p></li>
 <li><p><strong>lower_bound</strong> – </p></li>
 <li><p><strong>upper_bound</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -3496,17 +3839,17 @@ fix: True</p>
 <span class="sig-name descname"><span class="pre">to_table_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#XSPECTableModel.to_table_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.XSPECTableModel.to_table_model" title="Permalink to this definition"></a></dt>
 <dd><p>Write the table model to your local astromodels database</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_name</strong> – name of file to store</p></li>
 <li><p><strong>model_name</strong> – name of the model</p></li>
 <li><p><strong>overwrite</strong> – overwite the previous model</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -3573,10 +3916,10 @@ allowed values:
 <span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">get_polynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><span class="pre">Function1D</span></a></span></span><a class="reference internal" href="../_modules/astromodels/functions/functions_1D/polynomials.html#get_polynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.get_polynomial" title="Permalink to this definition"></a></dt>
 <dd><p>get a polynomial function of order</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – the order of the polynomical</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>

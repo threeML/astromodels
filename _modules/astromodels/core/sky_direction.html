@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.core.sky_direction</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.core.sky_direction</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -107,13 +112,13 @@
 
 
 <div class="viewcode-block" id="SkyDirection"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection">[docs]</a><span class="k">class</span> <span class="nc">SkyDirection</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    This is essentially a wrapper around astropy.coordinates.SkyCoord with a possibility for</span>
 <span class="sd">    being serialized and deserialized with YAML.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="s2">&quot;J2000&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        :param ra: Right Ascension in degrees</span>
 <span class="sd">        :param dec: Declination in degrees</span>
@@ -225,7 +230,7 @@
         <span class="k">return</span> <span class="n">parameter</span>
 
 <div class="viewcode-block" id="SkyDirection.get_ra"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_ra">[docs]</a>    <span class="k">def</span> <span class="nf">get_ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get R.A. corresponding to the current position (ICRS, J2000)</span>
 
 <span class="sd">        :return: Right Ascension</span>
@@ -242,7 +247,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span></div>
 
 <div class="viewcode-block" id="SkyDirection.get_dec"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_dec">[docs]</a>    <span class="k">def</span> <span class="nf">get_dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Dec. corresponding to the current position (ICRS, J2000)</span>
 
 <span class="sd">        :return: Declination</span>
@@ -259,7 +264,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span></div>
 
 <div class="viewcode-block" id="SkyDirection.get_l"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_l">[docs]</a>    <span class="k">def</span> <span class="nf">get_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Galactic Longitude (l) corresponding to the current position</span>
 
 <span class="sd">        :return: Galactic Longitude</span>
@@ -276,7 +281,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sky_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span></div>
 
 <div class="viewcode-block" id="SkyDirection.get_b"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_b">[docs]</a>    <span class="k">def</span> <span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get Galactic latitude (b) corresponding to the current position</span>
 
 <span class="sd">        :return: Latitude</span>
@@ -314,7 +319,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">sky_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return an instance of astropy.coordinates.SkyCoord which can be used to make all transformations supported</span>
 <span class="sd">        by it</span>
 
@@ -324,7 +329,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the dictionary of parameters (either ra,dec or l,b)</span>
 
 <span class="sd">        :return: dictionary of parameters</span>
@@ -340,7 +345,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">equinox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the equinox for the coordinates.</span>
 
 <span class="sd">        :return:</span>
@@ -366,7 +371,7 @@
         <span class="k">return</span> <span class="n">data</span></div>
 
 <div class="viewcode-block" id="SkyDirection.fix"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.fix">[docs]</a>    <span class="k">def</span> <span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
 <span class="sd">        has been instanced)</span>
 
@@ -383,7 +388,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="SkyDirection.free"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.free">[docs]</a>    <span class="k">def</span> <span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Free the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
 <span class="sd">        has been instanced)</span>
 

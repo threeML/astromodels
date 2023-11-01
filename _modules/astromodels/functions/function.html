@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.functions.function</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.function</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -200,7 +205,7 @@
 
 <span class="c1"># The following is a metaclass for all the functions</span>
 <div class="viewcode-block" id="FunctionMeta"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.FunctionMeta">[docs]</a><span class="k">class</span> <span class="nc">FunctionMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A metaclass for the models, which takes care of setting up the parameters and the other attributes</span>
 <span class="sd">    according to the definition given in the documentation of the function class.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -214,7 +219,9 @@
 
         <span class="k">if</span> <span class="s2">&quot;evaluate&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You have to implement the &#39;evaluate&#39; method in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;You have to implement the &#39;evaluate&#39; method in </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+            <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span>
 
@@ -243,8 +250,8 @@
                 <span class="s2">&quot;Docstring parsing has failed. &quot;</span>
                 <span class="s2">&quot;Did you remember to specify the docstring of </span><span class="si">%s</span><span class="s2"> as raw? &quot;</span>
                 <span class="s2">&quot;To do that, you have to put a r before the docstring, &quot;</span>
-                <span class="sd">&#39;&#39;&#39;like in \n\nr&quot;&quot;&quot;\n(docstring)\n&quot;&quot;&quot;\n\ninstead of just\n\n&#39;&#39;&#39;</span>
-                <span class="sd">&#39;&#39;&#39;&quot;&quot;&quot;\ndocstring\n&quot;&quot;&quot;&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">name</span>
+<span class="w">                </span><span class="sd">&#39;&#39;&#39;like in \n\nr&quot;&quot;&quot;\n(docstring)\n&quot;&quot;&quot;\n\ninstead of just\n\n&#39;&#39;&#39;</span>
+<span class="w">                </span><span class="sd">&#39;&#39;&#39;&quot;&quot;&quot;\ndocstring\n&quot;&quot;&quot;&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">name</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="n">DocstringIsNotRaw</span><span class="p">()</span>
@@ -334,7 +341,9 @@
 
                 <span class="k">if</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;_properties&quot;</span><span class="p">]:</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;you must specify unique parameters and propert names&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="s2">&quot;you must specify unique parameters and propert names&quot;</span>
+                    <span class="p">)</span>
 
                     <span class="k">raise</span> <span class="n">DesignViolation</span><span class="p">()</span>
 
@@ -421,9 +430,9 @@
 
             <span class="k">for</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dct</span><span class="p">[</span><span class="s2">&quot;_parameters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
 
-                <span class="n">repr_dict</span><span class="p">[</span><span class="s2">&quot;default parameters&quot;</span><span class="p">][</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;_parameters&quot;</span><span class="p">][</span>
-                    <span class="n">parameter_name</span>
-                <span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="n">repr_dict</span><span class="p">[</span><span class="s2">&quot;default parameters&quot;</span><span class="p">][</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span>
+                    <span class="s2">&quot;_parameters&quot;</span>
+                <span class="p">][</span><span class="n">parameter_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;_properties&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -432,9 +441,9 @@
 
                 <span class="k">for</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">dct</span><span class="p">[</span><span class="s2">&quot;_properties&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
 
-                    <span class="n">repr_dict</span><span class="p">[</span><span class="s2">&quot;default properties&quot;</span><span class="p">][</span><span class="n">property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;_properties&quot;</span><span class="p">][</span>
-                        <span class="n">property_name</span>
-                    <span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                    <span class="n">repr_dict</span><span class="p">[</span><span class="s2">&quot;default properties&quot;</span><span class="p">][</span><span class="n">property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">dct</span><span class="p">[</span>
+                        <span class="s2">&quot;_properties&quot;</span>
+                    <span class="p">][</span><span class="n">property_name</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">has_ipython</span><span class="p">:</span>
 
@@ -547,7 +556,8 @@
 
                         <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                             <span class="s2">&quot;You specified an init value for </span><span class="si">%s</span><span class="s2">, which is not a &quot;</span>
-                            <span class="s2">&quot;parameter of function </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+                            <span class="s2">&quot;parameter of function </span><span class="si">%s</span><span class="s2">&quot;</span>
+                            <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
                         <span class="p">)</span>
 
                         <span class="k">raise</span> <span class="n">UnknownParameter</span><span class="p">()</span>
@@ -597,13 +607,15 @@
         <span class="c1"># Last, if the class provides a setup method, call it</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s2">&quot;_setup&quot;</span><span class="p">):</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running setup of </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running setup of </span><span class="si">{</span><span class="n">instance</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="n">instance</span><span class="o">.</span><span class="n">_setup</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="FunctionMeta.check_calling_sequence"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.FunctionMeta.check_calling_sequence">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">check_calling_sequence</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">possible_variables</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">check_calling_sequence</span><span class="p">(</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">possible_variables</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check the calling sequence for the function looking for the variables specified.</span>
 <span class="sd">        One or more of the variables can be in the calling sequence. Note that the</span>
 <span class="sd">        order of the variables will be enforced.</span>
@@ -640,7 +652,9 @@
 
         <span class="c1"># Figure out how many variables are used</span>
 
-        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">var</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">calling_sequence</span> <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">possible_variables</span><span class="p">]</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">var</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">calling_sequence</span> <span class="k">if</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">possible_variables</span>
+        <span class="p">]</span>
 
         <span class="c1"># Check that they actually make sense. They must be used in the same order</span>
         <span class="c1"># as specified in possible_variables</span>
@@ -668,13 +682,17 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
         <span class="n">other_parameters</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">var</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">calling_sequence</span> <span class="k">if</span> <span class="n">var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">variables</span> <span class="ow">and</span> <span class="n">var</span> <span class="o">!=</span> <span class="s2">&quot;self&quot;</span>
+            <span class="n">var</span>
+            <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">calling_sequence</span>
+            <span class="k">if</span> <span class="n">var</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">variables</span> <span class="ow">and</span> <span class="n">var</span> <span class="o">!=</span> <span class="s2">&quot;self&quot;</span>
         <span class="p">]</span>
 
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">other_parameters</span></div>
 
 <div class="viewcode-block" id="FunctionMeta.parse_parameter_definition"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.FunctionMeta.parse_parameter_definition">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">parse_parameter_definition</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">definition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parameter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">parse_parameter_definition</span><span class="p">(</span>
+        <span class="n">func_name</span><span class="p">,</span> <span class="n">par_name</span><span class="p">,</span> <span class="n">definition</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parameter</span><span class="p">:</span>
 
         <span class="c1"># Parse definition of parameter</span>
 
@@ -714,9 +732,9 @@
 
             <span class="n">unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">])</span>
 
-            <span class="k">if</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">==</span> <span class="n">unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
-                <span class="n">unit</span><span class="o">.</span><span class="n">scale</span> <span class="o">!=</span> <span class="mi">1</span>
-            <span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">u</span><span class="o">.</span><span class="n">dimensionless_unscaled</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">==</span> <span class="n">unit</span><span class="o">.</span><span class="n">physical_type</span>
+            <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">unit</span><span class="o">.</span><span class="n">scale</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
 
                 <span class="c1"># some xpsec models list the unit as a number</span>
                 <span class="c1"># but this screws things up</span>
@@ -746,9 +764,17 @@
 
         <span class="c1"># Optional attributes are either None if not specified, or the value specified</span>
 
-        <span class="n">min_value</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="n">_parse_value</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">])</span>
-        <span class="n">max_value</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="n">_parse_value</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">])</span>
-        <span class="n">delta</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;delta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="n">_parse_value</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">])</span>
+        <span class="n">min_value</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;min&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="n">_parse_value</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">max_value</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span> <span class="k">if</span> <span class="s2">&quot;max&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="n">_parse_value</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">None</span>
+            <span class="k">if</span> <span class="s2">&quot;delta&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span>
+            <span class="k">else</span> <span class="n">_parse_value</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;delta&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
         <span class="n">unit</span> <span class="o">=</span> <span class="n">du</span>
 
         <span class="c1"># A parameter can be fixed by using fix=yes, otherwise it is free by default</span>
@@ -783,13 +809,17 @@
         <span class="k">return</span> <span class="n">new_parameter</span></div>
 
 <div class="viewcode-block" id="FunctionMeta.parse_property_definition"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.FunctionMeta.parse_property_definition">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">parse_property_definition</span><span class="p">(</span><span class="n">func_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">definition</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionProperty</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">parse_property_definition</span><span class="p">(</span>
+        <span class="n">func_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">definition</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionProperty</span><span class="p">:</span>
 
         <span class="c1"># Parse definition of parameter</span>
 
         <span class="c1"># see if we required a value at class construction</span>
 
-        <span class="n">deferred</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="s2">&quot;defer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="nb">bool</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;defer&quot;</span><span class="p">])</span>
+        <span class="n">deferred</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="kc">False</span> <span class="k">if</span> <span class="s2">&quot;defer&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">definition</span> <span class="k">else</span> <span class="nb">bool</span><span class="p">(</span><span class="n">definition</span><span class="p">[</span><span class="s2">&quot;defer&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
 
         <span class="c1"># Enforce the presence of attributes &#39;value&#39; and &#39;desc&#39;</span>
 
@@ -865,7 +895,7 @@
 
 
 <div class="viewcode-block" id="Function"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function">[docs]</a><span class="k">class</span> <span class="nc">Function</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generic Function class. Will be subclassed in Function1D, Function2D and Function3D.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -882,7 +912,11 @@
         <span class="c1"># calling sequence of this contructor. We actually need to enforce its proper use,</span>
         <span class="c1"># with this assert</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">function_definition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">function_definition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="p">(</span><span class="n">parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">):</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;improper call&quot;</span><span class="p">)</span>
 
@@ -957,18 +991,20 @@
 
         <span class="c1"># stores any extrernally linked functions</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;Function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
+            <span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;Function&quot;</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">n_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :return: number of dimensions for this function (1, 2 or 3)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_n_dim</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a dictionary of free parameters for this function</span>
 
 <span class="sd">        :return: dictionary of free parameters</span>
@@ -982,7 +1018,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns True or False depending on if any parameters are free</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -992,7 +1028,7 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">_get_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Parameter</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        return a tuple of parameters</span>
 <span class="sd">        similar to get_children but for functions</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1001,7 +1037,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProperty</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        return the properties of the function</span>
 
 <span class="sd">        :returns:</span>
@@ -1016,7 +1052,7 @@
 
 <div class="viewcode-block" id="Function.link_external_function"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.link_external_function">[docs]</a>    <span class="k">def</span> <span class="nf">link_external_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">:</span> <span class="s2">&quot;Function&quot;</span><span class="p">,</span> <span class="n">internal_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        link and external function to this function for use in its evaluate method.</span>
 <span class="sd">        the function can be from another source</span>
 
@@ -1045,11 +1081,13 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">[</span><span class="n">internal_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">function</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has now linked </span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> as </span><span class="si">{</span><span class="n">internal_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has now linked </span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> as </span><span class="si">{</span><span class="n">internal_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Function.unlink_external_function"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.unlink_external_function">[docs]</a>    <span class="k">def</span> <span class="nf">unlink_external_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        unlink an external function</span>
 
 <span class="sd">        :param internal_name:</span>
@@ -1068,7 +1106,7 @@
 
 <div class="viewcode-block" id="Function.unlink_all_external_functions"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.unlink_all_external_functions">[docs]</a>    <span class="k">def</span> <span class="nf">unlink_all_external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        unlinks all external functions from this function</span>
 
 <span class="sd">        :returns:</span>
@@ -1107,7 +1145,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_generate_uuid</span><span class="p">():</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Generate a unique identifier for this function.</span>
 
 <span class="sd">        :return: the UUID</span>
@@ -1115,7 +1153,7 @@
         <span class="k">return</span> <span class="n">uuid</span><span class="o">.</span><span class="n">UUID</span><span class="p">(</span><span class="nb">bytes</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">),</span> <span class="n">version</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Function.has_fixed_units"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.has_fixed_units">[docs]</a>    <span class="k">def</span> <span class="nf">has_fixed_units</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns True if this function cannot change units, which is the case only for very specific functions (like</span>
 <span class="sd">        models from foreign libraries like Xspec)</span>
 
@@ -1126,7 +1164,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">is_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns False by default and must be overrided in the prior functions.</span>
 
 <span class="sd">        :return: True or False</span>
@@ -1136,7 +1174,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fixed_units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the fixed units if has_fixed_units is True (see has_fixed_units)</span>
 
 <span class="sd">        :return: None, or a tuple (x_unit, y_unit)</span>
@@ -1146,7 +1184,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a description for this function</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1155,14 +1193,14 @@
     <span class="c1"># Add a property returning the parameters dictionary</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a dictionary of parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">latex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the LaTEX formula for this function</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_function_definition</span><span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">]</span>
@@ -1171,7 +1209,7 @@
     <span class="c1"># instance of a CompositeFunction, which can then be used as a function on its own</span>
 
 <div class="viewcode-block" id="Function.of"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.of">[docs]</a>    <span class="k">def</span> <span class="nf">of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">another_function</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compose this function with another as in this_function(another_function(x))</span>
 <span class="sd">        :param another_function: another function to compose with the current one</span>
 <span class="sd">        :return: a composite function instance</span>
@@ -1262,7 +1300,7 @@
 
                 <span class="n">other_instance</span><span class="o">.</span><span class="n">_make_dimensionless</span> <span class="o">=</span> <span class="kc">True</span>
 
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other_instance</span><span class="si">}</span><span class="s2"> is not dimensionless&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">other_instance</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not dimensionless&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">c</span>
 
@@ -1281,7 +1319,9 @@
 
                 <span class="c1"># This is likely a XSpec model. Division is not supported.</span>
 
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;Division for XSpec models is not supported&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                    <span class="s2">&quot;Division for XSpec models is not supported&quot;</span>
+                <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
 
@@ -1319,7 +1359,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">uuid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the ID of the current function. The ID is used by the CompositeFunction class to keep track of the</span>
 <span class="sd">        unique instances of each function. It should not be used by the user for any specific purpose.</span>
 
@@ -1329,12 +1369,12 @@
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">o</span><span class="p">):</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checking equality of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checking equality of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">o</span><span class="o">.</span><span class="n">uuid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uuid</span> <span class="o">==</span> <span class="n">o</span><span class="o">.</span><span class="n">uuid</span>
 
 <div class="viewcode-block" id="Function.duplicate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.duplicate">[docs]</a>    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Create a copy of the current function with all the parameters equal to the current value</span>
 
 <span class="sd">        :return: a new copy of the function</span>
@@ -1347,7 +1387,7 @@
         <span class="k">return</span> <span class="n">function_copy</span></div>
 
 <div class="viewcode-block" id="Function.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the boundaries of this function. By default there is no boundary, but subclasses can</span>
 <span class="sd">        override this.</span>
 
@@ -1365,7 +1405,7 @@
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;You have to implement this&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Function.evaluate_at"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.evaluate_at">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter_specification</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluate the function at the given x(,y,z) for the provided parameters, explicitly provided as part of the</span>
 <span class="sd">        parameter_specification keywords.</span>
 
@@ -1377,12 +1417,14 @@
         <span class="c1"># Set the parameters to the provided values</span>
         <span class="k">for</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">parameter_specification</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">parameter_specification</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">parameter</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">parameter_specification</span><span class="p">[</span>
+                <span class="n">parameter</span>
+            <span class="p">]</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Function.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -1401,7 +1443,9 @@
         <span class="n">properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProperty</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
-        <span class="n">Function</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">properties</span><span class="p">)</span>
+        <span class="n">Function</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">properties</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_unit</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_unit</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1426,7 +1470,7 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Could not get a Unit instance from provided units </span><span class="si">{</span><span class="p">(</span><span class="n">in_x_unit</span><span class="p">,</span> <span class="n">in_y_unit</span><span class="p">)</span><span class="si">}</span><span class="s2"> when setting units &quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Could not get a Unit instance from provided units </span><span class="si">{</span><span class="p">(</span><span class="n">in_x_unit</span><span class="p">,</span><span class="w"> </span><span class="n">in_y_unit</span><span class="p">)</span><span class="si">}</span><span class="s2"> when setting units &quot;</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> for function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1458,12 +1502,13 @@
         <span class="c1"># This will be overridden by derived classes</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;You have to implement the method _set_units for function </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="s2">&quot;You have to implement the method _set_units for function </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">x_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The unit of the independent variable</span>
 <span class="sd">        :return: a astropy.Unit instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1471,7 +1516,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">y_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        The unit of the dependent variable</span>
 <span class="sd">        :return: a astropy.Unit instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1605,7 +1650,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Function1D.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function1D.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the boundaries of this function. By default there is no boundary, but subclasses can</span>
 <span class="sd">        override this.</span>
 
@@ -1617,7 +1662,7 @@
         <span class="k">raise</span> <span class="n">DesignViolation</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Function1D.local_spectral_index"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Function1D.local_spectral_index">[docs]</a>    <span class="k">def</span> <span class="nf">local_spectral_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        compute the local spectral index of the model at</span>
 <span class="sd">        a given set of energies</span>
 
@@ -1650,7 +1695,9 @@
         <span class="n">properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProperty</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
-        <span class="n">Function</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">properties</span><span class="p">)</span>
+        <span class="n">Function</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">properties</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_unit</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_unit</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1677,9 +1724,7 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Could not get a Unit instance from provided units when setting units &quot;</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Could not get a Unit instance from provided units when setting units &quot;</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">for function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1700,7 +1745,8 @@
         <span class="c1"># This will be overridden by derived classes</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;You have to implement the method _set_units for function </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="s2">&quot;You have to implement the method _set_units for function </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -1723,7 +1769,7 @@
         <span class="c1"># which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform</span>
         <span class="c1"># this transformation only when strictly required</span>
 
-        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="s2">&quot;You have to use the same type for x and y&quot;</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="s2">&quot;You have to use the same type for x and y&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 
@@ -1807,7 +1853,9 @@
         <span class="n">properties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProperty</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
-        <span class="n">Function</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">properties</span><span class="p">)</span>
+        <span class="n">Function</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">properties</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_x_unit</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y_unit</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1839,9 +1887,7 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;Could not get a Unit instance from provided units when setting units &quot;</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Could not get a Unit instance from provided units when setting units &quot;</span>
             <span class="n">msg</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">for function </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -1864,7 +1910,8 @@
         <span class="c1"># This will be overridden by derived classes</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;You have to implement the method _set_units for function </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="s2">&quot;You have to implement the method _set_units for function </span><span class="si">%s</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -1891,7 +1938,7 @@
         <span class="c1"># which is not an array into an array introduce a significant overload (10 microseconds or so), so we perform</span>
         <span class="c1"># this transformation only when strictly required</span>
 
-        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span>
             <span class="n">z</span>
         <span class="p">),</span> <span class="s2">&quot;You have to use the same type for x, y and z&quot;</span>
 
@@ -2009,7 +2056,9 @@
 
 
 <div class="viewcode-block" id="CompositeFunction"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.CompositeFunction">[docs]</a><span class="k">class</span> <span class="nc">CompositeFunction</span><span class="p">(</span><span class="n">Function</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">function_or_scalar_1</span><span class="p">,</span> <span class="n">function_or_scalar_2</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">function_or_scalar_1</span><span class="p">,</span> <span class="n">function_or_scalar_2</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">):</span>
 
         <span class="k">if</span> <span class="n">operation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_operations</span><span class="p">:</span>
 
@@ -2040,7 +2089,7 @@
             <span class="n">operation</span><span class="p">,</span> <span class="n">function_or_scalar_1</span><span class="p">,</span> <span class="n">function_or_scalar_2</span>
         <span class="p">)</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;UUID of composite </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_uuid_expression</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;UUID of composite </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_uuid_expression</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Makes the list of unique functions which compose this composite function.</span>
 
@@ -2053,15 +2102,15 @@
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">CompositeFunction</span><span class="p">):</span>
 
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a composite function&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a composite function&quot;</span><span class="p">)</span>
 
                 <span class="k">for</span> <span class="n">sub_function</span> <span class="ow">in</span> <span class="n">function</span><span class="o">.</span><span class="n">functions</span><span class="p">:</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checking sub function </span><span class="si">{</span><span class="n">sub_function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;checking sub function </span><span class="si">{</span><span class="n">sub_function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">sub_function</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">:</span>
 
-                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;now adding </span><span class="si">{</span><span class="n">sub_function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;now adding </span><span class="si">{</span><span class="n">sub_function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                         <span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_function</span><span class="p">)</span>
 
@@ -2072,13 +2121,13 @@
 
                 <span class="k">if</span> <span class="n">function</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">:</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is being added&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is being added&quot;</span><span class="p">)</span>
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
 
                 <span class="k">else</span><span class="p">:</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a duplicate&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> is a duplicate&quot;</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
 
@@ -2086,9 +2135,11 @@
 
                 <span class="k">pass</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;comp now has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> functions&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;comp now has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> functions&quot;</span><span class="p">)</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;added functions are now </span><span class="si">{</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;added functions are now </span><span class="si">{</span><span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
 
         <span class="c1"># Make sure all functions have the same dimension, and store it so that the property .n_dim of</span>
         <span class="c1"># the Function class will work</span>
@@ -2106,7 +2157,9 @@
 
             <span class="k">if</span> <span class="n">function</span><span class="o">.</span><span class="n">n_dim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_dim</span><span class="p">:</span>
 
-                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You cannot compose functions of different dimensionality&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;You cannot compose functions of different dimensionality&quot;</span>
+                <span class="p">)</span>
 
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
 
@@ -2130,7 +2183,7 @@
         <span class="c1"># Save the expression</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_expression</span> <span class="o">=</span> <span class="n">expression</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;function expression: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_expression</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;function expression: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_expression</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># Build the parameters dictionary assigning a new name to each parameter to account for possible</span>
         <span class="c1"># duplicates.</span>
@@ -2141,11 +2194,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_sub_children</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;we now have </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;we now have </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">function</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_functions</span><span class="p">):</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;func path before comp: </span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;func path before comp: </span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">function</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
@@ -2163,7 +2216,7 @@
 
                 <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
 
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rename </span><span class="si">{</span><span class="n">original_name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rename </span><span class="si">{</span><span class="n">original_name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                 <span class="c1"># Store the parameter under the new name (obviously this is a reference to the</span>
                 <span class="c1"># parameter, not a copy, as always in python)</span>
@@ -2193,7 +2246,7 @@
 
                     <span class="n">new_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">original_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rename </span><span class="si">{</span><span class="n">original_name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;rename </span><span class="si">{</span><span class="n">original_name</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">new_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
                     <span class="c1"># Store the parameter under the new name (obviously this is a reference to the</span>
                     <span class="c1"># parameter, not a copy, as always in python)</span>
@@ -2202,7 +2255,7 @@
 
                     <span class="n">function_property</span><span class="o">.</span><span class="n">_change_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">,</span> <span class="n">clear_parent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;function property name has changed&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="s2">&quot;function property name has changed&quot;</span><span class="p">)</span>
 
             <span class="c1"># now, some functions may have children and we want to keep track of those</span>
 
@@ -2212,11 +2265,11 @@
 
                 <span class="k">if</span> <span class="n">child_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">function</span><span class="o">.</span><span class="n">parameters</span><span class="p">:</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has child </span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has child </span><span class="si">{</span><span class="n">child_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_sub_children</span><span class="p">[</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">][</span><span class="n">child_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span>
-                        <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span>
-                    <span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_sub_children</span><span class="p">[</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">][</span>
+                        <span class="n">child_name</span>
+                    <span class="p">]</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">function</span><span class="o">.</span><span class="n">is_root</span><span class="p">:</span>
 
@@ -2231,9 +2284,11 @@
                 <span class="c1"># if the function is attached to a source, we want to ditch the source</span>
                 <span class="c1"># because now this function is part of a composite</span>
 
-                <span class="n">function</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">function</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span>
+                    <span class="n">function</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;func path after comp: </span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;func path after comp: </span><span class="si">{</span><span class="n">function</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="c1"># reset properties if there were none</span>
 
@@ -2414,7 +2469,7 @@
 
 
 <div class="viewcode-block" id="get_function"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.get_function">[docs]</a><span class="k">def</span> <span class="nf">get_function</span><span class="p">(</span><span class="n">function_name</span><span class="p">,</span> <span class="n">composite_function_expression</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns the function &quot;name&quot;, which must be among the known functions or a composite function.</span>
 
 <span class="sd">    :param function_name: the name of the function (use &#39;composite&#39; if the function is a composite function)</span>
@@ -2430,7 +2485,9 @@
         <span class="c1"># Composite function</span>
 
         <span class="c1"># get the function</span>
-        <span class="n">composite_function</span> <span class="o">=</span> <span class="n">_parse_function_expression</span><span class="p">(</span><span class="n">composite_function_expression</span><span class="p">)</span>
+        <span class="n">composite_function</span> <span class="o">=</span> <span class="n">_parse_function_expression</span><span class="p">(</span>
+            <span class="n">composite_function_expression</span>
+        <span class="p">)</span>
 
         <span class="c1"># it is possible that the functions have sub children</span>
 
@@ -2459,7 +2516,9 @@
                             <span class="c1"># if there are only allowed values</span>
                             <span class="c1"># then we select the first one</span>
 
-                            <span class="n">deferred_properites</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func_prop</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                            <span class="n">deferred_properites</span><span class="p">[</span>
+                                <span class="n">name</span>
+                            <span class="p">]</span> <span class="o">=</span> <span class="n">func_prop</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
                         <span class="k">else</span><span class="p">:</span>
 
@@ -2480,6 +2539,7 @@
             <span class="kn">from</span> <span class="nn">astromodels.functions.template_model</span> <span class="kn">import</span> <span class="p">(</span>
                 <span class="n">MissingDataFile</span><span class="p">,</span>
                 <span class="n">TemplateModel</span><span class="p">,</span>
+                <span class="n">InvalidTemplateModelFile</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="k">try</span><span class="p">:</span>
@@ -2495,13 +2555,44 @@
 
                 <span class="k">raise</span> <span class="n">UnknownFunction</span><span class="p">()</span>
 
+            <span class="c1"># see if it is an emulator model from</span>
+            <span class="c1"># netspec</span>
+
+            <span class="k">except</span> <span class="n">InvalidTemplateModelFile</span><span class="p">:</span>
+
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;check if it is an emulator&quot;</span><span class="p">)</span>
+
+                    <span class="kn">from</span> <span class="nn">netspec</span> <span class="kn">import</span> <span class="n">EmulatorModel</span>
+
+                    <span class="n">instance</span> <span class="o">=</span> <span class="n">EmulatorModel</span><span class="p">(</span><span class="n">function_name</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="s2">&quot;Function </span><span class="si">%s</span><span class="s2"> is not known. Known functions are: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                        <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">function_name</span><span class="p">,</span>
+                            <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">_known_functions</span><span class="o">.</span><span class="n">keys</span><span class="p">())),</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+
+                    <span class="k">raise</span> <span class="n">UnknownFunction</span><span class="p">()</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="k">return</span> <span class="n">instance</span>
+
             <span class="k">else</span><span class="p">:</span>
 
                 <span class="k">return</span> <span class="n">instance</span></div>
 
 
 <div class="viewcode-block" id="get_function_class"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.get_function_class">[docs]</a><span class="k">def</span> <span class="nf">get_function_class</span><span class="p">(</span><span class="n">function_name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return the type for the requested function</span>
 
 <span class="sd">    :param function_name: the function to return</span>
@@ -2533,7 +2624,9 @@
 
     <span class="c1"># Order by key (i.e., by function name)</span>
 
-    <span class="n">ordered</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">functions_and_descriptions</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+    <span class="n">ordered</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span>
+        <span class="nb">sorted</span><span class="p">(</span><span class="n">functions_and_descriptions</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="p">)</span>
 
     <span class="c1"># Format in a table</span>
 
@@ -2543,7 +2636,7 @@
 
 
 <span class="k">def</span> <span class="nf">_parse_function_expression</span><span class="p">(</span><span class="n">function_specification</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse a complex function expression like:</span>
 
 <span class="sd">    ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))</span>
@@ -2572,7 +2665,9 @@
     <span class="c1"># then build the set of unique functions by using the constructor set()</span>
 
     <span class="n">unique_functions</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-        <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\b([a-zA-Z0-9_]+)\{([0-9]?[0-9]?[0-9]?)\}&quot;</span><span class="p">,</span> <span class="n">function_specification</span><span class="p">)</span>
+        <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s2">&quot;\b([a-zA-Z0-9_]+)\{([0-9]?[0-9]?[0-9]?)\}&quot;</span><span class="p">,</span> <span class="n">function_specification</span>
+        <span class="p">)</span>
     <span class="p">)</span>
 
     <span class="c1"># NB: unique functions is a set like:</span>
@@ -2619,7 +2714,9 @@
                                 <span class="c1"># if there are only allowed values</span>
                                 <span class="c1"># then we select the first one</span>
 
-                                <span class="n">deferred_properites</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func_prop</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                                <span class="n">deferred_properites</span><span class="p">[</span>
+                                    <span class="n">name</span>
+                                <span class="p">]</span> <span class="o">=</span> <span class="n">func_prop</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
                             <span class="k">else</span><span class="p">:</span>
 
@@ -2665,6 +2762,28 @@
                     <span class="o">%</span> <span class="p">(</span><span class="n">unique_function</span><span class="p">,</span> <span class="n">function_specification</span><span class="p">)</span>
                 <span class="p">)</span>
 
+            <span class="k">except</span> <span class="n">astromodels</span><span class="o">.</span><span class="n">functions</span><span class="o">.</span><span class="n">template_model</span><span class="o">.</span><span class="n">InvalidTemplateModelFile</span><span class="p">:</span>
+
+                <span class="c1"># It&#39;s not a template</span>
+
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="kn">import</span> <span class="nn">netspec</span>
+
+                    <span class="n">instance</span> <span class="o">=</span> <span class="n">netspec</span><span class="o">.</span><span class="n">EmulatorModel</span><span class="p">(</span><span class="n">unique_function</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+
+                    <span class="k">raise</span> <span class="n">UnknownFunction</span><span class="p">(</span>
+                        <span class="s2">&quot;Function </span><span class="si">%s</span><span class="s2"> in expression </span><span class="si">%s</span><span class="s2"> is unknown. If this is a template model, you are &quot;</span>
+                        <span class="s2">&quot;probably missing the data file&quot;</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">unique_function</span><span class="p">,</span> <span class="n">function_specification</span><span class="p">)</span>
+                    <span class="p">)</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="n">instances</span><span class="p">[</span><span class="n">complete_function_specification</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span>
+
             <span class="k">else</span><span class="p">:</span>
 
                 <span class="c1"># It&#39;s a template</span>
@@ -2696,7 +2815,7 @@
 
     <span class="n">string_for_literal_eval</span> <span class="o">=</span> <span class="n">function_specification</span>
 
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">string_for_literal_eval</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="n">string_for_literal_eval</span><span class="p">)</span>
 
     <span class="c1"># Remove from the function_specification all the known operators and function_expressions, and substitute them</span>
     <span class="c1"># with a 0 and a space</span>
@@ -2705,21 +2824,23 @@
 
     <span class="k">for</span> <span class="n">function_expression</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">instances</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">function_expression</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="n">function_expression</span><span class="p">)</span>
 
         <span class="n">string_for_literal_eval</span> <span class="o">=</span> <span class="n">string_for_literal_eval</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
             <span class="n">function_expression</span><span class="p">,</span> <span class="s2">&quot;0 &quot;</span>
         <span class="p">)</span>
 
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">string_for_literal_eval</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="n">string_for_literal_eval</span><span class="p">)</span>
 
     <span class="c1"># Now remove all the known operators</span>
 
     <span class="k">for</span> <span class="n">operator</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">_operations</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
 
-        <span class="n">string_for_literal_eval</span> <span class="o">=</span> <span class="n">string_for_literal_eval</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;0 &quot;</span><span class="p">)</span>
+        <span class="n">string_for_literal_eval</span> <span class="o">=</span> <span class="n">string_for_literal_eval</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="n">operator</span><span class="p">,</span> <span class="s2">&quot;0 &quot;</span>
+        <span class="p">)</span>
 
-    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">string_for_literal_eval</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="n">string_for_literal_eval</span><span class="p">)</span>
 
     <span class="c1"># The string at this point should contains only numbers and parenthesis separated by one or more spaces</span>
 
@@ -2762,8 +2883,10 @@
 
         <span class="k">for</span> <span class="n">function_expression</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">instances</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
 
-            <span class="n">sanitized_function_specification</span> <span class="o">=</span> <span class="n">sanitized_function_specification</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
-                <span class="n">function_expression</span><span class="p">,</span> <span class="s1">&#39;instances[&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="n">function_expression</span>
+            <span class="n">sanitized_function_specification</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">sanitized_function_specification</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+                    <span class="n">function_expression</span><span class="p">,</span> <span class="s1">&#39;instances[&quot;</span><span class="si">%s</span><span class="s1">&quot;]&#39;</span> <span class="o">%</span> <span class="n">function_expression</span>
+                <span class="p">)</span>
             <span class="p">)</span>
 
         <span class="c1"># Now eval it. For safety measure, I remove all globals, and the only local is the &#39;instances&#39; dictionary</span>

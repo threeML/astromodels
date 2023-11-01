@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Extended source tutorial &mdash; Astromodels latest documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/sg_gallery.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/nbsphinx-code-cells.css" type="text/css" />
       <link rel="stylesheet" href="../_static/dark_mode_css/general.css" type="text/css" />
       <link rel="stylesheet" href="../_static/dark_mode_css/dark.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
@@ -37,12 +38,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Astromodels
-            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -50,17 +55,18 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Point_source_tutorial.html">Point sources</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Extended source tutorial</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#Introduction">Introduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Available-shapes">Available shapes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#“Moveable”-Functions">“Moveable” Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#%22Moveable%22-Functions">“Moveable” Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Fixed-position-Functions">Fixed-position Functions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#“Calling”-extended-sources">“Calling” extended sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#%22Calling%22-extended-sources">“Calling” extended sources</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Caveats-and-gotchas">Caveats and gotchas</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Large-extended-sources">Large extended sources</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Small-extended-sources">Small extended sources</a></li>
@@ -93,8 +99,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Extended source tutorial</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Extended source tutorial</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -103,285 +109,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS for nbsphinx extension */
-
-/* remove conflicting styling from Sphinx themes */
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt *,
-div.nbinput.container div.input_area pre,
-div.nboutput.container div.output_area pre,
-div.nbinput.container div.input_area .highlight,
-div.nboutput.container div.output_area .highlight {
-    border: none;
-    padding: 0;
-    margin: 0;
-    box-shadow: none;
-}
-
-div.nbinput.container > div[class*=highlight],
-div.nboutput.container > div[class*=highlight] {
-    margin: 0;
-}
-
-div.nbinput.container div.prompt *,
-div.nboutput.container div.prompt * {
-    background: none;
-}
-
-div.nboutput.container div.output_area .highlight,
-div.nboutput.container div.output_area pre {
-    background: unset;
-}
-
-div.nboutput.container div.output_area div.highlight {
-    color: unset;  /* override Pygments text color */
-}
-
-/* avoid gaps between output lines */
-div.nboutput.container div[class*=highlight] pre {
-    line-height: normal;
-}
-
-/* input/output containers */
-div.nbinput.container,
-div.nboutput.container {
-    display: -webkit-flex;
-    display: flex;
-    align-items: flex-start;
-    margin: 0;
-    width: 100%;
-}
-@media (max-width: 540px) {
-    div.nbinput.container,
-    div.nboutput.container {
-        flex-direction: column;
-    }
-}
-
-/* input container */
-div.nbinput.container {
-    padding-top: 5px;
-}
-
-/* last container */
-div.nblast.container {
-    padding-bottom: 5px;
-}
-
-/* input prompt */
-div.nbinput.container div.prompt pre {
-    color: #307FC1;
-}
-
-/* output prompt */
-div.nboutput.container div.prompt pre {
-    color: #BF5B3D;
-}
-
-/* all prompts */
-div.nbinput.container div.prompt,
-div.nboutput.container div.prompt {
-    width: 4.5ex;
-    padding-top: 5px;
-    position: relative;
-    user-select: none;
-}
-
-div.nbinput.container div.prompt > div,
-div.nboutput.container div.prompt > div {
-    position: absolute;
-    right: 0;
-    margin-right: 0.3ex;
-}
-
-@media (max-width: 540px) {
-    div.nbinput.container div.prompt,
-    div.nboutput.container div.prompt {
-        width: unset;
-        text-align: left;
-        padding: 0.4em;
-    }
-    div.nboutput.container div.prompt.empty {
-        padding: 0;
-    }
-
-    div.nbinput.container div.prompt > div,
-    div.nboutput.container div.prompt > div {
-        position: unset;
-    }
-}
-
-/* disable scrollbars on prompts */
-div.nbinput.container div.prompt pre,
-div.nboutput.container div.prompt pre {
-    overflow: hidden;
-}
-
-/* input/output area */
-div.nbinput.container div.input_area,
-div.nboutput.container div.output_area {
-    -webkit-flex: 1;
-    flex: 1;
-    overflow: auto;
-}
-@media (max-width: 540px) {
-    div.nbinput.container div.input_area,
-    div.nboutput.container div.output_area {
-        width: 100%;
-    }
-}
-
-/* input area */
-div.nbinput.container div.input_area {
-    border: 1px solid #e0e0e0;
-    border-radius: 2px;
-    /*background: #f5f5f5;*/
-}
-
-/* override MathJax center alignment in output cells */
-div.nboutput.container div[class*=MathJax] {
-    text-align: left !important;
-}
-
-/* override sphinx.ext.imgmath center alignment in output cells */
-div.nboutput.container div.math p {
-    text-align: left;
-}
-
-/* standard error */
-div.nboutput.container div.output_area.stderr {
-    background: #fdd;
-}
-
-/* ANSI colors */
-.ansi-black-fg { color: #3E424D; }
-.ansi-black-bg { background-color: #3E424D; }
-.ansi-black-intense-fg { color: #282C36; }
-.ansi-black-intense-bg { background-color: #282C36; }
-.ansi-red-fg { color: #E75C58; }
-.ansi-red-bg { background-color: #E75C58; }
-.ansi-red-intense-fg { color: #B22B31; }
-.ansi-red-intense-bg { background-color: #B22B31; }
-.ansi-green-fg { color: #00A250; }
-.ansi-green-bg { background-color: #00A250; }
-.ansi-green-intense-fg { color: #007427; }
-.ansi-green-intense-bg { background-color: #007427; }
-.ansi-yellow-fg { color: #DDB62B; }
-.ansi-yellow-bg { background-color: #DDB62B; }
-.ansi-yellow-intense-fg { color: #B27D12; }
-.ansi-yellow-intense-bg { background-color: #B27D12; }
-.ansi-blue-fg { color: #208FFB; }
-.ansi-blue-bg { background-color: #208FFB; }
-.ansi-blue-intense-fg { color: #0065CA; }
-.ansi-blue-intense-bg { background-color: #0065CA; }
-.ansi-magenta-fg { color: #D160C4; }
-.ansi-magenta-bg { background-color: #D160C4; }
-.ansi-magenta-intense-fg { color: #A03196; }
-.ansi-magenta-intense-bg { background-color: #A03196; }
-.ansi-cyan-fg { color: #60C6C8; }
-.ansi-cyan-bg { background-color: #60C6C8; }
-.ansi-cyan-intense-fg { color: #258F8F; }
-.ansi-cyan-intense-bg { background-color: #258F8F; }
-.ansi-white-fg { color: #C5C1B4; }
-.ansi-white-bg { background-color: #C5C1B4; }
-.ansi-white-intense-fg { color: #A1A6B2; }
-.ansi-white-intense-bg { background-color: #A1A6B2; }
-
-.ansi-default-inverse-fg { color: #FFFFFF; }
-.ansi-default-inverse-bg { background-color: #000000; }
-
-.ansi-bold { font-weight: bold; }
-.ansi-underline { text-decoration: underline; }
-
-
-div.nbinput.container div.input_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight] > pre,
-div.nboutput.container div.output_area div[class*=highlight].math,
-div.nboutput.container div.output_area.rendered_html,
-div.nboutput.container div.output_area > div.output_javascript,
-div.nboutput.container div.output_area:not(.rendered_html) > img{
-    padding: 5px;
-    margin: 0;
-}
-
-/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
-div.nbinput.container div.input_area > div[class^='highlight'],
-div.nboutput.container div.output_area > div[class^='highlight']{
-    overflow-y: hidden;
-}
-
-/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt .copybtn {
-    display: none;
-}
-
-/* Some additional styling taken form the Jupyter notebook CSS */
-.jp-RenderedHTMLCommon table,
-div.rendered_html table {
-  border: none;
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: black;
-  font-size: 12px;
-  table-layout: fixed;
-}
-.jp-RenderedHTMLCommon thead,
-div.rendered_html thead {
-  border-bottom: 1px solid black;
-  vertical-align: bottom;
-}
-.jp-RenderedHTMLCommon tr,
-.jp-RenderedHTMLCommon th,
-.jp-RenderedHTMLCommon td,
-div.rendered_html tr,
-div.rendered_html th,
-div.rendered_html td {
-  text-align: right;
-  vertical-align: middle;
-  padding: 0.5em 0.5em;
-  line-height: normal;
-  white-space: normal;
-  max-width: none;
-  border: none;
-}
-.jp-RenderedHTMLCommon th,
-div.rendered_html th {
-  font-weight: bold;
-}
-.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
-div.rendered_html tbody tr:nth-child(odd) {
-  background: #f5f5f5;
-}
-.jp-RenderedHTMLCommon tbody tr:hover,
-div.rendered_html tbody tr:hover {
-  background: rgba(66, 165, 245, 0.2);
-}
-
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="Extended-source-tutorial">
+  <section id="Extended-source-tutorial">
 <h1>Extended source tutorial<a class="headerlink" href="#Extended-source-tutorial" title="Permalink to this heading"></a></h1>
 <section id="Introduction">
 <h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this heading"></a></h2>
@@ -400,7 +128,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">14:58:47 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g1ffa3f8-py3.9.egg/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g1ffa3f8-py3.9.egg/astromodels/functions/functions_1D/functions.py#48" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">48</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">01:07:43 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#48" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">48</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">available                                                                         </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
 </pre></div>
 </div>
@@ -408,9 +136,69 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it  </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g1ffa3f8-py3.9.egg/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g1ffa3f8-py3.9.egg/astromodels/functions/functions_1D/functions.py#69" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">69</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it  </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#69" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">69</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">will not be available.                                                            </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
 </pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/runner/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class="ansi-bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
+  warnings.warn(msg, NumbaDeprecationWarning)
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">01:07:44 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of F to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive transform   </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+</pre></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/runner/hostedtoolcache/Python/3.9.18/x64/lib/python3.9/site-packages/numba/core/decorators.py:262: NumbaDeprecationWarning: <span class="ansi-bold">numba.generated_jit is deprecated. Please see the documentation at: https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-generated-jit for more information and advice on a suitable replacement.</span>
+  warnings.warn(msg, NumbaDeprecationWarning)
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
@@ -736,8 +524,8 @@ Parameter radius = 0.3 [deg]
 </pre></div></div>
 </div>
 <p>Check the API or use the <code class="docutils literal notranslate"><span class="pre">display()</span></code> function to find out more about the shapes and their free parameters.</p>
-<section id="“Moveable”-Functions">
-<h3>“Moveable” Functions<a class="headerlink" href="#“Moveable”-Functions" title="Permalink to this heading"></a></h3>
+<section id="%22Moveable%22-Functions">
+<h3>“Moveable” Functions<a class="headerlink" href="#%22Moveable%22-Functions" title="Permalink to this heading"></a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">Gaussian_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Asymm_Gaussian_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Disk_on_sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Ellipse_on_sphere</span></code>, and <code class="docutils literal notranslate"><span class="pre">Power_law_on_sphere</span></code> each have parameters called <code class="docutils literal notranslate"><span class="pre">lat0</span></code> and <code class="docutils literal notranslate"><span class="pre">lon0</span></code>, describing the longitude (R.A.) and latitude (Declination) of the function’s “center” (center of mass/center of symmetry). These parameters can be set free to allow the source position to vary during the fit, or fixed to a known position. <strong>If fitting the source position, it is strongly recommended to restrict these
 parameters so that source overlaps the region of interest (ROI) at all times.</strong> The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting “stuck” due to the likelihood surface being flat.</p>
 <p>Each of these functions also has other parameter(s) related to the source’s extend and (if applicable) its orientation.</p>
@@ -882,7 +670,7 @@ expected.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">14:58:50 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> 2D template read from spitzer_example_image.fits is normalized to nan        </span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g1ffa3f8-py3.9.egg/astromodels/functions/functions_2D.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions_2D.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/hostedtoolcache/Python/3.9.14/x64/lib/python3.9/site-packages/astromodels-0+untagged.1.g1ffa3f8-py3.9.egg/astromodels/functions/functions_2D.py#747" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">747</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">01:07:45 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> 2D template read from spitzer_example_image.fits is normalized to nan        </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions_2D.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#747" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">747</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">(expected: </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">)                                                                 </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                   </span>
 </pre></div>
 </div>
@@ -1010,8 +798,8 @@ expected.</p>
 </div>
 </section>
 </section>
-<section id="“Calling”-extended-sources">
-<h2>“Calling” extended sources<a class="headerlink" href="#“Calling”-extended-sources" title="Permalink to this heading"></a></h2>
+<section id="%22Calling%22-extended-sources">
+<h2>“Calling” extended sources<a class="headerlink" href="#%22Calling%22-extended-sources" title="Permalink to this heading"></a></h2>
 <p>Extended sources can be called as functions. They take 3 arguments: A list or <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. <strong>If no units are
 provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s deg2).</strong></p>
 <div class="nbinput docutils container">
@@ -1052,17 +840,17 @@ provided, energies are assumed to be in keV, coordinates in degrees, and fluxes 
 <div class="highlight"><pre>
 Whole source:
 [[1.16105524e+04 1.13462640e+02 1.10879915e+00]
- [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (cm2 deg2 keV s)
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s cm2 deg2)
 
 Spatial only:
 [11610.55239595     0.        ] 1 / deg2
 
 Spectral only:
-[1.00000000e+00 9.77237221e-03 9.54992586e-05] 1 / (cm2 keV s)
+[1.00000000e+00 9.77237221e-03 9.54992586e-05] 1 / (keV s cm2)
 
 Spatial transposed times spectral
 [[1.16105524e+04 1.13462640e+02 1.10879915e+00]
- [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (cm2 deg2 keV s)
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s cm2 deg2)
 </pre></div></div>
 </div>
 </section>

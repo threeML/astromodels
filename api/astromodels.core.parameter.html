@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.core.parameter module &mdash; Astromodels latest documentation</title>
@@ -35,12 +35,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Astromodels
-            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -48,6 +52,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -75,10 +80,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="API.html">API</a> &raquo;</li>
-          <li><a href="astromodels.core.html">astromodels.core package</a> &raquo;</li>
-      <li>astromodels.core.parameter module</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="API.html">API</a></li>
+          <li class="breadcrumb-item"><a href="astromodels.core.html">astromodels.core package</a></li>
+      <li class="breadcrumb-item active">astromodels.core.parameter module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,31 +92,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-astromodels.core.parameter">
+  <section id="module-astromodels.core.parameter">
 <span id="astromodels-core-parameter-module"></span><h1>astromodels.core.parameter module<a class="headerlink" href="#module-astromodels.core.parameter" title="Permalink to this heading"></a></h1>
 <dl class="py exception">
 <dt class="sig sig-object py" id="astromodels.core.parameter.CannotConvertValueToNewUnits">
@@ -150,7 +131,7 @@
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase" title="astromodels.core.parameter.ParameterBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterBase</span></code></a></p>
 <p>Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – Name for the parameter</p></li>
 <li><p><strong>value</strong> – Initial value</p></li>
@@ -176,13 +157,13 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <span class="sig-name descname"><span class="pre">add_auxiliary_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">law</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.add_auxiliary_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.add_auxiliary_variable" title="Permalink to this definition"></a></dt>
 <dd><p>TODO describe function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>variable</strong> – </p></li>
 <li><p><strong>law</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -193,7 +174,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auxiliary_variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span></em><a class="headerlink" href="#astromodels.core.parameter.Parameter.auxiliary_variable" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a tuple with the auxiliary variable and the law</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple (variable, law)</p>
 </dd>
 </dl>
@@ -210,7 +191,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fix</span></span><a class="headerlink" href="#astromodels.core.parameter.Parameter.fix" title="Permalink to this definition"></a></dt>
 <dd><p>‘p.fix = True’  or ‘p.fix = False’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gets or sets whether the parameter is fixed or not. Use booleans, like</p>
 </dd>
 </dl>
@@ -221,7 +202,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free</span></span><a class="headerlink" href="#astromodels.core.parameter.Parameter.free" title="Permalink to this definition"></a></dt>
 <dd><p>‘p.free = True’  or ‘p.free = False’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gets or sets whether the parameter is free or not. Use booleans, like</p>
 </dd>
 </dl>
@@ -243,7 +224,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <span class="sig-name descname"><span class="pre">has_prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.has_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.has_prior" title="Permalink to this definition"></a></dt>
 <dd><p>Check whether the current parameter has a defined prior</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
 </dd>
 </dl>
@@ -265,7 +246,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <span class="sig-name descname"><span class="pre">remove_auxiliary_variable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.remove_auxiliary_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.remove_auxiliary_variable" title="Permalink to this definition"></a></dt>
 <dd><p>Remove an existing auxiliary variable</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -295,7 +276,7 @@ provide a lower_bound and an upper_bound properties)
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter.</span></span><span class="sig-name descname"><span class="pre">ParameterBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Unit</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Unit(dimensionless)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation" title="astromodels.core.parameter_transformation.ParameterTransformation"><span class="pre">ParameterTransformation</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.tree.Node" title="astromodels.core.tree.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name for parameter</p></li>
 <li><p><strong>value</strong> – initial value</p></li>
@@ -322,7 +303,7 @@ same order they have been entered.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_quantity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.as_quantity" title="Permalink to this definition"></a></dt>
 <dd><p>Return the current value with its units (as an astropy.Quantity instance)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an instance of astropy.Quantity)</p>
 </dd>
 </dl>
@@ -339,7 +320,7 @@ same order they have been entered.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.description" title="Permalink to this definition"></a></dt>
 <dd><p>Return a description of this parameter</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a string cointaining a description of the meaning of this parameter</p>
 </dd>
 </dl>
@@ -362,7 +343,7 @@ same order they have been entered.</p>
 <span class="sig-name descname"><span class="pre">get_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.get_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.get_callbacks" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the list of callbacks currently defined</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -383,7 +364,7 @@ same order they have been entered.</p>
 <span class="sig-name descname"><span class="pre">in_unit_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.in_unit_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.in_unit_of" title="Permalink to this definition"></a></dt>
 <dd><p>Return the current value transformed to the new units</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>unit</strong> – either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
 instance, like “1 / (erg cm**2 s)”</p></li>
@@ -391,7 +372,7 @@ instance, like “1 / (erg cm**2 s)”</p></li>
 Default is False</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>either a floating point or a astropy.Quantity depending on the value of “as_quantity”</p>
 </dd>
 </dl>
@@ -404,13 +385,13 @@ Default is False</p></li>
 if you have for example a confidence interval in internal reference and you want to transform it to the
 external reference</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>interval_value</strong> – value in internal reference</p></li>
 <li><p><strong>internal_delta</strong> – delta in internal reference</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>value and delta in external reference</p>
 </dd>
 </dl>
@@ -448,7 +429,7 @@ external reference</p>
 we do not care about
 transformations but want speed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -460,7 +441,7 @@ transformations but want speed</p>
 <dd><p>restore the original transformation
 if it had been removed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -525,7 +506,7 @@ functions)</p>
 astropy.Quantity or a simple float, but to be coded like it’s always receiving a pure float in the right units.
 This is to give a way to avoid the huge bottleneck that are astropy.units</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input_type</strong> – the expected type for the input (float, int)</p>
 </dd>
 </dl>

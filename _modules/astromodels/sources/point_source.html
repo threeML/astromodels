@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.sources.point_source</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.sources.point_source</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -114,7 +119,7 @@
 
 
 <div class="viewcode-block" id="PointSource"><a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.PointSource">[docs]</a><span class="k">class</span> <span class="nc">PointSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A point source. You can instance this class in many ways.</span>
 
 <span class="sd">    - with Equatorial position and a function as spectrum (the component will be automatically called &#39;main&#39;)::</span>
@@ -159,6 +164,7 @@
         <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sky_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SkyDirection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">polarization</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">):</span>
 
         <span class="c1"># Check that we have all the required information</span>
@@ -226,7 +232,7 @@
 
         <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)]</span>
 
         <span class="n">Source</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">src_type</span><span class="o">=</span><span class="n">SourceType</span><span class="o">.</span><span class="n">POINT_SOURCE</span><span class="p">)</span>
 
@@ -262,7 +268,7 @@
 
             <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -273,9 +279,8 @@
                 <span class="c1"># Slow version with units</span>
 
                 <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                    <span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
                 <span class="p">]</span>
-
                 <span class="c1"># We need to sum like this (slower) because using np.sum will not preserve the units</span>
                 <span class="c1"># (thanks astropy.units)</span>
 
@@ -286,9 +291,8 @@
                 <span class="c1"># Fast version without units, where x is supposed to be in the same units as currently defined in</span>
                 <span class="c1"># units.get_units()</span>
 
-                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                    <span class="p">[</span><span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
-                <span class="p">)</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+                                      <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">_sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 
@@ -341,7 +345,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns True or False whether there is any parameter in this source</span>
 
 <span class="sd">        :return:</span>
@@ -365,7 +369,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a dictionary of free parameters for this source.</span>
 <span class="sd">        We use the parameter path as the key because it&#39;s</span>
 <span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
@@ -392,7 +396,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns a dictionary of all parameters for this source.</span>
 <span class="sd">        We use the parameter path as the key because it&#39;s</span>
 <span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
@@ -414,7 +418,7 @@
         <span class="k">return</span> <span class="n">all_parameters</span>
 
     <span class="k">def</span> <span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Representation of the object</span>
 
 <span class="sd">        :param rich_output: if True, generates HTML, otherwise text</span>

@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.functions.functions_2D</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.functions_2D</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -104,7 +109,7 @@
 
 
 <div class="viewcode-block" id="Latitude_galactic_diffuse"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Latitude_galactic_diffuse">[docs]</a><span class="k">class</span> <span class="nc">Latitude_galactic_diffuse</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A Gaussian distribution in Galactic latitude around the Galactic plane</span>
@@ -143,7 +148,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">ICRS</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Latitude_galactic_diffuse.set_frame"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Latitude_galactic_diffuse.set_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
 <span class="sd">        :param new_frame: a coordinate frame from astropy</span>
@@ -199,7 +204,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Latitude_galactic_diffuse.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Latitude_galactic_diffuse.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -222,7 +227,7 @@
 
 
 <div class="viewcode-block" id="Gaussian_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A bidimensional Gaussian function on a sphere (in spherical coordinates)</span>
@@ -318,7 +323,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Gaussian_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -331,7 +336,7 @@
 
 
 <div class="viewcode-block" id="Asymm_Gaussian_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Asymm_Gaussian_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Asymm_Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A bidimensional Gaussian function on a sphere (in spherical coordinates)</span>
@@ -468,7 +473,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Asymm_Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -481,7 +486,7 @@
 
 
 <div class="viewcode-block" id="Disk_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Disk_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Disk_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A bidimensional disk/tophat function on a sphere (in spherical coordinates)</span>
@@ -575,7 +580,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Disk_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Disk_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -588,7 +593,7 @@
 
 
 <div class="viewcode-block" id="Ellipse_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Ellipse_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Ellipse_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        An ellipse function on a sphere (in spherical coordinates)</span>
@@ -730,7 +735,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Ellipse_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Ellipse_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -743,7 +748,7 @@
 
 
 <div class="viewcode-block" id="SpatialTemplate_2D"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.SpatialTemplate_2D">[docs]</a><span class="k">class</span> <span class="nc">SpatialTemplate_2D</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        User input Spatial Template.  Expected to be normalized to 1/sr</span>
@@ -909,7 +914,7 @@
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpatialTemplate_2D.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.SpatialTemplate_2D.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 
@@ -923,7 +928,7 @@
 
 <div class="viewcode-block" id="Power_law_on_sphere"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Power_law_on_sphere">[docs]</a><span class="k">class</span> <span class="nc">Power_law_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A power law function on a sphere (in spherical coordinates)</span>
@@ -1024,7 +1029,7 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Power_law_on_sphere.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Power_law_on_sphere.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
 

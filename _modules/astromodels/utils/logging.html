@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.utils.logging</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.utils.logging</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -149,12 +154,10 @@
 
 
 <div class="viewcode-block" id="get_path_of_log_file"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns the path of the log files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span> <span class="p">(</span>
-        <span class="n">log_file</span> <span class="ow">in</span> <span class="n">_log_file_names</span>
-    <span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2"> is not one of </span><span class="si">{</span><span class="n">_log_file_names</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">assert</span> <span class="n">log_file</span> <span class="ow">in</span> <span class="n">_log_file_names</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2"> is not one of </span><span class="si">{</span><span class="n">_log_file_names</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">return</span> <span class="n">get_path_of_log_dir</span><span class="p">()</span> <span class="o">/</span> <span class="n">log_file</span></div>
 
@@ -241,7 +244,7 @@
 
 <div class="viewcode-block" id="silence_console_log"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_console_log">[docs]</a><span class="nd">@contextmanager</span>
 <span class="k">def</span> <span class="nf">silence_console_log</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    temporarily silence the console and progress bars</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">current_console_logging_level</span> <span class="o">=</span> <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">level</span>
@@ -251,6 +254,7 @@
     <span class="n">astromodels_usr_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
+
         <span class="k">yield</span>
 
     <span class="k">finally</span><span class="p">:</span>
@@ -260,7 +264,7 @@
 
 
 <div class="viewcode-block" id="silence_warnings"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a><span class="k">def</span> <span class="nf">silence_warnings</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    supress warning messages in console and file usr logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -269,7 +273,7 @@
 
 
 <div class="viewcode-block" id="activate_warnings"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a><span class="k">def</span> <span class="nf">activate_warnings</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    supress warning messages in console and file usr logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

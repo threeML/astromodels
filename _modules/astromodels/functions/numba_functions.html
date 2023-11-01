@@ -32,12 +32,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +49,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -72,9 +77,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>astromodels.functions.numba_functions</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.numba_functions</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -140,7 +145,7 @@
 
 <div class="viewcode-block" id="plaw_flux_norm"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_flux_norm">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">plaw_flux_norm</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    energy flux power law</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># use the limit of the</span>
@@ -370,9 +375,9 @@
     <span class="n">arg2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">xb</span>
     <span class="n">arg3</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">xj</span>
 
-    <span class="n">inner1</span> <span class="o">=</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg2</span><span class="p">,</span> <span class="o">-</span><span class="n">a1</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg2</span><span class="p">,</span> <span class="o">-</span><span class="n">a2</span> <span class="o">*</span> <span class="n">n2</span><span class="p">)</span>
+    <span class="n">inner1</span> <span class="o">=</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg2</span><span class="p">,</span> <span class="o">-</span><span class="n">a1</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg2</span><span class="p">,</span> <span class="o">-</span><span class="n">a2</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span>
 
-    <span class="n">inner2</span> <span class="o">=</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="o">-</span><span class="n">a1</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="o">-</span><span class="n">a2</span> <span class="o">*</span> <span class="n">n2</span><span class="p">)</span>
+    <span class="n">inner2</span> <span class="o">=</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="o">-</span><span class="n">a1</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg1</span><span class="p">,</span> <span class="o">-</span><span class="n">a2</span> <span class="o">*</span> <span class="n">n1</span><span class="p">)</span>
 
     <span class="n">out</span> <span class="o">=</span> <span class="n">_pow</span><span class="p">(</span><span class="n">xb</span> <span class="o">/</span> <span class="n">xpiv</span><span class="p">,</span> <span class="n">a1</span><span class="p">)</span> <span class="o">*</span> <span class="n">_pow</span><span class="p">(</span>
         <span class="n">_pow</span><span class="p">(</span><span class="n">inner1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">/</span> <span class="n">n1</span><span class="p">)</span> <span class="o">+</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg3</span><span class="p">,</span> <span class="o">-</span><span class="n">b1</span> <span class="o">*</span> <span class="n">n2</span><span class="p">)</span> <span class="o">*</span> <span class="n">_pow</span><span class="p">(</span><span class="n">inner2</span><span class="p">,</span> <span class="n">n2</span> <span class="o">/</span> <span class="n">n1</span><span class="p">),</span>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.functions.functions_2D module &mdash; Astromodels latest documentation</title>
@@ -35,12 +35,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Astromodels
-            <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -48,6 +52,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
@@ -75,10 +80,10 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="API.html">API</a> &raquo;</li>
-          <li><a href="astromodels.functions.html">astromodels.functions package</a> &raquo;</li>
-      <li>astromodels.functions.functions_2D module</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="API.html">API</a></li>
+          <li class="breadcrumb-item"><a href="astromodels.functions.html">astromodels.functions package</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.functions_2D module</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -87,31 +92,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="module-astromodels.functions.functions_2D">
+  <section id="module-astromodels.functions.functions_2D">
 <span id="astromodels-functions-functions-2d-module"></span><h1>astromodels.functions.functions_2D module<a class="headerlink" href="#module-astromodels.functions.functions_2D" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere">
@@ -171,7 +152,7 @@ max : 90.0</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -183,7 +164,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -240,7 +221,7 @@ max : 20</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -252,7 +233,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -333,7 +314,7 @@ max : 90.0</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -345,7 +326,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -422,7 +403,7 @@ max : 20</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -434,7 +415,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -490,7 +471,7 @@ initial value : 30</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -502,7 +483,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -518,10 +499,10 @@ needs to be implemented in subclasses.</p>
 <span class="sig-name descname"><span class="pre">set_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Latitude_galactic_diffuse.set_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Latitude_galactic_diffuse.set_frame" title="Permalink to this definition"></a></dt>
 <dd><p>Set a new frame for the coordinates (the default is ICRS J2000)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_frame</strong> – a coordinate frame from astropy</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>(none)</p>
 </dd>
 </dl>
@@ -585,7 +566,7 @@ fix : yes</p>
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -597,7 +578,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>
@@ -670,7 +651,7 @@ allowed values:
 <dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
 override this.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
@@ -682,7 +663,7 @@ override this.</p>
 <dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
 needs to be implemented in subclasses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
 </dd>
 </dl>

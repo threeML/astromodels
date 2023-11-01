@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.core package &mdash; Astromodels latest documentation</title>
@@ -33,12 +33,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Astromodels
-            <img src="../../_static/transp_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../_static/transp_logo.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -46,6 +50,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../function_list.html">Available Functions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Functions_tutorial.html">Functions tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../Point_source_tutorial.html">Point sources</a></li>
@@ -73,8 +78,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>astromodels.core package</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">astromodels.core package</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -83,31 +88,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
-
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="astromodels-core-package">
+  <section id="astromodels-core-package">
 <h1>astromodels.core package<a class="headerlink" href="#astromodels-core-package" title="Permalink to this heading"></a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
@@ -122,10 +103,10 @@
 <span class="sig-prename descclassname"><span class="pre">astromodels.core.memoization.</span></span><span class="sig-name descname"><span class="pre">memoize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/memoization.html#memoize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.memoization.memoize" title="Permalink to this definition"></a></dt>
 <dd><p>A decorator for functions of sources which memoize the results of the last _CACHE_SIZE calls,</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>method</strong> – method to be memoized</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the decorated method</p>
 </dd>
 </dl>
@@ -136,13 +117,13 @@
 <span class="sig-prename descclassname"><span class="pre">astromodels.core.memoization.</span></span><span class="sig-name descname"><span class="pre">use_astromodels_memoization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">switch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cache_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/memoization.html#use_astromodels_memoization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.memoization.use_astromodels_memoization" title="Permalink to this definition"></a></dt>
 <dd><p>Activate/deactivate memoization temporarily</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>switch</strong> – True (memoization on) or False (memoization off)</p></li>
 <li><p><strong>cache_size</strong> – number of previous evaluation of functions to keep in memory. Default: 100</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -172,10 +153,10 @@
 <span class="sig-name descname"><span class="pre">add_external_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.add_external_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.add_external_parameter" title="Permalink to this definition"></a></dt>
 <dd><p>Add a parameter that comes from something other than a function, to the model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>parameter</strong> – a Parameter instance</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>none</p>
 </dd>
 </dl>
@@ -186,10 +167,10 @@
 <span class="sig-name descname"><span class="pre">add_independent_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.core.parameter.IndependentVariable" title="astromodels.core.parameter.IndependentVariable"><span class="pre">IndependentVariable</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.add_independent_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.add_independent_variable" title="Permalink to this definition"></a></dt>
 <dd><p>Add a global independent variable to this model, such as time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>variable</strong> – an IndependentVariable instance</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>none</p>
 </dd>
 </dl>
@@ -200,10 +181,10 @@
 <span class="sig-name descname"><span class="pre">add_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.point_source.PointSource" title="astromodels.sources.point_source.PointSource"><span class="pre">PointSource</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.extended_source.ExtendedSource" title="astromodels.sources.extended_source.ExtendedSource"><span class="pre">ExtendedSource</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.particle_source.ParticleSource" title="astromodels.sources.particle_source.ParticleSource"><span class="pre">ParticleSource</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.add_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.add_source" title="Permalink to this definition"></a></dt>
 <dd><p>Add the provided source to the model</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_source</strong> – the new source to be added (an instance of PointSource, ExtendedSource or ParticleSource)</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>(none)</p>
 </dd>
 </dl>
@@ -222,7 +203,7 @@
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extended_sources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.extended_source.ExtendedSource" title="astromodels.sources.extended_source.ExtendedSource"><span class="pre">ExtendedSource</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.extended_sources" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the dictionary of all defined extended sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>collections.OrderedDict()</p>
 </dd>
 </dl>
@@ -233,7 +214,7 @@
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.free_parameters" title="Permalink to this definition"></a></dt>
 <dd><p>Get a dictionary with all the free parameters in this model</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary of free parameters</p>
 </dd>
 </dl>
@@ -249,7 +230,7 @@
 <span class="sig-name descname"><span class="pre">get_extended_source_fluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j2000_ra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j2000_dec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_extended_source_fluxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_extended_source_fluxes" title="Permalink to this definition"></a></dt>
 <dd><p>Get the flux of the id-th extended sources at the given position at the given energies</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> – id of the source</p></li>
 <li><p><strong>j2000_ra</strong> – R.A. where the flux is desired</p></li>
@@ -257,7 +238,7 @@
 <li><p><strong>energies</strong> – energies at which the flux is desired</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>flux array</p>
 </dd>
 </dl>
@@ -268,10 +249,10 @@
 <span class="sig-name descname"><span class="pre">get_extended_source_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_extended_source_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_extended_source_name" title="Permalink to this definition"></a></dt>
 <dd><p>Return the name of the n-th extended source</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> – id of the source (integer)</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the name of the id-th source</p>
 </dd>
 </dl>
@@ -282,7 +263,7 @@
 <span class="sig-name descname"><span class="pre">get_number_of_extended_sources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_number_of_extended_sources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_number_of_extended_sources" title="Permalink to this definition"></a></dt>
 <dd><p>Return the number of extended sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of extended sources</p>
 </dd>
 </dl>
@@ -293,7 +274,7 @@
 <span class="sig-name descname"><span class="pre">get_number_of_particle_sources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_number_of_particle_sources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_number_of_particle_sources" title="Permalink to this definition"></a></dt>
 <dd><p>Return the number of particle sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of particle sources</p>
 </dd>
 </dl>
@@ -304,7 +285,7 @@
 <span class="sig-name descname"><span class="pre">get_number_of_point_sources</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_number_of_point_sources"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_number_of_point_sources" title="Permalink to this definition"></a></dt>
 <dd><p>Return the number of point sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>number of point sources</p>
 </dd>
 </dl>
@@ -315,13 +296,13 @@
 <span class="sig-name descname"><span class="pre">get_particle_source_fluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_particle_source_fluxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_particle_source_fluxes" title="Permalink to this definition"></a></dt>
 <dd><p>Get the fluxes from the id-th point source</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> – id of the source</p></li>
 <li><p><strong>energies</strong> – energies at which you need the flux</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>fluxes</p>
 </dd>
 </dl>
@@ -334,10 +315,10 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.model.Model.get_point_source_fluxes">
-<span class="sig-name descname"><span class="pre">get_point_source_fluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_point_source_fluxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_point_source_fluxes" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_point_source_fluxes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tag</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stokes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_point_source_fluxes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_point_source_fluxes" title="Permalink to this definition"></a></dt>
 <dd><p>Get the fluxes from the id-th point source</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>id</strong> – id of the source</p></li>
 <li><p><strong>energies</strong> – energies at which you need the flux</p></li>
@@ -349,6 +330,7 @@
 between a and b over the integration variable divided by (b-a). The integration variable must be an independent
 variable contained in the model. If b is None, then instead of integrating the integration variable will be
 set to a and the model evaluated in a.
+:param stokes: can be I, Q, U, V
 :return: fluxes</p>
 </dd></dl>
 
@@ -362,10 +344,10 @@ set to a and the model evaluated in a.
 <span class="sig-name descname"><span class="pre">get_point_source_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_point_source_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_point_source_position" title="Permalink to this definition"></a></dt>
 <dd><p>Get the point source position (R.A., Dec)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>id</strong> – id of the source</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a tuple with R.A. and Dec.</p>
 </dd>
 </dl>
@@ -376,10 +358,16 @@ set to a and the model evaluated in a.
 <span class="sig-name descname"><span class="pre">get_total_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.get_total_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.get_total_flux" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the total differential flux at the provided energies from all <em>point</em> sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.core.model.Model.has_free_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_free_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#astromodels.core.model.Model.has_free_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Returns True or False depending on if any parameters are free</p>
 </dd></dl>
 
 <dl class="py method">
@@ -393,7 +381,7 @@ set to a and the model evaluated in a.
 <dd><p>Link the value of the provided parameters through the provided function (identity is the default, i.e.,
 parameter_1 = parameter_2).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>parameter_1</strong> – the first parameter;can be either a single parameter or a list of prarameters</p></li>
 <li><p><strong>parameter_2</strong> – the second parameter</p></li>
@@ -418,7 +406,7 @@ parameter_1 = parameter_2).</p>
 if it is linked to another parameter (i.e. it is forced to have the same value of the other parameter), or
 if it is linked with another parameter or an independent variable through a law.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary of linked parameters</p>
 </dd>
 </dl>
@@ -429,7 +417,7 @@ if it is linked with another parameter or an independent variable through a law.
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.parameters" title="Permalink to this definition"></a></dt>
 <dd><p>Return a dictionary with all parameters</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary of parameters</p>
 </dd>
 </dl>
@@ -440,7 +428,7 @@ if it is linked with another parameter or an independent variable through a law.
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">particle_sources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.particle_source.ParticleSource" title="astromodels.sources.particle_source.ParticleSource"><span class="pre">ParticleSource</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.particle_sources" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the dictionary of all defined particle sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>collections.OrderedDict()</p>
 </dd>
 </dl>
@@ -451,7 +439,7 @@ if it is linked with another parameter or an independent variable through a law.
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">point_sources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.point_source.PointSource" title="astromodels.sources.point_source.PointSource"><span class="pre">PointSource</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.point_sources" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the dictionary of all defined point sources</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>collections.OrderedDict()</p>
 </dd>
 </dl>
@@ -462,7 +450,7 @@ if it is linked with another parameter or an independent variable through a law.
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">properties</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.properties" title="Permalink to this definition"></a></dt>
 <dd><p>Return a dictionary with all parameters</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary of parameters</p>
 </dd>
 </dl>
@@ -473,10 +461,10 @@ if it is linked with another parameter or an independent variable through a law.
 <span class="sig-name descname"><span class="pre">remove_external_parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.remove_external_parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.remove_external_parameter" title="Permalink to this definition"></a></dt>
 <dd><p>Remove an external parameter which was added with add_external_parameter</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>variable_name</strong> – name of parameter to remove</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -487,10 +475,10 @@ if it is linked with another parameter or an independent variable through a law.
 <span class="sig-name descname"><span class="pre">remove_independent_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.remove_independent_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.remove_independent_variable" title="Permalink to this definition"></a></dt>
 <dd><p>Remove an independent variable which was added with add_independent_variable</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>variable_name</strong> – name of variable to remove</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -501,10 +489,10 @@ if it is linked with another parameter or an independent variable through a law.
 <span class="sig-name descname"><span class="pre">remove_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.remove_source"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.remove_source" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>source_name</strong> – the name of the source to be removed</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a new Model instance without the source</p>
 </dd>
 </dl>
@@ -522,10 +510,10 @@ if it is linked with another parameter or an independent variable through a law.
 <dd><p>Set the free parameters in the model to the provided values.</p>
 <p>NOTE: of course, order matters</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>values</strong> – a list of new values</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
@@ -536,7 +524,7 @@ if it is linked with another parameter or an independent variable through a law.
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sources</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.point_source.PointSource" title="astromodels.sources.point_source.PointSource"><span class="pre">PointSource</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.extended_source.ExtendedSource" title="astromodels.sources.extended_source.ExtendedSource"><span class="pre">ExtendedSource</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="astromodels.sources.html#astromodels.sources.particle_source.ParticleSource" title="astromodels.sources.particle_source.ParticleSource"><span class="pre">ParticleSource</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.model.Model.sources" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a dictionary containing all defined sources (of any kind)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>collections.OrderedDict()</p>
 </dd>
 </dl>
@@ -552,10 +540,10 @@ if it is linked with another parameter or an independent variable through a law.
 <span class="sig-name descname"><span class="pre">unlink</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/model.html#Model.unlink"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model.Model.unlink" title="Permalink to this definition"></a></dt>
 <dd><p>Sets free one or more parameters which have been linked previously</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>parameter</strong> – the parameter to be set free, can also be a list of parameters</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>(none)</p>
 </dd>
 </dl>
@@ -567,7 +555,7 @@ if it is linked with another parameter or an independent variable through a law.
 <dd><p>Unlink all parameters of the current model that are linked to a parameter of a given source.
 To be called before removing a source from the model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>source_name</strong> – the name of the source to which to remove all links</p></li>
 <li><p><strong>warn</strong> – If True, prints a warning if any parameters were unlinked.</p></li>
@@ -707,10 +695,10 @@ To be called before removing a source from the model.</p>
 <dd><p>Returns a copy of the given model with all objects cloned. This is equivalent to saving the model to
 a file and reload it, but it doesn’t require writing or reading to/from disk. The original model is not touched.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>model</strong> – model to be cloned</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a cloned copy of the given model</p>
 </dd>
 </dl>
@@ -721,10 +709,10 @@ a file and reload it, but it doesn’t require writing or reading to/from disk. 
 <span class="sig-prename descclassname"><span class="pre">astromodels.core.model_parser.</span></span><span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/model_parser.html#load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.model_parser.load_model" title="Permalink to this definition"></a></dt>
 <dd><p>Load a model from a file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>filename</strong> – the name of the file containing the model</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>an instance of a Model</p>
 </dd>
 </dl>
@@ -832,7 +820,7 @@ screen</p>
 <dd><p>Bases: <a class="reference internal" href="#astromodels.core.parameter.ParameterBase" title="astromodels.core.parameter.ParameterBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterBase</span></code></a></p>
 <p>Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – Name for the parameter</p></li>
 <li><p><strong>value</strong> – Initial value</p></li>
@@ -858,13 +846,13 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <span class="sig-name descname"><span class="pre">add_auxiliary_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">law</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/parameter.html#Parameter.add_auxiliary_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.add_auxiliary_variable" title="Permalink to this definition"></a></dt>
 <dd><p>TODO describe function</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>variable</strong> – </p></li>
 <li><p><strong>law</strong> – </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p></p>
 </dd>
 </dl>
@@ -875,7 +863,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auxiliary_variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span></em><a class="headerlink" href="#astromodels.core.parameter.Parameter.auxiliary_variable" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a tuple with the auxiliary variable and the law</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple (variable, law)</p>
 </dd>
 </dl>
@@ -892,7 +880,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fix</span></span><a class="headerlink" href="#astromodels.core.parameter.Parameter.fix" title="Permalink to this definition"></a></dt>
 <dd><p>‘p.fix = True’  or ‘p.fix = False’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gets or sets whether the parameter is fixed or not. Use booleans, like</p>
 </dd>
 </dl>
@@ -903,7 +891,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free</span></span><a class="headerlink" href="#astromodels.core.parameter.Parameter.free" title="Permalink to this definition"></a></dt>
 <dd><p>‘p.free = True’  or ‘p.free = False’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gets or sets whether the parameter is free or not. Use booleans, like</p>
 </dd>
 </dl>
@@ -925,7 +913,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <span class="sig-name descname"><span class="pre">has_prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/parameter.html#Parameter.has_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.has_prior" title="Permalink to this definition"></a></dt>
 <dd><p>Check whether the current parameter has a defined prior</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
 </dd>
 </dl>
@@ -947,7 +935,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <span class="sig-name descname"><span class="pre">remove_auxiliary_variable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/parameter.html#Parameter.remove_auxiliary_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.remove_auxiliary_variable" title="Permalink to this definition"></a></dt>
 <dd><p>Remove an existing auxiliary variable</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -977,7 +965,7 @@ provide a lower_bound and an upper_bound properties)
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter.</span></span><span class="sig-name descname"><span class="pre">ParameterBase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Unit</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Unit(dimensionless)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#astromodels.core.parameter_transformation.ParameterTransformation" title="astromodels.core.parameter_transformation.ParameterTransformation"><span class="pre">ParameterTransformation</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/parameter.html#ParameterBase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#astromodels.core.tree.Node" title="astromodels.core.tree.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name for parameter</p></li>
 <li><p><strong>value</strong> – initial value</p></li>
@@ -1004,7 +992,7 @@ same order they have been entered.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_quantity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.as_quantity" title="Permalink to this definition"></a></dt>
 <dd><p>Return the current value with its units (as an astropy.Quantity instance)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an instance of astropy.Quantity)</p>
 </dd>
 </dl>
@@ -1021,7 +1009,7 @@ same order they have been entered.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.description" title="Permalink to this definition"></a></dt>
 <dd><p>Return a description of this parameter</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a string cointaining a description of the meaning of this parameter</p>
 </dd>
 </dl>
@@ -1044,7 +1032,7 @@ same order they have been entered.</p>
 <span class="sig-name descname"><span class="pre">get_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/parameter.html#ParameterBase.get_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.get_callbacks" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the list of callbacks currently defined</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -1065,7 +1053,7 @@ same order they have been entered.</p>
 <span class="sig-name descname"><span class="pre">in_unit_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="reference internal" href="../../_modules/astromodels/core/parameter.html#ParameterBase.in_unit_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.in_unit_of" title="Permalink to this definition"></a></dt>
 <dd><p>Return the current value transformed to the new units</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>unit</strong> – either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
 instance, like “1 / (erg cm**2 s)”</p></li>
@@ -1073,7 +1061,7 @@ instance, like “1 / (erg cm**2 s)”</p></li>
 Default is False</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>either a floating point or a astropy.Quantity depending on the value of “as_quantity”</p>
 </dd>
 </dl>
@@ -1086,13 +1074,13 @@ Default is False</p></li>
 if you have for example a confidence interval in internal reference and you want to transform it to the
 external reference</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>interval_value</strong> – value in internal reference</p></li>
 <li><p><strong>internal_delta</strong> – delta in internal reference</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>value and delta in external reference</p>
 </dd>
 </dl>
@@ -1130,7 +1118,7 @@ external reference</p>
 we do not care about
 transformations but want speed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -1142,7 +1130,7 @@ transformations but want speed</p>
 <dd><p>restore the original transformation
 if it had been removed</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -1207,7 +1195,7 @@ functions)</p>
 astropy.Quantity or a simple float, but to be coded like it’s always receiving a pure float in the right units.
 This is to give a way to avoid the huge bottleneck that are astropy.units</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input_type</strong> – the expected type for the input (float, int)</p>
 </dd>
 </dl>
@@ -1267,10 +1255,10 @@ This is to give a way to avoid the huge bottleneck that are astropy.units</p>
 <span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter_transformation.</span></span><span class="sig-name descname"><span class="pre">get_transformation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transformation_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/parameter_transformation.html#get_transformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter_transformation.get_transformation" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an instance of a transformation by name</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>transformation_name</strong> – </p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>instance of transformation with provided name</p>
 </dd>
 </dl>
@@ -1279,6 +1267,12 @@ This is to give a way to avoid the huge bottleneck that are astropy.units</p>
 </section>
 <section id="module-astromodels.core.polarization">
 <span id="astromodels-core-polarization-module"></span><h2>astromodels.core.polarization module<a class="headerlink" href="#module-astromodels.core.polarization" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.core.polarization.LinearParameter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.polarization.</span></span><span class="sig-name descname"><span class="pre">LinearParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/polarization.html#LinearParameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.polarization.LinearParameter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.core.tree.Node" title="astromodels.core.tree.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="astromodels.core.polarization.LinearPolarization">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.polarization.</span></span><span class="sig-name descname"><span class="pre">LinearPolarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">degree</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/polarization.html#LinearPolarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.polarization.LinearPolarization" title="Permalink to this definition"></a></dt>
@@ -1292,8 +1286,14 @@ This is to give a way to avoid the huge bottleneck that are astropy.units</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="astromodels.core.polarization.StokesParameter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.polarization.</span></span><span class="sig-name descname"><span class="pre">StokesParameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/polarization.html#StokesParameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.polarization.StokesParameter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.core.tree.Node" title="astromodels.core.tree.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="astromodels.core.polarization.StokesPolarization">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.polarization.</span></span><span class="sig-name descname"><span class="pre">StokesPolarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/polarization.html#StokesPolarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.polarization.StokesPolarization" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.polarization.</span></span><span class="sig-name descname"><span class="pre">StokesPolarization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">U</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/polarization.html#StokesPolarization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.polarization.StokesPolarization" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#astromodels.core.polarization.Polarization" title="astromodels.core.polarization.Polarization"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polarization</span></code></a></p>
 </dd></dl>
 
@@ -1315,7 +1315,7 @@ This is to give a way to avoid the huge bottleneck that are astropy.units</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.core.property.PropertyBase.description" title="Permalink to this definition"></a></dt>
 <dd><p>Return a description of this parameter</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a string cointaining a description of the meaning of this parameter</p>
 </dd>
 </dl>
@@ -1375,7 +1375,7 @@ being serialized and deserialized with YAML.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">equinox</span></span><a class="headerlink" href="#astromodels.core.sky_direction.SkyDirection.equinox" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the equinox for the coordinates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
 </dd>
 </dl>
@@ -1405,7 +1405,7 @@ has been instanced)</p>
 <span class="sig-name descname"><span class="pre">get_b</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/sky_direction.html#SkyDirection.get_b"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.sky_direction.SkyDirection.get_b" title="Permalink to this definition"></a></dt>
 <dd><p>Get Galactic latitude (b) corresponding to the current position</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Latitude</p>
 </dd>
 </dl>
@@ -1416,7 +1416,7 @@ has been instanced)</p>
 <span class="sig-name descname"><span class="pre">get_dec</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/sky_direction.html#SkyDirection.get_dec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.sky_direction.SkyDirection.get_dec" title="Permalink to this definition"></a></dt>
 <dd><p>Get Dec. corresponding to the current position (ICRS, J2000)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Declination</p>
 </dd>
 </dl>
@@ -1427,7 +1427,7 @@ has been instanced)</p>
 <span class="sig-name descname"><span class="pre">get_l</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/sky_direction.html#SkyDirection.get_l"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.sky_direction.SkyDirection.get_l" title="Permalink to this definition"></a></dt>
 <dd><p>Get Galactic Longitude (l) corresponding to the current position</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Galactic Longitude</p>
 </dd>
 </dl>
@@ -1438,7 +1438,7 @@ has been instanced)</p>
 <span class="sig-name descname"><span class="pre">get_ra</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/sky_direction.html#SkyDirection.get_ra"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.sky_direction.SkyDirection.get_ra" title="Permalink to this definition"></a></dt>
 <dd><p>Get R.A. corresponding to the current position (ICRS, J2000)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Right Ascension</p>
 </dd>
 </dl>
@@ -1449,7 +1449,7 @@ has been instanced)</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#astromodels.core.sky_direction.SkyDirection.parameters" title="Permalink to this definition"></a></dt>
 <dd><p>Get the dictionary of parameters (either ra,dec or l,b)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dictionary of parameters</p>
 </dd>
 </dl>
@@ -1461,7 +1461,7 @@ has been instanced)</p>
 <dd><p>Return an instance of astropy.coordinates.SkyCoord which can be used to make all transformations supported
 by it</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>astropy.coordinates.SkyCoord</p>
 </dd>
 </dl>
@@ -1498,7 +1498,7 @@ by it</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#astromodels.core.spectral_component.SpectralComponent.shape" title="Permalink to this definition"></a></dt>
 <dd><p>A generic name for the spectral shape.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the spectral shape instance</p>
 </dd>
 </dl>
@@ -1527,7 +1527,28 @@ by it</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.thread_safe_unit_format.ThreadSafe.to_string">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/thread_safe_unit_format.html#ThreadSafe.to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.thread_safe_unit_format.ThreadSafe.to_string" title="Permalink to this definition"></a></dt>
-<dd><p>Convert a unit object to a string.</p>
+<dd><p>Convert a unit to its string representation.</p>
+<p>Implementation for <cite>~astropy.units.UnitBase.to_string</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>unit</strong> (<em>|Unit|</em>) – The unit to convert.</p></li>
+<li><p><strong>fraction</strong> (<em>{False|True|’inline’|’multiline’}, optional</em>) – Options are as follows:</p>
+<ul>
+<li><p><cite>False</cite> : display unit bases with negative powers as they are
+(e.g., <code class="docutils literal notranslate"><span class="pre">km</span> <span class="pre">s-1</span></code>);</p></li>
+<li><p>‘inline’ or <cite>True</cite> : use a single-line fraction (e.g., <code class="docutils literal notranslate"><span class="pre">km</span> <span class="pre">/</span> <span class="pre">s</span></code>);</p></li>
+<li><p>‘multiline’ : use a multiline fraction (available for the
+<code class="docutils literal notranslate"><span class="pre">latex</span></code>, <code class="docutils literal notranslate"><span class="pre">console</span></code> and <code class="docutils literal notranslate"><span class="pre">unicode</span></code> formats only; e.g.,
+<code class="docutils literal notranslate"><span class="pre">$\mathrm{\frac{km}{s}}$</span></code>).</p></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If <code class="docutils literal notranslate"><span class="pre">fraction</span></code> is not recognized.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1550,7 +1571,7 @@ by it</p>
 <span class="sig-name descname"><span class="pre">display</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/core/tree.html#Node.display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.tree.Node.display" title="Permalink to this definition"></a></dt>
 <dd><p>Display information about the point source.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>(none)</p>
 </dd>
 </dl>
