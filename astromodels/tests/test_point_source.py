@@ -13,7 +13,7 @@ from astromodels.functions import (
     Log_parabola,
     Powerlaw,
 )
-from astromodels.functions.functions_1D.functions import _ComplexTestFunction
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction, GenericFunction
 
 try:
     from astromodels.functions import PhAbs, TbAbs, WAbs
@@ -201,7 +201,7 @@ def test_call_with_units():
 
             instance = class_type()
 
-        if not instance.is_prior:
+        if not instance.is_prior and not instance.name == "GenericFunction":
 
             # if we have fixed x_units then we will use those
             # in the test

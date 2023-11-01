@@ -11,7 +11,7 @@ from ._version import get_versions
 
 if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
-    from .utils.configuration import astromodels_config
+    from .utils.configuration import astromodels_config, show_configuration
     from .core.memoization import use_astromodels_memoization
     from .core.model import Model
     from .core.model_parser import clone_model, load_model
@@ -74,10 +74,12 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         Quartic,
         Sin,
         SmoothlyBrokenPowerLaw,
+        DoubleSmoothlyBrokenPowerlaw,
         SpatialTemplate_2D,
         Standard_Rv,
         StepFunction,
         StepFunctionUpper,
+        GenericFunction,
         Super_cutoff_powerlaw,
         TbAbs,
         TemplateModel,

@@ -31,7 +31,11 @@ class My_build_ext(_build_ext):
         import numpy
 
         self.include_dirs.append(numpy.get_include())
-        self.include_dirs.append('astromodels/xspec/include')
+        self.include_dirs.append('astromodels/xspec/include')     
+        conda_prefix = os.environ.get("CONDA_PREFIX")
+        if conda_prefix is not None:
+            conda_include_path = os.path.join(conda_prefix, 'include')
+            self.include_dirs.append(conda_include_path)
 
 
 def sanitize_lib_name(library_path):

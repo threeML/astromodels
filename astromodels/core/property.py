@@ -25,7 +25,6 @@ class PropertyBase(Node):
         defer: bool = False,
         eval_func: Optional[str] = None,
     ):
-
         # Make this a node
 
         Node.__init__(self, name)
@@ -35,8 +34,9 @@ class PropertyBase(Node):
         self._eval_func: Optional[str] = eval_func
 
         if (value is None) and (not self._defer):
-
-            log.error(f"property {name} was given no initial value but is NOT deferred")
+            log.error(
+                f"property {name} was given no initial value but is NOT deferred"
+            )
 
         # now we set the value
 
@@ -51,7 +51,7 @@ class PropertyBase(Node):
         Return current parameter value
         """
 
-        log.debug(
+        log.debug_node(
             f"accessing the property {self.name} with value {self._internal_value}"
         )
 
@@ -63,14 +63,11 @@ class PropertyBase(Node):
         """
 
         if (self._defer) and (new_value is None):
-
             # this is ok
             pass
 
         elif self._allowed_values is not None:
-
             if new_value not in self._allowed_values:
-
                 log.error(
                     f"{self.name} can only take the values {','.join(self._allowed_values)} not {new_value}"
                 )
@@ -84,31 +81,29 @@ class PropertyBase(Node):
         # on the parent
 
         if (self._internal_value == "_tmp") and self._defer:
-
             # do not execute in this mode
 
             return
 
         if self._eval_func is not None:
-
             # if there is a parent
             if self._parent is not None:
-
                 if self._parent.name == "composite":
                     # ok, we have a composite function
 
                     func_idx = int(self._name.split("_")[-1]) - 1
 
-                    log.debug(f"{self._name} has a composite parent and")
-                    log.debug(f"is being executed on func idx {func_idx}")
-                    log.debug(
+                    log.debug_node(f"{self._name} has a composite parent and")
+                    log.debug_node(f"is being executed on func idx {func_idx}")
+                    log.debug_node(
                         f"and the parent has {len(self._parent._functions)} functions"
                     )
 
-                    getattr(self._parent._functions[func_idx], str(self._eval_func))()
+                    getattr(
+                        self._parent._functions[func_idx], str(self._eval_func)
+                    )()
 
                 else:
-
                     getattr(self._parent, str(self._eval_func))()
 
             # other wise this will run when the parent is set
@@ -120,7 +115,6 @@ class PropertyBase(Node):
     )
 
     def _set_parent(self, parent):
-
         # we intecept here becuase we want
         # to make sure the eval works
 
@@ -154,7 +148,6 @@ class PropertyBase(Node):
         return new_property
 
     def _repr__base(self, rich_output):  # pragma: no cover
-
         raise NotImplementedError(
             "You need to implement this for the actual Property class"
         )
@@ -171,11 +164,9 @@ class PropertyBase(Node):
         # Assume variable is a np.array, fall back to the case where variable is already a primitive type
 
         try:
-
             return variable.item()
 
         except AttributeError:
-
             return variable
 
     def to_dict(self, minimal=False) -> Dict[str, Any]:
@@ -184,16 +175,16 @@ class PropertyBase(Node):
         data = collections.OrderedDict()
 
         if minimal:
-
             # In the minimal representation we just output the value
 
             data["value"] = self._to_python_type(self.value)
 
         else:
-
             # In the complete representation we output everything is needed to re-build the object
 
-            data["value"] = str(self.value)
+            data["value"] = (
+                self.value if type(self.value) is bool else str(self.value)
+            )
             data["desc"] = str(self._desc)
             data["allowed values"] = self._to_python_type(self._allowed_values)
             data["defer"] = self._to_python_type(self._defer)
@@ -212,7 +203,6 @@ class FunctionProperty(PropertyBase):
         defer: bool = False,
         eval_func: Optional[str] = None,
     ):
-
         super(FunctionProperty, self).__init__(
             name=name,
             desc=desc,
@@ -223,7 +213,6 @@ class FunctionProperty(PropertyBase):
         )
 
     def _repr__base(self, rich_output=False):
-
         representation = (
             f"Property {self.name} = {self.value}\n"
             f"(allowed values = {'all' if self._allowed_values is None else ' ,'.join(self._allowed_values)})"

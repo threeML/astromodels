@@ -16,9 +16,8 @@ log = setup_logger(__name__)
 
 class ExtendedSource(Source, Node):
     def __init__(
-        self, source_name, spatial_shape, spectral_shape=None, components=None
+        self, source_name, spatial_shape, spectral_shape=None, components=None, polarization=None
     ):
-
         # Check that we have all the required information
         # and set the units
 
@@ -41,7 +40,7 @@ class ExtendedSource(Source, Node):
 
             if spectral_shape is not None:
 
-                components = [SpectralComponent("main", spectral_shape)]
+                components = [SpectralComponent("main", spectral_shape, polarization)]
 
             # Components in this case have energy as x and differential flux as y
 
@@ -102,7 +101,7 @@ class ExtendedSource(Source, Node):
 
                 if spectral_shape is not None:
 
-                    components = [SpectralComponent("main", spectral_shape)]
+                    components = [SpectralComponent("main", spectral_shape, polarization)]
 
                 # Assign units
                 diff_flux_units = (
@@ -205,7 +204,7 @@ class ExtendedSource(Source, Node):
         :return: differential flux at given position and energy
         """
 
-        assert type(lat) == type(lon) and type(lon) == type(
+        assert type(lat) is type(lon) and type(lon) is type(
             energies
         ), "Type mismatch in input of call"
 

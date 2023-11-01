@@ -1,13 +1,7 @@
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import IntEnum, Enum
 
-
-# from .catalog_structure import Catalogs, PublicDataServer
-# from .fitting_structure import BayesianDefault, MLEDefault
-# from .plotting_structure import GenericPlotting, ModelPlotting
-# from .plugin_structure import Plugins, TimeSeries
-# from .point_source_structure import PointSourceDefaults
 
 # logging
 class LoggingLevel(IntEnum):
@@ -20,7 +14,6 @@ class LoggingLevel(IntEnum):
 
 @dataclass
 class Logging:
-
     path: str = "~/.astromodels/log"
     developer: bool = "off"
     usr: bool = "on"
@@ -64,6 +57,8 @@ class Modeling:
 
 @dataclass
 class Config:
-    logging: Logging = Logging()
-    absorption_models: AbsorptionModels = AbsorptionModels()
-    modeling: Modeling = Modeling()
+    logging: Logging = field(default_factory=Logging)
+    absorption_models: AbsorptionModels = field(
+        default_factory=AbsorptionModels
+    )
+    modeling: Modeling = field(default_factory=Modeling)

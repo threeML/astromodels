@@ -78,6 +78,63 @@ else:
     has_gsl = True
 
 
+class GenericFunction(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        Return k*f(x)
+
+    latex : $ k $
+
+    parameters :
+
+        k :
+
+            desc : Constant value
+            initial value : 1
+    """
+
+    def set_function(self, f):
+        self._function = f
+
+    def get_function(self):
+        return self._function
+
+    def _set_units(self, x_unit, y_unit):
+        self.k.unit = y_unit
+
+    function = property(
+        get_function,
+        set_function,
+        doc="""Get/set function""",
+    )
+
+    def evaluate(self, x, k):
+        try:
+            return k * self._function(x)
+        except TypeError:
+            if isinstance(x, u.Quantity):
+                ones = np.ones_like(x).value
+            else:
+                ones = np.ones_like(x)
+            return k * ones
+        except AttributeError:
+            log.error('You must define a function with set_function!')
+
+    def to_dict(self, minimal=False):
+
+        data = super(Function1D, self).to_dict(minimal)
+
+        if not minimal:
+            try:
+                f = self._function
+            except AttributeError:
+                f = None
+            data["extra_setup"] = {"function": f}
+
+        return data
+
+
 class StepFunction(Function1D, metaclass=FunctionMeta):
     r"""
     description :
@@ -543,7 +600,6 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
     parameters :
 
         K :
-
             desc : Normalization
             initial value : 1.0
             is_normalization : True

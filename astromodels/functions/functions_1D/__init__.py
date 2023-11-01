@@ -13,6 +13,7 @@ from .functions import (
     StepFunctionUpper,
     has_gsl,
     has_naima,
+    GenericFunction
 )
 
 if has_naima:
@@ -51,6 +52,7 @@ from .powerlaws import (
     Powerlaw_flux,
     SmoothlyBrokenPowerLaw,
     Super_cutoff_powerlaw,
+    DoubleSmoothlyBrokenPowerlaw,
 )
 
 if has_atomdb:
@@ -70,6 +72,7 @@ __all__ = [
     "Powerlaw_Eflux",
     "Powerlaw_flux",
     "SmoothlyBrokenPowerLaw",
+    "DoubleSmoothlyBrokenPowerlaw",
     "Super_cutoff_powerlaw",
     "Constant",
     "Cubic",
@@ -80,6 +83,7 @@ __all__ = [
     "Sin",
     "StepFunction",
     "StepFunctionUpper",
+    "GenericFunction",
     "PhAbs",
     "TbAbs",
     "WAbs",
