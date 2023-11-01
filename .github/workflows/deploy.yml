@@ -98,9 +98,8 @@ jobs:
                   activate-environment: "test_env"
                   auto-activate-base: false
                   architecture: "x64"
-                  #mamba-version: "*"
-                  #conda-build-version: 3.21.6
-                  miniforge-version: latest
+                  miniforge-variant: Mambaforge
+                  #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ci/environment.yml
@@ -138,26 +137,26 @@ jobs:
 
                   echo "HOME= ${HOME}"
                   echo "Building ${PKG_VERSION} ..."
-                  echo "Python version: ${{matrix.python-version}}"
+                  
+                  #echo "Python version: ${{matrix.python-version}}"
 
                   conda install codecov pytest-cov
-
+            - name: Conda list
+              shell: bash -l {0}
+              run: |
+                  conda list
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
-                  # Install conda build:
-                  conda install conda-build -n base
-                  #conda update conda-build
-                  # Install mambabuild (boa):
-                  # conda install -c conda-forge boa -n base
                   # Build package
-                  conda build --python=${{matrix.python-version}} conda-dist/recipe
-                  # Install the package
-                  conda install astromodels --use-local
-                  echo "=================== conda list ================================="
-                  conda list
-                  echo "===================================================="
 
+                  #conda install conda-build -n base
+                  mamba install -c conda-forge boa
+
+                  #conda build --python=${{matrix.python-version}} conda-dist/recipe
+                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
+
+                  conda install --use-local -c conda-forge astromodels
             - name: Test conda build
               shell: bash -l {0}
               run: |
@@ -165,7 +164,6 @@ jobs:
                   echo "======>  importing XSPEC..."
                   python -c "import astromodels.xspec"
                   python -m pytest -vv --cov=astromodels --cov-report=xml
-
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
