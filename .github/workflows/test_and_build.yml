@@ -35,8 +35,9 @@ jobs:
         if: ${{ needs.skip_duplicate.outputs.should_skip == 'false' }}
         strategy:
             matrix:
-                python-version: [3.7, 3.8, 3.9]
-        runs-on: ubuntu-latest
+                python-version: [3.9, 3.10, 3.11, 3.12]
+                os: ["ubuntu-latest", "macos-latest"]
+        runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -85,7 +86,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest"]
-                python-version: [3.7, 3.9]
+                python-version: [3.9]
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
