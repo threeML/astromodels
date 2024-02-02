@@ -34,9 +34,11 @@ jobs:
         needs: skip_duplicate
         if: ${{ needs.skip_duplicate.outputs.should_skip == 'false' }}
         strategy:
+            fail-fast: false
             matrix:
-                python-version: [3.7, 3.8, 3.9]
-        runs-on: ubuntu-latest
+                python-version: ["3.9", "3.10", "3.11"]
+                os: ["ubuntu-latest", "macos-latest"]
+        runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -48,6 +50,7 @@ jobs:
               run: |
                   python -m pip install --upgrade pip wheel
                   pip install --upgrade flake8 coverage pytest-cov cython
+                  pip install git+https://github.com/EconForge/interpolation.py.git
                   pip install -e .
             - name: Lint with flake8
               run: |
@@ -63,9 +66,16 @@ jobs:
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
 
-            - name: Publish Unit Test Results
-              uses: EnricoMi/publish-unit-test-result-action@v1
-              if: always()
+            - name: Publish Unit Test Results Ubuntu
+              uses: EnricoMi/publish-unit-test-result-action@v2
+              if: runner.os == 'Linux'
+              with:
+                files: junit/test-*.xml
+                comment_mode: off
+
+            - name: Publish Unit Test Results MacOS
+              uses: EnricoMi/publish-unit-test-result-action/composite@v2
+              if: runner.os == 'macOS'
               with:
                 files: junit/test-*.xml
                 comment_mode: off
@@ -85,7 +95,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest"]
-                python-version: [3.7, 3.9]
+                python-version: [3.9]
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
