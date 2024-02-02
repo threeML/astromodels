@@ -260,8 +260,6 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             - ASPL
             function: _init_xsect
 
-
-
     """
 
     def _setup(self):

@@ -6,7 +6,7 @@ import collections
 import contextlib
 import copy
 import warnings
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple
 
 import astropy.units as u
 import numpy as np
