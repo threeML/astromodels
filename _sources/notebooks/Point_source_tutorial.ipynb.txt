@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "91a41532",
+   "id": "0d4ef2e4",
    "metadata": {},
    "source": [
     "# Point sources #\n",
@@ -19,25 +19,25 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "9bb108bc",
+   "id": "b9e871fa",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:31.614057Z",
-     "iopub.status.busy": "2023-11-01T23:57:31.613538Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.006139Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.003977Z"
+     "iopub.execute_input": "2024-02-02T21:42:53.106737Z",
+     "iopub.status.busy": "2024-02-02T21:42:53.105902Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.400569Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.398201Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">23:57:33 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#48\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">48</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">21:42:54 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#48\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">48</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">available                                                                         </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m23:57:33\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=653598;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=621221;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#48\u001b\\\u001b[2m48\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m21:42:54\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=289981;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=78494;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#48\u001b\\\u001b[2m48\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mavailable                                                                        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -52,7 +52,7 @@
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=604422;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=244422;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#69\u001b\\\u001b[2m69\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=643823;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=827341;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#69\u001b\\\u001b[2m69\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mwill not be available.                                                           \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -83,7 +83,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4844ca2d",
+   "id": "841db677",
    "metadata": {},
    "source": [
     "We can also use Galactic coordinates:"
@@ -92,13 +92,13 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "3511dab9",
+   "id": "253e9120",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.013348Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.012974Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.023405Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.022199Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.408056Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.407437Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.417722Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.415438Z"
     }
    },
    "outputs": [],
@@ -108,7 +108,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "bd521b3b",
+   "id": "faafc1c5",
    "metadata": {},
    "source": [
     "As spectral shape we can use any function or any composite function (see\n",
@@ -117,7 +117,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "3c524a68",
+   "id": "3808eccc",
    "metadata": {},
    "source": [
     "## Getting info about a point source\n",
@@ -130,13 +130,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "cda4b24f",
+   "id": "c1f7156e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.029519Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.029193Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.045087Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.043900Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.424048Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.423683Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.438019Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.436401Z"
     }
    },
    "outputs": [
@@ -335,13 +335,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "f86f8c81",
+   "id": "662c6506",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.051261Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.050843Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.063550Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.062256Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.444346Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.443953Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.454094Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.452388Z"
     }
    },
    "outputs": [
@@ -401,7 +401,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "539d4cc4",
+   "id": "03349259",
    "metadata": {},
    "source": [
     "As you can see we have created a point source with one component automatically named \"main\", with a power law spectrum, at the\n",
@@ -410,7 +410,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "bc5c07f6",
+   "id": "3e478d9e",
    "metadata": {},
    "source": [
     "## Converting between coordinate systems\n",
@@ -423,13 +423,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "561a1e65",
+   "id": "a268dca0",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.069801Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.069456Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.100969Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.099556Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.460396Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.460066Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.491716Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.490183Z"
     }
    },
    "outputs": [
@@ -486,7 +486,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9b066dd0",
+   "id": "f87e8c8c",
    "metadata": {},
    "source": [
     "For more control on the output and many more options, such as transform\n",
@@ -498,13 +498,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "0f68bb0e",
+   "id": "3ae3dfb8",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.107147Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.106778Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.117625Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.116093Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.497473Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.497157Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.507819Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.506122Z"
     }
    },
    "outputs": [
@@ -525,7 +525,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "d955ef9f",
+   "id": "fcf1d134",
    "metadata": {},
    "source": [
     "## Gotcha while accessing coordinates\n",
@@ -540,13 +540,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "f9d710b2",
+   "id": "fc5ca48e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.123664Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.123335Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.134305Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.132784Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.513839Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.513497Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.524509Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.523038Z"
     }
    },
    "outputs": [
@@ -597,7 +597,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "aa866b0a",
+   "id": "2bc3e6d9",
    "metadata": {},
    "source": [
     "The following would instead throw `AttributeError`, since `simple_source_icrs` was instanced using R.A. and Dec. and hence does not have the `l`, `b` parameters:"
@@ -606,13 +606,13 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "718a81c4",
+   "id": "78f58bc3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.140766Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.140398Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.146969Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.145216Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.530383Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.530057Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.536047Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.534488Z"
     }
    },
    "outputs": [
@@ -633,7 +633,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "41b6d783",
+   "id": "e6341a01",
    "metadata": {},
    "source": [
     "In all cases, independently on how the source was instanced, you can obtain the *values* of coordinates in degrees\n",
@@ -643,13 +643,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "bd122609",
+   "id": "a0e044bf",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.153579Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.153198Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.165754Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.164027Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.541934Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.541588Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.552284Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.550880Z"
     }
    },
    "outputs": [
@@ -687,7 +687,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "b4fc3e6d",
+   "id": "3b85e33d",
    "metadata": {},
    "source": [
     "## Fitting the source position\n",
@@ -698,13 +698,13 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "d1320ca5",
+   "id": "4d837a5c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.172626Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.172191Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.179756Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.178131Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.558490Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.558135Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.567362Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.566060Z"
     }
    },
    "outputs": [
@@ -726,7 +726,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "d405d2bd",
+   "id": "2cc7d661",
    "metadata": {},
    "source": [
     "For a source created in Galactic coordinates, instead use the following:"
@@ -735,13 +735,13 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "278dda27",
+   "id": "6a331442",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.186011Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.185643Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.193062Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.191451Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.573696Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.573314Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.581601Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.579344Z"
     }
    },
    "outputs": [
@@ -763,7 +763,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "6d92296e",
+   "id": "64bb36ef",
    "metadata": {},
    "source": [
     "By default, the allowed range for the Right Ascension is from 0˚ to 360˚ and allowed declination values range from -90˚ to 90˚. **If fitting the source position, it is strongly recommended to restrict the coordinates to be inside the region of interest (ROI) at all times.** The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting \"stuck\" due to the likelihood surface being flat. For example:"
@@ -772,13 +772,13 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "946d6cf7",
+   "id": "95642dc7",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.200037Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.199552Z",
-     "iopub.status.idle": "2023-11-01T23:57:34.213125Z",
-     "shell.execute_reply": "2023-11-01T23:57:34.211350Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.587961Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.587591Z",
+     "iopub.status.idle": "2024-02-02T21:42:55.600439Z",
+     "shell.execute_reply": "2024-02-02T21:42:55.598799Z"
     }
    },
    "outputs": [
@@ -820,7 +820,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "d2c278d0",
+   "id": "d072ef15",
    "metadata": {},
    "source": [
     "## \"Calling\" a point source\n",
@@ -831,13 +831,13 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "f2452be1",
+   "id": "3d4d2754",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2023-11-01T23:57:34.220489Z",
-     "iopub.status.busy": "2023-11-01T23:57:34.220076Z",
-     "iopub.status.idle": "2023-11-01T23:57:35.582872Z",
-     "shell.execute_reply": "2023-11-01T23:57:35.581343Z"
+     "iopub.execute_input": "2024-02-02T21:42:55.607589Z",
+     "iopub.status.busy": "2024-02-02T21:42:55.606952Z",
+     "iopub.status.idle": "2024-02-02T21:42:56.796073Z",
+     "shell.execute_reply": "2024-02-02T21:42:56.794798Z"
     }
    },
    "outputs": [
@@ -894,7 +894,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "a4b59d6c",
+   "id": "9d002088",
    "metadata": {},
    "outputs": [],
    "source": []
