@@ -68,14 +68,14 @@ jobs:
 
             - name: Publish Unit Test Results Ubuntu
               uses: EnricoMi/publish-unit-test-result-action@v2
-              if: matrix.os=="ubuntu-latest"
+              if: runner.os == 'Linux'
               with:
                 files: junit/test-*.xml
                 comment_mode: off
 
             - name: Publish Unit Test Results MacOS
               uses: EnricoMi/publish-unit-test-result-action/composite@v2
-              if: matrix.os=="macos-latest"
+              if: runner.os == 'macOS'
               with:
                 files: junit/test-*.xml
                 comment_mode: off
