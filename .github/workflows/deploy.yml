@@ -21,9 +21,9 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout source
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
             - name: Set up Python 3.9
-              uses: actions/setup-python@v1
+              uses: actions/setup-python@v5
               with:
                   python-version: 3.9
             - name: Build package
@@ -42,8 +42,8 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v2
-            - uses: actions/setup-python@v2
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
               with:
                   python-version: 3.9
 
@@ -77,15 +77,15 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
             # - name: Set up Python
-            #   uses: actions/setup-python@v2
+            #   uses: actions/setup-python@v5
             #   with:
             #       python-version: ${{ matrix.python-version }}
             # - name: Cache conda
-            #   uses: actions/cache@v2
+            #   uses: actions/cache@v4
             #   env:
             #     # Increase this value to reset cache if etc/example-environment.yml has not changed
             #     CACHE_NUMBER: 0
@@ -93,7 +93,7 @@ jobs:
             #       path: ~/conda_pkgs_dir
             #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
-              uses: conda-incubator/setup-miniconda@v2
+              uses: conda-incubator/setup-miniconda@v3
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
@@ -178,11 +178,11 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
               with:
                   fetch-depth: 0
             - name: Cache conda
-              uses: actions/cache@v2
+              uses: actions/cache@v4
               env:
                 # Increase this value to reset cache if etc/example-environment.yml has not changed
                 CACHE_NUMBER: 0
@@ -190,7 +190,7 @@ jobs:
                   path: ~/conda_pkgs_dir
                   key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
-              uses: conda-incubator/setup-miniconda@v2
+              uses: conda-incubator/setup-miniconda@v3
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
