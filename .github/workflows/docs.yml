@@ -6,18 +6,18 @@ jobs:
     name: "Build the notebooks for the docs"
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      #- name: Checkout
+      #  uses: actions/checkout@v4
       - name: Init Environment
         #shell: bash -l {0}
         run: |
@@ -83,10 +83,10 @@ jobs:
           path: docs/notebooks
 
 
-      - name: Sleep for 5 min
+      - name: Sleep for 10 min
         uses: juliangruber/sleep-action@v1
         with:
-          time: 5m
+          time: 10m
 
       - name: Trigger RTDs build
         uses: dfm/rtds-action@main
@@ -99,13 +99,13 @@ jobs:
     name: "Create the API stubs"
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
 
