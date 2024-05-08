@@ -192,9 +192,15 @@ def find_library(library_root, additional_places=None):
 
 def setup_xspec():
 
+    skip_xspec = os.environ.get("SKIP_XSPEC")
     headas_root = os.environ.get("HEADAS")
     conda_prefix = os.environ.get("CONDA_PREFIX")
     xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
+
+    if skip_xspec is not None:
+
+        print("The SKIP_XSPEC env variable was set. Xspec support will not be installed.")
+        return None
 
     # thanks to the sherpa team for this
     
