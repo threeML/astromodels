@@ -49,8 +49,7 @@ jobs:
             - name: Install dependencies
               run: |
                   python -m pip install --upgrade pip wheel h5py
-                  pip install --upgrade flake8 coverage pytest-cov cython "tables==3.8.0"
-                  #pip install git+https://github.com/EconForge/interpolation.py.git
+                  pip install --upgrade flake8 coverage pytest-cov cython
                   pip install -e .
             - name: Lint with flake8
               run: |
