@@ -19,6 +19,9 @@ jobs:
         name: Publish to PyPi
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         runs-on: ubuntu-latest
+        permissions:
+          # IMPORTANT: this permission is mandatory for trusted publishing
+          id-token: write
         steps:
             - name: Checkout source
               uses: actions/checkout@v4
@@ -31,10 +34,8 @@ jobs:
                   pip install wheel setuptools -U
                   python setup.py sdist
             - name: Publish
-              uses: pypa/gh-action-pypi-publish@v1.1.0
+              uses: pypa/gh-action-pypi-publish@release/v1
               with:
-                  user: __token__
-                  password: ${{ secrets.PYPI_TOKEN }}
                   skip-existing: true
 
     test-publish-pypi:
@@ -72,7 +73,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest]
+                os: [ubuntu-latest, macos-latest, macos-12]
                 python-version: [3.9]
 
         steps:
