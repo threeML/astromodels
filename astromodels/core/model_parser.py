@@ -4,7 +4,7 @@ __author__ = "giacomov"
 
 import re
 import warnings
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, List
 
 from astromodels.core import (
     model,

@@ -1,6 +1,6 @@
 import collections
 import copy
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional
 
 from astromodels.utils.logging import setup_logger
 

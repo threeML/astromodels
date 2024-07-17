@@ -1,15 +1,9 @@
-import math
-import warnings
-from typing import Iterable
-
 import astropy.units as astropy_units
 import numpy as np
-import six
 from past.utils import old_div
-from scipy.special import erfcinv, gamma, gammaincc
+from scipy.special import gamma, gammaincc
 
 import astromodels.functions.numba_functions as nb_func
-from astromodels.core.units import get_units
 from astromodels.functions.function import (
     Function1D,
     FunctionMeta,

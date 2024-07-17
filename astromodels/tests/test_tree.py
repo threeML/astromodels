@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 import gc
-import os
 from builtins import range
 
 import astropy.units as u
