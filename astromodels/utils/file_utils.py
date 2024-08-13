@@ -16,6 +16,7 @@ if np.lib.NumpyVersion(np.__version__) >= "2.0.0":
 else:
     copy_if_needed = False
 
+
 def _get_data_file_path(data_file: str) -> Path:
     """
     Returns the absolute path to the required data files.
