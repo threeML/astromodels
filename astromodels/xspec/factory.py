@@ -486,7 +486,7 @@ $DOCSTRING$
 
         if isinstance(x, u.Quantity):
 
-            x = np.array(x.to('keV').value, ndmin=1, copy=False, dtype=float)
+            x = np.asarray(x.to('keV').value, dtype=float)
 
             quantity = True
 

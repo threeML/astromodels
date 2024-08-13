@@ -1479,7 +1479,7 @@ class Function1D(Function):
 
             # Transform the input to an array of floats. If x is a single number, this will be an array of size 1
 
-            new_input = np.array(x, dtype=float, ndmin=1, copy=False)
+            new_input = np.asarray(x, dtype=float)
 
             # Compute the function
 
@@ -1705,8 +1705,8 @@ class Function2D(Function):
 
             # Transform the input to an array of floats
 
-            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+            new_x = np.asarray(x, dtype=float)
+            new_y = np.asarray(y, dtype=float)
 
             # Compute the function
 
@@ -1876,9 +1876,9 @@ class Function3D(Function):
             # This is either a single number or a list
             # Transform the input to an array of floats
 
-            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
-            new_z = np.array(z, dtype=float, ndmin=1, copy=False)
+            new_x = np.asarray(x, dtype=float)
+            new_y = np.asarray(y, dtype=float)
+            new_z = np.asarray(z, dtype=float)
 
             # Compute the function
 
