@@ -9,6 +9,7 @@ import numpy as np
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.logging import setup_logger
+from astromodels.utils.file_utils import copy_if_needed
 
 log = setup_logger(__name__)
 
@@ -89,7 +90,7 @@ class ZDust(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _x = np.array(x.to("keV").value, ndmin=1, copy=None, dtype=float)
+            _x = np.array(x.to("keV").value, ndmin=1, copy=copy_if_needed, dtype=float)
 
             _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled

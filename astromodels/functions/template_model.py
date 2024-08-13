@@ -21,6 +21,7 @@ from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
 from astromodels.utils.logging import setup_logger
+from astromodels.utils.file_utils import copy_if_needed
 
 log = setup_logger(__name__)
 
@@ -761,7 +762,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             # the logarithm below will fail.
 
             energies = np.array(
-                energies.to("keV").value, ndmin=1, copy=None, dtype=float
+                energies.to("keV").value, ndmin=1, copy=copy_if_needed, dtype=float
             )
 
             # Same for the scale

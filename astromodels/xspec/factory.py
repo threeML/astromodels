@@ -431,6 +431,7 @@ class_definition_code = '''
 from astromodels.functions.function import FunctionMeta, Function1D
 import numpy as np
 import astropy.units as u
+from astromodels.utils.file_utils import copy_if_needed
 from astromodels.xspec import _xspec
 import six
 
@@ -486,7 +487,7 @@ $DOCSTRING$
 
         if isinstance(x, u.Quantity):
 
-            x = np.array(x.to('keV').value, ndmin=1, copy=None, dtype=float)
+            x = np.array(x.to('keV').value, ndmin=1, copy=copy_if_needed, dtype=float)
 
             quantity = True
 
