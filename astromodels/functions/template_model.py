@@ -760,8 +760,8 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             # a dimensionless quantity (actually we take the .value property) because otherwise
             # the logarithm below will fail.
 
-            energies = np.asarray(
-                energies.to("keV").value, dtype=float
+            energies = np.array(
+                energies.to("keV").value, ndmin=1, copy=None, dtype=float
             )
 
             # Same for the scale
