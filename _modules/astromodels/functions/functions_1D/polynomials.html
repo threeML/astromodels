@@ -91,16 +91,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.functions.functions_1D.polynomials</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">past.utils</span> <span class="kn">import</span> <span class="n">old_div</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">import</span> <span class="nn">astromodels.functions.numba_functions</span> <span class="k">as</span> <span class="nn">nb_func</span>
 <span class="kn">from</span> <span class="nn">astromodels.core.units</span> <span class="kn">import</span> <span class="n">get_units</span>
 <span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Function1D</span><span class="p">,</span>
     <span class="n">FunctionMeta</span><span class="p">,</span>
-    <span class="n">ModelAssertionViolation</span><span class="p">,</span>
 <span class="p">)</span>
 
 
