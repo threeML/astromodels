@@ -1,7 +1,7 @@
 from __future__ import division
 
 import collections
-from typing import Any, Dict, List, Optional, Union
+from typing import Dict, Optional
 
 import astropy.units as u
 import numba as nb

@@ -2,7 +2,7 @@ __author__ = "giacomov"
 
 from enum import Enum, unique
 from astromodels.utils.logging import setup_logger
-from typing import Dict, Optional, List, Any
+from typing import Dict, List, Any
 
 from astromodels.core.parameter import Parameter
 

@@ -12,7 +12,6 @@ import pickle
 from astromodels import Model, PointSource, clone_model, load_model
 from astromodels.functions import (
     Band,
-    MissingDataFile,
     Powerlaw,
     TemplateModel,
     TemplateModelFactory,

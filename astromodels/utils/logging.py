@@ -12,8 +12,6 @@ from rich.theme import Theme
 
 from astromodels.utils.configuration import astromodels_config
 
-from .file_utils import _get_data_file_path
-
 try:
 
     from threeML.config.config import threeML_config
