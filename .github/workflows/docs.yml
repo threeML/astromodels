@@ -48,7 +48,8 @@ jobs:
       - name: Execute the notebooks
         #shell: bash -l {0}
         run: |
-
+          # Make sure we fail in case of error
+          set -e
           # Download an example file
           
           wget https://www.astropy.org/astropy-data/photometry/spitzer_example_image.fits

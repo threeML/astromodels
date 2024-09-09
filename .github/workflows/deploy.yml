@@ -98,7 +98,7 @@ jobs:
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
-                  architecture: "x64"
+                  #architecture: "x64"
                   miniforge-variant: Mambaforge
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
@@ -174,7 +174,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-latest]
+                os: [ubuntu-latest, macos-latest, macos-12]
                 python-version: [3.9]
 
         steps:
@@ -195,7 +195,7 @@ jobs:
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
-                  architecture: "x64"
+                  #architecture: "x64"
                   miniforge-variant: Mambaforge
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
