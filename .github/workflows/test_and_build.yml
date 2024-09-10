@@ -102,6 +102,10 @@ jobs:
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-12"]
                 python-version: [3.9]
+                include:
+                  - environment: ci/environment.yml
+                  - environment:  ci/environment_noxspec.yml
+                    os: macos-latest
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
@@ -124,7 +128,7 @@ jobs:
                   miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.environment }}
                   use-only-tar-bz2: true
                   channel-priority: strict
                   channels: conda-forge, xspecmodels

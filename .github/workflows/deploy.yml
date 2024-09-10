@@ -75,7 +75,10 @@ jobs:
             matrix:
                 os: [ubuntu-latest, macos-latest, macos-12]
                 python-version: [3.9]
-
+                include:
+                  - environment: ci/environment.yml
+                  - environment:  ci/environment_noxspec.yml
+                    os: macos-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -103,7 +106,7 @@ jobs:
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.environment }}
                   use-only-tar-bz2: true
                   channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
@@ -176,20 +179,23 @@ jobs:
             matrix:
                 os: [ubuntu-latest, macos-latest, macos-12]
                 python-version: [3.9]
-
+                include:
+                  - environment: ci/environment.yml
+                  - environment:  ci/environment_noxspec.yml
+                    os: macos-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-            - name: Cache conda
-              uses: actions/cache@v4
-              env:
-                # Increase this value to reset cache if etc/example-environment.yml has not changed
-                CACHE_NUMBER: 0
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
+            #- name: Cache conda
+            #  uses: actions/cache@v4
+            #  env:
+            #    # Increase this value to reset cache if etc/example-environment.yml has not changed
+            #    CACHE_NUMBER: 0
+            #  with:
+            #      path: ~/conda_pkgs_dir
+            #      key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v3
               with:
@@ -200,7 +206,7 @@ jobs:
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.environment }}
                   use-only-tar-bz2: true
                   channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
@@ -254,7 +260,7 @@ jobs:
                   LABEL="--label dev"
 
                   fi
-
+.github/workflows/test_and_build.yml
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
 
