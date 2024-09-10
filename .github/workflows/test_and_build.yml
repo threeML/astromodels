@@ -172,6 +172,16 @@ jobs:
 
             - name: Test conda install
               shell: bash -l {0}
+              run: python -m pytest -vv --cov=astromodels --cov-report=xml
+              if: ${{matrix.os}} == "macos-latest"
+              env:
+                OMP_NUM_THREADS: 1
+                MKL_NUM_THREADS: 1
+                NUMEXPR_NUM_THREADS: 1
+                MPLBACKEND: "Agg"
+            - name: Test conda install
+              shell: bash -l {0}
+              if: ${{matrix.os}} != "macos-latest" 
               run: |
               
                   echo "======>  importing XSPEC..."

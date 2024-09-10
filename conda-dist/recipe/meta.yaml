@@ -13,10 +13,10 @@ requirements:
     - {{ compiler('c') }} # [linux]
     - {{ compiler('cxx') }} # [linux]
     - {{ compiler('fortran') }} # [linux]
-    - xspec-modelsonly
-    - cfitsio
-    - ccfits
-    - wcslib
+    - xspec-modelsonly #[not arm64]
+    - cfitsio # [not arm64]
+    - ccfits # [not arm64]
+    - wcslib # [not arm64]
 
   host:
     - python
@@ -25,10 +25,10 @@ requirements:
     - numpy
     - pyyaml>=5.1
     - pandas>=0.23
-    - cfitsio
-    - ccfits
-    - wcslib
-    - xspec-modelsonly
+    - cfitsio # [not arm64]
+    - ccfits # [not arm64]
+    - wcslib # [not arm64]
+    - xspec-modelsonly # [not arm64]
     - future
     - numba>=0.54
     - h5py
@@ -46,9 +46,9 @@ requirements:
     - pytables
     - pandas>=0.23
     - dill
-    - cfitsio
-    - ccfits
-    - wcslib
+    - cfitsio # [not arm64]
+    - ccfits # [not arm64]
+    - wcslib # [not arm64]
     - future
     - numba>=0.54
     - h5py
