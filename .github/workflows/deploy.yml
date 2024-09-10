@@ -147,7 +147,9 @@ jobs:
             - name: Test import xspec
               if: matrix.os != 'macos-latest'
               shell: bash -l {0}
-              run: python -c "import astromodels.xspec"
+              run: |
+                  cd astromodels/tests
+                  python -c "import astromodels.xspec"
             - name: Test astromodels
               shell: bash -l {0}
               run: python -m pytest -vv --cov=astromodels --cov-report=xml
