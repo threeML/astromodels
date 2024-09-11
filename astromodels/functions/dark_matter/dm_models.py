@@ -2,7 +2,6 @@ from __future__ import print_function
 
 import astropy.units as astropy_units
 import numpy as np
-import six
 from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.functions.function import Function1D, FunctionMeta

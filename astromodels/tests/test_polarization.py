@@ -1,13 +1,9 @@
 from __future__ import division
 
 import os
-
-import copy
-
-import numpy as np
 import math
 
-from astromodels import u, update_logging_level
+from astromodels import update_logging_level
 from astromodels.core.polarization import *
 from astromodels.core.model import Model
 from astromodels.core.model_parser import *

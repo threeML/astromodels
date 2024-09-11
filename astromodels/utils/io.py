@@ -6,11 +6,9 @@ __author__ = "giacomov"
 # create a wrapper which just uses print
 
 try:
-
     from IPython.display import display
 
 except ImportError:
-
     def display(*args):
         """
         Mock version of display, used if there is no ipython installed
@@ -19,11 +17,9 @@ except ImportError:
 
 
 try:
-
     from IPython.display import Latex
 
 except ImportError:
-
     class Latex(object):
         """
         Mock version of the IPython Latex object, used if there is no ipython installed
