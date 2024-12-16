@@ -128,9 +128,7 @@ class FunctionMeta(type):
 
         if "evaluate" not in dct:
 
-            log.error(
-                "You have to implement the 'evaluate' method in %s" % name
-            )
+            log.error("You have to implement the 'evaluate' method in %s" % name)
 
             raise AttributeError()
 
@@ -250,9 +248,7 @@ class FunctionMeta(type):
 
                 if parameter_name in dct["_properties"]:
 
-                    log.error(
-                        "you must specify unique parameters and propert names"
-                    )
+                    log.error("you must specify unique parameters and propert names")
 
                     raise DesignViolation()
 
@@ -339,9 +335,9 @@ class FunctionMeta(type):
 
             for parameter_name in list(dct["_parameters"].keys()):
 
-                repr_dict["default parameters"][parameter_name] = dct[
-                    "_parameters"
-                ][parameter_name].to_dict()
+                repr_dict["default parameters"][parameter_name] = dct["_parameters"][
+                    parameter_name
+                ].to_dict()
 
             if dct["_properties"] is not None:
 
@@ -350,9 +346,9 @@ class FunctionMeta(type):
 
                 for property_name in list(dct["_properties"].keys()):
 
-                    repr_dict["default properties"][property_name] = dct[
-                        "_properties"
-                    ][property_name].to_dict()
+                    repr_dict["default properties"][property_name] = dct["_properties"][
+                        property_name
+                    ].to_dict()
 
             if has_ipython:
 
@@ -465,8 +461,7 @@ class FunctionMeta(type):
 
                         log.error(
                             "You specified an init value for %s, which is not a "
-                            "parameter of function %s"
-                            % (key, type(instance)._name)
+                            "parameter of function %s" % (key, type(instance)._name)
                         )
 
                         raise UnknownParameter()
@@ -521,9 +516,7 @@ class FunctionMeta(type):
             instance._setup()
 
     @staticmethod
-    def check_calling_sequence(
-        name, function_name, function, possible_variables
-    ):
+    def check_calling_sequence(name, function_name, function, possible_variables):
         """
         Check the calling sequence for the function looking for the variables specified.
         One or more of the variables can be in the calling sequence. Note that the
@@ -561,9 +554,7 @@ class FunctionMeta(type):
 
         # Figure out how many variables are used
 
-        variables = [
-            var for var in calling_sequence if var in possible_variables
-        ]
+        variables = [var for var in calling_sequence if var in possible_variables]
 
         # Check that they actually make sense. They must be used in the same order
         # as specified in possible_variables
@@ -591,17 +582,13 @@ class FunctionMeta(type):
             raise AssertionError()
 
         other_parameters = [
-            var
-            for var in calling_sequence
-            if var not in variables and var != "self"
+            var for var in calling_sequence if var not in variables and var != "self"
         ]
 
         return variables, other_parameters
 
     @staticmethod
-    def parse_parameter_definition(
-        func_name, par_name, definition
-    ) -> Parameter:
+    def parse_parameter_definition(func_name, par_name, definition) -> Parameter:
 
         # Parse definition of parameter
 
@@ -641,9 +628,9 @@ class FunctionMeta(type):
 
             unit = u.Unit(definition["unit"])
 
-            if (
-                u.dimensionless_unscaled.physical_type == unit.physical_type
-            ) and (unit.scale != 1):
+            if (u.dimensionless_unscaled.physical_type == unit.physical_type) and (
+                unit.scale != 1
+            ):
 
                 # some xpsec models list the unit as a number
                 # but this screws things up
@@ -673,17 +660,9 @@ class FunctionMeta(type):
 
         # Optional attributes are either None if not specified, or the value specified
 
-        min_value = (
-            None if "min" not in definition else _parse_value(definition["min"])
-        )
-        max_value = (
-            None if "max" not in definition else _parse_value(definition["max"])
-        )
-        delta = (
-            None
-            if "delta" not in definition
-            else _parse_value(definition["delta"])
-        )
+        min_value = None if "min" not in definition else _parse_value(definition["min"])
+        max_value = None if "max" not in definition else _parse_value(definition["max"])
+        delta = None if "delta" not in definition else _parse_value(definition["delta"])
         unit = du
 
         # A parameter can be fixed by using fix=yes, otherwise it is free by default
@@ -718,17 +697,13 @@ class FunctionMeta(type):
         return new_parameter
 
     @staticmethod
-    def parse_property_definition(
-        func_name, prop_name, definition
-    ) -> FunctionProperty:
+    def parse_property_definition(func_name, prop_name, definition) -> FunctionProperty:
 
         # Parse definition of parameter
 
         # see if we required a value at class construction
 
-        deferred = (
-            False if "defer" not in definition else bool(definition["defer"])
-        )
+        deferred = False if "defer" not in definition else bool(definition["defer"])
 
         # Enforce the presence of attributes 'value' and 'desc'
 
@@ -821,11 +796,7 @@ class Function(Node):
         # calling sequence of this contructor. We actually need to enforce its proper use,
         # with this assert
 
-        if (
-            (name is None)
-            or (function_definition is None)
-            or (parameters is None)
-        ):
+        if (name is None) or (function_definition is None) or (parameters is None):
 
             log.error("improper call")
 
@@ -869,9 +840,9 @@ class Function(Node):
 
         if properties is not None:
 
-            self._properties: Optional[
-                Dict[str, FunctionProperty]
-            ] = collections.OrderedDict()
+            self._properties: Optional[Dict[str, FunctionProperty]] = (
+                collections.OrderedDict()
+            )
 
             for child_name, child in properties.items():
 
@@ -900,9 +871,7 @@ class Function(Node):
 
         # stores any extrernally linked functions
 
-        self._external_functions: Dict[
-            str, "Function"
-        ] = collections.OrderedDict()
+        self._external_functions: Dict[str, "Function"] = collections.OrderedDict()
 
     @property
     def n_dim(self) -> int:
@@ -960,7 +929,6 @@ class Function(Node):
         return self._properties is not None
 
     def link_external_function(self, function: "Function", internal_name: str):
-
         """
         link and external function to this function for use in its evaluate method.
         the function can be from another source
@@ -990,12 +958,9 @@ class Function(Node):
 
         self._external_functions[internal_name] = function
 
-        log.debug(
-            f"{self.name} has now linked {function.name} as {internal_name}"
-        )
+        log.debug(f"{self.name} has now linked {function.name} as {internal_name}")
 
     def unlink_external_function(self, internal_name: str):
-
         """
         unlink an external function
 
@@ -1014,7 +979,6 @@ class Function(Node):
         self._external_functions.pop(internal_name)
 
     def unlink_all_external_functions(self):
-
         """
         unlinks all external functions from this function
 
@@ -1228,9 +1192,7 @@ class Function(Node):
 
                 # This is likely a XSpec model. Division is not supported.
 
-                raise NotImplementedError(
-                    "Division for XSpec models is not supported"
-                )
+                raise NotImplementedError("Division for XSpec models is not supported")
 
             else:
 
@@ -1326,9 +1288,7 @@ class Function(Node):
         # Set the parameters to the provided values
         for parameter in parameter_specification:
 
-            self._get_child(parameter).value = parameter_specification[
-                parameter
-            ]
+            self._get_child(parameter).value = parameter_specification[parameter]
 
         return self(*args)
 
@@ -1352,9 +1312,7 @@ class Function1D(Function):
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
 
-        Function.__init__(
-            self, name, function_definition, parameters, properties
-        )
+        Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
@@ -1411,8 +1369,7 @@ class Function1D(Function):
         # This will be overridden by derived classes
 
         raise NotImplementedError(
-            "You have to implement the method _set_units for function %s"
-            % self.name
+            "You have to implement the method _set_units for function %s" % self.name
         )
 
     @property
@@ -1479,7 +1436,8 @@ class Function1D(Function):
 
             # Transform the input to an array of floats. If x is a single number, this will be an array of size 1
 
-            new_input = np.array(x, dtype=float, ndmin=1, copy=False)
+            new_input = np.asarray(x, dtype=float)
+            new_input = np.atleast_1d(new_input)
 
             # Compute the function
 
@@ -1604,9 +1562,7 @@ class Function2D(Function):
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
 
-        Function.__init__(
-            self, name, function_definition, parameters, properties
-        )
+        Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
@@ -1633,7 +1589,9 @@ class Function2D(Function):
 
         except ValueError:
 
-            msg = "Could not get a Unit instance from provided units when setting units "
+            msg = (
+                "Could not get a Unit instance from provided units when setting units "
+            )
             msg += f"\nfor function {self.name}"
 
             log.error(msg)
@@ -1654,8 +1612,7 @@ class Function2D(Function):
         # This will be overridden by derived classes
 
         raise NotImplementedError(
-            "You have to implement the method _set_units for function %s"
-            % self.name
+            "You have to implement the method _set_units for function %s" % self.name
         )
 
     @property
@@ -1705,8 +1662,10 @@ class Function2D(Function):
 
             # Transform the input to an array of floats
 
-            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+            new_x = np.asarray(x, dtype=float)
+            new_x = np.reshape(new_x, -1)
+            new_y = np.asarray(y, dtype=float)
+            new_y = np.reshape(new_y, -1)
 
             # Compute the function
 
@@ -1762,9 +1721,7 @@ class Function3D(Function):
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
 
-        Function.__init__(
-            self, name, function_definition, parameters, properties
-        )
+        Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
@@ -1796,7 +1753,9 @@ class Function3D(Function):
 
         except ValueError:
 
-            msg = "Could not get a Unit instance from provided units when setting units "
+            msg = (
+                "Could not get a Unit instance from provided units when setting units "
+            )
             msg += f"\nfor function {self.name}"
 
             log.error(msg)
@@ -1819,8 +1778,7 @@ class Function3D(Function):
         # This will be overridden by derived classes
 
         raise NotImplementedError(
-            "You have to implement the method _set_units for function %s"
-            % self.name
+            "You have to implement the method _set_units for function %s" % self.name
         )
 
     @property
@@ -1876,9 +1834,12 @@ class Function3D(Function):
             # This is either a single number or a list
             # Transform the input to an array of floats
 
-            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
-            new_z = np.array(z, dtype=float, ndmin=1, copy=False)
+            new_x = np.asarray(x, dtype=float)
+            new_x = np.reshape(x, -1)
+            new_y = np.asarray(y, dtype=float)
+            new_y = np.reshape(y, -1)
+            new_z = np.asarray(z, dtype=float)
+            new_z = np.reshape(z, -1)
 
             # Compute the function
 
@@ -1965,9 +1926,7 @@ def _cf_evaluate_func_of_func(np_operator, f1, f2, *args):
 
 
 class CompositeFunction(Function):
-    def __init__(
-        self, operation, function_or_scalar_1, function_or_scalar_2=None
-    ):
+    def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
 
         if operation not in _operations:
 
@@ -2046,9 +2005,7 @@ class CompositeFunction(Function):
 
             log.debug_node(f"comp now has {len(self._functions)} functions")
 
-        log.debug_node(
-            f"added functions are now {[f.name for f in self._functions]}"
-        )
+        log.debug_node(f"added functions are now {[f.name for f in self._functions]}")
 
         # Make sure all functions have the same dimension, and store it so that the property .n_dim of
         # the Function class will work
@@ -2066,9 +2023,7 @@ class CompositeFunction(Function):
 
             if function.n_dim != self._n_dim:
 
-                log.error(
-                    "You cannot compose functions of different dimensionality"
-                )
+                log.error("You cannot compose functions of different dimensionality")
 
                 raise RuntimeError()
 
@@ -2176,9 +2131,9 @@ class CompositeFunction(Function):
 
                     log.debug_node(f"{function.name} has child {child_name}")
 
-                    self._sub_children[function.name][
-                        child_name
-                    ] = child.to_dict(minimal=False)
+                    self._sub_children[function.name][child_name] = child.to_dict(
+                        minimal=False
+                    )
 
             if not function.is_root:
 
@@ -2193,9 +2148,7 @@ class CompositeFunction(Function):
                 # if the function is attached to a source, we want to ditch the source
                 # because now this function is part of a composite
 
-                function = function._parent._remove_child(
-                    function.name, delete=False
-                )
+                function = function._parent._remove_child(function.name, delete=False)
 
             log.debug_node(f"func path after comp: {function.path}")
 
@@ -2394,9 +2347,7 @@ def get_function(function_name, composite_function_expression=None):
         # Composite function
 
         # get the function
-        composite_function = _parse_function_expression(
-            composite_function_expression
-        )
+        composite_function = _parse_function_expression(composite_function_expression)
 
         # it is possible that the functions have sub children
 
@@ -2425,9 +2376,7 @@ def get_function(function_name, composite_function_expression=None):
                             # if there are only allowed values
                             # then we select the first one
 
-                            deferred_properites[
-                                name
-                            ] = func_prop._allowed_values[0]
+                            deferred_properites[name] = func_prop._allowed_values[0]
 
                         else:
 
@@ -2533,9 +2482,7 @@ def list_functions():
 
     # Order by key (i.e., by function name)
 
-    ordered = collections.OrderedDict(
-        sorted(functions_and_descriptions.items())
-    )
+    ordered = collections.OrderedDict(sorted(functions_and_descriptions.items()))
 
     # Format in a table
 
@@ -2574,9 +2521,7 @@ def _parse_function_expression(function_specification):
     # then build the set of unique functions by using the constructor set()
 
     unique_functions = set(
-        re.findall(
-            r"\b([a-zA-Z0-9_]+)\{([0-9]?[0-9]?[0-9]?)\}", function_specification
-        )
+        re.findall(r"\b([a-zA-Z0-9_]+)\{([0-9]?[0-9]?[0-9]?)\}", function_specification)
     )
 
     # NB: unique functions is a set like:
@@ -2588,7 +2533,7 @@ def _parse_function_expression(function_specification):
 
     # Loop over the unique functions and create instances
 
-    for (unique_function, number) in unique_functions:
+    for unique_function, number in unique_functions:
 
         complete_function_specification = "%s{%s}" % (unique_function, number)
 
@@ -2623,9 +2568,7 @@ def _parse_function_expression(function_specification):
                                 # if there are only allowed values
                                 # then we select the first one
 
-                                deferred_properites[
-                                    name
-                                ] = func_prop._allowed_values[0]
+                                deferred_properites[name] = func_prop._allowed_values[0]
 
                             else:
 
@@ -2745,9 +2688,7 @@ def _parse_function_expression(function_specification):
 
     for operator in list(_operations.keys()):
 
-        string_for_literal_eval = string_for_literal_eval.replace(
-            operator, "0 "
-        )
+        string_for_literal_eval = string_for_literal_eval.replace(operator, "0 ")
 
     log.debug_node(string_for_literal_eval)
 
@@ -2792,10 +2733,8 @@ def _parse_function_expression(function_specification):
 
         for function_expression in list(instances.keys()):
 
-            sanitized_function_specification = (
-                sanitized_function_specification.replace(
-                    function_expression, 'instances["%s"]' % function_expression
-                )
+            sanitized_function_specification = sanitized_function_specification.replace(
+                function_expression, 'instances["%s"]' % function_expression
             )
 
         # Now eval it. For safety measure, I remove all globals, and the only local is the 'instances' dictionary
