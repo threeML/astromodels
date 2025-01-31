@@ -73,7 +73,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-12]
+                os: [ubuntu-latest, macos-latest, macos-13]
                 python-version: [3.9]
                 include:
                   - environment: ci/environment.yml
@@ -89,7 +89,7 @@ jobs:
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
-                  miniforge-variant: Mambaforge
+                  miniforge-variant: Miniforge3
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ${{ matrix.environment }}
@@ -165,7 +165,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-12]
+                os: [ubuntu-latest, macos-latest, macos-13]
                 python-version: [3.9]
                 include:
                   - environment: ci/environment.yml
@@ -182,7 +182,7 @@ jobs:
                   activate-environment: "test_env"
                   auto-activate-base: false
                   #architecture: "x64"
-                  miniforge-variant: Mambaforge
+                  miniforge-variant: Miniforge3
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
