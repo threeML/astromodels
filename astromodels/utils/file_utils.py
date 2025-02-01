@@ -3,10 +3,18 @@
 
 import os
 from pathlib import Path
-
+from typing import Optional
+import numpy as np
 import pkg_resources
 
 _custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
+
+copy_if_needed: Optional[bool]
+
+if np.lib.NumpyVersion(np.__version__) >= "2.0.0":
+    copy_if_needed = None
+else:
+    copy_if_needed = False
 
 
 def _get_data_file_path(data_file: str) -> Path:

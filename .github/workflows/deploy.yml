@@ -73,37 +73,26 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-12]
+                os: [ubuntu-latest, macos-latest, macos-13]
                 python-version: [3.9]
-
+                include:
+                  - environment: ci/environment.yml
+                  - environment:  ci/environment_noxspec.yml
+                    os: macos-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-            # - name: Set up Python
-            #   uses: actions/setup-python@v5
-            #   with:
-            #       python-version: ${{ matrix.python-version }}
-            # - name: Cache conda
-            #   uses: actions/cache@v4
-            #   env:
-            #     # Increase this value to reset cache if etc/example-environment.yml has not changed
-            #     CACHE_NUMBER: 0
-            #   with:
-            #       path: ~/conda_pkgs_dir
-            #       key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v3
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
-                  architecture: "x64"
-                  miniforge-variant: Mambaforge
-                  #miniforge-version: latest
+                  miniforge-variant: Miniforge3
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.environment }}
                   use-only-tar-bz2: true
                   channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
@@ -118,7 +107,7 @@ jobs:
                       
                       miniconda_os=Linux
                       compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
-                  else  # osx
+                  else
                       
                       miniconda_os=MacOSX
                       compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
@@ -155,13 +144,15 @@ jobs:
 
                   #conda install --use-local astromodels
                   conda install -c ${CONDA}/envs/test_env/conda-bld/ astromodels
-            - name: Test conda build
+            - name: Test import xspec
+              if: matrix.os != 'macos-latest'
               shell: bash -l {0}
               run: |
                   cd astromodels/tests
-                  echo "======>  importing XSPEC..."
                   python -c "import astromodels.xspec"
-                  python -m pytest -vv --cov=astromodels --cov-report=xml
+            - name: Test astromodels
+              shell: bash -l {0}
+              run: python -m pytest -vv --cov=astromodels --cov-report=xml
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
@@ -174,33 +165,28 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                os: [ubuntu-latest, macos-latest]
+                os: [ubuntu-latest, macos-latest, macos-13]
                 python-version: [3.9]
-
+                include:
+                  - environment: ci/environment.yml
+                  - environment:  ci/environment_noxspec.yml
+                    os: macos-latest
         steps:
             - name: Checkout
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-            - name: Cache conda
-              uses: actions/cache@v4
-              env:
-                # Increase this value to reset cache if etc/example-environment.yml has not changed
-                CACHE_NUMBER: 0
-              with:
-                  path: ~/conda_pkgs_dir
-                  key: conda-${{ matrix.os }}-python-${{ matrix.python-version }}-${{ hashFiles('ci/environment.yml') }}
             - name: Add conda ${{ matrix.python-version }} to system path
               uses: conda-incubator/setup-miniconda@v3
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
-                  architecture: "x64"
-                  miniforge-variant: Mambaforge
+                  #architecture: "x64"
+                  miniforge-variant: Miniforge3
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.environment }}
                   use-only-tar-bz2: true
                   channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
@@ -254,11 +240,15 @@ jobs:
                   LABEL="--label dev"
 
                   fi
-
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
 
                   anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.tar.bz2 --force $LABEL
+
+                  elif [[ ${{matrix.os}} == macos-latest ]];
+                  then
+
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-arm64/*.tar.bz2 --force $LABEL
 
                   else
 

@@ -24,6 +24,7 @@ from astromodels.core.tree import Node
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
+from astromodels.utils.file_utils import copy_if_needed
 from yaml.reader import ReaderError
 
 log = setup_logger(__name__)
@@ -1479,7 +1480,7 @@ class Function1D(Function):
 
             # Transform the input to an array of floats. If x is a single number, this will be an array of size 1
 
-            new_input = np.array(x, dtype=float, ndmin=1, copy=False)
+            new_input = np.array(x, dtype=float, ndmin=1, copy=copy_if_needed)
 
             # Compute the function
 
@@ -1705,8 +1706,8 @@ class Function2D(Function):
 
             # Transform the input to an array of floats
 
-            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
+            new_x = np.array(x, dtype=float, ndmin=1, copy=copy_if_needed)
+            new_y = np.array(y, dtype=float, ndmin=1, copy=copy_if_needed)
 
             # Compute the function
 
@@ -1876,9 +1877,9 @@ class Function3D(Function):
             # This is either a single number or a list
             # Transform the input to an array of floats
 
-            new_x = np.array(x, dtype=float, ndmin=1, copy=False)
-            new_y = np.array(y, dtype=float, ndmin=1, copy=False)
-            new_z = np.array(z, dtype=float, ndmin=1, copy=False)
+            new_x = np.array(x, dtype=float, ndmin=1, copy=copy_if_needed)
+            new_y = np.array(y, dtype=float, ndmin=1, copy=copy_if_needed)
+            new_z = np.array(z, dtype=float, ndmin=1, copy=copy_if_needed)
 
             # Compute the function
 
