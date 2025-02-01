@@ -1,29 +1,27 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.core.model_parser &mdash; Astromodels latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=ad0ac74c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
-        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -91,43 +89,54 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.core.model_parser</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">str</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">str</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.core</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
     <span class="n">parameter</span><span class="p">,</span>
     <span class="n">polarization</span><span class="p">,</span>
     <span class="n">sky_direction</span><span class="p">,</span>
     <span class="n">spectral_component</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">astromodels.core.my_yaml</span> <span class="kn">import</span> <span class="n">my_yaml</span>
-<span class="kn">from</span> <span class="nn">astromodels.functions</span> <span class="kn">import</span> <span class="n">function</span>
-<span class="kn">from</span> <span class="nn">astromodels.sources</span> <span class="kn">import</span> <span class="n">extended_source</span><span class="p">,</span> <span class="n">particle_source</span><span class="p">,</span> <span class="n">point_source</span>
-<span class="kn">from</span> <span class="nn">astromodels.sources.source</span> <span class="kn">import</span> <span class="n">SourceType</span>
-<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.my_yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">my_yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions</span><span class="w"> </span><span class="kn">import</span> <span class="n">function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.sources</span><span class="w"> </span><span class="kn">import</span> <span class="n">extended_source</span><span class="p">,</span> <span class="n">particle_source</span><span class="p">,</span> <span class="n">point_source</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.sources.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">SourceType</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="ModelIOError"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelIOError">[docs]</a><span class="k">class</span> <span class="nc">ModelIOError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelIOError">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelIOError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelIOError</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ModelYAMLError"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelYAMLError">[docs]</a><span class="k">class</span> <span class="nc">ModelYAMLError</span><span class="p">(</span><span class="n">my_yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelYAMLError">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelYAMLError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelYAMLError</span><span class="p">(</span><span class="n">my_yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ModelSyntaxError"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelSyntaxError">[docs]</a><span class="k">class</span> <span class="nc">ModelSyntaxError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelSyntaxError">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelSyntaxError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelSyntaxError</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="load_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.load_model">[docs]</a><span class="k">def</span> <span class="nf">load_model</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+
+<div class="viewcode-block" id="load_model">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.load_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_model</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a model from a file.</span>
 
@@ -140,7 +149,10 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="clone_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.clone_model">[docs]</a><span class="k">def</span> <span class="nf">clone_model</span><span class="p">(</span><span class="n">model_instance</span><span class="p">):</span>
+
+<div class="viewcode-block" id="clone_model">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.clone_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">clone_model</span><span class="p">(</span><span class="n">model_instance</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a copy of the given model with all objects cloned. This is equivalent to saving the model to</span>
 <span class="sd">    a file and reload it, but it doesn&#39;t require writing or reading to/from disk. The original model is not touched.</span>
@@ -156,13 +168,19 @@
     <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="model_unpickler"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.model_unpickler">[docs]</a><span class="k">def</span> <span class="nf">model_unpickler</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+
+<div class="viewcode-block" id="model_unpickler">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.model_unpickler">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">model_unpickler</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">ModelParser</span><span class="p">(</span><span class="n">model_dict</span><span class="o">=</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">get_model</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="ModelParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser">[docs]</a><span class="k">class</span> <span class="nc">ModelParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ModelParser">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">model_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)):</span>
 
@@ -203,7 +221,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Traverse the dictionary and create all the needed classes</span>
 
@@ -271,7 +289,9 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">this_parser</span><span class="o">.</span><span class="n">external_functions</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ModelParser.get_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser.get_model">[docs]</a>    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ModelParser.get_model">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ModelParser.get_model">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Instance the model with all the parsed sources</span>
 
@@ -356,21 +376,31 @@
                         <span class="n">function</span><span class="o">=</span><span class="n">new_model</span><span class="p">[</span><span class="n">linked_function</span><span class="p">],</span> <span class="n">internal_name</span><span class="o">=</span><span class="n">fname</span>
                     <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">new_model</span></div></div>
+        <span class="k">return</span> <span class="n">new_model</span></div>
+</div>
 
 
-<div class="viewcode-block" id="IndependentVariableParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser">[docs]</a><span class="k">class</span> <span class="nc">IndependentVariableParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+
+<div class="viewcode-block" id="IndependentVariableParser">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">IndependentVariableParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">IndependentVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span>
 
-<div class="viewcode-block" id="IndependentVariableParser.get_variable"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="IndependentVariableParser.get_variable">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser.get_variable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span></div>
+</div>
 
 
-<div class="viewcode-block" id="ParameterParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser">[docs]</a><span class="k">class</span> <span class="nc">ParameterParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ParameterParser">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParameterParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -455,18 +485,24 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ParameterParser.get_variable"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.get_variable">[docs]</a>    <span class="k">def</span> <span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="ParameterParser.get_variable">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ParameterParser.get_variable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span></div>
 
+
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span></div>
 
 
-<div class="viewcode-block" id="SourceParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser">[docs]</a><span class="k">class</span> <span class="nc">SourceParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SourceParser">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SourceParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
 
         <span class="c1"># Get the type of the source</span>
 
@@ -530,25 +566,28 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_particle_source</span><span class="p">(</span><span class="n">source_definition</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">extra_setups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extra_setups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span>
 
-<div class="viewcode-block" id="SourceParser.get_source"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser.get_source">[docs]</a>    <span class="k">def</span> <span class="nf">get_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SourceParser.get_source">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.SourceParser.get_source">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_source</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parsed_source</span></div>
 
-    <span class="k">def</span> <span class="nf">_parse_particle_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_source_definition</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_particle_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">particle_source_definition</span><span class="p">):</span>
 
         <span class="c1"># Parse the spectral information</span>
 
@@ -583,7 +622,7 @@
 
         <span class="k">return</span> <span class="n">this_particle_source</span>
 
-    <span class="k">def</span> <span class="nf">_parse_point_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pts_source_definition</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_point_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pts_source_definition</span><span class="p">):</span>
 
         <span class="c1"># Parse the positional information</span>
 
@@ -660,7 +699,7 @@
 
         <span class="k">return</span> <span class="n">this_point_source</span>
 
-    <span class="k">def</span> <span class="nf">_parse_sky_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sky_direction_definition</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_sky_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sky_direction_definition</span><span class="p">):</span>
 
         <span class="c1"># Instance the SkyDirection class using the coordinates provided</span>
 
@@ -735,7 +774,7 @@
 
         <span class="k">return</span> <span class="n">this_sky_direction</span>
 
-    <span class="k">def</span> <span class="nf">_parse_polarization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_definititon</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_polarization</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_definititon</span><span class="p">):</span>
 
         <span class="n">polarization_params</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -809,7 +848,7 @@
 
         <span class="k">return</span> <span class="n">this_polarization</span>
 
-    <span class="k">def</span> <span class="nf">_parse_spectral_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component_definition</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_spectral_component</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component_definition</span><span class="p">):</span>
 
         <span class="c1"># Parse the shape definition, which is the first to occur</span>
 
@@ -864,7 +903,7 @@
 
         <span class="k">return</span> <span class="n">this_spectral_component</span>
 
-    <span class="k">def</span> <span class="nf">_parse_extended_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext_source_definition</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_extended_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ext_source_definition</span><span class="p">):</span>
 
         <span class="c1"># The first item in the dictionary is the definition of the extended shape</span>
         <span class="n">name_of_spatial_shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ext_source_definition</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
@@ -915,8 +954,11 @@
         <span class="k">return</span> <span class="n">this_ext_source</span></div>
 
 
-<div class="viewcode-block" id="ShapeParser"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser">[docs]</a><span class="k">class</span> <span class="nc">ShapeParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ShapeParser">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span> <span class="o">=</span> <span class="n">source_name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
@@ -924,21 +966,23 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">extra_setups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">extra_setups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extra_setups</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">external_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span>
 
-<div class="viewcode-block" id="ShapeParser.parse"><a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span>
+<div class="viewcode-block" id="ShapeParser.parse">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model_parser.ShapeParser.parse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">component_name</span><span class="p">,</span>
         <span class="n">function_name</span><span class="p">,</span>
@@ -950,14 +994,15 @@
             <span class="n">component_name</span><span class="p">,</span> <span class="n">function_name</span><span class="p">,</span> <span class="n">parameters_definition</span><span class="p">,</span> <span class="n">is_spatial</span>
         <span class="p">)</span></div>
 
+
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_fix</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_fix</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
         <span class="c1"># Remove new lines where it shouldn&#39;t be any</span>
         <span class="c1"># Sometimes YAML add new lines in the middle of definitions,</span>
         <span class="c1"># such as in units</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_parse_shape_definition</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_parse_shape_definition</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">component_name</span><span class="p">,</span>
         <span class="n">function_name</span><span class="p">,</span>
@@ -1265,6 +1310,7 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">function_instance</span></div>
+
 </pre></div>
 
            </div>

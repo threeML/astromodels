@@ -1,33 +1,31 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Functions tutorial &mdash; Astromodels latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css" />
-      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=ad0ac74c" />
+      <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-        <script src="../_static/dark_mode_js/default_dark.js"></script>
-        <script src="../_static/dark_mode_js/theme_switcher.js"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -114,7 +112,7 @@
            <div itemprop="articleBody">
              
   <section id="Functions-tutorial">
-<h1>Functions tutorial<a class="headerlink" href="#Functions-tutorial" title="Permalink to this heading"></a></h1>
+<h1>Functions tutorial<a class="headerlink" href="#Functions-tutorial" title="Link to this heading"></a></h1>
 <p>In astromodels functions can be used as spectral shapes for sources, or to describe time-dependence, phase-dependence, or links among parameters.</p>
 <p>To get the list of available functions just do:</p>
 <div class="nbinput nblast docutils container">
@@ -122,7 +120,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
-<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 </div>
 </div>
@@ -139,7 +137,7 @@
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div><table id="table4386364096">
+<div><table id="table4416502320">
 <thead><tr><th>name</th><th>Description</th></tr></thead>
 <tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates)\nsee https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>
 <tr><td>Band</td><td>Band model from Band et al., 1993, parametrized with the peak energy</td></tr>
@@ -264,7 +262,7 @@
 </div>
 <p>Note that you don’t need to create an instance in order to call the info() method.</p>
 <section id="Creating-functions">
-<h2>Creating functions<a class="headerlink" href="#Creating-functions" title="Permalink to this heading"></a></h2>
+<h2>Creating functions<a class="headerlink" href="#Creating-functions" title="Link to this heading"></a></h2>
 <p>Functions can be created in two different ways. We can create an instance with the default values for the parameters like this:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -286,7 +284,7 @@
 <p>If you don’t remember the names of the parameters just call the .info() method as in powerlaw.info() as demonstrated above.</p>
 </section>
 <section id="Getting-information-about-an-instance">
-<h2>Getting information about an instance<a class="headerlink" href="#Getting-information-about-an-instance" title="Permalink to this heading"></a></h2>
+<h2>Getting information about an instance<a class="headerlink" href="#Getting-information-about-an-instance" title="Link to this heading"></a></h2>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">.display()</span></code> method we get a representation of the instance which exploits the features of the environment we are using. If we are running inside a IPython notebook, a rich representation with the formula of the function will be displayed (if available). Otherwise, in a normal terminal, the latex formula will not be rendered:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -436,7 +434,7 @@
 </div>
 </section>
 <section id="Modifying-parameters">
-<h2>Modifying parameters<a class="headerlink" href="#Modifying-parameters" title="Permalink to this heading"></a></h2>
+<h2>Modifying parameters<a class="headerlink" href="#Modifying-parameters" title="Link to this heading"></a></h2>
 <p>Modifying a parameter of a function is easy:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -481,7 +479,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">21:46:40 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of Powerlaw.K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive    </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of Powerlaw.K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive    </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#704" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">704</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">transform                                                                        </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                </span>
 </pre></div>
 </div>
@@ -494,7 +492,7 @@ Parameter K = 1.2 []
 </div>
 </section>
 <section id="Using-physical-units">
-<h2>Using physical units<a class="headerlink" href="#Using-physical-units" title="Permalink to this heading"></a></h2>
+<h2>Using physical units<a class="headerlink" href="#Using-physical-units" title="Link to this heading"></a></h2>
 <p>Astromodels uses the facility defined in astropy.units to make easier to convert between units during interactive analysis, when assigning to parameters. In order for functions to be aware of their units, they must be part of a `<code class="docutils literal notranslate"><span class="pre">Source</span></code>. Let’s create one:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -639,7 +637,7 @@ $\mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 
 <span class="c1"># Express the differential flux at the pivot energy in 1 / (MeV cm2 s)</span>
 
@@ -681,7 +679,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-5.24 µs ± 9.92 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+5.55 µs ± 150 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -697,13 +695,13 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-90.1 µs ± 1.63 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+95.5 µs ± 1.88 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
 <p>As you can see using <strong>astropy.units requires about 10x more than using a plain assignment</strong>. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. <strong>Note that this is a feature of astropy.units, not of astromodels.</strong></p>
 </section>
 <section id="Composing-functions">
-<h2>Composing functions<a class="headerlink" href="#Composing-functions" title="Permalink to this heading"></a></h2>
+<h2>Composing functions<a class="headerlink" href="#Composing-functions" title="Link to this heading"></a></h2>
 <p>We can create arbitrary complex functions by combining “primitive” functions using the normal math operators:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -806,14 +804,14 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 </section>
 <section id="Creating-custom-functions">
-<h2>Creating custom functions<a class="headerlink" href="#Creating-custom-functions" title="Permalink to this heading"></a></h2>
+<h2>Creating custom functions<a class="headerlink" href="#Creating-custom-functions" title="Link to this heading"></a></h2>
 <p>One of the most powerful aspects of astromodels is the ability to quickly build custom functions on the fly. The source code for a function can be pure python, FORTRAN linked via f2py, C++ linked via cython, etc. Anything that provides a python function can be used to fit data.</p>
 <p>To build a custom spectral 1D function in astromodels, we need to import a few things that will allow astromodels to recognize your model.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span><span class="p">,</span> <span class="n">ModelAssertionViolation</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span><span class="p">,</span> <span class="n">ModelAssertionViolation</span>
 </pre></div>
 </div>
 </div>
@@ -825,7 +823,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <li><p>the evaluate function</p></li>
 </ul>
 <p>Let’s look at the simple case of the power law already define in astromodels.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 <span class="sd">            A  power-law</span>
@@ -851,7 +849,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <span class="sd">        &quot;&quot;&quot;</span>
 
 
-        <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
             <span class="c1"># The index is always dimensionless</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
@@ -863,7 +861,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
             <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
 
-        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
 
             <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">piv</span><span class="p">)</span>
 
@@ -871,7 +869,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </pre></div>
 </div>
 <section id="The-docstring">
-<h3>The docstring<a class="headerlink" href="#The-docstring" title="Permalink to this heading"></a></h3>
+<h3>The docstring<a class="headerlink" href="#The-docstring" title="Link to this heading"></a></h3>
 <p>We have used the docstring interface to provide a YAML description of the function. This sets up the important information used in the fitting process and record keeping. The docstring has three parts:</p>
 <ul class="simple">
 <li><p>description</p>
@@ -894,26 +892,26 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <p>Keep in mind that this is in YAML format.</p>
 </section>
 <section id="Set-units">
-<h3>Set units<a class="headerlink" href="#Set-units" title="Permalink to this heading"></a></h3>
+<h3>Set units<a class="headerlink" href="#Set-units" title="Link to this heading"></a></h3>
 <p>astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy’s unit system. Keep in mind that models are fit with a differential photon flux,</p>
 <div class="math notranslate nohighlight">
 \[\frac{d N_p}{dA dt dE}\]</div>
 <p>so your units should reflect this convention. Therefore, proper normalizations should be taken into account.</p>
 </section>
 <section id="Evaluate">
-<h3>Evaluate<a class="headerlink" href="#Evaluate" title="Permalink to this heading"></a></h3>
+<h3>Evaluate<a class="headerlink" href="#Evaluate" title="Link to this heading"></a></h3>
 <p>This is where the function is evaluated. The first argument <strong>must be called x</strong> and the parameter names and ordering must reflect what is in the docstring. Any number of operations can take place inside the evaluate call, but remember that the return must be in the form of a differential photon flux. For 2D and 3D functions, the functions have <strong>y</strong> and <strong>z</strong> for their first arguments as well. ** x, y, and z are reserved names in functions**.</p>
 <p>A functions is defined in a python session. <strong>If you save the results of a fit to an AnalysisResults file and try to load this file without loading this model, you will get a error</strong> Thus, remember to import any local models you used for an analysis before trying to reload that analysis.</p>
 </section>
 </section>
 <section id="Custom-functions-in-other-langauges">
-<h2>Custom functions in other langauges<a class="headerlink" href="#Custom-functions-in-other-langauges" title="Permalink to this heading"></a></h2>
+<h2>Custom functions in other langauges<a class="headerlink" href="#Custom-functions-in-other-langauges" title="Link to this heading"></a></h2>
 <p>What if your model is built from a C++ function and you want to fit that directly to the data? using Cython, pybind11, f2py, etc, you can wrap these models and call them easily.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span> <span class="nf">cpp_function_wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cpp_function_wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
     <span class="c1"># we could wrap a c++ function here</span>
     <span class="c1"># with cython, pybind11, etc</span>
 
@@ -943,9 +941,9 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">astropy_units</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
 
-<span class="k">class</span> <span class="nc">CppModel</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CppModel</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 <span class="sd">            A spectral model wrapping a cython function</span>
@@ -960,14 +958,14 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <span class="sd">                delta : 0.1</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
             <span class="c1"># The normalization has the same units as the y</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
 
-        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
 
             <span class="c1"># check is the function is being called with units</span>
 
@@ -1002,7 +1000,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpp_spectrum</span> <span class="o">=</span> <span class="n">CppModel</span><span class="p">()</span>
 
-<span class="kn">from</span> <span class="nn">astromodels</span> <span class="kn">import</span> <span class="n">PointSource</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="n">PointSource</span>
 
 <span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;ps&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">spectral_shape</span><span class="o">=</span><span class="n">cpp_spectrum</span><span class="p">)</span>
 
@@ -1029,14 +1027,14 @@ $1 \; \mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 </div>
 </section>
 <section id="Advanced-functions">
-<h2>Advanced functions<a class="headerlink" href="#Advanced-functions" title="Permalink to this heading"></a></h2>
+<h2>Advanced functions<a class="headerlink" href="#Advanced-functions" title="Link to this heading"></a></h2>
 <p>We are not limited to functions that can only take numerical parameters as arguments. We can also link other astromodels function into a function to expand its abilities. ### Properties</p>
 <p>Let’s create a function that uses text based switches to alter its functionality</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SwitchFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SwitchFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 <span class="sd">            A demo function that can alter its state</span>
@@ -1059,20 +1057,20 @@ $1 \; \mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 <span class="sd">                    - cosine</span>
 <span class="sd">                function: _say_hello</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">def</span> <span class="nf">_say_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_say_hello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># called when we set the value of switch</span>
 
             <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
 
-        <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
             <span class="c1"># The normalization has the same units as the y</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
 
-        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;powerlaw&quot;</span><span class="p">:</span>
 
@@ -1107,13 +1105,13 @@ cosine
 </div>
 <p>In the docstring, one can also specify <code class="docutils literal notranslate"><span class="pre">defer:</span> <span class="pre">True</span></code> which allows you to not set a value until instancing an object. This is useful if you have a model that reads in file at runtime, but the file name is not known until then. Check out the source code of astromodels to see how properties can be used to expand the functionality of your custom models. For example, the absorption models such as <code class="docutils literal notranslate"><span class="pre">TbAbs</span></code> take advantage of this to set their abundance tables.</p>
 <section id="Linking-functions">
-<h3>Linking functions<a class="headerlink" href="#Linking-functions" title="Permalink to this heading"></a></h3>
+<h3>Linking functions<a class="headerlink" href="#Linking-functions" title="Link to this heading"></a></h3>
 <p>What if you need to call another astromodels function from inside your custom function? This is achieved by linking functions. For example, let’s create a convolutional model that redshifts the energies of and model linked to it:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Redshifter</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Redshifter</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        a function that can redshift the energies of any 1D function</span>
@@ -1129,12 +1127,12 @@ cosine
 <span class="sd">    &quot;&quot;&quot;</span>
 
 
-    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
 
-    <span class="k">def</span> <span class="nf">set_linked_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_linked_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
          <span class="c1"># this is an optional helper to</span>
              <span class="c1"># ease in the setting of the function</span>
 
@@ -1154,7 +1152,7 @@ cosine
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_linked_function</span> <span class="o">=</span> <span class="n">function</span>
 
-    <span class="k">def</span> <span class="nf">get_linked_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_linked_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># linked functions are stored in a dictionary</span>
             <span class="c1"># but you</span>
@@ -1169,7 +1167,7 @@ cosine
     <span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
 
         <span class="c1"># we can call the function here</span>

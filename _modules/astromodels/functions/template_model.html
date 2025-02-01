@@ -1,29 +1,27 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.functions.template_model &mdash; Astromodels latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=ad0ac74c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
-        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -91,29 +89,29 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.functions.template_model</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">collections</span>
-<span class="kn">import</span> <span class="nn">gc</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">import</span> <span class="nn">astropy.io.fits</span> <span class="k">as</span> <span class="nn">fits</span>
-<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
-<span class="kn">import</span> <span class="nn">h5py</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.io.fits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fits</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.interpolate</span>
 
-<span class="kn">from</span> <span class="nn">interpolation</span> <span class="kn">import</span> <span class="n">interp</span>
-<span class="kn">from</span> <span class="nn">interpolation.splines</span> <span class="kn">import</span> <span class="n">eval_linear</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">interpolation.splines</span><span class="w"> </span><span class="kn">import</span> <span class="n">eval_linear</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.core.parameter</span> <span class="kn">import</span> <span class="n">Parameter</span>
-<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
-<span class="kn">from</span> <span class="nn">astromodels.utils</span> <span class="kn">import</span> <span class="n">get_user_data_path</span>
-<span class="kn">from</span> <span class="nn">astromodels.utils.logging</span> <span class="kn">import</span> <span class="n">setup_logger</span>
-<span class="kn">from</span> <span class="nn">astromodels.utils.file_utils</span> <span class="kn">import</span> <span class="n">copy_if_needed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_data_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.file_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy_if_needed</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -130,19 +128,28 @@
 <span class="p">]</span>
 
 
-<div class="viewcode-block" id="IncompleteGrid"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.IncompleteGrid">[docs]</a><span class="k">class</span> <span class="nc">IncompleteGrid</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+<div class="viewcode-block" id="IncompleteGrid">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.IncompleteGrid">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">IncompleteGrid</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="ValuesNotInGrid"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.ValuesNotInGrid">[docs]</a><span class="k">class</span> <span class="nc">ValuesNotInGrid</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+
+<div class="viewcode-block" id="ValuesNotInGrid">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.ValuesNotInGrid">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ValuesNotInGrid</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<div class="viewcode-block" id="MissingDataFile"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.MissingDataFile">[docs]</a><span class="k">class</span> <span class="nc">MissingDataFile</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+
+<div class="viewcode-block" id="MissingDataFile">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.MissingDataFile">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MissingDataFile</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
-<span class="k">class</span> <span class="nc">InvalidTemplateModelFile</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">InvalidTemplateModelFile</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
     <span class="k">pass</span>
 
 
@@ -150,26 +157,28 @@
 <span class="n">_classes_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<span class="k">class</span> <span class="nc">GridInterpolate</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GridInterpolate</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span> <span class="o">=</span> <span class="n">grid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">eval_linear</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">UnivariateSpline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnivariateSpline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="TemplateModelFactory"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory">[docs]</a><span class="k">class</span> <span class="nc">TemplateModelFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+<div class="viewcode-block" id="TemplateModelFactory">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateModelFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -244,7 +253,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">spline_smoothing_factor</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TemplateModelFactory.define_parameter_grid"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.define_parameter_grid">[docs]</a>    <span class="k">def</span> <span class="nf">define_parameter_grid</span><span class="p">(</span>
+<div class="viewcode-block" id="TemplateModelFactory.define_parameter_grid">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.define_parameter_grid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_parameter_grid</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -277,7 +288,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_</span></div>
 
-<div class="viewcode-block" id="TemplateModelFactory.add_interpolation_data"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.add_interpolation_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_interpolation_data</span><span class="p">(</span>
+
+<div class="viewcode-block" id="TemplateModelFactory.add_interpolation_data">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.add_interpolation_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_interpolation_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">differential_fluxes</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="o">**</span><span class="n">parameters_values_input</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
@@ -407,7 +421,10 @@
             <span class="n">differential_fluxes</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="TemplateModelFactory.save_data"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.save_data">[docs]</a>    <span class="k">def</span> <span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TemplateModelFactory.save_data">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.save_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="c1"># First make sure that the whole data matrix has been filled</span>
 
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">)):</span>
@@ -470,41 +487,43 @@
             <span class="n">parameter_order</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
         <span class="p">)</span>
 
-        <span class="n">template_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="p">)</span></div></div>
+        <span class="n">template_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="p">)</span></div>
+</div>
+
 
 
 <span class="c1"># This adds a method to a class at runtime</span>
 
 
-<span class="k">def</span> <span class="nf">add_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="vm">__name__</span>
 
     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">RectBivariateSplineWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RectBivariateSplineWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Wrapper around RectBivariateSpline, which supplies a __call__ method which accept the same</span>
 <span class="sd">    syntax as the other interpolation methods</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># We can use interp2, which features spline interpolation instead of linear interpolation</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span>
             <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
 
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">TemplateFile</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateFile</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    simple container to read and write</span>
 <span class="sd">    the data to an hdf5 file</span>
@@ -520,7 +539,7 @@
     <span class="n">interpolation_degree</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">float</span>
 
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        serialize the contents to a file</span>
 
@@ -550,7 +569,7 @@
                 <span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        read contents from a file</span>
 
@@ -590,7 +609,9 @@
         <span class="p">)</span>
 
 
-<div class="viewcode-block" id="TemplateModel"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel">[docs]</a><span class="k">class</span> <span class="nc">TemplateModel</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="TemplateModel">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateModel</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        A template model</span>
@@ -616,7 +637,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_custom_init_</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_custom_init_</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">other_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -741,11 +762,11 @@
 
         <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_prepare_interpolators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_interp</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">data_frame</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_interpolators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_interp</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">data_frame</span><span class="p">):</span>
         <span class="c1"># Figure out the shape of the data matrices</span>
         <span class="n">data_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
 
-        <span class="k">def</span> <span class="nf">_construct_element</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">_construct_element</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
             <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">RuntimeWarning</span><span class="p">)</span>
 
@@ -835,7 +856,7 @@
         <span class="c1"># clear the data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">x_unit</span>
@@ -844,10 +865,13 @@
     <span class="c1"># This function will be substituted during construction by another version with</span>
     <span class="c1"># all the parameters of this template</span>
 
-<div class="viewcode-block" id="TemplateModel.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">redshift</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="TemplateModel.evaluate">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">redshift</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolate</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">redshift</span><span class="p">),</span> <span class="n">scale</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">parameters_values</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">parameters_values</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="c1"># Templates are always saved with energy in keV. We need to transform it to</span>
             <span class="c1"># a dimensionless quantity (actually we take the .value property) because otherwise</span>
@@ -905,7 +929,9 @@
 
         <span class="k">return</span> <span class="n">values</span> <span class="o">/</span> <span class="n">scale</span>
 
-<div class="viewcode-block" id="TemplateModel.clean"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TemplateModel.clean">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.clean">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Table models can consume a lot of memory. If are creating lots of</span>
 <span class="sd">        table models in memory for simulations, you may want to call</span>
@@ -923,26 +949,33 @@
             <span class="s2">&quot;You have &#39;cleaned&#39; the table model and it will no longer be useable&quot;</span>
         <span class="p">)</span></div>
 
+
     <span class="c1"># def __del__(self):</span>
 
     <span class="c1">#     self.clean()</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_file</span>
 
-<div class="viewcode-block" id="TemplateModel.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="TemplateModel.to_dict">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
         <span class="c1"># if not minimal:</span>
         <span class="c1">#</span>
         <span class="c1">#     data[&#39;extra_setup&#39;] = {&#39;data_file&#39;: self._data_file}</span>
 
-        <span class="k">return</span> <span class="n">data</span></div></div>
+        <span class="k">return</span> <span class="n">data</span></div>
+</div>
 
 
-<div class="viewcode-block" id="XSPECTableModel"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.XSPECTableModel">[docs]</a><span class="k">class</span> <span class="nc">XSPECTableModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+
+<div class="viewcode-block" id="XSPECTableModel">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.XSPECTableModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">XSPECTableModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">xspec_table_model_file</span><span class="p">,</span>
         <span class="n">interpolation_degree</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -977,7 +1010,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_xspec_file_name</span> <span class="o">=</span> <span class="n">xspec_table_model_file</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_extract_model</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">_extract_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_xspec_file_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="c1"># get the energies</span>
 
@@ -1029,7 +1062,9 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_params_dict</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_dict</span>
 
-<div class="viewcode-block" id="XSPECTableModel.to_table_model"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.XSPECTableModel.to_table_model">[docs]</a>    <span class="k">def</span> <span class="nf">to_table_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="XSPECTableModel.to_table_model">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.XSPECTableModel.to_table_model">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_table_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write the table model to your local astromodels database</span>
 
@@ -1060,11 +1095,13 @@
 
             <span class="n">tmf</span><span class="o">.</span><span class="n">add_interpolation_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_spectrum</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:],</span> <span class="o">**</span><span class="n">input_dict</span><span class="p">)</span>
 
-        <span class="n">tmf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span></div></div>
+        <span class="n">tmf</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">overwrite</span><span class="o">=</span><span class="n">overwrite</span><span class="p">)</span></div>
+</div>
 
 
-<span class="k">def</span> <span class="nf">convert_old_table_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">HDFStore</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_old_table_model</span><span class="p">(</span><span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="kn">import</span> <span class="n">HDFStore</span>
 
     <span class="c1"># Get the data directory</span>
 

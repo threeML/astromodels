@@ -1,29 +1,27 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.functions.functions_3D &mdash; Astromodels latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=ad0ac74c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
-        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -91,22 +89,24 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.functions.functions_3D</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
 
-<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
 
-<span class="kn">import</span> <span class="nn">astropy.units</span> <span class="k">as</span> <span class="nn">u</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">astropy.coordinates</span> <span class="kn">import</span> <span class="n">ICRS</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">,</span> <span class="n">SkyCoord</span>
-<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
-<span class="kn">from</span> <span class="nn">past.utils</span> <span class="kn">import</span> <span class="n">old_div</span>
-<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">ICRS</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">,</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">RegularGridInterpolator</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.functions.function</span> <span class="kn">import</span> <span class="n">Function3D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
-<span class="kn">from</span> <span class="nn">astromodels.utils.angular_distance</span> <span class="kn">import</span> <span class="n">angular_distance_fast</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function3D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.angular_distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">angular_distance_fast</span>
 
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse">[docs]</a><span class="k">class</span> <span class="nc">Continuous_injection_diffusion_ellipse</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Continuous_injection_diffusion_ellipse</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -184,7 +184,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
         <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
@@ -206,7 +206,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">piv2</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span>
+<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.evaluate">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">rdiff0</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">piv2</span><span class="p">,</span> <span class="n">incl</span><span class="p">,</span> <span class="n">elongation</span>
     <span class="p">):</span>
 
@@ -303,7 +305,10 @@
 
         <span class="k">return</span> <span class="n">results</span></div>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.get_boundaries">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the function at the max of rdiff allowed</span>
 
@@ -341,7 +346,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.get_total_spatial_integral">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.get_total_spatial_integral">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -351,10 +359,14 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Continuous_injection_diffusion"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion">[docs]</a><span class="k">class</span> <span class="nc">Continuous_injection_diffusion</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Continuous_injection_diffusion</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -424,7 +436,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
         <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
@@ -445,7 +457,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">piv2</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">rdiff0</span><span class="p">,</span> <span class="n">rinj</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">piv2</span><span class="p">):</span>
+<div class="viewcode-block" id="Continuous_injection_diffusion.evaluate">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">rdiff0</span><span class="p">,</span> <span class="n">rinj</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">piv2</span><span class="p">):</span>
 
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
         <span class="n">energy</span> <span class="o">=</span> <span class="n">z</span>
@@ -496,7 +510,10 @@
             <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">angseps</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rdiffs</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion.get_boundaries">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the function at the max of rdiff allowed</span>
 
@@ -534,7 +551,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion.get_total_spatial_integral">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.get_total_spatial_integral">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -544,10 +564,14 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_legacy"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy">[docs]</a><span class="k">class</span> <span class="nc">Continuous_injection_diffusion_legacy</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion_legacy">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Continuous_injection_diffusion_legacy</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -609,7 +633,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
         <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
@@ -629,7 +653,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">piv2</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_legacy.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">rdiff0</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">uratio</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">piv2</span><span class="p">):</span>
+<div class="viewcode-block" id="Continuous_injection_diffusion_legacy.evaluate">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">rdiff0</span><span class="p">,</span> <span class="n">delta</span><span class="p">,</span> <span class="n">uratio</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">piv2</span><span class="p">):</span>
 
         <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
         <span class="n">energy</span> <span class="o">=</span> <span class="n">z</span>
@@ -695,7 +721,10 @@
             <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">old_div</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">angseps</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">rdiffs</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
         <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_legacy.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion_legacy.get_boundaries">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Truncate the function at the max of rdiff allowed</span>
 
@@ -733,7 +762,10 @@
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Continuous_injection_diffusion_legacy.get_total_spatial_integral"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.get_total_spatial_integral">[docs]</a>    <span class="k">def</span> <span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+<div class="viewcode-block" id="Continuous_injection_diffusion_legacy.get_total_spatial_integral">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.get_total_spatial_integral">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
 <span class="sd">        needs to be implemented in subclasses.</span>
@@ -743,10 +775,14 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+</div>
 
 
-<div class="viewcode-block" id="GalPropTemplate_3D"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D">[docs]</a><span class="k">class</span> <span class="nc">GalPropTemplate_3D</span><span class="p">(</span><span class="n">Function3D</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GalPropTemplate_3D</span><span class="p">(</span><span class="n">Function3D</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
@@ -774,18 +810,20 @@
 
     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">FunctionMeta</span>
 
-    <span class="k">def</span> <span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">ICRS</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_interpmap</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.set_frame"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.set_frame">[docs]</a>    <span class="k">def</span> <span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
+<div class="viewcode-block" id="GalPropTemplate_3D.set_frame">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.set_frame">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
@@ -796,7 +834,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">new_frame</span></div>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.load_file"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.load_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitsfile</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">,</span> <span class="n">galactic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ihdu</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D.load_file">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.load_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitsfile</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">,</span> <span class="n">galactic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ihdu</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">fitsfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Need to specify a fits file with a template map.&quot;</span><span class="p">)</span>
@@ -851,7 +892,10 @@
             <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.to_dict"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D.to_dict">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
@@ -868,10 +912,16 @@
 
         <span class="k">return</span> <span class="n">data</span></div>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.which_model_file"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.which_model_file">[docs]</a>    <span class="k">def</span> <span class="nf">which_model_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D.which_model_file">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.which_model_file">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">which_model_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span></div>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.evaluate"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D.evaluate">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -925,7 +975,10 @@
         <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpmap</span> <span class="o">/</span> <span class="mf">1000.0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">A</span></div>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.define_region"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.define_region">[docs]</a>    <span class="k">def</span> <span class="nf">define_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">galactic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D.define_region">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.define_region">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">galactic</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">galactic</span><span class="p">:</span>
             <span class="n">lmin</span> <span class="o">=</span> <span class="n">a</span>
             <span class="n">lmax</span> <span class="o">=</span> <span class="n">b</span>
@@ -951,12 +1004,17 @@
             <span class="n">decmax</span> <span class="o">=</span> <span class="n">d</span>
         <span class="k">return</span> <span class="n">ramin</span><span class="p">,</span> <span class="n">ramax</span><span class="p">,</span> <span class="n">decmin</span><span class="p">,</span> <span class="n">decmax</span></div>
 
-<div class="viewcode-block" id="GalPropTemplate_3D.get_boundaries"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.get_boundaries">[docs]</a>    <span class="k">def</span> <span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GalPropTemplate_3D.get_boundaries">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">min_longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span>
         <span class="n">max_longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span>
         <span class="n">min_latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span>
         <span class="n">max_latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

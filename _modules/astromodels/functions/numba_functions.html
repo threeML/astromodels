@@ -1,29 +1,27 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.functions.numba_functions &mdash; Astromodels latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=ad0ac74c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
-        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -91,32 +89,32 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.functions.numba_functions</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
-<span class="kn">import</span> <span class="nn">numba</span> <span class="k">as</span> <span class="nn">nb</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 
 <span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
-<span class="k">def</span> <span class="nf">_expm1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_expm1</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">expm1</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 
 <span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
-<span class="k">def</span> <span class="nf">_exp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_exp</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 
 <span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
-<span class="k">def</span> <span class="nf">_sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 
 <span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
-<span class="k">def</span> <span class="nf">_pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
@@ -125,27 +123,32 @@
 
 
 <span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
-<span class="k">def</span> <span class="nf">_log</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_log</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 
 <span class="nd">@nb</span><span class="o">.</span><span class="n">vectorize</span>
-<span class="k">def</span> <span class="nf">_log10</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_log10</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="plaw_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">plaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+<div class="viewcode-block" id="plaw_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="plaw_flux_norm"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_flux_norm">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">plaw_flux_norm</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+
+<div class="viewcode-block" id="plaw_flux_norm">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.plaw_flux_norm">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">plaw_flux_norm</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    energy flux power law</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -162,8 +165,11 @@
     <span class="k">return</span> <span class="n">intflux</span></div>
 
 
-<div class="viewcode-block" id="cplaw_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.cplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">cplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="cplaw_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.cplaw_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -176,8 +182,11 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="cplaw_inverse_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.cplaw_inverse_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">cplaw_inverse_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="cplaw_inverse_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.cplaw_inverse_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cplaw_inverse_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -190,8 +199,11 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="super_cplaw_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.super_cplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">super_cplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+
+<div class="viewcode-block" id="super_cplaw_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.super_cplaw_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">super_cplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -205,8 +217,11 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="band_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.band_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">band_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">E0</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="band_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.band_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">band_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">E0</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -227,8 +242,11 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="bplaw_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.bplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">bplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="bplaw_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.bplaw_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -247,8 +265,11 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="sbplaw_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.sbplaw_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">sbplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="sbplaw_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.sbplaw_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sbplaw_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">be</span><span class="p">,</span> <span class="n">bs</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
@@ -295,20 +316,27 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="bb_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.bb_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">bb_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">kT</span><span class="p">):</span>
+
+<div class="viewcode-block" id="bb_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.bb_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">bb_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">kT</span><span class="p">):</span>
 
     <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">_expm1</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">kT</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="mbb_eval"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.mbb_eval">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">mbb_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">kT</span><span class="p">):</span>
+
+<div class="viewcode-block" id="mbb_eval">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.mbb_eval">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">mbb_eval</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">kT</span><span class="p">):</span>
 
     <span class="n">arg</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">kT</span>
     <span class="n">exp_arg</span> <span class="o">=</span> <span class="n">_exp</span><span class="p">(</span><span class="o">-</span><span class="n">arg</span><span class="p">)</span>
 
     <span class="n">out</span> <span class="o">=</span> <span class="n">_pow</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">exp_arg</span> <span class="o">/</span> <span class="n">_sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">exp_arg</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">out</span> <span class="o">/</span> <span class="n">x</span></div>
+
 
 
 <span class="c1"># @nb.njit(fastmath=True, cache=_cache_functions)</span>
@@ -340,8 +368,10 @@
 <span class="c1"># band calderone</span>
 
 
-<div class="viewcode-block" id="ggrb_int_pl"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.ggrb_int_pl">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">ggrb_int_pl</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Ec</span><span class="p">,</span> <span class="n">Emin</span><span class="p">,</span> <span class="n">Emax</span><span class="p">):</span>
+<div class="viewcode-block" id="ggrb_int_pl">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.ggrb_int_pl">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ggrb_int_pl</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">Ec</span><span class="p">,</span> <span class="n">Emin</span><span class="p">,</span> <span class="n">Emax</span><span class="p">):</span>
 
     <span class="n">pre</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">)</span> <span class="o">/</span> <span class="n">math</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">Ec</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
@@ -355,20 +385,26 @@
         <span class="k">return</span> <span class="n">pre</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Emax</span> <span class="o">/</span> <span class="n">Emin</span><span class="p">)</span></div>
 
 
+
 <span class="c1"># @nb.njit(fastmath=True, cache=_cache_functions)</span>
 <span class="c1"># def ggrb_int_cpl(a, Ec, Emin, Emax):</span>
 
 
-<div class="viewcode-block" id="non_diss_photoshere_generic"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.non_diss_photoshere_generic">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">non_diss_photoshere_generic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="viewcode-block" id="non_diss_photoshere_generic">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.non_diss_photoshere_generic">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">non_diss_photoshere_generic</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
 
     <span class="n">log_v</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">_log</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span> <span class="o">-</span> <span class="n">_pow</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">ec</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">_exp</span><span class="p">(</span><span class="n">log_v</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="dbl_sbpl"><a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.dbl_sbpl">[docs]</a><span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">dbl_sbpl</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">xpiv</span><span class="p">):</span>
+
+<div class="viewcode-block" id="dbl_sbpl">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.dbl_sbpl">[docs]</a>
+<span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dbl_sbpl</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">a2</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span><span class="p">,</span> <span class="n">xpiv</span><span class="p">):</span>
 
     <span class="n">xj</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">*</span> <span class="n">_pow</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">a2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">b1</span> <span class="o">+</span> <span class="mi">2</span><span class="p">),</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">((</span><span class="n">b1</span> <span class="o">-</span> <span class="n">a2</span><span class="p">)</span> <span class="o">*</span> <span class="n">n2</span><span class="p">))</span>
 
@@ -386,6 +422,7 @@
     <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">out</span></div>
+
 </pre></div>
 
            </div>

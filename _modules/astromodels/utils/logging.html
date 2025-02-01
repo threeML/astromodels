@@ -1,29 +1,27 @@
+
+
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>astromodels.utils.logging &mdash; Astromodels latest documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=ad0ac74c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
   
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script src="../../../_static/dark_mode_js/default_dark.js"></script>
-        <script src="../../../_static/dark_mode_js/theme_switcher.js"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
@@ -94,20 +92,20 @@
 <span></span><span class="c1"># If threeml is not installed, we create our own log,</span>
 <span class="c1"># otherwise, just print to the 3ML one!</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">logging.handlers</span> <span class="k">as</span> <span class="nn">handlers</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging.handlers</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">handlers</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span> <span class="nn">rich.console</span> <span class="kn">import</span> <span class="n">Console</span>
-<span class="kn">from</span> <span class="nn">rich.logging</span> <span class="kn">import</span> <span class="n">RichHandler</span>
-<span class="kn">from</span> <span class="nn">rich.theme</span> <span class="kn">import</span> <span class="n">Theme</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.console</span><span class="w"> </span><span class="kn">import</span> <span class="n">Console</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">RichHandler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rich.theme</span><span class="w"> </span><span class="kn">import</span> <span class="n">Theme</span>
 
-<span class="kn">from</span> <span class="nn">astromodels.utils.configuration</span> <span class="kn">import</span> <span class="n">astromodels_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">astromodels_config</span>
 
 <span class="k">try</span><span class="p">:</span>
 
-    <span class="kn">from</span> <span class="nn">threeML.config.config</span> <span class="kn">import</span> <span class="n">threeML_config</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">threeML.config.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">threeML_config</span>
 
     <span class="n">has_threeml</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -120,16 +118,21 @@
 <span class="n">logging</span><span class="o">.</span><span class="n">addLevelName</span><span class="p">(</span><span class="n">DEBUG_NODE_LEVEL</span><span class="p">,</span> <span class="s2">&quot;DEBUG_NODE&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="debug_node"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.debug_node">[docs]</a><span class="k">def</span> <span class="nf">debug_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
+<div class="viewcode-block" id="debug_node">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.debug_node">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">debug_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isEnabledFor</span><span class="p">(</span><span class="n">DEBUG_NODE_LEVEL</span><span class="p">):</span>
         <span class="c1"># Yes, logger takes its &#39;*args&#39; as &#39;args&#39;.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="p">(</span><span class="n">DEBUG_NODE_LEVEL</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">)</span></div>
 
 
+
 <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="o">.</span><span class="n">debug_node</span> <span class="o">=</span> <span class="n">debug_node</span>
 
 
-<div class="viewcode-block" id="get_path_of_log_dir"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_dir">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_dir</span><span class="p">():</span>
+<div class="viewcode-block" id="get_path_of_log_dir">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_dir">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_path_of_log_dir</span><span class="p">():</span>
 
     <span class="c1"># we use the 3ML log path to simplify things</span>
     <span class="c1"># a more clever solution could be found</span>
@@ -150,10 +153,13 @@
     <span class="k">return</span> <span class="n">user_log</span></div>
 
 
+
 <span class="n">_log_file_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;usr.log&quot;</span><span class="p">,</span> <span class="s2">&quot;dev.log&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="get_path_of_log_file"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a><span class="k">def</span> <span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<div class="viewcode-block" id="get_path_of_log_file">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    returns the path of the log files</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -162,12 +168,19 @@
     <span class="k">return</span> <span class="n">get_path_of_log_dir</span><span class="p">()</span> <span class="o">/</span> <span class="n">log_file</span></div>
 
 
-<div class="viewcode-block" id="LogFilter"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a><span class="k">class</span> <span class="nc">LogFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+
+<div class="viewcode-block" id="LogFilter">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">LogFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__level</span> <span class="o">=</span> <span class="n">level</span>
 
-<div class="viewcode-block" id="LogFilter.filter"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logRecord</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">logRecord</span><span class="o">.</span><span class="n">levelno</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__level</span></div></div>
+<div class="viewcode-block" id="LogFilter.filter">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logRecord</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">logRecord</span><span class="o">.</span><span class="n">levelno</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__level</span></div>
+</div>
+
 
 
 <span class="c1"># now create the developer handler that rotates every day and keeps</span>
@@ -242,8 +255,10 @@
 <span class="n">warning_filter</span> <span class="o">=</span> <span class="n">LogFilter</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="silence_console_log"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_console_log">[docs]</a><span class="nd">@contextmanager</span>
-<span class="k">def</span> <span class="nf">silence_console_log</span><span class="p">():</span>
+<div class="viewcode-block" id="silence_console_log">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_console_log">[docs]</a>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">silence_console_log</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    temporarily silence the console and progress bars</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -263,7 +278,10 @@
         <span class="n">astromodels_usr_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">current_usr_logging_level</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="silence_warnings"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a><span class="k">def</span> <span class="nf">silence_warnings</span><span class="p">():</span>
+
+<div class="viewcode-block" id="silence_warnings">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">silence_warnings</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    supress warning messages in console and file usr logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -272,7 +290,10 @@
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="activate_warnings"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a><span class="k">def</span> <span class="nf">activate_warnings</span><span class="p">():</span>
+
+<div class="viewcode-block" id="activate_warnings">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">activate_warnings</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    supress warning messages in console and file usr logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -281,12 +302,18 @@
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">removeFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="update_logging_level"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.update_logging_level">[docs]</a><span class="k">def</span> <span class="nf">update_logging_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+
+<div class="viewcode-block" id="update_logging_level">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.update_logging_level">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_logging_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
 
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="setup_logger"><a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.setup_logger">[docs]</a><span class="k">def</span> <span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+
+<div class="viewcode-block" id="setup_logger">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.setup_logger">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
     <span class="c1"># A logger with name name will be created</span>
     <span class="c1"># and then add it to the print stream</span>
@@ -307,6 +334,7 @@
     <span class="n">log</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">return</span> <span class="n">log</span></div>
+
 </pre></div>
 
            </div>
