@@ -127,7 +127,7 @@ jobs:
                   auto-update-conda: true
                   environment-file: ${{ matrix.environment }}
                   use-only-tar-bz2: true
-                  channel-priority: strict
+                  channel-priority: true
                   channels: conda-forge, xspecmodels
             - name: Init Env
               shell: bash -l {0}
