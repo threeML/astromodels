@@ -102,16 +102,14 @@ jobs:
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-13"]
                 python-version: [3.9, 3.11]
+                environment: [ci/environment_noxspec.yml]
                 include:
-                  - environment: ci/environment.yml
+                  - os: macos-13
                     python-version: 3.9
-                    os: [ubuntu-latest, macos-13]
-                  - environment:  ci/environment_noxspec.yml
+                    environment:  ci/environment.yml
+                  - os: ubuntu-latest
                     python-version: 3.9
-                    os: macos-latest
-                  - environment: ci/environment_noxspec.yml
-                    python-version: 3.11
-                    os: [ubuntu-latest, macos-latest, macos-13]
+                    environment:  ci/environment.yml
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
