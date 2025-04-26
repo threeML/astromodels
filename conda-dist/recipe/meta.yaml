@@ -13,7 +13,7 @@ requirements:
     - {{ compiler('c') }} # [linux]
     - {{ compiler('cxx') }} # [linux]
     - {{ compiler('fortran') }} # [linux]
-    - xspec-modelsonly #[not arm64]
+    - xspec-modelsonly # [not arm64 and py==39]
     - cfitsio # [not arm64]
     - ccfits # [not arm64]
     - wcslib # [not arm64]
@@ -28,7 +28,7 @@ requirements:
     - cfitsio # [not arm64]
     - ccfits # [not arm64]
     - wcslib # [not arm64]
-    - xspec-modelsonly # [not arm64]
+    - xspec-modelsonly # [not arm64 and py==39]
     - future
     - numba>=0.54
     - h5py
