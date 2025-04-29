@@ -147,7 +147,7 @@ jobs:
 
                   ls -l ${CONDA}/envs/test_env/conda-bld/*/*
 
-                  conda search astromodels --use-local --info
+                  conda search ${CONDA}/envs/test_env/conda-bld/::astromodels --use-local --info
             - name: Install it
               shell: bash -l {0}
               run: |
@@ -239,7 +239,7 @@ jobs:
                   #conda build --python=${{matrix.python-version}} conda-dist/recipe
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
-                  conda search astromodels --use-local --info
+                  conda search ${CONDA}/envs/test_env/conda-bld/::astromodels --use-local --info
             - name: Install it
               shell: bash -l {0}
               run: |
