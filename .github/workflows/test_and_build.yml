@@ -101,18 +101,11 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-13"]
-                python-version: [3.11]
+                python-version: [3.9, 3.11]
                 include:
+                  - environment: ci/environment.yml
                   - environment: ci/environment_noxspec.yml
-                  - os: ubuntu-latest
-                    python-version: 3.9
-                    environment:  ci/environment.yml
-                  - os: macos-13
-                    python-version: 3.9
-                    environment:  ci/environment.yml
-                  - os: macos-latest
-                    python-version: 3.9
-                    environment:  ci/environment_noxspec.yml
+                    os: macos-latest
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
@@ -166,7 +159,7 @@ jobs:
                   flake8
 
             - name: Test import xspec
-              if: matrix.os != 'macos-latest' && matrix.python-version != 3.11
+              if: matrix.os != 'macos-latest'
               shell: bash -l {0}
               run: python -c "import astromodels.xspec"
             - name: Test astromodels
