@@ -152,7 +152,7 @@ jobs:
               shell: bash -l {0}
               run: |
                   #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/--strict-channel-priority --use-local astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
             - name: Test import xspec
               if: matrix.os != 'macos-latest'
               shell: bash -l {0}
@@ -244,7 +244,7 @@ jobs:
               shell: bash -l {0}
               run: |
                   #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/--strict-channel-priority --use-local astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
