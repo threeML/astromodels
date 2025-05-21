@@ -137,7 +137,7 @@ _theme["logging.level.degub_node"] = "light_goldenrod1"
 
 # mytheme = Theme().read(_get_data_file_path("log_theme.ini"))
 mytheme = Theme(_theme)
-console = Console(theme=mytheme)
+console = Console(theme=mytheme, stderr=True)
 
 
 astromodels_console_log_handler = RichHandler(
