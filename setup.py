@@ -5,7 +5,7 @@ import glob
 import os
 import re
 import sys
-from distutils.version import LooseVersion
+from packaging import version as packaging_version
 
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext as _build_ext
@@ -26,7 +26,7 @@ class My_build_ext(_build_ext):
 
         # Prevent numpy from thinking it is still in its setup process:
 
-        __builtins__.__NUMPY_SETUP__ = False
+        #__builtins__.__NUMPY_SETUP__ = False
 
         import numpy
 
@@ -219,11 +219,11 @@ def setup_xspec():
         xspec_raw_version = xspec_version
 
 
-    xspec_version = LooseVersion(xspec_raw_version)
+    xspec_version = packaging_version.Version(xspec_raw_version)
 
     macros = []
 
-    if xspec_version < LooseVersion("12.9.0"):
+    if xspec_version < packaging_version.Version("12.9.0"):
         print("WARN: XSPEC Version is less than 12.9.0, which is the minimal supported version for astromodels")
 
         # I am not sure what the naming of the XSPEC components are,
@@ -238,7 +238,7 @@ def setup_xspec():
 
         macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
 
-        if xspec_version >= LooseVersion(version):
+        if xspec_version >= packaging_version.Version(version):
             macros += [(macro, None)]
                         
     print(macros)
