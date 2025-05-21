@@ -345,7 +345,15 @@ class ParameterBase(Node):
 
             try:
 
-                self.value = self.as_quantity.to(new_unit).value
+                factor = self._unit.to(new_unit)
+
+                if self.min_value is not None:
+                    self.min_value *= factor
+
+                if self.max_value is not None:
+                    self.max_value *= factor
+
+                self.value *= factor
 
             except u.UnitConversionError:
 
