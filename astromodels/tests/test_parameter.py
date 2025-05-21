@@ -301,6 +301,15 @@ def test_set_units():
 
     p.display()
 
+    # Check that the value and bounds are updated when we set a new unit
+    p = Parameter("test_parameter", 1.0, min_value=0, max_value=1e5, unit=u.MeV)
+    p.unit = u.eV
+    assert p.value == 1e6
+    assert p.min_value == 0.0
+    assert p.max_value == 1e11
+
+    p.display()
+
 
 def test_set_within_bounds_units():
 
