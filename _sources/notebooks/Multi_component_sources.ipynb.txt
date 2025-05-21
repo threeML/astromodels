@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "c1689ba6",
+   "id": "392e7bc9",
    "metadata": {},
    "source": [
     "# Multi-component sources"
@@ -10,7 +10,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "cddbf701",
+   "id": "aff50d71",
    "metadata": {},
    "source": [
     "A multi-component source is a point source (or extended source) which has different spectral\n",
@@ -30,25 +30,25 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "2e63b8f2",
+   "id": "d215cc19",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-05-21T18:27:46.529799Z",
-     "iopub.status.busy": "2025-05-21T18:27:46.529159Z",
-     "iopub.status.idle": "2025-05-21T18:27:48.009952Z",
-     "shell.execute_reply": "2025-05-21T18:27:48.009255Z"
+     "iopub.execute_input": "2025-05-21T19:15:36.025575Z",
+     "iopub.status.busy": "2025-05-21T19:15:36.024914Z",
+     "iopub.status.idle": "2025-05-21T19:15:37.891990Z",
+     "shell.execute_reply": "2025-05-21T19:15:37.890613Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:27:47 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#47\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">47</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">19:15:37 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#47\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">47</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">available                                                                         </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m18:27:47\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=66646;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=230638;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#47\u001b\\\u001b[2m47\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m19:15:37\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=888752;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=724040;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#47\u001b\\\u001b[2m47\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mavailable                                                                        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -63,7 +63,7 @@
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=532477;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=705969;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#68\u001b\\\u001b[2m68\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=138037;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=846976;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#68\u001b\\\u001b[2m68\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mwill not be available.                                                           \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -364,7 +364,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c8a6361e",
+   "id": "4a7e3869",
    "metadata": {},
    "source": [
     "## Modifying features of the source and modify parameters of its spectrum\n",
@@ -378,13 +378,13 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "51fbff51",
+   "id": "b2f379ac",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-05-21T18:27:48.013597Z",
-     "iopub.status.busy": "2025-05-21T18:27:48.013067Z",
-     "iopub.status.idle": "2025-05-21T18:27:48.016952Z",
-     "shell.execute_reply": "2025-05-21T18:27:48.016129Z"
+     "iopub.execute_input": "2025-05-21T19:15:37.895691Z",
+     "iopub.status.busy": "2025-05-21T19:15:37.895104Z",
+     "iopub.status.idle": "2025-05-21T19:15:37.904347Z",
+     "shell.execute_reply": "2025-05-21T19:15:37.903669Z"
     }
    },
    "outputs": [],
@@ -395,7 +395,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "41d65e45",
+   "id": "e21c586c",
    "metadata": {},
    "source": [
     "Change values for the parameters:"
@@ -404,13 +404,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "6e63cb1d",
+   "id": "36230e17",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-05-21T18:27:48.020044Z",
-     "iopub.status.busy": "2025-05-21T18:27:48.019778Z",
-     "iopub.status.idle": "2025-05-21T18:27:48.027759Z",
-     "shell.execute_reply": "2025-05-21T18:27:48.026920Z"
+     "iopub.execute_input": "2025-05-21T19:15:37.906891Z",
+     "iopub.status.busy": "2025-05-21T19:15:37.906705Z",
+     "iopub.status.idle": "2025-05-21T19:15:37.913455Z",
+     "shell.execute_reply": "2025-05-21T19:15:37.913006Z"
     }
    },
    "outputs": [
@@ -705,7 +705,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "05bf055d",
+   "id": "88c43f5a",
    "metadata": {},
    "source": [
     "Spectral components can be assigned to python variables to modify several parameters without too much repetition:"
@@ -714,13 +714,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "604e3577",
+   "id": "a46703bb",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-05-21T18:27:48.030827Z",
-     "iopub.status.busy": "2025-05-21T18:27:48.030625Z",
-     "iopub.status.idle": "2025-05-21T18:27:48.038121Z",
-     "shell.execute_reply": "2025-05-21T18:27:48.037471Z"
+     "iopub.execute_input": "2025-05-21T19:15:37.915547Z",
+     "iopub.status.busy": "2025-05-21T19:15:37.915371Z",
+     "iopub.status.idle": "2025-05-21T19:15:37.923137Z",
+     "shell.execute_reply": "2025-05-21T19:15:37.922668Z"
     }
    },
    "outputs": [
@@ -1016,7 +1016,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "66575b95",
+   "id": "c21fabb5",
    "metadata": {},
    "source": [
     "Be careful when creating a shortcut directly to a parameter."
@@ -1025,13 +1025,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "67ef8ea5",
+   "id": "bad771a4",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-05-21T18:27:48.041922Z",
-     "iopub.status.busy": "2025-05-21T18:27:48.041721Z",
-     "iopub.status.idle": "2025-05-21T18:27:48.051173Z",
-     "shell.execute_reply": "2025-05-21T18:27:48.050569Z"
+     "iopub.execute_input": "2025-05-21T19:15:37.926072Z",
+     "iopub.status.busy": "2025-05-21T19:15:37.925875Z",
+     "iopub.status.idle": "2025-05-21T19:15:37.935466Z",
+     "shell.execute_reply": "2025-05-21T19:15:37.934841Z"
     }
    },
    "outputs": [
@@ -1054,7 +1054,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c25b3e96",
+   "id": "91ba6503",
    "metadata": {},
    "source": [
     "This did **not** change the value of K, but instead assigned the float 0.3 to p1 (i.e., destroy the shortcut).   \n",
@@ -1065,13 +1065,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "7404af98",
+   "id": "47846564",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-05-21T18:27:48.054953Z",
-     "iopub.status.busy": "2025-05-21T18:27:48.054506Z",
-     "iopub.status.idle": "2025-05-21T18:27:48.063111Z",
-     "shell.execute_reply": "2025-05-21T18:27:48.062281Z"
+     "iopub.execute_input": "2025-05-21T19:15:37.937909Z",
+     "iopub.status.busy": "2025-05-21T19:15:37.937752Z",
+     "iopub.status.idle": "2025-05-21T19:15:37.950470Z",
+     "shell.execute_reply": "2025-05-21T19:15:37.949761Z"
     }
    },
    "outputs": [
@@ -1367,7 +1367,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "e9035338",
+   "id": "b8efb207",
    "metadata": {},
    "outputs": [],
    "source": []
@@ -1375,7 +1375,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "84a36e66",
+   "id": "7f0aee7d",
    "metadata": {},
    "outputs": [],
    "source": []

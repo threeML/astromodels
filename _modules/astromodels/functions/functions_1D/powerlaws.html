@@ -338,9 +338,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
-        <span class="c1"># The normalization has the same units as the y</span>
+        <span class="c1"># The flux is the integral of E*F(E) over E, so:</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">*</span> <span class="n">x_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">*</span> <span class="n">x_unit</span> <span class="o">*</span> <span class="n">x_unit</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
 <div class="viewcode-block" id="Powerlaw_Eflux.evaluate">
