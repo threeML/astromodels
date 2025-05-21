@@ -233,9 +233,9 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
         self.a.unit = x_unit
         self.b.unit = x_unit
 
-        # The normalization has the same units as the y
+        # The flux is the integral of E*F(E) over E, so:
 
-        self.F.unit = y_unit * x_unit
+        self.F.unit = y_unit * x_unit * x_unit
 
     # noinspection PyPep8Naming
     def evaluate(self, x, F, piv, index, a, b):
