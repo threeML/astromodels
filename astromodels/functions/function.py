@@ -15,17 +15,18 @@ import astropy.units as u
 import numba as nb
 import numpy as np
 import six
+from yaml.reader import ReaderError
+
 from astromodels.core.memoization import memoize
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
+from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
-from astromodels.utils.file_utils import copy_if_needed
-from yaml.reader import ReaderError
 
 log = setup_logger(__name__)
 
@@ -2447,9 +2448,9 @@ def get_function(function_name, composite_function_expression=None):
             # NOTE: import here to avoid circular import
 
             from astromodels.functions.template_model import (
+                InvalidTemplateModelFile,
                 MissingDataFile,
                 TemplateModel,
-                InvalidTemplateModelFile,
             )
 
             try:

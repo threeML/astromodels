@@ -1,5 +1,6 @@
-import pkg_resources
 import os
+
+import pkg_resources
 
 
 def _get_data_file_path(data_file):

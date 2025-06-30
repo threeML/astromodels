@@ -12,15 +12,14 @@ import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
-
 from interpolation import interp
 from interpolation.splines import eval_linear
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
-from astromodels.utils.logging import setup_logger
 from astromodels.utils.file_utils import copy_if_needed
+from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 

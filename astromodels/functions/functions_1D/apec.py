@@ -2,6 +2,7 @@ import gc
 
 import astropy.units as astropy_units
 import numpy as np
+
 from astromodels.functions.function import Function1D, FunctionMeta
 
 try:

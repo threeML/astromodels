@@ -1,9 +1,10 @@
 __author__ = "giacomov"
 
 
-from astromodels.core.tree import Node
-from astromodels.core.parameter import Parameter
 import numpy as np
+
+from astromodels.core.parameter import Parameter
+from astromodels.core.tree import Node
 
 
 class Polarization(Node):

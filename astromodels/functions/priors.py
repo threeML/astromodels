@@ -1,13 +1,14 @@
 from __future__ import division
-from past.utils import old_div
+
 import math
 
 import astropy.units as astropy_units
 import numpy as np
-from scipy.special import erfcinv, erf
 import scipy.stats as stats
-from astromodels.functions.function import Function1D, FunctionMeta
+from past.utils import old_div
+from scipy.special import erf, erfcinv
 
+from astromodels.functions.function import Function1D, FunctionMeta
 
 deg2rad = old_div(np.pi, 180.0)
 rad2deg = old_div(180.0, np.pi)

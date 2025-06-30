@@ -8,8 +8,8 @@ import numba as nb
 import numpy as np
 
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.logging import setup_logger
 from astromodels.utils.file_utils import copy_if_needed
+from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 

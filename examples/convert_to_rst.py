@@ -4,10 +4,11 @@
 # in the ../doc folder
 
 from __future__ import print_function
+
 import glob
-import subprocess
-import shutil
 import os
+import shutil
+import subprocess
 
 notebooks = glob.glob("*.ipynb")
 

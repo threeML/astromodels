@@ -1,8 +1,8 @@
 import collections
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Type, Any
-from rich.tree import Tree
+from typing import Any, Dict, List, Optional, Tuple, Type
 
+from rich.tree import Tree
 
 from astromodels.utils.logging import setup_logger
 

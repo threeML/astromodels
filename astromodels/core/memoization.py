@@ -1,6 +1,7 @@
 import collections
-import functools
 import contextlib
+import functools
+
 import astropy.units as u
 
 _WITH_MEMOIZATION = False

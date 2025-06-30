@@ -41,10 +41,11 @@ DOCS = Path(__file__).parent
 
 def run_apidoc(app):
     """Generage API documentation"""
-    import better_apidoc
+    import os
     import pkgutil
     import sys
-    import os
+
+    import better_apidoc
 
     astro_path = os.path.dirname(
         pkgutil.get_loader("astromodels").get_filename()

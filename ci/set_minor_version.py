@@ -2,10 +2,10 @@
 
 # This sets the minor version  
 
-import sys
-import re
-import os
 import argparse
+import os
+import re
+import sys
 
 if __name__ == "__main__":
 

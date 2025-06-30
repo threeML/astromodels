@@ -1,11 +1,13 @@
 from __future__ import print_function
+
 import collections
-import sys
-import time
-import astropy.units as u
 import os
 import re
+import sys
+import time
 import warnings
+
+import astropy.units as u
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions.function import get_function_class

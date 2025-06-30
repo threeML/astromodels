@@ -7,8 +7,8 @@ namedtuple.  Values are expressed in bytes.
 # Author: Giampaolo Rodola' <g.rodola [AT] gmail [DOT] com>
 # License: MIT
 
-import os
 import collections
+import os
 
 _ntuple_diskusage = collections.namedtuple("usage", "total used free")
 

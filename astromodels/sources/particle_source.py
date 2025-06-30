@@ -1,4 +1,5 @@
 from __future__ import division
+
 from past.utils import old_div
 
 __author__ = "giacomov"
@@ -11,9 +12,8 @@ from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
 from astromodels.sources.source import Source, SourceType
-from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.logging import setup_logger
-
+from astromodels.utils.pretty_list import dict_to_list
 
 log = setup_logger(__name__)
 

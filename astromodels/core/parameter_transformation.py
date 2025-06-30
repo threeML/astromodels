@@ -1,8 +1,8 @@
 import math
 from builtins import object
 
-import numpy as np
 import numba as nb
+import numpy as np
 
 
 @nb.vectorize

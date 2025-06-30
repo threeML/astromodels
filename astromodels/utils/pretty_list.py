@@ -2,8 +2,9 @@ from builtins import str
 
 __author__ = "giacomov"
 
-import yaml
 import re
+
+import yaml
 
 
 def _process_html(dictionary):

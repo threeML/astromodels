@@ -279,10 +279,12 @@ https://img.shields.io/travis/warner/python-versioneer/master.svg
 """
 
 from __future__ import print_function
+
 try:
     import configparser
 except ImportError:
     import ConfigParser as configparser
+
 import errno
 import json
 import os
@@ -1570,6 +1572,7 @@ def get_cmdclass(cmdclass=None):
 
     if "cx_Freeze" in sys.modules:  # cx_freeze enabled?
         from cx_Freeze.dist import build_exe as _build_exe
+
         # nczeczulin reports that py2exe won't like the pep440-style string
         # as FILEVERSION, but it can be used for PRODUCTVERSION, e.g.
         # setup(console=[{

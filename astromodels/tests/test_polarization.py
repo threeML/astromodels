@@ -1,13 +1,13 @@
 from __future__ import division
 
-import os
 import math
+import os
 
 from astromodels import update_logging_level
-from astromodels.core.polarization import *
 from astromodels.core.model import Model
 from astromodels.core.model_parser import *
-from astromodels.functions import Constant,Powerlaw
+from astromodels.core.polarization import *
+from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
 
 update_logging_level("DEBUG")

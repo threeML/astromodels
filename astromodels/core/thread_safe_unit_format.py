@@ -4,14 +4,12 @@
 # Here we implement a format which is very simple, does not use
 # ply.yacc and is thread safe
 
-from builtins import str
-from builtins import map
-from builtins import zip
 import re
-from astropy.units.format.base import Base
-import astropy.units as u
+from builtins import map, str, zip
 from functools import reduce
 
+import astropy.units as u
+from astropy.units.format.base import Base
 
 # NOTE: the metaclass in Base will take care of registering
 # this format, which will be available in the u.Unit

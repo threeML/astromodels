@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass, field
-from enum import IntEnum, Enum
+from enum import Enum, IntEnum
 
 
 # logging

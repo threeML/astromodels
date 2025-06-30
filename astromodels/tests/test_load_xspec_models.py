@@ -1,9 +1,11 @@
-from __future__ import print_function
-from __future__ import division
-import pytest
-import astropy.units as u
-from astromodels import clone_model, PointSource, Model, load_model
+from __future__ import division, print_function
+
 from pathlib import Path
+
+import astropy.units as u
+import pytest
+
+from astromodels import Model, PointSource, clone_model, load_model
 
 try:
 

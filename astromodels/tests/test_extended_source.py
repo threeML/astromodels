@@ -8,9 +8,9 @@ except:
     pass
 import astropy.io.fits as fits
 import astropy.units as u
-from astropy import wcs
 import numpy as np
 import pytest
+from astropy import wcs
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model

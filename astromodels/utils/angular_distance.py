@@ -1,6 +1,7 @@
 from __future__ import division
-from past.utils import old_div
+
 import numpy as np
+from past.utils import old_div
 
 
 def angular_distance_fast(ra1, dec1, ra2, dec2):

@@ -5,8 +5,8 @@ import glob
 import os
 import re
 import sys
-from packaging import version as packaging_version
 
+from packaging import version as packaging_version
 from setuptools import Extension, setup
 from setuptools.command.build_ext import build_ext as _build_ext
 
