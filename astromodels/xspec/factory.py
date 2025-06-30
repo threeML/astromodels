@@ -693,7 +693,7 @@ def setup_xspec_models():
 
     all_models = get_models(find_model_dat())
 
-    for (model_name, xspec_function, model_type) in all_models:
+    for model_name, xspec_function, model_type in all_models:
 
         if model_type == "con":
 

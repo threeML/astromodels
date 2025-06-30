@@ -16,7 +16,12 @@ log = setup_logger(__name__)
 
 class ExtendedSource(Source, Node):
     def __init__(
-        self, source_name, spatial_shape, spectral_shape=None, components=None, polarization=None
+        self,
+        source_name,
+        spatial_shape,
+        spectral_shape=None,
+        components=None,
+        polarization=None,
     ):
         # Check that we have all the required information
         # and set the units
@@ -101,7 +106,9 @@ class ExtendedSource(Source, Node):
 
                 if spectral_shape is not None:
 
-                    components = [SpectralComponent("main", spectral_shape, polarization)]
+                    components = [
+                        SpectralComponent("main", spectral_shape, polarization)
+                    ]
 
                 # Assign units
                 diff_flux_units = (
@@ -159,7 +166,6 @@ class ExtendedSource(Source, Node):
         return self._spatial_shape
 
     def get_spatially_integrated_flux(self, energies):
-
         """
         Returns total flux of source at the given energy
         :param energies: energies (array or float)

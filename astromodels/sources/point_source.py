@@ -73,7 +73,7 @@ class PointSource(Source, Node):
         b: Optional[float] = None,
         components=None,
         sky_position: Optional[SkyDirection] = None,
-        polarization=None
+        polarization=None,
     ):
 
         # Check that we have all the required information
@@ -200,8 +200,12 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same units as currently defined in
                 # units.get_units()
 
-                results = numpy.array([component(x, stokes) for component in list(self.components.values())]
-                                      )
+                results = numpy.array(
+                    [
+                        component(x, stokes)
+                        for component in list(self.components.values())
+                    ]
+                )
 
                 return _sum(results)
 

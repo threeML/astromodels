@@ -9,6 +9,7 @@ try:
     from IPython.display import display
 
 except ImportError:
+
     def display(*args):
         """
         Mock version of display, used if there is no ipython installed
@@ -20,6 +21,7 @@ try:
     from IPython.display import Latex
 
 except ImportError:
+
     class Latex(object):
         """
         Mock version of the IPython Latex object, used if there is no ipython installed

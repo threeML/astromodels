@@ -52,7 +52,11 @@ class Blackbody(Function1D, metaclass=FunctionMeta):
 
         else:
             unit_ = 1.0
-            K_, kT_, x_, = (
+            (
+                K_,
+                kT_,
+                x_,
+            ) = (
                 K,
                 kT,
                 x,
@@ -106,7 +110,11 @@ class ModifiedBlackbody(Function1D, metaclass=FunctionMeta):
         else:
 
             unit_ = 1.0
-            K_, kT_, x_, = (
+            (
+                K_,
+                kT_,
+                x_,
+            ) = (
                 K,
                 kT,
                 x,

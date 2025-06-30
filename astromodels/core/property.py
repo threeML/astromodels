@@ -34,9 +34,7 @@ class PropertyBase(Node):
         self._eval_func: Optional[str] = eval_func
 
         if (value is None) and (not self._defer):
-            log.error(
-                f"property {name} was given no initial value but is NOT deferred"
-            )
+            log.error(f"property {name} was given no initial value but is NOT deferred")
 
         # now we set the value
 
@@ -99,9 +97,7 @@ class PropertyBase(Node):
                         f"and the parent has {len(self._parent._functions)} functions"
                     )
 
-                    getattr(
-                        self._parent._functions[func_idx], str(self._eval_func)
-                    )()
+                    getattr(self._parent._functions[func_idx], str(self._eval_func))()
 
                 else:
                     getattr(self._parent, str(self._eval_func))()
@@ -182,9 +178,7 @@ class PropertyBase(Node):
         else:
             # In the complete representation we output everything is needed to re-build the object
 
-            data["value"] = (
-                self.value if type(self.value) is bool else str(self.value)
-            )
+            data["value"] = self.value if type(self.value) is bool else str(self.value)
             data["desc"] = str(self._desc)
             data["allowed values"] = self._to_python_type(self._allowed_values)
             data["defer"] = self._to_python_type(self._defer)

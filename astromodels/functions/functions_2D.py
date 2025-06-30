@@ -836,7 +836,6 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
 
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
-
     r"""
     description :
 
@@ -900,9 +899,7 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
         angsep = angular_distance(lon0, lat0, lon, lat)
 
         if maxr <= minr:
-            norm = (
-                np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr**2 * minr**index
-            )
+            norm = np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr**2 * minr**index
         elif self.index.value == -2.0:
             norm = np.pi * (1.0 + 2.0 * np.log(maxr / minr))
         else:

@@ -227,9 +227,9 @@ class ParameterBase(Node):
 
         # save the transformation so that it can be restored
 
-        self._original_transformation: Optional[
-            ParameterTransformation
-        ] = transformation
+        self._original_transformation: Optional[ParameterTransformation] = (
+            transformation
+        )
 
         # Let's store the init value
 
@@ -1433,7 +1433,6 @@ class Parameter(ParameterBase):
         return representation
 
     def to_dict(self, minimal=False):
-
         """Returns the representation for serialization"""
 
         data = super(Parameter, self).to_dict()
@@ -1457,9 +1456,9 @@ class Parameter(ParameterBase):
                 data["value"] = "f(%s)" % self._aux_variable["variable"]._get_path()
 
                 aux_variable_law_data = collections.OrderedDict()
-                aux_variable_law_data[
-                    self._aux_variable["law"].name
-                ] = self._aux_variable["law"].to_dict()
+                aux_variable_law_data[self._aux_variable["law"].name] = (
+                    self._aux_variable["law"].to_dict()
+                )
 
                 data["law"] = aux_variable_law_data
 

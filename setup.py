@@ -26,15 +26,15 @@ class My_build_ext(_build_ext):
 
         # Prevent numpy from thinking it is still in its setup process:
 
-        #__builtins__.__NUMPY_SETUP__ = False
+        # __builtins__.__NUMPY_SETUP__ = False
 
         import numpy
 
         self.include_dirs.append(numpy.get_include())
-        self.include_dirs.append('astromodels/xspec/include')     
+        self.include_dirs.append("astromodels/xspec/include")
         conda_prefix = os.environ.get("CONDA_PREFIX")
         if conda_prefix is not None:
-            conda_include_path = os.path.join(conda_prefix, 'include')
+            conda_include_path = os.path.join(conda_prefix, "include")
             self.include_dirs.append(conda_include_path)
 
 
@@ -54,8 +54,9 @@ def sanitize_lib_name(library_path):
     tokens = re.findall("lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
 
     if not tokens:
-        raise RuntimeError(f'Attempting to find {lib_name} in directory {library_path} but there are no libraries in this directory')
-
+        raise RuntimeError(
+            f"Attempting to find {lib_name} in directory {library_path} but there are no libraries in this directory"
+        )
 
     return tokens[0][0]
 
@@ -99,7 +100,6 @@ def find_library(library_root, additional_places=None):
 
             raise NotImplementedError("Platform %s is not supported" % sys.platform)
 
-
     else:
 
         # could not find it. Let's examine LD_LIBRARY_PATH or DYLD_LIBRARY_PATH
@@ -139,12 +139,7 @@ def find_library(library_root, additional_places=None):
 
                 continue
 
-
-
-
             results = glob.glob(os.path.join(search_path, f"lib{library_root}*"))
-
-
 
             if len(results) >= 1:
 
@@ -153,8 +148,13 @@ def find_library(library_root, additional_places=None):
 
                 for result in results:
 
-
-                    if re.match(f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*", os.path.basename(result)) is None:
+                    if (
+                        re.match(
+                            f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*",
+                            os.path.basename(result),
+                        )
+                        is None
+                    ):
 
                         continue
 
@@ -188,8 +188,6 @@ def find_library(library_root, additional_places=None):
             return sanitize_lib_name(library_name), library_dir
 
 
-
-
 def setup_xspec():
 
     skip_xspec = os.environ.get("SKIP_XSPEC")
@@ -199,18 +197,20 @@ def setup_xspec():
 
     if skip_xspec is not None:
 
-        print("The SKIP_XSPEC env variable was set. Xspec support will not be installed.")
+        print(
+            "The SKIP_XSPEC env variable was set. Xspec support will not be installed."
+        )
         return None
 
     # thanks to the sherpa team for this
-    
+
     if xspec_version is None:
 
         print("WARN: You have not specified and XSPEC version with the ")
         print("WARN: environment variable ASTRO_XSPEC_VERSION")
         print(f"WARN: we will assume you have {_default_xspec_version}")
 
-        xspec_raw_version = _default_xspec_version 
+        xspec_raw_version = _default_xspec_version
 
     else:
 
@@ -218,39 +218,46 @@ def setup_xspec():
 
         xspec_raw_version = xspec_version
 
-
     xspec_version = packaging_version.Version(xspec_raw_version)
 
     macros = []
 
     if xspec_version < packaging_version.Version("12.9.0"):
-        print("WARN: XSPEC Version is less than 12.9.0, which is the minimal supported version for astromodels")
+        print(
+            "WARN: XSPEC Version is less than 12.9.0, which is the minimal supported version for astromodels"
+        )
 
         # I am not sure what the naming of the XSPEC components are,
         # but let's stick with major, minor, and patch.
         #
-    for major, minor, patch in [(12, 9, 0), (12, 9, 1),
-                                (12, 10, 0), (12, 10, 1),
-                                (12, 11, 0), (12, 11, 1),
-                                (12, 12, 0), (12, 12, 1)]:
+    for major, minor, patch in [
+        (12, 9, 0),
+        (12, 9, 1),
+        (12, 10, 0),
+        (12, 10, 1),
+        (12, 11, 0),
+        (12, 11, 1),
+        (12, 12, 0),
+        (12, 12, 1),
+    ]:
 
-        version = '{}.{}.{}'.format(major, minor, patch)
+        version = "{}.{}.{}".format(major, minor, patch)
 
-        macro = 'XSPEC_{}_{}_{}'.format(major, minor, patch)
+        macro = "XSPEC_{}_{}_{}".format(major, minor, patch)
 
         if xspec_version >= packaging_version.Version(version):
             macros += [(macro, None)]
-                        
+
     print(macros)
-                
+
     if headas_root is None:
 
         # See, maybe we are running in Conda
-        
+
         if conda_prefix is None:
-            
+
             # Maybe this is a Conda build
-            
+
             conda_prefix = os.environ.get("PREFIX")
 
         if conda_prefix is not None:
@@ -258,13 +265,17 @@ def setup_xspec():
             # Yes, this is Conda
             # Let's see if the package xspec-modelsonly has been installed by checking whether one of the Xspec
             # libraries exists within conda
-            conda_lib_path = os.path.join(conda_prefix, 'lib')
-            this_lib, this_lib_path = find_library('XSFunctions', additional_places=[conda_lib_path])
+            conda_lib_path = os.path.join(conda_prefix, "lib")
+            this_lib, this_lib_path = find_library(
+                "XSFunctions", additional_places=[conda_lib_path]
+            )
 
             if this_lib is None:
 
                 # No, there is no library in Conda
-                print("No xspec-modelsonly package has been installed in Conda. Xspec support will not be installed")
+                print(
+                    "No xspec-modelsonly package has been installed in Conda. Xspec support will not be installed"
+                )
 
                 print("Was looking into %s" % conda_lib_path)
 
@@ -272,7 +283,9 @@ def setup_xspec():
 
             else:
 
-                print("The xspec-modelsonly package has been installed in Conda. Xspec support will be installed")
+                print(
+                    "The xspec-modelsonly package has been installed in Conda. Xspec support will be installed"
+                )
 
                 # Set up the HEADAS variable so that the following will find the libraries
                 headas_root = conda_prefix
@@ -289,25 +302,38 @@ def setup_xspec():
         print("\n NOTICE!!!!!\n")
         print("If you have issues, manually set the ENV variable XSPEC_INC_PATH")
         print("To the location of the XSPEC headers\n\n")
-        print("If you are still having issues, unset HEADAS before installing and contact the support team")
-        
-
+        print(
+            "If you are still having issues, unset HEADAS before installing and contact the support team"
+        )
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
-    
-    libraries_root = ['XSFunctions', 'XSModel', 'XSUtil', 'XS', 'cfitsio', 'CCfits', 'wcs', 'gfortran']
-            
+
+    libraries_root = [
+        "XSFunctions",
+        "XSModel",
+        "XSUtil",
+        "XS",
+        "cfitsio",
+        "CCfits",
+        "wcs",
+        "gfortran",
+    ]
+
     libraries = []
     library_dirs = []
 
     for lib_root in libraries_root:
 
-        this_library, this_library_path = find_library(lib_root, additional_places=[os.path.join(headas_root, 'lib')])
+        this_library, this_library_path = find_library(
+            lib_root, additional_places=[os.path.join(headas_root, "lib")]
+        )
 
         if this_library is None:
 
-            raise IOError("Could not find library %s. Impossible to compile Xspec" % lib_root)
+            raise IOError(
+                "Could not find library %s. Impossible to compile Xspec" % lib_root
+            )
 
         else:
 
@@ -322,11 +348,10 @@ def setup_xspec():
 
                 library_dirs.append(this_library_path)
 
-
     # try to manually add on the include directory
 
     header_paths = []
-    
+
     if library_dirs:
 
         # grab it from the lib assuming that it is one up
@@ -336,25 +361,25 @@ def setup_xspec():
         header_paths.append(include_path)
 
     # let's be sure to add the conda include directory
-       
+
     if conda_prefix is not None:
-        
-        conda_include_path = os.path.join(conda_prefix, 'include')
+
+        conda_include_path = os.path.join(conda_prefix, "include")
         header_paths.append(conda_include_path)
 
     # check if there are user set the location of the xspec headers:
-   
+
     xspec_headers_path = os.environ.get("XSPEC_INC_PATH")
-    
+
     if xspec_headers_path is not None:
 
         print("You have set XSPEC_INC_PATH=%s" % xspec_headers_path)
 
         header_paths.append(xspec_headers_path)
-    
+
     # Remove duplicates from library_dirs and header_paths
 
-    library_dirs = list(set(library_dirs))  
+    library_dirs = list(set(library_dirs))
     header_paths = list(set(header_paths))
 
     print("header paths:")
@@ -362,20 +387,21 @@ def setup_xspec():
 
         print(f"{h}")
 
-
     # Configure the variables to build the external module with the C/C++ wrapper
 
-
     ext_modules_configuration = [
-
-        Extension("astromodels.xspec._xspec",
-
-                  ["astromodels/xspec/src/_xspec.cc", ],
-                  include_dirs=header_paths,
-                  libraries=libraries,
-                  library_dirs=library_dirs,
-                  runtime_library_dirs=library_dirs,
-                  extra_compile_args=[], define_macros=macros),
+        Extension(
+            "astromodels.xspec._xspec",
+            [
+                "astromodels/xspec/src/_xspec.cc",
+            ],
+            include_dirs=header_paths,
+            libraries=libraries,
+            library_dirs=library_dirs,
+            runtime_library_dirs=library_dirs,
+            extra_compile_args=[],
+            define_macros=macros,
+        ),
     ]
 
     return ext_modules_configuration
@@ -383,16 +409,17 @@ def setup_xspec():
 
 # Normal packages
 
-packages = ['astromodels',
-            'astromodels/core',
-            'astromodels/functions',
-            'astromodels/functions/functions_1D',
-            'astromodels/functions/dark_matter',
-            'astromodels/sources',
-            'astromodels/utils',
-            'astromodels/xspec',
-            'astromodels/tests'
-            ]
+packages = [
+    "astromodels",
+    "astromodels/core",
+    "astromodels/functions",
+    "astromodels/functions/functions_1D",
+    "astromodels/functions/dark_matter",
+    "astromodels/sources",
+    "astromodels/utils",
+    "astromodels/xspec",
+    "astromodels/tests",
+]
 
 # Check whether we can compile Xspec support
 ext_modules_configuration = setup_xspec()
@@ -401,33 +428,25 @@ ext_modules_configuration = setup_xspec()
 
 
 setup(
-
-    setup_requires=['numpy'],
-
-    #cmdclass={'build_ext': My_build_ext},
-    cmdclass=versioneer.get_cmdclass({'build_ext': My_build_ext}),
-    
+    setup_requires=["numpy"],
+    # cmdclass={'build_ext': My_build_ext},
+    cmdclass=versioneer.get_cmdclass({"build_ext": My_build_ext}),
     packages=packages,
-
-    data_files=[('astromodels/data/functions', glob.glob('astromodels/data/functions/*.yaml')),
-                ('astromodels/data/tests',  glob.glob('astromodels/data/tests/*.fits'))
-
+    data_files=[
+        ("astromodels/data/functions", glob.glob("astromodels/data/functions/*.yaml")),
+        ("astromodels/data/tests", glob.glob("astromodels/data/tests/*.fits")),
     ],
-
     # The __version__ comes from the exec at the top
-
     version=versioneer.get_version(),
-
-
-    download_url='https://github.com/threeml/astromodels/archive/v0.1',
-
-    keywords=['Likelihood', 'Models', 'fit'],
-    
-
+    download_url="https://github.com/threeml/astromodels/archive/v0.1",
+    keywords=["Likelihood", "Models", "fit"],
     ext_modules=ext_modules_configuration,
-
     package_data={
-        'astromodels': ['data/dark_matter/*', 'data/xsect/*', 'data/past_1D_values.h5', 'data/log_theme.ini'],
+        "astromodels": [
+            "data/dark_matter/*",
+            "data/xsect/*",
+            "data/past_1D_values.h5",
+            "data/log_theme.ini",
+        ],
     },
-
 )

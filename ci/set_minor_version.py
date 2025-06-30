@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# This sets the minor version  
+# This sets the minor version
 
 import argparse
 import os
@@ -9,14 +9,20 @@ import sys
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Set the patch number in the version file")
+    parser = argparse.ArgumentParser(
+        description="Set the patch number in the version file"
+    )
     parser.add_argument("--patch", help="New patch number", required=True, type=int)
-    parser.add_argument("--version_file", help="Path of the version file", required=True, type=str)
+    parser.add_argument(
+        "--version_file", help="Path of the version file", required=True, type=str
+    )
 
     args = parser.parse_args()
 
     # Sanitize file name
-    file_path = os.path.abspath(os.path.expandvars(os.path.expanduser(args.version_file)))
+    file_path = os.path.abspath(
+        os.path.expandvars(os.path.expanduser(args.version_file))
+    )
 
     # Read current content
 
@@ -61,4 +67,3 @@ if __name__ == "__main__":
     with open(file_path, "w+") as f:
 
         f.writelines(lines)
-

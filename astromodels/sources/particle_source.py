@@ -73,7 +73,6 @@ class ParticleSource(Source, Node):
             component.shape.set_units(x_unit, y_unit)
 
     def get_flux(self, energies):
-
         """Get the total flux of this particle source at the given energies (summed over the components)"""
 
         results = [

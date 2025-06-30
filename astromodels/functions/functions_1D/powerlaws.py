@@ -1221,7 +1221,6 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
             return (x, K, alpha1, xb, n1, alpha2, xp, n2, beta, piv, 1.0)
 
     def free_curvature(self) -> None:
-
         """
         free the two curvature parameters n1, n2
 
@@ -1232,7 +1231,6 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
         self.n2.free = True
 
     def fix_curvature(self) -> None:
-
         """
         fix the two curvature parameters n1, n2
 

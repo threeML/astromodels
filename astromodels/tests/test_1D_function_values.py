@@ -53,7 +53,6 @@ def test_function_values_have_not_changed():
 
             continue
 
-
         if this_function._n_dim == 1:
 
             print("testing %s ..." % key)

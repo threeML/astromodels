@@ -47,7 +47,7 @@ class ThreadSafe(Base):
         # Here we build a list like [u.m, u.s**(-1), ...]
         r = []
 
-        for (unit, power) in tokens:
+        for unit, power in tokens:
 
             # Get the primitive unit from the units module
             thisr = getattr(u, unit)

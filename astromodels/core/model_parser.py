@@ -647,13 +647,13 @@ class SourceParser(object):
         polarization_params = {}
 
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
-            par_dict = {'degree': None, 'angle': None}
+            par_dict = {"degree": None, "angle": None}
             par_names = list(polarization_definititon.keys())
-            par_bounds = {'degree':(0,100),'angle':(0,180)}
+            par_bounds = {"degree": (0, 100), "angle": (0, 180)}
 
             for par in par_names:
 
-                if list(polarization_definititon[par].keys())[0] == 'value':
+                if list(polarization_definititon[par].keys())[0] == "value":
 
                     par_parser = ParameterParser(par, polarization_definititon[par])
 
@@ -666,24 +666,35 @@ class SourceParser(object):
                     try:
 
                         function_name = list(polarization_definititon[par].keys())[0]
-                        parameters_definition = polarization_definititon[par][function_name]
+                        parameters_definition = polarization_definititon[par][
+                            function_name
+                        ]
 
                         # parse the function
                         shape_parser = ShapeParser(self._source_name)
 
-                        shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                        shape = shape_parser.parse(
+                            par, function_name, parameters_definition, is_spatial=False
+                        )
                         par_dict[par] = shape
 
                     except KeyError:  # pragma: no cover
 
-                        raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
-                                               % (self._source_name))
+                        raise ModelSyntaxError(
+                            "The polarization_definititon of source %s is malformed"
+                            % (self._source_name)
+                        )
 
             this_polarization = polarization.LinearPolarization(**par_dict)
 
-        elif 'I' in polarization_definititon or 'U' in polarization_definititon or 'Q' in polarization_definititon or 'V' in polarization_definititon:
+        elif (
+            "I" in polarization_definititon
+            or "U" in polarization_definititon
+            or "Q" in polarization_definititon
+            or "V" in polarization_definititon
+        ):
 
-            par_dict = {'I': None, 'Q':None, 'U':None, 'V':None}
+            par_dict = {"I": None, "Q": None, "U": None, "V": None}
             par_names = list(polarization_definititon.keys())
 
             for par in par_names:
@@ -695,13 +706,17 @@ class SourceParser(object):
                     # parse the function
                     shape_parser = ShapeParser(self._source_name)
 
-                    shape = shape_parser.parse(par, function_name, parameters_definition, is_spatial=False)
+                    shape = shape_parser.parse(
+                        par, function_name, parameters_definition, is_spatial=False
+                    )
                     par_dict[par] = shape
 
                 except KeyError:  # pragma: no cover
 
-                    raise ModelSyntaxError("The polarization_definititon of source %s is malformed"
-                                           % (self._source_name))
+                    raise ModelSyntaxError(
+                        "The polarization_definititon of source %s is malformed"
+                        % (self._source_name)
+                    )
 
             this_polarization = polarization.StokesPolarization(**par_dict)
 
@@ -943,14 +958,14 @@ class ShapeParser(object):
                 warnings.simplefilter("ignore", RuntimeWarning)
 
                 if "min_value" in this_definition:
-                    function_instance.parameters[
-                        parameter_name
-                    ].min_value = this_definition["min_value"]
+                    function_instance.parameters[parameter_name].min_value = (
+                        this_definition["min_value"]
+                    )
 
                 if "max_value" in this_definition:
-                    function_instance.parameters[
-                        parameter_name
-                    ].max_value = this_definition["max_value"]
+                    function_instance.parameters[parameter_name].max_value = (
+                        this_definition["max_value"]
+                    )
 
             if "delta" in this_definition:
                 function_instance.parameters[parameter_name].delta = this_definition[

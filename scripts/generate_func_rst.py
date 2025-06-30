@@ -55,7 +55,7 @@ with open("functions_1d.rst") as f:
 
         lines.append(f"   ../notebooks/{func}.ipynb\n")
 
-#p = Path("../docs/function_docs/functions_1d.rst").absolute()
+# p = Path("../docs/function_docs/functions_1d.rst").absolute()
 
 p = Path("../docs/function_docs/functions_1d.rst").absolute()
 

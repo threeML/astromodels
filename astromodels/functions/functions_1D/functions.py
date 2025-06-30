@@ -118,7 +118,7 @@ class GenericFunction(Function1D, metaclass=FunctionMeta):
                 ones = np.ones_like(x)
             return k * ones
         except AttributeError:
-            log.error('You must define a function with set_function!')
+            log.error("You must define a function with set_function!")
 
     def to_dict(self, minimal=False):
 
