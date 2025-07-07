@@ -84,8 +84,7 @@ class TemplateModelFactory(object):
         interpolation_degree: int = 1,
         spline_smoothing_factor: int = 0,
     ):
-        """
-        Creates a template model from inputs
+        """Creates a template model from inputs.
 
         :param name:
         :type name: str
@@ -100,7 +99,6 @@ class TemplateModelFactory(object):
         :param spline_smoothing_factor:
         :type spline_smoothing_factor: int
         :returns:
-
         """
         # Store model name
 
@@ -151,9 +149,10 @@ class TemplateModelFactory(object):
         self._spline_smoothing_factor: int = int(spline_smoothing_factor)
 
     def define_parameter_grid(self, parameter_name: str, grid: np.ndarray) -> None:
-        """
-        Define the parameter grid for this parameter.
-        Pass the name of the parameter and the array of values that it will take in the grid
+        """Define the parameter grid for this parameter.
+
+        Pass the name of the parameter and the array of values that it
+        will take in the grid
         """
 
         if parameter_name not in self._parameters_grids:
@@ -377,11 +376,8 @@ def add_method(self, method, name=None):
 
 
 class RectBivariateSplineWrapper(object):
-    """
-    Wrapper around RectBivariateSpline, which supplies a __call__ method which accept the same
-    syntax as the other interpolation methods
-
-    """
+    """Wrapper around RectBivariateSpline, which supplies a __call__ method
+    which accept the same syntax as the other interpolation methods."""
 
     def __init__(self, *args, **kwargs):
         # We can use interp2, which features spline interpolation instead of linear interpolation
@@ -396,11 +392,7 @@ class RectBivariateSplineWrapper(object):
 
 @dataclass
 class TemplateFile:
-    """
-    simple container to read and write
-    the data to an hdf5 file
-
-    """
+    """Simple container to read and write the data to an hdf5 file."""
 
     name: str
     description: str
@@ -412,13 +404,11 @@ class TemplateFile:
     spline_smoothing_factor: float
 
     def save(self, file_name: str):
-        """
-        serialize the contents to a file
+        """Serialize the contents to a file.
 
         :param file_name:
         :type file_name: str
         :returns:
-
         """
         with h5py.File(file_name, "w") as f:
             f.attrs["name"] = self.name
@@ -440,15 +430,13 @@ class TemplateFile:
 
     @classmethod
     def from_file(cls, file_name: str):
-        """
-        read contents from a file
+        """Read contents from a file.
 
         :param cls:
         :type cls:
         :param file_name:
         :type file_name: str
         :returns:
-
         """
 
         with h5py.File(file_name, "r") as f:
@@ -511,12 +499,13 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         other_name: Optional[str] = None,
         log_interp: bool = True,
     ):
-        """
-        Custom initialization for this model
+        """Custom initialization for this model.
 
-        :param model_name: the name of the model, corresponding to the root of the .h5 file in the data directory
-        :param other_name: (optional) the name to be used as name of the model when used in astromodels. If None
-        (default), use the same name as model_name
+        :param model_name: the name of the model, corresponding to the
+            root of the .h5 file in the data directory
+        :param other_name: (optional) the name to be used as name of the
+            model when used in astromodels. If None (default), use the
+            same name as model_name
         :return: none
         """
 
@@ -787,13 +776,11 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         return values / scale
 
     def clean(self):
-        """
-        Table models can consume a lot of memory. If are creating lots of
-        table models in memory for simulations, you may want to call
-        clean on the model try and remove some of the memory consumed by the models
+        """Table models can consume a lot of memory. If are creating lots of
+        table models in memory for simulations, you may want to call clean on
+        the model try and remove some of the memory consumed by the models.
 
         :returns:
-
         """
 
         self._interpolators = None
@@ -909,15 +896,13 @@ class XSPECTableModel(object):
                 self._params_dict[name] = this_dict
 
     def to_table_model(self, file_name, model_name, overwrite=False):
-        """
-        Write the table model to your local astromodels database
+        """Write the table model to your local astromodels database.
 
         :param file_name: name of file to store
         :param model_name: name of the model
         :param overwrite: overwite the previous model
         :returns:
         :rtype:
-
         """
 
         tmf = TemplateModelFactory(

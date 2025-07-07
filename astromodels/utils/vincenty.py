@@ -2,8 +2,9 @@ import numpy as np
 
 
 def vincenty(lon0, lat0, a1, s):
-    """
-    Returns the coordinates of a new point that is a given angular distance s away from a starting point (lon0, lat0) at bearing (angle from north) a1), to within a given precision
+    """Returns the coordinates of a new point that is a given angular distance
+    s away from a starting point (lon0, lat0) at bearing (angle from north)
+    a1), to within a given precision.
 
     Note that this calculation is a simplified version of the full vincenty problem, which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we only care about the surface of a sphere.
 

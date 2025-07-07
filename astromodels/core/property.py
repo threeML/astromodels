@@ -45,9 +45,7 @@ class PropertyBase(Node):
         self._desc = desc
 
     def _get_value(self) -> Any:
-        """
-        Return current parameter value
-        """
+        """Return current parameter value."""
 
         log.debug_node(
             f"accessing the property {self.name} with value {self._internal_value}"
@@ -56,9 +54,8 @@ class PropertyBase(Node):
         return self._internal_value
 
     def _set_value(self, new_value) -> None:
-        """
-        Sets the current value of the parameter, ensuring that it is within the allowed range.
-        """
+        """Sets the current value of the parameter, ensuring that it is within
+        the allowed range."""
 
         if (self._defer) and (new_value is None):
             # this is ok
@@ -125,17 +122,15 @@ class PropertyBase(Node):
 
     @property
     def description(self) -> Optional[str]:
-        """
-        Return a description of this parameter
+        """Return a description of this parameter.
 
-        :return: a string cointaining a description of the meaning of this parameter
+        :return: a string cointaining a description of the meaning of
+            this parameter
         """
         return self._desc
 
     def duplicate(self) -> "FunctionProperty":
-        """
-        Returns an exact copy of the current property
-        """
+        """Returns an exact copy of the current property."""
 
         # Deep copy everything to make sure that there are no ties between the new instance and the old one
 
@@ -150,8 +145,8 @@ class PropertyBase(Node):
 
     @staticmethod
     def _to_python_type(variable):
-        """
-        Returns the value in the variable handling also np.array of one element
+        """Returns the value in the variable handling also np.array of one
+        element.
 
         :param variable: input variable
         :return: the value of the variable having a python type (int, float, ...)
@@ -166,7 +161,7 @@ class PropertyBase(Node):
             return variable
 
     def to_dict(self, minimal=False) -> Dict[str, Any]:
-        """Returns the representation for serialization"""
+        """Returns the representation for serialization."""
 
         data = collections.OrderedDict()
 

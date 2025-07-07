@@ -2,13 +2,13 @@ from astromodels.xspec import _xspec
 
 
 def xspec_abund(command_string=None):
-    """
-    Change/Report the solar abundance table in use. See XSpec manual for help:
+    """Change/Report the solar abundance table in use. See XSpec manual for
+    help:
 
     http://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html
 
-    :param command_string : the command string. If None, returns the current settings, otherwise set to the provided
-    settings
+    :param command_string : the command string. If None, returns the
+        current settings, otherwise set to the provided settings
     :return: Either none or the current setting
     """
 
@@ -22,8 +22,8 @@ def xspec_abund(command_string=None):
 
 
 def xspec_cosmo(H0=None, q0=None, lambda_0=None):
-    """
-    Define the Cosmology in use within the XSpec models. See Xspec manual for help:
+    """Define the Cosmology in use within the XSpec models. See Xspec manual
+    for help:
 
     http://heasarc.nasa.gov/xanadu/xspec/manual/XScosmo.html
 
@@ -62,13 +62,13 @@ def xspec_cosmo(H0=None, q0=None, lambda_0=None):
 
 
 def xspec_xsect(command_string=None):
-    """
-    Change/Report the photoionization cross sections in use for XSpec models. See Xspec manual for help:
+    """Change/Report the photoionization cross sections in use for XSpec
+    models. See Xspec manual for help:
 
     http://heasarc.nasa.gov/xanadu/xspec/manual/XSxsect.html
 
-    :param command_string : the command string. If None, returns the current settings, otherwise set to the provided
-    settings
+    :param command_string : the command string. If None, returns the
+        current settings, otherwise set to the provided settings
     :return: Either none or the current setting
     """
 

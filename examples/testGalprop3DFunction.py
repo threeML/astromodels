@@ -1,10 +1,9 @@
 # code to show how to use the GalPropTemplate_3D() function
 # author: Hugo Ayala (hgayala@psu.edu)
 # date: Apr 22, 2019
-import os
 
 import numpy as np
-from threeML import *
+from threeML import GalPropTemplate_3D
 
 MODELMAP = "testICModel.fits"
 

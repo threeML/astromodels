@@ -108,23 +108,23 @@ def _py2to3_getargspec(function):
     return argspec
 
 
-# This dictionary will contain the known function by name, so that the model_parser can instance
-# them by looking into this dictionary. It will be filled by the FunctionMeta meta-class.
+# This dictionary will contain the known function by name, so that the model_parser can
+# instance them by looking into this dictionary. It will be filled by the FunctionMeta
+# meta-class.
 
 _known_functions = {}
 
 
 # The following is a metaclass for all the functions
 class FunctionMeta(type):
-    """
-    A metaclass for the models, which takes care of setting up the parameters and the other attributes
-    according to the definition given in the documentation of the function class.
-    """
+    """A metaclass for the models, which takes care of setting up the
+    parameters and the other attributes according to the definition given in
+    the documentation of the function class."""
 
     def __new__(mcs, name, bases, dct):
 
-        # We do the parsing of the parameters in the __new__ instead of the __init__ so this is the first thing
-        # that runs when importing astromodels
+        # We do the parsing of the parameters in the __new__ instead of the __init__ so
+        # this is the first thing that runs when importing astromodels
 
         # Enforce the presence of the evaluate method
 
@@ -141,9 +141,11 @@ class FunctionMeta(type):
                 "You have to implement the '_set_units' method in %s" % name
             )
 
-        # Now parse the documentation of the function which contains the parameter specification
+        # Now parse the documentation of the function which contains the parameter
+        # specification
 
-        # The doc is a YAML document containing among other things the definition of the parameters
+        # The doc is a YAML document containing among other things the definition of
+        # the parameters
 
         # Parse it
 
@@ -195,7 +197,8 @@ class FunctionMeta(type):
 
         if "latex" in function_definition:
 
-            # First remove the escaping we did to overcome the limitation of the YAML parser
+            # First remove the escaping we did to overcome the limitation of the YAML
+            # parser
 
             latex_formula = function_definition["latex"].replace(r"\\", chr(92))
 
@@ -237,8 +240,9 @@ class FunctionMeta(type):
 
             raise AssertionError()
 
-        # Add the parameters as attribute of the *type*. During the __call__ method below this dictionary will be used
-        # to create a copy of each parameter which will be made available as child of the *instance*.
+        # Add the parameters as attribute of the *type*. During the __call__ method
+        # below this dictionary will be used to create a copy of each parameter which
+        # will be made available as child of the *instance*.
 
         dct["_parameters"] = collections.OrderedDict()
 
@@ -269,33 +273,32 @@ class FunctionMeta(type):
             name, "evaluate", dct["evaluate"], ["x", "y", "z"]
         )
 
-        # Now check that all the parameters used in 'evaluate' are part of the documentation,
-        # and that there are no unused parameters
+        # Now check that all the parameters used in 'evaluate' are part of the
+        # documentation, and that there are no unused parameters
 
         set1 = set(dct["_parameters"].keys())
         set2 = set(parameters_in_calling_sequence)
 
         if set1 != set2:
 
-            # The parameters are different. Figure out who is missing and raise an exception accordingly
+            # The parameters are different. Figure out who is missing and raise an
+            # exception accordingly
 
             if set1 > set2:
 
                 missing = set1 - set2
-
-                msg = (
-                    "Parameters %s have init values but are not used in 'evaluate' in %s"
-                    % (",".join(missing), name)
-                )
+                msg = "Parameters %s have init values but are" % ",".join(missing)
+                msg += "not used in 'evaluate' in %s" % name
 
             else:
 
                 missing = set2 - set1
 
-                msg = (
-                    "Parameters %s are used in 'evaluate' but do not have init values in %s"
-                    % (",".join(missing), name)
+                msg = "Parameters %s are used in 'evaluate' but do" % (
+                    ",".join(missing),
+                    name,
                 )
+                msg += "not have init values in %s"
 
             log.error(msg)
 
@@ -519,16 +522,17 @@ class FunctionMeta(type):
 
     @staticmethod
     def check_calling_sequence(name, function_name, function, possible_variables):
-        """
-        Check the calling sequence for the function looking for the variables specified.
-        One or more of the variables can be in the calling sequence. Note that the
-        order of the variables will be enforced.
-        It will also enforce that the first parameter in the calling sequence is called 'self'.
+        """Check the calling sequence for the function looking for the
+        variables specified. One or more of the variables can be in the calling
+        sequence. Note that the order of the variables will be enforced. It
+        will also enforce that the first parameter in the calling sequence is
+        called 'self'.
 
         :param function: the function to check
-        :param possible_variables: a list of variables to check, The order is important, and will be enforced
-        :return: a tuple containing the list of found variables, and the name of the other parameters in the calling
-        sequence
+        :param possible_variables: a list of variables to check, The
+            order is important, and will be enforced
+        :return: a tuple containing the list of found variables, and the
+            name of the other parameters in the calling sequence
         """
 
         # Get calling sequence
@@ -781,9 +785,9 @@ class FunctionMeta(type):
 
 
 class Function(Node):
-    """
-    Generic Function class. Will be subclassed in Function1D, Function2D and Function3D.
+    """Generic Function class.
 
+    Will be subclassed in Function1D, Function2D and Function3D.
     """
 
     def __init__(
@@ -884,8 +888,7 @@ class Function(Node):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of free parameters for this function
+        """Returns a dictionary of free parameters for this function.
 
         :return: dictionary of free parameters
         """
@@ -898,9 +901,7 @@ class Function(Node):
 
     @property
     def has_free_parameters(self) -> bool:
-        """
-        Returns True or False depending on if any parameters are free
-        """
+        """Returns True or False depending on if any parameters are free."""
 
         for p in self.parameters.values():
             if p.free:
@@ -908,20 +909,16 @@ class Function(Node):
         return False
 
     def _get_parameters(self) -> Tuple[Parameter]:
-        """
-        return a tuple of parameters
-        similar to get_children but for functions
-        """
+        """Return a tuple of parameters similar to get_children but for
+        functions."""
 
         return tuple(self._parameters.values())
 
     @property
     def properties(self) -> Optional[Dict[str, FunctionProperty]]:
-        """
-        return the properties of the function
+        """Return the properties of the function.
 
         :returns:
-
         """
 
         return self._properties
@@ -931,18 +928,18 @@ class Function(Node):
         return self._properties is not None
 
     def link_external_function(self, function: "Function", internal_name: str):
-        """
-        link and external function to this function for use in its evaluate method.
-        the function can be from another source
+        """Link and external function to this function for use in its evaluate
+        method. the function can be from another source.
 
-        the linked function can be accessed via self.external_functions[internal_name]
+        the linked function can be accessed via
+        self.external_functions[internal_name]
 
         :param function: the function to link.
         :type function: "Function"
-        :param internal_name: the internal name used to access this in the external_functions dict
+        :param internal_name: the internal name used to access this in
+            the external_functions dict
         :type internal_name: str
         :returns:
-
         """
         if not isinstance(function, Function):
 
@@ -963,13 +960,11 @@ class Function(Node):
         log.debug(f"{self.name} has now linked {function.name} as {internal_name}")
 
     def unlink_external_function(self, internal_name: str):
-        """
-        unlink an external function
+        """Unlink an external function.
 
         :param internal_name:
         :type internal_name: str
         :returns:
-
         """
         if internal_name not in self._external_functions:
 
@@ -981,11 +976,9 @@ class Function(Node):
         self._external_functions.pop(internal_name)
 
     def unlink_all_external_functions(self):
-        """
-        unlinks all external functions from this function
+        """Unlinks all external functions from this function.
 
         :returns:
-
         """
         names = list(self._external_functions.keys())
 
@@ -1020,17 +1013,16 @@ class Function(Node):
 
     @staticmethod
     def _generate_uuid():
-        """
-        Generate a unique identifier for this function.
+        """Generate a unique identifier for this function.
 
         :return: the UUID
         """
         return uuid.UUID(bytes=os.urandom(16), version=4)
 
     def has_fixed_units(self) -> bool:
-        """
-        Returns True if this function cannot change units, which is the case only for very specific functions (like
-        models from foreign libraries like Xspec)
+        """Returns True if this function cannot change units, which is the case
+        only for very specific functions (like models from foreign libraries
+        like Xspec)
 
         :return: True or False
         """
@@ -1039,8 +1031,8 @@ class Function(Node):
 
     @property
     def is_prior(self) -> bool:
-        """
-        Returns False by default and must be overrided in the prior functions.
+        """Returns False by default and must be overrided in the prior
+        functions.
 
         :return: True or False
         """
@@ -1049,8 +1041,8 @@ class Function(Node):
 
     @property
     def fixed_units(self):
-        """
-        Returns the fixed units if has_fixed_units is True (see has_fixed_units)
+        """Returns the fixed units if has_fixed_units is True (see
+        has_fixed_units)
 
         :return: None, or a tuple (x_unit, y_unit)
         """
@@ -1059,36 +1051,29 @@ class Function(Node):
 
     @property
     def description(self) -> str:
-        """
-        Returns a description for this function
-        """
+        """Returns a description for this function."""
 
         return self._function_definition["description"]
 
     # Add a property returning the parameters dictionary
     @property
     def parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of parameters
-        """
+        """Returns a dictionary of parameters."""
         return self._parameters
 
     @property
     def latex(self):
-        """
-        Returns the LaTEX formula for this function
-        """
+        """Returns the LaTEX formula for this function."""
         return self._function_definition["latex"]
 
     # Define now all the operators which allow to combine functions. Each operator will return a new
     # instance of a CompositeFunction, which can then be used as a function on its own
 
     def of(self, another_function):
-        """
-        Compose this function with another as in this_function(another_function(x))
-        :param another_function: another function to compose with the current one
-        :return: a composite function instance
-        """
+        """Compose this function with another as in
+        this_function(another_function(x)) :param another_function: another
+        function to compose with the current one :return: a composite function
+        instance."""
         return CompositeFunction("of", self, another_function)
 
     def __neg__(self):
@@ -1232,9 +1217,9 @@ class Function(Node):
 
     @property
     def uuid(self):
-        """
-        Returns the ID of the current function. The ID is used by the CompositeFunction class to keep track of the
-        unique instances of each function. It should not be used by the user for any specific purpose.
+        """Returns the ID of the current function. The ID is used by the
+        CompositeFunction class to keep track of the unique instances of each
+        function. It should not be used by the user for any specific purpose.
 
         :return: (none)
         """
@@ -1247,8 +1232,8 @@ class Function(Node):
         return self._uuid == o.uuid
 
     def duplicate(self):
-        """
-        Create a copy of the current function with all the parameters equal to the current value
+        """Create a copy of the current function with all the parameters equal
+        to the current value.
 
         :return: a new copy of the function
         """
@@ -1260,11 +1245,11 @@ class Function(Node):
         return function_copy
 
     def get_boundaries(self):  # pragma: no cover
-        """
-        Returns the boundaries of this function. By default there is no boundary, but subclasses can
-        override this.
+        """Returns the boundaries of this function. By default there is no
+        boundary, but subclasses can override this.
 
-        :return: a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)
+        :return: a tuple of tuples containing the boundaries for each
+            coordinate (ra_min, ra_max), (dec_min, dec_max)
         """
 
         raise NotImplementedError("You have to implement this")
@@ -1278,12 +1263,11 @@ class Function(Node):
         raise NotImplementedError("You have to implement this")
 
     def evaluate_at(self, *args, **parameter_specification):  # pragma: no cover
-        """
-        Evaluate the function at the given x(,y,z) for the provided parameters, explicitly provided as part of the
-        parameter_specification keywords.
+        """Evaluate the function at the given x(,y,z) for the provided
+        parameters, explicitly provided as part of the parameter_specification
+        keywords.
 
-        :param *args:
-        :param **parameter_specification:
+        :param *args: :param **parameter_specification:
         :return:
         """
 
@@ -1295,11 +1279,12 @@ class Function(Node):
         return self(*args)
 
     def get_total_spatial_integral(self, z):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         raise NotImplementedError("You have to implement this")
@@ -1376,18 +1361,14 @@ class Function1D(Function):
 
     @property
     def x_unit(self):
-        """
-        The unit of the independent variable
-        :return: a astropy.Unit instance
-        """
+        """The unit of the independent variable :return: a astropy.Unit
+        instance."""
         return self._x_unit
 
     @property
     def y_unit(self) -> u.Unit:
-        """
-        The unit of the dependent variable
-        :return: a astropy.Unit instance
-        """
+        """The unit of the dependent variable :return: a astropy.Unit
+        instance."""
         return self._y_unit
 
     def __call__(self, x):
@@ -1518,11 +1499,11 @@ class Function1D(Function):
         return self.evaluate(x, *values)
 
     def get_boundaries(self):
-        """
-        Returns the boundaries of this function. By default there is no boundary, but subclasses can
-        override this.
+        """Returns the boundaries of this function. By default there is no
+        boundary, but subclasses can override this.
 
-        :return: a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)
+        :return: a tuple of tuples containing the boundaries for each
+            coordinate (ra_min, ra_max), (dec_min, dec_max)
         """
 
         log.error("Cannot call get_boundaries() on a 1d function")
@@ -1530,16 +1511,14 @@ class Function1D(Function):
         raise DesignViolation()
 
     def local_spectral_index(self, x, epsilon=1e-5):
-        """
-        compute the local spectral index of the model at
-        a given set of energies
+        """Compute the local spectral index of the model at a given set of
+        energies.
 
         :param x:
         :type energy:
         :param epsilon:
         :type epsilon:
         :returns:
-
         """
 
         a = self(x)
@@ -2327,14 +2306,13 @@ class CompositeFunction(Function):
 
 
 def get_function(function_name, composite_function_expression=None):
-    """
-    Returns the function "name", which must be among the known functions or a composite function.
+    """Returns the function "name", which must be among the known functions or
+    a composite function.
 
     :param function_name: the name of the function (use 'composite' if the function is a composite function)
     :param composite_function_expression: composite function specification such as
     ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
     :return: the an instance of the requested class
-
     """
 
     # Check whether this is a composite function or a simple function
@@ -2446,11 +2424,11 @@ def get_function(function_name, composite_function_expression=None):
 
 
 def get_function_class(function_name):
-    """
-    Return the type for the requested function
+    """Return the type for the requested function.
 
     :param function_name: the function to return
-    :return: the type for that function (i.e., this is a class, not an instance)
+    :return: the type for that function (i.e., this is a class, not an
+        instance)
     """
 
     if function_name in _known_functions:

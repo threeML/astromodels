@@ -86,10 +86,8 @@ if has_atomdb:
             )
 
         def clean(self):
-            """
-            Clean the current APEC session to avoid having too many open files
-            :returns:
-            """
+            """Clean the current APEC session to avoid having too many open
+            files :returns:"""
 
             self.session = None
             del self.session
@@ -320,10 +318,8 @@ if has_atomdb:
             )
 
         def clean(self):
-            """
-            Clean the current APEC session to avoid having too many open files
-            :returns:
-            """
+            """Clean the current APEC session to avoid having too many open
+            files :returns:"""
 
             self.session = None
             del self.session

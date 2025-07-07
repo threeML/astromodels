@@ -66,8 +66,7 @@ def _process_text(dictionary):
 
 
 def dict_to_list(dictionary, html=False):
-    """
-    Convert a dictionary into a unordered list.
+    """Convert a dictionary into a unordered list.
 
     :param dictionary: a dictionary
     :param html: whether to output HTML or simple text (True or False)

@@ -54,8 +54,7 @@ class Source(object):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of free parameters for this source
+        """Returns a dictionary of free parameters for this source.
 
         :return:
         """
@@ -64,8 +63,7 @@ class Source(object):
 
     @property
     def components(self) -> Dict[str, Any]:
-        """
-        Return the dictionary of components
+        """Return the dictionary of components.
 
         :return: dictionary of components
         """
@@ -74,8 +72,7 @@ class Source(object):
 
     @property
     def source_type(self) -> str:
-        """
-        Return the type of the source ('point source' or 'extended source')
+        """Return the type of the source ('point source' or 'extended source')
 
         :return: type of the source
         """

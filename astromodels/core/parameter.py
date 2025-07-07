@@ -24,10 +24,7 @@ log = setup_logger(__name__)
 
 @contextlib.contextmanager
 def turn_off_parameter_transforms() -> None:
-    """
-    deactivate parameter transforms temporarily
-    :return: None
-    """
+    """Deactivate parameter transforms temporarily :return: None."""
 
     # store the old status
 
@@ -100,13 +97,14 @@ class ParameterMustHaveBounds(RuntimeError):
 
 
 def accept_quantity(input_type=float, allow_none=False):
-    """
-    A class-method decorator which allow a given method (typically the set_value method) to receive both a
-    astropy.Quantity or a simple float, but to be coded like it's always receiving a pure float in the right units.
-    This is to give a way to avoid the huge bottleneck that are astropy.units
+    """A class-method decorator which allow a given method (typically the
+    set_value method) to receive both a astropy.Quantity or a simple float, but
+    to be coded like it's always receiving a pure float in the right units.
+    This is to give a way to avoid the huge bottleneck that are astropy.units.
 
     :param input_type: the expected type for the input (float, int)
-    :param allow_none : whether to allow or not the passage of None as argument (default: False)
+    :param allow_none : whether to allow or not the passage of None as
+        argument (default: False)
     :return: a decorator for the particular type
     """
 
@@ -291,9 +289,8 @@ class ParameterBase(Node):
 
     @property
     def static_name(self) -> str:
-        """
-        Returns a name which will never change, even if the name of the parameter does (for example in composite
-        functions)
+        """Returns a name which will never change, even if the name of the
+        parameter does (for example in composite functions)
 
         :return : the static name
         :type : str
@@ -303,10 +300,10 @@ class ParameterBase(Node):
 
     @property
     def description(self) -> Optional[str]:
-        """
-        Return a description of this parameter
+        """Return a description of this parameter.
 
-        :return: a string cointaining a description of the meaning of this parameter
+        :return: a string cointaining a description of the meaning of
+            this parameter
         """
         return self._desc
 
@@ -390,22 +387,24 @@ class ParameterBase(Node):
 
     @property
     def as_quantity(self) -> u.Quantity:
-        """
-        Return the current value with its units (as an astropy.Quantity instance)
+        """Return the current value with its units (as an astropy.Quantity
+        instance)
 
         :return: an instance of astropy.Quantity)
         """
         return self.value * self._unit
 
     def in_unit_of(self, unit, as_quantity=False) -> u.Quantity:
-        """
-        Return the current value transformed to the new units
+        """Return the current value transformed to the new units.
 
-        :param unit: either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
-            instance, like "1 / (erg cm**2 s)"
-        :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number.
+        :param unit: either an astropy.Unit instance, or a string which
+            can be converted to an astropy.Unit instance, like "1 / (erg
+            cm**2 s)"
+        :param as_quantity: if True, the method return an
+            astropy.Quantity, if False just a floating point number.
             Default is False
-        :return: either a floating point or a astropy.Quantity depending on the value of "as_quantity"
+        :return: either a floating point or a astropy.Quantity depending
+            on the value of "as_quantity"
         """
 
         new_unit = u.Unit(unit)
@@ -450,16 +449,12 @@ class ParameterBase(Node):
             return None
 
     def remove_transformation(self) -> None:
-        """
+        """Remove any transform on the parameter.
 
-        remove any transform on the parameter
-
-        useful in bayesian fits where
-        we do not care about
+        useful in bayesian fits where we do not care about
         transformations but want speed
 
         :returns:
-
         """
         # first get the real value
         old_value = self.value
@@ -475,13 +470,9 @@ class ParameterBase(Node):
         self.value = old_value
 
     def restore_transformation(self) -> None:
-        """
-
-        restore the original transformation
-        if it had been removed
+        """Restore the original transformation if it had been removed.
 
         :returns:
-
         """
         # first get the real value
         old_value = self.value
@@ -497,10 +488,10 @@ class ParameterBase(Node):
         self.value = old_value
 
     def internal_to_external_delta(self, internal_value, internal_delta):
-        """
-        Transform an interval from the internal to the external reference (through the transformation). It is useful
-        if you have for example a confidence interval in internal reference and you want to transform it to the
-        external reference
+        """Transform an interval from the internal to the external reference
+        (through the transformation). It is useful if you have for example a
+        confidence interval in internal reference and you want to transform it
+        to the external reference.
 
         :param interval_value: value in internal reference
         :param internal_delta: delta in internal reference
@@ -518,7 +509,7 @@ class ParameterBase(Node):
     # outside of its bounds
 
     def _get_value(self) -> float:
-        """Return current parameter value"""
+        """Return current parameter value."""
 
         # This is going to be true (possibly) only for derived classes. It is here to make the code cleaner
         # and also to avoid infinite recursion
@@ -546,7 +537,8 @@ class ParameterBase(Node):
         float, allow_none=False
     )  # This means that the method will always receive a float
     def _set_value(self, new_value) -> None:
-        """Sets the current value of the parameter, ensuring that it is within the allowed range."""
+        """Sets the current value of the parameter, ensuring that it is within
+        the allowed range."""
 
         if (
             (self.min_value is not None)
@@ -626,9 +618,9 @@ class ParameterBase(Node):
     )
 
     def _get_internal_value(self) -> float:
-        """
-        This is supposed to be only used by fitting engines at the beginning to get the starting value for free
-        parameters. From then on, only the _set_internal_value should be used
+        """This is supposed to be only used by fitting engines at the beginning
+        to get the starting value for free parameters. From then on, only the
+        _set_internal_value should be used.
 
         :return: the internal value
         """
@@ -647,8 +639,7 @@ class ParameterBase(Node):
         return self._internal_value
 
     def _set_internal_value(self, new_internal_value) -> None:
-        """
-        This is supposed to be only used by fitting engines
+        """This is supposed to be only used by fitting engines.
 
         :param new_internal_value: new value in internal representation
         :return: none
@@ -668,13 +659,13 @@ class ParameterBase(Node):
     # NOTE: the min value is always in external representation
 
     def _get_min_value(self):
-        """Return current minimum allowed value"""
+        """Return current minimum allowed value."""
 
         return self._external_min_value
 
     @accept_quantity(float, allow_none=True)
     def _set_min_value(self, min_value) -> None:
-        """Sets current minimum allowed value"""
+        """Sets current minimum allowed value."""
 
         # Check that the min value can be transformed if a transformation is present
         if self.has_transformation():
@@ -739,9 +730,8 @@ class ParameterBase(Node):
     )
 
     def remove_minimum(self) -> None:
-        """
-        Remove the minimum from this parameter (i.e., it becomes boundless in the negative direction)
-        """
+        """Remove the minimum from this parameter (i.e., it becomes boundless
+        in the negative direction)"""
         self._external_min_value = None
 
     def _set_internal_min_value(self):
@@ -753,11 +743,13 @@ class ParameterBase(Node):
         raise NotCallableOrErrorInCall()
 
     def _get_internal_min_value(self) -> float:
-        """
-        This is supposed to be only used by fitting engines to get the minimum value in internal representation.
-        It is supposed to be called only once before doing the minimization/sampling, to set the range of the parameter
+        """This is supposed to be only used by fitting engines to get the
+        minimum value in internal representation. It is supposed to be called
+        only once before doing the minimization/sampling, to set the range of
+        the parameter.
 
-        :return: minimum value in internal representation (or None if there is no minimum)
+        :return: minimum value in internal representation (or None if
+            there is no minimum)
         """
 
         if self.min_value is None:
@@ -781,13 +773,13 @@ class ParameterBase(Node):
     # Define the property "max_value"
 
     def _get_max_value(self) -> float:
-        """Return current maximum allowed value"""
+        """Return current maximum allowed value."""
 
         return self._external_max_value
 
     @accept_quantity(float, allow_none=True)
     def _set_max_value(self, max_value) -> None:
-        """Sets current maximum allowed value"""
+        """Sets current maximum allowed value."""
 
         self._external_max_value = max_value
 
@@ -812,9 +804,8 @@ class ParameterBase(Node):
     )
 
     def remove_maximum(self) -> None:
-        """
-        Remove the maximum from this parameter (i.e., it becomes boundless in the positive direction)
-        """
+        """Remove the maximum from this parameter (i.e., it becomes boundless
+        in the positive direction)"""
         self._external_max_value = None
 
     def _set_internal_max_value(self) -> None:
@@ -826,11 +817,13 @@ class ParameterBase(Node):
         raise NotCallableOrErrorInCall()
 
     def _get_internal_max_value(self) -> float:
-        """
-        This is supposed to be only used by fitting engines to get the maximum value in internal representation.
-        It is supposed to be called only once before doing the minimization/sampling, to set the range of the parameter
+        """This is supposed to be only used by fitting engines to get the
+        maximum value in internal representation. It is supposed to be called
+        only once before doing the minimization/sampling, to set the range of
+        the parameter.
 
-        :return: maximum value in internal representation (or None if there is no minimum)
+        :return: maximum value in internal representation (or None if
+            there is no minimum)
         """
 
         if self.max_value is None:
@@ -852,7 +845,8 @@ class ParameterBase(Node):
                 return self._transformation.forward(self._external_max_value)
 
     def _set_bounds(self, bounds) -> None:
-        """Sets the boundaries for this parameter to min_value and max_value"""
+        """Sets the boundaries for this parameter to min_value and
+        max_value."""
 
         # Use the properties so that the checks and the handling of units are made automatically
 
@@ -868,7 +862,7 @@ class ParameterBase(Node):
         self.max_value = max_value
 
     def _get_bounds(self) -> Tuple[float]:
-        """Returns the current boundaries for the parameter"""
+        """Returns the current boundaries for the parameter."""
 
         return self.min_value, self.max_value
 
@@ -879,30 +873,30 @@ class ParameterBase(Node):
     )
 
     def add_callback(self, callback) -> None:
-        """Add a callback to the list of functions which are called immediately after the value of the parameter
-        is changed. The callback must be a function accepting the current parameter as input. The return value of the
-        callback is ignored. More than one callback can be specified. In that case, the callbacks will be called in the
-        same order they have been entered."""
+        """Add a callback to the list of functions which are called immediately
+        after the value of the parameter is changed.
+
+        The callback must be a function accepting the current parameter
+        as input. The return value of the callback is ignored. More than
+        one callback can be specified. In that case, the callbacks will
+        be called in the same order they have been entered.
+        """
 
         self._callbacks.append(callback)
 
     def get_callbacks(self):
-        """
-        Returns the list of callbacks currently defined
+        """Returns the list of callbacks currently defined.
 
         :return:
-
         """
         return self._callbacks
 
     def empty_callbacks(self) -> None:
-        """Remove all callbacks for this parameter"""
+        """Remove all callbacks for this parameter."""
         self._callbacks = []
 
     def duplicate(self) -> "Parameter":
-        """
-        Returns an exact copy of the current parameter
-        """
+        """Returns an exact copy of the current parameter."""
 
         # Deep copy everything to make sure that there are no ties between the new instance and the old one
 
@@ -911,7 +905,7 @@ class ParameterBase(Node):
         return new_parameter
 
     def to_dict(self, minimal=False) -> Dict[str, Any]:
-        """Returns the representation for serialization"""
+        """Returns the representation for serialization."""
 
         data = collections.OrderedDict()
 
@@ -936,8 +930,8 @@ class ParameterBase(Node):
 
     @staticmethod
     def _to_python_type(variable):
-        """
-        Returns the value in the variable handling also np.array of one element
+        """Returns the value in the variable handling also np.array of one
+        element.
 
         :param variable: input variable
         :return: the value of the variable having a python type (int, float, ...)
@@ -955,26 +949,34 @@ class ParameterBase(Node):
 
 
 class Parameter(ParameterBase):
-    """
-
-    Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).
+    """Implements a numerical parameter. Optionally the parameter can vary
+    according to an auxiliary law (see below).
 
     :param name: Name for the parameter
     :param value: Initial value
-    :param min_value: minimum allowed value for the parameter (default: None)
-    :param max_value: maximum allowed value for the parameter (default: None)
-    :param delta: initial step used by some fitting engines (default: 0.1 * value)
+    :param min_value: minimum allowed value for the parameter (default:
+        None)
+    :param max_value: maximum allowed value for the parameter (default:
+        None)
+    :param delta: initial step used by some fitting engines (default:
+        0.1 * value)
     :param desc: description of parameter (default: '')
     :param free: whether the parameter is free or not (default: True)
     :param unit: the parameter units (default: dimensionless)
     :param prior: the parameter's prior (default: None)
-    :param is_normalization: True or False, wether the parameter is a normalization or not (default: False)
-    :param transformation: a transformation to be used between external value (the value the user interacts with) and
-        the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
-        forward(external_value) and a backward(internal_value) method returning respectively the transformation of the
-        external value in the internal value and viceversa. This is useful because for example the logarithm of a parameter
-        with a large range of possible values (say from 1e-12 to 1e20) is handled much better by fitting engines than the
-        raw value. The log transformation indeed makes the gradient much easier to compute.
+    :param is_normalization: True or False, wether the parameter is a
+        normalization or not (default: False)
+    :param transformation: a transformation to be used between external
+        value (the value the user interacts with) and the value the
+        fitting/sampling engine interacts with (internal value). It is
+        an instance of a class implementing a forward(external_value)
+        and a backward(internal_value) method returning respectively the
+        transformation of the external value in the internal value and
+        viceversa. This is useful because for example the logarithm of a
+        parameter with a large range of possible values (say from 1e-12
+        to 1e20) is handled much better by fitting engines than the raw
+        value. The log transformation indeed makes the gradient much
+        easier to compute.
     """
 
     def __init__(
@@ -1060,7 +1062,10 @@ class Parameter(ParameterBase):
 
     @accept_quantity(float, allow_none=False)
     def _set_delta(self, delta):
-        """Sets the current delta for the parameter. The delta is used as initial step by some fitting engines"""
+        """Sets the current delta for the parameter.
+
+        The delta is used as initial step by some fitting engines
+        """
 
         self._delta = delta
 
@@ -1071,8 +1076,8 @@ class Parameter(ParameterBase):
     )
 
     def _get_internal_delta(self):
-        """
-        This is only supposed to be used by fitting/sampling engine, to get the initial step in internal representation
+        """This is only supposed to be used by fitting/sampling engine, to get
+        the initial step in internal representation.
 
         :return: initial delta in internal representation
         """
@@ -1140,8 +1145,11 @@ class Parameter(ParameterBase):
         return self._prior
 
     def _set_prior(self, prior):
-        """Set prior for this parameter. The prior must be a function accepting the current value of the parameter
-        as input and giving the probability density as output."""
+        """Set prior for this parameter.
+
+        The prior must be a function accepting the current value of the
+        parameter as input and giving the probability density as output.
+        """
 
         if prior is None:
 
@@ -1187,8 +1195,7 @@ class Parameter(ParameterBase):
     )
 
     def has_prior(self):
-        """
-        Check whether the current parameter has a defined prior
+        """Check whether the current parameter has a defined prior.
 
         :return: True or False
         """
@@ -1196,9 +1203,9 @@ class Parameter(ParameterBase):
         return self._prior is not None
 
     def set_uninformative_prior(self, prior_class):
-        """
-        Sets the prior for the parameter to a uniform prior between the current minimum and maximum, or a
-        log-uniform prior between the current minimum and maximum.
+        """Sets the prior for the parameter to a uniform prior between the
+        current minimum and maximum, or a log-uniform prior between the current
+        minimum and maximum.
 
         NOTE: if the current minimum and maximum are not defined, the default bounds for the prior class will be used.
 
@@ -1306,14 +1313,13 @@ class Parameter(ParameterBase):
     )
 
     def add_auxiliary_variable(self, variable, law) -> None:
-        """TODO describe function
+        """TODO describe function.
 
         :param variable:
         :type variable:
         :param law:
         :type law:
         :returns:
-
         """
 
         # Assign units to the law
@@ -1352,8 +1358,7 @@ class Parameter(ParameterBase):
         self.free = False
 
     def remove_auxiliary_variable(self):
-        """
-        Remove an existing auxiliary variable
+        """Remove an existing auxiliary variable.
 
         :return:
         """
@@ -1380,15 +1385,12 @@ class Parameter(ParameterBase):
 
     @property
     def has_auxiliary_variable(self) -> bool:
-        """
-        Returns whether the parameter is linked to an auxiliary variable
-        """
+        """Returns whether the parameter is linked to an auxiliary variable."""
         return self._aux_variable is not None
 
     @property
     def auxiliary_variable(self) -> Tuple:
-        """
-        Returns a tuple with the auxiliary variable and the law
+        """Returns a tuple with the auxiliary variable and the law.
 
         :return: tuple (variable, law)
         """
@@ -1433,7 +1435,7 @@ class Parameter(ParameterBase):
         return representation
 
     def to_dict(self, minimal=False):
-        """Returns the representation for serialization"""
+        """Returns the representation for serialization."""
 
         data = super(Parameter, self).to_dict()
 
@@ -1533,9 +1535,7 @@ class Parameter(ParameterBase):
 
 
 class IndependentVariable(ParameterBase):
-    """
-    An independent variable like time or energy.
-    """
+    """An independent variable like time or energy."""
 
     # Override the constructor to make the unit specification mandatory
 

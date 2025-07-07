@@ -21,42 +21,80 @@ class XSpecNotAvailable(ImportWarning):
 from astromodels.xspec import _xspec
 
 # When running in a Anaconda environment, the package xspec-modelsonly
-# will install the models data in a specific place, so we set the HEADAS variable to point to the right place for
-# the models to find their data
+# will install the models data in a specific place, so we set the HEADAS variable to
+# point to the right place for the models to find their data
 if (
     os.environ.get("CONDA_PREFIX") is not None
     and os.environ.get("HEADAS", None) is None
 ):
 
-    # NOTE: the 'headas' directory doesn't actually exists, but models are looked for (according to Xspec documentation)
-    # into $HEADAS../spectral, so we put HEADAS=[....]/headas so that $HEADAS/../ will be the right place where
-    # the 'spectral' directory is
+    # NOTE: the 'headas' directory doesn't actually exists, but models are looked for
+    # (according to Xspec documentation) into $HEADAS../spectral, so we put
+    # HEADAS=[....]/headas so that $HEADAS/../ will be the right place where the
+    # 'spectral' directory is
 
     os.environ["HEADAS"] = os.path.join(
         os.environ.get("CONDA_PREFIX"), "lib", "Xspec", "headas"
     )
 
-    # os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"), 'Xspec', 'headas')
+    # os.environ['HEADAS'] = os.path.join(os.environ.get("CONDA_PREFIX"),
+    # 'Xspec', 'headas')
 
     # we need to create the directory otherwise an exception casted:
     if not os.path.exists(os.environ["HEADAS"]):
         os.makedirs(os.environ["HEADAS"])
 
-# This list defines all python protected names (names which variables or attributes should not have)
-illegal_variable_names_ = (
-    "and, assert, break, class, continue, def, del, elif, else, except, exec, finally, for,"
-    "if, import, in, is, lambda, not, or, pass, print, raise, return, try, while, data, "
-    "float, int, numeric, array, close, input, open, range, type, write, zeros, from, global"
-)
-# Make it a list
-illegal_variable_names = illegal_variable_names_.replace(" ", "").split(",")
+# This list defines all python protected names (names which variables or attributes
+# should not have)
+
+
+illegal_variable_names = [
+    "and",
+    "assert",
+    "break",
+    "class",
+    "continue",
+    "def",
+    "del",
+    "elif",
+    "else",
+    "except",
+    "exec",
+    "finally",
+    "for",
+    "if",
+    "import",
+    "in",
+    "is",
+    "lambda",
+    "not",
+    "or",
+    "pass",
+    "print",
+    "raise",
+    "return",
+    "try",
+    "while",
+    "data",
+    "float",
+    "int",
+    "numeric",
+    "array",
+    "close",
+    "input",
+    "open",
+    "range",
+    "type",
+    "write",
+    "zeros",
+    "from",
+    "global",
+]
 
 
 def find_model_dat():
-    """
-    Find the file containing the definition of all the models in Xspec
-    (model.dat) and return its path
-    """
+    """Find the file containing the definition of all the models in Xspec
+    (model.dat) and return its path."""
 
     # model.dat is in $HEADAS/../spectral
 
@@ -94,8 +132,8 @@ def find_model_dat():
 
 
 def get_models(model_dat_path):
-    """
-    Parse the model.dat file from Xspec and returns a dictionary containing the definition of all the models
+    """Parse the model.dat file from Xspec and returns a dictionary containing
+    the definition of all the models.
 
     :param model_dat_path: the path to the model.dat file
     :return: dictionary containing the definition of all XSpec models
@@ -225,7 +263,7 @@ def get_models(model_dat_path):
 
                 else:
 
-                    match = re.match('(\S+)\s+(".+"|[a-zA-Z]+)?(.+)*', line[1:])
+                    match = re.match(r'(\S+)\s+(".+"|[a-zA-Z]+)?(.+)*', line[1:])
 
                     par_name, par_unit, par_spec = match.groups()
 
@@ -259,7 +297,7 @@ def get_models(model_dat_path):
 
                 # A normal parameter
 
-                match = re.match('(\S+)\s+(".+"|\S+)(.+)', line)
+                match = re.match(r'(\S+)\s+(".+"|\S+)(.+)', line)
 
                 if match is None:
 
@@ -322,14 +360,14 @@ def get_models(model_dat_path):
             # Now fix the parameter name removing illegal characters
             # (for example 'log(A)' is not a legal name)
 
-            par_name = re.sub("[\(,\)]", "_", par_name)
-            par_name = re.sub("<", "_less_", par_name)
-            par_name = re.sub(">", "_more_", par_name)
-            par_name = re.sub("/", "_div_", par_name)
-            par_name = re.sub("\-", "_minus_", par_name)
-            par_name = re.sub("\+", "_plus_", par_name)
-            par_name = re.sub("\.", "_dot_", par_name)
-            par_name = re.sub("@", "_at_", par_name)
+            par_name = re.sub(r"[\(,\)]", "_", par_name)
+            par_name = re.sub(r"<", "_less_", par_name)
+            par_name = re.sub(r">", "_more_", par_name)
+            par_name = re.sub(r"/", "_div_", par_name)
+            par_name = re.sub(r"\-", "_minus_", par_name)
+            par_name = re.sub(r"\+", "_plus_", par_name)
+            par_name = re.sub(r"\.", "_dot_", par_name)
+            par_name = re.sub(r"@", "_at_", par_name)
 
             # Parameter names must be lower case
             par_name = par_name.lower()
@@ -357,7 +395,8 @@ def get_models(model_dat_path):
 
                 par_unit = par_unit.replace('"', "")
 
-            # There are some errors in model.dat , like KeV instead of keV, and ergcm/s instead of erg cm /s
+            # There are some errors in model.dat , like KeV instead of keV, and
+            # ergcm/s instead of erg cm /s
             # Let's correct them
             if par_unit == "KeV":
 
@@ -375,8 +414,10 @@ def get_models(model_dat_path):
 
                 par_unit = ""
 
-            # There are funny units in model.dat, like "Rs" (which means Schwarzschild radius) or other things
-            # so let's try to convert the par_unit into an astropy.Unit instance. If that fails, use a unitless unit
+            # There are funny units in model.dat, like "Rs" (which means
+            # Schwarzschild radius) or other things so let's try to convert the
+            # par_unit into an astropy.Unit instance. If that fails, use a
+            # unitless unit
             try:
 
                 _ = u.Unit(par_unit)
@@ -430,7 +471,6 @@ def get_models(model_dat_path):
 
 class_definition_code = '''
 
-from astromodels.functions.function import FunctionMeta, Function1D
 import numpy as np
 import astropy.units as u
 from astromodels.utils.file_utils import copy_if_needed
@@ -438,30 +478,39 @@ from astromodels.xspec import _xspec
 import six
 
 # These are multiplicative functions which need numerical differentiation
-_force_differentiation = ['XS_gabs', 'XS_expfac', 'XS_plabs', 'XS_pwab',
-                          'XS_spline', 'XS_swind1', 'XS_xion', 'XS_zxipcf',
-                          'XS_cabs', 'XS_wabs', 'XS_zwabs'
-                          ]
+_force_differentiation = [
+    "XS_gabs",
+    "XS_expfac",
+    "XS_plabs",
+    "XS_pwab",
+    "XS_spline",
+    "XS_swind1",
+    "XS_xion",
+    "XS_zxipcf",
+    "XS_cabs",
+    "XS_wabs",
+    "XS_zwabs",
+]
 
 
 class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
-
     """
-$DOCSTRING$
+    $DOCSTRING$
     """
 
     def _setup(self):
 
         # Link to the Xspec function
         self._model = _xspec.$XSPEC_FUNCTION$
-        self._model_type = '$MODEL_TYPE$'
-        
+
+        self._model_type = "$MODEL_TYPE$"
+
         # Decide whether we need numerical differentiation
-        
-        if self._model_type == 'add' or self._name in _force_differentiation:
+
+        if self._model_type == "add" or self._name in _force_differentiation:
 
             self._scale = 1e5
-            
+
             self._differentiate = True
 
         else:
@@ -470,17 +519,17 @@ $DOCSTRING$
             # (but there are exceptions, such as the gabs model)
 
             self._scale = 1
-            
+
             self._differentiate = False
-        
+
         # Now set the units as appropriate
-        
-        if self._model_type == 'add':
-            
+
+        if self._model_type == "add":
+
             self._fixed_units = (u.keV, 1 / (u.keV * u.cm**2 * u.s))
-        
+
         else:
-            
+
             self._fixed_units = (u.keV, u.dimensionless_unscaled)
 
     def evaluate(self, x, $PARAMETERS_NAMES$):
@@ -489,7 +538,7 @@ $DOCSTRING$
 
         if isinstance(x, u.Quantity):
 
-            x = np.array(x.to('keV').value, ndmin=1, copy=copy_if_needed, dtype=float)
+            x = np.array(x.to("keV").value, ndmin=1, copy=copy_if_needed, dtype=float)
 
             quantity = True
 
@@ -500,18 +549,18 @@ $DOCSTRING$
             # Create a tuple of the current values of the parameters
 
             parameters_tuple = ($PARAMETERS_NAMES$,)
-        
-        # We need to make sure that the energy array is sorted because otherwise some Xspec models will give
-        # incorrect values
+
+        # We need to make sure that the energy array is sorted because otherwise some
+        # Xspec models will give incorrect values
         idx = np.argsort(x)
-        
+
         # This is needed to be able to "reverse" the sort operation
         rev_idx = np.argsort(idx)
-        
+
         # Ordered input vector
-        
+
         xx = x[idx]
-        
+
         if self._differentiate:
 
             # Finite difference differentiation of the Xspec
@@ -533,44 +582,51 @@ $DOCSTRING$
                 val = self._model(parameters_tuple, xx - epsilon, xx + epsilon)
 
             except TypeError:
+                msg = "This is a bug, xspec call failed and x is not only one element"
+                assert xx.shape[0] == 1, msg
 
-                assert xx.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
+                val = np.array(
+                    self._model(
+                        parameters_tuple, ((xx - epsilon)[0], (xx + epsilon)[0])
+                    )[0],
+                    ndmin=1,
+                )
 
-                val = np.array(self._model(parameters_tuple, ((xx - epsilon)[0], (xx + epsilon)[0]))[0], ndmin=1)
-            
-            if self._model_type == 'add':
-            
+            if self._model_type == "add":
+
                 # val is now F(x-epsilon,x+epsilon) ~ f(x) * ( 2 * epsilon )
-                
+
                 # In a additive model the function returns the integral over the bins
-    
+
                 final_value = val / (2 * epsilon)
-            
+
             else:
-            
+
                 final_value = val
 
         else:
 
-            # In a multiplicative model usually the function returns the average factor over
-            # the bins (but there are exceptions, handled through the list _force_differentiation)
+            # In a multiplicative model usually the function returns the average factor
+            # over the bins (but there are exceptions, handled through the list
+            # _force_differentiation)
 
             try:
-            
+
                 final_value = self._model(parameters_tuple, xx, xx)
 
             except TypeError:
 
-                assert xx.shape[0]==1, "This is a bug, xspec call failed and x is not only one element"
+                assert (
+                    xx.shape[0] == 1
+                ), "This is a bug, xspec call failed and x is not only one element"
 
                 final_value = self._model(parameters_tuple, ((xx)[0], (xx)[0]))
 
-
         if quantity:
 
-            if self._model_type == 'add':
+            if self._model_type == "add":
 
-                return final_value[rev_idx] * u.Unit('1 / (keV cm^2 s)')
+                return final_value[rev_idx] * u.Unit("1 / (keV cm^2 s)")
 
             else:
 
@@ -587,17 +643,22 @@ $DOCSTRING$
     def _set_units(self, x_unit, y_unit):
 
         # Make sure this is an energy
-        #assert str(x_unit.physical_type) == 'energy', "Trying to set x-unit with (%s), which is not energy" % (x_unit)
-        assert 'energy' in str(x_unit.physical_type), "Trying to set x-unit with (%s), which is not energy" % (x_unit)
+        # assert str(x_unit.physical_type) == 'energy', "Trying to set x-unit with
+        # (%s), which is not energy" % (x_unit)
+        assert "energy" in str(
+            x_unit.physical_type
+        ), "Trying to set x-unit with (%s), which is not energy" % (x_unit)
 
         # Make sure the y_unit is the correct one
         try:
 
             y_unit.in_units(self._fixed_units[1])
 
-        except:
+        except Exception as e:
 
-            raise RuntimeError("Xspec model %s cannot have units of %s" % (self.name, y_unit))
+            raise RuntimeError(
+                f"{e} - Xspec model {self.name} cannot have units of {y_unit}."
+            )
 
     def _integral(self, low_bounds, hi_bounds, $PARAMETERS_NAMES$):
 
@@ -605,7 +666,6 @@ $DOCSTRING$
         parameters_tuple = ($PARAMETERS_NAMES$,)
 
         return self._model(parameters_tuple, low_bounds, hi_bounds)
-
 '''
 
 
@@ -708,9 +768,9 @@ def setup_xspec_models():
 
         this_model = all_models[(model_name, xspec_function, model_type)]
 
-        # When the class is created it is registered among the known functions in the function module
-        # (it happens in the metaclass), so we don't need to do anything special here after the
-        # class type is created
+        # When the class is created it is registered among the known functions in the
+        # function module (it happens in the metaclass), so we don't need to do
+        # anything special here after the class type is created
 
         this_class_name, this_class = xspec_model_factory(
             model_name, xspec_function, model_type, this_model

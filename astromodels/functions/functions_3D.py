@@ -249,11 +249,12 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -442,11 +443,12 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -641,11 +643,12 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -693,8 +696,7 @@ class GalPropTemplate_3D(Function3D):
         self._interpmap = None
 
     def set_frame(self, new_frame):
-        """
-        Set a new frame for the coordinates (the default is ICRS J2000)
+        """Set a new frame for the coordinates (the default is ICRS J2000)
 
         :param new_frame: a coordinate frame from astropy
         :return: (none)

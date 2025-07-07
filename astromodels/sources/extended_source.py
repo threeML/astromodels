@@ -157,8 +157,7 @@ class ExtendedSource(Source, Node):
 
     @property
     def spatial_shape(self):
-        """
-        A generic name for the spatial shape.
+        """A generic name for the spatial shape.
 
         :return: the spatial shape instance
         """
@@ -166,11 +165,9 @@ class ExtendedSource(Source, Node):
         return self._spatial_shape
 
     def get_spatially_integrated_flux(self, energies):
-        """
-        Returns total flux of source at the given energy
-        :param energies: energies (array or float)
-        :return: differential flux at given energy
-        """
+        """Returns total flux of source at the given energy :param energies:
+        energies (array or float) :return: differential flux at given
+        energy."""
 
         if not isinstance(energies, np.ndarray):
             energies = np.array(energies, ndmin=1)
@@ -202,13 +199,10 @@ class ExtendedSource(Source, Node):
         return differential_flux
 
     def __call__(self, lon, lat, energies):
-        """
-        Returns brightness of source at the given position and energy
-        :param lon: longitude (array or float)
-        :param lat: latitude (array or float)
-        :param energies: energies (array or float)
-        :return: differential flux at given position and energy
-        """
+        """Returns brightness of source at the given position and energy :param
+        lon: longitude (array or float) :param lat: latitude (array or float)
+        :param energies: energies (array or float) :return: differential flux
+        at given position and energy."""
 
         assert type(lat) is type(lon) and type(lon) is type(
             energies
@@ -270,8 +264,7 @@ class ExtendedSource(Source, Node):
 
     @property
     def has_free_parameters(self):
-        """
-        Returns True or False whether there is any parameter in this source
+        """Returns True or False whether there is any parameter in this source.
 
         :return:
         """
@@ -294,10 +287,9 @@ class ExtendedSource(Source, Node):
 
     @property
     def free_parameters(self):
-        """
-        Returns a dictionary of free parameters for this source
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of free parameters for this source We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -321,10 +313,9 @@ class ExtendedSource(Source, Node):
 
     @property
     def parameters(self):
-        """
-        Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of all parameters for this source. We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -343,8 +334,7 @@ class ExtendedSource(Source, Node):
         return all_parameters
 
     def _repr__base(self, rich_output=False):
-        """
-        Representation of the object
+        """Representation of the object.
 
         :param rich_output: if True, generates HTML, otherwise text
         :return: the representation
@@ -366,9 +356,9 @@ class ExtendedSource(Source, Node):
         return dict_to_list(repr_dict, rich_output)
 
     def get_boundaries(self):
-        """
-        Returns the boundaries for this extended source
+        """Returns the boundaries for this extended source.
 
-        :return: a tuple of tuples ((min. lon, max. lon), (min lat, max lat))
+        :return: a tuple of tuples ((min. lon, max. lon), (min lat, max
+            lat))
         """
         return self._spatial_shape.get_boundaries()

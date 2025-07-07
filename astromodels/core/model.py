@@ -123,8 +123,8 @@ class Model(Node):
     def _add_source(
         self, source: Union[PointSource, ExtendedSource, ParticleSource]
     ) -> None:
-        """
-        Remember to call _update_parameters after this!
+        """Remember to call _update_parameters after this!
+
         :param source:
         :return:
         """
@@ -170,9 +170,8 @@ class Model(Node):
             )
 
     def _remove_source(self, source_name: str):
-        """
-        Remember to call _update_parameters after this
-        :param source_name:
+        """Remember to call _update_parameters after this :param source_name:
+
         :return:
         """
 
@@ -213,8 +212,7 @@ class Model(Node):
 
     @property
     def parameters(self) -> Dict[str, Parameter]:
-        """
-        Return a dictionary with all parameters
+        """Return a dictionary with all parameters.
 
         :return: dictionary of parameters
         """
@@ -224,8 +222,7 @@ class Model(Node):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Get a dictionary with all the free parameters in this model
+        """Get a dictionary with all the free parameters in this model.
 
         :return: dictionary of free parameters
         """
@@ -248,9 +245,7 @@ class Model(Node):
 
     @property
     def has_free_parameters(self) -> bool:
-        """
-        Returns True or False depending on if any parameters are free
-        """
+        """Returns True or False depending on if any parameters are free."""
 
         self._update_parameters()
 
@@ -261,10 +256,11 @@ class Model(Node):
 
     @property
     def linked_parameters(self) -> Dict[str, Parameter]:
-        """
-        Get a dictionary with all parameters in this model in a linked status. A parameter is in a linked status
-        if it is linked to another parameter (i.e. it is forced to have the same value of the other parameter), or
-        if it is linked with another parameter or an independent variable through a law.
+        """Get a dictionary with all parameters in this model in a linked
+        status. A parameter is in a linked status if it is linked to another
+        parameter (i.e. it is forced to have the same value of the other
+        parameter), or if it is linked with another parameter or an independent
+        variable through a law.
 
         :return: dictionary of linked parameters
         """
@@ -287,8 +283,7 @@ class Model(Node):
 
     @property
     def properties(self) -> Dict[str, Parameter]:
-        """
-        Return a dictionary with all parameters
+        """Return a dictionary with all parameters.
 
         :return: dictionary of parameters
         """
@@ -298,10 +293,7 @@ class Model(Node):
 
     @property
     def linked_functions(self) -> List[_LinkedFunctionContainer]:
-        """
-        return a list of containers for the linked functions
-
-        """
+        """Return a list of containers for the linked functions."""
 
         linked_functions = []
 
@@ -358,8 +350,7 @@ class Model(Node):
         return all_functions
 
     def set_free_parameters(self, values: Iterable[float]) -> None:
-        """
-        Set the free parameters in the model to the provided values.
+        """Set the free parameters in the model to the provided values.
 
         NOTE: of course, order matters
 
@@ -380,9 +371,9 @@ class Model(Node):
             parameter.value = this_value
 
     def __getitem__(self, path: str):
-        """
-        Get a parameter from a path like "source_1.component.powerlaw.logK". This might be useful in certain
-        context, although in an interactive analysis there is no reason to use this.
+        """Get a parameter from a path like "source_1.component.powerlaw.logK".
+        This might be useful in certain context, although in an interactive
+        analysis there is no reason to use this.
 
         :param path: the address of the parameter
         :return: the parameter
@@ -391,11 +382,10 @@ class Model(Node):
         return self._get_child_from_path(path)
 
     def __contains__(self, path: str) -> bool:
-        """
-        This allows the model to be used with the "in" operator, like;
+        """This allows the model to be used with the "in" operator, like;
 
-        > if 'myparameter' in model:
-        >    print("Myparameter is contained in the model")
+        > if 'myparameter' in model: >    print("Myparameter is
+        contained in the model")
 
         :param path: the parameter to look for
         :return:
@@ -414,8 +404,7 @@ class Model(Node):
             return True
 
     def __iter__(self):
-        """
-        This allows the model to be iterated on, like in:
+        """This allows the model to be iterated on, like in:
 
         for parameter in model:
             ...
@@ -433,8 +422,7 @@ class Model(Node):
 
     @property
     def point_sources(self) -> Dict[str, PointSource]:
-        """
-        Returns the dictionary of all defined point sources
+        """Returns the dictionary of all defined point sources.
 
         :return: collections.OrderedDict()
         """
@@ -442,21 +430,17 @@ class Model(Node):
 
     @property
     def extended_sources(self) -> Dict[str, ExtendedSource]:
-        """
-        Returns the dictionary of all defined extended sources
+        """Returns the dictionary of all defined extended sources.
 
         :return: collections.OrderedDict()
-
         """
         return self._extended_sources
 
     @property
     def particle_sources(self) -> Dict[str, ParticleSource]:
-        """
-        Returns the dictionary of all defined particle sources
+        """Returns the dictionary of all defined particle sources.
 
         :return: collections.OrderedDict()
-
         """
         return self._particle_sources
 
@@ -464,11 +448,9 @@ class Model(Node):
     def sources(
         self,
     ) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
-        """
-        Returns a dictionary containing all defined sources (of any kind)
+        """Returns a dictionary containing all defined sources (of any kind)
 
         :return: collections.OrderedDict()
-
         """
 
         sources: Dict[str, Union[PointSource, ExtendedSource, ParticleSource]] = (
@@ -488,10 +470,10 @@ class Model(Node):
     def add_source(
         self, new_source: Union[PointSource, ExtendedSource, ParticleSource]
     ) -> None:
-        """
-        Add the provided source to the model
+        """Add the provided source to the model.
 
-        :param new_source: the new source to be added (an instance of PointSource, ExtendedSource or ParticleSource)
+        :param new_source: the new source to be added (an instance of
+            PointSource, ExtendedSource or ParticleSource)
         :return: (none)
         """
 
@@ -500,8 +482,9 @@ class Model(Node):
         self._update_parameters()
 
     def remove_source(self, source_name: str) -> None:
-        """
-        Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.
+        """Returns a new model with the provided source removed from the
+        current model. Any parameters linked to the source to be removed are
+        automatically unlinked.
 
         :param source_name: the name of the source to be removed
         :return: a new Model instance without the source
@@ -514,12 +497,14 @@ class Model(Node):
         self._update_parameters()
 
     def unlink_all_from_source(self, source_name: str, warn: bool = False) -> None:
-        """
-        Unlink all parameters of the current model that are linked to a parameter of a given source.
-        To be called before removing a source from the model.
+        """Unlink all parameters of the current model that are linked to a
+        parameter of a given source. To be called before removing a source from
+        the model.
 
-        :param source_name: the name of the source to which to remove all links
-        :param warn: If True, prints a warning if any parameters were unlinked.
+        :param source_name: the name of the source to which to remove
+            all links
+        :param warn: If True, prints a warning if any parameters were
+            unlinked.
         """
 
         tempmodel = Model(self[source_name])
@@ -545,8 +530,7 @@ class Model(Node):
             )
 
     def add_independent_variable(self, variable: IndependentVariable) -> None:
-        """
-        Add a global independent variable to this model, such as time.
+        """Add a global independent variable to this model, such as time.
 
         :param variable: an IndependentVariable instance
         :return: none
@@ -567,8 +551,8 @@ class Model(Node):
         self._independent_variables[variable.name] = variable
 
     def remove_independent_variable(self, variable_name: str) -> None:
-        """
-        Remove an independent variable which was added with add_independent_variable
+        """Remove an independent variable which was added with
+        add_independent_variable.
 
         :param variable_name: name of variable to remove
         :return:
@@ -580,8 +564,8 @@ class Model(Node):
         self._independent_variables.pop(variable_name)
 
     def add_external_parameter(self, parameter: Parameter) -> None:
-        """
-        Add a parameter that comes from something other than a function, to the model.
+        """Add a parameter that comes from something other than a function, to
+        the model.
 
         :param parameter: a Parameter instance
         :return: none
@@ -613,8 +597,8 @@ class Model(Node):
         self._add_child(parameter)
 
     def remove_external_parameter(self, parameter_name: str) -> None:
-        """
-        Remove an external parameter which was added with add_external_parameter
+        """Remove an external parameter which was added with
+        add_external_parameter.
 
         :param variable_name: name of parameter to remove
         :return:
@@ -623,14 +607,15 @@ class Model(Node):
         self._remove_child(parameter_name)
 
     def link(self, parameter_1, parameter_2, link_function=None) -> None:
-        """
-        Link the value of the provided parameters through the provided function (identity is the default, i.e.,
-        parameter_1 = parameter_2).
+        """Link the value of the provided parameters through the provided
+        function (identity is the default, i.e., parameter_1 = parameter_2).
 
-        :param parameter_1: the first parameter;can be either a single parameter or a list of prarameters
+        :param parameter_1: the first parameter;can be either a single
+            parameter or a list of prarameters
         :param parameter_2: the second parameter
-        :param link_function: a function instance. If not provided, the identity function will be used by default.
-        Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
+        :param link_function: a function instance. If not provided, the
+            identity function will be used by default. Otherwise, this
+            link will be set: parameter_1 = link_function(parameter_2)
         :return: (none)
         """
         if not isinstance(parameter_1, list):
@@ -674,10 +659,10 @@ class Model(Node):
             link_function.set_units(parameter_2.unit, param_1.unit)
 
     def unlink(self, parameter: Parameter) -> None:
-        """
-        Sets free one or more parameters which have been linked previously
+        """Sets free one or more parameters which have been linked previously.
 
-        :param parameter: the parameter to be set free, can also be a list of parameters
+        :param parameter: the parameter to be set free, can also be a
+            list of parameters
         :return: (none)
         """
 
@@ -701,10 +686,10 @@ class Model(Node):
                     log.warning("Parameter %s has no link to be removed." % param.path)
 
     def display(self, complete: bool = False) -> None:
-        """
-        Display information about the point source.
+        """Display information about the point source.
 
-        :param complete : if True, displays also information on fixed parameters
+        :param complete : if True, displays also information on fixed
+            parameters
         :return: (none)
         """
 
@@ -1279,7 +1264,7 @@ class Model(Node):
         return data
 
     def save(self, output_file, overwrite=False):
-        """Save the model to disk"""
+        """Save the model to disk."""
 
         if os.path.exists(output_file) and overwrite is False:
 
@@ -1316,16 +1301,14 @@ class Model(Node):
                 )
 
     def get_number_of_point_sources(self) -> int:
-        """
-        Return the number of point sources
+        """Return the number of point sources.
 
         :return: number of point sources
         """
         return len(self._point_sources)
 
     def get_point_source_position(self, id) -> Tuple[float]:
-        """
-        Get the point source position (R.A., Dec)
+        """Get the point source position (R.A., Dec)
 
         :param id: id of the source
         :return: a tuple with R.A. and Dec.
@@ -1338,16 +1321,19 @@ class Model(Node):
     def get_point_source_fluxes(
         self, id: int, energies: np.ndarray, tag=None, stokes=None
     ) -> np.ndarray:
-        """
-        Get the fluxes from the id-th point source
+        """Get the fluxes from the id-th point source.
 
         :param id: id of the source
         :param energies: energies at which you need the flux
-        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this
-        parameter is specified then the returned value will be the average flux for the source computed as the integral
-        between a and b over the integration variable divided by (b-a). The integration variable must be an independent
-        variable contained in the model. If b is None, then instead of integrating the integration variable will be
-        set to a and the model evaluated in a.
+        :param tag: a tuple (integration variable, a, b) specifying the
+            integration to perform. If this parameter is specified then
+            the returned value will be the average flux for the source
+            computed as the integral between a and b over the
+            integration variable divided by (b-a). The integration
+            variable must be an independent variable contained in the
+            model. If b is None, then instead of integrating the
+            integration variable will be set to a and the model
+            evaluated in a.
         :param stokes: can be I, Q, U, V
         :return: fluxes
         """
@@ -1359,8 +1345,7 @@ class Model(Node):
         return list(self._point_sources.values())[id].name
 
     def get_number_of_extended_sources(self) -> int:
-        """
-        Return the number of extended sources
+        """Return the number of extended sources.
 
         :return: number of extended sources
         """
@@ -1369,8 +1354,8 @@ class Model(Node):
     def get_extended_source_fluxes(
         self, id: int, j2000_ra: float, j2000_dec: float, energies: np.ndarray
     ) -> np.ndarray:
-        """
-        Get the flux of the id-th extended sources at the given position at the given energies
+        """Get the flux of the id-th extended sources at the given position at
+        the given energies.
 
         :param id: id of the source
         :param j2000_ra: R.A. where the flux is desired
@@ -1382,8 +1367,7 @@ class Model(Node):
         return list(self._extended_sources.values())[id](j2000_ra, j2000_dec, energies)
 
     def get_extended_source_name(self, id: int) -> str:
-        """
-        Return the name of the n-th extended source
+        """Return the name of the n-th extended source.
 
         :param id: id of the source (integer)
         :return: the name of the id-th source
@@ -1420,8 +1404,7 @@ class Model(Node):
         return False
 
     def get_number_of_particle_sources(self) -> int:
-        """
-        Return the number of particle sources
+        """Return the number of particle sources.
 
         :return: number of particle sources
         """
@@ -1429,8 +1412,7 @@ class Model(Node):
         return len(self._particle_sources)
 
     def get_particle_source_fluxes(self, id: int, energies: np.ndarray) -> np.ndarray:
-        """
-        Get the fluxes from the id-th point source
+        """Get the fluxes from the id-th point source.
 
         :param id: id of the source
         :param energies: energies at which you need the flux
@@ -1444,8 +1426,8 @@ class Model(Node):
         return list(self._particle_sources.values())[id].name
 
     def get_total_flux(self, energies: np.ndarray) -> float:
-        """
-        Returns the total differential flux at the provided energies from all *point* sources
+        """Returns the total differential flux at the provided energies from
+        all *point* sources.
 
         :return:
         """

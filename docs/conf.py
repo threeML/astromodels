@@ -40,7 +40,7 @@ DOCS = Path(__file__).parent
 
 
 def run_apidoc(app):
-    """Generage API documentation"""
+    """Generage API documentation."""
     import os
     import pkgutil
     import sys

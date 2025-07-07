@@ -16,9 +16,7 @@ log = setup_logger(__name__)
 
 @dataclass(frozen=True)
 class _ExtinctionCurve:
-    """
-    simple extinction container
-    """
+    """Simple extinction container."""
 
     a: np.ndarray
     lamb: np.ndarray
@@ -190,12 +188,7 @@ def ms_dust_xspec(x, e_bmv, rv, a, lamb, b, n):
 
 @nb.njit(fastmath=True)
 def pei(rlambda, a_b, a, lamb, b, n) -> float:
-    """
-    ported from XSPEC originally by
-    Martin.Still@gsfc.nasa.gov
-
-
-    """
+    """Ported from XSPEC originally by Martin.Still@gsfc.nasa.gov."""
 
     if rlambda < 800.0:
 

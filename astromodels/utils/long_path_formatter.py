@@ -2,10 +2,9 @@ import pandas as pd
 
 
 def long_path_formatter(line, max_width=pd.get_option("max_colwidth")):
-    """
-    If a path is longer than max_width, it substitute it with the first and last element,
-    joined by "...". For example 'this.is.a.long.path.which.we.want.to.shorten' becomes
-    'this...shorten'
+    """If a path is longer than max_width, it substitute it with the first and
+    last element, joined by "...". For example
+    'this.is.a.long.path.which.we.want.to.shorten' becomes 'this...shorten'.
 
     :param line:
     :param max_width:

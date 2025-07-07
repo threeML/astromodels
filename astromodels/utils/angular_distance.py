@@ -5,10 +5,10 @@ from past.utils import old_div
 
 
 def angular_distance_fast(ra1, dec1, ra2, dec2):
-    """
-    Compute angular distance using the Haversine formula. Use this one when you know you will never ask for points at
-    their antipodes. If this is not the case, use the angular_distance function which is slower, but works also for
-    antipodes.
+    """Compute angular distance using the Haversine formula. Use this one when
+    you know you will never ask for points at their antipodes. If this is not
+    the case, use the angular_distance function which is slower, but works also
+    for antipodes.
 
     :param lon1:
     :param lat1:
@@ -33,8 +33,8 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
 
 
 def angular_distance(ra1, dec1, ra2, dec2):
-    """
-    Returns the angular distance between two points, two sets of points, or a set of points and one point.
+    """Returns the angular distance between two points, two sets of points, or
+    a set of points and one point.
 
     :param ra1: array or float, longitude of first point(s)
     :param dec1: array or float, latitude of first point(s)
@@ -65,8 +65,8 @@ def angular_distance(ra1, dec1, ra2, dec2):
 
 
 def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):
-    """
-    Returns the spherical angle distance between two sets of great circles defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)
+    """Returns the spherical angle distance between two sets of great circles
+    defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)
 
     :param ra0: array or float, longitude of intersection point(s)
     :param dec0: array or float, latitude of intersection point(s)

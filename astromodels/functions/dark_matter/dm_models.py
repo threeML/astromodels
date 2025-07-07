@@ -53,7 +53,6 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
         tablepath = _get_data_file_path("dark_matter/gammamc_dif.dat")
 
         self._data = np.loadtxt(tablepath)
-
         """
             Mapping between the channel codes and the rows in the gammamc file
 
@@ -245,7 +244,6 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
 
         tablepath_f = _get_data_file_path("dark_matter/gammamc_dif.dat")
         self._data_f = np.loadtxt(tablepath_f)
-
         """
             Mapping between the channel codes and the rows in the gammamc file
             dmSpecTab.npy created to match this mapping too

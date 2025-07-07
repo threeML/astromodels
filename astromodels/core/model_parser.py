@@ -35,8 +35,7 @@ class ModelSyntaxError(RuntimeError):
 
 
 def load_model(filename):
-    """
-    Load a model from a file.
+    """Load a model from a file.
 
     :param filename: the name of the file containing the model
     :return: an instance of a Model
@@ -48,9 +47,9 @@ def load_model(filename):
 
 
 def clone_model(model_instance):
-    """
-    Returns a copy of the given model with all objects cloned. This is equivalent to saving the model to
-    a file and reload it, but it doesn't require writing or reading to/from disk. The original model is not touched.
+    """Returns a copy of the given model with all objects cloned. This is
+    equivalent to saving the model to a file and reload it, but it doesn't
+    require writing or reading to/from disk. The original model is not touched.
 
     :param model: model to be cloned
     :return: a cloned copy of the given model

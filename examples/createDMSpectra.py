@@ -2,10 +2,15 @@
 # author: Andrea Albert (aalbert@slac.stanford.edu)
 # date: Oct 26, 2016
 
-from threeML import *
+from threeML import DMFitFunction, DMSpectra
+import numpy as np
 
-# DMFitFunction uses the Pythia-generated table from the standard Fermi Science Tools which is appropriate for 2 GeV < mass < 10 TeV
-# DMSpectra combines the Pythia-generated table from the standard Fermi Science Tools (for 2 GeV < mass < 10 TeV) and the one used by the HAWC Collaboration (for 10 TeV < mass < 1 PeV).
+# DMFitFunction uses the Pythia-generated table from the standard Fermi Science Tools
+# which is appropriate for 2 GeV < mass < 10 TeV
+
+# DMSpectra combines the Pythia-generated table from the standard Fermi Science Tools
+# (for 2 GeV < mass < 10 TeV) and the one used by the HAWC Collaboration
+# (for 10 TeV < mass < 1 PeV).
 
 spec = DMFitFunction()
 spec2 = DMSpectra()

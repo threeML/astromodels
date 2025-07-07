@@ -659,8 +659,7 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
 
     @property
     def peak_energy(self):
-        """
-        Returns the peak energy in the nuFnu spectrum
+        """Returns the peak energy in the nuFnu spectrum.
 
         :return: peak energy in keV
         """

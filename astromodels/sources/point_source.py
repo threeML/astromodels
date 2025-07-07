@@ -28,8 +28,7 @@ log = setup_logger(__name__)
 
 
 class PointSource(Source, Node):
-    """
-    A point source. You can instance this class in many ways.
+    """A point source. You can instance this class in many ways.
 
     - with Equatorial position and a function as spectrum (the component will be automatically called 'main')::
 
@@ -258,8 +257,7 @@ class PointSource(Source, Node):
 
     @property
     def has_free_parameters(self) -> bool:
-        """
-        Returns True or False whether there is any parameter in this source
+        """Returns True or False whether there is any parameter in this source.
 
         :return:
         """
@@ -282,10 +280,9 @@ class PointSource(Source, Node):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of free parameters for this source.
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of free parameters for this source. We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -309,10 +306,9 @@ class PointSource(Source, Node):
 
     @property
     def parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of all parameters for this source. We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -331,8 +327,7 @@ class PointSource(Source, Node):
         return all_parameters
 
     def _repr__base(self, rich_output=False):
-        """
-        Representation of the object
+        """Representation of the object.
 
         :param rich_output: if True, generates HTML, otherwise text
         :return: the representation

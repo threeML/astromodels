@@ -27,8 +27,8 @@ class UnitMismatch(Exception):
 
 
 def _check_unit(new_unit, old_unit):
-    """
-    Check that the new unit is compatible with the old unit for the quantity described by variable_name
+    """Check that the new unit is compatible with the old unit for the quantity
+    described by variable_name.
 
     :param new_unit: instance of astropy.units.Unit
     :param old_unit: instance of astropy.units.Unit
@@ -55,9 +55,8 @@ def _check_unit(new_unit, old_unit):
 
 
 class _AstromodelsUnits(object):
-    """
-    Store the fundamental units of time, energy, angle and area to be used in astromodels.
-    """
+    """Store the fundamental units of time, energy, angle and area to be used
+    in astromodels."""
 
     def __init__(
         self, energy_unit=None, time_unit=None, angle_unit=None, area_unit=None

@@ -60,8 +60,7 @@ class SpectralComponent(Node):
 
     @property
     def shape(self):
-        """
-        A generic name for the spectral shape.
+        """A generic name for the spectral shape.
 
         :return: the spectral shape instance
         """

@@ -52,13 +52,11 @@ class AbundanceTable:
     _current_table: str
 
     def set_table(self, table: str):
-        """
-        set the current table from AG89, WILM or ASPL
+        """Set the current table from AG89, WILM or ASPL.
 
         :param table:
         :type table: str
         :returns:
-
         """
 
         old_table = self._current_table
@@ -100,11 +98,9 @@ class AbundanceTable:
 
     @property
     def xsect_table(self) -> np.ndarray:
-        """
-        returns the XSECT table for the current model
+        """Returns the XSECT table for the current model.
 
         :returns:
-
         """
         _path: Path = Path("xsect") / f"xsect_{self.name}_{self.current_table}.fits"
 
@@ -178,13 +174,11 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
-        """
-        Set the abundance table
+        """Set the abundance table.
 
         :param abund_table: "ASPL", "AG89"
         :returns:
         :rtype:
-
         """
 
         # load cross section data
@@ -275,13 +269,11 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
-        """
-        Set the abundance table
+        """Set the abundance table.
 
         :param abund_table: "WILM", "ASPL", "AG89"
         :returns:
         :rtype:
-
         """
 
         tbabs.set_table(self.abundance_table.value)
@@ -356,12 +348,10 @@ class WAbs(Function1D, metaclass=FunctionMeta):
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
-        """
-        Set the abundance table
+        """Set the abundance table.
 
         :returns:
         :rtype:
-
         """
 
         self.xsect_ene, self.xsect_val = wabs.xsect_table

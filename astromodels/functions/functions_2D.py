@@ -57,8 +57,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         self._frame = ICRS()
 
     def set_frame(self, new_frame):
-        """
-        Set a new frame for the coordinates (the default is ICRS J2000)
+        """Set a new frame for the coordinates (the default is ICRS J2000)
 
         :param new_frame: a coordinate frame from astropy
         :return: (none)
@@ -113,11 +112,12 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         dL = (
@@ -232,11 +232,12 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -382,11 +383,12 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -489,11 +491,12 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -644,11 +647,12 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -823,11 +827,12 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -935,11 +940,12 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
         )
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):

@@ -80,8 +80,7 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
         )
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -303,8 +302,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
         return K * norm * gamma2 / ((x - x0) * (x - x0) + gamma2)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -402,8 +400,7 @@ class Cosine_Prior(Function1D, metaclass=FunctionMeta):
         return result
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -513,8 +510,7 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
         return result
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -596,8 +592,7 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
         return result
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -674,8 +669,7 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
             return res
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -731,8 +725,7 @@ class Beta(Function1D, metaclass=FunctionMeta):
         return stats.beta.pdf(x, a, b)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -785,8 +778,7 @@ class Gamma(Function1D, metaclass=FunctionMeta):
         return stats.gamma.pdf(x, alpha, scale=1.0 / beta)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -832,8 +824,7 @@ class Exponential(Function1D, metaclass=FunctionMeta):
         return stats.expon.pdf(x, scale=1.0 / alpha)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -888,8 +879,7 @@ class Powerlaw_Prior(Function1D, metaclass=FunctionMeta):
         return stats.powerlaw.pdf(x, alpha, loc=a, scale=d)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:

@@ -81,8 +81,7 @@ class Polarization(Node):
 
 class LinearPolarization(Polarization):
     def __init__(self, degree, angle):
-        """
-        Linear parameterization of polarization
+        """Linear parameterization of polarization.
 
         :param degree: The polarization degree
         :param angle: The polarization angle
@@ -126,9 +125,7 @@ class LinearPolarization(Polarization):
 
 class StokesPolarization(Polarization):
     def __init__(self, I=None, Q=None, U=None, V=None):
-        """
-        Stokes parameterization of polarization
-        """
+        """Stokes parameterization of polarization."""
         super(StokesPolarization, self).__init__(polarization_type="stokes")
         self._Q = StokesParameter("Q", Q)
         self._add_child(self._Q)

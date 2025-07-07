@@ -19,11 +19,12 @@ else:
 
 
 def _get_data_file_path(data_file: str) -> Path:
-    """
-    Returns the absolute path to the required data files.
+    """Returns the absolute path to the required data files.
 
-    :param data_file: relative path to the data file, relative to the astromodels/data path.
-    So to get the path to data/dark_matter/gammamc_dif.dat you need to use data_file="dark_matter/gammamc_dif.dat"
+    :param data_file: relative path to the data file, relative to the
+        astromodels/data path. So to get the path to
+        data/dark_matter/gammamc_dif.dat you need to use
+        data_file="dark_matter/gammamc_dif.dat"
     :return: absolute path of the data file
     """
 
