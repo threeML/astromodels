@@ -20,11 +20,11 @@ from astromodels.core.model import (
     ModelFileExists,
 )
 from astromodels.core.model_parser import (
+    ModelIOError,
+    ModelParser,
+    ModelYAMLError,
     clone_model,
     load_model,
-    ModelParser,
-    ModelIOError,
-    ModelYAMLError,
 )
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.functions import (

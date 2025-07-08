@@ -2,7 +2,7 @@
 # author: Andrea Albert (aalbert@slac.stanford.edu)
 # date: Oct 26, 2016
 
-from threeML import SpatialTemplate_2D, Powerlaw, ExtendedSource
+from threeML import ExtendedSource, Powerlaw, SpatialTemplate_2D
 
 # the class SpatialTemplate_2D expects a FITs file that contains a header with the
 # following info: reference pixels (e.g. 'CRPIX1'), pixels step in degrees

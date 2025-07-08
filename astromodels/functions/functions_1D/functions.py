@@ -1,6 +1,7 @@
 from __future__ import division
 
 import astropy.units as astropy_units
+import astropy.units as u
 import numpy as np
 from past.utils import old_div
 
@@ -8,7 +9,6 @@ from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
-import astropy.units as u
 
 log = setup_logger(__name__)
 

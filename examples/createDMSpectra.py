@@ -2,8 +2,8 @@
 # author: Andrea Albert (aalbert@slac.stanford.edu)
 # date: Oct 26, 2016
 
-from threeML import DMFitFunction, DMSpectra
 import numpy as np
+from threeML import DMFitFunction, DMSpectra
 
 # DMFitFunction uses the Pythia-generated table from the standard Fermi Science Tools
 # which is appropriate for 2 GeV < mass < 10 TeV

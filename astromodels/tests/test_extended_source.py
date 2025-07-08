@@ -11,8 +11,7 @@ from astropy import wcs
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions import Gaussian_on_sphere
-from astromodels.functions import Log_parabola, Powerlaw
+from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
 

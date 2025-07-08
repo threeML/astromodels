@@ -1,12 +1,12 @@
 # This file contains some defaults, like locations of files, which should not
 # change much but benefits anyway of being in one central location
 
+import importlib
 import os
 from pathlib import Path
 from typing import Optional
 
 import numpy as np
-import importlib
 
 _custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
 

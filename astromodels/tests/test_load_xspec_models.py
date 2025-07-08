@@ -9,7 +9,7 @@ from astromodels import Model, PointSource, clone_model, load_model
 
 try:
 
-    from astromodels.xspec import XS_phabs, XS_powerlaw, XS_bbody
+    from astromodels.xspec import XS_bbody, XS_phabs, XS_powerlaw
 
 except (ImportError, ModuleNotFoundError):
 

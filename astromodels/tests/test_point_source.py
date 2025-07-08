@@ -1,10 +1,10 @@
 from __future__ import division, print_function
-from past.utils import old_div
 
 import astropy.units as u
 import numpy as np
 import numpy.testing as npt
 import pytest
+from past.utils import old_div
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (

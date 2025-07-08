@@ -1,11 +1,10 @@
 from __future__ import print_function
 
-from future import standard_library
-
 from builtins import object
 
 import astropy.units as u
 import pytest
+from future import standard_library
 
 from astromodels.functions import Log_uniform_prior, Uniform_prior
 
