@@ -1,5 +1,4 @@
 # Version: 0.29
-
 """The Versioneer - like a rocketeer, but for versions.
 
 The Versioneer
@@ -1450,8 +1449,8 @@ def git_pieces_from_vcs(
 def do_vcs_install(versionfile_source: str, ipy: Optional[str]) -> None:
     """Git-specific installation logic for Versioneer.
 
-    For Git, this means creating/changing .gitattributes to mark _version.py
-    for export-subst keyword substitution.
+    For Git, this means creating/changing .gitattributes to mark
+    _version.py for export-subst keyword substitution.
     """
     GITS = ["git"]
     if sys.platform == "win32":
@@ -1492,9 +1491,10 @@ def versions_from_parentdir(
 ) -> Dict[str, Any]:
     """Try to determine the version from the parent directory name.
 
-    Source tarballs conventionally unpack into a directory that includes both
-    the project name and a version string. We will also support searching up
-    two directory levels for an appropriately named parent directory
+    Source tarballs conventionally unpack into a directory that includes
+    both the project name and a version string. We will also support
+    searching up two directory levels for an appropriately named parent
+    directory
     """
     rootdirs = []
 
@@ -1628,8 +1628,9 @@ def render_pep440_branch(pieces: Dict[str, Any]) -> str:
 def pep440_split_post(ver: str) -> Tuple[str, Optional[int]]:
     """Split pep440 version string at the post-release segment.
 
-    Returns the release segments before the post-release and the
-    post-release version number (or -1 if no post-release segment is present).
+    Returns the release segments before the post-release and the post-
+    release version number (or -1 if no post-release segment is
+    present).
     """
     vc = str.split(ver, ".post")
     return vc[0], int(vc[1] or 0) if len(vc) == 2 else None

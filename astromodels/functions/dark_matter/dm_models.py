@@ -53,21 +53,20 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
         tablepath = _get_data_file_path("dark_matter/gammamc_dif.dat")
 
         self._data = np.loadtxt(tablepath)
-        """
-            Mapping between the channel codes and the rows in the gammamc file
+        """Mapping between the channel codes and the rows in the gammamc file.
 
-            1 : 8, # ee
-            2 : 6, # mumu
-            3 : 3, # tautau
-            4 : 1, # bb
-            5 : 2, # tt
-            6 : 7, # gg
-            7 : 4, # ww
-            8 : 5, # zz
-            9 : 0, # cc
-            10 : 10, # uu
-            11 : 11, # dd
-            12 : 9, # ss
+        1 : 8, # ee
+        2 : 6, # mumu
+        3 : 3, # tautau
+        4 : 1, # bb
+        5 : 2, # tt
+        6 : 7, # gg
+        7 : 4, # ww
+        8 : 5, # zz
+        9 : 0, # cc
+        10 : 10, # uu
+        11 : 11, # dd
+        12 : 9, # ss
         """
 
         channel_index_mapping = {
@@ -244,23 +243,22 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
 
         tablepath_f = _get_data_file_path("dark_matter/gammamc_dif.dat")
         self._data_f = np.loadtxt(tablepath_f)
-        """
-            Mapping between the channel codes and the rows in the gammamc file
-            dmSpecTab.npy created to match this mapping too
+        """Mapping between the channel codes and the rows in the gammamc file
+        dmSpecTab.npy created to match this mapping too.
 
-            1 : 8, # ee
-            2 : 6, # mumu
-            3 : 3, # tautau
-            4 : 1, # bb
-            5 : 2, # tt
-            6 : 7, # gg
-            7 : 4, # ww
-            8 : 5, # zz
-            9 : 0, # cc
-            10 : 10, # uu
-            11 : 11, # dd
-            12 : 9, # ss
-            """
+        1 : 8, # ee
+        2 : 6, # mumu
+        3 : 3, # tautau
+        4 : 1, # bb
+        5 : 2, # tt
+        6 : 7, # gg
+        7 : 4, # ww
+        8 : 5, # zz
+        9 : 0, # cc
+        10 : 10, # uu
+        11 : 11, # dd
+        12 : 9, # ss
+        """
 
         channel_index_mapping = {
             1: 8,  # ee

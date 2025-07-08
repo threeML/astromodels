@@ -169,8 +169,10 @@ class ExtendedSource(Source, Node):
 
     def get_spatially_integrated_flux(self, energies):
         """Returns total flux of source at the given energy :param energies:
-        energies (array or float) :return: differential flux at given
-        energy."""
+
+        energies (array or float)
+        :return: differential flux at given energy.
+        """
 
         if not isinstance(energies, np.ndarray):
             energies = np.array(energies, ndmin=1)

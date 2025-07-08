@@ -2338,11 +2338,11 @@ def get_function(function_name, composite_function_expression=None):
     """Returns the function "name", which must be among the known functions or
     a composite function.
 
-    :param function_name: the name of the function (use 'composite' if the function is
-    a composite function)
-    :param composite_function_expression: composite function specification such as
-    ((((powerlaw{1} + (sin{2} * 3)) + (sin{2} * 25)) -
-    (powerlaw{1} * 16)) + (sin{2} ** 3.0))
+    :param function_name: the name of the function (use 'composite' if
+        the function is a composite function)
+    :param composite_function_expression: composite function
+        specification such as ((((powerlaw{1} + (sin{2} * 3)) + (sin{2}
+        * 25)) - (powerlaw{1} * 16)) + (sin{2} ** 3.0))
     :return: the an instance of the requested class
     """
 

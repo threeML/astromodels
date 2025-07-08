@@ -1,7 +1,8 @@
 __author__ = "Giampaolo Rodola <g.rodola [AT] gmail [DOT] com>"
-"""
-Return disk usage statistics about the given path as a (total, used, free)
-namedtuple.  Values are expressed in bytes.
+"""Return disk usage statistics about the given path as a (total, used, free)
+namedtuple.
+
+Values are expressed in bytes.
 """
 # Author: Giampaolo Rodola' <g.rodola [AT] gmail [DOT] com>
 # License: MIT
