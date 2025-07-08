@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 import numpy as np
-import pkg_resources
+import importlib
 
 _custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
 
@@ -30,9 +30,7 @@ def _get_data_file_path(data_file: str) -> Path:
 
     try:
 
-        file_path: str = pkg_resources.resource_filename(
-            "astromodels", "data/%s" % data_file
-        )
+        file_path: str = importlib.resources.files("astromodels.data") / data_file
 
     except KeyError:
 
