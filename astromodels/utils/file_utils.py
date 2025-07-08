@@ -37,8 +37,8 @@ def _get_data_file_path(data_file: str) -> Path:
     except KeyError:
 
         raise IOError(
-            "Could not read or find data file %s. Try reinstalling astromodels. If this does not fix your "
-            "problem, open an issue on github." % (data_file)
+            "Could not read or find data file %s. Try reinstalling astromodels. If this"
+            " does not fix your problem, open an issue on github." % (data_file)
         )
 
     else:

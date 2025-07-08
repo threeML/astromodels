@@ -19,7 +19,10 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         Positron and electrons diffusing away from the accelerator
 
-    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$
+    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}
+            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}
+            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}
+            {r_{\rm diff} ^2} \right)$
 
     parameters :
 
@@ -39,7 +42,8 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         rdiff0 :
 
-            desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
+            desc : Projected diffusion radius. The maximum allowed value is used to
+                    define the truncation radius.
             initial value : 1.0
             min : 0
             max : 20
@@ -69,7 +73,8 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         piv2 :
 
-            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+            desc : Pivot for converting gamma energy to electron energy (always be
+                    1 TeV)
             initial value : 1e9
             min : 0
             fix : yes
@@ -121,8 +126,9 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         energy = z
 
         # energy in kev -> TeV.
-        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
-        # of a dimensionless quantity, so there must be a pivot there.
+        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the
+        # logarithm can only be taken of a dimensionless quantity, so there must be a
+        # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
             old_div(energy, piv2),
@@ -152,11 +158,12 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         except ValueError:
 
-            # This happens when using units, because astropy.units fails with the message:
-            # "ValueError: Quantities and Units may only be raised to a scalar power"
+            # This happens when using units, because astropy.units fails with the
+            # message: "ValueError: Quantities and Units may only be raised to a scalar
+            # power"
 
-            # Work around the problem with this loop, which is slow but using units is only for testing purposes or
-            # single calls, so it shouldn't matter too much
+            # Work around the problem with this loop, which is slow but using units is
+            # only for testing purposes or single calls, so it shouldn't matter too much
             rdiff_a = (
                 np.array(
                     [
@@ -268,7 +275,10 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         Positron and electrons diffusing away from the accelerator
 
-    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$
+    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}
+            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}
+            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}
+            {r_{\rm diff} ^2} \right)$
 
     parameters :
 
@@ -288,14 +298,16 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         rdiff0 :
 
-            desc : Projected diffusion radius limited by the cooling time. The maximum allowed value is used to define the truncation radius.
+            desc : Projected diffusion radius limited by the cooling time. The maximum
+                    allowed value is used to define the truncation radius.
             initial value : 1.0
             min : 0
             max : 20
 
         rinj :
 
-            desc : Ratio of diffusion radius limited by the injection time over rdiff0. The maximum allowed value is used to define the truncation radius.
+            desc : Ratio of diffusion radius limited by the injection time over rdiff0.
+                    The maximum allowed value is used to define the truncation radius.
             initial value : 100.0
             min : 0
             max : 200
@@ -325,7 +337,8 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
             fix : yes
 
         piv2 :
-            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+            desc : Pivot for converting gamma energy to electron energy (always be 1
+                    TeV)
             initial value : 1e9
             min : 0
             fix : yes
@@ -359,8 +372,9 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         energy = z
 
         # energy in kev -> TeV.
-        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
-        # of a dimensionless quantity, so there must be a pivot there.
+        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the
+        # logarithm can only be taken of a dimensionless quantity, so there must be a
+        # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
             old_div(energy, piv2),
@@ -462,7 +476,10 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         Positron and electrons diffusing away from the accelerator
 
-    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$
+    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}
+            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}
+            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}
+            {r_{\rm diff} ^2} \right)$
 
     parameters :
 
@@ -482,7 +499,8 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         rdiff0 :
 
-            desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
+            desc : Projected diffusion radius. The maximum allowed value is used to
+                    define the truncation radius.
             initial value : 1.0
             min : 0
             max : 20
@@ -511,7 +529,8 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
             fix : yes
 
         piv2 :
-            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+            desc : Pivot for converting gamma energy to electron energy (always be 1
+                    TeV)
             initial value : 1e9
             min : 0
             fix : yes
@@ -544,8 +563,9 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         energy = z
 
         # energy in kev -> TeV.
-        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
-        # of a dimensionless quantity, so there must be a pivot there.
+        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the
+        # logarithm can only be taken of a dimensionless quantity, so there must be a
+        # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
             old_div(energy, piv2),
@@ -569,11 +589,12 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         except ValueError:
 
-            # This happens when using units, because astropy.units fails with the message:
-            # "ValueError: Quantities and Units may only be raised to a scalar power"
+            # This happens when using units, because astropy.units fails with the
+            # message: "ValueError: Quantities and Units may only be raised to a scalar
+            # power"
 
-            # Work around the problem with this loop, which is slow but using units is only for testing purposes or
-            # single calls, so it shouldn't matter too much
+            # Work around the problem with this loop, which is slow but using units is
+            # only for testing purposes or single calls, so it shouldn't matter too much
             rdiff = (
                 np.array(
                     [
@@ -799,10 +820,8 @@ class GalPropTemplate_3D(Function3D):
 
             # We assume x and y are R.A. and Dec
             _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
-            b = _coord.transform_to("galactic").b.value
-            l = _coord.transform_to("galactic").l.value
-            lon = l
-            lat = b
+            lat = _coord.transform_to("galactic").b.value
+            lon = _coord.transform_to("galactic").l.value
 
             # transform energy from keV to MeV. Galprop Model starts at 100 MeV
             energy = np.log10(z) - np.log10((u.MeV.to("keV") / u.keV).value)
@@ -810,8 +829,8 @@ class GalPropTemplate_3D(Function3D):
             if lon.size != lat.size:
                 raise AttributeError("Lon and Lat should be the same size")
             f = np.zeros([lon.size, energy.size])
-            E0 = self._refEn
-            Ef = self._refEn + (self._ne - 1) * self._delEn
+            # E0 = self._refEn
+            # Ef = self._refEn + (self._ne - 1) * self._delEn
 
             # fix longitude
             shift = np.where(lon > 180.0)

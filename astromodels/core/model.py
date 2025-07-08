@@ -88,7 +88,8 @@ class _LinkedFunctionContainer:
 class Model(Node):
     def __init__(self, *sources):
 
-        # Setup the node, using the special name '__root__' to indicate that this is the root of the tree
+        # Setup the node, using the special name '__root__' to indicate that this is the
+        # root of the tree
 
         super(Model, self).__init__("__root__")
 
@@ -138,8 +139,8 @@ class Model(Node):
             if isinstance(source, Source):
 
                 log.error(
-                    "More than one source with the name '%s'. You cannot use the same name for multiple "
-                    "sources" % source.name
+                    f"More than one source with the name '{source.name}'. You cannot "
+                    "use the same name for multiple sources"
                 )
 
                 raise DuplicatedNode()
@@ -361,7 +362,8 @@ class Model(Node):
         if not len(values) == len(self.free_parameters):
 
             log.error(
-                f"tried to pass {len(values)} parameters but need {len(self.free_parameters)}"
+                f"tried to pass {len(values)} parameters but need"
+                f" {len(self.free_parameters)}"
             )
 
             raise AssertionError()
@@ -409,9 +411,10 @@ class Model(Node):
         for parameter in model:
             ...
 
-        NOTE: this will iterate over *all* parameters in the model, also those that are not free (and thus are not
-        normally displayed). If you need to operate only on free parameters, just check if they are free within
-        the loop or use the .free_parameters dictionary directly
+        NOTE: this will iterate over *all* parameters in the model, also those that are
+        not free (and thus are not normally displayed). If you need to operate only on
+        free parameters, just check if they are free within the loop or use the
+        .free_parameters dictionary directly
 
         :return: iterator
         """
@@ -522,11 +525,13 @@ class Model(Node):
         if warn and unlinked_parameters:
 
             log.warning(
-                f"The following {len(unlinked_parameters)} parameters that were linked to source {source_name}"
+                f"The following {len(unlinked_parameters)} parameters that were linked"
+                f" to source {source_name}"
             )
 
             log.warning(
-                f"have been automatically un-linked: {[p.path for p in unlinked_parameters.values()]}"
+                "have been automatically un-linked: "
+                f"{[p.path for p in unlinked_parameters.values()]}"
             )
 
     def add_independent_variable(self, variable: IndependentVariable) -> None:
@@ -579,15 +584,15 @@ class Model(Node):
 
         if self._has_child(parameter.name):
 
-            # Remove it from the children only if it is a Parameter instance, otherwise don't, which will
-            # make the _add_child call fail (which is the expected behaviour! You shouldn't call two children
-            # with the same name)
+            # Remove it from the children only if it is a Parameter instance, otherwise
+            # don't, which will make the _add_child call fail (which is the expected
+            # behaviour! You shouldn't call two children with the same name)
 
             if isinstance(self._get_child(parameter.name), Parameter):
 
                 log.warning(
-                    "External parameter %s already exist in the model. Overwriting it..."
-                    % parameter.name
+                    f"External parameter {parameter.name} already exist in the model."
+                    " Overwriting it..."
                 )
 
                 self._remove_child(parameter.name)
@@ -643,8 +648,8 @@ class Model(Node):
             raise AssertionError(msg)
 
         if link_function is None:
-            # Use the Line function by default, with both parameters fixed so that the two
-            # parameters to be linked will vary together
+            # Use the Line function by default, with both parameters fixed so that the
+            # two parameters to be linked will vary together
             link_function = get_function("Line")
 
             link_function.a.value = 0
@@ -696,7 +701,8 @@ class Model(Node):
         # Switch on the complete display flag
         self._complete_display = bool(complete)
 
-        # This will automatically choose the best representation among repr and repr_html
+        # This will automatically choose the best representation among repr and
+        # repr_html
 
         super(Model, self).display()
 
@@ -733,7 +739,8 @@ class Model(Node):
             orient="index",
         )
 
-        # These properties traverse the whole tree everytime, so let's cache their results here
+        # These properties traverse the whole tree everytime, so let's cache their
+        # results here
         parameters = self.parameters
         free_parameters = self.free_parameters
         linked_parameters = self.linked_parameters
@@ -1236,8 +1243,8 @@ class Model(Node):
 
             else:
 
-                # There are three possible cases. Either the element is a source, or it is an independent
-                # variable, or a parameter
+                # There are three possible cases. Either the element is a source, or it
+                # is an independent variable, or a parameter
 
                 if hasattr(element, "source_type"):
 
@@ -1269,8 +1276,8 @@ class Model(Node):
         if os.path.exists(output_file) and overwrite is False:
 
             raise ModelFileExists(
-                "The file %s exists already. If you want to overwrite it, use the 'overwrite=True' "
-                "options as 'model.save(\"%s\", overwrite=True)'. "
+                "The file %s exists already. If you want to overwrite it, use the "
+                "'overwrite=True' options as 'model.save(\"%s\", overwrite=True)'. "
                 % (output_file, output_file)
             )
 
@@ -1296,8 +1303,8 @@ class Model(Node):
 
                 raise CannotWriteModel(
                     os.path.dirname(os.path.abspath(output_file)),
-                    "Could not write model file %s. Check your permissions to write or the "
-                    "report on the free space which follows: " % output_file,
+                    "Could not write model file %s. Check your permissions to write or"
+                    "the report on the free space which follows: " % output_file,
                 )
 
     def get_number_of_point_sources(self) -> int:
@@ -1399,7 +1406,8 @@ class Model(Node):
 
                 return True
 
-        # If we are here, it means that no extended source contains the provided coordinates
+        # If we are here, it means that no extended source contains the provided
+        # coordinates
 
         return False
 

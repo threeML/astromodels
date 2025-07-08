@@ -8,11 +8,13 @@ from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
+import astropy.units as u
 
 log = setup_logger(__name__)
 
 __author__ = "giacomov"
-# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
+# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,
+# 2016
 
 erg2keV = 6.24151e8
 
@@ -31,12 +33,11 @@ class InvalidUsageForFunction(Exception):
 
 # Now let's try and import optional dependencies
 
-import astropy.units as u
 
 try:
 
-    # Naima is for numerical computation of Synch. and Inverse compton spectra in randomly oriented
-    # magnetic fields
+    # Naima is for numerical computation of Synch. and Inverse compton spectra in
+    # randomly oriented magnetic fields
 
     import naima
 
@@ -45,7 +46,8 @@ except ImportError:
     if astromodels_config.logging.startup_warnings:
 
         log.warning(
-            "The naima package is not available. Models that depend on it will not be available"
+            "The naima package is not available. Models that depend on it will not be"
+            " available"
         )
 
     has_naima = False
@@ -56,8 +58,8 @@ else:
 
 try:
 
-    # GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used by some
-    # functions for faster computation
+    # GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used
+    # by some functions for faster computation
 
     from pygsl.testing.sf import gamma_inc
 
@@ -66,8 +68,8 @@ except ImportError:
     if astromodels_config.logging.startup_warnings:
 
         log.warning(
-            "The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be "
-            "available."
+            "The GSL library or the pygsl wrapper cannot be loaded. Models that depend"
+            " on it will not be available."
         )
 
     has_gsl = False
@@ -138,10 +140,13 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-        extremes of the interval are counted as part of the interval.
+        A function which is constant on the interval lower_bound - upper_bound and 0
+        outside the interval. The extremes of the interval are counted as part of the
+        interval.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound} \end{cases}$
+    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
+        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound}
+        \end{cases}$
 
     parameters :
 
@@ -189,10 +194,12 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-        upper interval is open.
+        A function which is constant on the interval lower_bound - upper_bound and 0
+        outside the interval. The upper interval is open.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound} \end{cases}$
+    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
+        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound}
+        \end{cases}$
 
     parameters :
 
@@ -340,7 +347,8 @@ if has_naima:
     class Synchrotron(Function1D, metaclass=FunctionMeta):
         r"""
         description :
-            Synchrotron spectrum from an input particle distribution, using Naima (naima.readthedocs.org)
+            Synchrotron spectrum from an input particle distribution, using Naima
+            (naima.readthedocs.org)
         latex: not available
         parameters :
             B :
@@ -410,8 +418,8 @@ if has_naima:
             else:
 
                 raise InvalidUsageForFunction(
-                    "Unit for x is not an energy. The function synchrotron can only be used "
-                    "as a spectrum"
+                    "Unit for x is not an energy. The function synchrotron can only be "
+                    "used as a spectrum"
                 )
 
                 # we actually don't need to do anything as the units are already set up
@@ -436,9 +444,9 @@ if has_naima:
                 current_units.energy, current_units.energy ** (-1)
             )
 
-            # Naima wants a function which accepts a quantity as x (in units of eV) and returns an astropy quantity,
-            # so we need to create a wrapper which will remove the unit from x and add the unit to the return
-            # value
+            # Naima wants a function which accepts a quantity as x (in units of eV) and
+            # returns an astropy quantity, so we need to create a wrapper which will
+            # remove the unit from x and add the unit to the return value
 
             self._particle_distribution_wrapper = lambda x: old_div(
                 function(x.value), current_units.energy
@@ -590,11 +598,13 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A log-parabolic function. NOTE that we use the high-energy convention of using the natural log in place of the
-        base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
-        using the other convention.
+        A log-parabolic function. NOTE that we use the high-energy convention of using
+        the natural log in place of the base-10 logarithm. This means that beta is a
+        factor 1 / log10(e) larger than what returned by those software using the other
+        convention.
 
-    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $
+    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv}
+        \right)}} $
 
     parameters :
 
@@ -648,9 +658,10 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
 
         except ValueError:
 
-            # The current version of astropy (1.1.x) has a bug for which quantities that have become
-            # dimensionless because of a division (like xx here) are not recognized as such by the power
-            # operator, which throws an exception: ValueError: Quantities and Units may only be raised to a scalar power
+            # The current version of astropy (1.1.x) has a bug for which quantities that
+            # have become dimensionless because of a division (like xx here) are not
+            # recognized as such by the power operator, which throws an exception:
+            # ValueError: Quantities and Units may only be raised to a scalar power
             # This is a quick fix, waiting for astropy 1.2 which will fix this
 
             xx = xx.to("")
@@ -679,10 +690,12 @@ if has_gsl:
         r"""
         description :
 
-            A cutoff power law having the flux as normalization, which should reduce the correlation among
-            parameters.
+            A cutoff power law having the flux as normalization, which should reduce the
+            correlation among parameters.
 
-        latex : $ \frac{F}{T(b)-T(a)} ~x^{index}~\exp{(-x/x_{c})}~\text{with}~T(x)=-x_{c}^{index+1} \Gamma(index+1, x/C)~\text{(}\Gamma\text{ is the incomplete gamma function)} $
+        latex : $ \frac{F}{T(b)-T(a)} ~x^{index}~\exp{(-x/x_{c})}~\text{with}~T(x)=
+            -x_{c}^{index+1} \Gamma(index+1, x/C)~\text{(}\Gamma\text{ is the incomplete
+            gamma function)} $
 
         parameters :
 

@@ -137,8 +137,8 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit):
 
-        # Usually a model should not assume fixed units for energy or anything else. However,
-        # in this case this model is so specialistic that we can assume GeV
+        # Usually a model should not assume fixed units for energy or anything else.
+        # However, in this case this model is so specialistic that we can assume GeV
 
         self.mass.unit = astropy_units.GeV
 
@@ -393,7 +393,8 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
                 "currently spectra for selected channel and mass not implemented."
             )
             log.error(
-                "Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV"
+                "Spectra for channels ['ee','gg','WW'] currently not available for mass"
+                " > 10 TeV"
             )
 
     def _set_units(self, x_unit, y_unit):

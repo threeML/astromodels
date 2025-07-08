@@ -75,12 +75,12 @@ class Node(NodeBase):
     def __dir__(self):
 
         # Get the names of the attributes of the class
-        l = list(self.__class__.__dict__.keys())
+        li = list(self.__class__.__dict__.keys())
 
         # Get all the children
-        l.extend([child.name for child in self._get_children()])
+        li.extend([child.name for child in self._get_children()])
 
-        return l
+        return li
 
     def _repr__base(self, rich_output):
 
@@ -108,6 +108,7 @@ class Node(NodeBase):
         :return: (none)
         """
 
-        # This will automatically choose the best representation among repr and repr_html
+        # This will automatically choose the best representation among repr and
+        # repr_html
 
         display(self)

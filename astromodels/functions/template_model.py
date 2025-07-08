@@ -5,7 +5,7 @@ import re
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 import astropy.io.fits as fits
 import astropy.units as u
@@ -52,7 +52,8 @@ class InvalidTemplateModelFile(RuntimeError):
     pass
 
 
-# This dictionary will keep track of the new classes already created in the current session
+# This dictionary will keep track of the new classes already created in the current
+# session
 _classes_cache = {}
 
 
@@ -121,7 +122,8 @@ class TemplateModelFactory(object):
 
         if not isinstance(energies, u.Quantity):
             log.warning(
-                "Energy unit is not a Quantity instance, so units has not been provided. Using keV."
+                "Energy unit is not a Quantity instance, so units has not been"
+                " provided. Using keV."
             )
 
             energies: u.Quantity = energies * u.keV
@@ -219,12 +221,14 @@ class TemplateModelFactory(object):
             #     names=list(self._parameters_grids.keys()),
             # )
 
-            # # Pre-fill the data matrix with nans, so we will know if some elements have not been filled
+            # # Pre-fill the data matrix with nans, so we will know if some elements
+            # have not been filled
 
             # self._data_frame = pd.DataFrame(index=self._multi_index,
             #                                 columns=self._energies)
 
-        # Make sure we have all parameters and order the values in the same way as the dictionary
+        # Make sure we have all parameters and order the values in the same way as the
+        # dictionary
 
         parameter_idx = []
 
@@ -238,14 +242,16 @@ class TemplateModelFactory(object):
 
         log.debug(f" have index {parameter_idx}")
 
-        # If the user did not specify one of the parameters, then the parameters_values array will contain nan
+        # If the user did not specify one of the parameters, then the parameters_values
+        # array will contain nan
 
         if not len(parameter_idx) == len(self._parameters_grids):
             log.error("You didn't specify all parameters' values.")
 
             raise AssertionError()
 
-        # Make sure we are dealing with pure numpy arrays (list and astropy.Quantity instances will be transformed)
+        # Make sure we are dealing with pure numpy arrays (list and astropy.Quantity
+        # instances will be transformed)
         # First we transform the input into a u.Quantity (if it's not already)
 
         if not isinstance(differential_fluxes, u.Quantity):
@@ -269,8 +275,8 @@ class TemplateModelFactory(object):
 
             raise AssertionError()
 
-        # Check that the provided value does not contains nan, inf nor zero (as the interpolation happens in the
-        # log space)
+        # Check that the provided value does not contains nan, inf nor zero (as the
+        # interpolation happens in the log space)
         if not np.all(np.isfinite(differential_fluxes)):
             log.error("You have invalid values in the differential flux (nan or inf)")
 
@@ -286,8 +292,9 @@ class TemplateModelFactory(object):
 
         if not np.all(differential_fluxes > 0):
             log.warning(
-                "You have zeros in the differential flux. Since the interpolation happens in the log space, "
-                "this cannot be accepted. We will substitute zeros with %g" % _TINY_
+                "You have zeros in the differential flux. Since the interpolation"
+                " happens in the log space, this cannot be accepted."
+                "We will substitute zeros with %g" % _TINY_
             )
 
             idx = differential_fluxes == 0  # type: np.ndarray
@@ -329,13 +336,13 @@ class TemplateModelFactory(object):
 
                 except IOError:
                     log.error(
-                        "The file %s already exists and cannot be removed (maybe you do not have "
-                        "permissions to do so?). " % filename_sanitized
+                        "The file %s already exists and cannot be removed (maybe you do"
+                        "not have permissions to do so?). " % filename_sanitized
                     )
 
                     raise IOError(
-                        f"The file {filename_sanitized} already exists and cannot be removed (maybe you do not have "
-                        "permissions to do so?). "
+                        f"The file {filename_sanitized} already exists and cannot be"
+                        "removed (maybe you do not have permissions to do so?). "
                     )
 
             else:
@@ -345,8 +352,8 @@ class TemplateModelFactory(object):
                 )
 
                 raise IOError(
-                    f"The file {filename_sanitized} already exists! You cannot call two different "
-                    "template models with the same name"
+                    f"The file {filename_sanitized} already exists! You cannot call two"
+                    " different template models with the same name"
                 )
 
         # Open the HDF5 file and write objects
@@ -380,7 +387,8 @@ class RectBivariateSplineWrapper(object):
     which accept the same syntax as the other interpolation methods."""
 
     def __init__(self, *args, **kwargs):
-        # We can use interp2, which features spline interpolation instead of linear interpolation
+        # We can use interp2, which features spline interpolation instead of linear
+        # interpolation
 
         self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
 
@@ -475,13 +483,16 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         $n.a.$
     parameters :
         K :
-            desc : Normalization (freeze this to 1 if the template provides the normalization by itself)
+            desc : Normalization (freeze this to 1 if the template provides the
+                    normalization by itself)
             initial value : 1.0
         scale :
-            desc : Scale for the independent variable. The templates are handled as if they contains the fluxes
-                   at E = scale * x.This is useful for example when the template describe energies in the rest
-                   frame, at which point the scale describe the transformation between rest frame energy and
-                   observer frame energy. Fix this to 1 to neutralize its effect.
+            desc : Scale for the independent variable. The templates are handled as if
+                    they contains the fluxes at E = scale * x.This is useful for example
+                    when the template describe energies in the rest frame, at which
+                    point the scale describe the transformation between rest frame
+                    energy and observer frame energy. Fix this to 1 to neutralize its
+                    effect.
             initial value : 1.0
             min : 1e-5
 
@@ -643,12 +654,13 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                     if len(list(self._parameters_grids.values())) == 2:
                         x, y = list(self._parameters_grids.values())
 
-                        # Make sure that the requested polynomial degree is less than the number of data sets in
-                        # both directions
+                        # Make sure that the requested polynomial degree is less than
+                        # the number of data sets in both directions
 
                         msg = (
-                            "You cannot use an interpolation degree of %s if you don't provide at least %s points "
-                            "in the %s direction. Increase the number of templates or decrease the interpolation "
+                            "You cannot use an interpolation degree of %s if you don't"
+                            "provide at least %s points in the %s direction. Increase"
+                            " the number of templates or decrease the interpolation "
                             "degree."
                         )
 
@@ -722,8 +734,8 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
     def _interpolate(self, energies, scale, parameters_values):
         if isinstance(energies, u.Quantity):
             # Templates are always saved with energy in keV. We need to transform it to
-            # a dimensionless quantity (actually we take the .value property) because otherwise
-            # the logarithm below will fail.
+            # a dimensionless quantity (actually we take the .value property) because
+            # otherwise the logarithm below will fail.
 
             energies = np.array(
                 energies.to("keV").value, ndmin=1, copy=copy_if_needed, dtype=float
@@ -771,7 +783,8 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # de = dE / scale
         # dN / dE = dN / de * de / dE = dN / de * (1 / scale)
 
-        # NOTE: the units are added back through the multiplication by K in the evaluate method
+        # NOTE: the units are added back through the multiplication by K in the evaluate
+        # method
 
         return values / scale
 
@@ -854,7 +867,9 @@ class XSPECTableModel(object):
 
             if f[0].header["MODLUNIT"] == "photons/cm^2/s":
                 log.info(
-                    "This table model has flux units of photons/cm^2/s. It will be converted to differential Flux by dividing by the energy bin widths. Logarithmic centers will be turned off. "
+                    "This table model has flux units of photons/cm^2/s. It will be"
+                    " converted to differential Flux by dividing by the energy bin"
+                    " widths. Logarithmic centers will be turned off. "
                 )
                 delta_ene = ene_hi - ene_lo
                 self._spectrum = spectra.data["INTPSPEC"] / delta_ene

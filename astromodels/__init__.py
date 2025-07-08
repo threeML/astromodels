@@ -21,7 +21,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         turn_off_parameter_transforms,
     )
     from .core.polarization import LinearPolarization, StokesPolarization
-    from .core.serialization import *
+    from .core.serialization import serialize_model, unserialize_model
     from .core.spectral_component import SpectralComponent
     from .core.units import get_units
     from .functions import (

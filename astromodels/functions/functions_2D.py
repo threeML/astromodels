@@ -78,15 +78,15 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
-        b = _coord.transform_to("galactic").b.value
-        l = _coord.transform_to("galactic").l.value
+        lat = _coord.transform_to("galactic").b.value
+        lon = _coord.transform_to("galactic").l.value
 
         return (
             K
-            * np.exp(old_div(-(b**2), (2 * sigma_b**2)))
+            * np.exp(old_div(-(lat**2), (2 * sigma_b**2)))
             * np.logical_or(
-                np.logical_and(l > l_min, l < l_max),
-                np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
+                np.logical_and(lon > l_min, lon < l_max),
+                np.logical_and(l_min > l_max, np.logical_or(lon > l_min, lon < l_max)),
             )
         )
 
@@ -141,7 +141,13 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional Gaussian function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-\vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\ \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc} \sigma^2 & 0 \\ 0 & \sigma^2 (1-e^2) \end{array}\right) \\ U = \left( \begin{array}{cc} \cos \theta & -\sin \theta \\ \sin \theta & cos \theta \end{array}\right) \\\Sigma = U\Lambda U^\intercal $$
+    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi
+            \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-
+            \vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\
+            \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc}
+            \sigma^2 & 0 \\ 0 & \sigma^2 (1-e^2) \end{array}\right) \\ U = \left(
+            \begin{array}{cc} \cos \theta & -\sin \theta \\ \sin \theta & cos \theta
+            \end{array}\right) \\\Sigma = U\Lambda U^\intercal $$
 
     parameters :
 
@@ -248,10 +254,8 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
     description :
-
-        A bidimensional Gaussian function on a sphere (in spherical coordinates)
-
-        see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function
+       A bidimensional Gaussian function on a sphere (in spherical coordinates) see
+       https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function
 
     parameters :
 
@@ -402,7 +406,10 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional disk/tophat function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm radius}} \end{matrix}\right. $$
+    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm
+            radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0|
+            \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm
+            radius}} \end{matrix}\right. $$
 
     parameters :
 
@@ -510,7 +517,10 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
 
         An ellipse function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| > {\rm 2a}} \end{matrix}\right. $$
+    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b}
+            ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}|
+            + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 & {\rm if}& {\rm | \vec{x}
+            - \vec{x}_{f1}| + | \vec{x}-\vec{x}_{f2}| > {\rm 2a}} \end{matrix}\right. $$
 
     parameters :
 
@@ -727,8 +737,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
             self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
 
-            # note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0.
-            # see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
+            # note: map coordinates are switched compared to header. NAXIS1 is
+            # coordinate 1, not 0. see
+            # http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
             assert (
                 self._map.shape[1] == self._nX
             ), "NAXIS1 = %d in fits header, but %d in map" % (
@@ -754,8 +765,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                     )
                 )
 
-            # hash sum uniquely identifying the template function (defined by its 2D map array and coordinate system)
-            # this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
+            # hash sum uniquely identifying the template function (defined by its 2D map
+            # array and coordinate system) this is needed so that the memoization won't
+            # confuse different SpatialTemplate_2D objects.
             h = hashlib.sha224()
             h.update(self._map)
             h.update(repr(self._wcs).encode("utf-8"))
@@ -767,7 +779,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
     #      if not minimal:
 
-    #         data['extra_setup'] = {"_fitsfile": self._fitsfile, "_frame": self._frame }
+    #         data['extra_setup'] = {"_fitsfile": self._fitsfile,"_frame":self._frame}
 
     #      return data
 
@@ -809,7 +821,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         #     self.load_file(self._fitsfile)
 
         # We use the max/min RA/Dec of the image corners to define the boundaries.
-        # Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
+        # Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed
+        # accounting.
 
         Xcorners = np.array([0, 0, self._nX, self._nX])
         Ycorners = np.array([0, self._nY, 0, self._nY])
@@ -846,7 +859,10 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A power law function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & ||\vec{x}-\vec{x}_0|| \le 0.05\\ ||\vec{x}-\vec{x}_0||^{index} & {\rm if} & 0.05 < ||\vec{x}-\vec{x}_0|| \le maxr \\ 0 & {\rm if} & ||\vec{x}-\vec{x}_0||>maxr\end{matrix}\right. $$
+    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{
+            \begin{matrix} 0.05^{index} & {\rm if} & ||\vec{x}-\vec{x}_0|| \le 0.05\\
+            ||\vec{x}-\vec{x}_0||^{index} & {\rm if} & 0.05 < ||\vec{x}-\vec{x}_0|| \le
+            maxr \\ 0 & {\rm if} & ||\vec{x}-\vec{x}_0||>maxr\end{matrix}\right. $$
 
     parameters :
 
@@ -957,7 +973,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 #     r"""
 #         description :
 #
-#             Returns the average of the integrand function (a 1-d function) over the interval x-y. The integrand is set
+#             Returns the average of the integrand function (a 1-d function) over the
+#             interval x-y. The integrand is set
 #             using the .integrand property, like in:
 #
 #             > G = FunctionIntegrator()
@@ -969,7 +986,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 #
 #             s :
 #
-#                 desc : if s=0, then the integral will *not* be normalized by (y-x), otherwise (default) it will.
+#                 desc : if s=0, then the integral will *not* be normalized by (y-x),
+#                        otherwise (default) it will.
 #                 initial value : 1
 #                 fix : yes
 #         """
@@ -986,7 +1004,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 #
 #     def evaluate(self, x, y, s):
 #
-#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is zero or negative!"
+#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is
+#                           zero or negative!"
 #
 #         integral = self._integrand.integral(x, y)
 #

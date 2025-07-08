@@ -41,7 +41,7 @@ class ThreadSafe(Base):
         # This is of course the format that is the output of
         # our to_string method(). See there for details
 
-        tokens = re.findall("([a-zA-z]+)(-?\+?[0-9]+)?", s)
+        tokens = re.findall(r"([a-zA-z]+)(-?\+?[0-9]+)?", s)
 
         # tokens is a list of tuples of the type [(unit name, power), ...]
         # Here we build a list like [u.m, u.s**(-1), ...]

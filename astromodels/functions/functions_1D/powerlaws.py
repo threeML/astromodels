@@ -10,22 +10,13 @@ from astromodels.functions.function import (
     ModelAssertionViolation,
 )
 
-try:
-    from threeML.config.config import threeML_config
-
-    _has_threeml = True
-
-except ImportError:
-
-    _has_threeml = False
-
-
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 
 __author__ = "giacomov"
-# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016
+# DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu)
+# Oct 26, 2016
 
 erg2keV = 6.24151e8
 
@@ -107,8 +98,8 @@ class Powerlaw_flux(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation
-        between the index and the normalization.
+        A simple power-law with the photon flux in a band used as normalization. This
+        will reduce the correlation between the index and the normalization.
 
     latex : $ \frac{F(\gamma+1)} {b^{\gamma+1} - a^{\gamma+1}} (x)^{\gamma}$
 
@@ -169,11 +160,9 @@ class Powerlaw_flux(Function1D, metaclass=FunctionMeta):
             x_ = x.value
 
             yunit_ = self.y_unit
-            xunit_ = self.x_unit
 
         else:
             yunit_ = 1.0
-            xunit_ = 1.0
             F_, x_, index_, a_, b_ = F, x, index, a, b
 
         gp1 = index_ + 1
@@ -249,11 +238,9 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
             b_ = b.value
 
             yunit_ = self.y_unit
-            xunit_ = self.x_unit
 
         else:
             yunit_ = 1.0
-            xunit_ = 1.0
             F_, piv_, x_, index_, a_, b_ = F, piv, x, index, a, b
 
         intflux = nb_func.plaw_flux_norm(index_, a_, b_)
@@ -413,7 +400,7 @@ class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
             unit_ = 1.0
             K_, piv_, x_, index_, xp_ = K, piv, x, index, xp
 
-        xc = xp / (2 + index)
+        xc = xp_ / (2 + index)
 
         result = nb_func.cplaw_eval(x_, K_, xc, index_, piv_)
 
@@ -422,8 +409,8 @@ class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
 
 class Inverse_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
     r"""
-    description :
-        A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]
+    description : A power law multiplied by an exponential cutoff
+        Note, instead of cutoff energy energy parameter xc, b = 1/xc is used
     latex : $K \frac{x}{piv}^{index}\exp{(-x~b)} $
     parameters :
         K :
@@ -663,7 +650,7 @@ class SmoothlyBrokenPowerLaw(Function1D, metaclass=FunctionMeta):
             )
 
         result = nb_func.sbplaw_eval(
-            x_, K_, alpha_, break_energy, break_scale_, beta_, pivot_
+            x_, K_, alpha_, break_energy_, break_scale_, beta_, pivot_
         )
 
         return result * unit_
@@ -675,7 +662,8 @@ class Broken_powerlaw(Function1D, metaclass=FunctionMeta):
 
         A broken power law function
 
-    latex : $ f(x)= K~\begin{cases}\left( \frac{x}{x_{b}} \right)^{\alpha} & x < x_{b} \\ \left( \frac{x}{x_{b}} \right)^{\beta} & x \ge x_{b} \end{cases} $
+    latex : $ f(x)= K~\begin{cases}\left( \frac{x}{x_{b}} \right)^{\alpha} & x < x_{b}
+            \\ \left( \frac{x}{x_{b}} \right)^{\beta} & x \ge x_{b} \end{cases} $
 
     parameters :
 
@@ -731,9 +719,9 @@ class Broken_powerlaw(Function1D, metaclass=FunctionMeta):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, xb, alpha, beta, piv):
-        # The K * 0 is to keep the units right. If the input has unit, this will make a result
-        # array with the same units as K. If the input has no units, this will have no
-        # effect whatsoever
+        # The K * 0 is to keep the units right. If the input has unit, this will make a
+        # result array with the same units as K. If the input has no units, this will
+        # have no effect whatsoever
 
         if isinstance(x, astropy_units.Quantity):
             alpha_ = alpha.value
@@ -760,7 +748,11 @@ class Band(Function1D, metaclass=FunctionMeta):
 
         Band model from Band et al., 1993, parametrized with the peak energy
 
-    latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) & x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &x>(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $
+    latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-
+            \frac{(2+\alpha) x}{x_{p}}\right) & x \leq (\alpha-\beta) \frac{x_{p}}
+            {(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)
+            \left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &x>
+            (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $
 
     parameters :
 
@@ -926,8 +918,9 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        The Band model from Band et al. 1993, implemented however in a way which reduces the covariances between
-        the parameters (Calderone et al., MNRAS, 448, 403C, 2015)
+        The Band model from Band et al. 1993, implemented however in a way which reduces
+        the covariances between the parameters (Calderone et al., MNRAS, 448, 403C,
+        2015)
 
     latex : $ \text{(Calderone et al., MNRAS, 448, 403C, 2015)} $
 
@@ -949,7 +942,8 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
         xp :
 
-            desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)
+            desc : position of the peak in the x*x*f(x) space (if x is energy, this is
+                    the nuFnu or SED space)
             initial value : 200.0
             min : 1e-10
             transformation : log10
@@ -978,7 +972,8 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
         opt :
 
-            desc : option to select the spectral model (0 corresponds to a cutoff power law, 1 to the Band model)
+            desc : option to select the spectral model (0 corresponds to a cutoff power
+                    law, 1 to the Band model)
             initial value : 1
             min : 0
             max : 1
@@ -1115,9 +1110,19 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
 class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
     r"""
-    description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).
+    description : A smoothly broken power law with two breaks as parameterized in
+                    Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).
 
-    latex : $\begin{array}{l}\begin{aligned}f(x)=& A x_{\mathrm{b}}^{\alpha_{1}}\left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right.\\&\left.+\left(\frac{x}{x_{\mathrm{j}}}\right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}{n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot\left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}\right) n_{2}}}\end{array}$
+    latex : $\begin{array}{l}\begin{aligned}f(x)=& A x_{\mathrm{b}}^{\alpha_{1}}
+            \left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+
+            \left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{
+            \frac{n_{2}}{n_{1}}}\right.\\&\left.+\left(\frac{x}{x_{\mathrm{j}}}
+            \right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}
+            }}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}
+            \right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}
+            {n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot
+            \left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}
+            \right) n_{2}}}\end{array}$
 
     parameters :
 

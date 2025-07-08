@@ -89,11 +89,10 @@ class ModelParser(object):
                     self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
             except IOError:
+                msg = "File %s cannot be read. " % model_file
+                msg += "Check path and permissions for current user."
 
-                log.error(
-                    "File %s cannot be read. Check path and permissions for current user."
-                    % model_file
-                )
+                log.error(msg)
 
                 raise ModelIOError()
 
@@ -305,12 +304,14 @@ class ParameterParser(object):
                 name, function_name, parameters_definition
             )
 
-            # Substitute the definition with the instance, so that the following constructor will work
+            # Substitute the definition with the instance, so that the following
+            # constructor will work
             definition["prior"] = prior_instance
 
-        # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
+        # Check if this is a linked parameter, i.e., if 'value' is something like
+        # f(source.spectrum.powerlaw.index)
 
-        matches = re.findall("""f\((.+)\)""", str(definition["value"]))
+        matches = re.findall(r"f\((.+)\)", str(definition["value"]))
 
         if matches:
 
@@ -381,7 +382,7 @@ class SourceParser(object):
             # Point source or extended source?
 
             source_type = re.findall(
-                "\((%s|%s|%s)\)"
+                r"\((%s|%s|%s)\)"
                 % (
                     SourceType.POINT_SOURCE,
                     SourceType.EXTENDED_SOURCE,
@@ -416,8 +417,9 @@ class SourceParser(object):
         # This will store the links (if any)
         self._links = []
 
-        # This will store extra_setups (if any), used sometimes. For example, the function which uses naima
-        # to make a synchrotron spectrum uses this to save and set up the particle distribution
+        # This will store extra_setups (if any), used sometimes. For example, the
+        # function which uses naima to make a synchrotron spectrum uses this to save
+        # and set up the particle distribution
         self._extra_setups = []
 
         # this will store any externally linked functions
@@ -460,7 +462,7 @@ class SourceParser(object):
 
         try:
 
-            spectrum = particle_source_definition["spectrum"]
+            _ = particle_source_definition["spectrum"]
 
         except KeyError:  # pragma: no cover
 
@@ -595,10 +597,10 @@ class SourceParser(object):
 
             par_parser = ParameterParser("l", sky_direction_definition["l"])
 
-            l = par_parser.get_variable()
+            lon = par_parser.get_variable()
 
-            if l.bounds == (None, None):
-                l.bounds = (0, 360)
+            if lon.bounds == (None, None):
+                lon.bounds = (0, 360)
 
             par_parser = ParameterParser("b", sky_direction_definition["b"])
 
@@ -607,7 +609,7 @@ class SourceParser(object):
             if b.bounds == (None, None):
                 b.bounds = (-90, 90)
 
-            coordinates["l"] = l
+            coordinates["l"] = lon
             coordinates["b"] = b
 
         else:  # pragma: no cover
@@ -642,8 +644,6 @@ class SourceParser(object):
         return this_sky_direction
 
     def _parse_polarization(self, polarization_definititon):
-
-        polarization_params = {}
 
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
             par_dict = {"degree": None, "angle": None}
@@ -724,9 +724,9 @@ class SourceParser(object):
             # just make a default polarization
 
             this_polarization = polarization.Polarization()
-            # raise ModelSyntaxError("Polarization specification for source %s has an invalid parameters. "
-            #                        " You need to specify either 'angle' and 'degree', or 'I' ,'Q', 'U' and 'V'."
-            #                        % self._source_name)
+            # raise ModelSyntaxError("Polarization specification for source %s has an
+            # invalid parameters. You need to specify either 'angle' and 'degree', or
+            # 'I' ,'Q', 'U' and 'V'." % self._source_name)
 
         return this_polarization
 
@@ -808,7 +808,7 @@ class SourceParser(object):
 
         try:
 
-            spectrum = ext_source_definition["spectrum"]
+            _ = ext_source_definition["spectrum"]
 
         except KeyError:  # pragma: no cover
 
@@ -915,8 +915,9 @@ class ShapeParser(object):
 
                 raise ModelSyntaxError()
 
-        # Loop over the parameters of the function instance, instead of the specification,
-        # so we can understand if there are parameters missing from the specification
+        # Loop over the parameters of the function instance, instead of the
+        # specification, so we can understand if there are parameters missing from the
+        # specification
 
         for parameter_name, _ in function_instance.parameters.items():
 
@@ -943,14 +944,15 @@ class ShapeParser(object):
 
                 raise ModelSyntaxError()
 
-            # Update the parameter. Note that the order is important, because trying to set the value before the
-            # minimum and maximum could result in a error.
+            # Update the parameter. Note that the order is important, because trying to
+            # set the value before the minimum and maximum could result in a error.
 
-            # All these specifications are optional. If they are not present, then the default value
-            # already contained in the instance of the function will be used
+            # All these specifications are optional. If they are not present, then the
+            # default value already contained in the instance of the function will be
+            # used
 
-            # Ignore for a second the RuntimeWarning that is printed if the default value in the function definition
-            # is outside the bounds defined here
+            # Ignore for a second the RuntimeWarning that is printed if the default
+            # value in the function definition is outside the bounds defined here
 
             with warnings.catch_warnings():
 
@@ -998,14 +1000,15 @@ class ShapeParser(object):
 
                 raise ModelSyntaxError()
 
-            # Check if this is a linked parameter, i.e., if 'value' is something like f(source.spectrum.powerlaw.index)
+            # Check if this is a linked parameter, i.e., if 'value' is something like
+            # f(source.spectrum.powerlaw.index)
 
-            matches = re.findall("""f\((.+)\)""", str(this_definition["value"]))
+            matches = re.findall(r"f\((.+)\)", str(this_definition["value"]))
 
             if matches:
 
-                # This is an expression which marks a parameter
-                # with a link to another parameter (or an IndependentVariable such as time)
+                # This is an expression which marks a parameter with a link to another
+                # parameter (or an IndependentVariable such as time)
 
                 # Get the variable
                 linked_variable = matches[0]

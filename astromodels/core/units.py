@@ -42,15 +42,15 @@ def _check_unit(new_unit, old_unit):
     except AttributeError:
 
         raise UnitMismatch(
-            "The provided unit (%s) has no physical type. Was expecting a unit for %s"
-            % (new_unit, old_unit.physical_type)
+            f"The provided unit ({new_unit}) has no physical type. Was expecting a unit"
+            f" for {old_unit.physical_type}"
         )
 
     if new_unit.physical_type != old_unit.physical_type:
 
         raise UnitMismatch(
-            "Physical type mismatch: you provided a unit for %s instead of a unit for %s"
-            % (new_unit.physical_type, old_unit.physical_type)
+            f"Physical type mismatch: you provided a unit for {new_unit.physical_type}"
+            f" instead of a unit for {old_unit.physical_type}"
         )
 
 
@@ -78,9 +78,10 @@ class _AstromodelsUnits(object):
         self._units["angle"] = angle_unit
         self._units["area"] = area_unit
 
-    # This __new__ method add the properties to the class. We could have achieved the same with a metaclass,
-    # but this method is more clearer, for a tiny performance penalty. Consider also that under normal circumstances
-    # this class will be only created once per session
+    # This __new__ method add the properties to the class. We could have achieved the
+    # same with a metaclass, but this method is more clearer, for a tiny performance
+    # penalty. Consider also that under normal circumstances this class will be only
+    # created once per session
 
     def __new__(cls, *args, **kwargs):
 
@@ -106,8 +107,8 @@ class _AstromodelsUnits(object):
         except KeyError:
 
             raise UnknownUnit(
-                "You can only assign units for energy, time, angle and area. Don't know "
-                "anything about %s" % what
+                "You can only assign units for energy, time, angle and area. Don't know"
+                f" anything about {what}"
             )
 
         # This allows to use strings in place of Unit instances as new_unit
@@ -162,7 +163,8 @@ class _AstromodelsUnits(object):
         return self._units
 
 
-# This is a factory which will always return the same instance of the _AstromodelsUnits class
+# This is a factory which will always return the same instance of the _AstromodelsUnits
+# class
 
 
 class _AstromodelsUnitsFactory(object):

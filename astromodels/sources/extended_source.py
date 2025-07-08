@@ -41,7 +41,8 @@ class ExtendedSource(Source, Node):
                 "(but not both)."
             )
 
-            # If the user specified only one component, make a list of one element with a default name ("main")
+            # If the user specified only one component, make a list of one element with
+            # a default name ("main")
 
             if spectral_shape is not None:
 
@@ -65,8 +66,9 @@ class ExtendedSource(Source, Node):
 
         elif spatial_shape.n_dim == 3:
 
-            # If there is no spectral component then assume that the input is a template, which will provide the
-            # spectrum by itself. We just use a renormalization (a bias)
+            # If there is no spectral component then assume that the input is a
+            # template, which will provide the spectrum by itself. We just use a
+            # renormalization (a bias)
 
             if spectral_shape is None and components is None:
 
@@ -91,8 +93,9 @@ class ExtendedSource(Source, Node):
 
             else:
 
-                # the spectral shape has been given, so this is a case where the spatial template gives an
-                # energy-dependent shape and the spectral components give the spectrum
+                # the spectral shape has been given, so this is a case where the spatial
+                # template gives an energy-dependent shape and the spectral components
+                # give the spectrum
 
                 if not ((spectral_shape is not None) ^ (components is not None)):
 
@@ -184,15 +187,15 @@ class ExtendedSource(Source, Node):
 
             # Slow version with units
 
-            # We need to sum like this (slower) because using np.sum will not preserve the units
-            # (thanks astropy.units)
+            # We need to sum like this (slower) because using np.sum will not preserve
+            # the units (thanks astropy.units)
 
             differential_flux = sum(results)
 
         else:
 
-            # Fast version without units, where x is supposed to be in the same units as currently defined in
-            # units.get_units()
+            # Fast version without units, where x is supposed to be in the same units as
+            # currently defined in units.get_units()
 
             differential_flux = np.sum(results, 0)
 
@@ -224,15 +227,15 @@ class ExtendedSource(Source, Node):
 
             # Slow version with units
 
-            # We need to sum like this (slower) because using np.sum will not preserve the units
-            # (thanks astropy.units)
+            # We need to sum like this (slower) because using np.sum will not preserve
+            # the units (thanks astropy.units)
 
             differential_flux = sum(results)
 
         else:
 
-            # Fast version without units, where x is supposed to be in the same units as currently defined in
-            # units.get_units()
+            # Fast version without units, where x is supposed to be in the same units as
+            # currently defined in units.get_units()
 
             differential_flux = np.sum(results, 0)
 
@@ -246,7 +249,8 @@ class ExtendedSource(Source, Node):
             n_points = lat.shape[0]
             n_energies = differential_flux.shape[0]
 
-            # The following is a little obscure, but it is 6x faster than doing a for loop
+            # The following is a little obscure, but it is 6x faster than doing a for
+            # loop
 
             cube = (
                 np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T

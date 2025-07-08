@@ -1,4 +1,5 @@
 from __future__ import division, print_function
+from past.utils import old_div
 
 import astropy.units as u
 import numpy as np
@@ -14,7 +15,6 @@ from astromodels.functions import (
     Powerlaw,
 )
 from astromodels.functions.functions_1D.functions import (
-    GenericFunction,
     _ComplexTestFunction,
 )
 
@@ -23,8 +23,7 @@ try:
 
     has_abs_models = True
 
-except:
-
+except ImportError:
     has_abs_models = False
 
 
@@ -37,7 +36,7 @@ try:
 
     from astromodels.xspec import XS_phabs, XS_powerlaw
 
-except:
+except ImportError:
 
     has_xspec = False
 
@@ -49,7 +48,7 @@ try:
 
     from astromodels.functions import EBLattenuation
 
-except:
+except ImportError:
 
     has_ebl = False
 
@@ -58,7 +57,6 @@ else:
     has_ebl = True
 
 from astromodels.functions.function import _known_functions
-from astromodels.functions.priors import *
 
 __author__ = "giacomov"
 
@@ -183,7 +181,7 @@ def test_call_with_units():
         _ = po(1.0 * u.keV)
 
     # Use the function as a spectrum
-    ps = PointSource("test", 0, 0, po)
+    _ = PointSource("test", 0, 0, po)
 
     result = po(1.0 * u.keV)
 
@@ -274,7 +272,8 @@ def test_call_with_units():
 
         this_function = _known_functions[key]
 
-        # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
+        # Test only the power law of XSpec, which is the only one we know we can test
+        # at 1 keV
 
         if (
             key.find("XS") == 0
@@ -282,8 +281,8 @@ def test_call_with_units():
             or (key in _multiplicative_models)
         ):
 
-            # An XSpec model. Test it only if it's a power law (the others might need other parameters during
-            # initialization)
+            # An XSpec model. Test it only if it's a power law (the others might need
+            # other parameters during initialization)
 
             continue
 

@@ -154,8 +154,8 @@ if has_atomdb:
     class VAPEC(Function1D, metaclass=FunctionMeta):
         r"""
         description :
-            The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable abundances for individual elements
-            contributed by Dominique Eckert
+            The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable
+            abundances for individual elements contributed by Dominique Eckert
         parameters :
             K :
                 desc : Normalization in units of 1e-14/(4*pi*(1+z)^2*dA*2)*EM

@@ -340,9 +340,9 @@ class NodeBase:
 
     def __setattr__(self, name, value):
 
-        ### We cannot change a node
-        ### but if the node has a value
-        ### attribute, we want to call that
+        # We cannot change a node
+        # but if the node has a value
+        # attribute, we want to call that
 
         if "_children" in self.__dict__:
             if name in self._children:
@@ -352,7 +352,8 @@ class NodeBase:
                     if not self._children[name].is_leaf:
 
                         log.warning(
-                            f"Trying to set the value of a linked parameter ({name}) directly has no effect "
+                            f"Trying to set the value of a linked parameter ({name})"
+                            " directly has no effect "
                         )
 
                         return
@@ -367,7 +368,8 @@ class NodeBase:
                     # this is going to be a node which
                     # we are not allowed to erase
 
-                    # log.error(f"Accessing an element {name} of the node that does not exist")
+                    # log.error(f"Accessing an element {name} of the node that does not
+                    # exist")
 
                     raise AttributeError(
                         f"Accessing an element {name} of the node that does not exist"

@@ -60,7 +60,7 @@ def _process_text(dictionary):
 
     # Add a '*' for each point in the list and indent appropriately
 
-    final_output = re.sub("(\s*)(.+)", "\\1  * \\2", string_repr)
+    final_output = re.sub(r"(\s*)(.+)", "\\1  * \\2", string_repr)
 
     return final_output
 

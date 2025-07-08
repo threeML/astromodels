@@ -1,7 +1,8 @@
 __author__ = "giacomov"
 
-# The purpose of this module is to customize yaml so that it will load ordered dictionaries instead of normal
-# ones. This way the order in which things are expressed in the file is maintained.
+# The purpose of this module is to customize yaml so that it will load ordered
+# dictionaries instead of normal ones. This way the order in which things are expressed
+# in the file is maintained.
 
 import collections
 

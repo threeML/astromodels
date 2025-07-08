@@ -29,8 +29,8 @@ for nb in notebooks:
 
         os.remove("../doc/%s.rst" % root)
 
-    except:
-
+    except Exception as e:
+        print(f"Could not remove {root}, failed with {e}")
         pass
 
     files_dir = "%s_files" % root
@@ -39,8 +39,9 @@ for nb in notebooks:
 
         shutil.rmtree("../doc/%s" % files_dir)
 
-    except:
+    except Exception as e:
 
+        print(f"Could not rmtree {files_dir}, failed with {e}")
         pass
 
     shutil.move("%s.rst" % root, "../doc")

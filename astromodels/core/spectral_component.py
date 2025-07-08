@@ -6,8 +6,8 @@ from astromodels.core.tree import Node
 
 class SpectralComponent(Node):
 
-    # This is needed to avoid problems when constructing the class, due to the fact that we are overriding
-    # the __setattr__ and __getattr__ attributes
+    # This is needed to avoid problems when constructing the class, due to the fact that
+    # we are overriding the __setattr__ and __getattr__ attributes
 
     _spectral_shape = None
 
@@ -41,9 +41,9 @@ class SpectralComponent(Node):
         except TypeError:
 
             raise TypeError(
-                "Couldn't instance the spectral component. Please verify that you are using an "
-                "*instance* of a function, and not a class. For example, you need to use "
-                "'%s()', and not '%s'." % (shape.__name__, shape.__name__)
+                "Couldn't instance the spectral component. Please verify that you are"
+                " using an *instance* of a function, and not a class. For example, you"
+                " need to use '%s()', and not '%s'." % (shape.__name__, shape.__name__)
             )
 
     def _repr__base(self, rich_output):

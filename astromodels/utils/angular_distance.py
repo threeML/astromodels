@@ -43,7 +43,8 @@ def angular_distance(ra1, dec1, ra2, dec2):
     :return: angular distance(s) in degrees
     """
 
-    # Vincenty formula, slower than the Haversine formula in some cases, but stable also at antipodes
+    # Vincenty formula, slower than the Haversine formula in some cases, but stable also
+    # at antipodes
 
     lon1 = np.deg2rad(ra1)
     lat1 = np.deg2rad(dec1)
@@ -81,7 +82,8 @@ def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):
     b = np.deg2rad(angular_distance(ra0, dec0, ra2, dec2))
     c = np.deg2rad(angular_distance(ra2, dec2, ra1, dec1))
 
-    # use the spherical law of cosines: https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements
+    # use the spherical law of cosines:
+    # https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements
 
     numerator = np.atleast_1d(np.cos(c) - np.cos(a) * np.cos(b))
     denominator = np.atleast_1d(np.sin(a) * np.sin(b))

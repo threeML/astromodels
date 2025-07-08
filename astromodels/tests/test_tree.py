@@ -58,7 +58,7 @@ def test_constructor():
 
     with pytest.raises(TypeError):
 
-        n2 = Node()
+        _ = Node()
 
     clean()
 

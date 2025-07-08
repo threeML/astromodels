@@ -34,9 +34,8 @@ from astromodels.functions.function import (
     get_function_class,
     list_functions,
 )
-from astromodels.functions.functions_1D.absorption import phabs, tbabs, wabs
+from astromodels.functions.functions_1D.absorption import phabs, tbabs
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
-from astromodels.utils.configuration import astromodels_config
 
 update_logging_level("DEBUG")
 
@@ -549,7 +548,7 @@ def test_function_constructor():
 
     assert f.fixed_units is None
 
-    assert f.has_fixed_units() == False
+    assert f.has_fixed_units() is False
 
     with pytest.raises(DesignViolation):
 
@@ -798,7 +797,7 @@ def test_pickling_unpickling():
 
     dump2 = pickle.dumps(composite2)
 
-    new_composite2 = pickle.loads(dump2)
+    _ = pickle.loads(dump2)
 
 
 def test_get_function():
@@ -1026,13 +1025,13 @@ def test_function_properties():
 
     with pytest.raises(FunctionInstanceError):
 
-        c = _ComplexTestFunction()
+        _ = _ComplexTestFunction()
 
-    c = _ComplexTestFunction(file_name="lost.txt", dummy="test")
+    _ = _ComplexTestFunction(file_name="lost.txt", dummy="test")
 
     with pytest.raises(SettingUnknownValue):
 
-        c = _ComplexTestFunction(file_name="f.txt", dummy="wrong")
+        _ = _ComplexTestFunction(file_name="f.txt", dummy="wrong")
 
 
 def test_abs_model():
@@ -1074,7 +1073,7 @@ def test_complex_composites():
 
     assert tbabs._current_table == "ASPL"
 
-    ps = astromodels.PointSource("test", 0, 0, spectral_shape=f)
+    _ = astromodels.PointSource("test", 0, 0, spectral_shape=f)
 
     f.abundance_table_1 = "WILM"
 

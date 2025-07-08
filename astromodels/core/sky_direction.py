@@ -45,10 +45,11 @@ class SkyDirection(Node):
 
         if ra is not None and dec is not None:
 
-            # This goes against duck typing, but it is needed to provide a means of initiating this class
-            # with either Parameter instances or just floats
+            # This goes against duck typing, but it is needed to provide a means of
+            # initiating this class with either Parameter instances or just floats
 
-            # Try to transform it to float, if it works than we transform it to a parameter
+            # Try to transform it to float, if it works than we transform it to a
+            # parameter
 
             ra = self._get_parameter_from_input(ra, 0, 360, "ra", "Right Ascension")
 
@@ -61,18 +62,19 @@ class SkyDirection(Node):
 
         elif l is not None and b is not None:
 
-            # This goes against duck typing, but it is needed to provide a means of initiating this class
-            # with either Parameter instances or just floats
+            # This goes against duck typing, but it is needed to provide a means of
+            # initiating this class with either Parameter instances or just floats
 
-            # Try to transform it to float, if it works than we transform it to a parameter
+            # Try to transform it to float, if it works than we transform it to a
+            # parameter
 
-            l = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
+            lon = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
 
-            b = self._get_parameter_from_input(b, -90, 90, "b", "Galactic latitude")
+            lat = self._get_parameter_from_input(b, -90, 90, "b", "Galactic latitude")
 
             self._coord_type = "galactic"
-            self._add_child(l)
-            self._add_child(b)
+            self._add_child(lon)
+            self._add_child(lat)
 
         else:
 
@@ -93,7 +95,8 @@ class SkyDirection(Node):
                 "%s must be either a number or a " "parameter instance" % what
             )
 
-            # So this is a Parameter instance already. Enforce that it has the right maximum and minimum
+            # So this is a Parameter instance already. Enforce that it has the right
+            # maximum and minimum
 
             parameter = number_or_parameter
 
@@ -204,11 +207,11 @@ class SkyDirection(Node):
 
         if self._coord_type == "galactic":
 
-            l = self.l.value
-            b = self.b.value
+            lon = self.l.value
+            lat = self.b.value
 
             return coordinates.SkyCoord(
-                l=l, b=b, frame="galactic", equinox=self._equinox, unit="deg"
+                l=lon, b=lat, frame="galactic", equinox=self._equinox, unit="deg"
             )
 
         else:

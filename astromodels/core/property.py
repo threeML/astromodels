@@ -64,7 +64,8 @@ class PropertyBase(Node):
         elif self._allowed_values is not None:
             if new_value not in self._allowed_values:
                 log.error(
-                    f"{self.name} can only take the values {','.join(self._allowed_values)} not {new_value}"
+                    f"{self.name} can only take the values "
+                    f"{','.join(self._allowed_values)} not {new_value}"
                 )
 
                 raise SettingUnknownValue()
@@ -132,7 +133,8 @@ class PropertyBase(Node):
     def duplicate(self) -> "FunctionProperty":
         """Returns an exact copy of the current property."""
 
-        # Deep copy everything to make sure that there are no ties between the new instance and the old one
+        # Deep copy everything to make sure that there are no ties between the new
+        # instance and the old one
 
         new_property = copy.deepcopy(self)
 
@@ -152,7 +154,8 @@ class PropertyBase(Node):
         :return: the value of the variable having a python type (int, float, ...)
         """
 
-        # Assume variable is a np.array, fall back to the case where variable is already a primitive type
+        # Assume variable is a np.array, fall back to the case where variable is already
+        # a primitive type
 
         try:
             return variable.item()
@@ -171,7 +174,8 @@ class PropertyBase(Node):
             data["value"] = self._to_python_type(self.value)
 
         else:
-            # In the complete representation we output everything is needed to re-build the object
+            # In the complete representation we output everything is needed to re-build
+            # the object
 
             data["value"] = self.value if type(self.value) is bool else str(self.value)
             data["desc"] = str(self._desc)
@@ -202,9 +206,9 @@ class FunctionProperty(PropertyBase):
         )
 
     def _repr__base(self, rich_output=False):
+        rep = "all" if self._allowed_values is None else " ,".join(self._allowed_values)
         representation = (
-            f"Property {self.name} = {self.value}\n"
-            f"(allowed values = {'all' if self._allowed_values is None else ' ,'.join(self._allowed_values)})"
+            f"Property {self.name} = {self.value}\n (allowed values = {rep})"
         )
 
         return representation

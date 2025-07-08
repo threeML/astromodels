@@ -12,13 +12,12 @@ import astropy.units as u
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions.function import get_function_class
 from astromodels.utils import get_user_data_path
+from astromodels.xspec import _xspec
 
 
 class XSpecNotAvailable(ImportWarning):
     pass
 
-
-from astromodels.xspec import _xspec
 
 # When running in a Anaconda environment, the package xspec-modelsonly
 # will install the models data in a specific place, so we set the HEADAS variable to

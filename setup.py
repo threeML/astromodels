@@ -39,9 +39,9 @@ class My_build_ext(_build_ext):
 
 
 def sanitize_lib_name(library_path):
-    """
-    Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0, and returns the lib name needed to be
-    passed to the linker in the -l option (for example gfortran)
+    """Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0,
+    and returns the lib name needed to be passed to the linker in the -l option
+    (for example gfortran)
 
     :param library_path:
     :return:
@@ -49,30 +49,35 @@ def sanitize_lib_name(library_path):
 
     lib_name = os.path.basename(library_path)
 
-    # Some regexp magic needed to extract in a system-independent (mac/linux) way the library name
+    # Some regexp magic needed to extract in a system-independent (mac/linux)
+    # way the library name
 
-    tokens = re.findall("lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
+    tokens = re.findall(r"lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
 
     if not tokens:
-        raise RuntimeError(
-            f"Attempting to find {lib_name} in directory {library_path} but there are no libraries in this directory"
-        )
+        msg = f"Attempting to find {lib_name} in directory {library_path}"
+        msg += " but there are no libraries in this directory"
+
+        raise RuntimeError(msg)
 
     return tokens[0][0]
 
 
 def find_library(library_root, additional_places=None):
-    """
-    Returns the name of the library without extension
+    """Returns the name of the library without extension.
 
-    :param library_root: root of the library to search, for example "cfitsio_" will match libcfitsio_1.2.3.4.so
-    :return: the name of the library found (NOTE: this is *not* the path), and a directory path if the library is not
-    in the system paths (and None otherwise). The name of libcfitsio_1.2.3.4.so will be cfitsio_1.2.3.4, in other words,
-    it will be what is needed to be passed to the linker during a c/c++ compilation, in the -l option
+    :param library_root: root of the library to search, for example
+        "cfitsio_" will match libcfitsio_1.2.3.4.so
+    :return: the name of the library found (NOTE: this is *not* the
+        path), and a directory path if the library is not in the system
+        paths (and None otherwise). The name of libcfitsio_1.2.3.4.so
+        will be cfitsio_1.2.3.4, in other words, it will be what is
+        needed to be passed to the linker during a c/c++ compilation, in
+        the -l option
     """
 
-    # find_library searches for all system paths in a system independent way (but NOT those defined in
-    # LD_LIBRARY_PATH or DYLD_LIBRARY_PATH)
+    # find_library searches for all system paths in a system independent way (but NOT
+    # those defined in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH)
 
     first_guess = ctypes.util.find_library(library_root)
 
@@ -103,8 +108,8 @@ def find_library(library_root, additional_places=None):
     else:
 
         # could not find it. Let's examine LD_LIBRARY_PATH or DYLD_LIBRARY_PATH
-        # (if they sanitize_lib_name(first_guess), are not defined, possible_locations will become [""] which will
-        # be handled by the next loop)
+        # (if they sanitize_lib_name(first_guess), are not defined, possible_locations
+        # will become [""] which will be handled by the next loop)
 
         if sys.platform.lower().find("linux") >= 0:
 
@@ -134,8 +139,9 @@ def find_library(library_root, additional_places=None):
         for search_path in possible_locations:
 
             if search_path == "":
-                # This can happen if there are more than one :, or if nor LD_LIBRARY_PATH
-                # nor DYLD_LIBRARY_PATH are defined (because of the default use above for os.environ.get)
+                # This can happen if there are more than one :, or if nor
+                # LD_LIBRARY_PATH nor DYLD_LIBRARY_PATH are defined (because of
+                # the default use above for os.environ.get)
 
                 continue
 
@@ -144,13 +150,14 @@ def find_library(library_root, additional_places=None):
             if len(results) >= 1:
 
                 # Results contain things like libXS.so, libXSPlot.so, libXSpippo.so
-                # If we are looking for libXS.so, we need to make sure that we get the right one!
+                # If we are looking for libXS.so, we need to make sure that we get the
+                # right one!
 
                 for result in results:
 
                     if (
                         re.match(
-                            f"lib{library_root}[\-_\.]([0-9])*\d*(\.[0-9]\d*)*",
+                            f"lib{library_root}" + r"[\-_\.]([0-9])*\d*(\.[0-9]\d*)*",
                             os.path.basename(result),
                         )
                         is None
@@ -162,7 +169,8 @@ def find_library(library_root, additional_places=None):
 
                         # FOUND IT
 
-                        # This is the full path of the library, like /usr/lib/libcfitsio_1.2.3.4
+                        # This is the full path of the library, like
+                        # /usr/lib/libcfitsio_1.2.3.4
 
                         library_name = result
                         library_dir = search_path
@@ -182,8 +190,8 @@ def find_library(library_root, additional_places=None):
 
         else:
 
-            # Sanitize the library name to get from the fully-qualified path to just the library name
-            # (/usr/lib/libgfortran.so.3.0 becomes gfortran)
+            # Sanitize the library name to get from the fully-qualified path to just
+            # the library name (/usr/lib/libgfortran.so.3.0 becomes gfortran)
 
             return sanitize_lib_name(library_name), library_dir
 
@@ -223,9 +231,9 @@ def setup_xspec():
     macros = []
 
     if xspec_version < packaging_version.Version("12.9.0"):
-        print(
-            "WARN: XSPEC Version is less than 12.9.0, which is the minimal supported version for astromodels"
-        )
+        msg = "WARN: XSPEC Version is less than 12.9.0, which is the minimal supported"
+        msg += "version for astromodels"
+        print(msg)
 
         # I am not sure what the naming of the XSPEC components are,
         # but let's stick with major, minor, and patch.
@@ -263,8 +271,8 @@ def setup_xspec():
         if conda_prefix is not None:
 
             # Yes, this is Conda
-            # Let's see if the package xspec-modelsonly has been installed by checking whether one of the Xspec
-            # libraries exists within conda
+            # Let's see if the package xspec-modelsonly has been installed by checking
+            # whether one of the Xspec libraries exists within conda
             conda_lib_path = os.path.join(conda_prefix, "lib")
             this_lib, this_lib_path = find_library(
                 "XSFunctions", additional_places=[conda_lib_path]
@@ -273,21 +281,21 @@ def setup_xspec():
             if this_lib is None:
 
                 # No, there is no library in Conda
-                print(
-                    "No xspec-modelsonly package has been installed in Conda. Xspec support will not be installed"
-                )
+                msg = "No xspec-modelsonly package has been installed in Conda. Xspec"
+                msg += " support will not be installed"
+                print(msg)
 
                 print("Was looking into %s" % conda_lib_path)
 
                 return None
 
             else:
+                msg = "The xspec-modelsonly package has been installed in Conda. Xspec"
+                msg += " support will be installed"
+                print(msg)
 
-                print(
-                    "The xspec-modelsonly package has been installed in Conda. Xspec support will be installed"
-                )
-
-                # Set up the HEADAS variable so that the following will find the libraries
+                # Set up the HEADAS variable so that the following will find the
+                # libraries
                 headas_root = conda_prefix
 
         else:
@@ -302,12 +310,13 @@ def setup_xspec():
         print("\n NOTICE!!!!!\n")
         print("If you have issues, manually set the ENV variable XSPEC_INC_PATH")
         print("To the location of the XSPEC headers\n\n")
-        print(
-            "If you are still having issues, unset HEADAS before installing and contact the support team"
-        )
+        msg = "If you are still having issues, unset HEADAS before installing and"
+        msg += "contact the support team"
+        print(msg)
 
     # Make sure these libraries exist and are linkable right now
-    # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system paths)
+    # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system
+    # paths)
 
     libraries_root = [
         "XSFunctions",
@@ -343,8 +352,8 @@ def setup_xspec():
 
             if this_library_path is not None:
                 # This library is not in one of the system path library, we need to add
-                # it to the -L flag during linking. Let's put it in the library_dirs list
-                # which will be used in the Extension class
+                # it to the -L flag during linking. Let's put it in the library_dirs
+                # list which will be used in the Extension class
 
                 library_dirs.append(this_library_path)
 

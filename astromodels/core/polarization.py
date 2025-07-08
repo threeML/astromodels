@@ -36,7 +36,8 @@ class Polarization(Node):
                 "%s must be either a number or a " "parameter instance" % what
             )
 
-            # So this is a Parameter instance already. Enforce that it has the right maximum and minimum
+            # So this is a Parameter instance already. Enforce that it has the right
+            # maximum and minimum
 
             parameter = number_or_parameter
 

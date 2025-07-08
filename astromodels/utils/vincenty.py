@@ -6,12 +6,15 @@ def vincenty(lon0, lat0, a1, s):
     s away from a starting point (lon0, lat0) at bearing (angle from north)
     a1), to within a given precision.
 
-    Note that this calculation is a simplified version of the full vincenty problem, which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we only care about the surface of a sphere.
+    Note that this calculation is a simplified version of the full vincenty problem,
+    which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we
+    only care about the surface of a sphere.
 
     Note: All parameters are assumed to be given in DEGREES
     :param lon0: float, longitude of starting point
     :param lat0: float, latitude of starting point
-    :param a1: float, bearing to second point, i.e. angle between due north and line connecting 2 points
+    :param a1: float, bearing to second point, i.e. angle between due north and line
+    connecting 2 points
     :param s: float, angular distance between the two points
     :return: coordinates of second point in degrees
     """

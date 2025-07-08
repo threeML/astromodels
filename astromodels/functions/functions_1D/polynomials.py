@@ -1,6 +1,5 @@
 import numpy as np
 
-from astromodels.core.units import get_units
 from astromodels.functions.function import (
     Function1D,
     FunctionMeta,

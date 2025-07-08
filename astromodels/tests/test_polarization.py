@@ -5,8 +5,8 @@ import os
 
 from astromodels import update_logging_level
 from astromodels.core.model import Model
-from astromodels.core.model_parser import *
-from astromodels.core.polarization import *
+from astromodels.core.model_parser import load_model
+from astromodels.core.polarization import LinearPolarization, StokesPolarization
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
 

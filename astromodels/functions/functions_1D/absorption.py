@@ -18,9 +18,9 @@ log = setup_logger(__name__)
 
 try:
 
-    # ebltable is a Python packages to read in and interpolate tables for the photon density of
-    # the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma
-    # rays.
+    # ebltable is a Python packages to read in and interpolate tables for the photon
+    # density of the Extragalactic Background Light (EBL) and the resulting opacity for
+    # high energy gamma rays.
 
     import ebltable.tau_from_model as ebltau
 
@@ -29,10 +29,9 @@ try:
 except ImportError:
 
     if astromodels_config.logging.startup_warnings:
-
-        log.warning(
-            "The ebltable package is not available. Models that depend on it will not be available"
-        )
+        msg = "The ebltable package is not available. Models that depend on it will"
+        msg += " not be available"
+        log.warning(msg)
 
     has_ebltable = False
 
@@ -84,15 +83,19 @@ class AbundanceTable:
     def info(self) -> str:
 
         _abund_info = {}
-        _abund_info["WILM"] = (
-            "wilms\nfrom Wilms, Allen & McCray (2000), ApJ 542, 914 \n except for elements not listed which are given zero abundance)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html "
-        )
-        _abund_info["AG89"] = (
-            "angr\nfrom Anders E. & Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)\n https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
-        )
-        _abund_info["ASPL"] = (
-            "aspl\nfrom Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA, 47, 481)\nhttps://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
-        )
+        wilm = "wilms\nfrom Wilms, Allen & McCray (2000), ApJ 542, 914 \n except for"
+        wilm += " elements not listed which are given zero abundance)\n"
+        wilm += "https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html "
+        _abund_info["WILM"] = wilm
+
+        ag89 = "angr\nfrom Anders E. & Grevesse N. (1989, Geochimica et Cosmochimica "
+        ag89 += "Acta 53, 197)\n"
+        ag89 += "https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
+        _abund_info["AG89"] = ag89
+
+        aspl = "aspl\nfrom Asplund M., Grevesse N., Sauval A.J. & Scott P. (2009, ARAA,"
+        aspl += " 47, 481)\nhttps://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html"
+        _abund_info["ASPL"] = aspl
 
         return _abund_info[self._current_table]
 
@@ -195,13 +198,11 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
         else:
 
-            _unit = 1.0
             _y_unit = 1.0
             _redshift = redshift
             _x = x
@@ -290,13 +291,11 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
         else:
 
-            _unit = 1.0
             _y_unit = 1.0
             _redshift = redshift
             _x = x
@@ -364,13 +363,11 @@ class WAbs(Function1D, metaclass=FunctionMeta):
 
         if isinstance(x, astropy_units.Quantity):
 
-            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
             _x = x.value
             _redshift = redshift.value
         else:
 
-            _unit = 1.0
             _y_unit = 1.0
             _redshift = redshift
             _x = x
@@ -387,9 +384,9 @@ if has_ebltable:
     class EBLattenuation(Function1D, metaclass=FunctionMeta):
         r"""
         description :
-            Attenuation factor for absorption in the extragalactic background light (EBL) ,
-            to be used for extragalactic source spectra. Based on package "ebltable" by
-            Manuel Meyer, https://github.com/me-manu/ebltable .
+            Attenuation factor for absorption in the extragalactic background light
+            (EBL), to be used for extragalactic source spectra. Based on package
+            "ebltable" by Manuel Meyer, https://github.com/me-manu/ebltable .
 
         latex: not available
 
@@ -425,7 +422,8 @@ if has_ebltable:
         # def _setup(self):
 
         #     # define EBL model, use dominguez as default
-        #     self._tau = ebltau.OptDepth.readmodel(model=astromodels_config.absorption_models.ebl_table.value)
+        #     self._tau = ebltau.OptDepth.readmodel(
+        # model=astromodels_config.absorption_models.ebl_table.value)
 
         def _set_ebl_model(self):
 
