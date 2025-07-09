@@ -68,13 +68,13 @@ class SkyDirection(Node):
             # Try to transform it to float, if it works than we transform it to a
             # parameter
 
-            lon = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
+            l = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
 
-            lat = self._get_parameter_from_input(b, -90, 90, "b", "Galactic latitude")
+            b = self._get_parameter_from_input(b, -90, 90, "b", "Galactic latitude")
 
             self._coord_type = "galactic"
-            self._add_child(lon)
-            self._add_child(lat)
+            self._add_child(l)
+            self._add_child(b)
 
         else:
 
@@ -207,11 +207,11 @@ class SkyDirection(Node):
 
         if self._coord_type == "galactic":
 
-            lon = self.l.value
-            lat = self.b.value
+            l = self.l.value
+            b = self.b.value
 
             return coordinates.SkyCoord(
-                l=lon, b=lat, frame="galactic", equinox=self._equinox, unit="deg"
+                l=l, b=b, frame="galactic", equinox=self._equinox, unit="deg"
             )
 
         else:

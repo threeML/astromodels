@@ -597,10 +597,10 @@ class SourceParser(object):
 
             par_parser = ParameterParser("l", sky_direction_definition["l"])
 
-            lon = par_parser.get_variable()
+            l = par_parser.get_variable()
 
-            if lon.bounds == (None, None):
-                lon.bounds = (0, 360)
+            if l.bounds == (None, None):
+                l.bounds = (0, 360)
 
             par_parser = ParameterParser("b", sky_direction_definition["b"])
 
@@ -609,7 +609,7 @@ class SourceParser(object):
             if b.bounds == (None, None):
                 b.bounds = (-90, 90)
 
-            coordinates["l"] = lon
+            coordinates["l"] = l
             coordinates["b"] = b
 
         else:  # pragma: no cover

@@ -78,15 +78,15 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
 
-        lat = _coord.transform_to("galactic").b.value
-        lon = _coord.transform_to("galactic").l.value
+        b = _coord.transform_to("galactic").b.value
+        l = _coord.transform_to("galactic").l.value
 
         return (
             K
-            * np.exp(old_div(-(lat**2), (2 * sigma_b**2)))
+            * np.exp(old_div(-(b**2), (2 * sigma_b**2)))
             * np.logical_or(
-                np.logical_and(lon > l_min, lon < l_max),
-                np.logical_and(l_min > l_max, np.logical_or(lon > l_min, lon < l_max)),
+                np.logical_and(l > l_min, l < l_max),
+                np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
             )
         )
 
