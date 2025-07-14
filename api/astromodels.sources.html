@@ -156,9 +156,9 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.ExtendedSource.free_parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free_parameters</span></span><a class="headerlink" href="#astromodels.sources.ExtendedSource.free_parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns a dictionary of free parameters for this source
-We use the parameter path as the key because it’s
-guaranteed to be unique, unlike the parameter name.</p>
+<dd><p>Returns a dictionary of free parameters for this source We use the
+parameter path as the key because it’s guaranteed to be unique, unlike
+the parameter name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -169,10 +169,11 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.sources.ExtendedSource.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/sources/extended_source.html#ExtendedSource.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.sources.ExtendedSource.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries for this extended source</p>
+<dd><p>Returns the boundaries for this extended source.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples ((min. lon, max. lon), (min lat, max lat))</p>
+<dd class="field-odd"><p>a tuple of tuples ((min. lon, max. lon), (min lat, max
+lat))</p>
 </dd>
 </dl>
 </dd></dl>
@@ -180,15 +181,15 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.sources.ExtendedSource.get_spatially_integrated_flux">
 <span class="sig-name descname"><span class="pre">get_spatially_integrated_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/sources/extended_source.html#ExtendedSource.get_spatially_integrated_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.sources.ExtendedSource.get_spatially_integrated_flux" title="Link to this definition"></a></dt>
-<dd><p>Returns total flux of source at the given energy
-:param energies: energies (array or float)
-:return: differential flux at given energy</p>
+<dd><p>Returns total flux of source at the given energy :param energies:</p>
+<p>energies (array or float)
+:return: differential flux at given energy.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.ExtendedSource.has_free_parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_free_parameters</span></span><a class="headerlink" href="#astromodels.sources.ExtendedSource.has_free_parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns True or False whether there is any parameter in this source</p>
+<dd><p>Returns True or False whether there is any parameter in this source.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -199,9 +200,9 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.ExtendedSource.parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#astromodels.sources.ExtendedSource.parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns a dictionary of all parameters for this source.
-We use the parameter path as the key because it’s
-guaranteed to be unique, unlike the parameter name.</p>
+<dd><p>Returns a dictionary of all parameters for this source. We use the
+parameter path as the key because it’s guaranteed to be unique, unlike
+the parameter name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -226,14 +227,16 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dt class="sig sig-object py" id="astromodels.sources.ParticleSource">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.sources.</span></span><span class="sig-name descname"><span class="pre">ParticleSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distribution_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/sources/particle_source.html#ParticleSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.sources.ParticleSource" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.sources.html#astromodels.sources.source.Source" title="astromodels.sources.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, <a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.tree.Node" title="astromodels.core.tree.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
-<p>A source of particles with a certain distribution. This source does not produce any electromagnetic signal,
-but it is useful if used in conjuction with spectral shapes which need a particle distribution as input, like
-for example a Synchrotron kernel.</p>
+<p>A source of particles with a certain distribution. This source does not
+produce any electromagnetic signal, but it is useful if used in conjuction
+with spectral shapes which need a particle distribution as input, like for
+example a Synchrotron kernel.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – name for the source</p></li>
-<li><p><strong>distribution_shape</strong> – a function describing the energy distribution of the particles</p></li>
+<li><p><strong>distribution_shape</strong> – a function describing the energy
+distribution of the particles</p></li>
 <li><p><strong>components</strong> – a list of SpectralComponents instances</p></li>
 </ul>
 </dd>
@@ -244,9 +247,9 @@ for example a Synchrotron kernel.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.ParticleSource.free_parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free_parameters</span></span><a class="headerlink" href="#astromodels.sources.ParticleSource.free_parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns a dictionary of free parameters for this source.
-We use the parameter path as the key because it’s
-guaranteed to be unique, unlike the parameter name.</p>
+<dd><p>Returns a dictionary of free parameters for this source. We use the
+parameter path as the key because it’s guaranteed to be unique, unlike
+the parameter name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -257,15 +260,16 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.sources.ParticleSource.get_flux">
 <span class="sig-name descname"><span class="pre">get_flux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/sources/particle_source.html#ParticleSource.get_flux"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.sources.ParticleSource.get_flux" title="Link to this definition"></a></dt>
-<dd><p>Get the total flux of this particle source at the given energies (summed over the components)</p>
+<dd><p>Get the total flux of this particle source at the given energies
+(summed over the components)</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.ParticleSource.parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#astromodels.sources.ParticleSource.parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns a dictionary of all parameters for this source.
-We use the parameter path as the key because it’s
-guaranteed to be unique, unlike the parameter name.</p>
+<dd><p>Returns a dictionary of all parameters for this source. We use the
+parameter path as the key because it’s guaranteed to be unique, unlike
+the parameter name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -280,18 +284,24 @@ guaranteed to be unique, unlike the parameter name.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.sources.</span></span><span class="sig-name descname"><span class="pre">PointSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_shape</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><span class="pre">Function1D</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection" title="astromodels.core.sky_direction.SkyDirection"><span class="pre">SkyDirection</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polarization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/sources/point_source.html#PointSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.sources.PointSource" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.sources.html#astromodels.sources.source.Source" title="astromodels.sources.source.Source"><code class="xref py py-class docutils literal notranslate"><span class="pre">Source</span></code></a>, <a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.tree.Node" title="astromodels.core.tree.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Node</span></code></a></p>
 <p>A point source. You can instance this class in many ways.</p>
-<ul>
-<li><p>with Equatorial position and a function as spectrum (the component will be automatically called ‘main’):</p>
+<ul class="simple">
+<li><p>with Equatorial position and a function as spectrum (the component will be</p></li>
+</ul>
+<p>automatically called ‘main’):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;my_source&#39;</span><span class="p">,</span> <span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
 </pre></div>
 </div>
-</li>
-<li><p>with Galactic position and a function as spectrum (the component will be automatically called ‘main’):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;my_source&#39;</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mf">15.67</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">80.75</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+<ul class="simple">
+<li><p>with Galactic position and a function as spectrum (the component will be</p></li>
+</ul>
+<p>automatically called ‘main’):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
+<span class="go">            &#39;my_source&#39;, l=15.67, b=80.75, spectral_shape=Powerlaw()</span>
+<span class="go">        )</span>
 </pre></div>
 </div>
-</li>
+<ul>
 <li><p>with Equatorial position or Galactic position and a list of spectral components:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;component1&quot;</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;component2&quot;</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
@@ -299,12 +309,15 @@ guaranteed to be unique, unlike the parameter name.</p>
 
 <span class="go">Or with Galactic position:</span>
 
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">&quot;test_source&quot;</span><span class="p">,</span><span class="n">l</span><span class="o">=</span><span class="mf">15.67</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">80.75</span><span class="p">,</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
+<span class="go">            &quot;test_source&quot;,l=15.67, b=80.75,components=[c1,c2]</span>
+<span class="go">        )</span>
 </pre></div>
 </div>
 </li>
 </ul>
-<p>NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)</p>
+<p>NOTE: by default the position of the source is fixed (i.e., its positional
+parameters are fixed)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -325,9 +338,9 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.PointSource.free_parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.sources.PointSource.free_parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns a dictionary of free parameters for this source.
-We use the parameter path as the key because it’s
-guaranteed to be unique, unlike the parameter name.</p>
+<dd><p>Returns a dictionary of free parameters for this source. We use the
+parameter path as the key because it’s guaranteed to be unique, unlike
+the parameter name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -338,7 +351,7 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.PointSource.has_free_parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_free_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#astromodels.sources.PointSource.has_free_parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns True or False whether there is any parameter in this source</p>
+<dd><p>Returns True or False whether there is any parameter in this source.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -349,9 +362,9 @@ guaranteed to be unique, unlike the parameter name.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.sources.PointSource.parameters">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#astromodels.sources.PointSource.parameters" title="Link to this definition"></a></dt>
-<dd><p>Returns a dictionary of all parameters for this source.
-We use the parameter path as the key because it’s
-guaranteed to be unique, unlike the parameter name.</p>
+<dd><p>Returns a dictionary of all parameters for this source. We use the
+parameter path as the key because it’s guaranteed to be unique, unlike
+the parameter name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>

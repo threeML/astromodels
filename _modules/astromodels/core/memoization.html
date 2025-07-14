@@ -90,8 +90,9 @@
              
   <h1>Source code for astromodels.core.memoization</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 
 <span class="n">_WITH_MEMOIZATION</span> <span class="o">=</span> <span class="kc">False</span>
@@ -102,11 +103,11 @@
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.memoization.use_astromodels_memoization">[docs]</a>
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">use_astromodels_memoization</span><span class="p">(</span><span class="n">switch</span><span class="p">,</span> <span class="n">cache_size</span><span class="o">=</span><span class="n">_CACHE_SIZE</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Activate/deactivate memoization temporarily</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Activate/deactivate memoization temporarily.</span>
 
 <span class="sd">    :param switch: True (memoization on) or False (memoization off)</span>
-<span class="sd">    :param cache_size: number of previous evaluation of functions to keep in memory. Default: 100</span>
+<span class="sd">    :param cache_size: number of previous evaluation of functions to</span>
+<span class="sd">        keep in memory. Default: 100</span>
 <span class="sd">    :return:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -129,8 +130,8 @@
 <div class="viewcode-block" id="memoize">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.memoization.memoize">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">memoize</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A decorator for functions of sources which memoize the results of the last _CACHE_SIZE calls,</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A decorator for functions of sources which memoize the results of the</span>
+<span class="sd">    last _CACHE_SIZE calls,</span>
 
 <span class="sd">    :param method: method to be memoized</span>
 <span class="sd">    :return: the decorated method</span>
@@ -176,7 +177,8 @@
             <span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">_CACHE_SIZE</span><span class="p">:</span>
-                <span class="c1"># Remove half of the element (but at least 1, even if _CACHE_SIZE=1, which would be pretty idiotic ;-) )</span>
+                <span class="c1"># Remove half of the element (but at least 1, even if _CACHE_SIZE=1,</span>
+                <span class="c1"># which would be pretty idiotic ;-) )</span>
                 <span class="p">[</span><span class="n">_popitem</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">_CACHE_SIZE</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))]</span>
 
             <span class="k">return</span> <span class="n">result</span>

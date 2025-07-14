@@ -99,17 +99,15 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.file_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy_if_needed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">_ExtinctionCurve</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    simple extinction container</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple extinction container.&quot;&quot;&quot;</span>
 
     <span class="n">a</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="n">lamb</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
@@ -122,7 +120,19 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">ZDust</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
-<span class="sd">        Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.</span>
+<span class="sd">        Extinction by dust grains from Pei (1992), suitable for IR, optical and UV</span>
+<span class="sd">        energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton</span>
+<span class="sd">        OM detectors. Three models are included which characterize the extinction curves</span>
+<span class="sd">        of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by</span>
+<span class="sd">        redshift and can therefore be applied to extragalactic sources. The transmission</span>
+<span class="sd">        is set to unity shortward of 912 Angstroms in the rest frame of the dust. This</span>
+<span class="sd">        is incorrect physically but does allow the model to be used in combination with</span>
+<span class="sd">        an X-ray photoelectric absorption model such as phabs. Parameter 1 (method)</span>
+<span class="sd">        describes which extinction curve (MW, LMC or SMC) will be constructed and should</span>
+<span class="sd">        never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv.</span>
+<span class="sd">        Rv should typically remain frozen for a fit. Standard values for Rv are</span>
+<span class="sd">        MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these</span>
+<span class="sd">        may not be applicable to more distant dusty sources.</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        e_bmv :</span>
 <span class="sd">            desc : color excess</span>
@@ -187,7 +197,6 @@
 
             <span class="n">_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;keV&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy_if_needed</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
             <span class="n">_e_bmv</span> <span class="o">=</span> <span class="n">e_bmv</span><span class="o">.</span><span class="n">value</span>
@@ -196,7 +205,6 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_e_bmv</span> <span class="o">=</span> <span class="n">e_bmv</span>
@@ -295,12 +303,7 @@
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.pei">[docs]</a>
 <span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">pei</span><span class="p">(</span><span class="n">rlambda</span><span class="p">,</span> <span class="n">a_b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    ported from XSPEC originally by</span>
-<span class="sd">    Martin.Still@gsfc.nasa.gov</span>
-
-
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Ported from XSPEC originally by Martin.Still@gsfc.nasa.gov.&quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">rlambda</span> <span class="o">&lt;</span> <span class="mf">800.0</span><span class="p">:</span>
 

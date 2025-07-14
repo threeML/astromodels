@@ -102,7 +102,12 @@
 <blockquote>
 <div><p>Positron and electrons diffusing away from the accelerator</p>
 </div></blockquote>
-<p>latex : $left(frac{180^circ}{pi}right)^2 frac{1.2154}{sqrt{pi^3} r_{rm diff} ({rm angsep} ({rm x, y, lon_0, lat_0})+0.06 r_{rm diff} )} , {rm exp}left(-frac{{rm angsep}^2 ({rm x, y, lon_0, lat_0})}{r_{rm diff} ^2} right)$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$left(frac{180^circ}{pi}right)^2 frac{1.2154}{sqrt{pi^3}</span></dt><dd><p>r_{rm diff} ({rm angsep} ({rm x, y, lon_0, lat_0})+0.06 r_{rm diff} )}
+, {rm exp}left(-frac{{rm angsep}^2 ({rm x, y, lon_0, lat_0})}
+{r_{rm diff} ^2} right)$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -121,15 +126,21 @@ max : 90.0</p>
 </div></blockquote>
 <p>rdiff0 :</p>
 <blockquote>
-<div><p>desc : Projected diffusion radius limited by the cooling time. The maximum allowed value is used to define the truncation radius.
-initial value : 1.0
+<div><dl class="simple">
+<dt>desc<span class="classifier">Projected diffusion radius limited by the cooling time. The maximum</span></dt><dd><p>allowed value is used to define the truncation radius.</p>
+</dd>
+</dl>
+<p>initial value : 1.0
 min : 0
 max : 20</p>
 </div></blockquote>
 <p>rinj :</p>
 <blockquote>
-<div><p>desc : Ratio of diffusion radius limited by the injection time over rdiff0. The maximum allowed value is used to define the truncation radius.
-initial value : 100.0
+<div><dl class="simple">
+<dt>desc<span class="classifier">Ratio of diffusion radius limited by the injection time over rdiff0.</span></dt><dd><p>The maximum allowed value is used to define the truncation radius.</p>
+</dd>
+</dl>
+<p>initial value : 100.0
 min : 0
 max : 200
 fix : yes</p>
@@ -157,9 +168,12 @@ initial value : 2e10
 min : 0
 fix : yes</p>
 </div></blockquote>
-<dl class="simple">
-<dt>piv2 :</dt><dd><p>desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
-initial value : 1e9
+<dl>
+<dt>piv2 :</dt><dd><dl class="simple">
+<dt>desc<span class="classifier">Pivot for converting gamma energy to electron energy (always be 1</span></dt><dd><p>TeV)</p>
+</dd>
+</dl>
+<p>initial value : 1e9
 min : 0
 fix : yes</p>
 </dd>
@@ -173,11 +187,12 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -185,11 +200,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,7 +226,12 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>Positron and electrons diffusing away from the accelerator</p>
 </div></blockquote>
-<p>latex : $left(frac{180^circ}{pi}right)^2 frac{1.2154}{sqrt{pi^3} r_{rm diff} ({rm angsep} ({rm x, y, lon_0, lat_0})+0.06 r_{rm diff} )} , {rm exp}left(-frac{{rm angsep}^2 ({rm x, y, lon_0, lat_0})}{r_{rm diff} ^2} right)$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$left(frac{180^circ}{pi}right)^2 frac{1.2154}{sqrt{pi^3}</span></dt><dd><p>r_{rm diff} ({rm angsep} ({rm x, y, lon_0, lat_0})+0.06 r_{rm diff} )}
+, {rm exp}left(-frac{{rm angsep}^2 ({rm x, y, lon_0, lat_0})}
+{r_{rm diff} ^2} right)$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -228,8 +250,11 @@ max : 90.0</p>
 </div></blockquote>
 <p>rdiff0 :</p>
 <blockquote>
-<div><p>desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
-initial value : 1.0
+<div><dl class="simple">
+<dt>desc<span class="classifier">Projected diffusion radius. The maximum allowed value is used to</span></dt><dd><p>define the truncation radius.</p>
+</dd>
+</dl>
+<p>initial value : 1.0
 min : 0
 max : 20</p>
 </div></blockquote>
@@ -258,8 +283,11 @@ fix : yes</p>
 </div></blockquote>
 <p>piv2 :</p>
 <blockquote>
-<div><p>desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
-initial value : 1e9
+<div><dl class="simple">
+<dt>desc<span class="classifier">Pivot for converting gamma energy to electron energy (always be</span></dt><dd><p>1 TeV)</p>
+</dd>
+</dl>
+<p>initial value : 1e9
 min : 0
 fix : yes</p>
 </div></blockquote>
@@ -287,11 +315,12 @@ max : 10.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_ellipse.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -299,11 +328,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_ellipse.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -323,7 +354,12 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>Positron and electrons diffusing away from the accelerator</p>
 </div></blockquote>
-<p>latex : $left(frac{180^circ}{pi}right)^2 frac{1.2154}{sqrt{pi^3} r_{rm diff} ({rm angsep} ({rm x, y, lon_0, lat_0})+0.06 r_{rm diff} )} , {rm exp}left(-frac{{rm angsep}^2 ({rm x, y, lon_0, lat_0})}{r_{rm diff} ^2} right)$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$left(frac{180^circ}{pi}right)^2 frac{1.2154}{sqrt{pi^3}</span></dt><dd><p>r_{rm diff} ({rm angsep} ({rm x, y, lon_0, lat_0})+0.06 r_{rm diff} )}
+, {rm exp}left(-frac{{rm angsep}^2 ({rm x, y, lon_0, lat_0})}
+{r_{rm diff} ^2} right)$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -342,8 +378,11 @@ max : 90.0</p>
 </div></blockquote>
 <p>rdiff0 :</p>
 <blockquote>
-<div><p>desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
-initial value : 1.0
+<div><dl class="simple">
+<dt>desc<span class="classifier">Projected diffusion radius. The maximum allowed value is used to</span></dt><dd><p>define the truncation radius.</p>
+</dd>
+</dl>
+<p>initial value : 1.0
 min : 0
 max : 20</p>
 </div></blockquote>
@@ -370,9 +409,12 @@ initial value : 2e10
 min : 0
 fix : yes</p>
 </div></blockquote>
-<dl class="simple">
-<dt>piv2 :</dt><dd><p>desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
-initial value : 1e9
+<dl>
+<dt>piv2 :</dt><dd><dl class="simple">
+<dt>desc<span class="classifier">Pivot for converting gamma energy to electron energy (always be 1</span></dt><dd><p>TeV)</p>
+</dd>
+</dl>
+<p>initial value : 1e9
 min : 0
 fix : yes</p>
 </dd>
@@ -386,11 +428,12 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_legacy.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -398,11 +441,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Continuous_injection_diffusion_legacy.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -453,11 +498,12 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_3D.GalPropTemplate_3D.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#GalPropTemplate_3D.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.GalPropTemplate_3D.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>

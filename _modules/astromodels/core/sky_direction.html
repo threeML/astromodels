@@ -123,10 +123,8 @@
 <div class="viewcode-block" id="SkyDirection">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SkyDirection</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    This is essentially a wrapper around astropy.coordinates.SkyCoord with a possibility for</span>
-<span class="sd">    being serialized and deserialized with YAML.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This is essentially a wrapper around astropy.coordinates.SkyCoord with a</span>
+<span class="sd">    possibility for being serialized and deserialized with YAML.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equinox</span><span class="o">=</span><span class="s2">&quot;J2000&quot;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -149,10 +147,11 @@
 
         <span class="k">if</span> <span class="n">ra</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dec</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="c1"># This goes against duck typing, but it is needed to provide a means of initiating this class</span>
-            <span class="c1"># with either Parameter instances or just floats</span>
+            <span class="c1"># This goes against duck typing, but it is needed to provide a means of</span>
+            <span class="c1"># initiating this class with either Parameter instances or just floats</span>
 
-            <span class="c1"># Try to transform it to float, if it works than we transform it to a parameter</span>
+            <span class="c1"># Try to transform it to float, if it works than we transform it to a</span>
+            <span class="c1"># parameter</span>
 
             <span class="n">ra</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="s2">&quot;Right Ascension&quot;</span><span class="p">)</span>
 
@@ -165,10 +164,11 @@
 
         <span class="k">elif</span> <span class="n">l</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-            <span class="c1"># This goes against duck typing, but it is needed to provide a means of initiating this class</span>
-            <span class="c1"># with either Parameter instances or just floats</span>
+            <span class="c1"># This goes against duck typing, but it is needed to provide a means of</span>
+            <span class="c1"># initiating this class with either Parameter instances or just floats</span>
 
-            <span class="c1"># Try to transform it to float, if it works than we transform it to a parameter</span>
+            <span class="c1"># Try to transform it to float, if it works than we transform it to a</span>
+            <span class="c1"># parameter</span>
 
             <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;Galactic longitude&quot;</span><span class="p">)</span>
 
@@ -197,7 +197,8 @@
                 <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> must be either a number or a &quot;</span> <span class="s2">&quot;parameter instance&quot;</span> <span class="o">%</span> <span class="n">what</span>
             <span class="p">)</span>
 
-            <span class="c1"># So this is a Parameter instance already. Enforce that it has the right maximum and minimum</span>
+            <span class="c1"># So this is a Parameter instance already. Enforce that it has the right</span>
+            <span class="c1"># maximum and minimum</span>
 
             <span class="n">parameter</span> <span class="o">=</span> <span class="n">number_or_parameter</span>
 
@@ -243,8 +244,7 @@
 <div class="viewcode-block" id="SkyDirection.get_ra">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_ra">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_ra</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get R.A. corresponding to the current position (ICRS, J2000)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get R.A. corresponding to the current position (ICRS, J2000)</span>
 
 <span class="sd">        :return: Right Ascension</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -263,8 +263,7 @@
 <div class="viewcode-block" id="SkyDirection.get_dec">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_dec">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_dec</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get Dec. corresponding to the current position (ICRS, J2000)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Dec. corresponding to the current position (ICRS, J2000)</span>
 
 <span class="sd">        :return: Declination</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -283,8 +282,7 @@
 <div class="viewcode-block" id="SkyDirection.get_l">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_l">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get Galactic Longitude (l) corresponding to the current position</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Galactic Longitude (l) corresponding to the current position.</span>
 
 <span class="sd">        :return: Galactic Longitude</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -303,8 +301,7 @@
 <div class="viewcode-block" id="SkyDirection.get_b">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.get_b">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get Galactic latitude (b) corresponding to the current position</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get Galactic latitude (b) corresponding to the current position.</span>
 
 <span class="sd">        :return: Latitude</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -342,9 +339,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">sky_coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return an instance of astropy.coordinates.SkyCoord which can be used to make all transformations supported</span>
-<span class="sd">        by it</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an instance of astropy.coordinates.SkyCoord which can be used</span>
+<span class="sd">        to make all transformations supported by it.</span>
 
 <span class="sd">        :return: astropy.coordinates.SkyCoord</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -352,8 +348,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the dictionary of parameters (either ra,dec or l,b)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the dictionary of parameters (either ra,dec or l,b)</span>
 
 <span class="sd">        :return: dictionary of parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -368,8 +363,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">equinox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the equinox for the coordinates.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the equinox for the coordinates.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -399,11 +393,8 @@
 <div class="viewcode-block" id="SkyDirection.fix">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.fix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
-<span class="sd">        has been instanced)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fix the parameters with the coordinates (either ra,dec or l,b</span>
+<span class="sd">        depending on how the class has been instanced)&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s2">&quot;equatorial&quot;</span><span class="p">:</span>
 
@@ -419,11 +410,8 @@
 <div class="viewcode-block" id="SkyDirection.free">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.free">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">free</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Free the parameters with the coordinates (either ra,dec or l,b depending on how the class</span>
-<span class="sd">        has been instanced)</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Free the parameters with the coordinates (either ra,dec or l,b</span>
+<span class="sd">        depending on how the class has been instanced)&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s2">&quot;equatorial&quot;</span><span class="p">:</span>
 

@@ -99,8 +99,8 @@
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.spectral_component.SpectralComponent">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SpectralComponent</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
-    <span class="c1"># This is needed to avoid problems when constructing the class, due to the fact that we are overriding</span>
-    <span class="c1"># the __setattr__ and __getattr__ attributes</span>
+    <span class="c1"># This is needed to avoid problems when constructing the class, due to the fact that</span>
+    <span class="c1"># we are overriding the __setattr__ and __getattr__ attributes</span>
 
     <span class="n">_spectral_shape</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -134,9 +134,9 @@
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;Couldn&#39;t instance the spectral component. Please verify that you are using an &quot;</span>
-                <span class="s2">&quot;*instance* of a function, and not a class. For example, you need to use &quot;</span>
-                <span class="s2">&quot;&#39;</span><span class="si">%s</span><span class="s2">()&#39;, and not &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="s2">&quot;Couldn&#39;t instance the spectral component. Please verify that you are&quot;</span>
+                <span class="s2">&quot; using an *instance* of a function, and not a class. For example, you&quot;</span>
+                <span class="s2">&quot; need to use &#39;</span><span class="si">%s</span><span class="s2">()&#39;, and not &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
@@ -153,8 +153,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A generic name for the spectral shape.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A generic name for the spectral shape.</span>
 
 <span class="sd">        :return: the spectral shape instance</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -162,7 +161,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s1">&#39;Q&#39;</span> <span class="ow">or</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span> <span class="ow">or</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
             <span class="n">spec</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">spec</span></div>
 

@@ -91,12 +91,13 @@
   <h1>Source code for astromodels.core.my_yaml</h1><div class="highlight"><pre>
 <span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
-<span class="c1"># The purpose of this module is to customize yaml so that it will load ordered dictionaries instead of normal</span>
-<span class="c1"># ones. This way the order in which things are expressed in the file is maintained.</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">my_yaml</span>
+<span class="c1"># The purpose of this module is to customize yaml so that it will load ordered</span>
+<span class="c1"># dictionaries instead of normal ones. This way the order in which things are expressed</span>
+<span class="c1"># in the file is maintained.</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">my_yaml</span>
 
 <span class="n">_mapping_tag</span> <span class="o">=</span> <span class="n">my_yaml</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">BaseResolver</span><span class="o">.</span><span class="n">DEFAULT_MAPPING_TAG</span>
 

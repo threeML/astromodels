@@ -101,6 +101,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.my_yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">my_yaml</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter</span><span class="w"> </span><span class="kn">import</span> <span class="n">IndependentVariable</span><span class="p">,</span> <span class="n">Parameter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.property</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionProperty</span>
@@ -144,12 +145,9 @@
 
         <span class="n">free_space</span> <span class="o">=</span> <span class="n">disk_usage</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">free</span>
 
-        <span class="n">message</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Free space on the file system hosting </span><span class="si">%s</span><span class="s2"> was </span><span class="si">%.2f</span><span class="s2"> Mbytes&quot;</span>
-            <span class="o">%</span> <span class="p">(</span>
-                <span class="n">directory</span><span class="p">,</span>
-                <span class="n">free_space</span> <span class="o">/</span> <span class="mf">1024.0</span> <span class="o">/</span> <span class="mf">1024.0</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Free space on the file system hosting </span><span class="si">%s</span><span class="s2"> was </span><span class="si">%.2f</span><span class="s2"> Mbytes&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="n">directory</span><span class="p">,</span>
+            <span class="n">free_space</span> <span class="o">/</span> <span class="mf">1024.0</span> <span class="o">/</span> <span class="mf">1024.0</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">CannotWriteModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
@@ -195,7 +193,8 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">):</span>
 
-        <span class="c1"># Setup the node, using the special name &#39;__root__&#39; to indicate that this is the root of the tree</span>
+        <span class="c1"># Setup the node, using the special name &#39;__root__&#39; to indicate that this is the</span>
+        <span class="c1"># root of the tree</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;__root__&quot;</span><span class="p">)</span>
 
@@ -205,15 +204,11 @@
 
         <span class="c1"># Dictionary to keep extended sources</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-            <span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="c1"># Dictionary to keep particle sources</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-            <span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="c1"># Loop over the provided sources and process them</span>
 
@@ -234,8 +229,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_source</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remember to call _update_parameters after this!</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remember to call _update_parameters after this!</span>
+
 <span class="sd">        :param source:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -249,8 +244,8 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">Source</span><span class="p">):</span>
 
                 <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;More than one source with the name &#39;</span><span class="si">%s</span><span class="s2">&#39;. You cannot use the same name for multiple &quot;</span>
-                    <span class="s2">&quot;sources&quot;</span> <span class="o">%</span> <span class="n">source</span><span class="o">.</span><span class="n">name</span>
+                    <span class="sa">f</span><span class="s2">&quot;More than one source with the name &#39;</span><span class="si">{</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;. You cannot &quot;</span>
+                    <span class="s2">&quot;use the same name for multiple sources&quot;</span>
                 <span class="p">)</span>
 
                 <span class="k">raise</span> <span class="n">DuplicatedNode</span><span class="p">()</span>
@@ -281,9 +276,8 @@
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_remove_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remember to call _update_parameters after this</span>
-<span class="sd">        :param source_name:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remember to call _update_parameters after this :param source_name:</span>
+
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -320,14 +314,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_update_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProperty</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_properties</span><span class="p">(</span>
-            <span class="bp">self</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">FunctionProperty</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a dictionary with all parameters</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a dictionary with all parameters.</span>
 
 <span class="sd">        :return: dictionary of parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -337,8 +328,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get a dictionary with all the free parameters in this model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary with all the free parameters in this model.</span>
 
 <span class="sd">        :return: dictionary of free parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -349,9 +339,7 @@
 
         <span class="c1"># Filter selecting only free parameters</span>
 
-        <span class="n">free_parameters_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-            <span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">free_parameters_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -363,9 +351,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns True or False depending on if any parameters are free</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True or False depending on if any parameters are free.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_parameters</span><span class="p">()</span>
 
@@ -376,10 +362,11 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">linked_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get a dictionary with all parameters in this model in a linked status. A parameter is in a linked status</span>
-<span class="sd">        if it is linked to another parameter (i.e. it is forced to have the same value of the other parameter), or</span>
-<span class="sd">        if it is linked with another parameter or an independent variable through a law.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a dictionary with all parameters in this model in a linked</span>
+<span class="sd">        status. A parameter is in a linked status if it is linked to another</span>
+<span class="sd">        parameter (i.e. it is forced to have the same value of the other</span>
+<span class="sd">        parameter), or if it is linked with another parameter or an independent</span>
+<span class="sd">        variable through a law.</span>
 
 <span class="sd">        :return: dictionary of linked parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -390,9 +377,7 @@
 
         <span class="c1"># Filter selecting only free parameters</span>
 
-        <span class="n">linked_parameter_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-            <span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">linked_parameter_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -404,8 +389,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a dictionary with all parameters</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a dictionary with all parameters.</span>
 
 <span class="sd">        :return: dictionary of parameters</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -415,10 +399,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">linked_functions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">_LinkedFunctionContainer</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        return a list of containers for the linked functions</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a list of containers for the linked functions.&quot;&quot;&quot;</span>
 
         <span class="n">linked_functions</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -477,8 +458,7 @@
 <div class="viewcode-block" id="Model.set_free_parameters">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.set_free_parameters">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the free parameters in the model to the provided values.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the free parameters in the model to the provided values.</span>
 
 <span class="sd">        NOTE: of course, order matters</span>
 
@@ -489,22 +469,21 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="p">):</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;tried to pass </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters but need </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;tried to pass </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters but need&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-        <span class="k">for</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">this_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">values</span>
-        <span class="p">):</span>
+        <span class="k">for</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">this_value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">values</span><span class="p">):</span>
 
             <span class="n">parameter</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">this_value</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get a parameter from a path like &quot;source_1.component.powerlaw.logK&quot;. This might be useful in certain</span>
-<span class="sd">        context, although in an interactive analysis there is no reason to use this.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a parameter from a path like &quot;source_1.component.powerlaw.logK&quot;.</span>
+<span class="sd">        This might be useful in certain context, although in an interactive</span>
+<span class="sd">        analysis there is no reason to use this.</span>
 
 <span class="sd">        :param path: the address of the parameter</span>
 <span class="sd">        :return: the parameter</span>
@@ -513,11 +492,10 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_child_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This allows the model to be used with the &quot;in&quot; operator, like;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This allows the model to be used with the &quot;in&quot; operator, like;</span>
 
-<span class="sd">        &gt; if &#39;myparameter&#39; in model:</span>
-<span class="sd">        &gt;    print(&quot;Myparameter is contained in the model&quot;)</span>
+<span class="sd">        &gt; if &#39;myparameter&#39; in model: &gt;    print(&quot;Myparameter is</span>
+<span class="sd">        contained in the model&quot;)</span>
 
 <span class="sd">        :param path: the parameter to look for</span>
 <span class="sd">        :return:</span>
@@ -536,15 +514,15 @@
             <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This allows the model to be iterated on, like in:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This allows the model to be iterated on, like in:</span>
 
 <span class="sd">        for parameter in model:</span>
 <span class="sd">            ...</span>
 
-<span class="sd">        NOTE: this will iterate over *all* parameters in the model, also those that are not free (and thus are not</span>
-<span class="sd">        normally displayed). If you need to operate only on free parameters, just check if they are free within</span>
-<span class="sd">        the loop or use the .free_parameters dictionary directly</span>
+<span class="sd">        NOTE: this will iterate over *all* parameters in the model, also those that are</span>
+<span class="sd">        not free (and thus are not normally displayed). If you need to operate only on</span>
+<span class="sd">        free parameters, just check if they are free within the loop or use the</span>
+<span class="sd">        .free_parameters dictionary directly</span>
 
 <span class="sd">        :return: iterator</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -555,8 +533,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">point_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the dictionary of all defined point sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of all defined point sources.</span>
 
 <span class="sd">        :return: collections.OrderedDict()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -564,21 +541,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">extended_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the dictionary of all defined extended sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of all defined extended sources.</span>
 
 <span class="sd">        :return: collections.OrderedDict()</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">particle_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the dictionary of all defined particle sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of all defined particle sources.</span>
 
 <span class="sd">        :return: collections.OrderedDict()</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span>
 
@@ -586,16 +559,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">sources</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a dictionary containing all defined sources (of any kind)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary containing all defined sources (of any kind)</span>
 
 <span class="sd">        :return: collections.OrderedDict()</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-            <span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">point_sources</span><span class="p">,</span>
@@ -612,10 +583,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">add_source</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">new_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add the provided source to the model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the provided source to the model.</span>
 
-<span class="sd">        :param new_source: the new source to be added (an instance of PointSource, ExtendedSource or ParticleSource)</span>
+<span class="sd">        :param new_source: the new source to be added (an instance of</span>
+<span class="sd">            PointSource, ExtendedSource or ParticleSource)</span>
 <span class="sd">        :return: (none)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -627,8 +598,9 @@
 <div class="viewcode-block" id="Model.remove_source">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.remove_source">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new model with the provided source removed from the</span>
+<span class="sd">        current model. Any parameters linked to the source to be removed are</span>
+<span class="sd">        automatically unlinked.</span>
 
 <span class="sd">        :param source_name: the name of the source to be removed</span>
 <span class="sd">        :return: a new Model instance without the source</span>
@@ -643,15 +615,15 @@
 
 <div class="viewcode-block" id="Model.unlink_all_from_source">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.unlink_all_from_source">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">unlink_all_from_source</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Unlink all parameters of the current model that are linked to a parameter of a given source.</span>
-<span class="sd">        To be called before removing a source from the model.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">unlink_all_from_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unlink all parameters of the current model that are linked to a</span>
+<span class="sd">        parameter of a given source. To be called before removing a source from</span>
+<span class="sd">        the model.</span>
 
-<span class="sd">        :param source_name: the name of the source to which to remove all links</span>
-<span class="sd">        :param warn: If True, prints a warning if any parameters were unlinked.</span>
+<span class="sd">        :param source_name: the name of the source to which to remove</span>
+<span class="sd">            all links</span>
+<span class="sd">        :param warn: If True, prints a warning if any parameters were</span>
+<span class="sd">            unlinked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">tempmodel</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">source_name</span><span class="p">])</span>
@@ -669,19 +641,20 @@
         <span class="k">if</span> <span class="n">warn</span> <span class="ow">and</span> <span class="n">unlinked_parameters</span><span class="p">:</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;The following </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unlinked_parameters</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters that were linked to source </span><span class="si">{</span><span class="n">source_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;The following </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">unlinked_parameters</span><span class="p">)</span><span class="si">}</span><span class="s2"> parameters that were linked&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; to source </span><span class="si">{</span><span class="n">source_name</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;have been automatically un-linked: </span><span class="si">{</span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">path</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">unlinked_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">&quot;have been automatically un-linked: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">path</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">unlinked_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Model.add_independent_variable">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.add_independent_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_independent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">IndependentVariable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a global independent variable to this model, such as time.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a global independent variable to this model, such as time.</span>
 
 <span class="sd">        :param variable: an IndependentVariable instance</span>
 <span class="sd">        :return: none</span>
@@ -705,8 +678,8 @@
 <div class="viewcode-block" id="Model.remove_independent_variable">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.remove_independent_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_independent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove an independent variable which was added with add_independent_variable</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove an independent variable which was added with</span>
+<span class="sd">        add_independent_variable.</span>
 
 <span class="sd">        :param variable_name: name of variable to remove</span>
 <span class="sd">        :return:</span>
@@ -721,8 +694,8 @@
 <div class="viewcode-block" id="Model.add_external_parameter">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.add_external_parameter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_external_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add a parameter that comes from something other than a function, to the model.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a parameter that comes from something other than a function, to</span>
+<span class="sd">        the model.</span>
 
 <span class="sd">        :param parameter: a Parameter instance</span>
 <span class="sd">        :return: none</span>
@@ -736,15 +709,15 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_child</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
 
-            <span class="c1"># Remove it from the children only if it is a Parameter instance, otherwise don&#39;t, which will</span>
-            <span class="c1"># make the _add_child call fail (which is the expected behaviour! You shouldn&#39;t call two children</span>
-            <span class="c1"># with the same name)</span>
+            <span class="c1"># Remove it from the children only if it is a Parameter instance, otherwise</span>
+            <span class="c1"># don&#39;t, which will make the _add_child call fail (which is the expected</span>
+            <span class="c1"># behaviour! You shouldn&#39;t call two children with the same name)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">Parameter</span><span class="p">):</span>
 
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;External parameter </span><span class="si">%s</span><span class="s2"> already exist in the model. Overwriting it...&quot;</span>
-                    <span class="o">%</span> <span class="n">parameter</span><span class="o">.</span><span class="n">name</span>
+                    <span class="sa">f</span><span class="s2">&quot;External parameter </span><span class="si">{</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> already exist in the model.&quot;</span>
+                    <span class="s2">&quot; Overwriting it...&quot;</span>
                 <span class="p">)</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_remove_child</span><span class="p">(</span><span class="n">parameter</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
@@ -757,8 +730,8 @@
 <div class="viewcode-block" id="Model.remove_external_parameter">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.remove_external_parameter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_external_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove an external parameter which was added with add_external_parameter</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove an external parameter which was added with</span>
+<span class="sd">        add_external_parameter.</span>
 
 <span class="sd">        :param variable_name: name of parameter to remove</span>
 <span class="sd">        :return:</span>
@@ -770,14 +743,15 @@
 <div class="viewcode-block" id="Model.link">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.link">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_1</span><span class="p">,</span> <span class="n">parameter_2</span><span class="p">,</span> <span class="n">link_function</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Link the value of the provided parameters through the provided function (identity is the default, i.e.,</span>
-<span class="sd">        parameter_1 = parameter_2).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Link the value of the provided parameters through the provided</span>
+<span class="sd">        function (identity is the default, i.e., parameter_1 = parameter_2).</span>
 
-<span class="sd">        :param parameter_1: the first parameter;can be either a single parameter or a list of prarameters</span>
+<span class="sd">        :param parameter_1: the first parameter;can be either a single</span>
+<span class="sd">            parameter or a list of prarameters</span>
 <span class="sd">        :param parameter_2: the second parameter</span>
-<span class="sd">        :param link_function: a function instance. If not provided, the identity function will be used by default.</span>
-<span class="sd">        Otherwise, this link will be set: parameter_1 = link_function(parameter_2)</span>
+<span class="sd">        :param link_function: a function instance. If not provided, the</span>
+<span class="sd">            identity function will be used by default. Otherwise, this</span>
+<span class="sd">            link will be set: parameter_1 = link_function(parameter_2)</span>
 <span class="sd">        :return: (none)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameter_1</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
@@ -805,8 +779,8 @@
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">link_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Use the Line function by default, with both parameters fixed so that the two</span>
-            <span class="c1"># parameters to be linked will vary together</span>
+            <span class="c1"># Use the Line function by default, with both parameters fixed so that the</span>
+            <span class="c1"># two parameters to be linked will vary together</span>
             <span class="n">link_function</span> <span class="o">=</span> <span class="n">get_function</span><span class="p">(</span><span class="s2">&quot;Line&quot;</span><span class="p">)</span>
 
             <span class="n">link_function</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
@@ -824,10 +798,10 @@
 <div class="viewcode-block" id="Model.unlink">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.unlink">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets free one or more parameters which have been linked previously</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets free one or more parameters which have been linked previously.</span>
 
-<span class="sd">        :param parameter: the parameter to be set free, can also be a list of parameters</span>
+<span class="sd">        :param parameter: the parameter to be set free, can also be a</span>
+<span class="sd">            list of parameters</span>
 <span class="sd">        :return: (none)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -848,25 +822,24 @@
 
                     <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> has no link to be removed.&quot;</span> <span class="o">%</span> <span class="n">param</span><span class="o">.</span><span class="n">path</span>
-                    <span class="p">)</span></div>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> has no link to be removed.&quot;</span> <span class="o">%</span> <span class="n">param</span><span class="o">.</span><span class="n">path</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Model.display">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.display">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">complete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Display information about the point source.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display information about the point source.</span>
 
-<span class="sd">        :param complete : if True, displays also information on fixed parameters</span>
+<span class="sd">        :param complete : if True, displays also information on fixed</span>
+<span class="sd">            parameters</span>
 <span class="sd">        :return: (none)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Switch on the complete display flag</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_complete_display</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">complete</span><span class="p">)</span>
 
-        <span class="c1"># This will automatically choose the best representation among repr and repr_html</span>
+        <span class="c1"># This will automatically choose the best representation among repr and</span>
+        <span class="c1"># repr_html</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 
@@ -904,7 +877,8 @@
             <span class="n">orient</span><span class="o">=</span><span class="s2">&quot;index&quot;</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="c1"># These properties traverse the whole tree everytime, so let&#39;s cache their results here</span>
+        <span class="c1"># These properties traverse the whole tree everytime, so let&#39;s cache their</span>
+        <span class="c1"># results here</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span>
         <span class="n">free_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_parameters</span>
         <span class="n">linked_parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linked_parameters</span>
@@ -975,9 +949,7 @@
 
                     <span class="n">fixed_parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">][</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-            <span class="n">fixed_parameters_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-                <span class="n">fixed_parameter_dict</span>
-            <span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">fixed_parameters_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">fixed_parameter_dict</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 
             <span class="c1"># Re-order it</span>
             <span class="n">fixed_parameters_summary</span> <span class="o">=</span> <span class="n">fixed_parameters_summary</span><span class="p">[</span>
@@ -1100,9 +1072,7 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">free_parameters_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="n">free_parameters_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_frames</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
@@ -1135,8 +1105,8 @@
 
                 <span class="k">for</span> <span class="n">linked_function</span> <span class="ow">in</span> <span class="n">linked_functions</span><span class="p">:</span>
 
-                    <span class="n">linked_function_summary_representation</span> <span class="o">+=</span> <span class="p">(</span>
-                        <span class="n">linked_function</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">rich</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="n">linked_function_summary_representation</span> <span class="o">+=</span> <span class="n">linked_function</span><span class="o">.</span><span class="n">output</span><span class="p">(</span>
+                        <span class="n">rich</span><span class="o">=</span><span class="kc">True</span>
                     <span class="p">)</span>
                     <span class="n">linked_function_summary_representation</span> <span class="o">+=</span> <span class="n">new_line</span>
 
@@ -1159,9 +1129,7 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="n">_repr_html_</span><span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
 
@@ -1173,9 +1141,7 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">free_parameters_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="n">free_parameters_representation</span> <span class="o">=</span> <span class="n">free_parameters_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
 
             <span class="k">if</span> <span class="n">properties_summary</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
 
@@ -1211,8 +1177,8 @@
 
                 <span class="k">for</span> <span class="n">linked_function</span> <span class="ow">in</span> <span class="n">linked_functions</span><span class="p">:</span>
 
-                    <span class="n">linked_function_summary_representation</span> <span class="o">+=</span> <span class="p">(</span>
-                        <span class="n">linked_function</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">rich</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                    <span class="n">linked_function_summary_representation</span> <span class="o">+=</span> <span class="n">linked_function</span><span class="o">.</span><span class="n">output</span><span class="p">(</span>
+                        <span class="n">rich</span><span class="o">=</span><span class="kc">False</span>
                     <span class="p">)</span>
                     <span class="n">linked_function_summary_representation</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="si">%s%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span>
                         <span class="n">new_line</span><span class="p">,</span>
@@ -1241,9 +1207,7 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
-                <span class="p">)</span>
+                <span class="n">fixed_parameters_representation</span> <span class="o">=</span> <span class="n">fixed_parameters_summary</span><span class="o">.</span><span class="fm">__repr__</span><span class="p">()</span>
 
         <span class="c1"># Build the representation</span>
 
@@ -1311,8 +1275,7 @@
         <span class="k">else</span><span class="p">:</span>
 
             <span class="n">representation</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="s2">&quot;(abridged. Use complete=True to see all fixed parameters)</span><span class="si">%s</span><span class="s2">&quot;</span>
-                <span class="o">%</span> <span class="n">new_line</span>
+                <span class="s2">&quot;(abridged. Use complete=True to see all fixed parameters)</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">new_line</span>
             <span class="p">)</span>
 
         <span class="n">representation</span> <span class="o">+=</span> <span class="n">new_line</span>
@@ -1420,8 +1383,8 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="c1"># There are three possible cases. Either the element is a source, or it is an independent</span>
-                <span class="c1"># variable, or a parameter</span>
+                <span class="c1"># There are three possible cases. Either the element is a source, or it</span>
+                <span class="c1"># is an independent variable, or a parameter</span>
 
                 <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s2">&quot;source_type&quot;</span><span class="p">):</span>
 
@@ -1431,9 +1394,7 @@
 
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">IndependentVariable</span><span class="p">):</span>
 
-                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;IndependentVariable&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>
-                        <span class="n">key</span>
-                    <span class="p">)</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="s2">&quot;IndependentVariable&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">):</span>
 
@@ -1445,9 +1406,7 @@
 
                 <span class="k">else</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 
-                    <span class="k">raise</span> <span class="n">ModelInternalError</span><span class="p">(</span>
-                        <span class="s2">&quot;Found an unknown class at the top level&quot;</span>
-                    <span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">ModelInternalError</span><span class="p">(</span><span class="s2">&quot;Found an unknown class at the top level&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">data</span></div>
 
@@ -1455,14 +1414,13 @@
 <div class="viewcode-block" id="Model.save">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.save">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model to disk&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model to disk.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">output_file</span><span class="p">)</span> <span class="ow">and</span> <span class="n">overwrite</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="n">ModelFileExists</span><span class="p">(</span>
-                <span class="s2">&quot;The file </span><span class="si">%s</span><span class="s2"> exists already. If you want to overwrite it, use the &#39;overwrite=True&#39; &quot;</span>
-                <span class="s2">&quot;options as &#39;model.save(</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">, overwrite=True)&#39;. &quot;</span>
+                <span class="s2">&quot;The file </span><span class="si">%s</span><span class="s2"> exists already. If you want to overwrite it, use the &quot;</span>
+                <span class="s2">&quot;&#39;overwrite=True&#39; options as &#39;model.save(</span><span class="se">\&quot;</span><span class="si">%s</span><span class="se">\&quot;</span><span class="s2">, overwrite=True)&#39;. &quot;</span>
                 <span class="o">%</span> <span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
             <span class="p">)</span>
 
@@ -1488,16 +1446,15 @@
 
                 <span class="k">raise</span> <span class="n">CannotWriteModel</span><span class="p">(</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">output_file</span><span class="p">)),</span>
-                    <span class="s2">&quot;Could not write model file </span><span class="si">%s</span><span class="s2">. Check your permissions to write or the &quot;</span>
-                    <span class="s2">&quot;report on the free space which follows: &quot;</span> <span class="o">%</span> <span class="n">output_file</span><span class="p">,</span>
+                    <span class="s2">&quot;Could not write model file </span><span class="si">%s</span><span class="s2">. Check your permissions to write or&quot;</span>
+                    <span class="s2">&quot;the report on the free space which follows: &quot;</span> <span class="o">%</span> <span class="n">output_file</span><span class="p">,</span>
                 <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Model.get_number_of_point_sources">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_number_of_point_sources">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_point_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the number of point sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of point sources.</span>
 
 <span class="sd">        :return: number of point sources</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1507,8 +1464,7 @@
 <div class="viewcode-block" id="Model.get_point_source_position">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_point_source_position">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_point_source_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the point source position (R.A., Dec)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the point source position (R.A., Dec)</span>
 
 <span class="sd">        :param id: id of the source</span>
 <span class="sd">        :return: a tuple with R.A. and Dec.</span>
@@ -1524,23 +1480,24 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_point_source_fluxes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the fluxes from the id-th point source</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the fluxes from the id-th point source.</span>
 
 <span class="sd">        :param id: id of the source</span>
 <span class="sd">        :param energies: energies at which you need the flux</span>
-<span class="sd">        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this</span>
-<span class="sd">        parameter is specified then the returned value will be the average flux for the source computed as the integral</span>
-<span class="sd">        between a and b over the integration variable divided by (b-a). The integration variable must be an independent</span>
-<span class="sd">        variable contained in the model. If b is None, then instead of integrating the integration variable will be</span>
-<span class="sd">        set to a and the model evaluated in a.</span>
+<span class="sd">        :param tag: a tuple (integration variable, a, b) specifying the</span>
+<span class="sd">            integration to perform. If this parameter is specified then</span>
+<span class="sd">            the returned value will be the average flux for the source</span>
+<span class="sd">            computed as the integral between a and b over the</span>
+<span class="sd">            integration variable divided by (b-a). The integration</span>
+<span class="sd">            variable must be an independent variable contained in the</span>
+<span class="sd">            model. If b is None, then instead of integrating the</span>
+<span class="sd">            integration variable will be set to a and the model</span>
+<span class="sd">            evaluated in a.</span>
 <span class="sd">        :param stokes: can be I, Q, U, V</span>
 <span class="sd">        :return: fluxes</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span>
-            <span class="n">energies</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="n">stokes</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span><span class="n">energies</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="n">stokes</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Model.get_point_source_name">
@@ -1553,8 +1510,7 @@
 <div class="viewcode-block" id="Model.get_number_of_extended_sources">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_number_of_extended_sources">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_extended_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the number of extended sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of extended sources.</span>
 
 <span class="sd">        :return: number of extended sources</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1566,8 +1522,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_extended_source_fluxes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the flux of the id-th extended sources at the given position at the given energies</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the flux of the id-th extended sources at the given position at</span>
+<span class="sd">        the given energies.</span>
 
 <span class="sd">        :param id: id of the source</span>
 <span class="sd">        :param j2000_ra: R.A. where the flux is desired</span>
@@ -1576,16 +1532,13 @@
 <span class="sd">        :return: flux array</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span>
-            <span class="n">j2000_ra</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">,</span> <span class="n">energies</span>
-        <span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">](</span><span class="n">j2000_ra</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">,</span> <span class="n">energies</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Model.get_extended_source_name">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_extended_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the name of the n-th extended source</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the n-th extended source.</span>
 
 <span class="sd">        :param id: id of the source (integer)</span>
 <span class="sd">        :return: the name of the id-th source</span>
@@ -1598,18 +1551,16 @@
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_boundaries">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_extended_source_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
-        <span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">),</span> <span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="p">)[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span>
+        <span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">),</span> <span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span>
+            <span class="nb">id</span>
+        <span class="p">]</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">,</span> <span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span></div>
 
 
 <div class="viewcode-block" id="Model.is_inside_any_extended_source">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.is_inside_any_extended_source">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_inside_any_extended_source</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_inside_any_extended_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
         <span class="k">for</span> <span class="n">ext_source</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
 
@@ -1625,7 +1576,8 @@
 
                 <span class="k">return</span> <span class="kc">True</span>
 
-        <span class="c1"># If we are here, it means that no extended source contains the provided coordinates</span>
+        <span class="c1"># If we are here, it means that no extended source contains the provided</span>
+        <span class="c1"># coordinates</span>
 
         <span class="k">return</span> <span class="kc">False</span></div>
 
@@ -1633,8 +1585,7 @@
 <div class="viewcode-block" id="Model.get_number_of_particle_sources">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_number_of_particle_sources">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_particle_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the number of particle sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of particle sources.</span>
 
 <span class="sd">        :return: number of particle sources</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1644,11 +1595,8 @@
 
 <div class="viewcode-block" id="Model.get_particle_source_fluxes">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_fluxes">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_source_fluxes</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the fluxes from the id-th point source</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_source_fluxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the fluxes from the id-th point source.</span>
 
 <span class="sd">        :param id: id of the source</span>
 <span class="sd">        :param energies: energies at which you need the flux</span>
@@ -1668,8 +1616,8 @@
 <div class="viewcode-block" id="Model.get_total_flux">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_total_flux">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total differential flux at the provided energies from all *point* sources</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total differential flux at the provided energies from</span>
+<span class="sd">        all *point* sources.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>

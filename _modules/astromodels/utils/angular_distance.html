@@ -90,17 +90,18 @@
              
   <h1>Source code for astromodels.utils.angular_distance</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
 
 
 <div class="viewcode-block" id="angular_distance_fast">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance_fast">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">angular_distance_fast</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compute angular distance using the Haversine formula. Use this one when you know you will never ask for points at</span>
-<span class="sd">    their antipodes. If this is not the case, use the angular_distance function which is slower, but works also for</span>
-<span class="sd">    antipodes.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute angular distance using the Haversine formula. Use this one when</span>
+<span class="sd">    you know you will never ask for points at their antipodes. If this is not</span>
+<span class="sd">    the case, use the angular_distance function which is slower, but works also</span>
+<span class="sd">    for antipodes.</span>
 
 <span class="sd">    :param lon1:</span>
 <span class="sd">    :param lat1:</span>
@@ -128,8 +129,8 @@
 <div class="viewcode-block" id="angular_distance">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">angular_distance</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the angular distance between two points, two sets of points, or a set of points and one point.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the angular distance between two points, two sets of points, or</span>
+<span class="sd">    a set of points and one point.</span>
 
 <span class="sd">    :param ra1: array or float, longitude of first point(s)</span>
 <span class="sd">    :param dec1: array or float, latitude of first point(s)</span>
@@ -138,7 +139,8 @@
 <span class="sd">    :return: angular distance(s) in degrees</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="c1"># Vincenty formula, slower than the Haversine formula in some cases, but stable also at antipodes</span>
+    <span class="c1"># Vincenty formula, slower than the Haversine formula in some cases, but stable also</span>
+    <span class="c1"># at antipodes</span>
 
     <span class="n">lon1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">ra1</span><span class="p">)</span>
     <span class="n">lat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dec1</span><span class="p">)</span>
@@ -163,8 +165,8 @@
 <div class="viewcode-block" id="spherical_angle">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.angular_distance.spherical_angle">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">spherical_angle</span><span class="p">(</span><span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the spherical angle distance between two sets of great circles defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the spherical angle distance between two sets of great circles</span>
+<span class="sd">    defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)</span>
 
 <span class="sd">    :param ra0: array or float, longitude of intersection point(s)</span>
 <span class="sd">    :param dec0: array or float, latitude of intersection point(s)</span>
@@ -179,7 +181,8 @@
     <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angular_distance</span><span class="p">(</span><span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">))</span>
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angular_distance</span><span class="p">(</span><span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">))</span>
 
-    <span class="c1"># use the spherical law of cosines: https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements</span>
+    <span class="c1"># use the spherical law of cosines:</span>
+    <span class="c1"># https://en.wikipedia.org/wiki/Spherical_law_of_cosines#Rearrangements</span>
 
     <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
     <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>

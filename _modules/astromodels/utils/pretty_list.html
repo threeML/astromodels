@@ -93,8 +93,9 @@
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_process_html</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
@@ -150,7 +151,7 @@
 
     <span class="c1"># Add a &#39;*&#39; for each point in the list and indent appropriately</span>
 
-    <span class="n">final_output</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">&quot;(\s*)(.+)&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">1  * </span><span class="se">\\</span><span class="s2">2&quot;</span><span class="p">,</span> <span class="n">string_repr</span><span class="p">)</span>
+    <span class="n">final_output</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\s*)(.+)&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">1  * </span><span class="se">\\</span><span class="s2">2&quot;</span><span class="p">,</span> <span class="n">string_repr</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">final_output</span>
 
@@ -158,8 +159,7 @@
 <div class="viewcode-block" id="dict_to_list">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.pretty_list.dict_to_list">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dict_to_list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert a dictionary into a unordered list.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a dictionary into a unordered list.</span>
 
 <span class="sd">    :param dictionary: a dictionary</span>
 <span class="sd">    :param html: whether to output HTML or simple text (True or False)</span>

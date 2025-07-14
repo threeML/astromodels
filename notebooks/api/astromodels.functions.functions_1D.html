@@ -117,7 +117,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.absorption.AbundanceTable.set_table">
 <span class="sig-name descname"><span class="pre">set_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/absorption.html#AbundanceTable.set_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.absorption.AbundanceTable.set_table" title="Link to this definition"></a></dt>
-<dd><p>set the current table from AG89, WILM or ASPL</p>
+<dd><p>Set the current table from AG89, WILM or ASPL.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>table</strong> (<em>str</em>)</p>
@@ -136,7 +136,7 @@
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.absorption.AbundanceTable.xsect_table">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">xsect_table</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#astromodels.functions.functions_1D.absorption.AbundanceTable.xsect_table" title="Link to this definition"></a></dt>
-<dd><p>returns the XSECT table for the current model</p>
+<dd><p>Returns the XSECT table for the current model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -398,9 +398,8 @@ min: 0.</p>
 <dt>description :</dt><dd><p>Non-dissipative photosphere of a GRB occuring above the saturation radius
 Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</p>
 </dd>
-</dl>
-<p>latex : $N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.4} e^{-left(frac{E}{E_{c}}right)^{0.65}}$</p>
-<dl class="simple">
+<dt>latex<span class="classifier">$N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.4}</span></dt><dd><p>e^{-left(frac{E}{E_{c}}right)^{0.65}}$</p>
+</dd>
 <dt>parameters :</dt><dd><dl class="simple">
 <dt>K :</dt><dd><p>desc :
 initial value : 1e-4
@@ -438,9 +437,8 @@ fix: True</p>
 <dt>description :</dt><dd><p>Non-dissipative photosphere of a GRB occuring BELOW the saturation radius.
 Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</p>
 </dd>
-</dl>
-<p>latex : $N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.66} e^{-left(frac{E}{E_{c}}right)}$</p>
-<dl class="simple">
+<dt>latex<span class="classifier">$N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.66}</span></dt><dd><p>e^{-left(frac{E}{E_{c}}right)}$</p>
+</dd>
 <dt>parameters :</dt><dd><dl class="simple">
 <dt>K :</dt><dd><p>desc :
 initial value : 1e-4
@@ -500,7 +498,19 @@ fix: True</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">ZDust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/extinction.html#ZDust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.ZDust" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <dl>
-<dt>description :</dt><dd><p>Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.</p>
+<dt>description :</dt><dd><p>Extinction by dust grains from Pei (1992), suitable for IR, optical and UV
+energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton
+OM detectors. Three models are included which characterize the extinction curves
+of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by
+redshift and can therefore be applied to extragalactic sources. The transmission
+is set to unity shortward of 912 Angstroms in the rest frame of the dust. This
+is incorrect physically but does allow the model to be used in combination with
+an X-ray photoelectric absorption model such as phabs. Parameter 1 (method)
+describes which extinction curve (MW, LMC or SMC) will be constructed and should
+never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv.
+Rv should typically remain frozen for a fit. Standard values for Rv are
+MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these
+may not be applicable to more distant dusty sources.</p>
 </dd>
 <dt>parameters :</dt><dd><dl class="simple">
 <dt>e_bmv :</dt><dd><p>desc : color excess
@@ -562,8 +572,7 @@ allowed values:
 <dl class="py function">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.extinction.pei">
 <span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.extinction.</span></span><span class="sig-name descname"><span class="pre">pei</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rlambda</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a_b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lamb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/extinction.html#pei"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.extinction.pei" title="Link to this definition"></a></dt>
-<dd><p>ported from XSPEC originally by
-<a class="reference external" href="mailto:Martin&#46;Still&#37;&#52;&#48;gsfc&#46;nasa&#46;gov">Martin<span>&#46;</span>Still<span>&#64;</span>gsfc<span>&#46;</span>nasa<span>&#46;</span>gov</a></p>
+<dd><p>Ported from XSPEC originally by <a class="reference external" href="mailto:Martin&#46;Still&#37;&#52;&#48;gsfc&#46;nasa&#46;gov">Martin<span>&#46;</span>Still<span>&#64;</span>gsfc<span>&#46;</span>nasa<span>&#46;</span>gov</a>.</p>
 </dd></dl>
 
 </section>
@@ -709,11 +718,15 @@ initial value : 1</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A log-parabolic function. NOTE that we use the high-energy convention of using the natural log in place of the
-base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
-using the other convention.</p>
+<div><p>A log-parabolic function. NOTE that we use the high-energy convention of using
+the natural log in place of the base-10 logarithm. This means that beta is a
+factor 1 / log10(e) larger than what returned by those software using the other
+convention.</p>
 </div></blockquote>
-<p>latex : $ K left( frac{x}{piv} right)^{alpha -beta log{left( frac{x}{piv} right)}} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ K left( frac{x}{piv} right)^{alpha -beta log{left( frac{x}{piv}</span></dt><dd><p>right)}} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><dl class="simple">
@@ -753,7 +766,7 @@ initial value : 1.0</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.functions.Log_parabola.peak_energy">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peak_energy</span></span><a class="headerlink" href="#astromodels.functions.functions_1D.functions.Log_parabola.peak_energy" title="Link to this definition"></a></dt>
-<dd><p>Returns the peak energy in the nuFnu spectrum</p>
+<dd><p>Returns the peak energy in the nuFnu spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>peak energy in keV</p>
@@ -826,10 +839,15 @@ unit: rad</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-extremes of the interval are counted as part of the interval.</p>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0
+outside the interval. The extremes of the interval are counted as part of the
+interval.</p>
 </div></blockquote>
-<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp;</span></dt><dd><p>text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound}
+end{cases}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lower_bound :</p>
@@ -873,10 +891,14 @@ initial value : 1.0</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-upper interval is open.</p>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0
+outside the interval. The upper interval is open.</p>
 </div></blockquote>
-<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp;</span></dt><dd><p>text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound}
+end{cases}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lower_bound :</p>
@@ -1117,7 +1139,7 @@ initial value : 1</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.polynomials.get_polynomial">
 <span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.polynomials.</span></span><span class="sig-name descname"><span class="pre">get_polynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><span class="pre">Function1D</span></a></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/polynomials.html#get_polynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.polynomials.get_polynomial" title="Link to this definition"></a></dt>
-<dd><p>get a polynomial function of order</p>
+<dd><p>Get a polynomial function of order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – the order of the polynomical</p>
@@ -1139,7 +1161,13 @@ initial value : 1</p>
 <blockquote>
 <div><p>Band model from Band et al., 1993, parametrized with the peak energy</p>
 </div></blockquote>
-<p>latex : $K begin{cases} left(frac{x}{piv}right)^{alpha} exp left(-frac{(2+alpha) x}{x_{p}}right) &amp; x leq (alpha-beta) frac{x_{p}}{(alpha+2)} \ left(frac{x}{piv}right)^{beta} exp (beta-alpha)left[frac{(alpha-beta) x_{p}}{piv(2+alpha)}right]^{alpha-beta} &amp;x&gt;(alpha-beta) frac{x_{p}}{(alpha+2)} end{cases} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$K begin{cases} left(frac{x}{piv}right)^{alpha} exp left(-</span></dt><dd><p>frac{(2+alpha) x}{x_{p}}right) &amp; x leq (alpha-beta) frac{x_{p}}
+{(alpha+2)} \ left(frac{x}{piv}right)^{beta} exp (beta-alpha)
+left[frac{(alpha-beta) x_{p}}{piv(2+alpha)}right]^{alpha-beta} &amp;x&gt;
+(alpha-beta) frac{x_{p}}{(alpha+2)} end{cases} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -1196,8 +1224,9 @@ fix : yes</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>The Band model from Band et al. 1993, implemented however in a way which reduces the covariances between
-the parameters (Calderone et al., MNRAS, 448, 403C, 2015)</p>
+<div><p>The Band model from Band et al. 1993, implemented however in a way which reduces
+the covariances between the parameters (Calderone et al., MNRAS, 448, 403C,
+2015)</p>
 </div></blockquote>
 <p>latex : $ text{(Calderone et al., MNRAS, 448, 403C, 2015)} $</p>
 <p>parameters :</p>
@@ -1221,8 +1250,11 @@ max : -1</p>
 </div></blockquote>
 <p>xp :</p>
 <blockquote>
-<div><p>desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)
-initial value : 200.0
+<div><dl class="simple">
+<dt>desc<span class="classifier">position of the peak in the x*x*f(x) space (if x is energy, this is</span></dt><dd><p>the nuFnu or SED space)</p>
+</dd>
+</dl>
+<p>initial value : 200.0
 min : 1e-10
 transformation : log10</p>
 </div></blockquote>
@@ -1250,8 +1282,11 @@ fix : yes</p>
 </div></blockquote>
 <p>opt :</p>
 <blockquote>
-<div><p>desc : option to select the spectral model (0 corresponds to a cutoff power law, 1 to the Band model)
-initial value : 1
+<div><dl class="simple">
+<dt>desc<span class="classifier">option to select the spectral model (0 corresponds to a cutoff power</span></dt><dd><p>law, 1 to the Band model)</p>
+</dd>
+</dl>
+<p>initial value : 1
 min : 0
 max : 1
 fix : yes</p>
@@ -1341,7 +1376,10 @@ fix : yes</p>
 <blockquote>
 <div><p>A broken power law function</p>
 </div></blockquote>
-<p>latex : $ f(x)= K~begin{cases}left( frac{x}{x_{b}} right)^{alpha} &amp; x &lt; x_{b} \ left( frac{x}{x_{b}} right)^{beta} &amp; x ge x_{b} end{cases} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)= K~begin{cases}left( frac{x}{x_{b}} right)^{alpha} &amp; x &lt; x_{b}</span></dt><dd><p>\ left( frac{x}{x_{b}} right)^{beta} &amp; x ge x_{b} end{cases} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -1505,8 +1543,20 @@ transformation : log10</p>
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.powerlaws.</span></span><span class="sig-name descname"><span class="pre">DoubleSmoothlyBrokenPowerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
-<p>description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</p>
-<p>latex : $begin{array}{l}begin{aligned}f(x)=&amp; A x_{mathrm{b}}^{alpha_{1}}left[left[left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right.\&amp;left.+left(frac{x}{x_{mathrm{j}}}right)^{-beta n_{2}} cdotleft[left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right]^{-frac{1}{n_{2}}}end{aligned}\text { where }\x_{mathrm{j}}=x_{mathrm{p}} cdotleft(-frac{alpha_{2}+2}{beta+2}right)^{frac{1}{left.beta-alpha_{2}right) n_{2}}}end{array}$</p>
+<dl class="simple">
+<dt>description<span class="classifier">A smoothly broken power law with two breaks as parameterized in</span></dt><dd><p>Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</p>
+</dd>
+<dt>latex<span class="classifier">$begin{array}{l}begin{aligned}f(x)=&amp; A x_{mathrm{b}}^{alpha_{1}}</span></dt><dd><p>left[left[left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+
+left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{
+frac{n_{2}}{n_{1}}}right.\&amp;left.+left(frac{x}{x_{mathrm{j}}}
+right)^{-beta n_{2}} cdotleft[left(frac{x_{mathrm{j}}}{x_{mathrm{b}
+}}right)^{-alpha_{1} n_{1}}+left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}
+right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right]^{-frac{1}
+{n_{2}}}end{aligned}\text { where }\x_{mathrm{j}}=x_{mathrm{p}} cdot
+left(-frac{alpha_{2}+2}{beta+2}right)^{frac{1}{left.beta-alpha_{2}
+right) n_{2}}}end{array}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -1576,7 +1626,7 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw.fix_curvature">
 <span class="sig-name descname"><span class="pre">fix_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.fix_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw.fix_curvature" title="Link to this definition"></a></dt>
-<dd><p>fix the two curvature parameters n1, n2</p>
+<dd><p>Fix the two curvature parameters n1, n2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -1587,7 +1637,7 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw.free_curvature">
 <span class="sig-name descname"><span class="pre">free_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.free_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.powerlaws.DoubleSmoothlyBrokenPowerlaw.free_curvature" title="Link to this definition"></a></dt>
-<dd><p>free the two curvature parameters n1, n2</p>
+<dd><p>Free the two curvature parameters n1, n2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -1607,7 +1657,7 @@ fix : yes</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.powerlaws.</span></span><span class="sig-name descname"><span class="pre">Inverse_cutoff_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#Inverse_cutoff_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.powerlaws.Inverse_cutoff_powerlaw" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <dl class="simple">
-<dt>description :</dt><dd><p>A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</p>
+<dt>description<span class="classifier">A power law multiplied by an exponential cutoff</span></dt><dd><p>Note, instead of cutoff energy energy parameter xc, b = 1/xc is used</p>
 </dd>
 </dl>
 <p>latex : $K frac{x}{piv}^{index}exp{(-x~b)} $
@@ -1761,8 +1811,8 @@ fix: yes</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation
-between the index and the normalization.</p>
+<div><p>A simple power-law with the photon flux in a band used as normalization. This
+will reduce the correlation between the index and the normalization.</p>
 </div></blockquote>
 <p>latex : $ frac{F(gamma+1)} {b^{gamma+1} - a^{gamma+1}} (x)^{gamma}$</p>
 <p>parameters :</p>
@@ -1947,7 +1997,13 @@ max : 10.0</p>
 <blockquote>
 <div><p>Band model from Band et al., 1993, parametrized with the peak energy</p>
 </div></blockquote>
-<p>latex : $K begin{cases} left(frac{x}{piv}right)^{alpha} exp left(-frac{(2+alpha) x}{x_{p}}right) &amp; x leq (alpha-beta) frac{x_{p}}{(alpha+2)} \ left(frac{x}{piv}right)^{beta} exp (beta-alpha)left[frac{(alpha-beta) x_{p}}{piv(2+alpha)}right]^{alpha-beta} &amp;x&gt;(alpha-beta) frac{x_{p}}{(alpha+2)} end{cases} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$K begin{cases} left(frac{x}{piv}right)^{alpha} exp left(-</span></dt><dd><p>frac{(2+alpha) x}{x_{p}}right) &amp; x leq (alpha-beta) frac{x_{p}}
+{(alpha+2)} \ left(frac{x}{piv}right)^{beta} exp (beta-alpha)
+left[frac{(alpha-beta) x_{p}}{piv(2+alpha)}right]^{alpha-beta} &amp;x&gt;
+(alpha-beta) frac{x_{p}}{(alpha+2)} end{cases} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -2004,8 +2060,9 @@ fix : yes</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>The Band model from Band et al. 1993, implemented however in a way which reduces the covariances between
-the parameters (Calderone et al., MNRAS, 448, 403C, 2015)</p>
+<div><p>The Band model from Band et al. 1993, implemented however in a way which reduces
+the covariances between the parameters (Calderone et al., MNRAS, 448, 403C,
+2015)</p>
 </div></blockquote>
 <p>latex : $ text{(Calderone et al., MNRAS, 448, 403C, 2015)} $</p>
 <p>parameters :</p>
@@ -2029,8 +2086,11 @@ max : -1</p>
 </div></blockquote>
 <p>xp :</p>
 <blockquote>
-<div><p>desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)
-initial value : 200.0
+<div><dl class="simple">
+<dt>desc<span class="classifier">position of the peak in the x*x*f(x) space (if x is energy, this is</span></dt><dd><p>the nuFnu or SED space)</p>
+</dd>
+</dl>
+<p>initial value : 200.0
 min : 1e-10
 transformation : log10</p>
 </div></blockquote>
@@ -2058,8 +2118,11 @@ fix : yes</p>
 </div></blockquote>
 <p>opt :</p>
 <blockquote>
-<div><p>desc : option to select the spectral model (0 corresponds to a cutoff power law, 1 to the Band model)
-initial value : 1
+<div><dl class="simple">
+<dt>desc<span class="classifier">option to select the spectral model (0 corresponds to a cutoff power</span></dt><dd><p>law, 1 to the Band model)</p>
+</dd>
+</dl>
+<p>initial value : 1
 min : 0
 max : 1
 fix : yes</p>
@@ -2184,7 +2247,10 @@ min: 0.</p>
 <blockquote>
 <div><p>A broken power law function</p>
 </div></blockquote>
-<p>latex : $ f(x)= K~begin{cases}left( frac{x}{x_{b}} right)^{alpha} &amp; x &lt; x_{b} \ left( frac{x}{x_{b}} right)^{beta} &amp; x ge x_{b} end{cases} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)= K~begin{cases}left( frac{x}{x_{b}} right)^{alpha} &amp; x &lt; x_{b}</span></dt><dd><p>\ left( frac{x}{x_{b}} right)^{beta} &amp; x ge x_{b} end{cases} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -2456,8 +2522,20 @@ fix : yes</p>
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.DoubleSmoothlyBrokenPowerlaw">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">DoubleSmoothlyBrokenPowerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.DoubleSmoothlyBrokenPowerlaw" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
-<p>description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</p>
-<p>latex : $begin{array}{l}begin{aligned}f(x)=&amp; A x_{mathrm{b}}^{alpha_{1}}left[left[left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right.\&amp;left.+left(frac{x}{x_{mathrm{j}}}right)^{-beta n_{2}} cdotleft[left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right]^{-frac{1}{n_{2}}}end{aligned}\text { where }\x_{mathrm{j}}=x_{mathrm{p}} cdotleft(-frac{alpha_{2}+2}{beta+2}right)^{frac{1}{left.beta-alpha_{2}right) n_{2}}}end{array}$</p>
+<dl class="simple">
+<dt>description<span class="classifier">A smoothly broken power law with two breaks as parameterized in</span></dt><dd><p>Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</p>
+</dd>
+<dt>latex<span class="classifier">$begin{array}{l}begin{aligned}f(x)=&amp; A x_{mathrm{b}}^{alpha_{1}}</span></dt><dd><p>left[left[left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{1} n_{1}}+
+left(frac{x}{x_{mathrm{b}}}right)^{-alpha_{2} n_{1}}right]^{
+frac{n_{2}}{n_{1}}}right.\&amp;left.+left(frac{x}{x_{mathrm{j}}}
+right)^{-beta n_{2}} cdotleft[left(frac{x_{mathrm{j}}}{x_{mathrm{b}
+}}right)^{-alpha_{1} n_{1}}+left(frac{x_{mathrm{j}}}{x_{mathrm{b}}}
+right)^{-alpha_{2} n_{1}}right]^{frac{n_{2}}{n_{1}}}right]^{-frac{1}
+{n_{2}}}end{aligned}\text { where }\x_{mathrm{j}}=x_{mathrm{p}} cdot
+left(-frac{alpha_{2}+2}{beta+2}right)^{frac{1}{left.beta-alpha_{2}
+right) n_{2}}}end{array}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
@@ -2527,7 +2605,7 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.DoubleSmoothlyBrokenPowerlaw.fix_curvature">
 <span class="sig-name descname"><span class="pre">fix_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.fix_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.DoubleSmoothlyBrokenPowerlaw.fix_curvature" title="Link to this definition"></a></dt>
-<dd><p>fix the two curvature parameters n1, n2</p>
+<dd><p>Fix the two curvature parameters n1, n2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -2538,7 +2616,7 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.DoubleSmoothlyBrokenPowerlaw.free_curvature">
 <span class="sig-name descname"><span class="pre">free_curvature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#DoubleSmoothlyBrokenPowerlaw.free_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.DoubleSmoothlyBrokenPowerlaw.free_curvature" title="Link to this definition"></a></dt>
-<dd><p>free the two curvature parameters n1, n2</p>
+<dd><p>Free the two curvature parameters n1, n2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -2645,7 +2723,7 @@ initial value : 1</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">Inverse_cutoff_powerlaw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/powerlaws.html#Inverse_cutoff_powerlaw"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.Inverse_cutoff_powerlaw" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <dl class="simple">
-<dt>description :</dt><dd><p>A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</p>
+<dt>description<span class="classifier">A power law multiplied by an exponential cutoff</span></dt><dd><p>Note, instead of cutoff energy energy parameter xc, b = 1/xc is used</p>
 </dd>
 </dl>
 <p>latex : $K frac{x}{piv}^{index}exp{(-x~b)} $
@@ -2726,11 +2804,15 @@ initial value : 1</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A log-parabolic function. NOTE that we use the high-energy convention of using the natural log in place of the
-base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software
-using the other convention.</p>
+<div><p>A log-parabolic function. NOTE that we use the high-energy convention of using
+the natural log in place of the base-10 logarithm. This means that beta is a
+factor 1 / log10(e) larger than what returned by those software using the other
+convention.</p>
 </div></blockquote>
-<p>latex : $ K left( frac{x}{piv} right)^{alpha -beta log{left( frac{x}{piv} right)}} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ K left( frac{x}{piv} right)^{alpha -beta log{left( frac{x}{piv}</span></dt><dd><p>right)}} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><dl class="simple">
@@ -2770,7 +2852,7 @@ initial value : 1.0</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.Log_parabola.peak_energy">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">peak_energy</span></span><a class="headerlink" href="#astromodels.functions.functions_1D.Log_parabola.peak_energy" title="Link to this definition"></a></dt>
-<dd><p>Returns the peak energy in the nuFnu spectrum</p>
+<dd><p>Returns the peak energy in the nuFnu spectrum.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>peak energy in keV</p>
@@ -2823,9 +2905,8 @@ min: 0.</p>
 <dt>description :</dt><dd><p>Non-dissipative photosphere of a GRB occuring above the saturation radius
 Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</p>
 </dd>
-</dl>
-<p>latex : $N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.4} e^{-left(frac{E}{E_{c}}right)^{0.65}}$</p>
-<dl class="simple">
+<dt>latex<span class="classifier">$N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.4}</span></dt><dd><p>e^{-left(frac{E}{E_{c}}right)^{0.65}}$</p>
+</dd>
 <dt>parameters :</dt><dd><dl class="simple">
 <dt>K :</dt><dd><p>desc :
 initial value : 1e-4
@@ -2863,9 +2944,8 @@ fix: True</p>
 <dt>description :</dt><dd><p>Non-dissipative photosphere of a GRB occuring BELOW the saturation radius.
 Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</p>
 </dd>
-</dl>
-<p>latex : $N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.66} e^{-left(frac{E}{E_{c}}right)}$</p>
-<dl class="simple">
+<dt>latex<span class="classifier">$N_{mathrm{E}}=Kleft(frac{E}{E_{mathrm{pivot}}}right)^{0.66}</span></dt><dd><p>e^{-left(frac{E}{E_{c}}right)}$</p>
+</dd>
 <dt>parameters :</dt><dd><dl class="simple">
 <dt>K :</dt><dd><p>desc :
 initial value : 1e-4
@@ -3063,8 +3143,8 @@ fix: yes</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation
-between the index and the normalization.</p>
+<div><p>A simple power-law with the photon flux in a band used as normalization. This
+will reduce the correlation between the index and the normalization.</p>
 </div></blockquote>
 <p>latex : $ frac{F(gamma+1)} {b^{gamma+1} - a^{gamma+1}} (x)^{gamma}$</p>
 <p>parameters :</p>
@@ -3346,10 +3426,15 @@ fix: yes</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-extremes of the interval are counted as part of the interval.</p>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0
+outside the interval. The extremes of the interval are counted as part of the
+interval.</p>
 </div></blockquote>
-<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp;</span></dt><dd><p>text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound}
+end{cases}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lower_bound :</p>
@@ -3393,10 +3478,14 @@ initial value : 1.0</p>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-upper interval is open.</p>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0
+outside the interval. The upper interval is open.</p>
 </div></blockquote>
-<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp;</span></dt><dd><p>text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound}
+end{cases}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lower_bound :</p>
@@ -3601,7 +3690,19 @@ fix: True</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">ZDust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/extinction.html#ZDust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.ZDust" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <dl>
-<dt>description :</dt><dd><p>Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.</p>
+<dt>description :</dt><dd><p>Extinction by dust grains from Pei (1992), suitable for IR, optical and UV
+energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton
+OM detectors. Three models are included which characterize the extinction curves
+of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by
+redshift and can therefore be applied to extragalactic sources. The transmission
+is set to unity shortward of 912 Angstroms in the rest frame of the dust. This
+is incorrect physically but does allow the model to be used in combination with
+an X-ray photoelectric absorption model such as phabs. Parameter 1 (method)
+describes which extinction curve (MW, LMC or SMC) will be constructed and should
+never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv.
+Rv should typically remain frozen for a fit. Standard values for Rv are
+MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these
+may not be applicable to more distant dusty sources.</p>
 </dd>
 <dt>parameters :</dt><dd><dl class="simple">
 <dt>e_bmv :</dt><dd><p>desc : color excess
@@ -3653,7 +3754,7 @@ allowed values:
 <dl class="py function">
 <dt class="sig sig-object py" id="astromodels.functions.functions_1D.get_polynomial">
 <span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_1D.</span></span><span class="sig-name descname"><span class="pre">get_polynomial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><span class="pre">Function1D</span></a></span></span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/polynomials.html#get_polynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_1D.get_polynomial" title="Link to this definition"></a></dt>
-<dd><p>get a polynomial function of order</p>
+<dd><p>Get a polynomial function of order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>order</strong> (<em>int</em>) – the order of the polynomical</p>

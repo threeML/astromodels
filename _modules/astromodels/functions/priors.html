@@ -90,15 +90,16 @@
              
   <h1>Source code for astromodels.functions.priors</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">erfcinv</span><span class="p">,</span> <span class="n">erf</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">erf</span><span class="p">,</span> <span class="n">erfcinv</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
 
 <span class="n">deg2rad</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">)</span>
 <span class="n">rad2deg</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="mf">180.0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
@@ -120,7 +121,8 @@
 
 <span class="sd">        F :</span>
 
-<span class="sd">            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution</span>
+<span class="sd">            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal</span>
+<span class="sd">                    distribution</span>
 <span class="sd">            initial value : 1</span>
 
 <span class="sd">        mu :</span>
@@ -177,8 +179,7 @@
 <div class="viewcode-block" id="Gaussian.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -210,15 +211,21 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A  truncated Gaussian function defined on the interval between the lower_bound (a) and upper_bound (b)</span>
+<span class="sd">        A  truncated Gaussian function defined on the interval between the lower_bound</span>
+<span class="sd">        (a) and upper_bound (b)</span>
 
-<span class="sd">    latex : $\begin{split}f(x;\mu,\sigma,a,b)=\frac{\frac{1}{\sigma} \phi\left( \frac{x-\mu}{\sigma} \right)}{\Phi\left( \frac{b-\mu}{\sigma} \right) - \Phi\left( \frac{a-\mu}{\sigma} \right)}\\\phi\left(z\right)=\frac{1}{\sqrt{2 \pi}}\exp\left(-\frac{1}{2}z^2\right)\\\Phi\left(z\right)=\frac{1}{2}\left(1+erf\left(\frac{z}{\sqrt(2)}\right)\right)\end{split}$</span>
+<span class="sd">    latex : $\begin{split}f(x;\mu,\sigma,a,b)=\frac{\frac{1}{\sigma} \phi\left(</span>
+<span class="sd">            \frac{x-\mu}{\sigma} \right)}{\Phi\left( \frac{b-\mu}{\sigma} \right)</span>
+<span class="sd">            - \Phi\left( \frac{a-\mu}{\sigma} \right)}\\\phi\left(z\right)=</span>
+<span class="sd">            \frac{1}{\sqrt{2 \pi}}\exp\left(-\frac{1}{2}z^2\right)\\\Phi\left(z\right)</span>
+<span class="sd">            =\frac{1}{2}\left(1+erf\left(\frac{z}{\sqrt(2)}\right)\right)\end{split}$</span>
 
 <span class="sd">    parameters :</span>
 
 <span class="sd">        F :</span>
 
-<span class="sd">            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution</span>
+<span class="sd">            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal</span>
+<span class="sd">                    distribution</span>
 <span class="sd">            initial value : 1</span>
 
 <span class="sd">        mu :</span>
@@ -234,12 +241,14 @@
 
 <span class="sd">        lower_bound :</span>
 
-<span class="sd">            desc: lower bound of gaussian, setting to -np.inf results in half normal distribution</span>
+<span class="sd">            desc: lower bound of gaussian, setting to -np.inf results in half normal</span>
+<span class="sd">                    distribution</span>
 <span class="sd">            initial value : -1.</span>
 
 <span class="sd">        upper_bound :</span>
 
-<span class="sd">            desc: upper bound of gaussian  setting to np.inf results in half normal distribution</span>
+<span class="sd">            desc: upper bound of gaussian  setting to np.inf results in half normal</span>
+<span class="sd">                    distribution</span>
 <span class="sd">            initial value : 1.</span>
 
 
@@ -329,8 +338,8 @@
 
         <span class="n">sqrt_two</span> <span class="o">=</span> <span class="mf">1.414213562</span>
 
-        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mf">1e-16</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">:</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e32</span>
+        <span class="c1"># if x &lt; 1e-16 or (1 - x) &lt; 1e-16:</span>
+        <span class="c1">#    res = -1e32</span>
 
         <span class="c1"># precalculate the arguments to the  CDF</span>
 
@@ -360,13 +369,14 @@
 
 <span class="sd">        The Cauchy distribution</span>
 
-<span class="sd">    latex : $ K \frac{1}{ \gamma \pi} \left[ \frac{\gamma^2}{(x-x_0)^2 + \gamma^2}  \right] $</span>
+<span class="sd">    latex : $K\frac{1}{\gamma\pi}\left[\frac{\gamma^2}{(x-x_0)^2+\gamma^2}\right]$</span>
 
 <span class="sd">    parameters :</span>
 
 <span class="sd">        K :</span>
 
-<span class="sd">            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy distribution</span>
+<span class="sd">            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy</span>
+<span class="sd">                    distribution</span>
 <span class="sd">            initial value : 1</span>
 
 <span class="sd">        x0 :</span>
@@ -418,8 +428,7 @@
 <div class="viewcode-block" id="Cauchy.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cauchy.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -529,8 +538,7 @@
 <div class="viewcode-block" id="Cosine_Prior.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Cosine_Prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -565,12 +573,14 @@
 
 <span class="sd">        A log normal function</span>
 
-<span class="sd">    latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x/piv - \mu/piv)^2}{2~(\sigma)^2}} $</span>
+<span class="sd">    latex : $K\frac{1}{x\sigma\sqrt{2\pi}}\exp{\frac{(\log x/piv-\mu/piv)^2}</span>
+<span class="sd">            {2~(\sigma)^2}} $</span>
 
 <span class="sd">    parameters :</span>
 
 <span class="sd">        F :</span>
-<span class="sd">            desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution</span>
+<span class="sd">            desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal</span>
+<span class="sd">                    distribution</span>
 <span class="sd">            initial value : 1</span>
 
 <span class="sd">        mu :</span>
@@ -627,8 +637,8 @@
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">F</span> <span class="o">*</span> <span class="mi">0</span>
 
-        <span class="c1"># The log normal is not defined if x &lt; 0. The &quot;0 * x&quot; part is to conserve the units if</span>
-        <span class="c1"># x has them, because 0 * x will be a Quantity with the same units as x</span>
+        <span class="c1"># The log normal is not defined if x &lt; 0. The &quot;0 * x&quot; part is to conserve the</span>
+        <span class="c1"># units if x has them, because 0 * x will be a Quantity with the same units as x</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span>
 
         <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -649,8 +659,7 @@
 <div class="viewcode-block" id="Log_normal.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_normal.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -682,10 +691,13 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The</span>
-<span class="sd">        extremes of the interval are counted as part of the interval.</span>
+<span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0</span>
+<span class="sd">        outside the interval. The extremes of the interval are counted as part of the</span>
+<span class="sd">        interval.</span>
 
-<span class="sd">    latex : $ f(x)=\begin{cases}0 &amp; x &lt; \text{lower_bound} \\\text{value} &amp; \text{lower_bound} \le x \le \text{upper_bound} \\ 0 &amp; x &gt; \text{upper_bound} \end{cases}$</span>
+<span class="sd">    latex : $ f(x)=\begin{cases}0 &amp; x &lt; \text{lower_bound} \\\text{value} &amp;</span>
+<span class="sd">            \text{lower_bound} \le x \le \text{upper_bound} \\ 0 &amp; x &gt;</span>
+<span class="sd">            \text{upper_bound} \end{cases}$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -741,8 +753,7 @@
 <div class="viewcode-block" id="Uniform_prior.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Uniform_prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -769,10 +780,13 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A function which is K/x on the interval lower_bound - upper_bound and 0 outside the interval. The</span>
-<span class="sd">        extremes of the interval are NOT counted as part of the interval. Lower_bound must be &gt;= 0.</span>
+<span class="sd">        A function which is K/x on the interval lower_bound - upper_bound and 0 outside</span>
+<span class="sd">        the interval. The extremes of the interval are NOT counted as part of the</span>
+<span class="sd">        interval. Lower_bound must be &gt;= 0.</span>
 
-<span class="sd">    latex : $ f(x)=K~\begin{cases}0 &amp; x \le \text{lower_bound} \\\frac{1}{x} &amp; \text{lower_bound} &lt; x &lt; \text{upper_bound} \\ 0 &amp; x \ge \text{upper_bound} \end{cases}$</span>
+<span class="sd">    latex : $ f(x)=K~\begin{cases}0 &amp; x \le \text{lower_bound} \\\frac{1}{x} &amp;</span>
+<span class="sd">            \text{lower_bound} &lt; x &lt; \text{upper_bound} \\ 0 &amp; x \ge \text{upper_bound}</span>
+<span class="sd">            \end{cases}$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -812,7 +826,8 @@
 <div class="viewcode-block" id="Log_uniform_prior.evaluate">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_uniform_prior.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">K</span><span class="p">):</span>
-        <span class="c1"># This makes the prior proper because it is the integral between lower_bound and upper_bound</span>
+        <span class="c1"># This makes the prior proper because it is the integral between lower_bound and</span>
+        <span class="c1"># upper_bound</span>
 
         <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">((</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">upper_bound</span><span class="p">),</span> <span class="n">old_div</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>
 
@@ -828,8 +843,7 @@
 <div class="viewcode-block" id="Log_uniform_prior.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Log_uniform_prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -894,8 +908,7 @@
 <div class="viewcode-block" id="Beta.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Beta.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -919,7 +932,8 @@
 
 <span class="sd">        A gamma distribution function</span>
 
-<span class="sd">    latex : $ f(x, \alpha, \beta)=\frac{\beta^\alpha x^{\alpha-1} e^{-\beta x}}{\Gamma(\alpha)}$</span>
+<span class="sd">    latex : $ f(x,\alpha, \beta)=\frac{\beta^\alpha x^{\alpha-1}</span>
+<span class="sd">            e^{-\beta x}}{\Gamma(\alpha)}$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -957,8 +971,7 @@
 <div class="viewcode-block" id="Gamma.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gamma.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -1013,8 +1026,7 @@
 <div class="viewcode-block" id="Exponential.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Exponential.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
@@ -1078,8 +1090,7 @@
 <div class="viewcode-block" id="Powerlaw_Prior.from_unit_cube">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Powerlaw_Prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used by multinest</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>

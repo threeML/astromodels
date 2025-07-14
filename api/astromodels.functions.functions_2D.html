@@ -98,11 +98,11 @@
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_2D.</span></span><span class="sig-name descname"><span class="pre">Asymm_Gaussian_on_sphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Asymm_Gaussian_on_sphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function2D" title="astromodels.functions.function.Function2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function2D</span></code></a></p>
-<p>description :</p>
-<blockquote>
-<div><p>A bidimensional Gaussian function on a sphere (in spherical coordinates)</p>
-<p>see <a class="reference external" href="https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function">https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</a></p>
-</div></blockquote>
+<dl class="simple">
+<dt>description :</dt><dd><p>A bidimensional Gaussian function on a sphere (in spherical coordinates) see
+<a class="reference external" href="https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function">https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</a></p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -149,11 +149,12 @@ max : 90.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Asymm_Gaussian_on_sphere.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -161,11 +162,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Asymm_Gaussian_on_sphere.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -185,7 +188,12 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>A bidimensional disk/tophat function on a sphere (in spherical coordinates)</p>
 </div></blockquote>
-<p>latex : $$ f(vec{x}) = left(frac{180}{pi}right)^2 frac{1}{pi~({rm radius})^2} ~left{begin{matrix} 1 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_0| le {rm radius}} \ 0 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_0| &gt; {rm radius}} end{matrix}right. $$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^2 frac{1}{pi~({rm</span></dt><dd><p>radius})^2} ~left{begin{matrix} 1 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_0|
+le {rm radius}} \ 0 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_0| &gt; {rm
+radius}} end{matrix}right. $$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -218,11 +226,12 @@ max : 20</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Disk_on_sphere.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Disk_on_sphere.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Disk_on_sphere.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -230,11 +239,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Disk_on_sphere.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Disk_on_sphere.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Disk_on_sphere.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -254,7 +265,12 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>An ellipse function on a sphere (in spherical coordinates)</p>
 </div></blockquote>
-<p>latex : $$ f(vec{x}) = left(frac{180}{pi}right)^2 frac{1}{pi~ a b} ~left{begin{matrix} 1 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_{f1}| + | vec{x} - vec{x}_{f2}| le {rm 2a}} \ 0 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_{f1}| + | vec{x} - vec{x}_{f2}| &gt; {rm 2a}} end{matrix}right. $$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^2 frac{1}{pi~ a b}</span></dt><dd><p>~left{begin{matrix} 1 &amp; {rm if}&amp; {rm | vec{x} - vec{x}_{f1}|
++ | vec{x} - vec{x}_{f2}| le {rm 2a}} \ 0 &amp; {rm if}&amp; {rm | vec{x}
+- vec{x}_{f1}| + | vec{x}-vec{x}_{f2}| &gt; {rm 2a}} end{matrix}right. $$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -311,11 +327,12 @@ max : 90.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Ellipse_on_sphere.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Ellipse_on_sphere.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Ellipse_on_sphere.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -323,11 +340,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Ellipse_on_sphere.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Ellipse_on_sphere.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Ellipse_on_sphere.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -367,7 +386,15 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>A bidimensional Gaussian function on a sphere (in spherical coordinates)</p>
 </div></blockquote>
-<p>latex : $$ f(vec{x}) = left(frac{180^circ}{pi}right)^2 frac{1}{2pi sqrt{det{Sigma}}} , {rm exp}left( -frac{1}{2} (vec{x}-vec{x}_0)^intercal cdot Sigma^{-1}cdot (vec{x}-vec{x}_0)right) \ vec{x}_0 = ({rm RA}_0,{rm Dec}_0)\ Lambda = left( begin{array}{cc} sigma^2 &amp; 0 \ 0 &amp; sigma^2 (1-e^2) end{array}right) \ U = left( begin{array}{cc} cos theta &amp; -sin theta \ sin theta &amp; cos theta end{array}right) \Sigma = ULambda U^intercal $$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180^circ}{pi}right)^2 frac{1}{2pi</span></dt><dd><p>sqrt{det{Sigma}}} , {rm exp}left( -frac{1}{2} (vec{x}-
+vec{x}_0)^intercal cdot Sigma^{-1}cdot (vec{x}-vec{x}_0)right) \
+vec{x}_0 = ({rm RA}_0,{rm Dec}_0)\ Lambda = left( begin{array}{cc}
+sigma^2 &amp; 0 \ 0 &amp; sigma^2 (1-e^2) end{array}right) \ U = left(
+begin{array}{cc} cos theta &amp; -sin theta \ sin theta &amp; cos theta
+end{array}right) \Sigma = ULambda U^intercal $$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -400,11 +427,12 @@ max : 20</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Gaussian_on_sphere.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Gaussian_on_sphere.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Gaussian_on_sphere.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -412,11 +440,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Gaussian_on_sphere.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Gaussian_on_sphere.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Gaussian_on_sphere.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -468,11 +498,12 @@ initial value : 30</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Latitude_galactic_diffuse.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -480,11 +511,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Latitude_galactic_diffuse.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -518,7 +551,12 @@ needs to be implemented in subclasses.</p>
 <blockquote>
 <div><p>A power law function on a sphere (in spherical coordinates)</p>
 </div></blockquote>
-<p>latex : $$ f(vec{x}) = left(frac{180}{pi}right)^{-1.*index}  left{begin{matrix} 0.05^{index} &amp; {rm if} &amp; ||vec{x}-vec{x}_0|| le 0.05\ ||vec{x}-vec{x}_0||^{index} &amp; {rm if} &amp; 0.05 &lt; ||vec{x}-vec{x}_0|| le maxr \ 0 &amp; {rm if} &amp; ||vec{x}-vec{x}_0||&gt;maxrend{matrix}right. $$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^{-1.*index}  left{</span></dt><dd><p>begin{matrix} 0.05^{index} &amp; {rm if} &amp; ||vec{x}-vec{x}_0|| le 0.05\
+||vec{x}-vec{x}_0||^{index} &amp; {rm if} &amp; 0.05 &lt; ||vec{x}-vec{x}_0|| le
+maxr \ 0 &amp; {rm if} &amp; ||vec{x}-vec{x}_0||&gt;maxrend{matrix}right. $$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lon0 :</p>
@@ -563,11 +601,12 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Power_law_on_sphere.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Power_law_on_sphere.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Power_law_on_sphere.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -575,11 +614,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.Power_law_on_sphere.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#Power_law_on_sphere.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.Power_law_on_sphere.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -648,11 +689,12 @@ allowed values:
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D.get_boundaries">
 <span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D.get_boundaries" title="Link to this definition"></a></dt>
-<dd><p>Returns the boundaries of this function. By default there is no boundary, but subclasses can
-override this.</p>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -660,11 +702,13 @@ override this.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D.get_total_spatial_integral">
 <span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D.get_total_spatial_integral" title="Link to this definition"></a></dt>
-<dd><p>Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-needs to be implemented in subclasses.</p>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of values of the integral (same dimension as z).</p>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
 </dd>
 </dl>
 </dd></dl>

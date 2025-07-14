@@ -92,6 +92,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
 
@@ -103,7 +104,8 @@
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
-<span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016</span>
+<span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,</span>
+<span class="c1"># 2016</span>
 
 <span class="n">erg2keV</span> <span class="o">=</span> <span class="mf">6.24151e8</span>
 
@@ -131,12 +133,11 @@
 
 <span class="c1"># Now let&#39;s try and import optional dependencies</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 
 <span class="k">try</span><span class="p">:</span>
 
-    <span class="c1"># Naima is for numerical computation of Synch. and Inverse compton spectra in randomly oriented</span>
-    <span class="c1"># magnetic fields</span>
+    <span class="c1"># Naima is for numerical computation of Synch. and Inverse compton spectra in</span>
+    <span class="c1"># randomly oriented magnetic fields</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">naima</span>
 
@@ -145,7 +146,8 @@
     <span class="k">if</span> <span class="n">astromodels_config</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">startup_warnings</span><span class="p">:</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;The naima package is not available. Models that depend on it will not be available&quot;</span>
+            <span class="s2">&quot;The naima package is not available. Models that depend on it will not be&quot;</span>
+            <span class="s2">&quot; available&quot;</span>
         <span class="p">)</span>
 
     <span class="n">has_naima</span> <span class="o">=</span> <span class="kc">False</span>
@@ -156,8 +158,8 @@
 
 <span class="k">try</span><span class="p">:</span>
 
-    <span class="c1"># GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used by some</span>
-    <span class="c1"># functions for faster computation</span>
+    <span class="c1"># GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used</span>
+    <span class="c1"># by some functions for faster computation</span>
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">pygsl.testing.sf</span><span class="w"> </span><span class="kn">import</span> <span class="n">gamma_inc</span>
 
@@ -166,8 +168,8 @@
     <span class="k">if</span> <span class="n">astromodels_config</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">startup_warnings</span><span class="p">:</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it will not be &quot;</span>
-            <span class="s2">&quot;available.&quot;</span>
+            <span class="s2">&quot;The GSL library or the pygsl wrapper cannot be loaded. Models that depend&quot;</span>
+            <span class="s2">&quot; on it will not be available.&quot;</span>
         <span class="p">)</span>
 
     <span class="n">has_gsl</span> <span class="o">=</span> <span class="kc">False</span>
@@ -228,7 +230,7 @@
                 <span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="n">ones</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;You must define a function with set_function!&#39;</span><span class="p">)</span></div>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You must define a function with set_function!&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GenericFunction.to_dict">
@@ -255,10 +257,13 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The</span>
-<span class="sd">        extremes of the interval are counted as part of the interval.</span>
+<span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0</span>
+<span class="sd">        outside the interval. The extremes of the interval are counted as part of the</span>
+<span class="sd">        interval.</span>
 
-<span class="sd">    latex : $ f(x)=\begin{cases}0 &amp; x &lt; \text{lower_bound} \\\text{value} &amp; \text{lower_bound} \le x \le \text{upper_bound} \\ 0 &amp; x &gt; \text{upper_bound} \end{cases}$</span>
+<span class="sd">    latex : $ f(x)=\begin{cases}0 &amp; x &lt; \text{lower_bound} \\\text{value} &amp;</span>
+<span class="sd">        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 &amp; x &gt; \text{upper_bound}</span>
+<span class="sd">        \end{cases}$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -312,10 +317,12 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The</span>
-<span class="sd">        upper interval is open.</span>
+<span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0</span>
+<span class="sd">        outside the interval. The upper interval is open.</span>
 
-<span class="sd">    latex : $ f(x)=\begin{cases}0 &amp; x &lt; \text{lower_bound} \\\text{value} &amp; \text{lower_bound} \le x \le \text{upper_bound} \\ 0 &amp; x &gt; \text{upper_bound} \end{cases}$</span>
+<span class="sd">    latex : $ f(x)=\begin{cases}0 &amp; x &lt; \text{lower_bound} \\\text{value} &amp;</span>
+<span class="sd">        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 &amp; x &gt; \text{upper_bound}</span>
+<span class="sd">        \end{cases}$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -479,7 +486,8 @@
     <span class="k">class</span><span class="w"> </span><span class="nc">Synchrotron</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
-<span class="sd">            Synchrotron spectrum from an input particle distribution, using Naima (naima.readthedocs.org)</span>
+<span class="sd">            Synchrotron spectrum from an input particle distribution, using Naima</span>
+<span class="sd">            (naima.readthedocs.org)</span>
 <span class="sd">        latex: not available</span>
 <span class="sd">        parameters :</span>
 <span class="sd">            B :</span>
@@ -549,8 +557,8 @@
             <span class="k">else</span><span class="p">:</span>
 
                 <span class="k">raise</span> <span class="n">InvalidUsageForFunction</span><span class="p">(</span>
-                    <span class="s2">&quot;Unit for x is not an energy. The function synchrotron can only be used &quot;</span>
-                    <span class="s2">&quot;as a spectrum&quot;</span>
+                    <span class="s2">&quot;Unit for x is not an energy. The function synchrotron can only be &quot;</span>
+                    <span class="s2">&quot;used as a spectrum&quot;</span>
                 <span class="p">)</span>
 
                 <span class="c1"># we actually don&#39;t need to do anything as the units are already set up</span>
@@ -575,9 +583,9 @@
                 <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="p">)</span>
 
-            <span class="c1"># Naima wants a function which accepts a quantity as x (in units of eV) and returns an astropy quantity,</span>
-            <span class="c1"># so we need to create a wrapper which will remove the unit from x and add the unit to the return</span>
-            <span class="c1"># value</span>
+            <span class="c1"># Naima wants a function which accepts a quantity as x (in units of eV) and</span>
+            <span class="c1"># returns an astropy quantity, so we need to create a wrapper which will</span>
+            <span class="c1"># remove the unit from x and add the unit to the return value</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_particle_distribution_wrapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">old_div</span><span class="p">(</span>
                 <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span>
@@ -731,11 +739,13 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A log-parabolic function. NOTE that we use the high-energy convention of using the natural log in place of the</span>
-<span class="sd">        base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software</span>
-<span class="sd">        using the other convention.</span>
+<span class="sd">        A log-parabolic function. NOTE that we use the high-energy convention of using</span>
+<span class="sd">        the natural log in place of the base-10 logarithm. This means that beta is a</span>
+<span class="sd">        factor 1 / log10(e) larger than what returned by those software using the other</span>
+<span class="sd">        convention.</span>
 
-<span class="sd">    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv} \right)}} $</span>
+<span class="sd">    latex : $ K \left( \frac{x}{piv} \right)^{\alpha -\beta \log{\left( \frac{x}{piv}</span>
+<span class="sd">        \right)}} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -791,9 +801,10 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
-            <span class="c1"># The current version of astropy (1.1.x) has a bug for which quantities that have become</span>
-            <span class="c1"># dimensionless because of a division (like xx here) are not recognized as such by the power</span>
-            <span class="c1"># operator, which throws an exception: ValueError: Quantities and Units may only be raised to a scalar power</span>
+            <span class="c1"># The current version of astropy (1.1.x) has a bug for which quantities that</span>
+            <span class="c1"># have become dimensionless because of a division (like xx here) are not</span>
+            <span class="c1"># recognized as such by the power operator, which throws an exception:</span>
+            <span class="c1"># ValueError: Quantities and Units may only be raised to a scalar power</span>
             <span class="c1"># This is a quick fix, waiting for astropy 1.2 which will fix this</span>
 
             <span class="n">xx</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
@@ -803,8 +814,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">peak_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the peak energy in the nuFnu spectrum</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the peak energy in the nuFnu spectrum.</span>
 
 <span class="sd">        :return: peak energy in keV</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -825,10 +835,12 @@
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
 
-<span class="sd">            A cutoff power law having the flux as normalization, which should reduce the correlation among</span>
-<span class="sd">            parameters.</span>
+<span class="sd">            A cutoff power law having the flux as normalization, which should reduce the</span>
+<span class="sd">            correlation among parameters.</span>
 
-<span class="sd">        latex : $ \frac{F}{T(b)-T(a)} ~x^{index}~\exp{(-x/x_{c})}~\text{with}~T(x)=-x_{c}^{index+1} \Gamma(index+1, x/C)~\text{(}\Gamma\text{ is the incomplete gamma function)} $</span>
+<span class="sd">        latex : $ \frac{F}{T(b)-T(a)} ~x^{index}~\exp{(-x/x_{c})}~\text{with}~T(x)=</span>
+<span class="sd">            -x_{c}^{index+1} \Gamma(index+1, x/C)~\text{(}\Gamma\text{ is the incomplete</span>
+<span class="sd">            gamma function)} $</span>
 
 <span class="sd">        parameters :</span>
 

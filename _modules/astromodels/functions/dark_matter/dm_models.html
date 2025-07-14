@@ -146,22 +146,20 @@
         <span class="n">tablepath</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/gammamc_dif.dat&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">tablepath</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mapping between the channel codes and the rows in the gammamc file.</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Mapping between the channel codes and the rows in the gammamc file</span>
-
-<span class="sd">            1 : 8, # ee</span>
-<span class="sd">            2 : 6, # mumu</span>
-<span class="sd">            3 : 3, # tautau</span>
-<span class="sd">            4 : 1, # bb</span>
-<span class="sd">            5 : 2, # tt</span>
-<span class="sd">            6 : 7, # gg</span>
-<span class="sd">            7 : 4, # ww</span>
-<span class="sd">            8 : 5, # zz</span>
-<span class="sd">            9 : 0, # cc</span>
-<span class="sd">            10 : 10, # uu</span>
-<span class="sd">            11 : 11, # dd</span>
-<span class="sd">            12 : 9, # ss</span>
+<span class="sd">        1 : 8, # ee</span>
+<span class="sd">        2 : 6, # mumu</span>
+<span class="sd">        3 : 3, # tautau</span>
+<span class="sd">        4 : 1, # bb</span>
+<span class="sd">        5 : 2, # tt</span>
+<span class="sd">        6 : 7, # gg</span>
+<span class="sd">        7 : 4, # ww</span>
+<span class="sd">        8 : 5, # zz</span>
+<span class="sd">        9 : 0, # cc</span>
+<span class="sd">        10 : 10, # uu</span>
+<span class="sd">        11 : 11, # dd</span>
+<span class="sd">        12 : 9, # ss</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">channel_index_mapping</span> <span class="o">=</span> <span class="p">{</span>
@@ -231,8 +229,8 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
-        <span class="c1"># Usually a model should not assume fixed units for energy or anything else. However,</span>
-        <span class="c1"># in this case this model is so specialistic that we can assume GeV</span>
+        <span class="c1"># Usually a model should not assume fixed units for energy or anything else.</span>
+        <span class="c1"># However, in this case this model is so specialistic that we can assume GeV</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">GeV</span>
 
@@ -347,24 +345,22 @@
 
         <span class="n">tablepath_f</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/gammamc_dif.dat&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">tablepath_f</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mapping between the channel codes and the rows in the gammamc file</span>
+<span class="sd">        dmSpecTab.npy created to match this mapping too.</span>
 
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">            Mapping between the channel codes and the rows in the gammamc file</span>
-<span class="sd">            dmSpecTab.npy created to match this mapping too</span>
-
-<span class="sd">            1 : 8, # ee</span>
-<span class="sd">            2 : 6, # mumu</span>
-<span class="sd">            3 : 3, # tautau</span>
-<span class="sd">            4 : 1, # bb</span>
-<span class="sd">            5 : 2, # tt</span>
-<span class="sd">            6 : 7, # gg</span>
-<span class="sd">            7 : 4, # ww</span>
-<span class="sd">            8 : 5, # zz</span>
-<span class="sd">            9 : 0, # cc</span>
-<span class="sd">            10 : 10, # uu</span>
-<span class="sd">            11 : 11, # dd</span>
-<span class="sd">            12 : 9, # ss</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">        1 : 8, # ee</span>
+<span class="sd">        2 : 6, # mumu</span>
+<span class="sd">        3 : 3, # tautau</span>
+<span class="sd">        4 : 1, # bb</span>
+<span class="sd">        5 : 2, # tt</span>
+<span class="sd">        6 : 7, # gg</span>
+<span class="sd">        7 : 4, # ww</span>
+<span class="sd">        8 : 5, # zz</span>
+<span class="sd">        9 : 0, # cc</span>
+<span class="sd">        10 : 10, # uu</span>
+<span class="sd">        11 : 11, # dd</span>
+<span class="sd">        12 : 9, # ss</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">channel_index_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>  <span class="c1"># ee</span>
@@ -497,7 +493,8 @@
                 <span class="s2">&quot;currently spectra for selected channel and mass not implemented.&quot;</span>
             <span class="p">)</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Spectra for channels [&#39;ee&#39;,&#39;gg&#39;,&#39;WW&#39;] currently not available for mass &gt; 10 TeV&quot;</span>
+                <span class="s2">&quot;Spectra for channels [&#39;ee&#39;,&#39;gg&#39;,&#39;WW&#39;] currently not available for mass&quot;</span>
+                <span class="s2">&quot; &gt; 10 TeV&quot;</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>

@@ -112,7 +112,10 @@
 
 <span class="sd">        Positron and electrons diffusing away from the accelerator</span>
 
-<span class="sd">    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$</span>
+<span class="sd">    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}</span>
+<span class="sd">            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}</span>
+<span class="sd">            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}</span>
+<span class="sd">            {r_{\rm diff} ^2} \right)$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -132,7 +135,8 @@
 
 <span class="sd">        rdiff0 :</span>
 
-<span class="sd">            desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.</span>
+<span class="sd">            desc : Projected diffusion radius. The maximum allowed value is used to</span>
+<span class="sd">                    define the truncation radius.</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 20</span>
@@ -162,7 +166,8 @@
 
 <span class="sd">        piv2 :</span>
 
-<span class="sd">            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)</span>
+<span class="sd">            desc : Pivot for converting gamma energy to electron energy (always be</span>
+<span class="sd">                    1 TeV)</span>
 <span class="sd">            initial value : 1e9</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            fix : yes</span>
@@ -216,8 +221,9 @@
         <span class="n">energy</span> <span class="o">=</span> <span class="n">z</span>
 
         <span class="c1"># energy in kev -&gt; TeV.</span>
-        <span class="c1"># NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken</span>
-        <span class="c1"># of a dimensionless quantity, so there must be a pivot there.</span>
+        <span class="c1"># NOTE: the use of piv2 is necessary to preserve dimensional correctness: the</span>
+        <span class="c1"># logarithm can only be taken of a dimensionless quantity, so there must be a</span>
+        <span class="c1"># pivot there.</span>
 
         <span class="n">e_energy_piv2</span> <span class="o">=</span> <span class="mf">17.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span>
             <span class="n">old_div</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">piv2</span><span class="p">),</span>
@@ -247,11 +253,12 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
-            <span class="c1"># This happens when using units, because astropy.units fails with the message:</span>
-            <span class="c1"># &quot;ValueError: Quantities and Units may only be raised to a scalar power&quot;</span>
+            <span class="c1"># This happens when using units, because astropy.units fails with the</span>
+            <span class="c1"># message: &quot;ValueError: Quantities and Units may only be raised to a scalar</span>
+            <span class="c1"># power&quot;</span>
 
-            <span class="c1"># Work around the problem with this loop, which is slow but using units is only for testing purposes or</span>
-            <span class="c1"># single calls, so it shouldn&#39;t matter too much</span>
+            <span class="c1"># Work around the problem with this loop, which is slow but using units is</span>
+            <span class="c1"># only for testing purposes or single calls, so it shouldn&#39;t matter too much</span>
             <span class="n">rdiff_a</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
@@ -350,11 +357,12 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_ellipse.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -372,7 +380,10 @@
 
 <span class="sd">        Positron and electrons diffusing away from the accelerator</span>
 
-<span class="sd">    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$</span>
+<span class="sd">    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}</span>
+<span class="sd">            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}</span>
+<span class="sd">            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}</span>
+<span class="sd">            {r_{\rm diff} ^2} \right)$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -392,14 +403,16 @@
 
 <span class="sd">        rdiff0 :</span>
 
-<span class="sd">            desc : Projected diffusion radius limited by the cooling time. The maximum allowed value is used to define the truncation radius.</span>
+<span class="sd">            desc : Projected diffusion radius limited by the cooling time. The maximum</span>
+<span class="sd">                    allowed value is used to define the truncation radius.</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 20</span>
 
 <span class="sd">        rinj :</span>
 
-<span class="sd">            desc : Ratio of diffusion radius limited by the injection time over rdiff0. The maximum allowed value is used to define the truncation radius.</span>
+<span class="sd">            desc : Ratio of diffusion radius limited by the injection time over rdiff0.</span>
+<span class="sd">                    The maximum allowed value is used to define the truncation radius.</span>
 <span class="sd">            initial value : 100.0</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 200</span>
@@ -429,7 +442,8 @@
 <span class="sd">            fix : yes</span>
 
 <span class="sd">        piv2 :</span>
-<span class="sd">            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)</span>
+<span class="sd">            desc : Pivot for converting gamma energy to electron energy (always be 1</span>
+<span class="sd">                    TeV)</span>
 <span class="sd">            initial value : 1e9</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            fix : yes</span>
@@ -465,8 +479,9 @@
         <span class="n">energy</span> <span class="o">=</span> <span class="n">z</span>
 
         <span class="c1"># energy in kev -&gt; TeV.</span>
-        <span class="c1"># NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken</span>
-        <span class="c1"># of a dimensionless quantity, so there must be a pivot there.</span>
+        <span class="c1"># NOTE: the use of piv2 is necessary to preserve dimensional correctness: the</span>
+        <span class="c1"># logarithm can only be taken of a dimensionless quantity, so there must be a</span>
+        <span class="c1"># pivot there.</span>
 
         <span class="n">e_energy_piv2</span> <span class="o">=</span> <span class="mf">17.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span>
             <span class="n">old_div</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">piv2</span><span class="p">),</span>
@@ -555,11 +570,12 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -577,7 +593,10 @@
 
 <span class="sd">        Positron and electrons diffusing away from the accelerator</span>
 
-<span class="sd">    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$</span>
+<span class="sd">    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}</span>
+<span class="sd">            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}</span>
+<span class="sd">            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}</span>
+<span class="sd">            {r_{\rm diff} ^2} \right)$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -597,7 +616,8 @@
 
 <span class="sd">        rdiff0 :</span>
 
-<span class="sd">            desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.</span>
+<span class="sd">            desc : Projected diffusion radius. The maximum allowed value is used to</span>
+<span class="sd">                    define the truncation radius.</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 20</span>
@@ -626,7 +646,8 @@
 <span class="sd">            fix : yes</span>
 
 <span class="sd">        piv2 :</span>
-<span class="sd">            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)</span>
+<span class="sd">            desc : Pivot for converting gamma energy to electron energy (always be 1</span>
+<span class="sd">                    TeV)</span>
 <span class="sd">            initial value : 1e9</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            fix : yes</span>
@@ -661,8 +682,9 @@
         <span class="n">energy</span> <span class="o">=</span> <span class="n">z</span>
 
         <span class="c1"># energy in kev -&gt; TeV.</span>
-        <span class="c1"># NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken</span>
-        <span class="c1"># of a dimensionless quantity, so there must be a pivot there.</span>
+        <span class="c1"># NOTE: the use of piv2 is necessary to preserve dimensional correctness: the</span>
+        <span class="c1"># logarithm can only be taken of a dimensionless quantity, so there must be a</span>
+        <span class="c1"># pivot there.</span>
 
         <span class="n">e_energy_piv2</span> <span class="o">=</span> <span class="mf">17.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span>
             <span class="n">old_div</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">piv2</span><span class="p">),</span>
@@ -686,11 +708,12 @@
 
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
-            <span class="c1"># This happens when using units, because astropy.units fails with the message:</span>
-            <span class="c1"># &quot;ValueError: Quantities and Units may only be raised to a scalar power&quot;</span>
+            <span class="c1"># This happens when using units, because astropy.units fails with the</span>
+            <span class="c1"># message: &quot;ValueError: Quantities and Units may only be raised to a scalar</span>
+            <span class="c1"># power&quot;</span>
 
-            <span class="c1"># Work around the problem with this loop, which is slow but using units is only for testing purposes or</span>
-            <span class="c1"># single calls, so it shouldn&#39;t matter too much</span>
+            <span class="c1"># Work around the problem with this loop, which is slow but using units is</span>
+            <span class="c1"># only for testing purposes or single calls, so it shouldn&#39;t matter too much</span>
             <span class="n">rdiff</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
@@ -766,11 +789,12 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion_legacy.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Continuous_injection_diffusion_legacy.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -824,8 +848,7 @@
 <div class="viewcode-block" id="GalPropTemplate_3D.set_frame">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.GalPropTemplate_3D.set_frame">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
 <span class="sd">        :param new_frame: a coordinate frame from astropy</span>
 <span class="sd">        :return: (none)</span>
@@ -940,10 +963,8 @@
 
             <span class="c1"># We assume x and y are R.A. and Dec</span>
             <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">lon</span> <span class="o">=</span> <span class="n">l</span>
-            <span class="n">lat</span> <span class="o">=</span> <span class="n">b</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
 
             <span class="c1"># transform energy from keV to MeV. Galprop Model starts at 100 MeV</span>
             <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;keV&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -951,8 +972,8 @@
             <span class="k">if</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Lon and Lat should be the same size&quot;</span><span class="p">)</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">energy</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
-            <span class="n">E0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span>
-            <span class="n">Ef</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span>
+            <span class="c1"># E0 = self._refEn</span>
+            <span class="c1"># Ef = self._refEn + (self._ne - 1) * self._delEn</span>
 
             <span class="c1"># fix longitude</span>
             <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">lon</span> <span class="o">&gt;</span> <span class="mf">180.0</span><span class="p">)</span>

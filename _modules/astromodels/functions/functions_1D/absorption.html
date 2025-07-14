@@ -109,9 +109,9 @@
 
 <span class="k">try</span><span class="p">:</span>
 
-    <span class="c1"># ebltable is a Python packages to read in and interpolate tables for the photon density of</span>
-    <span class="c1"># the Extragalactic Background Light (EBL) and the resulting opacity for high energy gamma</span>
-    <span class="c1"># rays.</span>
+    <span class="c1"># ebltable is a Python packages to read in and interpolate tables for the photon</span>
+    <span class="c1"># density of the Extragalactic Background Light (EBL) and the resulting opacity for</span>
+    <span class="c1"># high energy gamma rays.</span>
 
     <span class="kn">import</span><span class="w"> </span><span class="nn">ebltable.tau_from_model</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ebltau</span>
 
@@ -120,10 +120,9 @@
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
     <span class="k">if</span> <span class="n">astromodels_config</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">startup_warnings</span><span class="p">:</span>
-
-        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-            <span class="s2">&quot;The ebltable package is not available. Models that depend on it will not be available&quot;</span>
-        <span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;The ebltable package is not available. Models that depend on it will&quot;</span>
+        <span class="n">msg</span> <span class="o">+=</span> <span class="s2">&quot; not be available&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="n">has_ebltable</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -153,14 +152,11 @@
 <div class="viewcode-block" id="AbundanceTable.set_table">
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        set the current table from AG89, WILM or ASPL</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the current table from AG89, WILM or ASPL.</span>
 
 <span class="sd">        :param table:</span>
 <span class="sd">        :type table: str</span>
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">old_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span>
@@ -189,26 +185,27 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
         <span class="n">_abund_info</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">_abund_info</span><span class="p">[</span>
-            <span class="s2">&quot;WILM&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;wilms</span><span class="se">\n</span><span class="s2">from Wilms, Allen &amp; McCray (2000), ApJ 542, 914 </span><span class="se">\n</span><span class="s2"> except for elements not listed which are given zero abundance)</span><span class="se">\n</span><span class="s2"> https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html &quot;</span>
-        <span class="n">_abund_info</span><span class="p">[</span>
-            <span class="s2">&quot;AG89&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;angr</span><span class="se">\n</span><span class="s2">from Anders E. &amp; Grevesse N. (1989, Geochimica et Cosmochimica Acta 53, 197)</span><span class="se">\n</span><span class="s2"> https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html&quot;</span>
-        <span class="n">_abund_info</span><span class="p">[</span>
-            <span class="s2">&quot;ASPL&quot;</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;aspl</span><span class="se">\n</span><span class="s2">from Asplund M., Grevesse N., Sauval A.J. &amp; Scott P. (2009, ARAA, 47, 481)</span><span class="se">\n</span><span class="s2">https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html&quot;</span>
+        <span class="n">wilm</span> <span class="o">=</span> <span class="s2">&quot;wilms</span><span class="se">\n</span><span class="s2">from Wilms, Allen &amp; McCray (2000), ApJ 542, 914 </span><span class="se">\n</span><span class="s2"> except for&quot;</span>
+        <span class="n">wilm</span> <span class="o">+=</span> <span class="s2">&quot; elements not listed which are given zero abundance)</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">wilm</span> <span class="o">+=</span> <span class="s2">&quot;https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html &quot;</span>
+        <span class="n">_abund_info</span><span class="p">[</span><span class="s2">&quot;WILM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wilm</span>
+
+        <span class="n">ag89</span> <span class="o">=</span> <span class="s2">&quot;angr</span><span class="se">\n</span><span class="s2">from Anders E. &amp; Grevesse N. (1989, Geochimica et Cosmochimica &quot;</span>
+        <span class="n">ag89</span> <span class="o">+=</span> <span class="s2">&quot;Acta 53, 197)</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">ag89</span> <span class="o">+=</span> <span class="s2">&quot;https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html&quot;</span>
+        <span class="n">_abund_info</span><span class="p">[</span><span class="s2">&quot;AG89&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ag89</span>
+
+        <span class="n">aspl</span> <span class="o">=</span> <span class="s2">&quot;aspl</span><span class="se">\n</span><span class="s2">from Asplund M., Grevesse N., Sauval A.J. &amp; Scott P. (2009, ARAA,&quot;</span>
+        <span class="n">aspl</span> <span class="o">+=</span> <span class="s2">&quot; 47, 481)</span><span class="se">\n</span><span class="s2">https://heasarc.nasa.gov/xanadu/xspec/manual/XSabund.html&quot;</span>
+        <span class="n">_abund_info</span><span class="p">[</span><span class="s2">&quot;ASPL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aspl</span>
 
         <span class="k">return</span> <span class="n">_abund_info</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_current_table</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">xsect_table</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        returns the XSECT table for the current model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the XSECT table for the current model.</span>
 
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;xsect&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;xsect_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">current_table</span><span class="si">}</span><span class="s2">.fits&quot;</span>
 
@@ -285,13 +282,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the abundance table</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the abundance table.</span>
 
 <span class="sd">        :param abund_table: &quot;ASPL&quot;, &quot;AG89&quot;</span>
 <span class="sd">        :returns:</span>
 <span class="sd">        :rtype:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># load cross section data</span>
@@ -310,13 +305,11 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
@@ -388,13 +381,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the abundance table</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the abundance table.</span>
 
 <span class="sd">        :param abund_table: &quot;WILM&quot;, &quot;ASPL&quot;, &quot;AG89&quot;</span>
 <span class="sd">        :returns:</span>
 <span class="sd">        :rtype:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">tbabs</span><span class="o">.</span><span class="n">set_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">abundance_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -413,13 +404,11 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
@@ -475,12 +464,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">redshift</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_init_xsect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the abundance table</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the abundance table.</span>
 
 <span class="sd">        :returns:</span>
 <span class="sd">        :rtype:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">wabs</span><span class="o">.</span><span class="n">xsect_table</span>
@@ -495,13 +482,11 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span><span class="o">.</span><span class="n">value</span>
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_y_unit</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
@@ -520,9 +505,9 @@
     <span class="k">class</span><span class="w"> </span><span class="nc">EBLattenuation</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        description :</span>
-<span class="sd">            Attenuation factor for absorption in the extragalactic background light (EBL) ,</span>
-<span class="sd">            to be used for extragalactic source spectra. Based on package &quot;ebltable&quot; by</span>
-<span class="sd">            Manuel Meyer, https://github.com/me-manu/ebltable .</span>
+<span class="sd">            Attenuation factor for absorption in the extragalactic background light</span>
+<span class="sd">            (EBL), to be used for extragalactic source spectra. Based on package</span>
+<span class="sd">            &quot;ebltable&quot; by Manuel Meyer, https://github.com/me-manu/ebltable .</span>
 
 <span class="sd">        latex: not available</span>
 
@@ -558,7 +543,8 @@
         <span class="c1"># def _setup(self):</span>
 
         <span class="c1">#     # define EBL model, use dominguez as default</span>
-        <span class="c1">#     self._tau = ebltau.OptDepth.readmodel(model=astromodels_config.absorption_models.ebl_table.value)</span>
+        <span class="c1">#     self._tau = ebltau.OptDepth.readmodel(</span>
+        <span class="c1"># model=astromodels_config.absorption_models.ebl_table.value)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_set_ebl_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 

@@ -126,7 +126,7 @@ min: 0.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Beta.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Beta.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Beta.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -156,13 +156,16 @@ min: 0.</p>
 <blockquote>
 <div><p>The Cauchy distribution</p>
 </div></blockquote>
-<p>latex : $ K frac{1}{ gamma pi} left[ frac{gamma^2}{(x-x_0)^2 + gamma^2}  right] $</p>
+<p>latex : $Kfrac{1}{gammapi}left[frac{gamma^2}{(x-x_0)^2+gamma^2}right]$</p>
 <p>parameters :</p>
 <blockquote>
 <div><p>K :</p>
 <blockquote>
-<div><p>desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy distribution
-initial value : 1</p>
+<div><dl class="simple">
+<dt>desc<span class="classifier">Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy</span></dt><dd><p>distribution</p>
+</dd>
+</dl>
+<p>initial value : 1</p>
 </div></blockquote>
 <p>x0 :</p>
 <blockquote>
@@ -191,7 +194,7 @@ min : 1e-12</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Cauchy.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cauchy.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cauchy.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -252,7 +255,7 @@ initial value : 1.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -270,8 +273,9 @@ initial value : 1.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Cosine_Prior.has_fixed_units">
 <span class="sig-name descname"><span class="pre">has_fixed_units</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Cosine_Prior.has_fixed_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Cosine_Prior.has_fixed_units" title="Link to this definition"></a></dt>
-<dd><p>Returns True if this function cannot change units, which is the case only for very specific functions (like
-models from foreign libraries like Xspec)</p>
+<dd><p>Returns True if this function cannot change units, which is the case
+only for very specific functions (like models from foreign libraries
+like Xspec)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
@@ -312,7 +316,7 @@ min: 0.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Exponential.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Exponential.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Exponential.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -342,7 +346,10 @@ min: 0.</p>
 <blockquote>
 <div><p>A gamma distribution function</p>
 </div></blockquote>
-<p>latex : $ f(x, alpha, beta)=frac{beta^alpha x^{alpha-1} e^{-beta x}}{Gamma(alpha)}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x,alpha, beta)=frac{beta^alpha x^{alpha-1}</span></dt><dd><p>e^{-beta x}}{Gamma(alpha)}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>alpha :</p>
@@ -366,7 +373,7 @@ min: 0.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Gamma.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gamma.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Gamma.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -401,8 +408,11 @@ min: 0.</p>
 <blockquote>
 <div><p>F :</p>
 <blockquote>
-<div><p>desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
-initial value : 1</p>
+<div><dl class="simple">
+<dt>desc<span class="classifier">Integral between -inf and +inf. Fix this to 1 to obtain a Normal</span></dt><dd><p>distribution</p>
+</dd>
+</dl>
+<p>initial value : 1</p>
 </div></blockquote>
 <p>mu :</p>
 <blockquote>
@@ -431,7 +441,7 @@ min : 1e-12</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Gaussian.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Gaussian.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Gaussian.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -461,12 +471,18 @@ min : 1e-12</p>
 <blockquote>
 <div><p>A log normal function</p>
 </div></blockquote>
-<p>latex : $ K frac{1}{ x sigma sqrt{2 pi}}exp{frac{(log x/piv - mu/piv)^2}{2~(sigma)^2}} $</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$Kfrac{1}{xsigmasqrt{2pi}}exp{frac{(log x/piv-mu/piv)^2}</span></dt><dd><p>{2~(sigma)^2}} $</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
-<div><dl class="simple">
-<dt>F :</dt><dd><p>desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution
-initial value : 1</p>
+<div><dl>
+<dt>F :</dt><dd><dl class="simple">
+<dt>desc<span class="classifier">Integral between 0and +inf. Fix this to 1 to obtain a log Normal</span></dt><dd><p>distribution</p>
+</dd>
+</dl>
+<p>initial value : 1</p>
 </dd>
 </dl>
 <p>mu :</p>
@@ -502,7 +518,7 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Log_normal.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_normal.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_normal.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -530,10 +546,15 @@ fix : yes</p>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A function which is K/x on the interval lower_bound - upper_bound and 0 outside the interval. The
-extremes of the interval are NOT counted as part of the interval. Lower_bound must be &gt;= 0.</p>
+<div><p>A function which is K/x on the interval lower_bound - upper_bound and 0 outside
+the interval. The extremes of the interval are NOT counted as part of the
+interval. Lower_bound must be &gt;= 0.</p>
 </div></blockquote>
-<p>latex : $ f(x)=K~begin{cases}0 &amp; x le text{lower_bound} \frac{1}{x} &amp; text{lower_bound} &lt; x &lt; text{upper_bound} \ 0 &amp; x ge text{upper_bound} end{cases}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)=K~begin{cases}0 &amp; x le text{lower_bound} \frac{1}{x} &amp;</span></dt><dd><p>text{lower_bound} &lt; x &lt; text{upper_bound} \ 0 &amp; x ge text{upper_bound}
+end{cases}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lower_bound :</p>
@@ -565,7 +586,7 @@ fix : yes</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Log_uniform_prior.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Log_uniform_prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Log_uniform_prior.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -623,7 +644,7 @@ min: 0.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Powerlaw_Prior.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Powerlaw_Prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Powerlaw_Prior.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -651,15 +672,25 @@ min: 0.</p>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A  truncated Gaussian function defined on the interval between the lower_bound (a) and upper_bound (b)</p>
+<div><p>A  truncated Gaussian function defined on the interval between the lower_bound
+(a) and upper_bound (b)</p>
 </div></blockquote>
-<p>latex : $begin{split}f(x;mu,sigma,a,b)=frac{frac{1}{sigma} phileft( frac{x-mu}{sigma} right)}{Phileft( frac{b-mu}{sigma} right) - Phileft( frac{a-mu}{sigma} right)}\phileft(zright)=frac{1}{sqrt{2 pi}}expleft(-frac{1}{2}z^2right)\Phileft(zright)=frac{1}{2}left(1+erfleft(frac{z}{sqrt(2)}right)right)end{split}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$begin{split}f(x;mu,sigma,a,b)=frac{frac{1}{sigma} phileft(</span></dt><dd><p>frac{x-mu}{sigma} right)}{Phileft( frac{b-mu}{sigma} right)
+- Phileft( frac{a-mu}{sigma} right)}\phileft(zright)=
+frac{1}{sqrt{2 pi}}expleft(-frac{1}{2}z^2right)\Phileft(zright)
+=frac{1}{2}left(1+erfleft(frac{z}{sqrt(2)}right)right)end{split}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>F :</p>
 <blockquote>
-<div><p>desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
-initial value : 1</p>
+<div><dl class="simple">
+<dt>desc<span class="classifier">Integral between -inf and +inf. Fix this to 1 to obtain a Normal</span></dt><dd><p>distribution</p>
+</dd>
+</dl>
+<p>initial value : 1</p>
 </div></blockquote>
 <p>mu :</p>
 <blockquote>
@@ -674,13 +705,19 @@ min : 1e-12</p>
 </div></blockquote>
 <p>lower_bound :</p>
 <blockquote>
-<div><p>desc: lower bound of gaussian, setting to -np.inf results in half normal distribution
-initial value : -1.</p>
+<div><dl class="simple">
+<dt>desc: lower bound of gaussian, setting to -np.inf results in half normal</dt><dd><p>distribution</p>
+</dd>
+</dl>
+<p>initial value : -1.</p>
 </div></blockquote>
 <p>upper_bound :</p>
 <blockquote>
-<div><p>desc: upper bound of gaussian  setting to np.inf results in half normal distribution
-initial value : 1.</p>
+<div><dl class="simple">
+<dt>desc: upper bound of gaussian  setting to np.inf results in half normal</dt><dd><p>distribution</p>
+</dd>
+</dl>
+<p>initial value : 1.</p>
 </div></blockquote>
 </div></blockquote>
 <dl class="simple">
@@ -713,10 +750,15 @@ initial value : 1.</p>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.functions.html#astromodels.functions.function.Function1D" title="astromodels.functions.function.Function1D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function1D</span></code></a></p>
 <p>description :</p>
 <blockquote>
-<div><p>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-extremes of the interval are counted as part of the interval.</p>
+<div><p>A function which is constant on the interval lower_bound - upper_bound and 0
+outside the interval. The extremes of the interval are counted as part of the
+interval.</p>
 </div></blockquote>
-<p>latex : $ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp; text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt; text{upper_bound} end{cases}$</p>
+<dl class="simple">
+<dt>latex<span class="classifier">$ f(x)=begin{cases}0 &amp; x &lt; text{lower_bound} \text{value} &amp;</span></dt><dd><p>text{lower_bound} le x le text{upper_bound} \ 0 &amp; x &gt;
+text{upper_bound} end{cases}$</p>
+</dd>
+</dl>
 <p>parameters :</p>
 <blockquote>
 <div><p>lower_bound :</p>
@@ -754,7 +796,7 @@ initial value : 1.0</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.priors.Uniform_prior.from_unit_cube">
 <span class="sig-name descname"><span class="pre">from_unit_cube</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/priors.html#Uniform_prior.from_unit_cube"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.priors.Uniform_prior.from_unit_cube" title="Link to this definition"></a></dt>
-<dd><p>Used by multinest</p>
+<dd><p>Used by multinest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

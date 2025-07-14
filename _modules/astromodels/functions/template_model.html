@@ -96,22 +96,21 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.io.fits</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">fits</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy.interpolate</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">interpolation.splines</span><span class="w"> </span><span class="kn">import</span> <span class="n">eval_linear</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_data_path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.file_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy_if_needed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -153,7 +152,8 @@
     <span class="k">pass</span>
 
 
-<span class="c1"># This dictionary will keep track of the new classes already created in the current session</span>
+<span class="c1"># This dictionary will keep track of the new classes already created in the current</span>
+<span class="c1"># session</span>
 <span class="n">_classes_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
 
@@ -187,8 +187,7 @@
         <span class="n">interpolation_degree</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates a template model from inputs</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates a template model from inputs.</span>
 
 <span class="sd">        :param name:</span>
 <span class="sd">        :type name: str</span>
@@ -203,7 +202,6 @@
 <span class="sd">        :param spline_smoothing_factor:</span>
 <span class="sd">        :type spline_smoothing_factor: int</span>
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Store model name</span>
 
@@ -226,7 +224,8 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Energy unit is not a Quantity instance, so units has not been provided. Using keV.&quot;</span>
+                <span class="s2">&quot;Energy unit is not a Quantity instance, so units has not been&quot;</span>
+                <span class="s2">&quot; provided. Using keV.&quot;</span>
             <span class="p">)</span>
 
             <span class="n">energies</span><span class="p">:</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span>
@@ -238,9 +237,9 @@
 
         <span class="c1"># We create a dictionary which will contain the grid for each parameter</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span>
-            <span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="n">names_of_parameters</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -255,12 +254,11 @@
 
 <div class="viewcode-block" id="TemplateModelFactory.define_parameter_grid">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModelFactory.define_parameter_grid">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">define_parameter_grid</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Define the parameter grid for this parameter.</span>
-<span class="sd">        Pass the name of the parameter and the array of values that it will take in the grid</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_parameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Define the parameter grid for this parameter.</span>
+
+<span class="sd">        Pass the name of the parameter and the array of values that it</span>
+<span class="sd">        will take in the grid</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">parameter_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">:</span>
@@ -271,18 +269,14 @@
         <span class="n">grid_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">grid_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;A grid for a parameter must contain at least two elements&quot;</span>
-            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;A grid for a parameter must contain at least two elements&quot;</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
         <span class="c1"># Assert that elements are unique</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grid_</span><span class="p">)</span> <span class="o">==</span> <span class="n">grid_</span><span class="p">):</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Non-unique elements in grid for parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Non-unique elements in grid for parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
@@ -334,12 +328,14 @@
             <span class="c1">#     names=list(self._parameters_grids.keys()),</span>
             <span class="c1"># )</span>
 
-            <span class="c1"># # Pre-fill the data matrix with nans, so we will know if some elements have not been filled</span>
+            <span class="c1"># # Pre-fill the data matrix with nans, so we will know if some elements</span>
+            <span class="c1"># have not been filled</span>
 
             <span class="c1"># self._data_frame = pd.DataFrame(index=self._multi_index,</span>
             <span class="c1">#                                 columns=self._energies)</span>
 
-        <span class="c1"># Make sure we have all parameters and order the values in the same way as the dictionary</span>
+        <span class="c1"># Make sure we have all parameters and order the values in the same way as the</span>
+        <span class="c1"># dictionary</span>
 
         <span class="n">parameter_idx</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -349,20 +345,20 @@
 
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-            <span class="n">parameter_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">parameters_values_input</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-            <span class="p">)</span>
+            <span class="n">parameter_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="n">parameters_values_input</span><span class="p">[</span><span class="n">k</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; have index </span><span class="si">{</span><span class="n">parameter_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="c1"># If the user did not specify one of the parameters, then the parameters_values array will contain nan</span>
+        <span class="c1"># If the user did not specify one of the parameters, then the parameters_values</span>
+        <span class="c1"># array will contain nan</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">):</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You didn&#39;t specify all parameters&#39; values.&quot;</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-        <span class="c1"># Make sure we are dealing with pure numpy arrays (list and astropy.Quantity instances will be transformed)</span>
+        <span class="c1"># Make sure we are dealing with pure numpy arrays (list and astropy.Quantity</span>
+        <span class="c1"># instances will be transformed)</span>
         <span class="c1"># First we transform the input into a u.Quantity (if it&#39;s not already)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -386,12 +382,10 @@
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-        <span class="c1"># Check that the provided value does not contains nan, inf nor zero (as the interpolation happens in the</span>
-        <span class="c1"># log space)</span>
+        <span class="c1"># Check that the provided value does not contains nan, inf nor zero (as the</span>
+        <span class="c1"># interpolation happens in the log space)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">)):</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;You have invalid values in the differential flux (nan or inf)&quot;</span>
-            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You have invalid values in the differential flux (nan or inf)&quot;</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
@@ -405,9 +399,9 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">differential_fluxes</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;You have zeros in the differential flux. Since the interpolation happens in the log space, &quot;</span>
-                <span class="s2">&quot;this cannot be accepted. We will substitute zeros with </span><span class="si">%g</span><span class="s2">&quot;</span>
-                <span class="o">%</span> <span class="n">_TINY_</span>
+                <span class="s2">&quot;You have zeros in the differential flux. Since the interpolation&quot;</span>
+                <span class="s2">&quot; happens in the log space, this cannot be accepted.&quot;</span>
+                <span class="s2">&quot;We will substitute zeros with </span><span class="si">%g</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">_TINY_</span>
             <span class="p">)</span>
 
             <span class="n">idx</span> <span class="o">=</span> <span class="n">differential_fluxes</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># type: np.ndarray</span>
@@ -417,9 +411,7 @@
 
         <span class="c1"># Now set the values in the data frame</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span>
-            <span class="n">differential_fluxes</span>
-        <span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">differential_fluxes</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TemplateModelFactory.save_data">
@@ -454,13 +446,13 @@
 
                 <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="s2">&quot;The file </span><span class="si">%s</span><span class="s2"> already exists and cannot be removed (maybe you do not have &quot;</span>
-                        <span class="s2">&quot;permissions to do so?). &quot;</span> <span class="o">%</span> <span class="n">filename_sanitized</span>
+                        <span class="s2">&quot;The file </span><span class="si">%s</span><span class="s2"> already exists and cannot be removed (maybe you do&quot;</span>
+                        <span class="s2">&quot;not have permissions to do so?). &quot;</span> <span class="o">%</span> <span class="n">filename_sanitized</span>
                     <span class="p">)</span>
 
                     <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists and cannot be removed (maybe you do not have &quot;</span>
-                        <span class="s2">&quot;permissions to do so?). &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists and cannot be&quot;</span>
+                        <span class="s2">&quot;removed (maybe you do not have permissions to do so?). &quot;</span>
                     <span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
@@ -470,8 +462,8 @@
                 <span class="p">)</span>
 
                 <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists! You cannot call two different &quot;</span>
-                    <span class="s2">&quot;template models with the same name&quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists! You cannot call two&quot;</span>
+                    <span class="s2">&quot; different template models with the same name&quot;</span>
                 <span class="p">)</span>
 
         <span class="c1"># Open the HDF5 file and write objects</span>
@@ -503,18 +495,14 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">RectBivariateSplineWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wrapper around RectBivariateSpline, which supplies a __call__ method which accept the same</span>
-<span class="sd">    syntax as the other interpolation methods</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper around RectBivariateSpline, which supplies a __call__ method</span>
+<span class="sd">    which accept the same syntax as the other interpolation methods.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="c1"># We can use interp2, which features spline interpolation instead of linear interpolation</span>
+        <span class="c1"># We can use interp2, which features spline interpolation instead of linear</span>
+        <span class="c1"># interpolation</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span>
-            <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">RectBivariateSpline</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
@@ -524,11 +512,7 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">TemplateFile</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    simple container to read and write</span>
-<span class="sd">    the data to an hdf5 file</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simple container to read and write the data to an hdf5 file.&quot;&quot;&quot;</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
@@ -540,13 +524,11 @@
     <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">float</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        serialize the contents to a file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the contents to a file.</span>
 
 <span class="sd">        :param file_name:</span>
 <span class="sd">        :type file_name: str</span>
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
@@ -564,21 +546,17 @@
             <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;parameter_order&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">po</span><span class="p">)</span>
             <span class="n">par_group</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_order</span><span class="p">:</span>
-                <span class="n">par_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span>
-                    <span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span>
-                <span class="p">)</span>
+                <span class="n">par_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        read contents from a file</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read contents from a file.</span>
 
 <span class="sd">        :param cls:</span>
 <span class="sd">        :type cls:</span>
 <span class="sd">        :param file_name:</span>
 <span class="sd">        :type file_name: str</span>
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -619,13 +597,16 @@
 <span class="sd">        $n.a.$</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        K :</span>
-<span class="sd">            desc : Normalization (freeze this to 1 if the template provides the normalization by itself)</span>
+<span class="sd">            desc : Normalization (freeze this to 1 if the template provides the</span>
+<span class="sd">                    normalization by itself)</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">        scale :</span>
-<span class="sd">            desc : Scale for the independent variable. The templates are handled as if they contains the fluxes</span>
-<span class="sd">                   at E = scale * x.This is useful for example when the template describe energies in the rest</span>
-<span class="sd">                   frame, at which point the scale describe the transformation between rest frame energy and</span>
-<span class="sd">                   observer frame energy. Fix this to 1 to neutralize its effect.</span>
+<span class="sd">            desc : Scale for the independent variable. The templates are handled as if</span>
+<span class="sd">                    they contains the fluxes at E = scale * x.This is useful for example</span>
+<span class="sd">                    when the template describe energies in the rest frame, at which</span>
+<span class="sd">                    point the scale describe the transformation between rest frame</span>
+<span class="sd">                    energy and observer frame energy. Fix this to 1 to neutralize its</span>
+<span class="sd">                    effect.</span>
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            min : 1e-5</span>
 
@@ -643,12 +624,13 @@
         <span class="n">other_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">log_interp</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Custom initialization for this model</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Custom initialization for this model.</span>
 
-<span class="sd">        :param model_name: the name of the model, corresponding to the root of the .h5 file in the data directory</span>
-<span class="sd">        :param other_name: (optional) the name to be used as name of the model when used in astromodels. If None</span>
-<span class="sd">        (default), use the same name as model_name</span>
+<span class="sd">        :param model_name: the name of the model, corresponding to the</span>
+<span class="sd">            root of the .h5 file in the data directory</span>
+<span class="sd">        :param other_name: (optional) the name to be used as name of the</span>
+<span class="sd">            model when used in astromodels. If None (default), use the</span>
+<span class="sd">            same name as model_name</span>
 <span class="sd">        :return: none</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -675,9 +657,7 @@
         <span class="c1"># use the file shadow to read</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">template_file</span><span class="p">:</span> <span class="n">TemplateFile</span> <span class="o">=</span> <span class="n">TemplateFile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span>
-                <span class="n">filename_sanitized</span>
-            <span class="p">)</span>
+            <span class="n">template_file</span><span class="p">:</span> <span class="n">TemplateFile</span> <span class="o">=</span> <span class="n">TemplateFile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">InvalidTemplateModelFile</span><span class="p">()</span>
@@ -739,9 +719,7 @@
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">other_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">TemplateModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span>
-            <span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">TemplateModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">TemplateModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -790,12 +768,13 @@
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
                         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-                        <span class="c1"># Make sure that the requested polynomial degree is less than the number of data sets in</span>
-                        <span class="c1"># both directions</span>
+                        <span class="c1"># Make sure that the requested polynomial degree is less than</span>
+                        <span class="c1"># the number of data sets in both directions</span>
 
                         <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                            <span class="s2">&quot;You cannot use an interpolation degree of </span><span class="si">%s</span><span class="s2"> if you don&#39;t provide at least </span><span class="si">%s</span><span class="s2"> points &quot;</span>
-                            <span class="s2">&quot;in the </span><span class="si">%s</span><span class="s2"> direction. Increase the number of templates or decrease the interpolation &quot;</span>
+                            <span class="s2">&quot;You cannot use an interpolation degree of </span><span class="si">%s</span><span class="s2"> if you don&#39;t&quot;</span>
+                            <span class="s2">&quot;provide at least </span><span class="si">%s</span><span class="s2"> points in the </span><span class="si">%s</span><span class="s2"> direction. Increase&quot;</span>
+                            <span class="s2">&quot; the number of templates or decrease the interpolation &quot;</span>
                             <span class="s2">&quot;degree.&quot;</span>
                         <span class="p">)</span>
 
@@ -839,9 +818,7 @@
                             <span class="nb">tuple</span><span class="p">(</span>
                                 <span class="p">[</span>
                                     <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;&lt;f8&quot;</span><span class="p">)</span>
-                                    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-                                    <span class="p">)</span>
+                                    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
                                 <span class="p">]</span>
                             <span class="p">),</span>
                             <span class="n">this_data</span><span class="p">,</span>
@@ -874,8 +851,8 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">parameters_values</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="c1"># Templates are always saved with energy in keV. We need to transform it to</span>
-            <span class="c1"># a dimensionless quantity (actually we take the .value property) because otherwise</span>
-            <span class="c1"># the logarithm below will fail.</span>
+            <span class="c1"># a dimensionless quantity (actually we take the .value property) because</span>
+            <span class="c1"># otherwise the logarithm below will fail.</span>
 
             <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                 <span class="n">energies</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;keV&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="n">copy_if_needed</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
@@ -909,9 +886,7 @@
         <span class="c1"># NOTE: the variable &quot;interpolations&quot; contains already the log10 of the values,</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_log10</span><span class="p">:</span>
-            <span class="n">interpolator</span> <span class="o">=</span> <span class="n">UnivariateSpline</span><span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e_tilde</span><span class="p">),</span> <span class="n">log_interpolations</span>
-            <span class="p">)</span>
+            <span class="n">interpolator</span> <span class="o">=</span> <span class="n">UnivariateSpline</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">e_tilde</span><span class="p">),</span> <span class="n">log_interpolations</span><span class="p">)</span>
 
             <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">log_energies</span><span class="p">))</span>
 
@@ -925,29 +900,26 @@
         <span class="c1"># de = dE / scale</span>
         <span class="c1"># dN / dE = dN / de * de / dE = dN / de * (1 / scale)</span>
 
-        <span class="c1"># NOTE: the units are added back through the multiplication by K in the evaluate method</span>
+        <span class="c1"># NOTE: the units are added back through the multiplication by K in the evaluate</span>
+        <span class="c1"># method</span>
 
         <span class="k">return</span> <span class="n">values</span> <span class="o">/</span> <span class="n">scale</span>
 
 <div class="viewcode-block" id="TemplateModel.clean">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.TemplateModel.clean">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Table models can consume a lot of memory. If are creating lots of</span>
-<span class="sd">        table models in memory for simulations, you may want to call</span>
-<span class="sd">        clean on the model try and remove some of the memory consumed by the models</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Table models can consume a lot of memory. If are creating lots of</span>
+<span class="sd">        table models in memory for simulations, you may want to call clean on</span>
+<span class="sd">        the model try and remove some of the memory consumed by the models.</span>
 
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span>
         <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;You have &#39;cleaned&#39; the table model and it will no longer be useable&quot;</span>
-        <span class="p">)</span></div>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;You have &#39;cleaned&#39; the table model and it will no longer be useable&quot;</span><span class="p">)</span></div>
 
 
     <span class="c1"># def __del__(self):</span>
@@ -1021,7 +993,9 @@
 
             <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;MODLUNIT&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;photons/cm^2/s&quot;</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">&quot;This table model has flux units of photons/cm^2/s. It will be converted to differential Flux by dividing by the energy bin widths. Logarithmic centers will be turned off. &quot;</span>
+                    <span class="s2">&quot;This table model has flux units of photons/cm^2/s. It will be&quot;</span>
+                    <span class="s2">&quot; converted to differential Flux by dividing by the energy bin&quot;</span>
+                    <span class="s2">&quot; widths. Logarithmic centers will be turned off. &quot;</span>
                 <span class="p">)</span>
                 <span class="n">delta_ene</span> <span class="o">=</span> <span class="n">ene_hi</span> <span class="o">-</span> <span class="n">ene_lo</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_spectrum</span> <span class="o">=</span> <span class="n">spectra</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;INTPSPEC&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">delta_ene</span>
@@ -1065,15 +1039,13 @@
 <div class="viewcode-block" id="XSPECTableModel.to_table_model">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.XSPECTableModel.to_table_model">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_table_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Write the table model to your local astromodels database</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write the table model to your local astromodels database.</span>
 
 <span class="sd">        :param file_name: name of file to store</span>
 <span class="sd">        :param model_name: name of the model</span>
 <span class="sd">        :param overwrite: overwite the previous model</span>
 <span class="sd">        :returns:</span>
 <span class="sd">        :rtype:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">tmf</span> <span class="o">=</span> <span class="n">TemplateModelFactory</span><span class="p">(</span>

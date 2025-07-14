@@ -160,9 +160,7 @@
 <div class="viewcode-block" id="get_path_of_log_file">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    returns the path of the log files</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the path of the log files.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">log_file</span> <span class="ow">in</span> <span class="n">_log_file_names</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2"> is not one of </span><span class="si">{</span><span class="n">_log_file_names</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">return</span> <span class="n">get_path_of_log_dir</span><span class="p">()</span> <span class="o">/</span> <span class="n">log_file</span></div>
@@ -259,9 +257,7 @@
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_console_log">[docs]</a>
 <span class="nd">@contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">silence_console_log</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    temporarily silence the console and progress bars</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Temporarily silence the console and progress bars.&quot;&quot;&quot;</span>
     <span class="n">current_console_logging_level</span> <span class="o">=</span> <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">level</span>
     <span class="n">current_usr_logging_level</span> <span class="o">=</span> <span class="n">astromodels_usr_log_handler</span><span class="o">.</span><span class="n">level</span>
 
@@ -282,9 +278,7 @@
 <div class="viewcode-block" id="silence_warnings">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">silence_warnings</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    supress warning messages in console and file usr logs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Supress warning messages in console and file usr logs.&quot;&quot;&quot;</span>
 
     <span class="n">astromodels_usr_log_handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span>
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">addFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span></div>
@@ -294,9 +288,7 @@
 <div class="viewcode-block" id="activate_warnings">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">activate_warnings</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    supress warning messages in console and file usr logs</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Supress warning messages in console and file usr logs.&quot;&quot;&quot;</span>
 
     <span class="n">astromodels_usr_log_handler</span><span class="o">.</span><span class="n">removeFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span>
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">removeFilter</span><span class="p">(</span><span class="n">warning_filter</span><span class="p">)</span></div>

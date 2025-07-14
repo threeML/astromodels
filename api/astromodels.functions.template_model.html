@@ -116,13 +116,18 @@
 <dt>latex :</dt><dd><p>$n.a.$</p>
 </dd>
 <dt>parameters :</dt><dd><dl>
-<dt>K :</dt><dd><p>desc : Normalization (freeze this to 1 if the template provides the normalization by itself)
-initial value : 1.0</p>
+<dt>K :</dt><dd><dl class="simple">
+<dt>desc<span class="classifier">Normalization (freeze this to 1 if the template provides the</span></dt><dd><p>normalization by itself)</p>
+</dd>
+</dl>
+<p>initial value : 1.0</p>
 </dd>
 <dt>scale :</dt><dd><dl class="simple">
-<dt>desc<span class="classifier">Scale for the independent variable. The templates are handled as if they contains the fluxes</span></dt><dd><p>at E = scale * x.This is useful for example when the template describe energies in the rest
-frame, at which point the scale describe the transformation between rest frame energy and
-observer frame energy. Fix this to 1 to neutralize its effect.</p>
+<dt>desc<span class="classifier">Scale for the independent variable. The templates are handled as if</span></dt><dd><p>they contains the fluxes at E = scale * x.This is useful for example
+when the template describe energies in the rest frame, at which
+point the scale describe the transformation between rest frame
+energy and observer frame energy. Fix this to 1 to neutralize its
+effect.</p>
 </dd>
 </dl>
 <p>initial value : 1.0
@@ -140,8 +145,8 @@ fix: True</p>
 <dt class="sig sig-object py" id="astromodels.functions.template_model.TemplateModel.clean">
 <span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#TemplateModel.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.template_model.TemplateModel.clean" title="Link to this definition"></a></dt>
 <dd><p>Table models can consume a lot of memory. If are creating lots of
-table models in memory for simulations, you may want to call
-clean on the model try and remove some of the memory consumed by the models</p>
+table models in memory for simulations, you may want to call clean on
+the model try and remove some of the memory consumed by the models.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -183,8 +188,9 @@ clean on the model try and remove some of the memory consumed by the models</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.template_model.TemplateModelFactory.define_parameter_grid">
 <span class="sig-name descname"><span class="pre">define_parameter_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#TemplateModelFactory.define_parameter_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.template_model.TemplateModelFactory.define_parameter_grid" title="Link to this definition"></a></dt>
-<dd><p>Define the parameter grid for this parameter.
-Pass the name of the parameter and the array of values that it will take in the grid</p>
+<dd><p>Define the parameter grid for this parameter.</p>
+<p>Pass the name of the parameter and the array of values that it
+will take in the grid</p>
 </dd></dl>
 
 <dl class="py method">

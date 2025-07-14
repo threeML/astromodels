@@ -107,9 +107,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">astromodels_config</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">.thread_safe_unit_format</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadSafe</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -118,10 +117,7 @@
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.turn_off_parameter_transforms">[docs]</a>
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">turn_off_parameter_transforms</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    deactivate parameter transforms temporarily</span>
-<span class="sd">    :return: None</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deactivate parameter transforms temporarily :return: None.&quot;&quot;&quot;</span>
 
     <span class="c1"># store the old status</span>
 
@@ -145,7 +141,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">    :param obj:</span>
-<span class="sd">    :return: True if obj supports addition, subtraction, multiplication and division. False otherwise.</span>
+<span class="sd">    :return: True if obj supports addition, subtraction, multiplication and division.</span>
+<span class="sd">             False otherwise.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -218,23 +215,25 @@
 <div class="viewcode-block" id="accept_quantity">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.accept_quantity">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">accept_quantity</span><span class="p">(</span><span class="n">input_type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class-method decorator which allow a given method (typically the set_value method) to receive both a</span>
-<span class="sd">    astropy.Quantity or a simple float, but to be coded like it&#39;s always receiving a pure float in the right units.</span>
-<span class="sd">    This is to give a way to avoid the huge bottleneck that are astropy.units</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class-method decorator which allow a given method (typically the</span>
+<span class="sd">    set_value method) to receive both a astropy.Quantity or a simple float, but</span>
+<span class="sd">    to be coded like it&#39;s always receiving a pure float in the right units.</span>
+<span class="sd">    This is to give a way to avoid the huge bottleneck that are astropy.units.</span>
 
 <span class="sd">    :param input_type: the expected type for the input (float, int)</span>
-<span class="sd">    :param allow_none : whether to allow or not the passage of None as argument (default: False)</span>
+<span class="sd">    :param allow_none : whether to allow or not the passage of None as</span>
+<span class="sd">        argument (default: False)</span>
 <span class="sd">    :return: a decorator for the particular type</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">accept_quantity_wrapper</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
         <span class="k">def</span><span class="w"> </span><span class="nf">handle_quantity</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-            <span class="c1"># For speed reasons, first run the case where the input is not a quantity, and fall back to the handling</span>
-            <span class="c1"># of quantities if that fails. The parts that fails if the input is a Quantity is the conversion</span>
-            <span class="c1"># input_type(value). This could have been handled more elegantly with a &quot;finally&quot; clause, but that would</span>
-            <span class="c1"># have a 40 percent speed impact...</span>
+            <span class="c1"># For speed reasons, first run the case where the input is not a quantity,</span>
+            <span class="c1"># and fall back to the handling of quantities if that fails. The parts that</span>
+            <span class="c1"># fails if the input is a Quantity is the conversion input_type(value). This</span>
+            <span class="c1"># could have been handled more elegantly with a &quot;finally&quot; clause, but that</span>
+            <span class="c1"># would have a 40 percent speed impact...</span>
 
             <span class="k">try</span><span class="p">:</span>
 
@@ -244,7 +243,8 @@
 
             <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
 
-                <span class="c1"># Slow for slow, check that we actually have a quantity or None (if allowed)</span>
+                <span class="c1"># Slow for slow, check that we actually have a quantity or None (if</span>
+                <span class="c1"># allowed)</span>
 
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
@@ -294,8 +294,9 @@
 <span class="sd">    :param max_value: maximum</span>
 <span class="sd">    :param desc: description</span>
 <span class="sd">    :param unit: units (string or astropy.Unit)</span>
-<span class="sd">    :param transformation: a class which implements a .forward and a .backward method to transform forth and back from</span>
-<span class="sd">        face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)</span>
+<span class="sd">    :param transformation: a class which implements a .forward and a .backward method to</span>
+<span class="sd">        transform forth and back from face value (the value exposed to the user) to the</span>
+<span class="sd">        internal value (the value exposed to the fitting engine)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -313,10 +314,12 @@
 
         <span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
-        <span class="c1"># Make a static name which will never change (not even after a _change_name call)</span>
+        <span class="c1"># Make a static name which will never change (not even after a _change_name</span>
+        <span class="c1"># call)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_static_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="c1"># Callbacks are executed any time the value for the parameter changes (i.e., its value changes)</span>
+        <span class="c1"># Callbacks are executed any time the value for the parameter changes (i.e., its</span>
+        <span class="c1"># value changes)</span>
 
         <span class="c1"># We start from a empty list of callbacks.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">[]</span>
@@ -335,8 +338,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_min_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_max_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># Store the transformation. This allows to disentangle the value of the parameter which the user interact</span>
-        <span class="c1"># width with the value of the parameter the fitting engine (or the Bayesian sampler) interact with</span>
+        <span class="c1"># Store the transformation. This allows to disentangle the value of the</span>
+        <span class="c1"># parameter which the user interact width with the value of the parameter the</span>
+        <span class="c1"># fitting engine (or the Bayesian sampler) interact with</span>
         <span class="k">if</span> <span class="n">transformation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">transformation</span><span class="p">,</span> <span class="n">ParameterTransformation</span><span class="p">):</span>
 
@@ -348,13 +352,14 @@
 
         <span class="c1"># save the transformation so that it can be restored</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_original_transformation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-            <span class="n">ParameterTransformation</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="n">transformation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_original_transformation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParameterTransformation</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">transformation</span>
+        <span class="p">)</span>
 
         <span class="c1"># Let&#39;s store the init value</span>
 
-        <span class="c1"># NOTE: this will be updated immediately by the _set_value method of the &quot;value&quot; property</span>
+        <span class="c1"># NOTE: this will be updated immediately by the _set_value method of the &quot;value&quot;</span>
+        <span class="c1"># property</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="c1"># If the value is a Quantity, deal with that</span>
 
@@ -376,7 +381,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
 
         <span class="c1"># Set minimum if provided, otherwise use default</span>
-        <span class="c1"># (use the property so the checks that are there are performed also on construction)</span>
+        <span class="c1"># (use the property so the checks that are there are performed also on</span>
+        <span class="c1"># construction)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">min_value</span>
 
@@ -393,8 +399,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">desc</span>
 
-        <span class="c1"># Now perform a very lazy check that we can perform math operations on value, minimum and maximum</span>
-        <span class="c1"># (i.e., they are numbers)</span>
+        <span class="c1"># Now perform a very lazy check that we can perform math operations on value,</span>
+        <span class="c1"># minimum and maximum (i.e., they are numbers)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_behaves_like_a_number</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
 
@@ -412,9 +418,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">static_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a name which will never change, even if the name of the parameter does (for example in composite</span>
-<span class="sd">        functions)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a name which will never change, even if the name of the</span>
+<span class="sd">        parameter does (for example in composite functions)</span>
 
 <span class="sd">        :return : the static name</span>
 <span class="sd">        :type : str</span>
@@ -424,17 +429,18 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a description of this parameter</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a description of this parameter.</span>
 
-<span class="sd">        :return: a string cointaining a description of the meaning of this parameter</span>
+<span class="sd">        :return: a string cointaining a description of the meaning of</span>
+<span class="sd">            this parameter</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desc</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_safe_assign_unit</span><span class="p">(</span><span class="n">input_unit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">:</span>
 
-        <span class="c1"># We first try to use our own, thread-safe format, if we fail then we try the astropy one</span>
+        <span class="c1"># We first try to use our own, thread-safe format, if we fail then we try the</span>
+        <span class="c1"># astropy one</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -454,8 +460,8 @@
 
         <span class="n">new_unit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_assign_unit</span><span class="p">(</span><span class="n">input_unit</span><span class="p">)</span>
 
-        <span class="c1"># Now transform the current _value in the new unit, unless the current unit is dimensionless, in which</span>
-        <span class="c1"># case there is no transformation to make</span>
+        <span class="c1"># Now transform the current _value in the new unit, unless the current unit is</span>
+        <span class="c1"># dimensionless, in which case there is no transformation to make</span>
 
         <span class="c1"># (self._unit is the OLD unit here)</span>
 
@@ -511,8 +517,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">as_quantity</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the current value with its units (as an astropy.Quantity instance)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the current value with its units (as an astropy.Quantity</span>
+<span class="sd">        instance)</span>
 
 <span class="sd">        :return: an instance of astropy.Quantity)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -521,14 +527,16 @@
 <div class="viewcode-block" id="ParameterBase.in_unit_of">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.in_unit_of">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">in_unit_of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">as_quantity</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the current value transformed to the new units</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the current value transformed to the new units.</span>
 
-<span class="sd">        :param unit: either an astropy.Unit instance, or a string which can be converted to an astropy.Unit</span>
-<span class="sd">            instance, like &quot;1 / (erg cm**2 s)&quot;</span>
-<span class="sd">        :param as_quantity: if True, the method return an astropy.Quantity, if False just a floating point number.</span>
+<span class="sd">        :param unit: either an astropy.Unit instance, or a string which</span>
+<span class="sd">            can be converted to an astropy.Unit instance, like &quot;1 / (erg</span>
+<span class="sd">            cm**2 s)&quot;</span>
+<span class="sd">        :param as_quantity: if True, the method return an</span>
+<span class="sd">            astropy.Quantity, if False just a floating point number.</span>
 <span class="sd">            Default is False</span>
-<span class="sd">        :return: either a floating point or a astropy.Quantity depending on the value of &quot;as_quantity&quot;</span>
+<span class="sd">        :return: either a floating point or a astropy.Quantity depending</span>
+<span class="sd">            on the value of &quot;as_quantity&quot;</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">new_unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
@@ -579,16 +587,12 @@
 <div class="viewcode-block" id="ParameterBase.remove_transformation">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.remove_transformation">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove any transform on the parameter.</span>
 
-<span class="sd">        remove any transform on the parameter</span>
-
-<span class="sd">        useful in bayesian fits where</span>
-<span class="sd">        we do not care about</span>
+<span class="sd">        useful in bayesian fits where we do not care about</span>
 <span class="sd">        transformations but want speed</span>
 
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># first get the real value</span>
         <span class="n">old_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -607,13 +611,9 @@
 <div class="viewcode-block" id="ParameterBase.restore_transformation">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.restore_transformation">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">restore_transformation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">        restore the original transformation</span>
-<span class="sd">        if it had been removed</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Restore the original transformation if it had been removed.</span>
 
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># first get the real value</span>
         <span class="n">old_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span>
@@ -632,10 +632,10 @@
 <div class="viewcode-block" id="ParameterBase.internal_to_external_delta">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.internal_to_external_delta">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">internal_to_external_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">internal_value</span><span class="p">,</span> <span class="n">internal_delta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Transform an interval from the internal to the external reference (through the transformation). It is useful</span>
-<span class="sd">        if you have for example a confidence interval in internal reference and you want to transform it to the</span>
-<span class="sd">        external reference</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform an interval from the internal to the external reference</span>
+<span class="sd">        (through the transformation). It is useful if you have for example a</span>
+<span class="sd">        confidence interval in internal reference and you want to transform it</span>
+<span class="sd">        to the external reference.</span>
 
 <span class="sd">        :param interval_value: value in internal reference</span>
 <span class="sd">        :param internal_delta: delta in internal reference</span>
@@ -654,10 +654,10 @@
     <span class="c1"># outside of its bounds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current parameter value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current parameter value.&quot;&quot;&quot;</span>
 
-        <span class="c1"># This is going to be true (possibly) only for derived classes. It is here to make the code cleaner</span>
-        <span class="c1"># and also to avoid infinite recursion</span>
+        <span class="c1"># This is going to be true (possibly) only for derived classes. It is here to</span>
+        <span class="c1"># make the code cleaner and also to avoid infinite recursion</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">:</span>
 
@@ -672,17 +672,19 @@
             <span class="c1"># A transformation is set. Transform back from internal value to true value</span>
             <span class="c1">#</span>
             <span class="c1"># print(&quot;Interval value is %s&quot; % self._internal_value)</span>
-            <span class="c1"># print(&quot;Returning %s&quot; % self._transformation.backward(self._internal_value))</span>
+            <span class="c1"># print(&quot;Returning %s&quot; % self._transformation.backward(</span>
+            <span class="c1"># self._internal_value))</span>
 
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span><span class="p">)</span>
 
-    <span class="c1"># NOTE: this function should only be used by the user. Fitting engines should only deal with</span>
-    <span class="c1"># _get_internal_value and _set_internal_value</span>
+    <span class="c1"># NOTE: this function should only be used by the user. Fitting engines should only</span>
+    <span class="c1"># deal with _get_internal_value and _set_internal_value</span>
     <span class="nd">@accept_quantity</span><span class="p">(</span>
         <span class="nb">float</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>  <span class="c1"># This means that the method will always receive a float</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the current value of the parameter, ensuring that it is within the allowed range.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the current value of the parameter, ensuring that it is within</span>
+<span class="sd">        the allowed range.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="p">(</span>
             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
@@ -691,9 +693,8 @@
         <span class="p">):</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Trying to set parameter </span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1}</span><span class="s2">, which is less than the minimum allowed </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Trying to set parameter </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; which is less than the minimum allowed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="n">SettingOutOfBounds</span><span class="p">()</span>
@@ -705,14 +706,14 @@
         <span class="p">):</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Trying to set parameter </span><span class="si">{0}</span><span class="s2"> = </span><span class="si">{1}</span><span class="s2">, which is more than the maximum allowed </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span>
-                <span class="p">)</span>
+                <span class="sa">f</span><span class="s2">&quot;Trying to set parameter </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">,&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; which is less than the maximum allowed </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">max_value</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="n">SettingOutOfBounds</span><span class="p">()</span>
 
-        <span class="c1"># Issue a warning if there is an auxiliary variable, as the setting does not have any effect</span>
+        <span class="c1"># Issue a warning if there is an auxiliary variable, as the setting does not</span>
+        <span class="c1"># have any effect</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_auxiliary_variable</span><span class="p">:</span>
 
             <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
@@ -724,8 +725,8 @@
                     <span class="s2">&quot;has auxiliary variables. The assignment has no effect.&quot;</span>
                 <span class="p">)</span>
 
-        <span class="c1"># Save the value as a pure floating point to avoid the overhead of the astropy.units machinery when</span>
-        <span class="c1"># not needed</span>
+        <span class="c1"># Save the value as a pure floating point to avoid the overhead of the</span>
+        <span class="c1"># astropy.units machinery whennot needed</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -735,7 +736,8 @@
 
             <span class="n">new_internal_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span>
 
-        <span class="c1"># If the parameter has changed, update its value and call the callbacks if needed</span>
+        <span class="c1"># If the parameter has changed, update its value and call the callbacks if</span>
+        <span class="c1"># needed</span>
 
         <span class="k">if</span> <span class="n">new_internal_value</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span><span class="p">:</span>
 
@@ -762,20 +764,21 @@
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_internal_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is supposed to be only used by fitting engines at the beginning to get the starting value for free</span>
-<span class="sd">        parameters. From then on, only the _set_internal_value should be used</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is supposed to be only used by fitting engines at the beginning</span>
+<span class="sd">        to get the starting value for free parameters. From then on, only the</span>
+<span class="sd">        _set_internal_value should be used.</span>
 
 <span class="sd">        :return: the internal value</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># NOTE: we don&#39;t need here to deal with auxiliary variables because if one is defined, the parameter is not</span>
-        <span class="c1"># free thus it will not be touched by the fitting engine</span>
+        <span class="c1"># NOTE: we don&#39;t need here to deal with auxiliary variables because if one is</span>
+        <span class="c1"># defined, the parameter is not free thus it will not be touched by the fitting</span>
+        <span class="c1"># engine</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;You cannot get the internal value of a parameter which has an auxiliary &quot;</span>
-                <span class="s2">&quot;variable&quot;</span>
+                <span class="s2">&quot;You cannot get the internal value of a parameter which has an &quot;</span>
+                <span class="s2">&quot;auxiliary variable&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
@@ -783,8 +786,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_internal_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_internal_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is supposed to be only used by fitting engines</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is supposed to be only used by fitting engines.</span>
 
 <span class="sd">        :param new_internal_value: new value in internal representation</span>
 <span class="sd">        :return: none</span>
@@ -804,13 +806,13 @@
     <span class="c1"># NOTE: the min value is always in external representation</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_min_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current minimum allowed value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current minimum allowed value.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_min_value</span>
 
     <span class="nd">@accept_quantity</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_min_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets current minimum allowed value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets current minimum allowed value.&quot;&quot;&quot;</span>
 
         <span class="c1"># Check that the min value can be transformed if a transformation is present</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_transformation</span><span class="p">():</span>
@@ -820,8 +822,9 @@
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="o">.</span><span class="n">is_positive</span><span class="p">:</span>
 
                     <span class="k">assert</span> <span class="n">min_value</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">,</span> <span class="p">(</span>
-                        <span class="s2">&quot;The transformation </span><span class="si">%s</span><span class="s2"> is postive definite and the min_value was set to a negative number for </span><span class="si">%s</span><span class="s2"> &quot;</span>
-                        <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;The transformation </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="p">)</span><span class="si">}</span><span class="s2"> is postive&quot;</span>
+                        <span class="s2">&quot; definite and the min_value was set to a negative number for&quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> &quot;</span>
                     <span class="p">)</span>
 
                 <span class="k">try</span><span class="p">:</span>
@@ -831,9 +834,9 @@
                 <span class="k">except</span> <span class="ne">FloatingPointError</span><span class="p">:</span>
 
                     <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                        <span class="s2">&quot;The provided minimum </span><span class="si">%s</span><span class="s2"> cannot be transformed with the transformation </span><span class="si">%s</span><span class="s2"> which &quot;</span>
-                        <span class="s2">&quot;is defined for the parameter </span><span class="si">%s</span><span class="s2">&quot;</span>
-                        <span class="o">%</span> <span class="p">(</span><span class="n">min_value</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s2">&quot;The provided minimum </span><span class="si">{</span><span class="n">min_value</span><span class="si">}</span><span class="s2"> cannot be transformed with &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;the transformation </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="p">)</span><span class="si">}</span><span class="s2"> which &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;is defined for the parameter </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
                     <span class="p">)</span>
 
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
@@ -845,15 +848,16 @@
                     <span class="n">min_value</span> <span class="o">=</span> <span class="mf">1e-99</span>
 
                     <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="s2">&quot;We have set the min_value of </span><span class="si">%s</span><span class="s2"> to 1e-99 because there was a postive transform&quot;</span>
-                        <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+                        <span class="sa">f</span><span class="s2">&quot;We have set the min_value of </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> to 1e-99 because&quot;</span>
+                        <span class="s2">&quot; there was a postive transform&quot;</span>
                     <span class="p">)</span>
 
         <span class="c1"># Store the minimum as a pure float</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_min_value</span> <span class="o">=</span> <span class="n">min_value</span>
 
-        <span class="c1"># Check that the current value of the parameter is still within the boundaries. If not, issue a warning</span>
+        <span class="c1"># Check that the current value of the parameter is still within the boundaries.</span>
+        <span class="c1"># If not, issue a warning</span>
 
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_external_min_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -877,26 +881,28 @@
 <div class="viewcode-block" id="ParameterBase.remove_minimum">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.remove_minimum">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_minimum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove the minimum from this parameter (i.e., it becomes boundless in the negative direction)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the minimum from this parameter (i.e., it becomes boundless</span>
+<span class="sd">        in the negative direction)&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_min_value</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_internal_min_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-            <span class="s2">&quot;You should never attempt to change the internal representation of the minimum&quot;</span>
+            <span class="s2">&quot;You should never attempt to change the internal representation of the&quot;</span>
+            <span class="s2">&quot; minimum&quot;</span>
         <span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">NotCallableOrErrorInCall</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_internal_min_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is supposed to be only used by fitting engines to get the minimum value in internal representation.</span>
-<span class="sd">        It is supposed to be called only once before doing the minimization/sampling, to set the range of the parameter</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is supposed to be only used by fitting engines to get the</span>
+<span class="sd">        minimum value in internal representation. It is supposed to be called</span>
+<span class="sd">        only once before doing the minimization/sampling, to set the range of</span>
+<span class="sd">        the parameter.</span>
 
-<span class="sd">        :return: minimum value in internal representation (or None if there is no minimum)</span>
+<span class="sd">        :return: minimum value in internal representation (or None if</span>
+<span class="sd">            there is no minimum)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -907,7 +913,8 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="c1"># There is a minimum. If there is a transformation, use it, otherwise just return the minimum</span>
+            <span class="c1"># There is a minimum. If there is a transformation, use it, otherwise just</span>
+            <span class="c1"># return the minimum</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -920,17 +927,18 @@
     <span class="c1"># Define the property &quot;max_value&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_max_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current maximum allowed value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current maximum allowed value.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_max_value</span>
 
     <span class="nd">@accept_quantity</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_max_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets current maximum allowed value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets current maximum allowed value.&quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_max_value</span> <span class="o">=</span> <span class="n">max_value</span>
 
-        <span class="c1"># Check that the current value of the parameter is still within the boundaries. If not, issue a warning</span>
+        <span class="c1"># Check that the current value of the parameter is still within the boundaries.</span>
+        <span class="c1"># If not, issue a warning</span>
 
         <span class="k">if</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_external_max_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -953,26 +961,28 @@
 <div class="viewcode-block" id="ParameterBase.remove_maximum">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.remove_maximum">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_maximum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove the maximum from this parameter (i.e., it becomes boundless in the positive direction)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove the maximum from this parameter (i.e., it becomes boundless</span>
+<span class="sd">        in the positive direction)&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_external_max_value</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_internal_max_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-            <span class="s2">&quot;You should never attempt to change the internal representation of the minimum&quot;</span>
+            <span class="s2">&quot;You should never attempt to change the internal representation of the&quot;</span>
+            <span class="s2">&quot; minimum&quot;</span>
         <span class="p">)</span>
 
         <span class="k">raise</span> <span class="n">NotCallableOrErrorInCall</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_internal_max_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is supposed to be only used by fitting engines to get the maximum value in internal representation.</span>
-<span class="sd">        It is supposed to be called only once before doing the minimization/sampling, to set the range of the parameter</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is supposed to be only used by fitting engines to get the</span>
+<span class="sd">        maximum value in internal representation. It is supposed to be called</span>
+<span class="sd">        only once before doing the minimization/sampling, to set the range of</span>
+<span class="sd">        the parameter.</span>
 
-<span class="sd">        :return: maximum value in internal representation (or None if there is no minimum)</span>
+<span class="sd">        :return: maximum value in internal representation (or None if</span>
+<span class="sd">            there is no minimum)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -983,7 +993,8 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="c1"># There is a minimum. If there is a transformation, use it, otherwise just return the minimum</span>
+            <span class="c1"># There is a minimum. If there is a transformation, use it, otherwise just</span>
+            <span class="c1"># return the minimum</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -994,14 +1005,17 @@
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transformation</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_external_max_value</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bounds</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the boundaries for this parameter to min_value and max_value&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the boundaries for this parameter to min_value and</span>
+<span class="sd">        max_value.&quot;&quot;&quot;</span>
 
-        <span class="c1"># Use the properties so that the checks and the handling of units are made automatically</span>
+        <span class="c1"># Use the properties so that the checks and the handling of units are made</span>
+        <span class="c1"># automatically</span>
 
         <span class="n">min_value</span><span class="p">,</span> <span class="n">max_value</span> <span class="o">=</span> <span class="n">bounds</span>
 
-        <span class="c1"># Remove old boundaries to avoid problems with the new one, if the current value was within the old boundaries</span>
-        <span class="c1"># but is not within the new ones (it will then be adjusted automatically later)</span>
+        <span class="c1"># Remove old boundaries to avoid problems with the new one, if the current value</span>
+        <span class="c1"># was within the old boundaries but is not within the new ones (it will then be</span>
+        <span class="c1"># adjusted automatically later)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1010,7 +1024,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="o">=</span> <span class="n">max_value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current boundaries for the parameter&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the current boundaries for the parameter.&quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span>
 
@@ -1023,10 +1037,14 @@
 <div class="viewcode-block" id="ParameterBase.add_callback">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.add_callback">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a callback to the list of functions which are called immediately after the value of the parameter</span>
-<span class="sd">        is changed. The callback must be a function accepting the current parameter as input. The return value of the</span>
-<span class="sd">        callback is ignored. More than one callback can be specified. In that case, the callbacks will be called in the</span>
-<span class="sd">        same order they have been entered.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a callback to the list of functions which are called immediately</span>
+<span class="sd">        after the value of the parameter is changed.</span>
+
+<span class="sd">        The callback must be a function accepting the current parameter</span>
+<span class="sd">        as input. The return value of the callback is ignored. More than</span>
+<span class="sd">        one callback can be specified. In that case, the callbacks will</span>
+<span class="sd">        be called in the same order they have been entered.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span></div>
 
@@ -1034,11 +1052,9 @@
 <div class="viewcode-block" id="ParameterBase.get_callbacks">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.get_callbacks">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the list of callbacks currently defined</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the list of callbacks currently defined.</span>
 
 <span class="sd">        :return:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span></div>
 
@@ -1046,18 +1062,17 @@
 <div class="viewcode-block" id="ParameterBase.empty_callbacks">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.empty_callbacks">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">empty_callbacks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all callbacks for this parameter&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove all callbacks for this parameter.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_callbacks</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
 <div class="viewcode-block" id="ParameterBase.duplicate">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.duplicate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Parameter&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns an exact copy of the current parameter</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an exact copy of the current parameter.&quot;&quot;&quot;</span>
 
-        <span class="c1"># Deep copy everything to make sure that there are no ties between the new instance and the old one</span>
+        <span class="c1"># Deep copy everything to make sure that there are no ties between the new</span>
+        <span class="c1"># instance and the old one</span>
 
         <span class="n">new_parameter</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -1067,7 +1082,7 @@
 <div class="viewcode-block" id="ParameterBase.to_dict">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the representation for serialization&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the representation for serialization.&quot;&quot;&quot;</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
@@ -1079,7 +1094,8 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="c1"># In the complete representation we output everything is needed to re-build the object</span>
+            <span class="c1"># In the complete representation we output everything is needed to re-build</span>
+            <span class="c1"># the object</span>
 
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
@@ -1093,14 +1109,15 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_to_python_type</span><span class="p">(</span><span class="n">variable</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the value in the variable handling also np.array of one element</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value in the variable handling also np.array of one</span>
+<span class="sd">        element.</span>
 
 <span class="sd">        :param variable: input variable</span>
 <span class="sd">        :return: the value of the variable having a python type (int, float, ...)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># Assume variable is a np.array, fall back to the case where variable is already a primitive type</span>
+        <span class="c1"># Assume variable is a np.array, fall back to the case where variable is already</span>
+        <span class="c1"># a primitive type</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -1115,26 +1132,34 @@
 <div class="viewcode-block" id="Parameter">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Parameter</span><span class="p">(</span><span class="n">ParameterBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implements a numerical parameter. Optionally the parameter can vary</span>
+<span class="sd">    according to an auxiliary law (see below).</span>
 
 <span class="sd">    :param name: Name for the parameter</span>
 <span class="sd">    :param value: Initial value</span>
-<span class="sd">    :param min_value: minimum allowed value for the parameter (default: None)</span>
-<span class="sd">    :param max_value: maximum allowed value for the parameter (default: None)</span>
-<span class="sd">    :param delta: initial step used by some fitting engines (default: 0.1 * value)</span>
+<span class="sd">    :param min_value: minimum allowed value for the parameter (default:</span>
+<span class="sd">        None)</span>
+<span class="sd">    :param max_value: maximum allowed value for the parameter (default:</span>
+<span class="sd">        None)</span>
+<span class="sd">    :param delta: initial step used by some fitting engines (default:</span>
+<span class="sd">        0.1 * value)</span>
 <span class="sd">    :param desc: description of parameter (default: &#39;&#39;)</span>
 <span class="sd">    :param free: whether the parameter is free or not (default: True)</span>
 <span class="sd">    :param unit: the parameter units (default: dimensionless)</span>
 <span class="sd">    :param prior: the parameter&#39;s prior (default: None)</span>
-<span class="sd">    :param is_normalization: True or False, wether the parameter is a normalization or not (default: False)</span>
-<span class="sd">    :param transformation: a transformation to be used between external value (the value the user interacts with) and</span>
-<span class="sd">        the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a</span>
-<span class="sd">        forward(external_value) and a backward(internal_value) method returning respectively the transformation of the</span>
-<span class="sd">        external value in the internal value and viceversa. This is useful because for example the logarithm of a parameter</span>
-<span class="sd">        with a large range of possible values (say from 1e-12 to 1e20) is handled much better by fitting engines than the</span>
-<span class="sd">        raw value. The log transformation indeed makes the gradient much easier to compute.</span>
+<span class="sd">    :param is_normalization: True or False, wether the parameter is a</span>
+<span class="sd">        normalization or not (default: False)</span>
+<span class="sd">    :param transformation: a transformation to be used between external</span>
+<span class="sd">        value (the value the user interacts with) and the value the</span>
+<span class="sd">        fitting/sampling engine interacts with (internal value). It is</span>
+<span class="sd">        an instance of a class implementing a forward(external_value)</span>
+<span class="sd">        and a backward(internal_value) method returning respectively the</span>
+<span class="sd">        transformation of the external value in the internal value and</span>
+<span class="sd">        viceversa. This is useful because for example the logarithm of a</span>
+<span class="sd">        parameter with a large range of possible values (say from 1e-12</span>
+<span class="sd">        to 1e20) is handled much better by fitting engines than the raw</span>
+<span class="sd">        value. The log transformation indeed makes the gradient much</span>
+<span class="sd">        easier to compute.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -1152,8 +1177,8 @@
         <span class="n">transformation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParameterTransformation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
-        <span class="c1"># This extends ParameterBase by adding the possibility for free/fix, and a delta for fitting purposes, as</span>
-        <span class="c1"># well as a prior</span>
+        <span class="c1"># This extends ParameterBase by adding the possibility for free/fix, and a delta</span>
+        <span class="c1"># for fitting purposes, as well as a prior</span>
 
         <span class="nb">super</span><span class="p">(</span><span class="n">Parameter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">name</span><span class="p">,</span>
@@ -1175,7 +1200,8 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="c1"># Default is 10% of the value, unless the value is zero, in which case the delta is 0.1</span>
+            <span class="c1"># Default is 10% of the value, unless the value is zero, in which case the</span>
+            <span class="c1"># delta is 0.1</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
@@ -1202,8 +1228,8 @@
             <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;The provided delta is not a number&quot;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">()</span>
 
-        <span class="c1"># Create a backup copy of the status of the parameter (useful when an auxiliary variable</span>
-        <span class="c1"># is removed)</span>
+        <span class="c1"># Create a backup copy of the status of the parameter (useful when an auxiliary</span>
+        <span class="c1"># variable is removed)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_old_free</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_free</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_normalization</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">is_normalization</span><span class="p">)</span>
@@ -1220,7 +1246,10 @@
 
     <span class="nd">@accept_quantity</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delta</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the current delta for the parameter. The delta is used as initial step by some fitting engines&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the current delta for the parameter.</span>
+
+<span class="sd">        The delta is used as initial step by some fitting engines</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_delta</span> <span class="o">=</span> <span class="n">delta</span>
 
@@ -1231,8 +1260,8 @@
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_internal_delta</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This is only supposed to be used by fitting/sampling engine, to get the initial step in internal representation</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is only supposed to be used by fitting/sampling engine, to get</span>
+<span class="sd">        the initial step in internal representation.</span>
 
 <span class="sd">        :return: initial delta in internal representation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1300,8 +1329,11 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prior</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set prior for this parameter. The prior must be a function accepting the current value of the parameter</span>
-<span class="sd">        as input and giving the probability density as output.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set prior for this parameter.</span>
+
+<span class="sd">        The prior must be a function accepting the current value of the</span>
+<span class="sd">        parameter as input and giving the probability density as output.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">prior</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -1341,16 +1373,15 @@
     <span class="n">prior</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
         <span class="n">_get_prior</span><span class="p">,</span>
         <span class="n">_set_prior</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Gets or sets the current prior for this parameter. The prior must be a callable function &quot;</span>
-        <span class="s2">&quot;accepting the current value of the parameter as input and returning the probability &quot;</span>
-        <span class="s2">&quot;density as output. Set to None to remove prior.&quot;</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Gets or sets the current prior for this parameter. The prior must be a &quot;</span>
+        <span class="s2">&quot;callable function accepting the current value of the parameter as input and &quot;</span>
+        <span class="s2">&quot;returning the probability density as output. Set to None to remove prior.&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="Parameter.has_prior">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter.has_prior">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check whether the current parameter has a defined prior</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check whether the current parameter has a defined prior.</span>
 
 <span class="sd">        :return: True or False</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1361,14 +1392,16 @@
 <div class="viewcode-block" id="Parameter.set_uninformative_prior">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter.set_uninformative_prior">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_uninformative_prior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prior_class</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Sets the prior for the parameter to a uniform prior between the current minimum and maximum, or a</span>
-<span class="sd">        log-uniform prior between the current minimum and maximum.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the prior for the parameter to a uniform prior between the</span>
+<span class="sd">        current minimum and maximum, or a log-uniform prior between the current</span>
+<span class="sd">        minimum and maximum.</span>
 
-<span class="sd">        NOTE: if the current minimum and maximum are not defined, the default bounds for the prior class will be used.</span>
+<span class="sd">        NOTE: if the current minimum and maximum are not defined, the default bounds for</span>
+<span class="sd">            the prior class will be used.</span>
 
-<span class="sd">        :param prior_class : the class to be used as prior (either Log_uniform_prior or Uniform_prior, or a class which</span>
-<span class="sd">        provide a lower_bound and an upper_bound properties)</span>
+<span class="sd">        :param prior_class : the class to be used as prior (either Log_uniform_prior or</span>
+<span class="sd">            Uniform_prior, or a class which</span>
+<span class="sd">            provide a lower_bound and an upper_bound properties)</span>
 <span class="sd">        :return: (none)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -1377,8 +1410,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> does not have a defined minimum. Set one first, then re-run &quot;</span>
-                <span class="s2">&quot;set_uninformative_prior&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+                <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not have a defined minimum. Set one first,&quot;</span>
+                <span class="s2">&quot;then re-run set_uninformative_prior&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="n">ParameterMustHaveBounds</span><span class="p">()</span>
@@ -1401,8 +1434,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Parameter </span><span class="si">%s</span><span class="s2"> does not have a defined maximum. Set one first, then re-run &quot;</span>
-                <span class="s2">&quot;set_uninformative_prior&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span>
+                <span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="si">}</span><span class="s2"> does not have a defined maximum. Set one first,&quot;</span>
+                <span class="s2">&quot;then re-run set_uninformative_prior&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="n">ParameterMustHaveBounds</span><span class="p">()</span>
@@ -1450,8 +1483,8 @@
     <span class="n">free</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
         <span class="n">_get_free</span><span class="p">,</span>
         <span class="n">_set_free</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Gets or sets whether the parameter is free or not. Use booleans, like: &#39;p.free = True&#39; &quot;</span>
-        <span class="s2">&quot; or &#39;p.free = False&#39;. &quot;</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Gets or sets whether the parameter is free or not. Use booleans, like:&quot;</span>
+        <span class="s2">&quot;&#39;p.free = True&#39; or &#39;p.free = False&#39;. &quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Define property &quot;fix&quot;</span>
@@ -1467,21 +1500,20 @@
     <span class="n">fix</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
         <span class="n">_get_fix</span><span class="p">,</span>
         <span class="n">_set_fix</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Gets or sets whether the parameter is fixed or not. Use booleans, like: &#39;p.fix = True&#39; &quot;</span>
-        <span class="s2">&quot; or &#39;p.fix = False&#39;. &quot;</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Gets or sets whether the parameter is fixed or not. Use booleans, like: &quot;</span>
+        <span class="s2">&quot;&#39;p.fix = True&#39; or &#39;p.fix = False&#39;. &quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="Parameter.add_auxiliary_variable">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter.add_auxiliary_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_auxiliary_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">law</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;TODO describe function</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;TODO describe function.</span>
 
 <span class="sd">        :param variable:</span>
 <span class="sd">        :type variable:</span>
 <span class="sd">        :param law:</span>
 <span class="sd">        :type law:</span>
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Assign units to the law</span>
@@ -1523,8 +1555,7 @@
 <div class="viewcode-block" id="Parameter.remove_auxiliary_variable">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter.remove_auxiliary_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_auxiliary_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Remove an existing auxiliary variable</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove an existing auxiliary variable.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1545,22 +1576,20 @@
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span> <span class="o">=</span> <span class="kc">None</span>
 
-            <span class="c1"># Set the parameter to the status it has before the auxiliary variable was created</span>
+            <span class="c1"># Set the parameter to the status it has before the auxiliary variable was</span>
+            <span class="c1"># created</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_old_free</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_auxiliary_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns whether the parameter is linked to an auxiliary variable</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns whether the parameter is linked to an auxiliary variable.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">auxiliary_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a tuple with the auxiliary variable and the law</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a tuple with the auxiliary variable and the law.</span>
 
 <span class="sd">        :return: tuple (variable, law)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1607,8 +1636,7 @@
 <div class="viewcode-block" id="Parameter.to_dict">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the representation for serialization&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the representation for serialization.&quot;&quot;&quot;</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Parameter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
@@ -1622,7 +1650,8 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="c1"># In the complete representation we output everything is needed to re-build the object</span>
+            <span class="c1"># In the complete representation we output everything is needed to re-build</span>
+            <span class="c1"># the object</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_auxiliary_variable</span><span class="p">:</span>
 
@@ -1631,9 +1660,9 @@
                 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;f(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span>
 
                 <span class="n">aux_variable_law_data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-                <span class="n">aux_variable_law_data</span><span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
-                <span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="n">aux_variable_law_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                <span class="p">)</span>
 
                 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aux_variable_law_data</span>
 
@@ -1698,7 +1727,8 @@
                 <span class="c1"># This should never happen</span>
 
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span>
-                    <span class="s2">&quot;Got a sample outside of the boundaries of the truncated normal distribution&quot;</span>
+                    <span class="s2">&quot;Got a sample outside of the boundaries of the truncated normal&quot;</span>
+                    <span class="s2">&quot; distribution&quot;</span>
                 <span class="p">)</span>
 
             <span class="k">return</span> <span class="n">sample</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -1715,9 +1745,7 @@
 <div class="viewcode-block" id="IndependentVariable">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.parameter.IndependentVariable">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">IndependentVariable</span><span class="p">(</span><span class="n">ParameterBase</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    An independent variable like time or energy.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An independent variable like time or energy.&quot;&quot;&quot;</span>
 
     <span class="c1"># Override the constructor to make the unit specification mandatory</span>
 

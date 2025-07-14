@@ -97,12 +97,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="astromodels.utils.vincenty.vincenty">
 <span class="sig-prename descclassname"><span class="pre">astromodels.utils.vincenty.</span></span><span class="sig-name descname"><span class="pre">vincenty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/vincenty.html#vincenty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.vincenty.vincenty" title="Link to this definition"></a></dt>
-<dd><p>Returns the coordinates of a new point that is a given angular distance s away from a starting point (lon0, lat0) at bearing (angle from north) a1), to within a given precision</p>
-<p>Note that this calculation is a simplified version of the full vincenty problem, which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we only care about the surface of a sphere.</p>
+<dd><p>Returns the coordinates of a new point that is a given angular distance
+s away from a starting point (lon0, lat0) at bearing (angle from north)
+a1), to within a given precision.</p>
+<p>Note that this calculation is a simplified version of the full vincenty problem,
+which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we
+only care about the surface of a sphere.</p>
 <p>Note: All parameters are assumed to be given in DEGREES
 :param lon0: float, longitude of starting point
 :param lat0: float, latitude of starting point
-:param a1: float, bearing to second point, i.e. angle between due north and line connecting 2 points
+:param a1: float, bearing to second point, i.e. angle between due north and line
+connecting 2 points
 :param s: float, angular distance between the two points
 :return: coordinates of second point in degrees</p>
 </dd></dl>

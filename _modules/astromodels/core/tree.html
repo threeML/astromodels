@@ -165,7 +165,7 @@
 <div class="viewcode-block" id="Node.to_dict">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="n">this_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">():</span>
@@ -180,20 +180,19 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Get the names of the attributes of the class</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">li</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
         <span class="c1"># Get all the children</span>
-        <span class="n">l</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">()])</span>
+        <span class="n">li</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">()])</span>
 
-        <span class="k">return</span> <span class="n">l</span>
+        <span class="k">return</span> <span class="n">li</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Node with name </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Textual representation for console</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Textual representation for console.</span>
 
 <span class="sd">        :return: representation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -201,8 +200,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_repr__base</span><span class="p">(</span><span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr_html_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        HTML representation for the IPython notebook</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;HTML representation for the IPython notebook.</span>
 
 <span class="sd">        :return: HTML representation</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -212,13 +210,13 @@
 <div class="viewcode-block" id="Node.display">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.tree.Node.display">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Display information about the point source.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Display information about the point source.</span>
 
 <span class="sd">        :return: (none)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># This will automatically choose the best representation among repr and repr_html</span>
+        <span class="c1"># This will automatically choose the best representation among repr and</span>
+        <span class="c1"># repr_html</span>
 
         <span class="n">display</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 </div>

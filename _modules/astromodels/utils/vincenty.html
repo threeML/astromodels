@@ -95,15 +95,19 @@
 <div class="viewcode-block" id="vincenty">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.vincenty.vincenty">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">vincenty</span><span class="p">(</span><span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the coordinates of a new point that is a given angular distance s away from a starting point (lon0, lat0) at bearing (angle from north) a1), to within a given precision</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the coordinates of a new point that is a given angular distance</span>
+<span class="sd">    s away from a starting point (lon0, lat0) at bearing (angle from north)</span>
+<span class="sd">    a1), to within a given precision.</span>
 
-<span class="sd">    Note that this calculation is a simplified version of the full vincenty problem, which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we only care about the surface of a sphere.</span>
+<span class="sd">    Note that this calculation is a simplified version of the full vincenty problem,</span>
+<span class="sd">    which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we</span>
+<span class="sd">    only care about the surface of a sphere.</span>
 
 <span class="sd">    Note: All parameters are assumed to be given in DEGREES</span>
 <span class="sd">    :param lon0: float, longitude of starting point</span>
 <span class="sd">    :param lat0: float, latitude of starting point</span>
-<span class="sd">    :param a1: float, bearing to second point, i.e. angle between due north and line connecting 2 points</span>
+<span class="sd">    :param a1: float, bearing to second point, i.e. angle between due north and line</span>
+<span class="sd">    connecting 2 points</span>
 <span class="sd">    :param s: float, angular distance between the two points</span>
 <span class="sd">    :return: coordinates of second point in degrees</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -121,17 +121,20 @@
 <div class="viewcode-block" id="PointSource">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.PointSource">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PointSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A point source. You can instance this class in many ways.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A point source. You can instance this class in many ways.</span>
 
-<span class="sd">    - with Equatorial position and a function as spectrum (the component will be automatically called &#39;main&#39;)::</span>
+<span class="sd">    - with Equatorial position and a function as spectrum (the component will be</span>
+<span class="sd">    automatically called &#39;main&#39;)::</span>
 
 <span class="sd">        &gt;&gt;&gt; from astromodels import *</span>
 <span class="sd">        &gt;&gt;&gt; point_source = PointSource(&#39;my_source&#39;, 125.6, -75.3, Powerlaw())</span>
 
-<span class="sd">    - with Galactic position and a function as spectrum (the component will be automatically called &#39;main&#39;)::</span>
+<span class="sd">    - with Galactic position and a function as spectrum (the component will be</span>
+<span class="sd">    automatically called &#39;main&#39;)::</span>
 
-<span class="sd">        &gt;&gt;&gt; point_source = PointSource(&#39;my_source&#39;, l=15.67, b=80.75, spectral_shape=Powerlaw())</span>
+<span class="sd">        &gt;&gt;&gt; point_source = PointSource(</span>
+<span class="sd">                    &#39;my_source&#39;, l=15.67, b=80.75, spectral_shape=Powerlaw()</span>
+<span class="sd">                )</span>
 
 <span class="sd">    - with Equatorial position or Galactic position and a list of spectral components::</span>
 
@@ -141,9 +144,12 @@
 
 <span class="sd">        Or with Galactic position:</span>
 
-<span class="sd">        &gt;&gt;&gt; point_source = PointSource(&quot;test_source&quot;,l=15.67, b=80.75,components=[c1,c2])</span>
+<span class="sd">        &gt;&gt;&gt; point_source = PointSource(</span>
+<span class="sd">                    &quot;test_source&quot;,l=15.67, b=80.75,components=[c1,c2]</span>
+<span class="sd">                )</span>
 
-<span class="sd">    NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)</span>
+<span class="sd">    NOTE: by default the position of the source is fixed (i.e., its positional</span>
+<span class="sd">    parameters are fixed)</span>
 
 <span class="sd">    :param source_name: name for the source</span>
 <span class="sd">    :param ra: Equatorial J2000 Right Ascension (ICRS)</span>
@@ -166,7 +172,7 @@
         <span class="n">b</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">sky_position</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SkyDirection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">polarization</span><span class="o">=</span><span class="kc">None</span>
+        <span class="n">polarization</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 
         <span class="c1"># Check that we have all the required information</span>
@@ -203,8 +209,9 @@
                 <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
 
                     <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="s2">&quot;RA and Dec must be numbers. If you are confused by this message, you &quot;</span>
-                        <span class="s2">&quot;are likely using the constructor in the wrong way. Check the documentation.&quot;</span>
+                        <span class="s2">&quot;RA and Dec must be numbers. If you are confused by this &quot;</span>
+                        <span class="s2">&quot;message, you are likely using the constructor in the wrong &quot;</span>
+                        <span class="s2">&quot;way. Check the documentation.&quot;</span>
                     <span class="p">)</span>
 
                     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
@@ -225,12 +232,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;You have to provide either a single component, or a list of components (but not both).&quot;</span>
+                <span class="s2">&quot;You have to provide either a single component, or a list of components&quot;</span>
+                <span class="s2">&quot; (but not both).&quot;</span>
             <span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-        <span class="c1"># If the user specified only one component, make a list of one element with a default name (&quot;main&quot;)</span>
+        <span class="c1"># If the user specified only one component, make a list of one element with a</span>
+        <span class="c1"># default name (&quot;main&quot;)</span>
 
         <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
@@ -283,18 +292,22 @@
                 <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
                 <span class="p">]</span>
-                <span class="c1"># We need to sum like this (slower) because using np.sum will not preserve the units</span>
-                <span class="c1"># (thanks astropy.units)</span>
+                <span class="c1"># We need to sum like this (slower) because using np.sum will not</span>
+                <span class="c1"># preserve the units (thanks astropy.units)</span>
 
                 <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="c1"># Fast version without units, where x is supposed to be in the same units as currently defined in</span>
-                <span class="c1"># units.get_units()</span>
+                <span class="c1"># Fast version without units, where x is supposed to be in the same</span>
+                <span class="c1"># units as currently defined in units.get_units()</span>
 
-                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
-                                      <span class="p">)</span>
+                <span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">component</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">_sum</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
 
@@ -308,7 +321,8 @@
 
                 <span class="c1"># Evaluate in a, do not integrate</span>
 
-                <span class="c1"># Suspend memoization because the memoization gets confused when integrating</span>
+                <span class="c1"># Suspend memoization because the memoization gets confused when</span>
+                <span class="c1"># integrating</span>
                 <span class="k">with</span> <span class="n">use_astromodels_memoization</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
 
                     <span class="n">integration_variable</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">a</span>
@@ -325,7 +339,8 @@
 
                 <span class="c1"># TODO: implement an integration scheme avoiding the for loop</span>
 
-                <span class="c1"># Suspend memoization because the memoization gets confused when integrating</span>
+                <span class="c1"># Suspend memoization because the memoization gets confused when</span>
+                <span class="c1"># integrating</span>
                 <span class="k">with</span> <span class="n">use_astromodels_memoization</span><span class="p">(</span><span class="kc">False</span><span class="p">):</span>
 
                     <span class="n">reentrant_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__call__</span>
@@ -347,8 +362,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns True or False whether there is any parameter in this source</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True or False whether there is any parameter in this source.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -371,10 +385,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a dictionary of free parameters for this source.</span>
-<span class="sd">        We use the parameter path as the key because it&#39;s</span>
-<span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of free parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -398,10 +411,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a dictionary of all parameters for this source.</span>
-<span class="sd">        We use the parameter path as the key because it&#39;s</span>
-<span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of all parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -420,8 +432,7 @@
         <span class="k">return</span> <span class="n">all_parameters</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Representation of the object</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representation of the object.</span>
 
 <span class="sd">        :param rich_output: if True, generates HTML, otherwise text</span>
 <span class="sd">        :return: the representation</span>

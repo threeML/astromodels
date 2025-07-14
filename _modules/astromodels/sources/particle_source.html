@@ -90,6 +90,7 @@
              
   <h1>Source code for astromodels.sources.particle_source</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
@@ -102,9 +103,8 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_units</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.sources.source</span><span class="w"> </span><span class="kn">import</span> <span class="n">Source</span><span class="p">,</span> <span class="n">SourceType</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.pretty_list</span><span class="w"> </span><span class="kn">import</span> <span class="n">dict_to_list</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.pretty_list</span><span class="w"> </span><span class="kn">import</span> <span class="n">dict_to_list</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -112,16 +112,16 @@
 <div class="viewcode-block" id="ParticleSource">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.ParticleSource">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParticleSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A source of particles with a certain distribution. This source does not produce any electromagnetic signal,</span>
-<span class="sd">    but it is useful if used in conjuction with spectral shapes which need a particle distribution as input, like</span>
-<span class="sd">    for example a Synchrotron kernel.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A source of particles with a certain distribution. This source does not</span>
+<span class="sd">    produce any electromagnetic signal, but it is useful if used in conjuction</span>
+<span class="sd">    with spectral shapes which need a particle distribution as input, like for</span>
+<span class="sd">    example a Synchrotron kernel.</span>
 
 <span class="sd">    :param name: name for the source</span>
-<span class="sd">    :param distribution_shape: a function describing the energy distribution of the particles</span>
+<span class="sd">    :param distribution_shape: a function describing the energy</span>
+<span class="sd">        distribution of the particles</span>
 <span class="sd">    :param components: a list of SpectralComponents instances</span>
 <span class="sd">    :return:</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">distribution_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -168,8 +168,8 @@
 <div class="viewcode-block" id="ParticleSource.get_flux">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.ParticleSource.get_flux">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the total flux of this particle source at the given energies (summed over the components)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the total flux of this particle source at the given energies</span>
+<span class="sd">        (summed over the components)&quot;&quot;&quot;</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -179,8 +179,7 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Representation of the object</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representation of the object.</span>
 
 <span class="sd">        :param rich_output: if True, generates HTML, otherwise text</span>
 <span class="sd">        :return: the representation</span>
@@ -203,10 +202,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a dictionary of free parameters for this source.</span>
-<span class="sd">        We use the parameter path as the key because it&#39;s</span>
-<span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of free parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -224,10 +222,9 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns a dictionary of all parameters for this source.</span>
-<span class="sd">        We use the parameter path as the key because it&#39;s</span>
-<span class="sd">        guaranteed to be unique, unlike the parameter name.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of all parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>

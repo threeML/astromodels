@@ -93,10 +93,11 @@
 <span class="c1"># change much but benefits anyway of being in one central location</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.resources</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pkg_resources</span>
 
 <span class="n">_custom_config_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ASTROMODELS_CONFIG&quot;</span><span class="p">)</span>
 
@@ -108,31 +109,31 @@
     <span class="n">copy_if_needed</span> <span class="o">=</span> <span class="kc">False</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_get_data_file_path</span><span class="p">(</span><span class="n">data_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Returns the absolute path to the required data files.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_data_file_path</span><span class="p">(</span><span class="n">data_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the absolute path to the required data files.</span>
 
-<span class="sd">    :param data_file: relative path to the data file, relative to the astromodels/data path.</span>
-<span class="sd">    So to get the path to data/dark_matter/gammamc_dif.dat you need to use data_file=&quot;dark_matter/gammamc_dif.dat&quot;</span>
-<span class="sd">    :return: absolute path of the data file</span>
+<span class="sd">    :param data_file: relative path to the data file (str or Path), relative to</span>
+<span class="sd">    astromodels/data/.</span>
+<span class="sd">    Example: &quot;dark_matter/gammamc_dif.dat&quot; or Path(&quot;dark_matter/gammamc_dif.dat&quot;)</span>
+<span class="sd">    :return: absolute path of the data file as a Path object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
 
     <span class="k">try</span><span class="p">:</span>
+        <span class="n">resource_path</span> <span class="o">=</span> <span class="n">files</span><span class="p">(</span><span class="s2">&quot;astromodels&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">data_file</span><span class="o">.</span><span class="n">parts</span><span class="p">)</span>
 
-        <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">pkg_resources</span><span class="o">.</span><span class="n">resource_filename</span><span class="p">(</span>
-            <span class="s2">&quot;astromodels&quot;</span><span class="p">,</span> <span class="s2">&quot;data/</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">data_file</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">resource_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span>
 
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
-            <span class="s2">&quot;Could not read or find data file </span><span class="si">%s</span><span class="s2">. Try reinstalling astromodels. If this does not fix your &quot;</span>
-            <span class="s2">&quot;problem, open an issue on github.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Could not read or find data file </span><span class="si">{</span><span class="n">data_file</span><span class="si">}</span><span class="s2">. &quot;</span>
+            <span class="s2">&quot;Try reinstalling astromodels. &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;If this does not fix your problem, open an issue on github.&quot;</span>
         <span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-
-        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">resource_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="get_user_path">

@@ -124,8 +124,8 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check that the new unit is compatible with the old unit for the quantity described by variable_name</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the new unit is compatible with the old unit for the quantity</span>
+<span class="sd">    described by variable_name.</span>
 
 <span class="sd">    :param new_unit: instance of astropy.units.Unit</span>
 <span class="sd">    :param old_unit: instance of astropy.units.Unit</span>
@@ -139,22 +139,21 @@
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
 
         <span class="k">raise</span> <span class="n">UnitMismatch</span><span class="p">(</span>
-            <span class="s2">&quot;The provided unit (</span><span class="si">%s</span><span class="s2">) has no physical type. Was expecting a unit for </span><span class="si">%s</span><span class="s2">&quot;</span>
-            <span class="o">%</span> <span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;The provided unit (</span><span class="si">{</span><span class="n">new_unit</span><span class="si">}</span><span class="s2">) has no physical type. Was expecting a unit&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; for </span><span class="si">{</span><span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">:</span>
 
         <span class="k">raise</span> <span class="n">UnitMismatch</span><span class="p">(</span>
-            <span class="s2">&quot;Physical type mismatch: you provided a unit for </span><span class="si">%s</span><span class="s2"> instead of a unit for </span><span class="si">%s</span><span class="s2">&quot;</span>
-            <span class="o">%</span> <span class="p">(</span><span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">,</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">)</span>
+            <span class="sa">f</span><span class="s2">&quot;Physical type mismatch: you provided a unit for </span><span class="si">{</span><span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">&quot; instead of a unit for </span><span class="si">{</span><span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_AstromodelsUnits</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Store the fundamental units of time, energy, angle and area to be used in astromodels.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Store the fundamental units of time, energy, angle and area to be used</span>
+<span class="sd">    in astromodels.&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">energy_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angle_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">area_unit</span><span class="o">=</span><span class="kc">None</span>
@@ -176,9 +175,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;angle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">area_unit</span>
 
-    <span class="c1"># This __new__ method add the properties to the class. We could have achieved the same with a metaclass,</span>
-    <span class="c1"># but this method is more clearer, for a tiny performance penalty. Consider also that under normal circumstances</span>
-    <span class="c1"># this class will be only created once per session</span>
+    <span class="c1"># This __new__ method add the properties to the class. We could have achieved the</span>
+    <span class="c1"># same with a metaclass, but this method is more clearer, for a tiny performance</span>
+    <span class="c1"># penalty. Consider also that under normal circumstances this class will be only</span>
+    <span class="c1"># created once per session</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
@@ -204,8 +204,8 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="n">UnknownUnit</span><span class="p">(</span>
-                <span class="s2">&quot;You can only assign units for energy, time, angle and area. Don&#39;t know &quot;</span>
-                <span class="s2">&quot;anything about </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">what</span>
+                <span class="s2">&quot;You can only assign units for energy, time, angle and area. Don&#39;t know&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot; anything about </span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># This allows to use strings in place of Unit instances as new_unit</span>
@@ -260,7 +260,8 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_units</span>
 
 
-<span class="c1"># This is a factory which will always return the same instance of the _AstromodelsUnits class</span>
+<span class="c1"># This is a factory which will always return the same instance of the _AstromodelsUnits</span>
+<span class="c1"># class</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_AstromodelsUnitsFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>

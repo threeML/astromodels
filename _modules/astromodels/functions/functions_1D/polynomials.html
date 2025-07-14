@@ -91,7 +91,6 @@
   <h1>Source code for astromodels.functions.functions_1D.polynomials</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_units</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Function1D</span><span class="p">,</span>
     <span class="n">FunctionMeta</span><span class="p">,</span>
@@ -101,13 +100,11 @@
 <div class="viewcode-block" id="get_polynomial">
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.get_polynomial">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_polynomial</span><span class="p">(</span><span class="n">order</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Function1D</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    get a polynomial function of order</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a polynomial function of order.</span>
 
 <span class="sd">    :param order: the order of the polynomical</span>
 <span class="sd">    :type order: int</span>
 <span class="sd">    :returns:</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">Constant</span><span class="p">(),</span> <span class="n">Line</span><span class="p">(),</span> <span class="n">Quadratic</span><span class="p">(),</span> <span class="n">Cubic</span><span class="p">(),</span> <span class="n">Quartic</span><span class="p">()][</span><span class="n">order</span><span class="p">]</span></div>
 

@@ -152,8 +152,7 @@
 <div class="viewcode-block" id="Latitude_galactic_diffuse.set_frame">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Latitude_galactic_diffuse.set_frame">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
 <span class="sd">        :param new_frame: a coordinate frame from astropy</span>
 <span class="sd">        :return: (none)</span>
@@ -217,11 +216,12 @@
 <div class="viewcode-block" id="Latitude_galactic_diffuse.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Latitude_galactic_diffuse.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">dL</span> <span class="o">=</span> <span class="p">(</span>
@@ -249,7 +249,13 @@
 
 <span class="sd">        A bidimensional Gaussian function on a sphere (in spherical coordinates)</span>
 
-<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-\vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\ \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc} \sigma^2 &amp; 0 \\ 0 &amp; \sigma^2 (1-e^2) \end{array}\right) \\ U = \left( \begin{array}{cc} \cos \theta &amp; -\sin \theta \\ \sin \theta &amp; cos \theta \end{array}\right) \\\Sigma = U\Lambda U^\intercal $$</span>
+<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi</span>
+<span class="sd">            \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-</span>
+<span class="sd">            \vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\</span>
+<span class="sd">            \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc}</span>
+<span class="sd">            \sigma^2 &amp; 0 \\ 0 &amp; \sigma^2 (1-e^2) \end{array}\right) \\ U = \left(</span>
+<span class="sd">            \begin{array}{cc} \cos \theta &amp; -\sin \theta \\ \sin \theta &amp; cos \theta</span>
+<span class="sd">            \end{array}\right) \\\Sigma = U\Lambda U^\intercal $$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -348,11 +354,12 @@
 <div class="viewcode-block" id="Gaussian_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -367,10 +374,8 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Asymm_Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
-
-<span class="sd">        A bidimensional Gaussian function on a sphere (in spherical coordinates)</span>
-
-<span class="sd">        see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</span>
+<span class="sd">       A bidimensional Gaussian function on a sphere (in spherical coordinates) see</span>
+<span class="sd">       https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</span>
 
 <span class="sd">    parameters :</span>
 
@@ -510,11 +515,12 @@
 <div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Asymm_Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -532,7 +538,10 @@
 
 <span class="sd">        A bidimensional disk/tophat function on a sphere (in spherical coordinates)</span>
 
-<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm radius})^2} ~\left\{\begin{matrix} 1 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_0| \le {\rm radius}} \\ 0 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_0| &gt; {\rm radius}} \end{matrix}\right. $$</span>
+<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm</span>
+<span class="sd">            radius})^2} ~\left\{\begin{matrix} 1 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_0|</span>
+<span class="sd">            \le {\rm radius}} \\ 0 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_0| &gt; {\rm</span>
+<span class="sd">            radius}} \end{matrix}\right. $$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -629,11 +638,12 @@
 <div class="viewcode-block" id="Disk_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Disk_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -651,7 +661,10 @@
 
 <span class="sd">        An ellipse function on a sphere (in spherical coordinates)</span>
 
-<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b} ~\left\{\begin{matrix} 1 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| &gt; {\rm 2a}} \end{matrix}\right. $$</span>
+<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b}</span>
+<span class="sd">            ~\left\{\begin{matrix} 1 &amp; {\rm if}&amp; {\rm | \vec{x} - \vec{x}_{f1}|</span>
+<span class="sd">            + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 &amp; {\rm if}&amp; {\rm | \vec{x}</span>
+<span class="sd">            - \vec{x}_{f1}| + | \vec{x}-\vec{x}_{f2}| &gt; {\rm 2a}} \end{matrix}\right. $$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -799,11 +812,12 @@
 <div class="viewcode-block" id="Ellipse_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Ellipse_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -882,8 +896,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS1&quot;</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS2&quot;</span><span class="p">]</span>
 
-            <span class="c1"># note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0.</span>
-            <span class="c1"># see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data</span>
+            <span class="c1"># note: map coordinates are switched compared to header. NAXIS1 is</span>
+            <span class="c1"># coordinate 1, not 0. see</span>
+            <span class="c1"># http://docs.astropy.org/en/stable/io/fits/#working-with-image-data</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span>
             <span class="p">),</span> <span class="s2">&quot;NAXIS1 = </span><span class="si">%d</span><span class="s2"> in fits header, but </span><span class="si">%d</span><span class="s2"> in map&quot;</span> <span class="o">%</span> <span class="p">(</span>
@@ -909,8 +924,9 @@
                     <span class="p">)</span>
                 <span class="p">)</span>
 
-            <span class="c1"># hash sum uniquely identifying the template function (defined by its 2D map array and coordinate system)</span>
-            <span class="c1"># this is needed so that the memoization won&#39;t confuse different SpatialTemplate_2D objects.</span>
+            <span class="c1"># hash sum uniquely identifying the template function (defined by its 2D map</span>
+            <span class="c1"># array and coordinate system) this is needed so that the memoization won&#39;t</span>
+            <span class="c1"># confuse different SpatialTemplate_2D objects.</span>
             <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
             <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)</span>
             <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
@@ -922,7 +938,7 @@
 
     <span class="c1">#      if not minimal:</span>
 
-    <span class="c1">#         data[&#39;extra_setup&#39;] = {&quot;_fitsfile&quot;: self._fitsfile, &quot;_frame&quot;: self._frame }</span>
+    <span class="c1">#         data[&#39;extra_setup&#39;] = {&quot;_fitsfile&quot;: self._fitsfile,&quot;_frame&quot;:self._frame}</span>
 
     <span class="c1">#      return data</span>
 
@@ -969,7 +985,8 @@
         <span class="c1">#     self.load_file(self._fitsfile)</span>
 
         <span class="c1"># We use the max/min RA/Dec of the image corners to define the boundaries.</span>
-        <span class="c1"># Use the &#39;outside&#39; of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.</span>
+        <span class="c1"># Use the &#39;outside&#39; of the pixel corners, i.e. from pixel 0 to nX in 0-indexed</span>
+        <span class="c1"># accounting.</span>
 
         <span class="n">Xcorners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span><span class="p">])</span>
         <span class="n">Ycorners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span><span class="p">])</span>
@@ -990,11 +1007,12 @@
 <div class="viewcode-block" id="SpatialTemplate_2D.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.SpatialTemplate_2D.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -1007,13 +1025,15 @@
 <div class="viewcode-block" id="Power_law_on_sphere">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Power_law_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Power_law_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A power law function on a sphere (in spherical coordinates)</span>
 
-<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} &amp; {\rm if} &amp; ||\vec{x}-\vec{x}_0|| \le 0.05\\ ||\vec{x}-\vec{x}_0||^{index} &amp; {\rm if} &amp; 0.05 &lt; ||\vec{x}-\vec{x}_0|| \le maxr \\ 0 &amp; {\rm if} &amp; ||\vec{x}-\vec{x}_0||&gt;maxr\end{matrix}\right. $$</span>
+<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{</span>
+<span class="sd">            \begin{matrix} 0.05^{index} &amp; {\rm if} &amp; ||\vec{x}-\vec{x}_0|| \le 0.05\\</span>
+<span class="sd">            ||\vec{x}-\vec{x}_0||^{index} &amp; {\rm if} &amp; 0.05 &lt; ||\vec{x}-\vec{x}_0|| \le</span>
+<span class="sd">            maxr \\ 0 &amp; {\rm if} &amp; ||\vec{x}-\vec{x}_0||&gt;maxr\end{matrix}\right. $$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -1073,9 +1093,7 @@
         <span class="n">angsep</span> <span class="o">=</span> <span class="n">angular_distance</span><span class="p">(</span><span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">maxr</span> <span class="o">&lt;=</span> <span class="n">minr</span><span class="p">:</span>
-            <span class="n">norm</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">maxr</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">minr</span><span class="o">**</span><span class="n">index</span>
-            <span class="p">)</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">,</span> <span class="mf">2.0</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">maxr</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">minr</span><span class="o">**</span><span class="n">index</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">:</span>
             <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">maxr</span> <span class="o">/</span> <span class="n">minr</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1117,11 +1135,12 @@
 <div class="viewcode-block" id="Power_law_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Power_law_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).</span>
-<span class="sd">        needs to be implemented in subclasses.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
 
-<span class="sd">        :return: an array of values of the integral (same dimension as z).</span>
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -1135,7 +1154,8 @@
 <span class="c1">#     r&quot;&quot;&quot;</span>
 <span class="c1">#         description :</span>
 <span class="c1">#</span>
-<span class="c1">#             Returns the average of the integrand function (a 1-d function) over the interval x-y. The integrand is set</span>
+<span class="c1">#             Returns the average of the integrand function (a 1-d function) over the</span>
+<span class="c1">#             interval x-y. The integrand is set</span>
 <span class="c1">#             using the .integrand property, like in:</span>
 <span class="c1">#</span>
 <span class="c1">#             &gt; G = FunctionIntegrator()</span>
@@ -1147,7 +1167,8 @@
 <span class="c1">#</span>
 <span class="c1">#             s :</span>
 <span class="c1">#</span>
-<span class="c1">#                 desc : if s=0, then the integral will *not* be normalized by (y-x), otherwise (default) it will.</span>
+<span class="c1">#                 desc : if s=0, then the integral will *not* be normalized by (y-x),</span>
+<span class="c1">#                        otherwise (default) it will.</span>
 <span class="c1">#                 initial value : 1</span>
 <span class="c1">#                 fix : yes</span>
 <span class="c1">#         &quot;&quot;&quot;</span>
@@ -1164,7 +1185,8 @@
 <span class="c1">#</span>
 <span class="c1">#     def evaluate(self, x, y, s):</span>
 <span class="c1">#</span>
-<span class="c1">#         assert y-x &gt;= 0, &quot;Cannot obtain the integral if the integration interval is zero or negative!&quot;</span>
+<span class="c1">#         assert y-x &gt;= 0, &quot;Cannot obtain the integral if the integration interval is</span>
+<span class="c1">#                           zero or negative!&quot;</span>
 <span class="c1">#</span>
 <span class="c1">#         integral = self._integrand.integral(x, y)</span>
 <span class="c1">#</span>

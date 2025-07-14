@@ -129,33 +129,43 @@
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter.</span></span><span class="sig-name descname"><span class="pre">Parameter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">desc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">free</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prior</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_normalization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transformation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter_transformation.ParameterTransformation" title="astromodels.core.parameter_transformation.ParameterTransformation"><span class="pre">ParameterTransformation</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.ParameterBase" title="astromodels.core.parameter.ParameterBase"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParameterBase</span></code></a></p>
-<p>Implements a numerical parameter. Optionally the parameter can vary according to an auxiliary law (see below).</p>
+<p>Implements a numerical parameter. Optionally the parameter can vary
+according to an auxiliary law (see below).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – Name for the parameter</p></li>
 <li><p><strong>value</strong> – Initial value</p></li>
-<li><p><strong>min_value</strong> – minimum allowed value for the parameter (default: None)</p></li>
-<li><p><strong>max_value</strong> – maximum allowed value for the parameter (default: None)</p></li>
-<li><p><strong>delta</strong> – initial step used by some fitting engines (default: 0.1 * value)</p></li>
+<li><p><strong>min_value</strong> – minimum allowed value for the parameter (default:
+None)</p></li>
+<li><p><strong>max_value</strong> – maximum allowed value for the parameter (default:
+None)</p></li>
+<li><p><strong>delta</strong> – initial step used by some fitting engines (default:
+0.1 * value)</p></li>
 <li><p><strong>desc</strong> – description of parameter (default: ‘’)</p></li>
 <li><p><strong>free</strong> – whether the parameter is free or not (default: True)</p></li>
 <li><p><strong>unit</strong> – the parameter units (default: dimensionless)</p></li>
 <li><p><strong>prior</strong> – the parameter’s prior (default: None)</p></li>
-<li><p><strong>is_normalization</strong> – True or False, wether the parameter is a normalization or not (default: False)</p></li>
-<li><p><strong>transformation</strong> – a transformation to be used between external value (the value the user interacts with) and
-the value the fitting/sampling engine interacts with (internal value). It is an instance of a class implementing a
-forward(external_value) and a backward(internal_value) method returning respectively the transformation of the
-external value in the internal value and viceversa. This is useful because for example the logarithm of a parameter
-with a large range of possible values (say from 1e-12 to 1e20) is handled much better by fitting engines than the
-raw value. The log transformation indeed makes the gradient much easier to compute.</p></li>
+<li><p><strong>is_normalization</strong> – True or False, wether the parameter is a
+normalization or not (default: False)</p></li>
+<li><p><strong>transformation</strong> – a transformation to be used between external
+value (the value the user interacts with) and the value the
+fitting/sampling engine interacts with (internal value). It is
+an instance of a class implementing a forward(external_value)
+and a backward(internal_value) method returning respectively the
+transformation of the external value in the internal value and
+viceversa. This is useful because for example the logarithm of a
+parameter with a large range of possible values (say from 1e-12
+to 1e20) is handled much better by fitting engines than the raw
+value. The log transformation indeed makes the gradient much
+easier to compute.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.add_auxiliary_variable">
 <span class="sig-name descname"><span class="pre">add_auxiliary_variable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">law</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.add_auxiliary_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.add_auxiliary_variable" title="Link to this definition"></a></dt>
-<dd><p>TODO describe function</p>
+<dd><p>TODO describe function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -172,7 +182,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.auxiliary_variable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auxiliary_variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span></em><a class="headerlink" href="#astromodels.core.parameter.Parameter.auxiliary_variable" title="Link to this definition"></a></dt>
-<dd><p>Returns a tuple with the auxiliary variable and the law</p>
+<dd><p>Returns a tuple with the auxiliary variable and the law.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple (variable, law)</p>
@@ -189,7 +199,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.fix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fix</span></span><a class="headerlink" href="#astromodels.core.parameter.Parameter.fix" title="Link to this definition"></a></dt>
-<dd><p>‘p.fix = True’  or ‘p.fix = False’.</p>
+<dd><p>‘p.fix = True’ or ‘p.fix = False’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gets or sets whether the parameter is fixed or not. Use booleans, like</p>
@@ -200,7 +210,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.free">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">free</span></span><a class="headerlink" href="#astromodels.core.parameter.Parameter.free" title="Link to this definition"></a></dt>
-<dd><p>‘p.free = True’  or ‘p.free = False’.</p>
+<dd><p>‘p.free = True’ or ‘p.free = False’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Gets or sets whether the parameter is free or not. Use booleans, like</p>
@@ -216,13 +226,13 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.has_auxiliary_variable">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_auxiliary_variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#astromodels.core.parameter.Parameter.has_auxiliary_variable" title="Link to this definition"></a></dt>
-<dd><p>Returns whether the parameter is linked to an auxiliary variable</p>
+<dd><p>Returns whether the parameter is linked to an auxiliary variable.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.has_prior">
 <span class="sig-name descname"><span class="pre">has_prior</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.has_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.has_prior" title="Link to this definition"></a></dt>
-<dd><p>Check whether the current parameter has a defined prior</p>
+<dd><p>Check whether the current parameter has a defined prior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>True or False</p>
@@ -244,7 +254,7 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.remove_auxiliary_variable">
 <span class="sig-name descname"><span class="pre">remove_auxiliary_variable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.remove_auxiliary_variable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.remove_auxiliary_variable" title="Link to this definition"></a></dt>
-<dd><p>Remove an existing auxiliary variable</p>
+<dd><p>Remove an existing auxiliary variable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -255,18 +265,27 @@ raw value. The log transformation indeed makes the gradient much easier to compu
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.set_uninformative_prior">
 <span class="sig-name descname"><span class="pre">set_uninformative_prior</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prior_class</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.set_uninformative_prior"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.set_uninformative_prior" title="Link to this definition"></a></dt>
-<dd><p>Sets the prior for the parameter to a uniform prior between the current minimum and maximum, or a
-log-uniform prior between the current minimum and maximum.</p>
-<p>NOTE: if the current minimum and maximum are not defined, the default bounds for the prior class will be used.</p>
-<p>:param prior_class : the class to be used as prior (either Log_uniform_prior or Uniform_prior, or a class which
-provide a lower_bound and an upper_bound properties)
-:return: (none)</p>
+<dd><p>Sets the prior for the parameter to a uniform prior between the
+current minimum and maximum, or a log-uniform prior between the current
+minimum and maximum.</p>
+<dl class="simple">
+<dt>NOTE: if the current minimum and maximum are not defined, the default bounds for</dt><dd><p>the prior class will be used.</p>
+</dd>
+<dt>:param prior_class<span class="classifier">the class to be used as prior (either Log_uniform_prior or</span></dt><dd><p>Uniform_prior, or a class which
+provide a lower_bound and an upper_bound properties)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(none)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.Parameter.to_dict">
 <span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#Parameter.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.Parameter.to_dict" title="Link to this definition"></a></dt>
-<dd><p>Returns the representation for serialization</p>
+<dd><p>Returns the representation for serialization.</p>
 </dd></dl>
 
 </dd></dl>
@@ -284,24 +303,28 @@ provide a lower_bound and an upper_bound properties)
 <li><p><strong>max_value</strong> – maximum</p></li>
 <li><p><strong>desc</strong> – description</p></li>
 <li><p><strong>unit</strong> – units (string or astropy.Unit)</p></li>
-<li><p><strong>transformation</strong> – a class which implements a .forward and a .backward method to transform forth and back from
-face value (the value exposed to the user) to the internal value (the value exposed to the fitting engine)</p></li>
+<li><p><strong>transformation</strong> – a class which implements a .forward and a .backward method to
+transform forth and back from face value (the value exposed to the user) to the
+internal value (the value exposed to the fitting engine)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.add_callback">
 <span class="sig-name descname"><span class="pre">add_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.add_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.add_callback" title="Link to this definition"></a></dt>
-<dd><p>Add a callback to the list of functions which are called immediately after the value of the parameter
-is changed. The callback must be a function accepting the current parameter as input. The return value of the
-callback is ignored. More than one callback can be specified. In that case, the callbacks will be called in the
-same order they have been entered.</p>
+<dd><p>Add a callback to the list of functions which are called immediately
+after the value of the parameter is changed.</p>
+<p>The callback must be a function accepting the current parameter
+as input. The return value of the callback is ignored. More than
+one callback can be specified. In that case, the callbacks will
+be called in the same order they have been entered.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.as_quantity">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">as_quantity</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.as_quantity" title="Link to this definition"></a></dt>
-<dd><p>Return the current value with its units (as an astropy.Quantity instance)</p>
+<dd><p>Return the current value with its units (as an astropy.Quantity
+instance)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an instance of astropy.Quantity)</p>
@@ -318,10 +341,11 @@ same order they have been entered.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.description">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">description</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.description" title="Link to this definition"></a></dt>
-<dd><p>Return a description of this parameter</p>
+<dd><p>Return a description of this parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a string cointaining a description of the meaning of this parameter</p>
+<dd class="field-odd"><p>a string cointaining a description of the meaning of
+this parameter</p>
 </dd>
 </dl>
 </dd></dl>
@@ -329,19 +353,19 @@ same order they have been entered.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.duplicate">
 <span class="sig-name descname"><span class="pre">duplicate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../notebooks/api/astromodels.core.html#astromodels.core.parameter.Parameter" title="astromodels.core.parameter.Parameter"><span class="pre">Parameter</span></a></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.duplicate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.duplicate" title="Link to this definition"></a></dt>
-<dd><p>Returns an exact copy of the current parameter</p>
+<dd><p>Returns an exact copy of the current parameter.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.empty_callbacks">
 <span class="sig-name descname"><span class="pre">empty_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.empty_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.empty_callbacks" title="Link to this definition"></a></dt>
-<dd><p>Remove all callbacks for this parameter</p>
+<dd><p>Remove all callbacks for this parameter.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.get_callbacks">
 <span class="sig-name descname"><span class="pre">get_callbacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.get_callbacks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.get_callbacks" title="Link to this definition"></a></dt>
-<dd><p>Returns the list of callbacks currently defined</p>
+<dd><p>Returns the list of callbacks currently defined.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -362,18 +386,21 @@ same order they have been entered.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.in_unit_of">
 <span class="sig-name descname"><span class="pre">in_unit_of</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_quantity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Quantity</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.in_unit_of"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.in_unit_of" title="Link to this definition"></a></dt>
-<dd><p>Return the current value transformed to the new units</p>
+<dd><p>Return the current value transformed to the new units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>unit</strong> – either an astropy.Unit instance, or a string which can be converted to an astropy.Unit
-instance, like “1 / (erg cm**2 s)”</p></li>
-<li><p><strong>as_quantity</strong> – if True, the method return an astropy.Quantity, if False just a floating point number.
+<li><p><strong>unit</strong> – either an astropy.Unit instance, or a string which
+can be converted to an astropy.Unit instance, like “1 / (erg
+cm**2 s)”</p></li>
+<li><p><strong>as_quantity</strong> – if True, the method return an
+astropy.Quantity, if False just a floating point number.
 Default is False</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>either a floating point or a astropy.Quantity depending on the value of “as_quantity”</p>
+<dd class="field-even"><p>either a floating point or a astropy.Quantity depending
+on the value of “as_quantity”</p>
 </dd>
 </dl>
 </dd></dl>
@@ -381,9 +408,10 @@ Default is False</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.internal_to_external_delta">
 <span class="sig-name descname"><span class="pre">internal_to_external_delta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">internal_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internal_delta</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.internal_to_external_delta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.internal_to_external_delta" title="Link to this definition"></a></dt>
-<dd><p>Transform an interval from the internal to the external reference (through the transformation). It is useful
-if you have for example a confidence interval in internal reference and you want to transform it to the
-external reference</p>
+<dd><p>Transform an interval from the internal to the external reference
+(through the transformation). It is useful if you have for example a
+confidence interval in internal reference and you want to transform it
+to the external reference.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -412,21 +440,22 @@ external reference</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.remove_maximum">
 <span class="sig-name descname"><span class="pre">remove_maximum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.remove_maximum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.remove_maximum" title="Link to this definition"></a></dt>
-<dd><p>Remove the maximum from this parameter (i.e., it becomes boundless in the positive direction)</p>
+<dd><p>Remove the maximum from this parameter (i.e., it becomes boundless
+in the positive direction)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.remove_minimum">
 <span class="sig-name descname"><span class="pre">remove_minimum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.remove_minimum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.remove_minimum" title="Link to this definition"></a></dt>
-<dd><p>Remove the minimum from this parameter (i.e., it becomes boundless in the negative direction)</p>
+<dd><p>Remove the minimum from this parameter (i.e., it becomes boundless
+in the negative direction)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.remove_transformation">
 <span class="sig-name descname"><span class="pre">remove_transformation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.remove_transformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.remove_transformation" title="Link to this definition"></a></dt>
-<dd><p>remove any transform on the parameter</p>
-<p>useful in bayesian fits where
-we do not care about
+<dd><p>Remove any transform on the parameter.</p>
+<p>useful in bayesian fits where we do not care about
 transformations but want speed</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -438,8 +467,7 @@ transformations but want speed</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.restore_transformation">
 <span class="sig-name descname"><span class="pre">restore_transformation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.restore_transformation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.restore_transformation" title="Link to this definition"></a></dt>
-<dd><p>restore the original transformation
-if it had been removed</p>
+<dd><p>Restore the original transformation if it had been removed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p></p>
@@ -450,8 +478,8 @@ if it had been removed</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.static_name">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">static_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.static_name" title="Link to this definition"></a></dt>
-<dd><p>Returns a name which will never change, even if the name of the parameter does (for example in composite
-functions)</p>
+<dd><p>Returns a name which will never change, even if the name of the
+parameter does (for example in composite functions)</p>
 <p>:return : the static name
 :type : str</p>
 </dd></dl>
@@ -459,7 +487,7 @@ functions)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.core.parameter.ParameterBase.to_dict">
 <span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#ParameterBase.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.ParameterBase.to_dict" title="Link to this definition"></a></dt>
-<dd><p>Returns the representation for serialization</p>
+<dd><p>Returns the representation for serialization.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -502,23 +530,30 @@ functions)</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="astromodels.core.parameter.accept_quantity">
 <span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter.</span></span><span class="sig-name descname"><span class="pre">accept_quantity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_type=&lt;class</span> <span class="pre">'float'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_none=False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#accept_quantity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.accept_quantity" title="Link to this definition"></a></dt>
-<dd><p>A class-method decorator which allow a given method (typically the set_value method) to receive both a
-astropy.Quantity or a simple float, but to be coded like it’s always receiving a pure float in the right units.
-This is to give a way to avoid the huge bottleneck that are astropy.units</p>
+<dd><p>A class-method decorator which allow a given method (typically the
+set_value method) to receive both a astropy.Quantity or a simple float, but
+to be coded like it’s always receiving a pure float in the right units.
+This is to give a way to avoid the huge bottleneck that are astropy.units.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>input_type</strong> – the expected type for the input (float, int)</p>
 </dd>
 </dl>
-<p>:param allow_none : whether to allow or not the passage of None as argument (default: False)
-:return: a decorator for the particular type</p>
+<dl class="simple">
+<dt>:param allow_none<span class="classifier">whether to allow or not the passage of None as</span></dt><dd><p>argument (default: False)</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a decorator for the particular type</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="astromodels.core.parameter.turn_off_parameter_transforms">
 <span class="sig-prename descclassname"><span class="pre">astromodels.core.parameter.</span></span><span class="sig-name descname"><span class="pre">turn_off_parameter_transforms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/core/parameter.html#turn_off_parameter_transforms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.core.parameter.turn_off_parameter_transforms" title="Link to this definition"></a></dt>
-<dd><p>deactivate parameter transforms temporarily
-:return: None</p>
+<dd><p>Deactivate parameter transforms temporarily :return: None.</p>
 </dd></dl>
 
 </section>

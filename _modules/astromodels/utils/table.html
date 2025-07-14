@@ -97,11 +97,11 @@
 <div class="viewcode-block" id="dict_to_table">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.table.dict_to_table">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dict_to_table</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">list_of_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return a table representing the dictionary.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a table representing the dictionary.</span>
 
 <span class="sd">    :param dictionary: the dictionary to represent</span>
-<span class="sd">    :param list_of_keys: optionally, only the keys in this list will be inserted in the table</span>
+<span class="sd">    :param list_of_keys: optionally, only the keys in this list will be</span>
+<span class="sd">        inserted in the table</span>
 <span class="sd">    :return: a Table instance</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -150,16 +150,12 @@
 <div class="viewcode-block" id="Table">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.table.Table">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Table</span><span class="p">(</span><span class="n">astropy</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">Table</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Wrapper around the astropy table to remove some useless clutter (like the format of each column)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper around the astropy table to remove some useless clutter (like</span>
+<span class="sd">    the format of each column)&quot;&quot;&quot;</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_base_repr_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Override the method in the astropy.Table class</span>
-<span class="sd">        to avoid displaying the description, and the format</span>
-<span class="sd">        of the columns</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override the method in the astropy.Table class to avoid displaying</span>
+<span class="sd">        the description, and the format of the columns.&quot;&quot;&quot;</span>
 
         <span class="n">table_id</span> <span class="o">=</span> <span class="s2">&quot;table</span><span class="si">{id}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 

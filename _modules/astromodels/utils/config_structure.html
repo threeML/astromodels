@@ -91,7 +91,7 @@
   <h1>Source code for astromodels.utils.config_structure</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">IntEnum</span>
 
 
 <span class="c1"># logging</span>
@@ -169,9 +169,7 @@
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
     <span class="n">logging</span><span class="p">:</span> <span class="n">Logging</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Logging</span><span class="p">)</span>
-    <span class="n">absorption_models</span><span class="p">:</span> <span class="n">AbsorptionModels</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
-        <span class="n">default_factory</span><span class="o">=</span><span class="n">AbsorptionModels</span>
-    <span class="p">)</span>
+    <span class="n">absorption_models</span><span class="p">:</span> <span class="n">AbsorptionModels</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">AbsorptionModels</span><span class="p">)</span>
     <span class="n">modeling</span><span class="p">:</span> <span class="n">Modeling</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="n">Modeling</span><span class="p">)</span></div>
 
 </pre></div>

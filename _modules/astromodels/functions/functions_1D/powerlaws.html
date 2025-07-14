@@ -100,23 +100,13 @@
     <span class="n">FunctionMeta</span><span class="p">,</span>
     <span class="n">ModelAssertionViolation</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">threeML.config.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">threeML_config</span>
-
-    <span class="n">_has_threeml</span> <span class="o">=</span> <span class="kc">True</span>
-
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-
-    <span class="n">_has_threeml</span> <span class="o">=</span> <span class="kc">False</span>
-
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
-<span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26, 2016</span>
+<span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu)</span>
+<span class="c1"># Oct 26, 2016</span>
 
 <span class="n">erg2keV</span> <span class="o">=</span> <span class="mf">6.24151e8</span>
 
@@ -206,8 +196,8 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation</span>
-<span class="sd">        between the index and the normalization.</span>
+<span class="sd">        A simple power-law with the photon flux in a band used as normalization. This</span>
+<span class="sd">        will reduce the correlation between the index and the normalization.</span>
 
 <span class="sd">    latex : $ \frac{F(\gamma+1)} {b^{\gamma+1} - a^{\gamma+1}} (x)^{\gamma}$</span>
 
@@ -270,11 +260,9 @@
             <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">value</span>
 
             <span class="n">yunit_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_unit</span>
-            <span class="n">xunit_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_unit</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">yunit_</span> <span class="o">=</span> <span class="mf">1.0</span>
-            <span class="n">xunit_</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">F_</span><span class="p">,</span> <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 
         <span class="n">gp1</span> <span class="o">=</span> <span class="n">index_</span> <span class="o">+</span> <span class="mi">1</span>
@@ -356,11 +344,9 @@
             <span class="n">b_</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">value</span>
 
             <span class="n">yunit_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_unit</span>
-            <span class="n">xunit_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_unit</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">yunit_</span> <span class="o">=</span> <span class="mf">1.0</span>
-            <span class="n">xunit_</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">F_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">,</span> <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span> <span class="o">=</span> <span class="n">F</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span>
 
         <span class="n">intflux</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_flux_norm</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span><span class="p">)</span>
@@ -532,7 +518,7 @@
             <span class="n">unit_</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">K_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">,</span> <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">xp_</span> <span class="o">=</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xp</span>
 
-        <span class="n">xc</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
+        <span class="n">xc</span> <span class="o">=</span> <span class="n">xp_</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">cplaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
 
@@ -545,8 +531,8 @@
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Inverse_cutoff_powerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Inverse_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    description :</span>
-<span class="sd">        A power law multiplied by an exponential cutoff [Note: instead of cutoff energy energy parameter xc, b = 1/xc is used]</span>
+<span class="sd">    description : A power law multiplied by an exponential cutoff</span>
+<span class="sd">        Note, instead of cutoff energy energy parameter xc, b = 1/xc is used</span>
 <span class="sd">    latex : $K \frac{x}{piv}^{index}\exp{(-x~b)} $</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        K :</span>
@@ -800,7 +786,7 @@
             <span class="p">)</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">sbplaw_eval</span><span class="p">(</span>
-            <span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">alpha_</span><span class="p">,</span> <span class="n">break_energy</span><span class="p">,</span> <span class="n">break_scale_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">pivot_</span>
+            <span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">alpha_</span><span class="p">,</span> <span class="n">break_energy_</span><span class="p">,</span> <span class="n">break_scale_</span><span class="p">,</span> <span class="n">beta_</span><span class="p">,</span> <span class="n">pivot_</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div>
@@ -816,7 +802,8 @@
 
 <span class="sd">        A broken power law function</span>
 
-<span class="sd">    latex : $ f(x)= K~\begin{cases}\left( \frac{x}{x_{b}} \right)^{\alpha} &amp; x &lt; x_{b} \\ \left( \frac{x}{x_{b}} \right)^{\beta} &amp; x \ge x_{b} \end{cases} $</span>
+<span class="sd">    latex : $ f(x)= K~\begin{cases}\left( \frac{x}{x_{b}} \right)^{\alpha} &amp; x &lt; x_{b}</span>
+<span class="sd">            \\ \left( \frac{x}{x_{b}} \right)^{\beta} &amp; x \ge x_{b} \end{cases} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -874,9 +861,9 @@
 <div class="viewcode-block" id="Broken_powerlaw.evaluate">
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Broken_powerlaw.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xb</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
-        <span class="c1"># The K * 0 is to keep the units right. If the input has unit, this will make a result</span>
-        <span class="c1"># array with the same units as K. If the input has no units, this will have no</span>
-        <span class="c1"># effect whatsoever</span>
+        <span class="c1"># The K * 0 is to keep the units right. If the input has unit, this will make a</span>
+        <span class="c1"># result array with the same units as K. If the input has no units, this will</span>
+        <span class="c1"># have no effect whatsoever</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
@@ -907,7 +894,11 @@
 
 <span class="sd">        Band model from Band et al., 1993, parametrized with the peak energy</span>
 
-<span class="sd">    latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-\frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)\left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;(\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $</span>
+<span class="sd">    latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-</span>
+<span class="sd">            \frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}</span>
+<span class="sd">            {(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)</span>
+<span class="sd">            \left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;</span>
+<span class="sd">            (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -1085,8 +1076,9 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        The Band model from Band et al. 1993, implemented however in a way which reduces the covariances between</span>
-<span class="sd">        the parameters (Calderone et al., MNRAS, 448, 403C, 2015)</span>
+<span class="sd">        The Band model from Band et al. 1993, implemented however in a way which reduces</span>
+<span class="sd">        the covariances between the parameters (Calderone et al., MNRAS, 448, 403C,</span>
+<span class="sd">        2015)</span>
 
 <span class="sd">    latex : $ \text{(Calderone et al., MNRAS, 448, 403C, 2015)} $</span>
 
@@ -1108,7 +1100,8 @@
 
 <span class="sd">        xp :</span>
 
-<span class="sd">            desc : position of the peak in the x*x*f(x) space (if x is energy, this is the nuFnu or SED space)</span>
+<span class="sd">            desc : position of the peak in the x*x*f(x) space (if x is energy, this is</span>
+<span class="sd">                    the nuFnu or SED space)</span>
 <span class="sd">            initial value : 200.0</span>
 <span class="sd">            min : 1e-10</span>
 <span class="sd">            transformation : log10</span>
@@ -1137,7 +1130,8 @@
 
 <span class="sd">        opt :</span>
 
-<span class="sd">            desc : option to select the spectral model (0 corresponds to a cutoff power law, 1 to the Band model)</span>
+<span class="sd">            desc : option to select the spectral model (0 corresponds to a cutoff power</span>
+<span class="sd">                    law, 1 to the Band model)</span>
 <span class="sd">            initial value : 1</span>
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 1</span>
@@ -1283,9 +1277,19 @@
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DoubleSmoothlyBrokenPowerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    description : A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</span>
+<span class="sd">    description : A smoothly broken power law with two breaks as parameterized in</span>
+<span class="sd">                    Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</span>
 
-<span class="sd">    latex : $\begin{array}{l}\begin{aligned}f(x)=&amp; A x_{\mathrm{b}}^{\alpha_{1}}\left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right.\\&amp;\left.+\left(\frac{x}{x_{\mathrm{j}}}\right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}{n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot\left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}\right) n_{2}}}\end{array}$</span>
+<span class="sd">    latex : $\begin{array}{l}\begin{aligned}f(x)=&amp; A x_{\mathrm{b}}^{\alpha_{1}}</span>
+<span class="sd">            \left[\left[\left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{1} n_{1}}+</span>
+<span class="sd">            \left(\frac{x}{x_{\mathrm{b}}}\right)^{-\alpha_{2} n_{1}}\right]^{</span>
+<span class="sd">            \frac{n_{2}}{n_{1}}}\right.\\&amp;\left.+\left(\frac{x}{x_{\mathrm{j}}}</span>
+<span class="sd">            \right)^{-\beta n_{2}} \cdot\left[\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}</span>
+<span class="sd">            }}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}</span>
+<span class="sd">            \right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}</span>
+<span class="sd">            {n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot</span>
+<span class="sd">            \left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}</span>
+<span class="sd">            \right) n_{2}}}\end{array}$</span>
 
 <span class="sd">    parameters :</span>
 
@@ -1391,12 +1395,9 @@
 <div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.free_curvature">
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.free_curvature">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        free the two curvature parameters n1, n2</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Free the two curvature parameters n1, n2.</span>
 
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span></div>
@@ -1405,12 +1406,9 @@
 <div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.fix_curvature">
 <a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.fix_curvature">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fix_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        fix the two curvature parameters n1, n2</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fix the two curvature parameters n1, n2.</span>
 
 <span class="sd">        :returns:</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span></div>
