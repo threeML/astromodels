@@ -6,6 +6,7 @@ import math
 import os
 import re
 import sys
+import textwrap
 import uuid
 from builtins import chr, map, str
 from operator import attrgetter
@@ -151,8 +152,14 @@ class FunctionMeta(type):
 
         try:
 
+            yaml_string = textwrap.dedent(dct["__doc__"]).strip()
+
+            if not yaml_string.startswith("---"):
+                yaml_string = f"---\n{yaml_string}"
+
             function_definition = my_yaml.load(
-                dct["__doc__"], Loader=my_yaml.FullLoader
+                yaml_string,
+                Loader=my_yaml.FullLoader,
             )
 
         except ReaderError:  # pragma: no cover
