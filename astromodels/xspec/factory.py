@@ -472,6 +472,7 @@ class_definition_code = '''
 
 import numpy as np
 import astropy.units as u
+from astromodels.functions import Function1D,FunctionMeta
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.xspec import _xspec
 import six
