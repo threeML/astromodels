@@ -736,13 +736,13 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
         sys.path.append(user_data_path)
 
-    # Import the class in the current namespace (locals)
+    namespace = {}
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        exec("from %s import %s" % (class_name, class_name))
+        exec(f"from {class_name} import {class_name}", globals(), namespace)
 
-    # Return the class we just created
-    return class_name, locals()[class_name]
+    # Return the class we just imported
+    return class_name, namespace[class_name]
 
 
 def setup_xspec_models():
