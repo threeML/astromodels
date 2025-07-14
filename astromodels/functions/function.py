@@ -159,7 +159,7 @@ class FunctionMeta(type):
 
             function_definition = my_yaml.load(
                 yaml_string,
-                Loader=my_yaml.FullLoader,  # or SafeLoader if using only basic YAML types
+                Loader=my_yaml.FullLoader,
             )
 
         except ReaderError:  # pragma: no cover
