@@ -8,15 +8,20 @@ from astromodels.core.tree import Node
 from astromodels.core.units import get_units
 from astromodels.functions import Constant
 from astromodels.sources.source import Source, SourceType
-from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.logging import setup_logger
+from astromodels.utils.pretty_list import dict_to_list
 
 log = setup_logger(__name__)
 
 
 class ExtendedSource(Source, Node):
     def __init__(
-        self, source_name, spatial_shape, spectral_shape=None, components=None, polarization=None
+        self,
+        source_name,
+        spatial_shape,
+        spectral_shape=None,
+        components=None,
+        polarization=None,
     ):
         # Check that we have all the required information
         # and set the units
@@ -36,7 +41,8 @@ class ExtendedSource(Source, Node):
                 "(but not both)."
             )
 
-            # If the user specified only one component, make a list of one element with a default name ("main")
+            # If the user specified only one component, make a list of one element with
+            # a default name ("main")
 
             if spectral_shape is not None:
 
@@ -60,8 +66,9 @@ class ExtendedSource(Source, Node):
 
         elif spatial_shape.n_dim == 3:
 
-            # If there is no spectral component then assume that the input is a template, which will provide the
-            # spectrum by itself. We just use a renormalization (a bias)
+            # If there is no spectral component then assume that the input is a
+            # template, which will provide the spectrum by itself. We just use a
+            # renormalization (a bias)
 
             if spectral_shape is None and components is None:
 
@@ -86,8 +93,9 @@ class ExtendedSource(Source, Node):
 
             else:
 
-                # the spectral shape has been given, so this is a case where the spatial template gives an
-                # energy-dependent shape and the spectral components give the spectrum
+                # the spectral shape has been given, so this is a case where the spatial
+                # template gives an energy-dependent shape and the spectral components
+                # give the spectrum
 
                 if not ((spectral_shape is not None) ^ (components is not None)):
 
@@ -101,7 +109,9 @@ class ExtendedSource(Source, Node):
 
                 if spectral_shape is not None:
 
-                    components = [SpectralComponent("main", spectral_shape, polarization)]
+                    components = [
+                        SpectralComponent("main", spectral_shape, polarization)
+                    ]
 
                 # Assign units
                 diff_flux_units = (
@@ -150,8 +160,7 @@ class ExtendedSource(Source, Node):
 
     @property
     def spatial_shape(self):
-        """
-        A generic name for the spatial shape.
+        """A generic name for the spatial shape.
 
         :return: the spatial shape instance
         """
@@ -159,11 +168,10 @@ class ExtendedSource(Source, Node):
         return self._spatial_shape
 
     def get_spatially_integrated_flux(self, energies):
+        """Returns total flux of source at the given energy :param energies:
 
-        """
-        Returns total flux of source at the given energy
-        :param energies: energies (array or float)
-        :return: differential flux at given energy
+        energies (array or float)
+        :return: differential flux at given energy.
         """
 
         if not isinstance(energies, np.ndarray):
@@ -181,28 +189,25 @@ class ExtendedSource(Source, Node):
 
             # Slow version with units
 
-            # We need to sum like this (slower) because using np.sum will not preserve the units
-            # (thanks astropy.units)
+            # We need to sum like this (slower) because using np.sum will not preserve
+            # the units (thanks astropy.units)
 
             differential_flux = sum(results)
 
         else:
 
-            # Fast version without units, where x is supposed to be in the same units as currently defined in
-            # units.get_units()
+            # Fast version without units, where x is supposed to be in the same units as
+            # currently defined in units.get_units()
 
             differential_flux = np.sum(results, 0)
 
         return differential_flux
 
     def __call__(self, lon, lat, energies):
-        """
-        Returns brightness of source at the given position and energy
-        :param lon: longitude (array or float)
-        :param lat: latitude (array or float)
-        :param energies: energies (array or float)
-        :return: differential flux at given position and energy
-        """
+        """Returns brightness of source at the given position and energy :param
+        lon: longitude (array or float) :param lat: latitude (array or float)
+        :param energies: energies (array or float) :return: differential flux
+        at given position and energy."""
 
         assert type(lat) is type(lon) and type(lon) is type(
             energies
@@ -224,15 +229,15 @@ class ExtendedSource(Source, Node):
 
             # Slow version with units
 
-            # We need to sum like this (slower) because using np.sum will not preserve the units
-            # (thanks astropy.units)
+            # We need to sum like this (slower) because using np.sum will not preserve
+            # the units (thanks astropy.units)
 
             differential_flux = sum(results)
 
         else:
 
-            # Fast version without units, where x is supposed to be in the same units as currently defined in
-            # units.get_units()
+            # Fast version without units, where x is supposed to be in the same units as
+            # currently defined in units.get_units()
 
             differential_flux = np.sum(results, 0)
 
@@ -246,7 +251,8 @@ class ExtendedSource(Source, Node):
             n_points = lat.shape[0]
             n_energies = differential_flux.shape[0]
 
-            # The following is a little obscure, but it is 6x faster than doing a for loop
+            # The following is a little obscure, but it is 6x faster than doing a for
+            # loop
 
             cube = (
                 np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T
@@ -264,8 +270,7 @@ class ExtendedSource(Source, Node):
 
     @property
     def has_free_parameters(self):
-        """
-        Returns True or False whether there is any parameter in this source
+        """Returns True or False whether there is any parameter in this source.
 
         :return:
         """
@@ -288,10 +293,9 @@ class ExtendedSource(Source, Node):
 
     @property
     def free_parameters(self):
-        """
-        Returns a dictionary of free parameters for this source
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of free parameters for this source We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -315,10 +319,9 @@ class ExtendedSource(Source, Node):
 
     @property
     def parameters(self):
-        """
-        Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of all parameters for this source. We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -337,8 +340,7 @@ class ExtendedSource(Source, Node):
         return all_parameters
 
     def _repr__base(self, rich_output=False):
-        """
-        Representation of the object
+        """Representation of the object.
 
         :param rich_output: if True, generates HTML, otherwise text
         :return: the representation
@@ -360,9 +362,9 @@ class ExtendedSource(Source, Node):
         return dict_to_list(repr_dict, rich_output)
 
     def get_boundaries(self):
-        """
-        Returns the boundaries for this extended source
+        """Returns the boundaries for this extended source.
 
-        :return: a tuple of tuples ((min. lon, max. lon), (min lat, max lat))
+        :return: a tuple of tuples ((min. lon, max. lon), (min lat, max
+            lat))
         """
         return self._spatial_shape.get_boundaries()

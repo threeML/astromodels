@@ -1,8 +1,8 @@
 import collections
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple, Type, Any
-from rich.tree import Tree
+from typing import Any, Dict, List, Optional, Tuple, Type
 
+from rich.tree import Tree
 
 from astromodels.utils.logging import setup_logger
 
@@ -117,9 +117,7 @@ class NodeBase:
             self._add_child(child)
 
     def _remove_child(self, name: str, delete: bool = True) -> Optional["NodeBase"]:
-        """
-        return a child
-        """
+        """Return a child."""
 
         # this kills the child
 
@@ -148,10 +146,8 @@ class NodeBase:
             # return self._children.pop(name)
 
     def _orphan(self) -> None:
-        """
-        This will disconnect the current node from its parent
-        and inform all the children about the change
-        """
+        """This will disconnect the current node from its parent and inform all
+        the children about the change."""
 
         # disconnect from parent
 
@@ -162,9 +158,7 @@ class NodeBase:
         self._update_child_path()
 
     def _set_parent(self, parent: Type["NodeBase"]) -> None:
-        """
-        set the parent and update path
-        """
+        """Set the parent and update path."""
 
         self._parent = parent
 
@@ -181,29 +175,21 @@ class NodeBase:
         log.debug_node(f"path is now: {self._path}")
 
     def _get_child(self, name: str) -> "NodeBase":
-        """
-        return a child object
-        """
+        """Return a child object."""
 
         return self._children[name]
 
     def _has_child(self, name: str) -> bool:
-        """
-        is this child (name) in the tree
-        """
+        """Is this child (name) in the tree."""
         return name in self._children
 
     def _get_children(self) -> Tuple["NodeBase"]:
-        """
-        return a tuple of children
-        """
+        """Return a tuple of children."""
 
         return tuple(self._children.values())
 
     def _get_child_from_path(self, path: str) -> "NodeBase":
-        """
-        get a child from a string path
-        """
+        """Get a child from a string path."""
         nodes = path.split(".")
         _next = self
         for node in nodes:
@@ -246,9 +232,7 @@ class NodeBase:
         return self._parent
 
     def _get_path(self) -> "str":
-        """
-        returns the str path of this node
-        """
+        """Returns the str path of this node."""
         if self._parent is not None:
             return self._path
 
@@ -256,10 +240,8 @@ class NodeBase:
             return self._name
 
     def _root(self, source_only: bool = False) -> "NodeBase":
-        """
-        returns the root of the node, will stop at the source
-        if source_only is set to True
-        """
+        """Returns the root of the node, will stop at the source if source_only
+        is set to True."""
         if self.is_root:
             return self
 
@@ -291,13 +273,10 @@ class NodeBase:
         return self._get_path()
 
     def _update_child_path(self) -> None:
-        """
-
-        Update the path of all children recursively.
-        This is needed if the name is changed
+        """Update the path of all children recursively. This is needed if the
+        name is changed.
 
         :returns:
-
         """
         # recursively update the path
 
@@ -310,10 +289,10 @@ class NodeBase:
                 child._update_child_path()
 
     def _change_name(self, name: str, clear_parent: bool = False) -> None:
-        """
-        change the name of this node. This will have to update the
-        children about the change. if clear_parent is provided, then
-        the parent is removed
+        """Change the name of this node.
+
+        This will have to update the children about the change. if
+        clear_parent is provided, then the parent is removed
         """
         self._name = name
 
@@ -326,16 +305,12 @@ class NodeBase:
 
     @property
     def is_root(self) -> bool:
-        """
-        is this the root of the tree
-        """
+        """Is this the root of the tree."""
         return self._parent is None
 
     @property
     def is_leaf(self) -> bool:
-        """
-        is this a a leaf of the tree
-        """
+        """Is this a a leaf of the tree."""
         if len(self._children) == 0:
             return True
 
@@ -365,9 +340,9 @@ class NodeBase:
 
     def __setattr__(self, name, value):
 
-        ### We cannot change a node
-        ### but if the node has a value
-        ### attribute, we want to call that
+        # We cannot change a node
+        # but if the node has a value
+        # attribute, we want to call that
 
         if "_children" in self.__dict__:
             if name in self._children:
@@ -377,7 +352,8 @@ class NodeBase:
                     if not self._children[name].is_leaf:
 
                         log.warning(
-                            f"Trying to set the value of a linked parameter ({name}) directly has no effect "
+                            f"Trying to set the value of a linked parameter ({name})"
+                            " directly has no effect "
                         )
 
                         return
@@ -392,7 +368,8 @@ class NodeBase:
                     # this is going to be a node which
                     # we are not allowed to erase
 
-                    # log.error(f"Accessing an element {name} of the node that does not exist")
+                    # log.error(f"Accessing an element {name} of the node that does not
+                    # exist")
 
                     raise AttributeError(
                         f"Accessing an element {name} of the node that does not exist"
@@ -404,10 +381,7 @@ class NodeBase:
             return super().__setattr__(name, value)
 
     def plot_tree(self) -> Tree:
-        """
-        this plots the tree to the
-        screen
-        """
+        """This plots the tree to the screen."""
 
         try:
 

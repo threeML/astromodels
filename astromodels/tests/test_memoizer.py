@@ -1,6 +1,8 @@
 from builtins import zip
-from astromodels.functions import Powerlaw
+
 import numpy as np
+
+from astromodels.functions import Powerlaw
 
 
 def test_memoizer():

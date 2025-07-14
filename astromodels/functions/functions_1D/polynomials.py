@@ -1,6 +1,5 @@
 import numpy as np
 
-from astromodels.core.units import get_units
 from astromodels.functions.function import (
     Function1D,
     FunctionMeta,
@@ -8,13 +7,11 @@ from astromodels.functions.function import (
 
 
 def get_polynomial(order: int) -> Function1D:
-    """
-    get a polynomial function of order
+    """Get a polynomial function of order.
 
     :param order: the order of the polynomical
     :type order: int
     :returns:
-
     """
     return [Constant(), Line(), Quadratic(), Cubic(), Quartic()][order]
 

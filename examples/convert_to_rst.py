@@ -4,46 +4,48 @@
 # in the ../doc folder
 
 from __future__ import print_function
+
 import glob
-import subprocess
-import shutil
 import os
+import shutil
+import subprocess
 
 notebooks = glob.glob("*.ipynb")
 
 for nb in notebooks:
-    
+
     root = nb.split(".")[0]
-    
-    cmd_line = 'ipython nbconvert --to rst %s' % (nb)
-    
+
+    cmd_line = "ipython nbconvert --to rst %s" % (nb)
+
     print(cmd_line)
-    
-    subprocess.check_call(cmd_line,shell=True)
-    
+
+    subprocess.check_call(cmd_line, shell=True)
+
     # Now move the .rst file and the directory with the data
     # under ../doc
-    
+
     try:
-        
+
         os.remove("../doc/%s.rst" % root)
-    
-    except:
-        
+
+    except Exception as e:
+        print(f"Could not remove {root}, failed with {e}")
         pass
-    
+
     files_dir = "%s_files" % root
-    
+
     try:
-        
+
         shutil.rmtree("../doc/%s" % files_dir)
-    
-    except:
-        
+
+    except Exception as e:
+
+        print(f"Could not rmtree {files_dir}, failed with {e}")
         pass
-    
-    shutil.move("%s.rst" % root,"../doc")
-    
+
+    shutil.move("%s.rst" % root, "../doc")
+
     if os.path.exists(files_dir):
-    
+
         shutil.move(files_dir, "../doc")

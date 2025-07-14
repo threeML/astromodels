@@ -2,8 +2,9 @@ from builtins import str
 
 __author__ = "giacomov"
 
-import yaml
 import re
+
+import yaml
 
 
 def _process_html(dictionary):
@@ -59,14 +60,13 @@ def _process_text(dictionary):
 
     # Add a '*' for each point in the list and indent appropriately
 
-    final_output = re.sub("(\s*)(.+)", "\\1  * \\2", string_repr)
+    final_output = re.sub(r"(\s*)(.+)", "\\1  * \\2", string_repr)
 
     return final_output
 
 
 def dict_to_list(dictionary, html=False):
-    """
-    Convert a dictionary into a unordered list.
+    """Convert a dictionary into a unordered list.
 
     :param dictionary: a dictionary
     :param html: whether to output HTML or simple text (True or False)

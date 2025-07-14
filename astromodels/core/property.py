@@ -34,9 +34,7 @@ class PropertyBase(Node):
         self._eval_func: Optional[str] = eval_func
 
         if (value is None) and (not self._defer):
-            log.error(
-                f"property {name} was given no initial value but is NOT deferred"
-            )
+            log.error(f"property {name} was given no initial value but is NOT deferred")
 
         # now we set the value
 
@@ -47,9 +45,7 @@ class PropertyBase(Node):
         self._desc = desc
 
     def _get_value(self) -> Any:
-        """
-        Return current parameter value
-        """
+        """Return current parameter value."""
 
         log.debug_node(
             f"accessing the property {self.name} with value {self._internal_value}"
@@ -58,9 +54,8 @@ class PropertyBase(Node):
         return self._internal_value
 
     def _set_value(self, new_value) -> None:
-        """
-        Sets the current value of the parameter, ensuring that it is within the allowed range.
-        """
+        """Sets the current value of the parameter, ensuring that it is within
+        the allowed range."""
 
         if (self._defer) and (new_value is None):
             # this is ok
@@ -69,7 +64,8 @@ class PropertyBase(Node):
         elif self._allowed_values is not None:
             if new_value not in self._allowed_values:
                 log.error(
-                    f"{self.name} can only take the values {','.join(self._allowed_values)} not {new_value}"
+                    f"{self.name} can only take the values "
+                    f"{','.join(self._allowed_values)} not {new_value}"
                 )
 
                 raise SettingUnknownValue()
@@ -99,9 +95,7 @@ class PropertyBase(Node):
                         f"and the parent has {len(self._parent._functions)} functions"
                     )
 
-                    getattr(
-                        self._parent._functions[func_idx], str(self._eval_func)
-                    )()
+                    getattr(self._parent._functions[func_idx], str(self._eval_func))()
 
                 else:
                     getattr(self._parent, str(self._eval_func))()
@@ -129,19 +123,18 @@ class PropertyBase(Node):
 
     @property
     def description(self) -> Optional[str]:
-        """
-        Return a description of this parameter
+        """Return a description of this parameter.
 
-        :return: a string cointaining a description of the meaning of this parameter
+        :return: a string cointaining a description of the meaning of
+            this parameter
         """
         return self._desc
 
     def duplicate(self) -> "FunctionProperty":
-        """
-        Returns an exact copy of the current property
-        """
+        """Returns an exact copy of the current property."""
 
-        # Deep copy everything to make sure that there are no ties between the new instance and the old one
+        # Deep copy everything to make sure that there are no ties between the new
+        # instance and the old one
 
         new_property = copy.deepcopy(self)
 
@@ -154,14 +147,15 @@ class PropertyBase(Node):
 
     @staticmethod
     def _to_python_type(variable):
-        """
-        Returns the value in the variable handling also np.array of one element
+        """Returns the value in the variable handling also np.array of one
+        element.
 
         :param variable: input variable
         :return: the value of the variable having a python type (int, float, ...)
         """
 
-        # Assume variable is a np.array, fall back to the case where variable is already a primitive type
+        # Assume variable is a np.array, fall back to the case where variable is already
+        # a primitive type
 
         try:
             return variable.item()
@@ -170,7 +164,7 @@ class PropertyBase(Node):
             return variable
 
     def to_dict(self, minimal=False) -> Dict[str, Any]:
-        """Returns the representation for serialization"""
+        """Returns the representation for serialization."""
 
         data = collections.OrderedDict()
 
@@ -180,11 +174,10 @@ class PropertyBase(Node):
             data["value"] = self._to_python_type(self.value)
 
         else:
-            # In the complete representation we output everything is needed to re-build the object
+            # In the complete representation we output everything is needed to re-build
+            # the object
 
-            data["value"] = (
-                self.value if type(self.value) is bool else str(self.value)
-            )
+            data["value"] = self.value if type(self.value) is bool else str(self.value)
             data["desc"] = str(self._desc)
             data["allowed values"] = self._to_python_type(self._allowed_values)
             data["defer"] = self._to_python_type(self._defer)
@@ -213,9 +206,9 @@ class FunctionProperty(PropertyBase):
         )
 
     def _repr__base(self, rich_output=False):
+        rep = "all" if self._allowed_values is None else " ,".join(self._allowed_values)
         representation = (
-            f"Property {self.name} = {self.value}\n"
-            f"(allowed values = {'all' if self._allowed_values is None else ' ,'.join(self._allowed_values)})"
+            f"Property {self.name} = {self.value}\n (allowed values = {rep})"
         )
 
         return representation

@@ -1,12 +1,11 @@
 # code to show how to use the GalPropTemplate_3D() function
 # author: Hugo Ayala (hgayala@psu.edu)
 # date: Apr 22, 2019
-import os
 
 import numpy as np
-from threeML import *
+from threeML import GalPropTemplate_3D
 
-MODELMAP = 'testICModel.fits'
+MODELMAP = "testICModel.fits"
 
 # Create  and initialze shape object
 shape = GalPropTemplate_3D()
@@ -21,9 +20,9 @@ shape.load_file(MODELMAP, 65, 75, -5, 5, True)
 # The templates are cubes that contain spatial, energy and flux information.
 
 # Functions that are called during the fitting
-print( "Function get boundaries()")
+print("Function get boundaries()")
 (ramin, ramax), (decmin, decmax) = shape.get_boundaries()
-print ( "RA: {:0.2f},{:0.2f} Dec: {:0.2f},{:0.2f}".format(ramin, ramax, decmin, decmax))
+print("RA: {:0.2f},{:0.2f} Dec: {:0.2f},{:0.2f}".format(ramin, ramax, decmin, decmax))
 
 print("\nFunction evaluate()")
 

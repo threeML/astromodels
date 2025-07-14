@@ -1,6 +1,7 @@
 import collections
-import functools
 import contextlib
+import functools
+
 import astropy.units as u
 
 _WITH_MEMOIZATION = False
@@ -9,11 +10,11 @@ _CACHE_SIZE = 20
 
 @contextlib.contextmanager
 def use_astromodels_memoization(switch, cache_size=_CACHE_SIZE):
-    """
-    Activate/deactivate memoization temporarily
+    """Activate/deactivate memoization temporarily.
 
     :param switch: True (memoization on) or False (memoization off)
-    :param cache_size: number of previous evaluation of functions to keep in memory. Default: 100
+    :param cache_size: number of previous evaluation of functions to
+        keep in memory. Default: 100
     :return:
     """
 
@@ -33,8 +34,8 @@ def use_astromodels_memoization(switch, cache_size=_CACHE_SIZE):
 
 
 def memoize(method):
-    """
-    A decorator for functions of sources which memoize the results of the last _CACHE_SIZE calls,
+    """A decorator for functions of sources which memoize the results of the
+    last _CACHE_SIZE calls,
 
     :param method: method to be memoized
     :return: the decorated method
@@ -80,7 +81,8 @@ def memoize(method):
             cache[key] = result
 
             if len(cache) > _CACHE_SIZE:
-                # Remove half of the element (but at least 1, even if _CACHE_SIZE=1, which would be pretty idiotic ;-) )
+                # Remove half of the element (but at least 1, even if _CACHE_SIZE=1,
+                # which would be pretty idiotic ;-) )
                 [_popitem(False) for i in range(max(_CACHE_SIZE // 2, 1))]
 
             return result

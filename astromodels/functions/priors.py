@@ -1,13 +1,14 @@
 from __future__ import division
-from past.utils import old_div
+
 import math
 
 import astropy.units as astropy_units
 import numpy as np
-from scipy.special import erfcinv, erf
 import scipy.stats as stats
-from astromodels.functions.function import Function1D, FunctionMeta
+from past.utils import old_div
+from scipy.special import erf, erfcinv
 
+from astromodels.functions.function import Function1D, FunctionMeta
 
 deg2rad = old_div(np.pi, 180.0)
 rad2deg = old_div(180.0, np.pi)
@@ -27,7 +28,8 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
 
         F :
 
-            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal
+                    distribution
             initial value : 1
 
         mu :
@@ -79,8 +81,7 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
         )
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -108,15 +109,21 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A  truncated Gaussian function defined on the interval between the lower_bound (a) and upper_bound (b)
+        A  truncated Gaussian function defined on the interval between the lower_bound
+        (a) and upper_bound (b)
 
-    latex : $\begin{split}f(x;\mu,\sigma,a,b)=\frac{\frac{1}{\sigma} \phi\left( \frac{x-\mu}{\sigma} \right)}{\Phi\left( \frac{b-\mu}{\sigma} \right) - \Phi\left( \frac{a-\mu}{\sigma} \right)}\\\phi\left(z\right)=\frac{1}{\sqrt{2 \pi}}\exp\left(-\frac{1}{2}z^2\right)\\\Phi\left(z\right)=\frac{1}{2}\left(1+erf\left(\frac{z}{\sqrt(2)}\right)\right)\end{split}$
+    latex : $\begin{split}f(x;\mu,\sigma,a,b)=\frac{\frac{1}{\sigma} \phi\left(
+            \frac{x-\mu}{\sigma} \right)}{\Phi\left( \frac{b-\mu}{\sigma} \right)
+            - \Phi\left( \frac{a-\mu}{\sigma} \right)}\\\phi\left(z\right)=
+            \frac{1}{\sqrt{2 \pi}}\exp\left(-\frac{1}{2}z^2\right)\\\Phi\left(z\right)
+            =\frac{1}{2}\left(1+erf\left(\frac{z}{\sqrt(2)}\right)\right)\end{split}$
 
     parameters :
 
         F :
 
-            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal distribution
+            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Normal
+                    distribution
             initial value : 1
 
         mu :
@@ -132,12 +139,14 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
 
         lower_bound :
 
-            desc: lower bound of gaussian, setting to -np.inf results in half normal distribution
+            desc: lower bound of gaussian, setting to -np.inf results in half normal
+                    distribution
             initial value : -1.
 
         upper_bound :
 
-            desc: upper bound of gaussian  setting to np.inf results in half normal distribution
+            desc: upper bound of gaussian  setting to np.inf results in half normal
+                    distribution
             initial value : 1.
 
 
@@ -222,8 +231,8 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
 
         sqrt_two = 1.414213562
 
-        if x < 1e-16 or (1 - x) < 1e-16:
-            res = -1e32
+        # if x < 1e-16 or (1 - x) < 1e-16:
+        #    res = -1e32
 
         # precalculate the arguments to the  CDF
 
@@ -249,13 +258,14 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
         The Cauchy distribution
 
-    latex : $ K \frac{1}{ \gamma \pi} \left[ \frac{\gamma^2}{(x-x_0)^2 + \gamma^2}  \right] $
+    latex : $K\frac{1}{\gamma\pi}\left[\frac{\gamma^2}{(x-x_0)^2+\gamma^2}\right]$
 
     parameters :
 
         K :
 
-            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy distribution
+            desc : Integral between -inf and +inf. Fix this to 1 to obtain a Cauchy
+                    distribution
             initial value : 1
 
         x0 :
@@ -302,8 +312,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
         return K * norm * gamma2 / ((x - x0) * (x - x0) + gamma2)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -401,8 +410,7 @@ class Cosine_Prior(Function1D, metaclass=FunctionMeta):
         return result
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -433,12 +441,14 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
 
         A log normal function
 
-    latex : $ K \frac{1}{ x \sigma \sqrt{2 \pi}}\exp{\frac{(\log x/piv - \mu/piv)^2}{2~(\sigma)^2}} $
+    latex : $K\frac{1}{x\sigma\sqrt{2\pi}}\exp{\frac{(\log x/piv-\mu/piv)^2}
+            {2~(\sigma)^2}} $
 
     parameters :
 
         F :
-            desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal distribution
+            desc : Integral between 0and +inf. Fix this to 1 to obtain a log Normal
+                    distribution
             initial value : 1
 
         mu :
@@ -493,8 +503,8 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
 
         result = np.zeros(x.shape) * F * 0
 
-        # The log normal is not defined if x < 0. The "0 * x" part is to conserve the units if
-        # x has them, because 0 * x will be a Quantity with the same units as x
+        # The log normal is not defined if x < 0. The "0 * x" part is to conserve the
+        # units if x has them, because 0 * x will be a Quantity with the same units as x
         idx = x > 0 * x
 
         result[idx] = (
@@ -512,8 +522,7 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
         return result
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -541,10 +550,13 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The
-        extremes of the interval are counted as part of the interval.
+        A function which is constant on the interval lower_bound - upper_bound and 0
+        outside the interval. The extremes of the interval are counted as part of the
+        interval.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} & \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound} \end{cases}$
+    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
+            \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x >
+            \text{upper_bound} \end{cases}$
 
     parameters :
 
@@ -595,8 +607,7 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
         return result
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -619,10 +630,13 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A function which is K/x on the interval lower_bound - upper_bound and 0 outside the interval. The
-        extremes of the interval are NOT counted as part of the interval. Lower_bound must be >= 0.
+        A function which is K/x on the interval lower_bound - upper_bound and 0 outside
+        the interval. The extremes of the interval are NOT counted as part of the
+        interval. Lower_bound must be >= 0.
 
-    latex : $ f(x)=K~\begin{cases}0 & x \le \text{lower_bound} \\\frac{1}{x} & \text{lower_bound} < x < \text{upper_bound} \\ 0 & x \ge \text{upper_bound} \end{cases}$
+    latex : $ f(x)=K~\begin{cases}0 & x \le \text{lower_bound} \\\frac{1}{x} &
+            \text{lower_bound} < x < \text{upper_bound} \\ 0 & x \ge \text{upper_bound}
+            \end{cases}$
 
     parameters :
 
@@ -660,7 +674,8 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
         self.K.unit = y_unit * x_unit
 
     def evaluate(self, x, lower_bound, upper_bound, K):
-        # This makes the prior proper because it is the integral between lower_bound and upper_bound
+        # This makes the prior proper because it is the integral between lower_bound and
+        # upper_bound
 
         res = np.where((x > lower_bound) & (x < upper_bound), old_div(K, x), 0)
 
@@ -673,8 +688,7 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
             return res
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -730,8 +744,7 @@ class Beta(Function1D, metaclass=FunctionMeta):
         return stats.beta.pdf(x, a, b)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -751,7 +764,8 @@ class Gamma(Function1D, metaclass=FunctionMeta):
 
         A gamma distribution function
 
-    latex : $ f(x, \alpha, \beta)=\frac{\beta^\alpha x^{\alpha-1} e^{-\beta x}}{\Gamma(\alpha)}$
+    latex : $ f(x,\alpha, \beta)=\frac{\beta^\alpha x^{\alpha-1}
+            e^{-\beta x}}{\Gamma(\alpha)}$
 
     parameters :
 
@@ -784,8 +798,7 @@ class Gamma(Function1D, metaclass=FunctionMeta):
         return stats.gamma.pdf(x, alpha, scale=1.0 / beta)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -831,8 +844,7 @@ class Exponential(Function1D, metaclass=FunctionMeta):
         return stats.expon.pdf(x, scale=1.0 / alpha)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:
@@ -887,8 +899,7 @@ class Powerlaw_Prior(Function1D, metaclass=FunctionMeta):
         return stats.powerlaw.pdf(x, alpha, loc=a, scale=d)
 
     def from_unit_cube(self, x):
-        """
-        Used by multinest
+        """Used by multinest.
 
         :param x: 0 < x < 1
         :param lower_bound:

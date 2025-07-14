@@ -1,14 +1,12 @@
 from __future__ import print_function
 
-from future import standard_library
-
-standard_library.install_aliases()
 from builtins import object
 
 import astropy.units as u
 import pytest
+from future import standard_library
 
-from astromodels.functions import Log_uniform_prior, Powerlaw, Uniform_prior
+from astromodels.functions import Log_uniform_prior, Uniform_prior
 
 __author__ = "giacomov"
 
@@ -25,6 +23,8 @@ from astromodels.core.parameter_transformation import LogarithmicTransformation
 from astromodels.functions import Line
 from astromodels.utils.configuration import astromodels_config
 
+standard_library.install_aliases()
+
 
 def test_default_constructor():
 
@@ -36,9 +36,9 @@ def test_default_constructor():
     assert isinstance(p.delta, float)
     assert p.name == "test_parameter"
     assert p.description == "Description"
-    assert p.fix == False
-    assert p.free == True
-    assert p.has_prior() == False
+    assert p.fix is False
+    assert p.free is True
+    assert p.has_prior() is False
     assert p.prior is None
 
     assert p.unit == u.dimensionless_unscaled
@@ -77,9 +77,9 @@ def test_default_constructor_units():
     assert isinstance(p.delta, float)
     assert p.name == "test_parameter"
     assert p.description == "Description"
-    assert p.fix == False
-    assert p.free == True
-    assert p.has_prior() == False
+    assert p.fix is False
+    assert p.free is True
+    assert p.has_prior() is False
     assert p.prior is None
 
     assert p.unit == u.keV
@@ -108,9 +108,9 @@ def test_constructor_complete():
     assert p.delta == 0.2
     assert p.name == "test_parameter"
     assert p.description == "test"
-    assert p.fix == True
-    assert p.free == False
-    assert p.has_prior() == True
+    assert p.fix is True
+    assert p.free is False
+    assert p.has_prior() is True
 
     assert p.unit == u.MeV
 
@@ -145,9 +145,9 @@ def test_constructor_with_transform():
     assert p.delta == 0.2
     assert p.name == "test_parameter"
     assert p.description == "test"
-    assert p.fix == True
-    assert p.free == False
-    assert p.has_prior() == True
+    assert p.fix is True
+    assert p.free is False
+    assert p.has_prior() is True
 
     assert p.unit == u.MeV
 
@@ -200,9 +200,9 @@ def test_conflicting_units_in_initial_value_and_unit_keyword():
     assert isinstance(p.delta, float)
     assert p.name == "test_parameter"
     assert p.description == "Description"
-    assert p.fix == False
-    assert p.free == True
-    assert p.has_prior() == False
+    assert p.fix is False
+    assert p.free is True
+    assert p.has_prior() is False
     assert p.prior is None
 
     assert p.unit == u.MeV
@@ -479,7 +479,7 @@ def test_set_remove_minimum():
 
     p1.remove_minimum()
 
-    assert p1.min_value == None
+    assert p1.min_value is None
 
     p1.value = -1000.0
 
@@ -501,7 +501,7 @@ def test_set_remove_maximum():
 
     p1.remove_maximum()
 
-    assert p1.max_value == None
+    assert p1.max_value is None
 
     p1.value = 1000.0
 
@@ -531,11 +531,11 @@ def test_set_auxiliary_variable():
 
     p1.add_auxiliary_variable(x, law)
 
-    assert p1.has_auxiliary_variable == True
+    assert p1.has_auxiliary_variable is True
 
     assert p1.value == 3.0
 
-    assert p1.free == False
+    assert p1.free is False
 
     x.value = 4.0
 
@@ -589,7 +589,7 @@ def test_remove_auxiliary_variable():
 
     p1.remove_auxiliary_variable()
 
-    assert p1.has_auxiliary_variable == False
+    assert p1.has_auxiliary_variable is False
 
     p1.value = -1.0
 
@@ -729,14 +729,19 @@ def test_prior():
 
     assert my_prior == p1.prior
 
-    custom_prior = lambda x: x**2
+    def sqr(x):
+        return x**2
+
+    custom_prior = sqr
 
     with pytest.raises(NotCallableOrErrorInCall):
 
         p1.prior = custom_prior
 
-    invalid_prior = lambda x, y: x * y
+    def inval(x, y):
+        return x * y
 
+    invalid_prior = inval
     with pytest.raises(NotCallableOrErrorInCall):
 
         p1.prior = invalid_prior
@@ -787,12 +792,12 @@ def test_remove_prior():
 
     p1.prior = my_prior
 
-    assert p1.has_prior() == True
+    assert p1.has_prior() is True
 
     # Now remove it
     p1.prior = None
 
-    assert p1.has_prior() == False
+    assert p1.has_prior() is False
 
 
 def test_as_quantity():
@@ -875,9 +880,9 @@ def test_pickle():
     assert p.delta == 0.2
     assert p.name == "test_parameter"
     assert p.description == "test"
-    assert p.fix == True
-    assert p.free == False
-    assert p.has_prior() == True
+    assert p.fix is True
+    assert p.free is False
+    assert p.has_prior() is True
 
     assert p.unit == u.MeV
 
@@ -924,11 +929,11 @@ def test_links_and_pickle():
 
     p = pickle.loads(d)
 
-    assert p.has_auxiliary_variable == True
+    assert p.has_auxiliary_variable is True
 
     assert p.value == 3.0
 
-    assert p.free == False
+    assert p.free is False
 
     p.auxiliary_variable[0].value = 4.0
 

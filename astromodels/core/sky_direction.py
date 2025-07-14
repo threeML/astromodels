@@ -21,10 +21,8 @@ class WrongCoordinateSystem(ValueError):
 
 
 class SkyDirection(Node):
-    """
-    This is essentially a wrapper around astropy.coordinates.SkyCoord with a possibility for
-    being serialized and deserialized with YAML.
-    """
+    """This is essentially a wrapper around astropy.coordinates.SkyCoord with a
+    possibility for being serialized and deserialized with YAML."""
 
     def __init__(self, ra=None, dec=None, l=None, b=None, equinox="J2000"):
         """
@@ -47,10 +45,11 @@ class SkyDirection(Node):
 
         if ra is not None and dec is not None:
 
-            # This goes against duck typing, but it is needed to provide a means of initiating this class
-            # with either Parameter instances or just floats
+            # This goes against duck typing, but it is needed to provide a means of
+            # initiating this class with either Parameter instances or just floats
 
-            # Try to transform it to float, if it works than we transform it to a parameter
+            # Try to transform it to float, if it works than we transform it to a
+            # parameter
 
             ra = self._get_parameter_from_input(ra, 0, 360, "ra", "Right Ascension")
 
@@ -63,10 +62,11 @@ class SkyDirection(Node):
 
         elif l is not None and b is not None:
 
-            # This goes against duck typing, but it is needed to provide a means of initiating this class
-            # with either Parameter instances or just floats
+            # This goes against duck typing, but it is needed to provide a means of
+            # initiating this class with either Parameter instances or just floats
 
-            # Try to transform it to float, if it works than we transform it to a parameter
+            # Try to transform it to float, if it works than we transform it to a
+            # parameter
 
             l = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
 
@@ -95,7 +95,8 @@ class SkyDirection(Node):
                 "%s must be either a number or a " "parameter instance" % what
             )
 
-            # So this is a Parameter instance already. Enforce that it has the right maximum and minimum
+            # So this is a Parameter instance already. Enforce that it has the right
+            # maximum and minimum
 
             parameter = number_or_parameter
 
@@ -139,8 +140,7 @@ class SkyDirection(Node):
         return parameter
 
     def get_ra(self):
-        """
-        Get R.A. corresponding to the current position (ICRS, J2000)
+        """Get R.A. corresponding to the current position (ICRS, J2000)
 
         :return: Right Ascension
         """
@@ -156,8 +156,7 @@ class SkyDirection(Node):
             return self.sky_coord.transform_to("icrs").ra.value
 
     def get_dec(self):
-        """
-        Get Dec. corresponding to the current position (ICRS, J2000)
+        """Get Dec. corresponding to the current position (ICRS, J2000)
 
         :return: Declination
         """
@@ -173,8 +172,7 @@ class SkyDirection(Node):
             return self.sky_coord.transform_to("icrs").dec.value
 
     def get_l(self):
-        """
-        Get Galactic Longitude (l) corresponding to the current position
+        """Get Galactic Longitude (l) corresponding to the current position.
 
         :return: Galactic Longitude
         """
@@ -190,8 +188,7 @@ class SkyDirection(Node):
             return self.sky_coord.transform_to("galactic").l.value
 
     def get_b(self):
-        """
-        Get Galactic latitude (b) corresponding to the current position
+        """Get Galactic latitude (b) corresponding to the current position.
 
         :return: Latitude
         """
@@ -228,9 +225,8 @@ class SkyDirection(Node):
 
     @property
     def sky_coord(self):
-        """
-        Return an instance of astropy.coordinates.SkyCoord which can be used to make all transformations supported
-        by it
+        """Return an instance of astropy.coordinates.SkyCoord which can be used
+        to make all transformations supported by it.
 
         :return: astropy.coordinates.SkyCoord
         """
@@ -238,8 +234,7 @@ class SkyDirection(Node):
 
     @property
     def parameters(self):
-        """
-        Get the dictionary of parameters (either ra,dec or l,b)
+        """Get the dictionary of parameters (either ra,dec or l,b)
 
         :return: dictionary of parameters
         """
@@ -254,8 +249,7 @@ class SkyDirection(Node):
 
     @property
     def equinox(self):
-        """
-        Returns the equinox for the coordinates.
+        """Returns the equinox for the coordinates.
 
         :return:
         """
@@ -280,11 +274,8 @@ class SkyDirection(Node):
         return data
 
     def fix(self):
-        """
-        Fix the parameters with the coordinates (either ra,dec or l,b depending on how the class
-        has been instanced)
-
-        """
+        """Fix the parameters with the coordinates (either ra,dec or l,b
+        depending on how the class has been instanced)"""
 
         if self._coord_type == "equatorial":
 
@@ -297,11 +288,8 @@ class SkyDirection(Node):
             self.b.fix = True
 
     def free(self):
-        """
-        Free the parameters with the coordinates (either ra,dec or l,b depending on how the class
-        has been instanced)
-
-        """
+        """Free the parameters with the coordinates (either ra,dec or l,b
+        depending on how the class has been instanced)"""
 
         if self._coord_type == "equatorial":
 

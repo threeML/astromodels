@@ -44,10 +44,7 @@ def recurse_dict(d, tree):
 
 
 def show_configuration(sub_menu: Optional[str] = None):
-    """
-    display the current configuration or a sub menu if
-    provided
-    """
+    """Display the current configuration or a sub menu if provided."""
 
     if sub_menu is None:
 
