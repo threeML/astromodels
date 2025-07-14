@@ -452,10 +452,7 @@ setup(
     ext_modules=ext_modules_configuration,
     package_data={
         "astromodels": [
-            "data/dark_matter/*",
-            "data/xsect/*",
-            "data/past_1D_values.h5",
-            "data/log_theme.ini",
+            "data/*",
         ],
     },
 )

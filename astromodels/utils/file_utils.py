@@ -1,10 +1,10 @@
 # This file contains some defaults, like locations of files, which should not
 # change much but benefits anyway of being in one central location
 
-import importlib
 import os
+from importlib.resources import files
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 
@@ -18,30 +18,31 @@ else:
     copy_if_needed = False
 
 
-def _get_data_file_path(data_file: str) -> Path:
+def _get_data_file_path(data_file: Union[str, Path]) -> Path:
     """Returns the absolute path to the required data files.
 
-    :param data_file: relative path to the data file, relative to the
-        astromodels/data path. So to get the path to
-        data/dark_matter/gammamc_dif.dat you need to use
-        data_file="dark_matter/gammamc_dif.dat"
-    :return: absolute path of the data file
+    :param data_file: relative path to the data file (str or Path), relative to
+    astromodels/data/.
+    Example: "dark_matter/gammamc_dif.dat" or Path("dark_matter/gammamc_dif.dat")
+    :return: absolute path of the data file as a Path object
     """
+    data_file = Path(data_file)
 
     try:
+        resource_path = files("astromodels").joinpath("data", *data_file.parts)
 
-        file_path: str = importlib.resources.files("astromodels.data") / data_file
+        if not resource_path.is_file():
+            raise FileNotFoundError
 
-    except KeyError:
-
+    except Exception:
         raise IOError(
-            "Could not read or find data file %s. Try reinstalling astromodels. If this"
-            " does not fix your problem, open an issue on github." % (data_file)
+            f"Could not read or find data file {data_file}. "
+            "Try reinstalling astromodels. "
+            f"If this does not fix your problem, open an issue on github."
         )
 
     else:
-
-        return Path(file_path).absolute()
+        return Path(resource_path).resolve()
 
 
 def get_user_path() -> Path:
