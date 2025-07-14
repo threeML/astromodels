@@ -652,7 +652,7 @@ class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
         # Make sure the y_unit is the correct one
         try:
 
-            y_unit.in_units(self._fixed_units[1])
+            y_unit.to(self._fixed_units[1])
 
         except Exception as e:
 
