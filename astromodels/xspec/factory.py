@@ -120,6 +120,13 @@ def find_model_dat():
     # Now model.dat should be in $HEADAS/../spectral/manager
 
     final_path = os.path.join(inferred_path, "spectral", "manager", "model.dat")
+    if not os.path.exists(final_path):
+        warnings.warn(
+            f"Could not find Xspec model definition in {final_path}. If you installed "
+            "Xspec via conda not using xspec-modelsonly it may be in a different path. "
+            "We will check..."
+        )
+        final_path = os.path.join(headas_env, "spectral", "manager", "model.dat")
 
     # Check that model.dat exists
 
