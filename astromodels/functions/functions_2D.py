@@ -796,8 +796,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
     def evaluate(self, x, y, K, hash, ihdu):
 
-        # We assume x and y are R.A. and Dec
-        coord = SkyCoord(ra=x, dec=y, frame=self.frame.value, unit="deg")
+        # X and Y are defined by the frame (ICRS,galactic, etc..)
+        coord = SkyCoord(x, y, frame=self.frame.value, unit="deg")
 
         # transform input coordinates to pixel coordinates;
         # SkyCoord takes care of necessary coordinate frame transformations.
