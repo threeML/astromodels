@@ -7,13 +7,13 @@ from .blackbody import (
 from .functions import (
     DiracDelta,
     Exponential_cutoff,
+    GenericFunction,
     Log_parabola,
     Sin,
     StepFunction,
     StepFunctionUpper,
     has_gsl,
     has_naima,
-    GenericFunction
 )
 
 if has_naima:
@@ -28,7 +28,6 @@ from .apec import has_atomdb
 
 if has_ebltable:
     from .absorption import EBLattenuation
-
 
 from .extinction import Standard_Rv, ZDust
 from .polynomials import (
@@ -46,13 +45,13 @@ from .powerlaws import (
     Broken_powerlaw,
     Cutoff_powerlaw,
     Cutoff_powerlaw_Ep,
+    DoubleSmoothlyBrokenPowerlaw,
     Inverse_cutoff_powerlaw,
     Powerlaw,
     Powerlaw_Eflux,
     Powerlaw_flux,
     SmoothlyBrokenPowerLaw,
     Super_cutoff_powerlaw,
-    DoubleSmoothlyBrokenPowerlaw,
 )
 
 if has_atomdb:

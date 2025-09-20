@@ -101,10 +101,10 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-13"]
-                python-version: [3.9]
+                python-version: [3.9, 3.11]
                 include:
                   - environment: ci/environment.yml
-                  - environment:  ci/environment_noxspec.yml
+                  - environment: ci/environment_noxspec.yml
                     os: macos-latest
         runs-on: ${{ matrix.os }}
         steps:
@@ -119,8 +119,8 @@ jobs:
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ${{ matrix.environment }}
-                  use-only-tar-bz2: true
-                  channel-priority: strict
+                  use-only-tar-bz2: false
+                  channel-priority: true
                   channels: conda-forge, xspecmodels
             - name: Init Env
               shell: bash -l {0}

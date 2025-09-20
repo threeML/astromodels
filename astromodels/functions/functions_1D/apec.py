@@ -2,6 +2,7 @@ import gc
 
 import astropy.units as astropy_units
 import numpy as np
+
 from astromodels.functions.function import Function1D, FunctionMeta
 
 try:
@@ -85,10 +86,8 @@ if has_atomdb:
             )
 
         def clean(self):
-            """
-            Clean the current APEC session to avoid having too many open files
-            :returns:
-            """
+            """Clean the current APEC session to avoid having too many open
+            files :returns:"""
 
             self.session = None
             del self.session
@@ -155,8 +154,8 @@ if has_atomdb:
     class VAPEC(Function1D, metaclass=FunctionMeta):
         r"""
         description :
-            The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable abundances for individual elements
-            contributed by Dominique Eckert
+            The Astrophysical Plasma Emission Code (APEC, Smith et al. 2001), variable
+            abundances for individual elements contributed by Dominique Eckert
         parameters :
             K :
                 desc : Normalization in units of 1e-14/(4*pi*(1+z)^2*dA*2)*EM
@@ -319,10 +318,8 @@ if has_atomdb:
             )
 
         def clean(self):
-            """
-            Clean the current APEC session to avoid having too many open files
-            :returns:
-            """
+            """Clean the current APEC session to avoid having too many open
+            files :returns:"""
 
             self.session = None
             del self.session

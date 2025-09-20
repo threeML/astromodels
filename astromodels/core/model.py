@@ -10,6 +10,7 @@ from typing import Dict, Iterable, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
+
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.property import FunctionProperty
@@ -45,12 +46,9 @@ class CannotWriteModel(IOError):
 
         free_space = disk_usage(directory).free
 
-        message += (
-            "\nFree space on the file system hosting %s was %.2f Mbytes"
-            % (
-                directory,
-                free_space / 1024.0 / 1024.0,
-            )
+        message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (
+            directory,
+            free_space / 1024.0 / 1024.0,
         )
 
         super(CannotWriteModel, self).__init__(message)
@@ -90,7 +88,8 @@ class _LinkedFunctionContainer:
 class Model(Node):
     def __init__(self, *sources):
 
-        # Setup the node, using the special name '__root__' to indicate that this is the root of the tree
+        # Setup the node, using the special name '__root__' to indicate that this is the
+        # root of the tree
 
         super(Model, self).__init__("__root__")
 
@@ -100,15 +99,11 @@ class Model(Node):
 
         # Dictionary to keep extended sources
 
-        self._extended_sources: Dict[
-            str, ExtendedSource
-        ] = collections.OrderedDict()
+        self._extended_sources: Dict[str, ExtendedSource] = collections.OrderedDict()
 
         # Dictionary to keep particle sources
 
-        self._particle_sources: Dict[
-            str, ParticleSource
-        ] = collections.OrderedDict()
+        self._particle_sources: Dict[str, ParticleSource] = collections.OrderedDict()
 
         # Loop over the provided sources and process them
 
@@ -129,8 +124,8 @@ class Model(Node):
     def _add_source(
         self, source: Union[PointSource, ExtendedSource, ParticleSource]
     ) -> None:
-        """
-        Remember to call _update_parameters after this!
+        """Remember to call _update_parameters after this!
+
         :param source:
         :return:
         """
@@ -144,8 +139,8 @@ class Model(Node):
             if isinstance(source, Source):
 
                 log.error(
-                    "More than one source with the name '%s'. You cannot use the same name for multiple "
-                    "sources" % source.name
+                    f"More than one source with the name '{source.name}'. You cannot "
+                    "use the same name for multiple sources"
                 )
 
                 raise DuplicatedNode()
@@ -176,9 +171,8 @@ class Model(Node):
             )
 
     def _remove_source(self, source_name: str):
-        """
-        Remember to call _update_parameters after this
-        :param source_name:
+        """Remember to call _update_parameters after this :param source_name:
+
         :return:
         """
 
@@ -215,14 +209,11 @@ class Model(Node):
     def _update_parameters(self) -> None:
 
         self._parameters: Dict[str, Parameter] = self._find_parameters(self)
-        self._properties: Dict[str, FunctionProperty] = self._find_properties(
-            self
-        )
+        self._properties: Dict[str, FunctionProperty] = self._find_properties(self)
 
     @property
     def parameters(self) -> Dict[str, Parameter]:
-        """
-        Return a dictionary with all parameters
+        """Return a dictionary with all parameters.
 
         :return: dictionary of parameters
         """
@@ -232,8 +223,7 @@ class Model(Node):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Get a dictionary with all the free parameters in this model
+        """Get a dictionary with all the free parameters in this model.
 
         :return: dictionary of free parameters
         """
@@ -244,9 +234,7 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        free_parameters_dictionary: Dict[
-            str, Parameter
-        ] = collections.OrderedDict()
+        free_parameters_dictionary: Dict[str, Parameter] = collections.OrderedDict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -258,9 +246,7 @@ class Model(Node):
 
     @property
     def has_free_parameters(self) -> bool:
-        """
-        Returns True or False depending on if any parameters are free
-        """
+        """Returns True or False depending on if any parameters are free."""
 
         self._update_parameters()
 
@@ -271,10 +257,11 @@ class Model(Node):
 
     @property
     def linked_parameters(self) -> Dict[str, Parameter]:
-        """
-        Get a dictionary with all parameters in this model in a linked status. A parameter is in a linked status
-        if it is linked to another parameter (i.e. it is forced to have the same value of the other parameter), or
-        if it is linked with another parameter or an independent variable through a law.
+        """Get a dictionary with all parameters in this model in a linked
+        status. A parameter is in a linked status if it is linked to another
+        parameter (i.e. it is forced to have the same value of the other
+        parameter), or if it is linked with another parameter or an independent
+        variable through a law.
 
         :return: dictionary of linked parameters
         """
@@ -285,9 +272,7 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        linked_parameter_dictionary: Dict[
-            str, Parameter
-        ] = collections.OrderedDict()
+        linked_parameter_dictionary: Dict[str, Parameter] = collections.OrderedDict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -299,8 +284,7 @@ class Model(Node):
 
     @property
     def properties(self) -> Dict[str, Parameter]:
-        """
-        Return a dictionary with all parameters
+        """Return a dictionary with all parameters.
 
         :return: dictionary of parameters
         """
@@ -310,10 +294,7 @@ class Model(Node):
 
     @property
     def linked_functions(self) -> List[_LinkedFunctionContainer]:
-        """
-        return a list of containers for the linked functions
-
-        """
+        """Return a list of containers for the linked functions."""
 
         linked_functions = []
 
@@ -370,8 +351,7 @@ class Model(Node):
         return all_functions
 
     def set_free_parameters(self, values: Iterable[float]) -> None:
-        """
-        Set the free parameters in the model to the provided values.
+        """Set the free parameters in the model to the provided values.
 
         NOTE: of course, order matters
 
@@ -382,21 +362,20 @@ class Model(Node):
         if not len(values) == len(self.free_parameters):
 
             log.error(
-                f"tried to pass {len(values)} parameters but need {len(self.free_parameters)}"
+                f"tried to pass {len(values)} parameters but need"
+                f" {len(self.free_parameters)}"
             )
 
             raise AssertionError()
 
-        for parameter, this_value in zip(
-            list(self.free_parameters.values()), values
-        ):
+        for parameter, this_value in zip(list(self.free_parameters.values()), values):
 
             parameter.value = this_value
 
     def __getitem__(self, path: str):
-        """
-        Get a parameter from a path like "source_1.component.powerlaw.logK". This might be useful in certain
-        context, although in an interactive analysis there is no reason to use this.
+        """Get a parameter from a path like "source_1.component.powerlaw.logK".
+        This might be useful in certain context, although in an interactive
+        analysis there is no reason to use this.
 
         :param path: the address of the parameter
         :return: the parameter
@@ -405,11 +384,10 @@ class Model(Node):
         return self._get_child_from_path(path)
 
     def __contains__(self, path: str) -> bool:
-        """
-        This allows the model to be used with the "in" operator, like;
+        """This allows the model to be used with the "in" operator, like;
 
-        > if 'myparameter' in model:
-        >    print("Myparameter is contained in the model")
+        > if 'myparameter' in model: >    print("Myparameter is
+        contained in the model")
 
         :param path: the parameter to look for
         :return:
@@ -428,15 +406,15 @@ class Model(Node):
             return True
 
     def __iter__(self):
-        """
-        This allows the model to be iterated on, like in:
+        """This allows the model to be iterated on, like in:
 
         for parameter in model:
             ...
 
-        NOTE: this will iterate over *all* parameters in the model, also those that are not free (and thus are not
-        normally displayed). If you need to operate only on free parameters, just check if they are free within
-        the loop or use the .free_parameters dictionary directly
+        NOTE: this will iterate over *all* parameters in the model, also those that are
+        not free (and thus are not normally displayed). If you need to operate only on
+        free parameters, just check if they are free within the loop or use the
+        .free_parameters dictionary directly
 
         :return: iterator
         """
@@ -447,8 +425,7 @@ class Model(Node):
 
     @property
     def point_sources(self) -> Dict[str, PointSource]:
-        """
-        Returns the dictionary of all defined point sources
+        """Returns the dictionary of all defined point sources.
 
         :return: collections.OrderedDict()
         """
@@ -456,21 +433,17 @@ class Model(Node):
 
     @property
     def extended_sources(self) -> Dict[str, ExtendedSource]:
-        """
-        Returns the dictionary of all defined extended sources
+        """Returns the dictionary of all defined extended sources.
 
         :return: collections.OrderedDict()
-
         """
         return self._extended_sources
 
     @property
     def particle_sources(self) -> Dict[str, ParticleSource]:
-        """
-        Returns the dictionary of all defined particle sources
+        """Returns the dictionary of all defined particle sources.
 
         :return: collections.OrderedDict()
-
         """
         return self._particle_sources
 
@@ -478,16 +451,14 @@ class Model(Node):
     def sources(
         self,
     ) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
-        """
-        Returns a dictionary containing all defined sources (of any kind)
+        """Returns a dictionary containing all defined sources (of any kind)
 
         :return: collections.OrderedDict()
-
         """
 
-        sources: Dict[
-            str, Union[PointSource, ExtendedSource, ParticleSource]
-        ] = collections.OrderedDict()
+        sources: Dict[str, Union[PointSource, ExtendedSource, ParticleSource]] = (
+            collections.OrderedDict()
+        )
 
         for d in (
             self.point_sources,
@@ -502,10 +473,10 @@ class Model(Node):
     def add_source(
         self, new_source: Union[PointSource, ExtendedSource, ParticleSource]
     ) -> None:
-        """
-        Add the provided source to the model
+        """Add the provided source to the model.
 
-        :param new_source: the new source to be added (an instance of PointSource, ExtendedSource or ParticleSource)
+        :param new_source: the new source to be added (an instance of
+            PointSource, ExtendedSource or ParticleSource)
         :return: (none)
         """
 
@@ -514,8 +485,9 @@ class Model(Node):
         self._update_parameters()
 
     def remove_source(self, source_name: str) -> None:
-        """
-        Returns a new model with the provided source removed from the current model. Any parameters linked to the source to be removed are automatically unlinked.
+        """Returns a new model with the provided source removed from the
+        current model. Any parameters linked to the source to be removed are
+        automatically unlinked.
 
         :param source_name: the name of the source to be removed
         :return: a new Model instance without the source
@@ -527,15 +499,15 @@ class Model(Node):
 
         self._update_parameters()
 
-    def unlink_all_from_source(
-        self, source_name: str, warn: bool = False
-    ) -> None:
-        """
-        Unlink all parameters of the current model that are linked to a parameter of a given source.
-        To be called before removing a source from the model.
+    def unlink_all_from_source(self, source_name: str, warn: bool = False) -> None:
+        """Unlink all parameters of the current model that are linked to a
+        parameter of a given source. To be called before removing a source from
+        the model.
 
-        :param source_name: the name of the source to which to remove all links
-        :param warn: If True, prints a warning if any parameters were unlinked.
+        :param source_name: the name of the source to which to remove
+            all links
+        :param warn: If True, prints a warning if any parameters were
+            unlinked.
         """
 
         tempmodel = Model(self[source_name])
@@ -553,16 +525,17 @@ class Model(Node):
         if warn and unlinked_parameters:
 
             log.warning(
-                f"The following {len(unlinked_parameters)} parameters that were linked to source {source_name}"
+                f"The following {len(unlinked_parameters)} parameters that were linked"
+                f" to source {source_name}"
             )
 
             log.warning(
-                f"have been automatically un-linked: {[p.path for p in unlinked_parameters.values()]}"
+                "have been automatically un-linked: "
+                f"{[p.path for p in unlinked_parameters.values()]}"
             )
 
     def add_independent_variable(self, variable: IndependentVariable) -> None:
-        """
-        Add a global independent variable to this model, such as time.
+        """Add a global independent variable to this model, such as time.
 
         :param variable: an IndependentVariable instance
         :return: none
@@ -583,8 +556,8 @@ class Model(Node):
         self._independent_variables[variable.name] = variable
 
     def remove_independent_variable(self, variable_name: str) -> None:
-        """
-        Remove an independent variable which was added with add_independent_variable
+        """Remove an independent variable which was added with
+        add_independent_variable.
 
         :param variable_name: name of variable to remove
         :return:
@@ -596,8 +569,8 @@ class Model(Node):
         self._independent_variables.pop(variable_name)
 
     def add_external_parameter(self, parameter: Parameter) -> None:
-        """
-        Add a parameter that comes from something other than a function, to the model.
+        """Add a parameter that comes from something other than a function, to
+        the model.
 
         :param parameter: a Parameter instance
         :return: none
@@ -611,15 +584,15 @@ class Model(Node):
 
         if self._has_child(parameter.name):
 
-            # Remove it from the children only if it is a Parameter instance, otherwise don't, which will
-            # make the _add_child call fail (which is the expected behaviour! You shouldn't call two children
-            # with the same name)
+            # Remove it from the children only if it is a Parameter instance, otherwise
+            # don't, which will make the _add_child call fail (which is the expected
+            # behaviour! You shouldn't call two children with the same name)
 
             if isinstance(self._get_child(parameter.name), Parameter):
 
                 log.warning(
-                    "External parameter %s already exist in the model. Overwriting it..."
-                    % parameter.name
+                    f"External parameter {parameter.name} already exist in the model."
+                    " Overwriting it..."
                 )
 
                 self._remove_child(parameter.name)
@@ -629,8 +602,8 @@ class Model(Node):
         self._add_child(parameter)
 
     def remove_external_parameter(self, parameter_name: str) -> None:
-        """
-        Remove an external parameter which was added with add_external_parameter
+        """Remove an external parameter which was added with
+        add_external_parameter.
 
         :param variable_name: name of parameter to remove
         :return:
@@ -639,14 +612,15 @@ class Model(Node):
         self._remove_child(parameter_name)
 
     def link(self, parameter_1, parameter_2, link_function=None) -> None:
-        """
-        Link the value of the provided parameters through the provided function (identity is the default, i.e.,
-        parameter_1 = parameter_2).
+        """Link the value of the provided parameters through the provided
+        function (identity is the default, i.e., parameter_1 = parameter_2).
 
-        :param parameter_1: the first parameter;can be either a single parameter or a list of prarameters
+        :param parameter_1: the first parameter;can be either a single
+            parameter or a list of prarameters
         :param parameter_2: the second parameter
-        :param link_function: a function instance. If not provided, the identity function will be used by default.
-        Otherwise, this link will be set: parameter_1 = link_function(parameter_2)
+        :param link_function: a function instance. If not provided, the
+            identity function will be used by default. Otherwise, this
+            link will be set: parameter_1 = link_function(parameter_2)
         :return: (none)
         """
         if not isinstance(parameter_1, list):
@@ -674,8 +648,8 @@ class Model(Node):
             raise AssertionError(msg)
 
         if link_function is None:
-            # Use the Line function by default, with both parameters fixed so that the two
-            # parameters to be linked will vary together
+            # Use the Line function by default, with both parameters fixed so that the
+            # two parameters to be linked will vary together
             link_function = get_function("Line")
 
             link_function.a.value = 0
@@ -690,10 +664,10 @@ class Model(Node):
             link_function.set_units(parameter_2.unit, param_1.unit)
 
     def unlink(self, parameter: Parameter) -> None:
-        """
-        Sets free one or more parameters which have been linked previously
+        """Sets free one or more parameters which have been linked previously.
 
-        :param parameter: the parameter to be set free, can also be a list of parameters
+        :param parameter: the parameter to be set free, can also be a
+            list of parameters
         :return: (none)
         """
 
@@ -714,22 +688,21 @@ class Model(Node):
 
                     warnings.simplefilter("always", RuntimeWarning)
 
-                    log.warning(
-                        "Parameter %s has no link to be removed." % param.path
-                    )
+                    log.warning("Parameter %s has no link to be removed." % param.path)
 
     def display(self, complete: bool = False) -> None:
-        """
-        Display information about the point source.
+        """Display information about the point source.
 
-        :param complete : if True, displays also information on fixed parameters
+        :param complete : if True, displays also information on fixed
+            parameters
         :return: (none)
         """
 
         # Switch on the complete display flag
         self._complete_display = bool(complete)
 
-        # This will automatically choose the best representation among repr and repr_html
+        # This will automatically choose the best representation among repr and
+        # repr_html
 
         super(Model, self).display()
 
@@ -766,7 +739,8 @@ class Model(Node):
             orient="index",
         )
 
-        # These properties traverse the whole tree everytime, so let's cache their results here
+        # These properties traverse the whole tree everytime, so let's cache their
+        # results here
         parameters = self.parameters
         free_parameters = self.free_parameters
         linked_parameters = self.linked_parameters
@@ -837,9 +811,7 @@ class Model(Node):
 
                     fixed_parameter_dict[this_name][key] = d[key]
 
-            fixed_parameters_summary = pd.DataFrame.from_dict(
-                fixed_parameter_dict
-            ).T
+            fixed_parameters_summary = pd.DataFrame.from_dict(fixed_parameter_dict).T
 
             # Re-order it
             fixed_parameters_summary = fixed_parameters_summary[
@@ -962,9 +934,7 @@ class Model(Node):
 
             else:
 
-                free_parameters_representation = (
-                    free_parameters_summary._repr_html_()
-                )
+                free_parameters_representation = free_parameters_summary._repr_html_()
 
             if len(linked_frames) == 0:
 
@@ -997,8 +967,8 @@ class Model(Node):
 
                 for linked_function in linked_functions:
 
-                    linked_function_summary_representation += (
-                        linked_function.output(rich=True)
+                    linked_function_summary_representation += linked_function.output(
+                        rich=True
                     )
                     linked_function_summary_representation += new_line
 
@@ -1021,9 +991,7 @@ class Model(Node):
 
             else:
 
-                fixed_parameters_representation = (
-                    fixed_parameters_summary._repr_html_()
-                )
+                fixed_parameters_representation = fixed_parameters_summary._repr_html_()
 
         else:
 
@@ -1035,9 +1003,7 @@ class Model(Node):
 
             else:
 
-                free_parameters_representation = (
-                    free_parameters_summary.__repr__()
-                )
+                free_parameters_representation = free_parameters_summary.__repr__()
 
             if properties_summary.empty:
 
@@ -1073,8 +1039,8 @@ class Model(Node):
 
                 for linked_function in linked_functions:
 
-                    linked_function_summary_representation += (
-                        linked_function.output(rich=False)
+                    linked_function_summary_representation += linked_function.output(
+                        rich=False
                     )
                     linked_function_summary_representation += "%s%s" % (
                         new_line,
@@ -1103,9 +1069,7 @@ class Model(Node):
 
             else:
 
-                fixed_parameters_representation = (
-                    fixed_parameters_summary.__repr__()
-                )
+                fixed_parameters_representation = fixed_parameters_summary.__repr__()
 
         # Build the representation
 
@@ -1173,8 +1137,7 @@ class Model(Node):
         else:
 
             representation += (
-                "(abridged. Use complete=True to see all fixed parameters)%s"
-                % new_line
+                "(abridged. Use complete=True to see all fixed parameters)%s" % new_line
             )
 
         representation += new_line
@@ -1280,8 +1243,8 @@ class Model(Node):
 
             else:
 
-                # There are three possible cases. Either the element is a source, or it is an independent
-                # variable, or a parameter
+                # There are three possible cases. Either the element is a source, or it
+                # is an independent variable, or a parameter
 
                 if hasattr(element, "source_type"):
 
@@ -1291,9 +1254,7 @@ class Model(Node):
 
                 elif isinstance(element, IndependentVariable):
 
-                    data["%s (%s)" % (key, "IndependentVariable")] = data.pop(
-                        key
-                    )
+                    data["%s (%s)" % (key, "IndependentVariable")] = data.pop(key)
 
                 elif isinstance(element, Parameter):
 
@@ -1305,21 +1266,18 @@ class Model(Node):
 
                 else:  # pragma: no cover
 
-                    raise ModelInternalError(
-                        "Found an unknown class at the top level"
-                    )
+                    raise ModelInternalError("Found an unknown class at the top level")
 
         return data
 
     def save(self, output_file, overwrite=False):
-
-        """Save the model to disk"""
+        """Save the model to disk."""
 
         if os.path.exists(output_file) and overwrite is False:
 
             raise ModelFileExists(
-                "The file %s exists already. If you want to overwrite it, use the 'overwrite=True' "
-                "options as 'model.save(\"%s\", overwrite=True)'. "
+                "The file %s exists already. If you want to overwrite it, use the "
+                "'overwrite=True' options as 'model.save(\"%s\", overwrite=True)'. "
                 % (output_file, output_file)
             )
 
@@ -1345,21 +1303,19 @@ class Model(Node):
 
                 raise CannotWriteModel(
                     os.path.dirname(os.path.abspath(output_file)),
-                    "Could not write model file %s. Check your permissions to write or the "
-                    "report on the free space which follows: " % output_file,
+                    "Could not write model file %s. Check your permissions to write or"
+                    "the report on the free space which follows: " % output_file,
                 )
 
     def get_number_of_point_sources(self) -> int:
-        """
-        Return the number of point sources
+        """Return the number of point sources.
 
         :return: number of point sources
         """
         return len(self._point_sources)
 
     def get_point_source_position(self, id) -> Tuple[float]:
-        """
-        Get the point source position (R.A., Dec)
+        """Get the point source position (R.A., Dec)
 
         :param id: id of the source
         :return: a tuple with R.A. and Dec.
@@ -1372,31 +1328,31 @@ class Model(Node):
     def get_point_source_fluxes(
         self, id: int, energies: np.ndarray, tag=None, stokes=None
     ) -> np.ndarray:
-        """
-        Get the fluxes from the id-th point source
+        """Get the fluxes from the id-th point source.
 
         :param id: id of the source
         :param energies: energies at which you need the flux
-        :param tag: a tuple (integration variable, a, b) specifying the integration to perform. If this
-        parameter is specified then the returned value will be the average flux for the source computed as the integral
-        between a and b over the integration variable divided by (b-a). The integration variable must be an independent
-        variable contained in the model. If b is None, then instead of integrating the integration variable will be
-        set to a and the model evaluated in a.
+        :param tag: a tuple (integration variable, a, b) specifying the
+            integration to perform. If this parameter is specified then
+            the returned value will be the average flux for the source
+            computed as the integral between a and b over the
+            integration variable divided by (b-a). The integration
+            variable must be an independent variable contained in the
+            model. If b is None, then instead of integrating the
+            integration variable will be set to a and the model
+            evaluated in a.
         :param stokes: can be I, Q, U, V
         :return: fluxes
         """
 
-        return list(self._point_sources.values())[id](
-            energies, tag=tag, stokes=stokes
-        )
+        return list(self._point_sources.values())[id](energies, tag=tag, stokes=stokes)
 
     def get_point_source_name(self, id: int) -> str:
 
         return list(self._point_sources.values())[id].name
 
     def get_number_of_extended_sources(self) -> int:
-        """
-        Return the number of extended sources
+        """Return the number of extended sources.
 
         :return: number of extended sources
         """
@@ -1405,8 +1361,8 @@ class Model(Node):
     def get_extended_source_fluxes(
         self, id: int, j2000_ra: float, j2000_dec: float, energies: np.ndarray
     ) -> np.ndarray:
-        """
-        Get the flux of the id-th extended sources at the given position at the given energies
+        """Get the flux of the id-th extended sources at the given position at
+        the given energies.
 
         :param id: id of the source
         :param j2000_ra: R.A. where the flux is desired
@@ -1415,13 +1371,10 @@ class Model(Node):
         :return: flux array
         """
 
-        return list(self._extended_sources.values())[id](
-            j2000_ra, j2000_dec, energies
-        )
+        return list(self._extended_sources.values())[id](j2000_ra, j2000_dec, energies)
 
     def get_extended_source_name(self, id: int) -> str:
-        """
-        Return the name of the n-th extended source
+        """Return the name of the n-th extended source.
 
         :param id: id of the source (integer)
         :return: the name of the id-th source
@@ -1431,15 +1384,13 @@ class Model(Node):
 
     def get_extended_source_boundaries(self, id: int):
 
-        (ra_min, ra_max), (dec_min, dec_max) = list(
-            self._extended_sources.values()
-        )[id].get_boundaries()
+        (ra_min, ra_max), (dec_min, dec_max) = list(self._extended_sources.values())[
+            id
+        ].get_boundaries()
 
         return ra_min, ra_max, dec_min, dec_max
 
-    def is_inside_any_extended_source(
-        self, j2000_ra: float, j2000_dec: float
-    ) -> bool:
+    def is_inside_any_extended_source(self, j2000_ra: float, j2000_dec: float) -> bool:
 
         for ext_source in list(self.extended_sources.values()):
 
@@ -1455,24 +1406,21 @@ class Model(Node):
 
                 return True
 
-        # If we are here, it means that no extended source contains the provided coordinates
+        # If we are here, it means that no extended source contains the provided
+        # coordinates
 
         return False
 
     def get_number_of_particle_sources(self) -> int:
-        """
-        Return the number of particle sources
+        """Return the number of particle sources.
 
         :return: number of particle sources
         """
 
         return len(self._particle_sources)
 
-    def get_particle_source_fluxes(
-        self, id: int, energies: np.ndarray
-    ) -> np.ndarray:
-        """
-        Get the fluxes from the id-th point source
+    def get_particle_source_fluxes(self, id: int, energies: np.ndarray) -> np.ndarray:
+        """Get the fluxes from the id-th point source.
 
         :param id: id of the source
         :param energies: energies at which you need the flux
@@ -1486,8 +1434,8 @@ class Model(Node):
         return list(self._particle_sources.values())[id].name
 
     def get_total_flux(self, energies: np.ndarray) -> float:
-        """
-        Returns the total differential flux at the provided energies from all *point* sources
+        """Returns the total differential flux at the provided energies from
+        all *point* sources.
 
         :return:
         """

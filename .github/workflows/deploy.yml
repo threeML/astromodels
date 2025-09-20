@@ -73,11 +73,11 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-13]
-                python-version: [3.9]
+                os: ["ubuntu-latest", "macos-latest", "macos-13"]
+                python-version: [3.9, 3.11]
                 include:
                   - environment: ci/environment.yml
-                  - environment:  ci/environment_noxspec.yml
+                  - environment: ci/environment_noxspec.yml
                     os: macos-latest
         steps:
             - name: Checkout
@@ -93,7 +93,7 @@ jobs:
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ${{ matrix.environment }}
-                  use-only-tar-bz2: true
+                  use-only-tar-bz2: false
                   channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
 
@@ -139,11 +139,20 @@ jobs:
                   #conda install conda-build -n base
                   mamba install -c conda-forge boa
 
+                  conda config --set conda_build.pkg_format 2
+                  conda config --set conda_build.zstd_compression_level 19
+
                   #conda build --python=${{matrix.python-version}} conda-dist/recipe
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
+                  ls -l ${CONDA}/envs/test_env/conda-bld/*/*
+
+                  conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
+            - name: Install it
+              shell: bash -l {0}
+              run: |
                   #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
             - name: Test import xspec
               if: matrix.os != 'macos-latest'
               shell: bash -l {0}
@@ -164,12 +173,13 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         runs-on: ${{ matrix.os }}
         strategy:
+            fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-13]
-                python-version: [3.9]
+                os: ["ubuntu-latest", "macos-latest", "macos-13"]
+                python-version: [3.9, 3.11]
                 include:
                   - environment: ci/environment.yml
-                  - environment:  ci/environment_noxspec.yml
+                  - environment: ci/environment_noxspec.yml
                     os: macos-latest
         steps:
             - name: Checkout
@@ -187,7 +197,7 @@ jobs:
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ${{ matrix.environment }}
-                  use-only-tar-bz2: true
+                  use-only-tar-bz2: false
                   channel-priority: true
                   channels: conda-forge, xspecmodels, threeml
 
@@ -223,11 +233,18 @@ jobs:
                   #conda install conda-build -n base
                   mamba install -c conda-forge boa
 
+                  conda config --set conda_build.pkg_format 2
+                  conda config --set conda_build.zstd_compression_level 19
+
                   #conda build --python=${{matrix.python-version}} conda-dist/recipe
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
+                  conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
+            - name: Install it
+              shell: bash -l {0}
+              run: |
                   #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
@@ -243,16 +260,16 @@ jobs:
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
 
-                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.tar.bz2 --force $LABEL
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.conda --force $LABEL
 
                   elif [[ ${{matrix.os}} == macos-latest ]];
                   then
 
-                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-arm64/*.tar.bz2 --force $LABEL
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-arm64/*.conda --force $LABEL
 
                   else
 
-                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-64/*.tar.bz2 --force $LABEL
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-64/*.conda --force $LABEL
 
                   fi
 

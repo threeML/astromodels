@@ -61,7 +61,7 @@ class Node(NodeBase):
         return hash(self._get_path())
 
     def to_dict(self, minimal: bool = False) -> Dict[str, Any]:
-        """ """
+        """"""
         this_dict: Dict[str, Any] = collections.OrderedDict()
 
         for child in self._get_children():
@@ -75,20 +75,19 @@ class Node(NodeBase):
     def __dir__(self):
 
         # Get the names of the attributes of the class
-        l = list(self.__class__.__dict__.keys())
+        li = list(self.__class__.__dict__.keys())
 
         # Get all the children
-        l.extend([child.name for child in self._get_children()])
+        li.extend([child.name for child in self._get_children()])
 
-        return l
+        return li
 
     def _repr__base(self, rich_output):
 
         return f"Node with name {self.name}"
 
     def __repr__(self):
-        """
-        Textual representation for console
+        """Textual representation for console.
 
         :return: representation
         """
@@ -96,8 +95,7 @@ class Node(NodeBase):
         return self._repr__base(rich_output=False)
 
     def _repr_html_(self):
-        """
-        HTML representation for the IPython notebook
+        """HTML representation for the IPython notebook.
 
         :return: HTML representation
         """
@@ -105,12 +103,12 @@ class Node(NodeBase):
         return self._repr__base(rich_output=True)
 
     def display(self):
-        """
-        Display information about the point source.
+        """Display information about the point source.
 
         :return: (none)
         """
 
-        # This will automatically choose the best representation among repr and repr_html
+        # This will automatically choose the best representation among repr and
+        # repr_html
 
         display(self)

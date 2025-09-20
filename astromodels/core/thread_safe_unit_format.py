@@ -4,14 +4,12 @@
 # Here we implement a format which is very simple, does not use
 # ply.yacc and is thread safe
 
-from builtins import str
-from builtins import map
-from builtins import zip
 import re
-from astropy.units.format.base import Base
-import astropy.units as u
+from builtins import map, str, zip
 from functools import reduce
 
+import astropy.units as u
+from astropy.units.format.base import Base
 
 # NOTE: the metaclass in Base will take care of registering
 # this format, which will be available in the u.Unit
@@ -43,13 +41,13 @@ class ThreadSafe(Base):
         # This is of course the format that is the output of
         # our to_string method(). See there for details
 
-        tokens = re.findall("([a-zA-z]+)(-?\+?[0-9]+)?", s)
+        tokens = re.findall(r"([a-zA-z]+)(-?\+?[0-9]+)?", s)
 
         # tokens is a list of tuples of the type [(unit name, power), ...]
         # Here we build a list like [u.m, u.s**(-1), ...]
         r = []
 
-        for (unit, power) in tokens:
+        for unit, power in tokens:
 
             # Get the primitive unit from the units module
             thisr = getattr(u, unit)

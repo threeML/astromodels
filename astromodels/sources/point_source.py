@@ -28,17 +28,20 @@ log = setup_logger(__name__)
 
 
 class PointSource(Source, Node):
-    """
-    A point source. You can instance this class in many ways.
+    """A point source. You can instance this class in many ways.
 
-    - with Equatorial position and a function as spectrum (the component will be automatically called 'main')::
+    - with Equatorial position and a function as spectrum (the component will be
+    automatically called 'main')::
 
         >>> from astromodels import *
         >>> point_source = PointSource('my_source', 125.6, -75.3, Powerlaw())
 
-    - with Galactic position and a function as spectrum (the component will be automatically called 'main')::
+    - with Galactic position and a function as spectrum (the component will be
+    automatically called 'main')::
 
-        >>> point_source = PointSource('my_source', l=15.67, b=80.75, spectral_shape=Powerlaw())
+        >>> point_source = PointSource(
+                    'my_source', l=15.67, b=80.75, spectral_shape=Powerlaw()
+                )
 
     - with Equatorial position or Galactic position and a list of spectral components::
 
@@ -48,9 +51,12 @@ class PointSource(Source, Node):
 
         Or with Galactic position:
 
-        >>> point_source = PointSource("test_source",l=15.67, b=80.75,components=[c1,c2])
+        >>> point_source = PointSource(
+                    "test_source",l=15.67, b=80.75,components=[c1,c2]
+                )
 
-    NOTE: by default the position of the source is fixed (i.e., its positional parameters are fixed)
+    NOTE: by default the position of the source is fixed (i.e., its positional
+    parameters are fixed)
 
     :param source_name: name for the source
     :param ra: Equatorial J2000 Right Ascension (ICRS)
@@ -73,7 +79,7 @@ class PointSource(Source, Node):
         b: Optional[float] = None,
         components=None,
         sky_position: Optional[SkyDirection] = None,
-        polarization=None
+        polarization=None,
     ):
 
         # Check that we have all the required information
@@ -110,8 +116,9 @@ class PointSource(Source, Node):
                 except (TypeError, ValueError):
 
                     log.error(
-                        "RA and Dec must be numbers. If you are confused by this message, you "
-                        "are likely using the constructor in the wrong way. Check the documentation."
+                        "RA and Dec must be numbers. If you are confused by this "
+                        "message, you are likely using the constructor in the wrong "
+                        "way. Check the documentation."
                     )
 
                     raise AssertionError()
@@ -132,12 +139,14 @@ class PointSource(Source, Node):
         if not (spectral_shape is not None) ^ (components is not None):
 
             log.error(
-                "You have to provide either a single component, or a list of components (but not both)."
+                "You have to provide either a single component, or a list of components"
+                " (but not both)."
             )
 
             raise AssertionError()
 
-        # If the user specified only one component, make a list of one element with a default name ("main")
+        # If the user specified only one component, make a list of one element with a
+        # default name ("main")
 
         if spectral_shape is not None:
 
@@ -190,18 +199,22 @@ class PointSource(Source, Node):
                 results = [
                     component(x, stokes) for component in list(self.components.values())
                 ]
-                # We need to sum like this (slower) because using np.sum will not preserve the units
-                # (thanks astropy.units)
+                # We need to sum like this (slower) because using np.sum will not
+                # preserve the units (thanks astropy.units)
 
                 return sum(results)
 
             else:
 
-                # Fast version without units, where x is supposed to be in the same units as currently defined in
-                # units.get_units()
+                # Fast version without units, where x is supposed to be in the same
+                # units as currently defined in units.get_units()
 
-                results = numpy.array([component(x, stokes) for component in list(self.components.values())]
-                                      )
+                results = numpy.array(
+                    [
+                        component(x, stokes)
+                        for component in list(self.components.values())
+                    ]
+                )
 
                 return _sum(results)
 
@@ -215,7 +228,8 @@ class PointSource(Source, Node):
 
                 # Evaluate in a, do not integrate
 
-                # Suspend memoization because the memoization gets confused when integrating
+                # Suspend memoization because the memoization gets confused when
+                # integrating
                 with use_astromodels_memoization(False):
 
                     integration_variable.value = a
@@ -232,7 +246,8 @@ class PointSource(Source, Node):
 
                 # TODO: implement an integration scheme avoiding the for loop
 
-                # Suspend memoization because the memoization gets confused when integrating
+                # Suspend memoization because the memoization gets confused when
+                # integrating
                 with use_astromodels_memoization(False):
 
                     reentrant_call = self.__call__
@@ -254,8 +269,7 @@ class PointSource(Source, Node):
 
     @property
     def has_free_parameters(self) -> bool:
-        """
-        Returns True or False whether there is any parameter in this source
+        """Returns True or False whether there is any parameter in this source.
 
         :return:
         """
@@ -278,10 +292,9 @@ class PointSource(Source, Node):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of free parameters for this source.
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of free parameters for this source. We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -305,10 +318,9 @@ class PointSource(Source, Node):
 
     @property
     def parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of all parameters for this source.
-        We use the parameter path as the key because it's
-        guaranteed to be unique, unlike the parameter name.
+        """Returns a dictionary of all parameters for this source. We use the
+        parameter path as the key because it's guaranteed to be unique, unlike
+        the parameter name.
 
         :return:
         """
@@ -327,8 +339,7 @@ class PointSource(Source, Node):
         return all_parameters
 
     def _repr__base(self, rich_output=False):
-        """
-        Representation of the object
+        """Representation of the object.
 
         :param rich_output: if True, generates HTML, otherwise text
         :return: the representation

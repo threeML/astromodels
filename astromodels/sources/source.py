@@ -1,12 +1,11 @@
 __author__ = "giacomov"
 
+import collections
 from enum import Enum, unique
-from astromodels.utils.logging import setup_logger
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 from astromodels.core.parameter import Parameter
-
-import collections
+from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 
@@ -55,8 +54,7 @@ class Source(object):
 
     @property
     def free_parameters(self) -> Dict[str, Parameter]:
-        """
-        Returns a dictionary of free parameters for this source
+        """Returns a dictionary of free parameters for this source.
 
         :return:
         """
@@ -65,8 +63,7 @@ class Source(object):
 
     @property
     def components(self) -> Dict[str, Any]:
-        """
-        Return the dictionary of components
+        """Return the dictionary of components.
 
         :return: dictionary of components
         """
@@ -75,8 +72,7 @@ class Source(object):
 
     @property
     def source_type(self) -> str:
-        """
-        Return the type of the source ('point source' or 'extended source')
+        """Return the type of the source ('point source' or 'extended source')
 
         :return: type of the source
         """

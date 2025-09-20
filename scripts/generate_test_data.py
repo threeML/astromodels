@@ -7,11 +7,11 @@
 import sys
 
 import h5py
+import numpy as np
 
 from astromodels.functions.function import _known_functions
 from astromodels.functions.priors import *
-from astromodels.utils.data_files import _get_data_file_path
-import numpy as np
+from astromodels.utils.file_utils import _get_data_file_path
 
 eval_x = np.logspace(-1, 3, 10)
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC"]
