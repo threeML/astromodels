@@ -75,6 +75,7 @@ from .functions_3D import (
     Continuous_injection_diffusion_ellipse,
     Continuous_injection_diffusion_legacy,
     GalPropTemplate_3D,
+    Hermes
 )
 from .priors import (
     Beta,
@@ -165,6 +166,7 @@ __all__ = [
     "ModifiedBlackbody",
     "NonDissipativePhotosphere",
     "NonDissipativePhotosphere_Deep",
+    "Hermes",
 ]
 
 if has_atomdb:

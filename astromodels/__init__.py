@@ -54,6 +54,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         GalPropTemplate_3D,
         Gaussian,
         Gaussian_on_sphere,
+        Hermes,
         GenericFunction,
         Inverse_cutoff_powerlaw,
         Latitude_galactic_diffuse,
