@@ -996,7 +996,6 @@ class Hermes(Function3D, metaclass=FunctionMeta):
             h.update(repr(self._wcs).encode("utf-8"))
             self.hash = int(h.hexdigest(), 16)
 
-
     def evaluate(self, x, y, z, N, hash, ihdu):
 
         if self._map is None:
@@ -1040,7 +1039,7 @@ class Hermes(Function3D, metaclass=FunctionMeta):
         Ycorners = np.array([0, self._nb, 0, self._nb])
 
         corners = SkyCoord.from_pixel(Xcorners, Ycorners, wcs=self._wcs,
-                                     origin=0).transform_to(self._frame)
+                                      origin=0).transform_to(self._frame)
 
         min_lon = min(corners.ra.degree)
         max_lon = max(corners.ra.degree)
