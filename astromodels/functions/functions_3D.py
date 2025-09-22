@@ -891,8 +891,9 @@ class Hermes(Function3D, metaclass=FunctionMeta):
     r"""
         description :
 
-            Use a 3D template that has morphology and flux information created using the HERMES sky-maps in fits format. 
-            Only parameter is the normalization scale factor N. 
+            Use a 3D template that has morphology and flux information
+            created using the HERMES sky-maps in fits format.
+            Only parameter is the normalization scale factor N.
 
         latex : $ N $
 
@@ -933,9 +934,10 @@ class Hermes(Function3D, metaclass=FunctionMeta):
     """
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
-        #self.N*K.unit = (u.keV * u.cm**2 * u.s * u.sr) ** (-1)
+        # self.N*K.unit = (u.keV * u.cm**2 * u.s * u.sr) ** (-1)
         # The spectrum and morphology are embedded in the template.
-        # The normalization scale factor N is for scaling the normalization of the template to fit the data.
+        # The normalization scale factor N is for scaling the normalization
+        # of the template to fit the data.
         self.N.unit = w_unit
 
     def _setup(self):
@@ -959,7 +961,7 @@ class Hermes(Function3D, metaclass=FunctionMeta):
             raise RuntimeError(
                 "Need to specify a fits file with a template map.")
 
-        self._fitsfile=self.fits_file.value
+        self._fitsfile = self.fits_file.value
 
         with fits.open(self._fitsfile) as f:
 
@@ -970,7 +972,7 @@ class Hermes(Function3D, metaclass=FunctionMeta):
             self._refLat = f[int(self.ihdu.value)].header['CRVAL2']
             self._refEn = f[int(self.ihdu.value)].header['CRVAL3']  # values in log10
             self._map = f[int(self.ihdu.value)].data
-            self._wcs = wcs.WCS(header = f[int(self.ihdu.value)].header)
+            self._wcs = wcs.WCS(header=f[int(self.ihdu.value)].header)
             if len(self._map.shape) == 4:
                 self._map = self._map[0]
             self._nl = f[int(self.ihdu.value)].header['NAXIS1']  # longitude
@@ -1011,12 +1013,12 @@ class Hermes(Function3D, metaclass=FunctionMeta):
             if lon.size != lat.size:
                 raise AttributeError("Lon and Lat should be the same size")
             f = np.zeros([lon.size, energy.size])
-            E0 = self._refEn
-            Ef = self._refEn + (self._ne-1)*self._delEn
+            # E0 = self._refEn
+            # Ef = self._refEn + (self._ne-1)*self._delEn
 
-            #Update for the galactic center
-            mask = (lon<6) & (lon>=0)
-            lon[mask]+=360
+            # Update for the galactic center
+            mask = (lon < 6) & (lon >= 0)
+            lon[mask] += 360
 
             for i in range(energy.size):
                 e = np.repeat(energy[i], len(lon))
@@ -1034,10 +1036,11 @@ class Hermes(Function3D, metaclass=FunctionMeta):
 
     def get_boundaries(self):
         # Same as SpatialTemplate_2D
-        Xcorners = np.array( [0, 0,        self._nl, self._nl] )
-        Ycorners = np.array( [0, self._nb, 0,        self._nb] )
+        Xcorners = np.array([0, 0, self._nl, self._nl])
+        Ycorners = np.array([0, self._nb, 0, self._nb])
 
-        corners = SkyCoord.from_pixel( Xcorners, Ycorners, wcs=self._wcs, origin = 0).transform_to(self._frame)
+        corners = SkyCoord.from_pixel(Xcorners, Ycorners, wcs=self._wcs,
+                                     origin=0).transform_to(self._frame)
 
         min_lon = min(corners.ra.degree)
         max_lon = max(corners.ra.degree)
@@ -1047,8 +1050,7 @@ class Hermes(Function3D, metaclass=FunctionMeta):
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
-
     def get_total_spatial_integral(self, z=None):
-        if isinstance( z, u.Quantity):
+        if isinstance(z, u.Quantity):
             z = z.value
-        return np.multiply(self.K.value, np.ones_like( z ))
+        return np.multiply(self.K.value, np.ones_like(z))
