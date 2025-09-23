@@ -2198,6 +2198,114 @@ coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Hermes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_3D.</span></span><span class="sig-name descname"><span class="pre">Hermes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Hermes" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Use a 3D template that has morphology and flux information
+created using the HERMES sky-maps in fits format.
+Only parameter is the normalization scale factor N.</p>
+</div></blockquote>
+<p>latex : $ N $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>N :</p>
+<blockquote>
+<div><p>desc : normalization scale factor
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>hash :</p>
+<blockquote>
+<div><p>desc : hash of model map [needed for memoization]
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<dl class="simple">
+<dt>ihdu:</dt><dd><p>desc: header unit index of fits file
+initial value: 0
+fix: True
+min: 0</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>properties:</dt><dd><dl>
+<dt>fits_file:</dt><dd><p>desc: fits file to load
+defer: True
+function: _load_file</p>
+</dd>
+<dt>frame:</dt><dd><p>desc: coordinate frame
+initial value: icrs
+allowed values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>icrs</p></li>
+<li><p>galactic</p></li>
+<li><p>fk5</p></li>
+<li><p>fk4</p></li>
+<li><p>fk4_no_e</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Hermes.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ihdu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Hermes.evaluate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Hermes.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Hermes.get_boundaries" title="Link to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Hermes.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Hermes.get_total_spatial_integral" title="Link to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Hermes.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_3D.Hermes.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_3D.Hermes.set_frame">
+<span class="sig-name descname"><span class="pre">set_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.set_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_3D.Hermes.set_frame" title="Link to this definition"></a></dt>
+<dd><p>Set a new frame for the coordinates (the default is ICRS J2000)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_frame</strong> – a coordinate frame from astropy</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(none)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-astromodels.functions.numba_functions">
 <span id="astromodels-functions-numba-functions-module"></span><h2>astromodels.functions.numba_functions module<a class="headerlink" href="#module-astromodels.functions.numba_functions" title="Link to this heading"></a></h2>
@@ -5315,6 +5423,114 @@ initial value : 1</p>
 <dt class="sig sig-object py" id="astromodels.functions.GenericFunction.to_dict">
 <span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_1D/functions.html#GenericFunction.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.GenericFunction.to_dict" title="Link to this definition"></a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.Hermes">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">Hermes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Hermes" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<p>description :</p>
+<blockquote>
+<div><p>Use a 3D template that has morphology and flux information
+created using the HERMES sky-maps in fits format.
+Only parameter is the normalization scale factor N.</p>
+</div></blockquote>
+<p>latex : $ N $</p>
+<p>parameters :</p>
+<blockquote>
+<div><p>N :</p>
+<blockquote>
+<div><p>desc : normalization scale factor
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<p>hash :</p>
+<blockquote>
+<div><p>desc : hash of model map [needed for memoization]
+initial value : 1
+fix : yes</p>
+</div></blockquote>
+<dl class="simple">
+<dt>ihdu:</dt><dd><p>desc: header unit index of fits file
+initial value: 0
+fix: True
+min: 0</p>
+</dd>
+</dl>
+</div></blockquote>
+<dl>
+<dt>properties:</dt><dd><dl>
+<dt>fits_file:</dt><dd><p>desc: fits file to load
+defer: True
+function: _load_file</p>
+</dd>
+<dt>frame:</dt><dd><p>desc: coordinate frame
+initial value: icrs
+allowed values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>icrs</p></li>
+<li><p>galactic</p></li>
+<li><p>fk5</p></li>
+<li><p>fk4</p></li>
+<li><p>fk4_no_e</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Hermes.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ihdu</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Hermes.evaluate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Hermes.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Hermes.get_boundaries" title="Link to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Hermes.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Hermes.get_total_spatial_integral" title="Link to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Hermes.info">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.Hermes.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.Hermes.set_frame">
+<span class="sig-name descname"><span class="pre">set_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/astromodels/functions/functions_3D.html#Hermes.set_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Hermes.set_frame" title="Link to this definition"></a></dt>
+<dd><p>Set a new frame for the coordinates (the default is ICRS J2000)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_frame</strong> – a coordinate frame from astropy</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(none)</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

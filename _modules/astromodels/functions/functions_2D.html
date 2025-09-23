@@ -957,8 +957,8 @@
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.SpatialTemplate_2D.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">,</span> <span class="n">ihdu</span><span class="p">):</span>
 
-        <span class="c1"># We assume x and y are R.A. and Dec</span>
-        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+        <span class="c1"># X and Y are defined by the frame (ICRS,galactic, etc..)</span>
+        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
 
         <span class="c1"># transform input coordinates to pixel coordinates;</span>
         <span class="c1"># SkyCoord takes care of necessary coordinate frame transformations.</span>

@@ -92,7 +92,7 @@
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">wcs</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">ICRS</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">,</span> <span class="n">SkyCoord</span>
@@ -1034,6 +1034,189 @@
         <span class="n">min_latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span>
         <span class="n">max_latitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Hermes">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Hermes">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Hermes</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        description :</span>
+
+<span class="sd">            Use a 3D template that has morphology and flux information</span>
+<span class="sd">            created using the HERMES sky-maps in fits format.</span>
+<span class="sd">            Only parameter is the normalization scale factor N.</span>
+
+<span class="sd">        latex : $ N $</span>
+
+<span class="sd">        parameters :</span>
+
+<span class="sd">            N :</span>
+
+<span class="sd">                desc : normalization scale factor</span>
+<span class="sd">                initial value : 1</span>
+<span class="sd">                fix : yes</span>
+
+<span class="sd">            hash :</span>
+
+<span class="sd">                desc : hash of model map [needed for memoization]</span>
+<span class="sd">                initial value : 1</span>
+<span class="sd">                fix : yes</span>
+
+<span class="sd">            ihdu:</span>
+<span class="sd">                desc: header unit index of fits file</span>
+<span class="sd">                initial value: 0</span>
+<span class="sd">                fix: True</span>
+<span class="sd">                min: 0</span>
+
+<span class="sd">        properties:</span>
+<span class="sd">            fits_file:</span>
+<span class="sd">                desc: fits file to load</span>
+<span class="sd">                defer: True</span>
+<span class="sd">                function: _load_file</span>
+<span class="sd">            frame:</span>
+<span class="sd">                desc: coordinate frame</span>
+<span class="sd">                initial value: icrs</span>
+<span class="sd">                allowed values:</span>
+<span class="sd">                    - icrs</span>
+<span class="sd">                    - galactic</span>
+<span class="sd">                    - fk5</span>
+<span class="sd">                    - fk4</span>
+<span class="sd">                    - fk4_no_e</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
+        <span class="c1"># self.N*K.unit = (u.keV * u.cm**2 * u.s * u.sr) ** (-1)</span>
+        <span class="c1"># The spectrum and morphology are embedded in the template.</span>
+        <span class="c1"># The normalization scale factor N is for scaling the normalization</span>
+        <span class="c1"># of the template to fit the data.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">w_unit</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="s2">&quot;icrs&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Hermes.set_frame">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Hermes.set_frame">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
+
+<span class="sd">        :param new_frame: a coordinate frame from astropy</span>
+<span class="sd">        :return: (none)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_frame</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">new_frame</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">&quot;Need to specify a fits file with a template map.&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_file</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;CDELT1&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;CDELT2&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;CDELT3&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;CRVAL1&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;CRVAL2&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;CRVAL3&#39;</span><span class="p">]</span>  <span class="c1"># values in log10</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">WCS</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;NAXIS1&#39;</span><span class="p">]</span>  <span class="c1"># longitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;NAXIS2&#39;</span><span class="p">]</span>  <span class="c1"># latitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s1">&#39;NAXIS3&#39;</span><span class="p">]</span>  <span class="c1"># energy</span>
+
+            <span class="c1"># Create the function for the interpolation</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nl</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nb</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span><span class="o">+</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ne</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_F</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+            <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Hermes.evaluate">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Hermes.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="nb">hash</span><span class="p">,</span> <span class="n">ihdu</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_load_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;galactic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;galactic&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">l</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">b</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Lon and Lat should be the same size&quot;</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">energy</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
+            <span class="c1"># E0 = self._refEn</span>
+            <span class="c1"># Ef = self._refEn + (self._ne-1)*self._delEn</span>
+
+            <span class="c1"># Update for the galactic center</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">lon</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">lon</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">lon</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">360</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">energy</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">energy</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">len</span><span class="p">(</span><span class="n">lon</span><span class="p">))</span>
+                <span class="n">f</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_F</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">e</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+            <span class="n">bad_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">f</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">bad_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">f</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="s2">&quot;some interpolated values are wrong&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span> <span class="o">=</span> <span class="n">f</span>
+
+        <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">A</span></div>
+
+
+<div class="viewcode-block" id="Hermes.get_boundaries">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Hermes.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Same as SpatialTemplate_2D</span>
+        <span class="n">Xcorners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span><span class="p">])</span>
+        <span class="n">Ycorners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span><span class="p">])</span>
+
+        <span class="n">corners</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="o">.</span><span class="n">from_pixel</span><span class="p">(</span><span class="n">Xcorners</span><span class="p">,</span> <span class="n">Ycorners</span><span class="p">,</span> <span class="n">wcs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">,</span>
+                                      <span class="n">origin</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">)</span>
+
+        <span class="n">min_lon</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">corners</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+        <span class="n">max_lon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">corners</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+
+        <span class="n">min_lat</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">corners</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+        <span class="n">max_lat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">corners</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Hermes.get_total_spatial_integral">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.Hermes.get_total_spatial_integral">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
 </div>
 
 </pre></div>
