@@ -31,7 +31,7 @@ jobs:
                   python-version: 3.9
             - name: Build package
               run: |
-                  pip install wheel setuptools -U
+                  pip install wheel setuptools packaging -U
                   python setup.py sdist
             - name: Publish
               uses: pypa/gh-action-pypi-publish@release/v1
