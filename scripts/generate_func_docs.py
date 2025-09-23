@@ -12,6 +12,7 @@ models_to_exclude = [
     "TemplateModel",
     "SpatialTemplate_2D",
     "GenericFunction",
+    "Hermes",
 ]
 
 positive_priors = [
