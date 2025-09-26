@@ -17,6 +17,7 @@ requirements:
     - cfitsio==4.1.0 # [not arm64]
     - ccfits==2.6 # [not arm64]
     - wcslib # [not arm64]
+    - versioneer
 
   host:
     - python
@@ -32,17 +33,19 @@ requirements:
     - future
     - numba>=0.54
     - h5py
-    - interpolation>=2.2.2
+    - interpolation>=2.2.3
     - colorama
     - omegaconf
     - rich
     - joblib
+    - versioneer
     
   run:
     - python
-    - numpy
+    - numpy>1.6
     - pyyaml>=5.1
-    - astropy
+    - astropy>=1.2
+    - scipy>=0.14
     - pytables
     - pandas>=0.23
     - dill
@@ -52,11 +55,12 @@ requirements:
     - future
     - numba>=0.54
     - h5py
-    - interpolation>=2.2.2
+    - interpolation>=2.2.3
     - colorama
     - omegaconf
     - rich
     - joblib
+    - versioneer
     
 build:
   script: python -m pip install --verbose --no-deps --ignore-installed .
