@@ -1,6 +1,5 @@
 import os
 import pickle
-from builtins import object
 
 import astropy.units as u
 import numpy as np
