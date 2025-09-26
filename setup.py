@@ -15,7 +15,8 @@ import versioneer
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-_default_xspec_version = "12.12.1"
+_default_xspec_version = "12.15.0"  # default when installing xspec according following
+# https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
 
 class My_build_ext(_build_ext):
@@ -23,10 +24,6 @@ class My_build_ext(_build_ext):
     def finalize_options(self):
 
         _build_ext.finalize_options(self)
-
-        # Prevent numpy from thinking it is still in its setup process:
-
-        # __builtins__.__NUMPY_SETUP__ = False
 
         import numpy
 
@@ -213,7 +210,6 @@ def setup_xspec():
     # thanks to the sherpa team for this
 
     if xspec_version is None:
-
         print("WARN: You have not specified and XSPEC version with the ")
         print("WARN: environment variable ASTRO_XSPEC_VERSION")
         print(f"WARN: we will assume you have {_default_xspec_version}")
@@ -247,6 +243,11 @@ def setup_xspec():
         (12, 11, 1),
         (12, 12, 0),
         (12, 12, 1),
+        (12, 13, 0),
+        (12, 13, 1),
+        (12, 14, 0),
+        (12, 14, 1),
+        (12, 15, 0),
     ]:
 
         version = "{}.{}.{}".format(major, minor, patch)
@@ -437,22 +438,7 @@ ext_modules_configuration = setup_xspec()
 
 
 setup(
-    setup_requires=["numpy"],
-    # cmdclass={'build_ext': My_build_ext},
     cmdclass=versioneer.get_cmdclass({"build_ext": My_build_ext}),
-    packages=packages,
-    data_files=[
-        ("astromodels/data/functions", glob.glob("astromodels/data/functions/*.yaml")),
-        ("astromodels/data/tests", glob.glob("astromodels/data/tests/*.fits")),
-    ],
-    # The __version__ comes from the exec at the top
     version=versioneer.get_version(),
-    download_url="https://github.com/threeml/astromodels/archive/v0.1",
-    keywords=["Likelihood", "Models", "fit"],
     ext_modules=ext_modules_configuration,
-    package_data={
-        "astromodels": [
-            "data/*",
-        ],
-    },
 )
