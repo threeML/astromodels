@@ -92,10 +92,13 @@ illegal_variable_names = [
 
 
 def find_model_dat():
-    """Find the file containing the definition of all the models in Xspec
-    (model.dat) and return its path."""
+    """
+    Find the file containing the definition of all the models in Xspec
+    (model.dat) and return its path
+    """
 
-    # model.dat is in $HEADAS/../spectral
+    # model.dat is in either $HEADAS/spectral/manager or
+    # $HEADAS/../spectral/manager
 
     headas_env = os.environ.get("HEADAS")
 
@@ -108,33 +111,33 @@ def find_model_dat():
     headas_env = os.path.expandvars(os.path.expanduser(headas_env))
 
     # Lazy check that it exists
-
     assert os.path.exists(
         headas_env
-    ), "The HEADAS env. variable point to a non-existent directory: %s" % (headas_env)
-
-    # Get one directory above HEADAS (i.e., $HEADAS/..)
-
-    inferred_path = os.path.dirname(headas_env)
-
-    # Now model.dat should be in $HEADAS/../spectral/manager
-
-    final_path = os.path.join(inferred_path, "spectral", "manager", "model.dat")
-    if not os.path.exists(final_path):
-        warnings.warn(
-            f"Could not find Xspec model definition in {final_path}. If you installed "
-            "Xspec via conda not using xspec-modelsonly it may be in a different path. "
-            "We will check..."
-        )
-        final_path = os.path.join(headas_env, "spectral", "manager", "model.dat")
-
-    # Check that model.dat exists
-
-    assert os.path.exists(final_path), "Cannot find Xspec model definition file %s" % (
-        final_path
+    ), (
+        "The HEADAS env. variable point to a non-existent directory: %s"
+        % (headas_env)
     )
 
-    return os.path.abspath(final_path)
+    # First try: $HEADAS/spectral/manager/model.dat
+    final_path = os.path.join(headas_env, "spectral", "manager", "model.dat")
+
+    if os.path.exists(final_path):
+        return os.path.abspath(final_path)
+
+    # Second try: $HEADAS/../spectral/manager/model.dat
+    parent_dir = os.path.dirname(headas_env)
+    final_path = os.path.join(parent_dir, "spectral", "manager", "model.dat")
+
+    if os.path.exists(final_path):
+        return os.path.abspath(final_path)
+
+    # If neither exists, raise an error
+    raise FileNotFoundError(
+        "Cannot find Xspec model definition file. Tried: "
+        f"{os.path.join(headas_env, 'spectral', 'manager', 'model.dat')} "
+        "and "
+        f"{os.path.join(parent_dir, 'spectral', 'manager', 'model.dat')}"
+    )
 
 
 def get_models(model_dat_path):
