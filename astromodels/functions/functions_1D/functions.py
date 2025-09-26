@@ -1,9 +1,6 @@
-from __future__ import division
-
 import astropy.units as astropy_units
 import astropy.units as u
 import numpy as np
-from past.utils import old_div
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -448,8 +445,8 @@ if has_naima:
             # returns an astropy quantity, so we need to create a wrapper which will
             # remove the unit from x and add the unit to the return value
 
-            self._particle_distribution_wrapper = lambda x: old_div(
-                function(x.value), current_units.energy
+            self._particle_distribution_wrapper = (
+                lambda x: function(x.value) / current_units.energy
             )
 
         def get_particle_distribution(self):
@@ -552,7 +549,7 @@ class _ComplexTestFunction(Function1D, metaclass=FunctionMeta):
     def _set_units(self, x_unit, y_unit):
 
         self.A.unit = y_unit
-        self.B.unit = old_div(y_unit, x_unit)
+        self.B.unit = y_unit / x_unit
 
     def set_particle_distribution(self, function):
 
@@ -680,7 +677,7 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
 
         return self.piv.value * pow(
             10,
-            old_div(((2 + self.alpha.value) * np.log(10)), (2 * self.beta.value)),
+            ((2 + self.alpha.value) * np.log(10)) / (2 * self.beta.value),
         )
 
 
@@ -745,7 +742,7 @@ if has_gsl:
             ap1 = index + 1
 
             def integrand(x):
-                return -pow(ec, ap1) * gamma_inc(ap1, old_div(x, ec))
+                return -pow(ec, ap1) * gamma_inc(ap1, x / ec)
 
             return integrand(b) - integrand(a)
 

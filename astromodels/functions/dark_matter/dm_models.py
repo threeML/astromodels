@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import astropy.units as astropy_units
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator

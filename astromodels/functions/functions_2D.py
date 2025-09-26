@@ -1,5 +1,3 @@
-from __future__ import division
-
 import hashlib
 
 import astropy.units as u
@@ -7,7 +5,6 @@ import numpy as np
 from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
-from past.utils import old_div
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
@@ -83,7 +80,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
         return (
             K
-            * np.exp(old_div(-(b**2), (2 * sigma_b**2)))
+            * np.exp(-(b**2) / (2 * sigma_b**2))
             * np.logical_or(
                 np.logical_and(l > l_min, l < l_max),
                 np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
@@ -193,10 +190,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         s2 = sigma**2
 
         return (
-            (old_div(180, np.pi)) ** 2
-            * 1
-            / (2.0 * np.pi * s2)
-            * np.exp(-0.5 * angsep**2 / s2)
+            (180 / np.pi) ** 2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2 / s2)
         )
 
     def get_boundaries(self):
@@ -340,15 +334,15 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         sin_2phi = np.sin(2.0 * phi * np.pi / 180.0)
 
-        A = old_div(cos2_phi, (2.0 * b**2)) + old_div(sin2_phi, (2.0 * a**2))
+        A = cos2_phi / (2.0 * b**2) + sin2_phi / (2.0 * a**2)
 
-        B = old_div(-sin_2phi, (4.0 * b**2)) + old_div(sin_2phi, (4.0 * a**2))
+        B = -sin_2phi / (4.0 * b**2) + sin_2phi / (4.0 * a**2)
 
-        C = old_div(sin2_phi, (2.0 * b**2)) + old_div(cos2_phi, (2.0 * a**2))
+        C = sin2_phi / (2.0 * b**2) + cos2_phi / (2.0 * a**2)
 
         E = -A * np.power(dX, 2) + 2.0 * B * dX * dY - C * np.power(dY, 2)
 
-        return np.power(old_div(180, np.pi), 2) * 1.0 / (2 * np.pi * a * b) * np.exp(E)
+        return np.power(180 / np.pi, 2) * 1.0 / (2 * np.pi * a * b) * np.exp(E)
 
     def get_boundaries(self):
 
@@ -452,12 +446,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return (
-            np.power(old_div(180, np.pi), 2)
-            * 1.0
-            / (np.pi * radius**2)
-            * (angsep <= radius)
-        )
+        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
 
     def get_boundaries(self):
 
@@ -614,9 +603,7 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
         angsep2 = angular_distance(self.lon2, self.lat2, lon, lat)
         angsep = angsep1 + angsep2
 
-        return (
-            np.power(old_div(180, np.pi), 2) * 1.0 / (np.pi * a * b) * (angsep <= 2 * a)
-        )
+        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * a * b) * (angsep <= 2 * a)
 
     def get_boundaries(self):
 

@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import collections
 import os
 import re
@@ -482,7 +480,6 @@ import astropy.units as u
 from astromodels.functions import Function1D,FunctionMeta
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.xspec import _xspec
-import six
 
 # These are multiplicative functions which need numerical differentiation
 _force_differentiation = [

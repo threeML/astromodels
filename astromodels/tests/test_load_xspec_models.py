@@ -1,5 +1,3 @@
-from __future__ import division, print_function
-
 from pathlib import Path
 
 import astropy.units as u

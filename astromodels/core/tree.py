@@ -1,14 +1,10 @@
 import collections
 from typing import Any, Dict
 
-from future import standard_library
-
 from astromodels.core.node_type import NodeBase
 from astromodels.utils.io import display
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.valid_variable import is_valid_variable_name
-
-standard_library.install_aliases()
 
 
 class DuplicatedNode(Exception):

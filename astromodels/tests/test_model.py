@@ -1,10 +1,7 @@
-from __future__ import division
-
 import os
 from builtins import object, range
 
 import pytest
-from past.utils import old_div
 
 __author__ = "giacomov"
 
@@ -918,8 +915,8 @@ def test_clone_model():
 
     # Test that changing the parameter in one model does not changes the other
 
-    list(m2.free_parameters.values())[0].value = old_div(
-        list(m2.free_parameters.values())[0].value, 2.0
+    list(m2.free_parameters.values())[0].value = (
+        list(m2.free_parameters.values())[0].value / 2.0
     )
 
     assert (
@@ -1048,7 +1045,7 @@ def test_time_domain_integration():
     def F(x):
         return line2.b.value / 2.0 * x**2 + line2.a.value * x
 
-    effective_norm = old_div((F(10) - F(0)), 10.0)
+    effective_norm = (F(10) - F(0)) / 10.0
 
     expected_results = default_powerlaw(energies) * effective_norm  # type: np.ndarray
 

@@ -1,10 +1,7 @@
-from __future__ import division, print_function
-
 import astropy.units as u
 import numpy as np
 import numpy.testing as npt
 import pytest
-from past.utils import old_div
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (
@@ -326,7 +323,7 @@ def test_call_with_composite_function_with_units():
         res = pts(np.array([100.0, 200.0]) * x_unit_to_use)
 
         # This will fail if the units are wrong
-        res.to(old_div(1, (u.keV * u.cm**2 * u.s)))
+        res.to(1 / (u.keV * u.cm**2 * u.s))
 
     # Test a simple composition
 
