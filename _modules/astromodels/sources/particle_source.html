@@ -89,11 +89,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.sources.particle_source</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
-
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
 
@@ -159,7 +155,7 @@
 
         <span class="c1"># energy as x and particle flux as y</span>
         <span class="n">x_unit</span> <span class="o">=</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span>
-        <span class="n">y_unit</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span><span class="p">)</span>
+        <span class="n">y_unit</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span>
 
         <span class="c1"># Now set the units of the components</span>
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>

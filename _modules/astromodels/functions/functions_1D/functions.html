@@ -89,12 +89,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.functions.functions_1D.functions</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">division</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">past.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">old_div</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_units</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
@@ -587,8 +584,8 @@
             <span class="c1"># returns an astropy quantity, so we need to create a wrapper which will</span>
             <span class="c1"># remove the unit from x and add the unit to the return value</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_particle_distribution_wrapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">old_div</span><span class="p">(</span>
-                <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_particle_distribution_wrapper</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">function</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="n">current_units</span><span class="o">.</span><span class="n">energy</span>
             <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -691,7 +688,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">old_div</span><span class="p">(</span><span class="n">y_unit</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="n">x_unit</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_particle_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
 
@@ -824,7 +821,7 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span>
             <span class="mi">10</span><span class="p">,</span>
-            <span class="n">old_div</span><span class="p">(((</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">value</span><span class="p">)),</span>
+            <span class="p">((</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
         <span class="p">)</span></div>
 
 
@@ -890,7 +887,7 @@
             <span class="n">ap1</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
 
             <span class="k">def</span><span class="w"> </span><span class="nf">integrand</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-                <span class="k">return</span> <span class="o">-</span><span class="nb">pow</span><span class="p">(</span><span class="n">ec</span><span class="p">,</span> <span class="n">ap1</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma_inc</span><span class="p">(</span><span class="n">ap1</span><span class="p">,</span> <span class="n">old_div</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ec</span><span class="p">))</span>
+                <span class="k">return</span> <span class="o">-</span><span class="nb">pow</span><span class="p">(</span><span class="n">ec</span><span class="p">,</span> <span class="n">ap1</span><span class="p">)</span> <span class="o">*</span> <span class="n">gamma_inc</span><span class="p">(</span><span class="n">ap1</span><span class="p">,</span> <span class="n">x</span> <span class="o">/</span> <span class="n">ec</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">integrand</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="n">integrand</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
 
