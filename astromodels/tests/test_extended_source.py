@@ -1,7 +1,3 @@
-from __future__ import print_function
-
-# this prevent a crash in macos. If does not import threeML first the code crashes
-# with a segmantiation violation (Need to investigate more)s
 import astropy.io.fits as fits
 import astropy.units as u
 import numpy as np

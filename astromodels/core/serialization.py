@@ -1,9 +1,6 @@
-from future import standard_library
-
 from astromodels.core.model import Model
 from astromodels.core.model_parser import ModelParser
 
-standard_library.install_aliases()
 # We do not want to actually import anything from this module
 __all__ = []
 

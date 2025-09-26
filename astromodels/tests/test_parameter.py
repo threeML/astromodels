@@ -1,10 +1,7 @@
-from __future__ import print_function
-
 from builtins import object
 
 import astropy.units as u
 import pytest
-from future import standard_library
 
 from astromodels.functions import Log_uniform_prior, Uniform_prior
 
@@ -22,8 +19,6 @@ from astromodels.core.parameter import (
 from astromodels.core.parameter_transformation import LogarithmicTransformation
 from astromodels.functions import Line
 from astromodels.utils.configuration import astromodels_config
-
-standard_library.install_aliases()
 
 
 def test_default_constructor():

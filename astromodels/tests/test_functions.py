@@ -1,5 +1,3 @@
-from __future__ import division, print_function
-
 import os
 import pickle
 from builtins import object
@@ -8,7 +6,6 @@ import astropy.units as u
 import numpy as np
 import pytest
 from astropy.io import fits
-from future.utils import with_metaclass
 
 import astromodels
 from astromodels import update_logging_level
@@ -45,7 +42,7 @@ __author__ = "giacomov"
 def get_a_function_class():
 
     # Try to create a function inheriting from Function with meta FunctionMeta
-    class Test_function(with_metaclass(FunctionMeta, Function1D)):
+    class Test_function(Function1D, metaclass=FunctionMeta):
         r"""
         description :
 
@@ -88,14 +85,14 @@ def test_function_meta():
 
         # .evaluate is lacking, ._set_units is lacking, docstring is lacking
 
-        class Wrong_test_function1(with_metaclass(FunctionMeta, object)):
+        class Wrong_test_function1(metaclass=FunctionMeta):
             pass
 
     with pytest.raises(AttributeError):
 
         # .evaluate is lacking, ._set_units is lacking
 
-        class Wrong_test_function2(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function2(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -120,7 +117,7 @@ def test_function_meta():
     with pytest.raises(AttributeError):
         # _set_units is lacking
 
-        class Wrong_test_function3(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function3(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -149,7 +146,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
-        class Wrong_test_function4(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function4(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -183,7 +180,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
-        class Wrong_test_function5(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function5(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -215,7 +212,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate is wrong
 
-        class Wrong_test_function6(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function6(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -247,7 +244,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Signature of evaluate does not match docstring
 
-        class Wrong_test_function7(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function7(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -279,7 +276,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Definition of parameter b is not legal
 
-        class Wrong_test_function8(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function8(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -310,7 +307,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Parameter c declared but not used
 
-        class Wrong_test_function9(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function9(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -347,7 +344,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Parameter c used but not declared
 
-        class Wrong_test_function10(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function10(Function1D, metaclass=FunctionMeta):
             r"""
             description :
 
@@ -379,7 +376,7 @@ def test_function_meta():
     with pytest.raises(AssertionError):
         # Docstring lacking description
 
-        class Wrong_test_function11(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function11(Function1D, metaclass=FunctionMeta):
             r"""
             latex : $ a * x + b $
 
@@ -412,7 +409,7 @@ def test_function_meta():
     with pytest.raises(FunctionDefinitionError):
         # Parameter lacking description
 
-        class Wrong_test_function12(with_metaclass(FunctionMeta, Function1D)):
+        class Wrong_test_function12(Function1D, metaclass=FunctionMeta):
             r"""
 
             description: useless
@@ -447,7 +444,7 @@ def test_function_meta():
     with pytest.raises(AssertionError):
         # Parameters out of order in evaluate
 
-        class Wrong_test_function13(with_metaclass(FunctionMeta, Function2D)):
+        class Wrong_test_function13(Function2D, metaclass=FunctionMeta):
             r"""
 
             description: useless
@@ -483,7 +480,7 @@ def test_function_meta():
 
     # A function with no latex formula (which is optional)
 
-    class NoLatex_test_function11(with_metaclass(FunctionMeta, Function1D)):
+    class NoLatex_test_function11(Function1D, metaclass=FunctionMeta):
         r"""
 
         description:

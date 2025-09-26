@@ -1,17 +1,14 @@
-from __future__ import division
-
 import math
 
 import astropy.units as astropy_units
 import numpy as np
 import scipy.stats as stats
-from past.utils import old_div
 from scipy.special import erf, erfcinv
 
 from astromodels.functions.function import Function1D, FunctionMeta
 
-deg2rad = old_div(np.pi, 180.0)
-rad2deg = old_div(180.0, np.pi)
+deg2rad = np.pi / 180.0
+rad2deg = 180.0 / np.pi
 
 # noinspection PyPep8Naming
 
@@ -51,7 +48,7 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
 
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
+    __norm_const = 1.0 / math.sqrt(2 * np.pi)
 
     def _setup(self):
 
@@ -72,13 +69,9 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
     # noinspection PyPep8Naming
     def evaluate(self, x, F, mu, sigma):
 
-        norm = old_div(self.__norm_const, sigma)
+        norm = self.__norm_const / sigma
 
-        return (
-            F
-            * norm
-            * np.exp(old_div(-np.power(x - mu, 2.0), (2 * np.power(sigma, 2.0))))
-        )
+        return F * norm * np.exp(-np.power(x - mu, 2.0) / (2 * np.power(sigma, 2.0)))
 
     def from_unit_cube(self, x):
         """Used by multinest.
@@ -158,7 +151,7 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
 
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
+    __norm_const = 1.0 / (math.sqrt(2 * np.pi))
 
     def _setup(self):
 
@@ -188,7 +181,7 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
         # phi is in unitless, so we need to do this trick
         # to keep the units right
 
-        norm = old_div(self.__norm_const, sigma)
+        norm = self.__norm_const / sigma
 
         phi = np.zeros(x.shape) * F * norm * 0.0
         idx = (x >= lower_bound) & (x <= upper_bound)
@@ -197,15 +190,13 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
 
         # precalculate the arguments to the CDF
 
-        lower_arg = old_div((lower_bound - mu), sigma)
-        upper_arg = old_div((upper_bound - mu), sigma)
+        lower_arg = (lower_bound - mu) / sigma
+        upper_arg = (upper_bound - mu) / sigma
 
         # the typical gaussian functions
 
         phi[idx] = (
-            np.exp(old_div(-np.power(x[idx] - mu, 2.0), (2 * np.power(sigma, 2.0))))
-            * F
-            * norm
+            np.exp(-np.power(x[idx] - mu, 2.0) / (2 * np.power(sigma, 2.0))) * F * norm
         )
 
         # the denominator is a function of the CDF
@@ -216,11 +207,11 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
             upper_arg = upper_arg.value
             lower_arg = lower_arg.value
 
-        theta_lower = 0.5 + 0.5 * erf(old_div(lower_arg, sqrt_two))
+        theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
 
-        theta_upper = 0.5 + 0.5 * erf(old_div(upper_arg, sqrt_two))
+        theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
 
-        return old_div(phi, (theta_upper - theta_lower))
+        return phi / (theta_upper - theta_lower)
 
     def from_unit_cube(self, x):
 
@@ -236,12 +227,12 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
 
         # precalculate the arguments to the  CDF
 
-        lower_arg = old_div((lower_bound - mu), sigma)
-        upper_arg = old_div((upper_bound - mu), sigma)
+        lower_arg = (lower_bound - mu) / sigma
+        upper_arg = (upper_bound - mu) / sigma
 
-        theta_lower = 0.5 + 0.5 * erf(old_div(lower_arg, sqrt_two))
+        theta_lower = 0.5 + 0.5 * erf(lower_arg / sqrt_two)
 
-        theta_upper = 0.5 + 0.5 * erf(old_div(upper_arg, sqrt_two))
+        theta_upper = 0.5 + 0.5 * erf(upper_arg / sqrt_two)
 
         # now precalculate the argument to the Inv. CDF
 
@@ -287,7 +278,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
+    __norm_const = 1.0 / math.sqrt(2 * np.pi)
 
     def _setup(self):
         self._is_prior = True
@@ -305,7 +296,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, x0, gamma):
-        norm = old_div(1, (gamma * np.pi))
+        norm = 1 / (gamma * np.pi)
 
         gamma2 = gamma * gamma
 
@@ -323,9 +314,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
         x0 = self.x0.value
         gamma = self.gamma.value
 
-        half_pi = 1.57079632679
-
-        res = np.tan(np.pi * x - half_pi) * gamma + x0
+        res = np.tan(np.pi * x - np.pi / 2) * gamma + x0
 
         return res
 
@@ -475,7 +464,7 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
 
     # Place this here to avoid recomputing it all the time
 
-    __norm_const = old_div(1.0, (math.sqrt(2 * np.pi)))
+    __norm_const = 1.0 / math.sqrt(2 * np.pi)
 
     def _setup(self):
 
@@ -512,10 +501,8 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
             * self.__norm_const
             / (sigma / piv * x[idx] / piv)
             * np.exp(
-                old_div(
-                    -np.power(np.log(old_div(x[idx], piv)) - old_div(mu, piv), 2.0),
-                    (2 * np.power(old_div(sigma, piv), 2.0)),
-                )
+                -np.power(np.log(x[idx] / piv) - mu / piv, 2.0)
+                / (2 * np.power(sigma / piv, 2.0)),
             )
         )
 
@@ -677,7 +664,7 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
         # This makes the prior proper because it is the integral between lower_bound and
         # upper_bound
 
-        res = np.where((x > lower_bound) & (x < upper_bound), old_div(K, x), 0)
+        res = np.where((x > lower_bound) & (x < upper_bound), K / x, 0)
 
         if isinstance(x, astropy_units.Quantity):
 
