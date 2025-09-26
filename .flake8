@@ -1,0 +1,10 @@
+
+[flake8]
+extend-ignore = E203, E701, E741
+max-line-length = 88
+exclude = .eggs,.git,docs,scripts,ci,build,dist,*/*.ipynb_checkpoints
+per-file-ignores =
+    */*__init__.py:F401
+    astromodels/xspec/__init__.py:F401,F403
+    astromodels/core/cpickle_compatibility_layer.py:F401
+    astromodels/core/parameter.py:F401
