@@ -1,5 +1,3 @@
-from __future__ import division
-
 import collections
 from typing import Dict, Optional
 
@@ -7,7 +5,6 @@ import astropy.units as u
 import numba as nb
 import numpy
 import scipy.integrate
-from past.utils import old_div
 
 from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.parameter import Parameter
@@ -265,7 +262,7 @@ class PointSource(Source, Node):
                             integral, a, b, epsrel=1e-5
                         )[0]
 
-                return old_div(integrals, (b - a))
+                return integrals / (b - a)
 
     @property
     def has_free_parameters(self) -> bool:

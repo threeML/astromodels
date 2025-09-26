@@ -1,6 +1,5 @@
 import astropy.units as astropy_units
 import numpy as np
-from past.utils import old_div
 from scipy.special import gamma, gammaincc
 
 import astromodels.functions.numba_functions as nb_func
@@ -805,7 +804,7 @@ class Band(Function1D, metaclass=FunctionMeta):
         self.beta.unit = astropy_units.dimensionless_unscaled
 
     def evaluate(self, x, K, alpha, xp, beta, piv):
-        E0 = old_div(xp, (2 + alpha))
+        E0 = xp / (2 + alpha)
 
         if alpha < beta:
             alpha = beta
@@ -900,14 +899,12 @@ class Band_grbm(Function1D, metaclass=FunctionMeta):
 
         out = np.zeros(x.shape) * K * 0
 
-        out[idx] = (
-            K * np.power(old_div(x[idx], piv), alpha) * np.exp(old_div(-x[idx], xc))
-        )
+        out[idx] = K * np.power(x[idx] / piv, alpha) * np.exp(-x[idx] / xc)
         out[~idx] = (
             K
             * np.power((alpha - beta) * xc / piv, alpha - beta)
             * np.exp(beta - alpha)
-            * np.power(old_div(x[~idx], piv), beta)
+            * np.power(x[~idx] / piv, beta)
         )
 
         return out
@@ -1004,8 +1001,8 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
     def ggrb_int_cpl(a, Ec, Emin, Emax):
 
         # Gammaincc does not support quantities
-        i1 = gammaincc(2 + a, old_div(Emin, Ec)) * gamma(2 + a)
-        i2 = gammaincc(2 + a, old_div(Emax, Ec)) * gamma(2 + a)
+        i1 = gammaincc(2 + a, Emin / Ec) * gamma(2 + a)
+        i2 = gammaincc(2 + a, Emax / Ec) * gamma(2 + a)
 
         return -Ec * Ec * (i2 - i1)
 
@@ -1023,11 +1020,11 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
         if alpha == -2:
 
-            Ec = old_div(xp, 0.0001)  # TRICK: avoid a=-2
+            Ec = xp / 0.0001  # TRICK: avoid a=-2
 
         else:
 
-            Ec = old_div(xp, (2 + alpha))
+            Ec = xp / (2 + alpha)
 
         # Split energy
 
@@ -1094,9 +1091,6 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
             # Cutoff power law
 
             flux = nb_func.cplaw_eval(x_, 1.0, Ec_, alpha_, Ec_)
-
-            # flux = norm * np.power(old_div(x, Ec), alpha) * \
-            #     np.exp(old_div(- x, Ec))
 
         else:
 

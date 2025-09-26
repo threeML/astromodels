@@ -1,12 +1,9 @@
-from __future__ import division
-
 import hashlib
 from astropy import wcs
 import astropy.units as u
 import numpy as np
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
-from past.utils import old_div
 from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.functions.function import Function3D, FunctionMeta
@@ -131,20 +128,18 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
-            old_div(energy, piv2),
-            0.54 + 0.046 * np.log10(old_div(energy, piv2)),
+            energy / piv2,
+            0.54 + 0.046 * np.log10(energy / piv2),
         )
-        e_piv_piv2 = 17.0 * np.power(
-            old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2))
-        )
+        e_piv_piv2 = 17.0 * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
 
         try:
 
             rdiff_a = (
                 rdiff0
                 * np.power(
-                    old_div(e_energy_piv2, e_piv_piv2),
-                    old_div((delta - 1.0), 2.0),
+                    e_energy_piv2 / e_piv_piv2,
+                    (delta - 1.0) / 2.0,
                 )
                 * np.sqrt(
                     b * b / 8.0 / np.pi * 0.624
@@ -167,7 +162,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
             rdiff_a = (
                 np.array(
                     [
-                        (rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value
+                        (rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, x)).value
                         for x in (delta - 1.0)
                         / 2.0
                         * np.sqrt(
@@ -191,7 +186,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         ang = np.arctan2(lat - lat0, (lon - lon0) * np.cos(lat0 * np.pi / 180.0))
 
         theta = np.arctan2(
-            old_div(np.sin(ang - incl * np.pi / 180.0), elongation),
+            np.sin(ang - incl * np.pi / 180.0) / elongation,
             np.cos(ang - incl * np.pi / 180.0),
         )
 
@@ -203,7 +198,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         )
 
         results = (
-            np.power(old_div(180.0, pi), 2)
+            np.power(180.0 / pi, 2)
             * 1.22
             / (
                 pi
@@ -212,7 +207,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
                 * np.sqrt(elongation)
                 * (angseps + 0.06 * rdiffs)
             )
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
+            * np.exp(-np.power(angseps, 2) / rdiffs**2)
         )
 
         return results
@@ -230,7 +225,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
+            or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -238,11 +233,12 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         else:
 
-            min_longitude = self.lon0.value - old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+            min_longitude = self.lon0.value - maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
-            max_longitude = self.lon0.value + old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+
+            max_longitude = self.lon0.value + maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
 
             if min_longitude < 0.0:
@@ -377,16 +373,14 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
-            old_div(energy, piv2),
-            0.54 + 0.046 * np.log10(old_div(energy, piv2)),
+            energy / piv2,
+            0.54 + 0.046 * np.log10(energy / piv2),
         )
-        e_piv_piv2 = 17.0 * np.power(
-            old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2))
-        )
+        e_piv_piv2 = 17.0 * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
 
         rdiff_c = (
             rdiff0
-            * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.0), 2.0))
+            * np.power(e_energy_piv2 / e_piv_piv2, (delta - 1.0) / 2.0)
             * np.sqrt(
                 b * b / 8.0 / np.pi * 0.624
                 + 0.26 * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5)
@@ -397,11 +391,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
             )
         )
 
-        rdiff_i = (
-            rdiff0
-            * rinj
-            * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div(delta, 2.0))
-        )
+        rdiff_i = rdiff0 * rinj * np.power(e_energy_piv2 / e_piv_piv2, delta / 2.0)
 
         rdiff = np.minimum(rdiff_c, rdiff_i)
 
@@ -412,10 +402,10 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
         return (
-            np.power(old_div(180.0, pi), 2)
+            np.power(180.0 / pi, 2)
             * 1.2154
             / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs))
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
+            * np.exp(-np.power(angseps, 2) / rdiffs**2)
         )
 
     def get_boundaries(self):
@@ -431,7 +421,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
+            or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -439,11 +429,12 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         else:
 
-            min_longitude = self.lon0.value - old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+            min_longitude = self.lon0.value - maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
-            max_longitude = self.lon0.value + old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+
+            max_longitude = self.lon0.value + maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
 
             if min_longitude < 0.0:
@@ -568,20 +559,18 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
-            old_div(energy, piv2),
-            0.54 + 0.046 * np.log10(old_div(energy, piv2)),
+            energy / piv2,
+            0.54 + 0.046 * np.log10(energy / piv2),
         )
-        e_piv_piv2 = 17.0 * np.power(
-            old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2))
-        )
+        e_piv_piv2 = 17.0 * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
 
         try:
 
             rdiff = (
                 rdiff0
                 * np.power(
-                    old_div(e_energy_piv2, e_piv_piv2),
-                    old_div((delta - 1.0), 2.0),
+                    e_energy_piv2 / e_piv_piv2,
+                    (delta - 1.0) / 2.0,
                 )
                 * np.sqrt(1.0 + uratio * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5))
                 / np.sqrt(1.0 + uratio * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5))
@@ -598,7 +587,7 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
             rdiff = (
                 np.array(
                     [
-                        (rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value
+                        (rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, x)).value
                         for x in (delta - 1.0)
                         / 2.0
                         * np.sqrt(
@@ -619,10 +608,10 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
         return (
-            np.power(old_div(180.0, pi), 2)
+            np.power(180.0 / pi, 2)
             * 1.2154
             / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs))
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
+            * np.exp(-np.power(angseps, 2) / rdiffs**2)
         )
 
     def get_boundaries(self):
@@ -638,7 +627,7 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
+            or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -646,11 +635,12 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         else:
 
-            min_longitude = self.lon0.value - old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+            min_longitude = self.lon0.value - maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
-            max_longitude = self.lon0.value + old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+
+            max_longitude = self.lon0.value + maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
 
             if min_longitude < 0.0:
@@ -889,48 +879,48 @@ class GalPropTemplate_3D(Function3D):
 
 class Hermes(Function3D, metaclass=FunctionMeta):
     r"""
-        description :
+    description :
 
-            Use a 3D template that has morphology and flux information
-            created using the HERMES sky-maps in fits format.
-            Only parameter is the normalization scale factor N.
+        Use a 3D template that has morphology and flux information
+        created using the HERMES sky-maps in fits format.
+        Only parameter is the normalization scale factor N.
 
-        latex : $ N $
+    latex : $ N $
 
-        parameters :
+    parameters :
 
-            N :
+        N :
 
-                desc : normalization scale factor
-                initial value : 1
-                fix : yes
+            desc : normalization scale factor
+            initial value : 1
+            fix : yes
 
-            hash :
+        hash :
 
-                desc : hash of model map [needed for memoization]
-                initial value : 1
-                fix : yes
+            desc : hash of model map [needed for memoization]
+            initial value : 1
+            fix : yes
 
-            ihdu:
-                desc: header unit index of fits file
-                initial value: 0
-                fix: True
-                min: 0
+        ihdu:
+            desc: header unit index of fits file
+            initial value: 0
+            fix: True
+            min: 0
 
-        properties:
-            fits_file:
-                desc: fits file to load
-                defer: True
-                function: _load_file
-            frame:
-                desc: coordinate frame
-                initial value: icrs
-                allowed values:
-                    - icrs
-                    - galactic
-                    - fk5
-                    - fk4
-                    - fk4_no_e
+    properties:
+        fits_file:
+            desc: fits file to load
+            defer: True
+            function: _load_file
+        frame:
+            desc: coordinate frame
+            initial value: icrs
+            allowed values:
+                - icrs
+                - galactic
+                - fk5
+                - fk4
+                - fk4_no_e
     """
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
@@ -958,38 +948,41 @@ class Hermes(Function3D, metaclass=FunctionMeta):
     def _load_file(self):
 
         if self.fits_file is None:
-            raise RuntimeError(
-                "Need to specify a fits file with a template map.")
+            raise RuntimeError("Need to specify a fits file with a template map.")
 
         self._fitsfile = self.fits_file.value
 
         with fits.open(self._fitsfile) as f:
 
-            self._delLon = f[int(self.ihdu.value)].header['CDELT1']
-            self._delLat = f[int(self.ihdu.value)].header['CDELT2']
-            self._delEn = f[int(self.ihdu.value)].header['CDELT3']
-            self._refLon = f[int(self.ihdu.value)].header['CRVAL1']
-            self._refLat = f[int(self.ihdu.value)].header['CRVAL2']
-            self._refEn = f[int(self.ihdu.value)].header['CRVAL3']  # values in log10
+            self._delLon = f[int(self.ihdu.value)].header["CDELT1"]
+            self._delLat = f[int(self.ihdu.value)].header["CDELT2"]
+            self._delEn = f[int(self.ihdu.value)].header["CDELT3"]
+            self._refLon = f[int(self.ihdu.value)].header["CRVAL1"]
+            self._refLat = f[int(self.ihdu.value)].header["CRVAL2"]
+            self._refEn = f[int(self.ihdu.value)].header["CRVAL3"]  # values in log10
             self._map = f[int(self.ihdu.value)].data
             self._wcs = wcs.WCS(header=f[int(self.ihdu.value)].header)
             if len(self._map.shape) == 4:
                 self._map = self._map[0]
-            self._nl = f[int(self.ihdu.value)].header['NAXIS1']  # longitude
-            self._nb = f[int(self.ihdu.value)].header['NAXIS2']  # latitude
-            self._ne = f[int(self.ihdu.value)].header['NAXIS3']  # energy
+            self._nl = f[int(self.ihdu.value)].header["NAXIS1"]  # longitude
+            self._nb = f[int(self.ihdu.value)].header["NAXIS2"]  # latitude
+            self._ne = f[int(self.ihdu.value)].header["NAXIS3"]  # energy
 
             # Create the function for the interpolation
             self._L = np.linspace(
-                self._refLon, self._refLon-(self._nl-1)*self._delLon, self._nl)
+                self._refLon, self._refLon - (self._nl - 1) * self._delLon, self._nl
+            )
             self._B = np.linspace(
-                self._refLat, self._refLat+(self._nb-1)*self._delLat, self._nb)
+                self._refLat, self._refLat + (self._nb - 1) * self._delLat, self._nb
+            )
             self._E = np.linspace(
-                self._refEn, self._refEn+(self._ne-1)*self._delEn, self._ne)
+                self._refEn, self._refEn + (self._ne - 1) * self._delEn, self._ne
+            )
             for i in range(len(self._E)):
                 self._map[i] = np.fliplr(self._map[i])
             self._F = RegularGridInterpolator(
-                (self._E, self._B, self._L), self._map, bounds_error=False)
+                (self._E, self._B, self._L), self._map, bounds_error=False
+            )
 
             h = hashlib.sha224()
             h.update(self._map)
@@ -1003,8 +996,8 @@ class Hermes(Function3D, metaclass=FunctionMeta):
 
         if self._intmap is None:
             _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
-            b = _coord.transform_to('galactic').b.value
-            l = _coord.transform_to('galactic').l.value
+            b = _coord.transform_to("galactic").b.value
+            l = _coord.transform_to("galactic").l.value
             lon = l
             lat = b
             energy = np.log10(z)
@@ -1038,8 +1031,9 @@ class Hermes(Function3D, metaclass=FunctionMeta):
         Xcorners = np.array([0, 0, self._nl, self._nl])
         Ycorners = np.array([0, self._nb, 0, self._nb])
 
-        corners = SkyCoord.from_pixel(Xcorners, Ycorners, wcs=self._wcs,
-                                      origin=0).transform_to(self._frame)
+        corners = SkyCoord.from_pixel(
+            Xcorners, Ycorners, wcs=self._wcs, origin=0
+        ).transform_to(self._frame)
 
         min_lon = min(corners.ra.degree)
         max_lon = max(corners.ra.degree)

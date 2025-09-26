@@ -1,7 +1,3 @@
-from __future__ import division
-
-from past.utils import old_div
-
 __author__ = "giacomov"
 
 import collections
@@ -66,7 +62,7 @@ class ParticleSource(Source, Node):
 
         # energy as x and particle flux as y
         x_unit = current_units.energy
-        y_unit = old_div(1, current_units.energy)
+        y_unit = 1 / current_units.energy
 
         # Now set the units of the components
         for component in list(self._components.values()):
