@@ -15,7 +15,6 @@ from typing import Dict, List, Optional, Tuple
 import astropy.units as u
 import numba as nb
 import numpy as np
-import six
 from yaml.reader import ReaderError
 
 from astromodels.core.memoization import memoize
@@ -658,7 +657,7 @@ class FunctionMeta(type):
 
         def _parse_value(val):
 
-            if isinstance(val, six.string_types):
+            if isinstance(val, str):
 
                 return eval(val)
 
