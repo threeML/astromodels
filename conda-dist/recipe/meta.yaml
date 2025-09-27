@@ -10,6 +10,7 @@ source:
 
 requirements:
   build:
+    - python
     - {{ compiler('c') }} # [linux]
     - {{ compiler('cxx') }} # [linux]
     - {{ compiler('fortran') }} # [linux]
@@ -66,7 +67,7 @@ requirements:
     - versioneer
     
 build:
-  script: python -m pip install --verbose --no-deps --ignore-installed .
+  script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
 #  skip: true  # [py3k]
 
