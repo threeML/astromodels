@@ -117,7 +117,7 @@ jobs:
                       # We also need to pin down ncurses, for now only on macos.
                       xorg="xorg-libx11"
                   fi
-
+                  pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
@@ -219,7 +219,8 @@ jobs:
                   # We also need to pin down ncurses, for now only on macos.
                   xorg="xorg-libx11"
                   fi
-
+                  
+                  pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
