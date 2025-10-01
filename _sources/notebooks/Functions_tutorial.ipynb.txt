@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "87ad819d",
+   "id": "558bd871",
    "metadata": {},
    "source": [
     "# Functions tutorial\n",
@@ -15,13 +15,13 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "55e54920",
+   "id": "fa5b6317",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:03.966510Z",
-     "iopub.status.busy": "2025-10-01T22:32:03.966381Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.796894Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.796149Z"
+     "iopub.execute_input": "2025-10-01T23:22:45.581389Z",
+     "iopub.status.busy": "2025-10-01T23:22:45.581231Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.276878Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.276145Z"
     }
    },
    "outputs": [],
@@ -33,20 +33,20 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "f18905c1",
+   "id": "225d8cb0",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.799386Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.799075Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.809841Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.809319Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.279405Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.279082Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.284827Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.284348Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<div><table id=\"table4395856464\">\n",
+       "<div><table id=\"table4380619248\">\n",
        "<thead><tr><th>name</th><th>Description</th></tr></thead>\n",
        "<tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates) see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>\n",
        "<tr><td>Band</td><td>Band model from Band et al., 1993, parametrized with the peak energy</td></tr>\n",
@@ -110,7 +110,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "abcf214b",
+   "id": "76d55283",
    "metadata": {},
    "source": [
     "If you need more info about a function, you can obtain it by using:"
@@ -119,13 +119,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "12233ad9",
+   "id": "27ba48af",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.812024Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.811886Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.815052Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.814526Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.287037Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.286793Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.290137Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.289573Z"
     }
    },
    "outputs": [
@@ -230,7 +230,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "23072482",
+   "id": "27f090db",
    "metadata": {},
    "source": [
     "Note that you don’t need to create an instance in order to call the info() method."
@@ -238,7 +238,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4dd39a81",
+   "id": "56e76da8",
    "metadata": {},
    "source": [
     "## Creating functions\n",
@@ -249,13 +249,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "f5d9fc2f",
+   "id": "b8984ac7",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.817264Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.817094Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.820659Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.819732Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.292715Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.292575Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.300711Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.300090Z"
     }
    },
    "outputs": [],
@@ -265,7 +265,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "42256254",
+   "id": "873c25b2",
    "metadata": {},
    "source": [
     "or we can specify on construction specific values for the parameters:"
@@ -274,13 +274,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "54050287",
+   "id": "4a220ca5",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.822866Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.822696Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.830109Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.829448Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.302883Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.302767Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.310428Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.309969Z"
     }
    },
    "outputs": [],
@@ -290,7 +290,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "56acf28b",
+   "id": "09b2d423",
    "metadata": {},
    "source": [
     "If you don’t remember the names of the parameters just call the .info() method as in powerlaw.info() as demonstrated above."
@@ -298,7 +298,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "bcc1c047",
+   "id": "013c27c0",
    "metadata": {},
    "source": [
     "## Getting information about an instance\n",
@@ -309,13 +309,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "fbedfe75",
+   "id": "334d1b0d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.832164Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.832058Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.836341Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.836030Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.312516Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.312407Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.316793Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.316426Z"
     }
    },
    "outputs": [
@@ -449,7 +449,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "23977bca",
+   "id": "cf6a3dff",
    "metadata": {},
    "source": [
     "It is also possible to get the text-only representation by simply printing the object like this:"
@@ -458,13 +458,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "b6cb2aff",
+   "id": "93aadcac",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.838558Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.838360Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.842647Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.842199Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.318824Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.318638Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.322148Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.321658Z"
     }
    },
    "outputs": [
@@ -512,7 +512,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "7d227735",
+   "id": "f421f1ac",
    "metadata": {},
    "source": [
     "<div class=\"alert alert-info\">\n",
@@ -525,7 +525,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4a751f7c",
+   "id": "436a4c99",
    "metadata": {},
    "source": [
     "## Modifying parameters\n",
@@ -536,25 +536,25 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "f8dd16da",
+   "id": "d2a2256b",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.844855Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.844729Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.851465Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.850950Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.324499Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.324373Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.331113Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.330658Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of Powerlaw.K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive    </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#715\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">715</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">23:22:47 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> We have set the min_value of Powerlaw.K to </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1e-99</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> because there was a postive    </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">parameter.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#715\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">715</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">transform                                                                        </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">                </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of Powerlaw.K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive   \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=239661;file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=678220;file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#715\u001b\\\u001b[2m715\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m23:22:47\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m We have set the min_value of Powerlaw.K to \u001b[0m\u001b[1;37m1e-99\u001b[0m\u001b[1;38;5;251m because there was a postive   \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=617958;file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py\u001b\\\u001b[2mparameter.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=112611;file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#715\u001b\\\u001b[2m715\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mtransform                                                                       \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m                \u001b[0m\n"
       ]
      },
@@ -613,7 +613,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "0a34ee59",
+   "id": "6dd2fb0a",
    "metadata": {},
    "source": [
     "## Using physical units\n",
@@ -624,13 +624,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "8a9393de",
+   "id": "c5cfe045",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.853607Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.853479Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.856402Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.856031Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.333161Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.333038Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.342224Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.341724Z"
     }
    },
    "outputs": [],
@@ -642,7 +642,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "a4283ea9",
+   "id": "72241b23",
    "metadata": {},
    "source": [
     "Now we can see the units"
@@ -651,13 +651,13 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "2e8a3d4d",
+   "id": "f4efc5ca",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.858019Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.857917Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.861736Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.861187Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.344267Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.344147Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.348059Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.347697Z"
     }
    },
    "outputs": [
@@ -792,13 +792,13 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "6fda0ade",
+   "id": "b3277f04",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.863396Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.863292Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.866020Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.865639Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.349970Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.349815Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.352371Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.351991Z"
     }
    },
    "outputs": [
@@ -823,13 +823,13 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "0d959a1c",
+   "id": "732900a9",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.867698Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.867569Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.869986Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.869621Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.354301Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.354160Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.356867Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.356507Z"
     }
    },
    "outputs": [
@@ -854,13 +854,13 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "3df72e95",
+   "id": "9bec589a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.871701Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.871559Z",
-     "iopub.status.idle": "2025-10-01T22:32:05.874643Z",
-     "shell.execute_reply": "2025-10-01T22:32:05.874271Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.358919Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.358769Z",
+     "iopub.status.idle": "2025-10-01T23:22:47.362732Z",
+     "shell.execute_reply": "2025-10-01T23:22:47.361766Z"
     }
    },
    "outputs": [
@@ -893,7 +893,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4183b489",
+   "id": "a4b17433",
    "metadata": {},
    "source": [
     "We see that astromodels does the unit conversion for us in the background!\n",
@@ -904,13 +904,13 @@
   {
    "cell_type": "code",
    "execution_count": 14,
-   "id": "1b6ce035",
+   "id": "7cd3271f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:05.876339Z",
-     "iopub.status.busy": "2025-10-01T22:32:05.876242Z",
-     "iopub.status.idle": "2025-10-01T22:32:12.438346Z",
-     "shell.execute_reply": "2025-10-01T22:32:12.437522Z"
+     "iopub.execute_input": "2025-10-01T23:22:47.365724Z",
+     "iopub.status.busy": "2025-10-01T23:22:47.365567Z",
+     "iopub.status.idle": "2025-10-01T23:22:52.036901Z",
+     "shell.execute_reply": "2025-10-01T23:22:52.036460Z"
     }
    },
    "outputs": [
@@ -918,7 +918,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "8.36 µs ± 540 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)\n"
+      "5.75 µs ± 24.9 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)\n"
      ]
     }
    ],
@@ -929,13 +929,13 @@
   {
    "cell_type": "code",
    "execution_count": 15,
-   "id": "24d41c28",
+   "id": "25af33ce",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:12.441301Z",
-     "iopub.status.busy": "2025-10-01T22:32:12.441098Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.813822Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.810985Z"
+     "iopub.execute_input": "2025-10-01T23:22:52.038686Z",
+     "iopub.status.busy": "2025-10-01T23:22:52.038577Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.404666Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.404120Z"
     }
    },
    "outputs": [
@@ -943,7 +943,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "153 µs ± 12.5 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)\n"
+      "90.7 µs ± 1.75 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)\n"
      ]
     }
    ],
@@ -953,7 +953,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9161a749",
+   "id": "20942dad",
    "metadata": {},
    "source": [
     "As you can see using **astropy.units requires about 10x more than using a plain assignment**. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. **Note that this is a feature of astropy.units, not of astromodels.**"
@@ -961,7 +961,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "8c449f92",
+   "id": "f372d64d",
    "metadata": {},
    "source": [
     "## Composing functions\n",
@@ -972,13 +972,13 @@
   {
    "cell_type": "code",
    "execution_count": 16,
-   "id": "4aa1e472",
+   "id": "1826d09b",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.825195Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.824499Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.835445Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.834748Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.406805Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.406695Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.416059Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.415637Z"
     }
    },
    "outputs": [
@@ -1000,7 +1000,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "b76852fd",
+   "id": "40a7bd8f",
    "metadata": {},
    "source": [
     "These expressions can be as complex as needed. For example:"
@@ -1009,13 +1009,13 @@
   {
    "cell_type": "code",
    "execution_count": 17,
-   "id": "1e520e8e",
+   "id": "e37c6d2c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.838752Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.838557Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.854066Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.848597Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.417683Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.417587Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.421797Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.421385Z"
     }
    },
    "outputs": [
@@ -1035,7 +1035,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "2f6bef10",
+   "id": "35c6fe39",
    "metadata": {},
    "source": [
     "The numbers between ```{}``` enumerate the unique functions which constitute a composite function. This is useful because composite functions can be created starting from pre-existing instances of functions, in which case the same instance can be used more than once. For example:"
@@ -1044,13 +1044,13 @@
   {
    "cell_type": "code",
    "execution_count": 18,
-   "id": "c6170327",
+   "id": "c0395a9d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.860238Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.860039Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.869273Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.868209Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.423491Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.423356Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.433332Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.432855Z"
     }
    },
    "outputs": [
@@ -1073,7 +1073,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4fbc2160",
+   "id": "7c3afa3a",
    "metadata": {},
    "source": [
     "In this case the same instance of a power law has been used twice. Changing the value of the parameters for “a_powerlaw” will affect also the second part of the expression. Instead, by doing this:"
@@ -1082,13 +1082,13 @@
   {
    "cell_type": "code",
    "execution_count": 19,
-   "id": "1c975270",
+   "id": "ddd6b93f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.872339Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.872103Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.881872Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.880529Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.435220Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.435102Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.445544Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.445089Z"
     }
    },
    "outputs": [
@@ -1108,7 +1108,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "211af058",
+   "id": "d600c36d",
    "metadata": {},
    "source": [
     "we will end up with two independent sets of parameters for the two power laws. The difference can be seen immediately from the number of parameters of the two composite functions:"
@@ -1117,13 +1117,13 @@
   {
    "cell_type": "code",
    "execution_count": 20,
-   "id": "df2e1409",
+   "id": "e831cf72",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.884260Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.884033Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.890679Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.890057Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.447302Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.447200Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.449475Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.448935Z"
     }
    },
    "outputs": [
@@ -1143,7 +1143,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "68c707eb",
+   "id": "15588038",
    "metadata": {},
    "source": [
     "## Creating custom functions\n",
@@ -1156,13 +1156,13 @@
   {
    "cell_type": "code",
    "execution_count": 21,
-   "id": "140ce9e3",
+   "id": "972d2d33",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.892885Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.892725Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.899356Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.898687Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.451183Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.451084Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.456998Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.456603Z"
     }
    },
    "outputs": [],
@@ -1172,7 +1172,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "10d7af46",
+   "id": "8108edc5",
    "metadata": {},
    "source": [
     "```Function1D``` is the base class for 1D spectral models and ```FunctionMeta``` is a python meta type class that ensures all the needed parts of a model are in the class as well as making the class function as it should.\n",
@@ -1238,7 +1238,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "7597144f",
+   "id": "047ca18c",
    "metadata": {},
    "source": [
     "### The docstring\n",
@@ -1281,13 +1281,13 @@
   {
    "cell_type": "code",
    "execution_count": 22,
-   "id": "777357c2",
+   "id": "ac97bced",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.902008Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.901820Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.905872Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.905232Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.458829Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.458723Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.460559Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.460130Z"
     }
    },
    "outputs": [],
@@ -1303,13 +1303,13 @@
   {
    "cell_type": "code",
    "execution_count": 23,
-   "id": "decbd81b",
+   "id": "cbac5d99",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.908115Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.907891Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.911398Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.910694Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.462446Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.462328Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.465161Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.464590Z"
     }
    },
    "outputs": [
@@ -1330,7 +1330,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "62503aa8",
+   "id": "b2c4c040",
    "metadata": {},
    "source": [
     "Now we will define a astromodels function that will handle both the unit and non-unit call."
@@ -1339,13 +1339,13 @@
   {
    "cell_type": "code",
    "execution_count": 24,
-   "id": "a4f294d6",
+   "id": "86ae5291",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.913651Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.913480Z",
-     "iopub.status.idle": "2025-10-01T22:32:24.919155Z",
-     "shell.execute_reply": "2025-10-01T22:32:24.918617Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.467204Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.467071Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.478290Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.477629Z"
     }
    },
    "outputs": [],
@@ -1403,7 +1403,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "36c6d1ed",
+   "id": "028b75e7",
    "metadata": {},
    "source": [
     "We can check the unit and non-unit call by making a point source and evaluating it"
@@ -1412,13 +1412,13 @@
   {
    "cell_type": "code",
    "execution_count": 25,
-   "id": "65ea7acb",
+   "id": "919a8c17",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:24.921340Z",
-     "iopub.status.busy": "2025-10-01T22:32:24.921161Z",
-     "iopub.status.idle": "2025-10-01T22:32:25.859589Z",
-     "shell.execute_reply": "2025-10-01T22:32:25.859112Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.480555Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.480440Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.967199Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.966545Z"
     }
    },
    "outputs": [
@@ -1456,7 +1456,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "3cbaf1c2",
+   "id": "9c832868",
    "metadata": {},
    "source": [
     "## Advanced functions\n",
@@ -1470,13 +1470,13 @@
   {
    "cell_type": "code",
    "execution_count": 26,
-   "id": "ef3ddeda",
+   "id": "dd66cff2",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:25.864057Z",
-     "iopub.status.busy": "2025-10-01T22:32:25.863885Z",
-     "iopub.status.idle": "2025-10-01T22:32:25.871218Z",
-     "shell.execute_reply": "2025-10-01T22:32:25.870579Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.969405Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.969281Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.980543Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.979989Z"
     }
    },
    "outputs": [],
@@ -1530,7 +1530,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "24ebf930",
+   "id": "0549f37e",
    "metadata": {},
    "source": [
     "We have added a text parameter called switch and specified the allowed values that it can take on. We can of course allow it to take on any value. Additionally, we have specified a function to call whenever we change the value. This allows use to do things like read in a table from a dictionary or load a file, etc. Properties can be set in the constructor of a function. They behave just like parameters except that they do not participate in the function call. Thus, their state is saved whenever you serialize the model to disk. "
@@ -1539,13 +1539,13 @@
   {
    "cell_type": "code",
    "execution_count": 27,
-   "id": "70563a3f",
+   "id": "64ebc7fa",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:25.873412Z",
-     "iopub.status.busy": "2025-10-01T22:32:25.873256Z",
-     "iopub.status.idle": "2025-10-01T22:32:25.876045Z",
-     "shell.execute_reply": "2025-10-01T22:32:25.875526Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.982470Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.982366Z",
+     "iopub.status.idle": "2025-10-01T23:22:59.990947Z",
+     "shell.execute_reply": "2025-10-01T23:22:59.990460Z"
     },
     "lines_to_next_cell": 2
    },
@@ -1569,7 +1569,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "bea6e75c",
+   "id": "1ba34980",
    "metadata": {},
    "source": [
     "In the docstring, one can also specify ```defer: True``` which allows you to not set a value until instancing an object. This is useful if you have a model that reads in file at runtime, but the file name is not known until then. Check out the source code of astromodels to see how properties can be used to expand the functionality of your custom models. For example, the absorption models such as ```TbAbs``` take advantage of this to set their abundance tables.\n",
@@ -1582,13 +1582,13 @@
   {
    "cell_type": "code",
    "execution_count": 28,
-   "id": "e4f769dd",
+   "id": "e07ebf20",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:25.877922Z",
-     "iopub.status.busy": "2025-10-01T22:32:25.877779Z",
-     "iopub.status.idle": "2025-10-01T22:32:25.886476Z",
-     "shell.execute_reply": "2025-10-01T22:32:25.885831Z"
+     "iopub.execute_input": "2025-10-01T23:22:59.995170Z",
+     "iopub.status.busy": "2025-10-01T23:22:59.994981Z",
+     "iopub.status.idle": "2025-10-01T23:23:00.004412Z",
+     "shell.execute_reply": "2025-10-01T23:23:00.003534Z"
     }
    },
    "outputs": [],
@@ -1658,7 +1658,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "983db41a",
+   "id": "b6c67ad1",
    "metadata": {},
    "source": [
     "With this function, whenever we set the linked_function property to another astromodels function, its call will return that function redshifted."
@@ -1667,13 +1667,13 @@
   {
    "cell_type": "code",
    "execution_count": 29,
-   "id": "2694f1e9",
+   "id": "77dca061",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-10-01T22:32:25.888492Z",
-     "iopub.status.busy": "2025-10-01T22:32:25.888355Z",
-     "iopub.status.idle": "2025-10-01T22:32:26.049587Z",
-     "shell.execute_reply": "2025-10-01T22:32:26.048930Z"
+     "iopub.execute_input": "2025-10-01T23:23:00.008272Z",
+     "iopub.status.busy": "2025-10-01T23:23:00.007979Z",
+     "iopub.status.idle": "2025-10-01T23:23:00.141958Z",
+     "shell.execute_reply": "2025-10-01T23:23:00.141475Z"
     },
     "lines_to_next_cell": 2
    },
@@ -1701,7 +1701,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "d274dbf3",
+   "id": "d0e774aa",
    "metadata": {},
    "source": [
     "We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members ```f.link_external_function(func, 'internal_name')```  and ```f.unlink_external_function('internal_name')```. You can link as many functions as needed and they are accessed via an internal dictionary ```self._extranal_functions```. As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all the complexity you built. "

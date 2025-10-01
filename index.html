@@ -120,6 +120,19 @@ don’t slow down the actual computation of the models.</p></li>
 <p>Astromodels has been designed with performance as priority, and is considerably
 faster than other python-based solutions for the same problem, such as
 astropy.modeling and the modeling part of sherpa.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note for XSPEC users</p>
+<p>Starting from version 2.5.0 there is currently support for XSPEC 12.15.0
+installed via Conda via the <cite>xspec</cite> conda package (see
+<a class="reference external" href="https://heasarc.gsfc.nasa.gov/docs/software/conda.html">here</a>).</p>
+<p>If you compiled XSPEC from source, please set the environment variable
+ASTRO_XSPEC_VERSION to the version of XSPEC you are using, in the build
+process and make sure to have the HEADAS environment variable set.</p>
+<p>XSPEC versions lower than 12.12.0 or greater than 12.15.0 are not supported.</p>
+<p>Support for <cite>xspec-modelsonly</cite> conda package has been discontinued.
+Please use the conda package <cite>xspec==12.15.0</cite> instead.</p>
+</div>
 </section>
 </section>
 <section id="contents">
@@ -315,7 +328,7 @@ astropy.modeling and the modeling part of sherpa.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
