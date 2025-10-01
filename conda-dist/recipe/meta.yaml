@@ -11,13 +11,10 @@ source:
 requirements:
   build:
     - python
-    - {{ compiler('c') }} # [linux]
-    - {{ compiler('cxx') }} # [linux]
-    - {{ compiler('fortran') }} # [linux]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
     - xspec==12.15.0
-    - cfitsio
-    - ccfits
-    - wcslib
     - versioneer
     - setuptools
     - pip
@@ -25,15 +22,15 @@ requirements:
 
   host:
     - python
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
     - setuptools
     - pip
     - numpy
     - pyyaml>=5.1
     - pandas>=0.23
     - xspec==12.15.0
-    - cfitsio
-    - ccfits
-    - wcslib
     - future
     - numba>=0.54
     - h5py

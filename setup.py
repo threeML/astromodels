@@ -300,7 +300,7 @@ def setup_xspec():
             print("WARN: You have not specified an XSPEC version with the ")
             print("WARN: environment variable ASTRO_XSPEC_VERSION")
             print(f"WARN: we will assume you have {_default_xspec_version}")
-            print("If you are using a different version of XSPEC, please set" 
+            print("If you are using a different version of XSPEC, please set"
                   " the environment variable ASTRO_XSPEC_VERSION to the "
                   "version of XSPEC you are using")
 
