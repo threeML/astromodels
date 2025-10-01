@@ -173,7 +173,7 @@ master_doc = "index"
 
 project = "Astromodels"
 copyright = (
-    "2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack"
+    "2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack"
 )
 author = "G.Vianello"
 
