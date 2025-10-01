@@ -193,12 +193,17 @@ def find_library(library_root, additional_places=None):
 
             return sanitize_lib_name(library_name), library_dir
 
+
 def get_xspec_conda_version():
     """Get the version string from conda"""
     try:
-        lines = subprocess.check_output(['conda', 'list', '-f',  'xspec']).decode().split('\n')
-    except:
-        lines = subprocess.check_output(['conda', 'list', '-f',  'xspec']).split('\n')
+        lines = subprocess.check_output(
+            ['conda', 'list', '-f', 'xspec']
+        ).decode().split('\n')
+    except subprocess.CalledProcessError:
+        lines = subprocess.check_output(
+            ['conda', 'list', '-f', 'xspec']
+        ).split('\n')
     for l in lines:
         if not l:
             continue
@@ -207,6 +212,7 @@ def get_xspec_conda_version():
         tokens = l.split()
         return tokens[1]
     return None
+
 
 def setup_xspec():
 
@@ -253,8 +259,9 @@ def setup_xspec():
                 return None
 
             else:
-                msg = "WARN: The xspec-modelsonly package has been installed in Conda, but"
-                msg += " it's no longer supported. Xspec support will not be installed"
+                msg = ("WARN: The xspec-modelsonly package has been installed"
+                       " in Conda, but it's no longer supported."
+                       " Xspec support will not be installed")
                 print(msg)
 
                 return None
@@ -270,7 +277,8 @@ def setup_xspec():
             return None
 
     print("HEADAS env. variable detected. Will compile the Xspec extension.")
-    print("NOTICE: If you have issues, manually set the environment variable XSPEC_INC_PATH to the location of the XSPEC headers")
+    print("NOTICE: If you have issues, manually set the environment variable "
+          "XSPEC_INC_PATH to the location of the XSPEC headers")
     msg = "If you are still having issues, unset HEADAS before installing and"
     msg += "contact the support team"
     print(msg)
@@ -292,14 +300,15 @@ def setup_xspec():
             print("WARN: You have not specified an XSPEC version with the ")
             print("WARN: environment variable ASTRO_XSPEC_VERSION")
             print(f"WARN: we will assume you have {_default_xspec_version}")
-            print("If you are using a different version of XSPEC, please set the environment variable ASTRO_XSPEC_VERSION to the version of XSPEC you are using")
+            print("If you are using a different version of XSPEC, please set" 
+                  " the environment variable ASTRO_XSPEC_VERSION to the "
+                  "version of XSPEC you are using")
 
             xspec_version = _default_xspec_version
 
         else:
 
             print(f"You have specified the XSPEC version {xspec_version}")
-
 
     xspec_version = packaging_version.Version(xspec_version)
 
@@ -335,7 +344,6 @@ def setup_xspec():
             macros += [(macro, None)]
 
     print(macros)
-
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system
