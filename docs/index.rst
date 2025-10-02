@@ -40,20 +40,22 @@ Astromodels has been designed with performance as priority, and is considerably
 faster than other python-based solutions for the same problem, such as
 astropy.modeling and the modeling part of sherpa.
 
-.. warning:: Note for XSPEC users
+.. note:: 
+  
+    **Note for XSPEC users:**
 
     Starting from version 2.5.0 there is currently support for XSPEC 12.15.0
     installed via Conda via the `xspec` conda package (see
     `here <https://heasarc.gsfc.nasa.gov/docs/software/conda.html>`_).
     
     If you compiled XSPEC from source, please set the environment variable
-    ASTRO_XSPEC_VERSION to the version of XSPEC you are using, in the build
+    ASTRO_XSPEC_VERSION to the version of XSPEC you are using in the build
     process and make sure to have the HEADAS environment variable set.
 
     XSPEC versions lower than 12.12.0 or greater than 12.15.0 are not supported.
 
     Support for `xspec-modelsonly` conda package has been discontinued.
-    Please use the conda package `xspec==12.15.0` instead.
+    Please use the conda package `xspec` version 12.15.0 instead.
 
 Contents:
 =========
