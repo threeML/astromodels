@@ -5,6 +5,7 @@ import glob
 import os
 import re
 import sys
+import subprocess
 
 from packaging import version as packaging_version
 from setuptools import Extension, setup
@@ -193,12 +194,31 @@ def find_library(library_root, additional_places=None):
             return sanitize_lib_name(library_name), library_dir
 
 
+def get_xspec_conda_version():
+    """Get the version string from conda"""
+    try:
+        lines = subprocess.check_output(
+            ['conda', 'list', '-f', 'xspec']
+        ).decode().split('\n')
+    except subprocess.CalledProcessError:
+        lines = subprocess.check_output(
+            ['conda', 'list', '-f', 'xspec']
+        ).split('\n')
+    for l in lines:
+        if not l:
+            continue
+        if l[0] == '#':
+            continue
+        tokens = l.split()
+        return tokens[1]
+    return None
+
+
 def setup_xspec():
 
     skip_xspec = os.environ.get("SKIP_XSPEC")
     headas_root = os.environ.get("HEADAS")
     conda_prefix = os.environ.get("CONDA_PREFIX")
-    xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
 
     if skip_xspec is not None:
 
@@ -206,58 +226,6 @@ def setup_xspec():
             "The SKIP_XSPEC env variable was set. Xspec support will not be installed."
         )
         return None
-
-    # thanks to the sherpa team for this
-
-    if xspec_version is None:
-        print("WARN: You have not specified and XSPEC version with the ")
-        print("WARN: environment variable ASTRO_XSPEC_VERSION")
-        print(f"WARN: we will assume you have {_default_xspec_version}")
-
-        xspec_raw_version = _default_xspec_version
-
-    else:
-
-        print(f"WARN: you have specified you have XSPEC version {xspec_version}")
-
-        xspec_raw_version = xspec_version
-
-    xspec_version = packaging_version.Version(xspec_raw_version)
-
-    macros = []
-
-    if xspec_version < packaging_version.Version("12.9.0"):
-        msg = "WARN: XSPEC Version is less than 12.9.0, which is the minimal supported"
-        msg += "version for astromodels"
-        print(msg)
-
-        # I am not sure what the naming of the XSPEC components are,
-        # but let's stick with major, minor, and patch.
-        #
-    for major, minor, patch in [
-        (12, 9, 0),
-        (12, 9, 1),
-        (12, 10, 0),
-        (12, 10, 1),
-        (12, 11, 0),
-        (12, 11, 1),
-        (12, 12, 0),
-        (12, 12, 1),
-        (12, 13, 0),
-        (12, 13, 1),
-        (12, 14, 0),
-        (12, 14, 1),
-        (12, 15, 0),
-    ]:
-
-        version = "{}.{}.{}".format(major, minor, patch)
-
-        macro = "XSPEC_{}_{}_{}".format(major, minor, patch)
-
-        if xspec_version >= packaging_version.Version(version):
-            macros += [(macro, None)]
-
-    print(macros)
 
     if headas_root is None:
 
@@ -291,13 +259,16 @@ def setup_xspec():
                 return None
 
             else:
-                msg = "The xspec-modelsonly package has been installed in Conda. Xspec"
-                msg += " support will be installed"
+                msg = ("WARN: The xspec-modelsonly package has been installed"
+                       " in Conda, but it's no longer supported."
+                       " Xspec support will not be installed")
                 print(msg)
+
+                return None
 
                 # Set up the HEADAS variable so that the following will find the
                 # libraries
-                headas_root = conda_prefix
+                # headas_root = conda_prefix
 
         else:
 
@@ -305,15 +276,74 @@ def setup_xspec():
 
             return None
 
+    print("HEADAS env. variable detected. Will compile the Xspec extension.")
+    print("NOTICE: If you have issues, manually set the environment variable "
+          "XSPEC_INC_PATH to the location of the XSPEC headers")
+    msg = "If you are still having issues, unset HEADAS before installing and"
+    msg += "contact the support team"
+    print(msg)
+
+    xspec_version = get_xspec_conda_version()
+
+    if xspec_version is not None:
+
+        print("Found XSPEC version %s in Conda" % xspec_version)
+
     else:
 
-        print("\n Xspec is detected. Will compile the Xspec extension.\n")
-        print("\n NOTICE!!!!!\n")
-        print("If you have issues, manually set the ENV variable XSPEC_INC_PATH")
-        print("To the location of the XSPEC headers\n\n")
-        msg = "If you are still having issues, unset HEADAS before installing and"
-        msg += "contact the support team"
+        print("No XSPEC installation found in Conda")
+        print('Xspec was likely compiled from source.')
+
+        xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
+
+        if xspec_version is None:
+            print("WARN: You have not specified an XSPEC version with the ")
+            print("WARN: environment variable ASTRO_XSPEC_VERSION")
+            print(f"WARN: we will assume you have {_default_xspec_version}")
+            print("If you are using a different version of XSPEC, please set"
+                  " the environment variable ASTRO_XSPEC_VERSION to the "
+                  "version of XSPEC you are using")
+
+            xspec_version = _default_xspec_version
+
+        else:
+
+            print(f"You have specified the XSPEC version {xspec_version}")
+
+    xspec_version = packaging_version.Version(xspec_version)
+
+    if xspec_version < packaging_version.Version("12.12.0"):
+        msg = "WARN: XSPEC version is less than 12.12.0, which is the minimal"
+        msg += " supported version for astromodels"
         print(msg)
+        return None
+    elif xspec_version > packaging_version.Version("12.15.0"):
+        msg = "WARN: XSPEC version is greater than 12.15.0, which is the"
+        msg += " maximal supportedversion for astromodels"
+        print(msg)
+        return None
+
+    macros = []
+    # I am not sure what the naming of the XSPEC components are,
+    # but let's stick with major, minor, and patch.
+    for major, minor, patch in [
+        (12, 12, 0),
+        (12, 12, 1),
+        (12, 13, 0),
+        (12, 13, 1),
+        (12, 14, 0),
+        (12, 14, 1),
+        (12, 15, 0),
+    ]:
+
+        version = "{}.{}.{}".format(major, minor, patch)
+
+        macro = "XSPEC_{}_{}_{}".format(major, minor, patch)
+
+        if xspec_version >= packaging_version.Version(version):
+            macros += [(macro, None)]
+
+    print(macros)
 
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system

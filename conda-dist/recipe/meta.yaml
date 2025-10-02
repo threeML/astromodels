@@ -11,13 +11,10 @@ source:
 requirements:
   build:
     - python
-    - {{ compiler('c') }} # [linux]
-    - {{ compiler('cxx') }} # [linux]
-    - {{ compiler('fortran') }} # [linux]
-    - xspec-modelsonly # [not arm64]
-    - cfitsio==4.1.0 # [not arm64]
-    - ccfits==2.6 # [not arm64]
-    - wcslib # [not arm64]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - xspec==12.15.0
     - versioneer
     - setuptools
     - pip
@@ -25,15 +22,15 @@ requirements:
 
   host:
     - python
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
     - setuptools
     - pip
     - numpy
     - pyyaml>=5.1
     - pandas>=0.23
-    - cfitsio==4.1.0 # [not arm64]
-    - ccfits==2.6 # [not arm64]
-    - wcslib # [not arm64]
-    - xspec-modelsonly # [not arm64]
+    - xspec==12.15.0
     - future
     - numba>=0.54
     - h5py
@@ -53,9 +50,6 @@ requirements:
     - pytables
     - pandas>=0.23
     - dill
-    - cfitsio==4.1.0 # [not arm64]
-    - ccfits # [not arm64]
-    - wcslib # [not arm64]
     - future
     - numba>=0.54
     - h5py
