@@ -1,10 +1,7 @@
-from __future__ import division
-
 import os
 from builtins import object, range
 
 import pytest
-from past.utils import old_div
 
 __author__ = "giacomov"
 
@@ -19,7 +16,13 @@ from astromodels.core.model import (
     Model,
     ModelFileExists,
 )
-from astromodels.core.model_parser import *
+from astromodels.core.model_parser import (
+    ModelIOError,
+    ModelParser,
+    ModelYAMLError,
+    clone_model,
+    load_model,
+)
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.functions import (
     Gaussian_on_sphere,
@@ -149,7 +152,7 @@ def test_pickling_unpickling():
 
     pick = dill.dumps(m1)
 
-    m_reloaded = dill.loads(pick)
+    _ = dill.loads(pick)
 
 
 def test_default_constructor():
@@ -185,7 +188,7 @@ def test_constructor_duplicated_sources():
 
     with pytest.raises(DuplicatedNode):
 
-        m = Model(pts, pts)
+        _ = Model(pts, pts)
 
 
 def test_constructor_with_many_point_sources():
@@ -329,7 +332,8 @@ def test_links():
 
     # Now test the link
 
-    # This should print a warning, as trying to change the value of a linked parameters does not have any effect
+    # This should print a warning, as trying to change the value of a linked parameters
+    # does not have any effect
 
     old_value = m.one.spectrum.main.Powerlaw.K
 
@@ -511,7 +515,8 @@ def test_input_output_basic():
 
     os.remove(temp_file)
 
-    # Now check that saving twice with the same name issues an exception if overwrite is not True
+    # Now check that saving twice with the same name issues an exception if overwrite
+    # is not True
     m.save(temp_file, overwrite=True)
 
     with pytest.raises(ModelFileExists):
@@ -545,8 +550,8 @@ def test_input_output_basic():
 
     new_m = load_model(temp_file)
 
-    assert new_m.one.position.ra.free == True
-    assert new_m.two.spectrum.main.shape.K.fix == True
+    assert new_m.one.position.ra.free is True
+    assert new_m.two.spectrum.main.shape.K.fix is True
 
     os.remove(temp_file)
 
@@ -884,8 +889,8 @@ def test_3ML_interface():
 
     assert np.all(np.array(res).flatten() == np.array(res1).flatten())
 
-    assert m.is_inside_any_extended_source(0.0, 0.0) == True
-    assert m.is_inside_any_extended_source(0.0, -90.0) == False
+    assert m.is_inside_any_extended_source(0.0, 0.0) is True
+    assert m.is_inside_any_extended_source(0.0, -90.0) is False
 
     # Test particle source interface
 
@@ -910,8 +915,8 @@ def test_clone_model():
 
     # Test that changing the parameter in one model does not changes the other
 
-    list(m2.free_parameters.values())[0].value = old_div(
-        list(m2.free_parameters.values())[0].value, 2.0
+    list(m2.free_parameters.values())[0].value = (
+        list(m2.free_parameters.values())[0].value / 2.0
     )
 
     assert (
@@ -954,7 +959,7 @@ def test_model_parser():
 
     m1.save("__test.yml")
 
-    mp = ModelParser("__test.yml")
+    _ = ModelParser("__test.yml")
 
     with pytest.raises(ModelIOError):
 
@@ -1008,8 +1013,8 @@ def test_time_domain_integration():
 
     assert np.all(results == 1.0)
 
-    # Now test the linking of the normalization, first with a constant then with a line with a certain
-    # angular coefficient
+    # Now test the linking of the normalization, first with a constant then with a line
+    # with a certain angular coefficient
 
     m.unlink(po.index)
 
@@ -1040,7 +1045,7 @@ def test_time_domain_integration():
     def F(x):
         return line2.b.value / 2.0 * x**2 + line2.a.value * x
 
-    effective_norm = old_div((F(10) - F(0)), 10.0)
+    effective_norm = (F(10) - F(0)) / 10.0
 
     expected_results = default_powerlaw(energies) * effective_norm  # type: np.ndarray
 
@@ -1053,4 +1058,4 @@ def test_deepcopy():
 
     m1 = mg.model
 
-    clone = copy.deepcopy(m1)
+    _ = copy.deepcopy(m1)

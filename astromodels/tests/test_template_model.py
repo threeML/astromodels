@@ -1,13 +1,11 @@
-from __future__ import division, print_function
-
 import os
+import pickle
 import shutil
 from pathlib import Path
 
 import numpy as np
 import numpy.testing as npt
 import pytest
-import pickle
 
 from astromodels import Model, PointSource, clone_model, load_model
 from astromodels.functions import (

@@ -9,6 +9,7 @@ on:
     pull_request:
       branches:
         - master
+        - dev
         
     schedule:
         - cron: "0 11 * * *"
@@ -31,7 +32,7 @@ jobs:
                   python-version: 3.9
             - name: Build package
               run: |
-                  pip install wheel setuptools -U
+                  pip install wheel setuptools packaging -U
                   python setup.py sdist
             - name: Publish
               uses: pypa/gh-action-pypi-publish@release/v1
@@ -73,12 +74,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-13]
-                python-version: [3.9]
-                include:
-                  - environment: ci/environment.yml
-                  - environment:  ci/environment_noxspec.yml
-                    os: macos-latest
+                os: ["ubuntu-latest", "macos-latest", "macos-13"]
+                python-version: [3.9, 3.11]
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -92,10 +89,9 @@ jobs:
                   miniforge-variant: Miniforge3
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ${{ matrix.environment }}
-                  use-only-tar-bz2: true
+                  environment-file: ci/environment.yml
+                  use-only-tar-bz2: false
                   channel-priority: true
-                  channels: conda-forge, xspecmodels, threeml
 
             - name: Init Env
               shell: bash -l {0}
@@ -116,7 +112,7 @@ jobs:
                       # We also need to pin down ncurses, for now only on macos.
                       xorg="xorg-libx11"
                   fi
-
+                  pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
@@ -139,13 +135,21 @@ jobs:
                   #conda install conda-build -n base
                   mamba install -c conda-forge boa
 
+                  conda config --set conda_build.pkg_format 2
+                  conda config --set conda_build.zstd_compression_level 19
+
                   #conda build --python=${{matrix.python-version}} conda-dist/recipe
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
+                  ls -l ${CONDA}/envs/test_env/conda-bld/*/*
+
+                  conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
+            - name: Install it
+              shell: bash -l {0}
+              run: |
                   #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
             - name: Test import xspec
-              if: matrix.os != 'macos-latest'
               shell: bash -l {0}
               run: |
                   cd astromodels/tests
@@ -164,13 +168,10 @@ jobs:
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         runs-on: ${{ matrix.os }}
         strategy:
+            fail-fast: false
             matrix:
-                os: [ubuntu-latest, macos-latest, macos-13]
-                python-version: [3.9]
-                include:
-                  - environment: ci/environment.yml
-                  - environment:  ci/environment_noxspec.yml
-                    os: macos-latest
+                os: ["ubuntu-latest", "macos-latest", "macos-13"]
+                python-version: [3.9, 3.11]
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -186,10 +187,9 @@ jobs:
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ${{ matrix.environment }}
-                  use-only-tar-bz2: true
+                  environment-file: ci/environment.yml
+                  use-only-tar-bz2: false
                   channel-priority: true
-                  channels: conda-forge, xspecmodels, threeml
 
             - name: Init Env
               shell: bash -l {0}
@@ -208,7 +208,8 @@ jobs:
                   # We also need to pin down ncurses, for now only on macos.
                   xorg="xorg-libx11"
                   fi
-
+                  
+                  pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
@@ -223,11 +224,18 @@ jobs:
                   #conda install conda-build -n base
                   mamba install -c conda-forge boa
 
+                  conda config --set conda_build.pkg_format 2
+                  conda config --set conda_build.zstd_compression_level 19
+
                   #conda build --python=${{matrix.python-version}} conda-dist/recipe
                   conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
 
+                  conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
+            - name: Install it
+              shell: bash -l {0}
+              run: |
                   #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
@@ -243,16 +251,16 @@ jobs:
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
 
-                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.tar.bz2 --force $LABEL
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.conda --force $LABEL
 
                   elif [[ ${{matrix.os}} == macos-latest ]];
                   then
 
-                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-arm64/*.tar.bz2 --force $LABEL
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-arm64/*.conda --force $LABEL
 
                   else
 
-                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-64/*.tar.bz2 --force $LABEL
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/osx-64/*.conda --force $LABEL
 
                   fi
 

@@ -1,12 +1,9 @@
-from __future__ import division
-
 import hashlib
-
+from astropy import wcs
 import astropy.units as u
 import numpy as np
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
-from past.utils import old_div
 from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.functions.function import Function3D, FunctionMeta
@@ -19,7 +16,10 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         Positron and electrons diffusing away from the accelerator
 
-    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$
+    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}
+            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}
+            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}
+            {r_{\rm diff} ^2} \right)$
 
     parameters :
 
@@ -39,7 +39,8 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         rdiff0 :
 
-            desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
+            desc : Projected diffusion radius. The maximum allowed value is used to
+                    define the truncation radius.
             initial value : 1.0
             min : 0
             max : 20
@@ -69,7 +70,8 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         piv2 :
 
-            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+            desc : Pivot for converting gamma energy to electron energy (always be
+                    1 TeV)
             initial value : 1e9
             min : 0
             fix : yes
@@ -121,24 +123,23 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         energy = z
 
         # energy in kev -> TeV.
-        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
-        # of a dimensionless quantity, so there must be a pivot there.
+        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the
+        # logarithm can only be taken of a dimensionless quantity, so there must be a
+        # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
-            old_div(energy, piv2),
-            0.54 + 0.046 * np.log10(old_div(energy, piv2)),
+            energy / piv2,
+            0.54 + 0.046 * np.log10(energy / piv2),
         )
-        e_piv_piv2 = 17.0 * np.power(
-            old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2))
-        )
+        e_piv_piv2 = 17.0 * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
 
         try:
 
             rdiff_a = (
                 rdiff0
                 * np.power(
-                    old_div(e_energy_piv2, e_piv_piv2),
-                    old_div((delta - 1.0), 2.0),
+                    e_energy_piv2 / e_piv_piv2,
+                    (delta - 1.0) / 2.0,
                 )
                 * np.sqrt(
                     b * b / 8.0 / np.pi * 0.624
@@ -152,15 +153,16 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         except ValueError:
 
-            # This happens when using units, because astropy.units fails with the message:
-            # "ValueError: Quantities and Units may only be raised to a scalar power"
+            # This happens when using units, because astropy.units fails with the
+            # message: "ValueError: Quantities and Units may only be raised to a scalar
+            # power"
 
-            # Work around the problem with this loop, which is slow but using units is only for testing purposes or
-            # single calls, so it shouldn't matter too much
+            # Work around the problem with this loop, which is slow but using units is
+            # only for testing purposes or single calls, so it shouldn't matter too much
             rdiff_a = (
                 np.array(
                     [
-                        (rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value
+                        (rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, x)).value
                         for x in (delta - 1.0)
                         / 2.0
                         * np.sqrt(
@@ -184,7 +186,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         ang = np.arctan2(lat - lat0, (lon - lon0) * np.cos(lat0 * np.pi / 180.0))
 
         theta = np.arctan2(
-            old_div(np.sin(ang - incl * np.pi / 180.0), elongation),
+            np.sin(ang - incl * np.pi / 180.0) / elongation,
             np.cos(ang - incl * np.pi / 180.0),
         )
 
@@ -196,7 +198,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         )
 
         results = (
-            np.power(old_div(180.0, pi), 2)
+            np.power(180.0 / pi, 2)
             * 1.22
             / (
                 pi
@@ -205,7 +207,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
                 * np.sqrt(elongation)
                 * (angseps + 0.06 * rdiffs)
             )
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
+            * np.exp(-np.power(angseps, 2) / rdiffs**2)
         )
 
         return results
@@ -223,7 +225,7 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
+            or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -231,11 +233,12 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
 
         else:
 
-            min_longitude = self.lon0.value - old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+            min_longitude = self.lon0.value - maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
-            max_longitude = self.lon0.value + old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+
+            max_longitude = self.lon0.value + maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
 
             if min_longitude < 0.0:
@@ -249,11 +252,12 @@ class Continuous_injection_diffusion_ellipse(Function3D, metaclass=FunctionMeta)
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -267,7 +271,10 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         Positron and electrons diffusing away from the accelerator
 
-    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$
+    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}
+            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}
+            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}
+            {r_{\rm diff} ^2} \right)$
 
     parameters :
 
@@ -287,14 +294,16 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         rdiff0 :
 
-            desc : Projected diffusion radius limited by the cooling time. The maximum allowed value is used to define the truncation radius.
+            desc : Projected diffusion radius limited by the cooling time. The maximum
+                    allowed value is used to define the truncation radius.
             initial value : 1.0
             min : 0
             max : 20
 
         rinj :
 
-            desc : Ratio of diffusion radius limited by the injection time over rdiff0. The maximum allowed value is used to define the truncation radius.
+            desc : Ratio of diffusion radius limited by the injection time over rdiff0.
+                    The maximum allowed value is used to define the truncation radius.
             initial value : 100.0
             min : 0
             max : 200
@@ -324,7 +333,8 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
             fix : yes
 
         piv2 :
-            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+            desc : Pivot for converting gamma energy to electron energy (always be 1
+                    TeV)
             initial value : 1e9
             min : 0
             fix : yes
@@ -358,20 +368,19 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         energy = z
 
         # energy in kev -> TeV.
-        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
-        # of a dimensionless quantity, so there must be a pivot there.
+        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the
+        # logarithm can only be taken of a dimensionless quantity, so there must be a
+        # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
-            old_div(energy, piv2),
-            0.54 + 0.046 * np.log10(old_div(energy, piv2)),
+            energy / piv2,
+            0.54 + 0.046 * np.log10(energy / piv2),
         )
-        e_piv_piv2 = 17.0 * np.power(
-            old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2))
-        )
+        e_piv_piv2 = 17.0 * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
 
         rdiff_c = (
             rdiff0
-            * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div((delta - 1.0), 2.0))
+            * np.power(e_energy_piv2 / e_piv_piv2, (delta - 1.0) / 2.0)
             * np.sqrt(
                 b * b / 8.0 / np.pi * 0.624
                 + 0.26 * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5)
@@ -382,11 +391,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
             )
         )
 
-        rdiff_i = (
-            rdiff0
-            * rinj
-            * np.power(old_div(e_energy_piv2, e_piv_piv2), old_div(delta, 2.0))
-        )
+        rdiff_i = rdiff0 * rinj * np.power(e_energy_piv2 / e_piv_piv2, delta / 2.0)
 
         rdiff = np.minimum(rdiff_c, rdiff_i)
 
@@ -397,10 +402,10 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
         return (
-            np.power(old_div(180.0, pi), 2)
+            np.power(180.0 / pi, 2)
             * 1.2154
             / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs))
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
+            * np.exp(-np.power(angseps, 2) / rdiffs**2)
         )
 
     def get_boundaries(self):
@@ -416,7 +421,7 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
+            or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -424,11 +429,12 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
 
         else:
 
-            min_longitude = self.lon0.value - old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+            min_longitude = self.lon0.value - maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
-            max_longitude = self.lon0.value + old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+
+            max_longitude = self.lon0.value + maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
 
             if min_longitude < 0.0:
@@ -442,11 +448,12 @@ class Continuous_injection_diffusion(Function3D, metaclass=FunctionMeta):
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -460,7 +467,10 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         Positron and electrons diffusing away from the accelerator
 
-    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3} r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )} \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}{r_{\rm diff} ^2} \right)$
+    latex : $\left(\frac{180^\circ}{\pi}\right)^2 \frac{1.2154}{\sqrt{\pi^3}
+            r_{\rm diff} ({\rm angsep} ({\rm x, y, lon_0, lat_0})+0.06 r_{\rm diff} )}
+            \, {\rm exp}\left(-\frac{{\rm angsep}^2 ({\rm x, y, lon_0, lat_0})}
+            {r_{\rm diff} ^2} \right)$
 
     parameters :
 
@@ -480,7 +490,8 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         rdiff0 :
 
-            desc : Projected diffusion radius. The maximum allowed value is used to define the truncation radius.
+            desc : Projected diffusion radius. The maximum allowed value is used to
+                    define the truncation radius.
             initial value : 1.0
             min : 0
             max : 20
@@ -509,7 +520,8 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
             fix : yes
 
         piv2 :
-            desc : Pivot for converting gamma energy to electron energy (always be 1 TeV)
+            desc : Pivot for converting gamma energy to electron energy (always be 1
+                    TeV)
             initial value : 1e9
             min : 0
             fix : yes
@@ -542,24 +554,23 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         energy = z
 
         # energy in kev -> TeV.
-        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the logarithm can only be taken
-        # of a dimensionless quantity, so there must be a pivot there.
+        # NOTE: the use of piv2 is necessary to preserve dimensional correctness: the
+        # logarithm can only be taken of a dimensionless quantity, so there must be a
+        # pivot there.
 
         e_energy_piv2 = 17.0 * np.power(
-            old_div(energy, piv2),
-            0.54 + 0.046 * np.log10(old_div(energy, piv2)),
+            energy / piv2,
+            0.54 + 0.046 * np.log10(energy / piv2),
         )
-        e_piv_piv2 = 17.0 * np.power(
-            old_div(piv, piv2), 0.54 + 0.046 * np.log10(old_div(piv, piv2))
-        )
+        e_piv_piv2 = 17.0 * np.power(piv / piv2, 0.54 + 0.046 * np.log10(piv / piv2))
 
         try:
 
             rdiff = (
                 rdiff0
                 * np.power(
-                    old_div(e_energy_piv2, e_piv_piv2),
-                    old_div((delta - 1.0), 2.0),
+                    e_energy_piv2 / e_piv_piv2,
+                    (delta - 1.0) / 2.0,
                 )
                 * np.sqrt(1.0 + uratio * np.power(1.0 + 0.0107 * e_piv_piv2, -1.5))
                 / np.sqrt(1.0 + uratio * np.power(1.0 + 0.0107 * e_energy_piv2, -1.5))
@@ -567,15 +578,16 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         except ValueError:
 
-            # This happens when using units, because astropy.units fails with the message:
-            # "ValueError: Quantities and Units may only be raised to a scalar power"
+            # This happens when using units, because astropy.units fails with the
+            # message: "ValueError: Quantities and Units may only be raised to a scalar
+            # power"
 
-            # Work around the problem with this loop, which is slow but using units is only for testing purposes or
-            # single calls, so it shouldn't matter too much
+            # Work around the problem with this loop, which is slow but using units is
+            # only for testing purposes or single calls, so it shouldn't matter too much
             rdiff = (
                 np.array(
                     [
-                        (rdiff0 * np.power(old_div(e_energy_piv2, e_piv_piv2), x)).value
+                        (rdiff0 * np.power(e_energy_piv2 / e_piv_piv2, x)).value
                         for x in (delta - 1.0)
                         / 2.0
                         * np.sqrt(
@@ -596,10 +608,10 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         rdiffs, angseps = np.meshgrid(rdiff, angsep)
 
         return (
-            np.power(old_div(180.0, pi), 2)
+            np.power(180.0 / pi, 2)
             * 1.2154
             / (pi * np.sqrt(pi) * rdiffs * (angseps + 0.06 * rdiffs))
-            * np.exp(old_div(-np.power(angseps, 2), rdiffs**2))
+            * np.exp(-np.power(angseps, 2) / rdiffs**2)
         )
 
     def get_boundaries(self):
@@ -615,7 +627,7 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         if (
             max_abs_lat > 89.0
-            or old_div(maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)) >= 180.0
+            or maximum_rdiff / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
         ):
 
             min_longitude = 0.0
@@ -623,11 +635,12 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
 
         else:
 
-            min_longitude = self.lon0.value - old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+            min_longitude = self.lon0.value - maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
-            max_longitude = self.lon0.value + old_div(
-                maximum_rdiff, np.cos(max_abs_lat * np.pi / 180.0)
+
+            max_longitude = self.lon0.value + maximum_rdiff / np.cos(
+                max_abs_lat * np.pi / 180.0
             )
 
             if min_longitude < 0.0:
@@ -641,11 +654,12 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -693,8 +707,7 @@ class GalPropTemplate_3D(Function3D):
         self._interpmap = None
 
     def set_frame(self, new_frame):
-        """
-        Set a new frame for the coordinates (the default is ICRS J2000)
+        """Set a new frame for the coordinates (the default is ICRS J2000)
 
         :param new_frame: a coordinate frame from astropy
         :return: (none)
@@ -797,10 +810,8 @@ class GalPropTemplate_3D(Function3D):
 
             # We assume x and y are R.A. and Dec
             _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
-            b = _coord.transform_to("galactic").b.value
-            l = _coord.transform_to("galactic").l.value
-            lon = l
-            lat = b
+            lat = _coord.transform_to("galactic").b.value
+            lon = _coord.transform_to("galactic").l.value
 
             # transform energy from keV to MeV. Galprop Model starts at 100 MeV
             energy = np.log10(z) - np.log10((u.MeV.to("keV") / u.keV).value)
@@ -808,8 +819,8 @@ class GalPropTemplate_3D(Function3D):
             if lon.size != lat.size:
                 raise AttributeError("Lon and Lat should be the same size")
             f = np.zeros([lon.size, energy.size])
-            E0 = self._refEn
-            Ef = self._refEn + (self._ne - 1) * self._delEn
+            # E0 = self._refEn
+            # Ef = self._refEn + (self._ne - 1) * self._delEn
 
             # fix longitude
             shift = np.where(lon > 180.0)
@@ -864,3 +875,175 @@ class GalPropTemplate_3D(Function3D):
         min_latitude = self.decmin
         max_latitude = self.decmax
         return (min_longitude, max_longitude), (min_latitude, max_latitude)
+
+
+class Hermes(Function3D, metaclass=FunctionMeta):
+    r"""
+    description :
+
+        Use a 3D template that has morphology and flux information
+        created using the HERMES sky-maps in fits format.
+        Only parameter is the normalization scale factor N.
+
+    latex : $ N $
+
+    parameters :
+
+        N :
+
+            desc : normalization scale factor
+            initial value : 1
+            fix : yes
+
+        hash :
+
+            desc : hash of model map [needed for memoization]
+            initial value : 1
+            fix : yes
+
+        ihdu:
+            desc: header unit index of fits file
+            initial value: 0
+            fix: True
+            min: 0
+
+    properties:
+        fits_file:
+            desc: fits file to load
+            defer: True
+            function: _load_file
+        frame:
+            desc: coordinate frame
+            initial value: icrs
+            allowed values:
+                - icrs
+                - galactic
+                - fk5
+                - fk4
+                - fk4_no_e
+    """
+
+    def _set_units(self, x_unit, y_unit, z_unit, w_unit):
+        # self.N*K.unit = (u.keV * u.cm**2 * u.s * u.sr) ** (-1)
+        # The spectrum and morphology are embedded in the template.
+        # The normalization scale factor N is for scaling the normalization
+        # of the template to fit the data.
+        self.N.unit = w_unit
+
+    def _setup(self):
+        self._frame = "icrs"
+        self._intmap = None
+
+    def set_frame(self, new_frame):
+        """
+        Set a new frame for the coordinates (the default is ICRS J2000)
+
+        :param new_frame: a coordinate frame from astropy
+        :return: (none)
+        """
+        assert isinstance(new_frame, BaseCoordinateFrame)
+
+        self._frame = new_frame
+
+    def _load_file(self):
+
+        if self.fits_file is None:
+            raise RuntimeError("Need to specify a fits file with a template map.")
+
+        self._fitsfile = self.fits_file.value
+
+        with fits.open(self._fitsfile) as f:
+
+            self._delLon = f[int(self.ihdu.value)].header["CDELT1"]
+            self._delLat = f[int(self.ihdu.value)].header["CDELT2"]
+            self._delEn = f[int(self.ihdu.value)].header["CDELT3"]
+            self._refLon = f[int(self.ihdu.value)].header["CRVAL1"]
+            self._refLat = f[int(self.ihdu.value)].header["CRVAL2"]
+            self._refEn = f[int(self.ihdu.value)].header["CRVAL3"]  # values in log10
+            self._map = f[int(self.ihdu.value)].data
+            self._wcs = wcs.WCS(header=f[int(self.ihdu.value)].header)
+            if len(self._map.shape) == 4:
+                self._map = self._map[0]
+            self._nl = f[int(self.ihdu.value)].header["NAXIS1"]  # longitude
+            self._nb = f[int(self.ihdu.value)].header["NAXIS2"]  # latitude
+            self._ne = f[int(self.ihdu.value)].header["NAXIS3"]  # energy
+
+            # Create the function for the interpolation
+            self._L = np.linspace(
+                self._refLon, self._refLon - (self._nl - 1) * self._delLon, self._nl
+            )
+            self._B = np.linspace(
+                self._refLat, self._refLat + (self._nb - 1) * self._delLat, self._nb
+            )
+            self._E = np.linspace(
+                self._refEn, self._refEn + (self._ne - 1) * self._delEn, self._ne
+            )
+            for i in range(len(self._E)):
+                self._map[i] = np.fliplr(self._map[i])
+            self._F = RegularGridInterpolator(
+                (self._E, self._B, self._L), self._map, bounds_error=False
+            )
+
+            h = hashlib.sha224()
+            h.update(self._map)
+            h.update(repr(self._wcs).encode("utf-8"))
+            self.hash = int(h.hexdigest(), 16)
+
+    def evaluate(self, x, y, z, N, hash, ihdu):
+
+        if self._map is None:
+            self._load_file(self._fitsfile)
+
+        if self._intmap is None:
+            _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+            b = _coord.transform_to("galactic").b.value
+            l = _coord.transform_to("galactic").l.value
+            lon = l
+            lat = b
+            energy = np.log10(z)
+
+            if lon.size != lat.size:
+                raise AttributeError("Lon and Lat should be the same size")
+            f = np.zeros([lon.size, energy.size])
+            # E0 = self._refEn
+            # Ef = self._refEn + (self._ne-1)*self._delEn
+
+            # Update for the galactic center
+            mask = (lon < 6) & (lon >= 0)
+            lon[mask] += 360
+
+            for i in range(energy.size):
+                e = np.repeat(energy[i], len(lon))
+                f[:, i] = self._F(np.array([e, lat, lon]).T)
+
+            bad_idx = np.isnan(f)
+            f[bad_idx] = 0
+            bad_idx = np.isinf(f)
+            f[bad_idx] = 0
+            assert np.all(np.isfinite(f)), "some interpolated values are wrong"
+            self._intmap = f
+
+        A = np.multiply(N, self._intmap)
+        return A
+
+    def get_boundaries(self):
+        # Same as SpatialTemplate_2D
+        Xcorners = np.array([0, 0, self._nl, self._nl])
+        Ycorners = np.array([0, self._nb, 0, self._nb])
+
+        corners = SkyCoord.from_pixel(
+            Xcorners, Ycorners, wcs=self._wcs, origin=0
+        ).transform_to(self._frame)
+
+        min_lon = min(corners.ra.degree)
+        max_lon = max(corners.ra.degree)
+
+        min_lat = min(corners.dec.degree)
+        max_lat = max(corners.dec.degree)
+
+        return (min_lon, max_lon), (min_lat, max_lat)
+
+    def get_total_spatial_integral(self, z=None):
+        if isinstance(z, u.Quantity):
+            z = z.value
+        return np.multiply(self.K.value, np.ones_like(z))

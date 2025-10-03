@@ -54,7 +54,7 @@ jobs:
                   if [[ ${{matrix.os}} == macos-latest ]];
                   then
                     brew update
-                    brew install hdf5
+                    brew install hdf5 lzo c-blosc
                   fi
 
                   pip install -e .
@@ -101,11 +101,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-13"]
-                python-version: [3.9]
-                include:
-                  - environment: ci/environment.yml
-                  - environment:  ci/environment_noxspec.yml
-                    os: macos-latest
+                python-version: [3.9, 3.11]
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
@@ -118,10 +114,9 @@ jobs:
                   miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ${{ matrix.environment }}
-                  use-only-tar-bz2: true
-                  channel-priority: strict
-                  channels: conda-forge, xspecmodels
+                  environment-file: ci/environment.yml
+                  use-only-tar-bz2: false
+                  channel-priority: true
             - name: Init Env
               shell: bash -l {0}
               run: |
@@ -159,7 +154,6 @@ jobs:
                   flake8
 
             - name: Test import xspec
-              if: matrix.os != 'macos-latest'
               shell: bash -l {0}
               run: python -c "import astromodels.xspec"
             - name: Test astromodels

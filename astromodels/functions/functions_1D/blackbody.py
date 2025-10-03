@@ -1,7 +1,4 @@
-from __future__ import division
-
 import astropy.units as astropy_units
-from past.utils import old_div
 
 import astromodels.functions.numba_functions as nb_func
 from astromodels.functions.function import (
@@ -34,7 +31,7 @@ class Blackbody(Function1D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit):
         # The normalization has the same units as y
-        self.K.unit = old_div(y_unit, (x_unit**2))
+        self.K.unit = y_unit / (x_unit**2)
 
         # The break point has always the same dimension as the x variable
         self.kT.unit = x_unit
@@ -52,7 +49,11 @@ class Blackbody(Function1D, metaclass=FunctionMeta):
 
         else:
             unit_ = 1.0
-            K_, kT_, x_, = (
+            (
+                K_,
+                kT_,
+                x_,
+            ) = (
                 K,
                 kT,
                 x,
@@ -106,7 +107,11 @@ class ModifiedBlackbody(Function1D, metaclass=FunctionMeta):
         else:
 
             unit_ = 1.0
-            K_, kT_, x_, = (
+            (
+                K_,
+                kT_,
+                x_,
+            ) = (
                 K,
                 kT,
                 x,
@@ -123,7 +128,8 @@ class NonDissipativePhotosphere(Function1D, metaclass=FunctionMeta):
     description :
         Non-dissipative photosphere of a GRB occuring above the saturation radius
         Acuner, Z., Ryde, F. & Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).
-    latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.4} e^{-\left(\frac{E}{E_{c}}\right)^{0.65}}$
+    latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.4}
+        e^{-\left(\frac{E}{E_{c}}\right)^{0.65}}$
 
     parameters :
         K :
@@ -183,7 +189,8 @@ class NonDissipativePhotosphere_Deep(Function1D, metaclass=FunctionMeta):
         Acuner, Z., Ryde, F. & Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).
 
 
-    latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.66} e^{-\left(\frac{E}{E_{c}}\right)}$
+    latex : $N_{\mathrm{E}}=K\left(\frac{E}{E_{\mathrm{pivot}}}\right)^{0.66}
+        e^{-\left(\frac{E}{E_{c}}\right)}$
 
     parameters :
         K :

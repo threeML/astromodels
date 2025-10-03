@@ -1,22 +1,13 @@
-from __future__ import print_function
-
-# this prevent a crash in macos. If does not import threeML first the code crashes
-# with a segmantiation violation (Need to investigate more)s
-try:
-    from threeML import *
-except:
-    pass
 import astropy.io.fits as fits
 import astropy.units as u
-from astropy import wcs
 import numpy as np
 import pytest
+from astropy import wcs
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model
 from astromodels.core.spectral_component import SpectralComponent
-from astromodels.functions import *
-from astromodels.functions import Log_parabola, Powerlaw
+from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
 
@@ -25,7 +16,8 @@ __author__ = "henrikef"
 
 def make_test_template(ra, dec, fitsfile):
 
-    # Test template function: 40 pixel (0.8 deg) wide square centered approximately around a given ra, dec.
+    # Test template function: 40 pixel (0.8 deg) wide square centered approximately
+    # around a given ra, dec.
     test_wcs = False
     if test_wcs:
         # this is an alternative way to build the header from WCS:
@@ -83,14 +75,15 @@ def test_constructor():
     # RA, Dec and L,B of the same point in the sky
 
     ra, dec = (125.6, -75.3)
-    l, b = (288.44190139183564, -20.717313145391525)
+    # l, b = (288.44190139183564, -20.717313145391525)
 
     # This should throw an error as we are using Powerlaw instead of Powerlaw()
     with pytest.raises(RuntimeError):
 
         _ = ExtendedSource("my_source", Gaussian_on_sphere, Powerlaw)
 
-    # This should throw an error because we should use a 2D function for the spatial shape
+    # This should throw an error because we should use a 2D function for the spatial
+    # shape
     with pytest.raises(RuntimeError):
 
         _ = ExtendedSource("my_source", Powerlaw(), Powerlaw())
@@ -180,7 +173,8 @@ def test_call():
             test_one(this_function, key)
 
     with pytest.raises(AssertionError):
-        # this will fail because the Latitude_galactic_diffuse function isn't normalized.
+        # this will fail because the Latitude_galactic_diffuse function isn't
+        # normalized.
         test_one(
             _known_functions["Latitude_galactic_diffuse"],
             "Latitude_galactic_diffuse",
@@ -285,7 +279,8 @@ def test_call_with_units():
             test_one(this_function, key)
 
     with pytest.raises(AssertionError):
-        # this will fail because the Latitude_galactic_diffuse function isn't normalized.
+        # this will fail because the Latitude_galactic_diffuse function isn't
+        # normalized.
         test_one(
             _known_functions["Latitude_galactic_diffuse"],
             "Latitude_galactic_diffuse",

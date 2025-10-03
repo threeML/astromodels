@@ -8,17 +8,15 @@ import numba as nb
 import numpy as np
 
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.logging import setup_logger
 from astromodels.utils.file_utils import copy_if_needed
+from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
 
 
 @dataclass(frozen=True)
 class _ExtinctionCurve:
-    """
-    simple extinction container
-    """
+    """Simple extinction container."""
 
     a: np.ndarray
     lamb: np.ndarray
@@ -29,7 +27,19 @@ class _ExtinctionCurve:
 class ZDust(Function1D, metaclass=FunctionMeta):
     r"""
     description :
-        Extinction by dust grains from Pei (1992), suitable for IR, optical and UV energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton OM detectors. Three models are included which characterize the extinction curves of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by redshift and can therefore be applied to extragalactic sources. The transmission is set to unity shortward of 912 Angstroms in the rest frame of the dust. This is incorrect physically but does allow the model to be used in combination with an X-ray photoelectric absorption model such as phabs. Parameter 1 (method) describes which extinction curve (MW, LMC or SMC) will be constructed and should never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv. Rv should typically remain frozen for a fit. Standard values for Rv are MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these may not be applicable to more distant dusty sources.
+        Extinction by dust grains from Pei (1992), suitable for IR, optical and UV
+        energy bands, including the full energy ranges of the Swift UVOT and XMM-Newton
+        OM detectors. Three models are included which characterize the extinction curves
+        of (1) the Milky Way, (2) the LMC and (3) the SMC. The models can be modified by
+        redshift and can therefore be applied to extragalactic sources. The transmission
+        is set to unity shortward of 912 Angstroms in the rest frame of the dust. This
+        is incorrect physically but does allow the model to be used in combination with
+        an X-ray photoelectric absorption model such as phabs. Parameter 1 (method)
+        describes which extinction curve (MW, LMC or SMC) will be constructed and should
+        never be allowed to float during a fit. The extinction at V, A(V) = E(B-V) x Rv.
+        Rv should typically remain frozen for a fit. Standard values for Rv are
+        MW = 3.08, LMC = 3.16 and SMC = 2.93 (from table 2 of Pei 1992), although these
+        may not be applicable to more distant dusty sources.
     parameters :
         e_bmv :
             desc : color excess
@@ -92,7 +102,6 @@ class ZDust(Function1D, metaclass=FunctionMeta):
 
             _x = np.array(x.to("keV").value, ndmin=1, copy=copy_if_needed, dtype=float)
 
-            _unit = astropy_units.cm**2
             _y_unit = astropy_units.dimensionless_unscaled
 
             _e_bmv = e_bmv.value
@@ -101,7 +110,6 @@ class ZDust(Function1D, metaclass=FunctionMeta):
 
         else:
 
-            _unit = 1.0
             _y_unit = 1.0
             _redshift = redshift
             _e_bmv = e_bmv
@@ -190,12 +198,7 @@ def ms_dust_xspec(x, e_bmv, rv, a, lamb, b, n):
 
 @nb.njit(fastmath=True)
 def pei(rlambda, a_b, a, lamb, b, n) -> float:
-    """
-    ported from XSPEC originally by
-    Martin.Still@gsfc.nasa.gov
-
-
-    """
+    """Ported from XSPEC originally by Martin.Still@gsfc.nasa.gov."""
 
     if rlambda < 800.0:
 

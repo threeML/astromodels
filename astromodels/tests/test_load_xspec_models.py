@@ -1,15 +1,15 @@
-from __future__ import print_function
-from __future__ import division
-import pytest
-import astropy.units as u
-from astromodels import clone_model, PointSource, Model, load_model
 from pathlib import Path
+
+import astropy.units as u
+import pytest
+
+from astromodels import Model, PointSource, clone_model, load_model
 
 try:
 
-    from astromodels.xspec import *
+    from astromodels.xspec import XS_bbody, XS_phabs, XS_powerlaw
 
-except:
+except (ImportError, ModuleNotFoundError):
 
     has_XSPEC = False
 
@@ -44,13 +44,13 @@ def test_xspec_saving():
 
     model = Model(ps)
 
-    cloned_model = clone_model(model)
+    _ = clone_model(model)
 
     filename = "_test_xspec_model.yml"
 
     model.save(filename)
 
-    reloaded_model = load_model(filename)
+    _ = load_model(filename)
 
     p = Path(filename)
 

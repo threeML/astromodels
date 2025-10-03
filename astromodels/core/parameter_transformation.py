@@ -1,8 +1,8 @@
 import math
 from builtins import object
 
-import numpy as np
 import numba as nb
+import numpy as np
 
 
 @nb.vectorize
@@ -60,8 +60,7 @@ _known_transformations = {"log10": LogarithmicTransformation}
 
 
 def get_transformation(transformation_name):
-    """
-    Returns an instance of a transformation by name
+    """Returns an instance of a transformation by name.
 
     :param transformation_name:
     :return: instance of transformation with provided name

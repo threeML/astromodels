@@ -40,15 +40,14 @@ DOCS = Path(__file__).parent
 
 
 def run_apidoc(app):
-    """Generage API documentation"""
-    import better_apidoc
+    """Generage API documentation."""
+    import os
     import pkgutil
     import sys
-    import os
 
-    astro_path = os.path.dirname(
-        pkgutil.get_loader("astromodels").get_filename()
-    )
+    import better_apidoc
+
+    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
     sys.path.insert(0, os.path.abspath(".."))
     sys.path.insert(1, os.path.abspath("../astromodels"))
@@ -111,7 +110,7 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
     "sphinx_gallery.load_style",
-#    "sphinx_math_dollar",
+    #    "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
 ]
 
@@ -137,11 +136,7 @@ napoleon_use_param = False
 default_dark_mode = True
 
 
-
-
 # SPHINX gallery
-
-
 
 
 # The path where the artifact should be extracted
@@ -177,7 +172,9 @@ master_doc = "index"
 # -- Project information -----------------------------------------------------
 
 project = "Astromodels"
-copyright = "2016--2022, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack"
+copyright = (
+    "2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack"
+)
 author = "G.Vianello"
 
 
@@ -187,7 +184,6 @@ author = "G.Vianello"
 # a list of builtin themes.
 #
 language = None
-
 
 
 # List of patterns, relative to source directory, that match files and

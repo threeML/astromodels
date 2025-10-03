@@ -9,7 +9,9 @@ from .functions_1D import (
     Cutoff_powerlaw,
     Cutoff_powerlaw_Ep,
     DiracDelta,
+    DoubleSmoothlyBrokenPowerlaw,
     Exponential_cutoff,
+    GenericFunction,
     Inverse_cutoff_powerlaw,
     Line,
     Log_parabola,
@@ -24,11 +26,9 @@ from .functions_1D import (
     Quartic,
     Sin,
     SmoothlyBrokenPowerLaw,
-    DoubleSmoothlyBrokenPowerlaw,
     Standard_Rv,
     StepFunction,
     StepFunctionUpper,
-    GenericFunction,
     Super_cutoff_powerlaw,
     TbAbs,
     WAbs,
@@ -75,19 +75,20 @@ from .functions_3D import (
     Continuous_injection_diffusion_ellipse,
     Continuous_injection_diffusion_legacy,
     GalPropTemplate_3D,
+    Hermes
 )
 from .priors import (
+    Beta,
     Cauchy,
     Cosine_Prior,
+    Exponential,
+    Gamma,
     Gaussian,
     Log_normal,
     Log_uniform_prior,
+    Powerlaw_Prior,
     Truncated_gaussian,
     Uniform_prior,
-    Beta,
-    Gamma,
-    Exponential,
-    Powerlaw_Prior,
 )
 from .template_model import (
     MissingDataFile,
@@ -165,6 +166,7 @@ __all__ = [
     "ModifiedBlackbody",
     "NonDissipativePhotosphere",
     "NonDissipativePhotosphere_Deep",
+    "Hermes",
 ]
 
 if has_atomdb:

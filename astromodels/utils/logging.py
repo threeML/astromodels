@@ -61,9 +61,7 @@ _log_file_names = ["usr.log", "dev.log"]
 
 
 def get_path_of_log_file(log_file: str) -> Path:
-    """
-    returns the path of the log files
-    """
+    """Returns the path of the log files."""
     assert log_file in _log_file_names, f"{log_file} is not one of {_log_file_names}"
 
     return get_path_of_log_dir() / log_file
@@ -137,7 +135,7 @@ _theme["logging.level.degub_node"] = "light_goldenrod1"
 
 # mytheme = Theme().read(_get_data_file_path("log_theme.ini"))
 mytheme = Theme(_theme)
-console = Console(theme=mytheme)
+console = Console(theme=mytheme, stderr=True)
 
 
 astromodels_console_log_handler = RichHandler(
@@ -151,9 +149,7 @@ warning_filter = LogFilter(logging.WARNING)
 
 @contextmanager
 def silence_console_log():
-    """
-    temporarily silence the console and progress bars
-    """
+    """Temporarily silence the console and progress bars."""
     current_console_logging_level = astromodels_console_log_handler.level
     current_usr_logging_level = astromodels_usr_log_handler.level
 
@@ -171,18 +167,14 @@ def silence_console_log():
 
 
 def silence_warnings():
-    """
-    supress warning messages in console and file usr logs
-    """
+    """Supress warning messages in console and file usr logs."""
 
     astromodels_usr_log_handler.addFilter(warning_filter)
     astromodels_console_log_handler.addFilter(warning_filter)
 
 
 def activate_warnings():
-    """
-    supress warning messages in console and file usr logs
-    """
+    """Supress warning messages in console and file usr logs."""
 
     astromodels_usr_log_handler.removeFilter(warning_filter)
     astromodels_console_log_handler.removeFilter(warning_filter)

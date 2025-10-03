@@ -53,9 +53,7 @@ def plaw_eval(x, K, index, piv):
 
 @nb.njit(fastmath=True, cache=_cache_functions)
 def plaw_flux_norm(index, a, b):
-    """
-    energy flux power law
-    """
+    """Energy flux power law."""
     # use the limit of the
     if index != -2.0:
 

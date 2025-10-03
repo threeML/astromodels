@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import os
 
 from ._version import get_versions
@@ -11,7 +9,6 @@ from ._version import get_versions
 
 if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
-    from .utils.configuration import astromodels_config, show_configuration
     from .core.memoization import use_astromodels_memoization
     from .core.model import Model
     from .core.model_parser import clone_model, load_model
@@ -22,7 +19,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         turn_off_parameter_transforms,
     )
     from .core.polarization import LinearPolarization, StokesPolarization
-    from .core.serialization import *
+    from .core.serialization import serialize_model, unserialize_model
     from .core.spectral_component import SpectralComponent
     from .core.units import get_units
     from .functions import (
@@ -45,6 +42,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         Disk_on_sphere,
         DMFitFunction,
         DMSpectra,
+        DoubleSmoothlyBrokenPowerlaw,
         Ellipse_on_sphere,
         Exponential_cutoff,
         Function1D,
@@ -54,6 +52,8 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         GalPropTemplate_3D,
         Gaussian,
         Gaussian_on_sphere,
+        Hermes,
+        GenericFunction,
         Inverse_cutoff_powerlaw,
         Latitude_galactic_diffuse,
         Line,
@@ -74,12 +74,10 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         Quartic,
         Sin,
         SmoothlyBrokenPowerLaw,
-        DoubleSmoothlyBrokenPowerlaw,
         SpatialTemplate_2D,
         Standard_Rv,
         StepFunction,
         StepFunctionUpper,
-        GenericFunction,
         Super_cutoff_powerlaw,
         TbAbs,
         TemplateModel,
@@ -90,11 +88,12 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         XSPECTableModel,
         ZDust,
         get_polynomial,
+        has_atomdb,
         has_ebltable,
         has_gsl,
         has_naima,
-        has_atomdb,
     )
+    from .utils.configuration import astromodels_config, show_configuration
 
     if has_ebltable:
 

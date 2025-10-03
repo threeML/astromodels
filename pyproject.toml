@@ -1,0 +1,87 @@
+[build-system]
+    requires = ["setuptools","versioneer[toml]","numpy"]
+    build-backend = "setuptools.build_meta"
+
+[project]
+    name = "astromodels"
+    description = """Astromodels contains models to be used in likelihood or Bayesian 
+    analysis in astronomy"""
+    readme = "README.md"
+    license = "BSD-3-Clause"
+    license-files = ["LICENSE"]
+    dynamic = ["version"]
+
+    authors = [
+	    {name = "Giacomo Vianello",email = "giacomo.vianello@gmail.com"}
+    ]
+    maintainers = [
+	    {name = "Niccolò Di Lalla",email = "niccolo.dilalla@stanford.edu"}
+    ]
+
+
+    requires-python = ">=3.9.0"
+    dependencies = [
+	"numpy>=1.6",
+	"PyYAML>=5.1",
+	"scipy>=0.14",
+	"astropy>=1.2",
+	"dill",
+	"future",
+	"legacy-cgi; python_version >= '3.13'",
+	"interpolation>=2.2.3",
+	"numba",
+	"h5py",
+	"pandas",
+	"tables",
+	"colorama",
+	"omegaconf",
+	"rich",
+	"joblib",
+	"versioneer"
+    ]
+    classifiers =[
+	"Development Status :: 5 - Production/Stable",
+	"Topic :: Scientific/Engineering :: Astronomy",
+	"Intended Audience :: Science/Research",
+	"Operating System :: POSIX",
+	"Programming Language :: Python :: 3.9",
+	"Environment :: Console",
+    ]
+
+[project.optional-dependencies]
+    tests = ["pytest","pytest-codecov"]
+    docs = [
+	"sphinx>=1.4",
+	"sphinx_rtd_theme",
+	"nbsphinx==0.8.8",
+	"sphinx-autoapi"
+    ]
+
+[project.urls]
+    Documentation = "https://astromodels.readthedocs.io"
+    Homepage = "https://github.com/threeML/astromodels"
+    Issues = "https://github.com/threeML/astromodels/issues"
+
+[tool.setuptools]
+    include-package-data = true
+
+[tool.setuptools.package-data]
+    astromodels = [
+	"astromodels/data/functions/*.yaml",
+	"astromodels/data/tests/*.fits",
+    ]
+
+[tool.versioneer]
+VCS = "git"
+style = "pep440"
+versionfile_source = "astromodels/_version.py"
+versionfile_build = "astromodels/_version.py"
+tag_prefix = "v"
+parentdir_prefix = "astromodels-"
+
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: slow tests",
+]
+

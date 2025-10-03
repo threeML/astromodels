@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 __author__ = "giacomov"
 
 # Import IPython display facility, if available. Otherwise,
@@ -9,10 +7,9 @@ try:
     from IPython.display import display
 
 except ImportError:
+
     def display(*args):
-        """
-        Mock version of display, used if there is no ipython installed
-        """
+        """Mock version of display, used if there is no ipython installed."""
         print(args)
 
 
@@ -20,10 +17,10 @@ try:
     from IPython.display import Latex
 
 except ImportError:
+
     class Latex(object):
-        """
-        Mock version of the IPython Latex object, used if there is no ipython installed
-        """
+        """Mock version of the IPython Latex object, used if there is no
+        ipython installed."""
 
         def __init__(self, *args, **kwargs):
 

@@ -1,5 +1,3 @@
-from __future__ import division
-
 import hashlib
 
 import astropy.units as u
@@ -7,7 +5,6 @@ import numpy as np
 from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
-from past.utils import old_div
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
@@ -57,8 +54,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         self._frame = ICRS()
 
     def set_frame(self, new_frame):
-        """
-        Set a new frame for the coordinates (the default is ICRS J2000)
+        """Set a new frame for the coordinates (the default is ICRS J2000)
 
         :param new_frame: a coordinate frame from astropy
         :return: (none)
@@ -84,7 +80,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
         return (
             K
-            * np.exp(old_div(-(b**2), (2 * sigma_b**2)))
+            * np.exp(-(b**2) / (2 * sigma_b**2))
             * np.logical_or(
                 np.logical_and(l > l_min, l < l_max),
                 np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
@@ -113,11 +109,12 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         dL = (
@@ -141,7 +138,13 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional Gaussian function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-\vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\ \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc} \sigma^2 & 0 \\ 0 & \sigma^2 (1-e^2) \end{array}\right) \\ U = \left( \begin{array}{cc} \cos \theta & -\sin \theta \\ \sin \theta & cos \theta \end{array}\right) \\\Sigma = U\Lambda U^\intercal $$
+    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi
+            \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-
+            \vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\
+            \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc}
+            \sigma^2 & 0 \\ 0 & \sigma^2 (1-e^2) \end{array}\right) \\ U = \left(
+            \begin{array}{cc} \cos \theta & -\sin \theta \\ \sin \theta & cos \theta
+            \end{array}\right) \\\Sigma = U\Lambda U^\intercal $$
 
     parameters :
 
@@ -187,10 +190,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         s2 = sigma**2
 
         return (
-            (old_div(180, np.pi)) ** 2
-            * 1
-            / (2.0 * np.pi * s2)
-            * np.exp(-0.5 * angsep**2 / s2)
+            (180 / np.pi) ** 2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2 / s2)
         )
 
     def get_boundaries(self):
@@ -232,11 +232,12 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -247,10 +248,8 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
     description :
-
-        A bidimensional Gaussian function on a sphere (in spherical coordinates)
-
-        see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function
+       A bidimensional Gaussian function on a sphere (in spherical coordinates) see
+       https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function
 
     parameters :
 
@@ -335,15 +334,15 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         sin_2phi = np.sin(2.0 * phi * np.pi / 180.0)
 
-        A = old_div(cos2_phi, (2.0 * b**2)) + old_div(sin2_phi, (2.0 * a**2))
+        A = cos2_phi / (2.0 * b**2) + sin2_phi / (2.0 * a**2)
 
-        B = old_div(-sin_2phi, (4.0 * b**2)) + old_div(sin_2phi, (4.0 * a**2))
+        B = -sin_2phi / (4.0 * b**2) + sin_2phi / (4.0 * a**2)
 
-        C = old_div(sin2_phi, (2.0 * b**2)) + old_div(cos2_phi, (2.0 * a**2))
+        C = sin2_phi / (2.0 * b**2) + cos2_phi / (2.0 * a**2)
 
         E = -A * np.power(dX, 2) + 2.0 * B * dX * dY - C * np.power(dY, 2)
 
-        return np.power(old_div(180, np.pi), 2) * 1.0 / (2 * np.pi * a * b) * np.exp(E)
+        return np.power(180 / np.pi, 2) * 1.0 / (2 * np.pi * a * b) * np.exp(E)
 
     def get_boundaries(self):
 
@@ -382,11 +381,12 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -400,7 +400,10 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional disk/tophat function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm radius}} \end{matrix}\right. $$
+    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm
+            radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0|
+            \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm
+            radius}} \end{matrix}\right. $$
 
     parameters :
 
@@ -443,12 +446,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return (
-            np.power(old_div(180, np.pi), 2)
-            * 1.0
-            / (np.pi * radius**2)
-            * (angsep <= radius)
-        )
+        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
 
     def get_boundaries(self):
 
@@ -489,11 +487,12 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -507,7 +506,10 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
 
         An ellipse function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}| + | \vec{x} - \vec{x}_{f2}| > {\rm 2a}} \end{matrix}\right. $$
+    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~ a b}
+            ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_{f1}|
+            + | \vec{x} - \vec{x}_{f2}| \le {\rm 2a}} \\ 0 & {\rm if}& {\rm | \vec{x}
+            - \vec{x}_{f1}| + | \vec{x}-\vec{x}_{f2}| > {\rm 2a}} \end{matrix}\right. $$
 
     parameters :
 
@@ -601,9 +603,7 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
         angsep2 = angular_distance(self.lon2, self.lat2, lon, lat)
         angsep = angsep1 + angsep2
 
-        return (
-            np.power(old_div(180, np.pi), 2) * 1.0 / (np.pi * a * b) * (angsep <= 2 * a)
-        )
+        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * a * b) * (angsep <= 2 * a)
 
     def get_boundaries(self):
 
@@ -644,11 +644,12 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -723,8 +724,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
             self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
 
-            # note: map coordinates are switched compared to header. NAXIS1 is coordinate 1, not 0.
-            # see http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
+            # note: map coordinates are switched compared to header. NAXIS1 is
+            # coordinate 1, not 0. see
+            # http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
             assert (
                 self._map.shape[1] == self._nX
             ), "NAXIS1 = %d in fits header, but %d in map" % (
@@ -750,8 +752,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                     )
                 )
 
-            # hash sum uniquely identifying the template function (defined by its 2D map array and coordinate system)
-            # this is needed so that the memoization won't confuse different SpatialTemplate_2D objects.
+            # hash sum uniquely identifying the template function (defined by its 2D map
+            # array and coordinate system) this is needed so that the memoization won't
+            # confuse different SpatialTemplate_2D objects.
             h = hashlib.sha224()
             h.update(self._map)
             h.update(repr(self._wcs).encode("utf-8"))
@@ -763,7 +766,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
     #      if not minimal:
 
-    #         data['extra_setup'] = {"_fitsfile": self._fitsfile, "_frame": self._frame }
+    #         data['extra_setup'] = {"_fitsfile": self._fitsfile,"_frame":self._frame}
 
     #      return data
 
@@ -780,8 +783,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
     def evaluate(self, x, y, K, hash, ihdu):
 
-        # We assume x and y are R.A. and Dec
-        coord = SkyCoord(ra=x, dec=y, frame=self.frame.value, unit="deg")
+        # X and Y are defined by the frame (ICRS,galactic, etc..)
+        coord = SkyCoord(x, y, frame=self.frame.value, unit="deg")
 
         # transform input coordinates to pixel coordinates;
         # SkyCoord takes care of necessary coordinate frame transformations.
@@ -805,7 +808,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         #     self.load_file(self._fitsfile)
 
         # We use the max/min RA/Dec of the image corners to define the boundaries.
-        # Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed accounting.
+        # Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed
+        # accounting.
 
         Xcorners = np.array([0, 0, self._nX, self._nX])
         Ycorners = np.array([0, self._nY, 0, self._nY])
@@ -823,11 +827,12 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         return (min_lon, max_lon), (min_lat, max_lat)
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -836,13 +841,15 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
 
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
-
     r"""
     description :
 
         A power law function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{\begin{matrix} 0.05^{index} & {\rm if} & ||\vec{x}-\vec{x}_0|| \le 0.05\\ ||\vec{x}-\vec{x}_0||^{index} & {\rm if} & 0.05 < ||\vec{x}-\vec{x}_0|| \le maxr \\ 0 & {\rm if} & ||\vec{x}-\vec{x}_0||>maxr\end{matrix}\right. $$
+    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{
+            \begin{matrix} 0.05^{index} & {\rm if} & ||\vec{x}-\vec{x}_0|| \le 0.05\\
+            ||\vec{x}-\vec{x}_0||^{index} & {\rm if} & 0.05 < ||\vec{x}-\vec{x}_0|| \le
+            maxr \\ 0 & {\rm if} & ||\vec{x}-\vec{x}_0||>maxr\end{matrix}\right. $$
 
     parameters :
 
@@ -900,9 +907,7 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
         angsep = angular_distance(lon0, lat0, lon, lat)
 
         if maxr <= minr:
-            norm = (
-                np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr**2 * minr**index
-            )
+            norm = np.power(np.pi / 180.0, 2.0 + index) * np.pi * maxr**2 * minr**index
         elif self.index.value == -2.0:
             norm = np.pi * (1.0 + 2.0 * np.log(maxr / minr))
         else:
@@ -938,11 +943,12 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
         )
 
     def get_total_spatial_integral(self, z=None):
-        """
-        Returns the total integral (for 2D functions) or the integral over the spatial components (for 3D functions).
-        needs to be implemented in subclasses.
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
 
-        :return: an array of values of the integral (same dimension as z).
+        :return: an array of values of the integral (same dimension as
+            z).
         """
 
         if isinstance(z, u.Quantity):
@@ -954,7 +960,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 #     r"""
 #         description :
 #
-#             Returns the average of the integrand function (a 1-d function) over the interval x-y. The integrand is set
+#             Returns the average of the integrand function (a 1-d function) over the
+#             interval x-y. The integrand is set
 #             using the .integrand property, like in:
 #
 #             > G = FunctionIntegrator()
@@ -966,7 +973,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 #
 #             s :
 #
-#                 desc : if s=0, then the integral will *not* be normalized by (y-x), otherwise (default) it will.
+#                 desc : if s=0, then the integral will *not* be normalized by (y-x),
+#                        otherwise (default) it will.
 #                 initial value : 1
 #                 fix : yes
 #         """
@@ -983,7 +991,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 #
 #     def evaluate(self, x, y, s):
 #
-#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is zero or negative!"
+#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is
+#                           zero or negative!"
 #
 #         integral = self._integrand.integral(x, y)
 #

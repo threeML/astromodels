@@ -3,7 +3,6 @@ import numpy as np
 import numpy.testing as npt
 
 from astromodels.functions.function import _known_functions
-from astromodels.functions.priors import *
 from astromodels.utils import _get_data_file_path
 
 _multiplicative_models = [
@@ -26,12 +25,13 @@ def test_function_values_have_not_changed():
 
         this_function = _known_functions[key]
 
-        # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
+        # Test only the power law of XSpec, which is the only one we know we can test
+        # at 1 keV
 
         if key.find("XS") == 0 or (key in _multiplicative_models):
 
-            # An XSpec model OR EBLattenuation function. Test it only if it's a power law (the others might need other parameters during
-            # initialization)
+            # An XSpec model OR EBLattenuation function. Test it only if it's a power
+            # law (the others might need other parameters during initialization)
 
             continue
 
@@ -53,7 +53,6 @@ def test_function_values_have_not_changed():
 
             continue
 
-
         if this_function._n_dim == 1:
 
             print("testing %s ..." % key)
@@ -70,11 +69,9 @@ def test_function_values_have_not_changed():
 
             with h5py.File(_get_data_file_path("past_1D_values.h5"), "r") as f:
                 if key not in f.keys():
-
-                    print(
-                        "the function %s does not exist in the past data. You must run a script to add it"
-                        % key
-                    )
+                    msg = f"the function {key} does not exist in the past data. You"
+                    msg += " must run a script to add it"
+                    print(msg)
 
                 else:
 

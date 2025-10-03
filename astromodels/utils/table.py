@@ -4,11 +4,11 @@ import astropy.table
 
 
 def dict_to_table(dictionary, list_of_keys=None):
-    """
-    Return a table representing the dictionary.
+    """Return a table representing the dictionary.
 
     :param dictionary: the dictionary to represent
-    :param list_of_keys: optionally, only the keys in this list will be inserted in the table
+    :param list_of_keys: optionally, only the keys in this list will be
+        inserted in the table
     :return: a Table instance
     """
 
@@ -54,16 +54,12 @@ def dict_to_table(dictionary, list_of_keys=None):
 
 
 class Table(astropy.table.Table):
-    """
-    Wrapper around the astropy table to remove some useless clutter (like the format of each column)
-    """
+    """Wrapper around the astropy table to remove some useless clutter (like
+    the format of each column)"""
 
     def _base_repr_(self, html=False, show_name=True, **kwargs):
-        """
-        Override the method in the astropy.Table class
-        to avoid displaying the description, and the format
-        of the columns
-        """
+        """Override the method in the astropy.Table class to avoid displaying
+        the description, and the format of the columns."""
 
         table_id = "table{id}".format(id=id(self))
 

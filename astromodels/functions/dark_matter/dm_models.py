@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import astropy.units as astropy_units
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
@@ -53,22 +51,20 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
         tablepath = _get_data_file_path("dark_matter/gammamc_dif.dat")
 
         self._data = np.loadtxt(tablepath)
+        """Mapping between the channel codes and the rows in the gammamc file.
 
-        """
-            Mapping between the channel codes and the rows in the gammamc file
-
-            1 : 8, # ee
-            2 : 6, # mumu
-            3 : 3, # tautau
-            4 : 1, # bb
-            5 : 2, # tt
-            6 : 7, # gg
-            7 : 4, # ww
-            8 : 5, # zz
-            9 : 0, # cc
-            10 : 10, # uu
-            11 : 11, # dd
-            12 : 9, # ss
+        1 : 8, # ee
+        2 : 6, # mumu
+        3 : 3, # tautau
+        4 : 1, # bb
+        5 : 2, # tt
+        6 : 7, # gg
+        7 : 4, # ww
+        8 : 5, # zz
+        9 : 0, # cc
+        10 : 10, # uu
+        11 : 11, # dd
+        12 : 9, # ss
         """
 
         channel_index_mapping = {
@@ -138,8 +134,8 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit):
 
-        # Usually a model should not assume fixed units for energy or anything else. However,
-        # in this case this model is so specialistic that we can assume GeV
+        # Usually a model should not assume fixed units for energy or anything else.
+        # However, in this case this model is so specialistic that we can assume GeV
 
         self.mass.unit = astropy_units.GeV
 
@@ -245,24 +241,22 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
 
         tablepath_f = _get_data_file_path("dark_matter/gammamc_dif.dat")
         self._data_f = np.loadtxt(tablepath_f)
+        """Mapping between the channel codes and the rows in the gammamc file
+        dmSpecTab.npy created to match this mapping too.
 
+        1 : 8, # ee
+        2 : 6, # mumu
+        3 : 3, # tautau
+        4 : 1, # bb
+        5 : 2, # tt
+        6 : 7, # gg
+        7 : 4, # ww
+        8 : 5, # zz
+        9 : 0, # cc
+        10 : 10, # uu
+        11 : 11, # dd
+        12 : 9, # ss
         """
-            Mapping between the channel codes and the rows in the gammamc file
-            dmSpecTab.npy created to match this mapping too
-
-            1 : 8, # ee
-            2 : 6, # mumu
-            3 : 3, # tautau
-            4 : 1, # bb
-            5 : 2, # tt
-            6 : 7, # gg
-            7 : 4, # ww
-            8 : 5, # zz
-            9 : 0, # cc
-            10 : 10, # uu
-            11 : 11, # dd
-            12 : 9, # ss
-            """
 
         channel_index_mapping = {
             1: 8,  # ee
@@ -395,7 +389,8 @@ class DMSpectra(Function1D, metaclass=FunctionMeta):
                 "currently spectra for selected channel and mass not implemented."
             )
             log.error(
-                "Spectra for channels ['ee','gg','WW'] currently not available for mass > 10 TeV"
+                "Spectra for channels ['ee','gg','WW'] currently not available for mass"
+                " > 10 TeV"
             )
 
     def _set_units(self, x_unit, y_unit):
