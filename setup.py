@@ -50,7 +50,7 @@ def sanitize_lib_name(library_path):
     # Some regexp magic needed to extract in a system-independent (mac/linux)
     # way the library name
 
-    tokens = re.findall(r"lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
+    tokens = re.findall(r"lib(.+)(\.so|\.dylib|\.a|\.la)(.+)?", lib_name)
 
     if not tokens:
         msg = f"Attempting to find {lib_name} in directory {library_path}"
