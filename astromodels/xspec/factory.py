@@ -14,6 +14,7 @@ from astromodels.xspec import _xspec
 
 from datetime import datetime, timezone
 
+
 class XSpecNotAvailable(ImportWarning):
     pass
 
@@ -557,14 +558,14 @@ class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
             # Create a tuple of the current values of the parameters
 
             parameters_tuple = ($PARAMETERS_NAMES$,)
-        
+
         if self._model_type == 'add':
 
             # For XSPEC additive models we need to remove the normalization
             # parameter, which is always in the last position, from the tuple
             # and applied it in python rather than passing it to the compiled
             # code. This is needed to be consistent with the changes in the
-            # code we copy from sherpa > 4.18.0 (xspec_extension.hh and 
+            # code we copy from sherpa > 4.18.0 (xspec_extension.hh and
             # _xspec.cc). See sherpa PR #2268 and #2275.
 
             parameters_tuple, norm = parameters_tuple[:-1], parameters_tuple[-1]
@@ -690,55 +691,59 @@ class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
 
         if self._model_type == 'add':
 
-            return parameters_tuple[-1] * self._model(parameters_tuple[:-1], low_bounds, hi_bounds)
+            return (parameters_tuple[-1] *
+                    self._model(parameters_tuple[:-1],
+                                low_bounds, hi_bounds))
 
         return self._model(parameters_tuple, low_bounds, hi_bounds)
 '''
 
-def generate_xs_model_file(code_file_name, model_name, xspec_function, model_type, definition):
-        print("Generating code for Xspec model %s..." % model_name)
 
-        # If this is an additive model (model_type == 'add') we need to add
-        # one more parameter (normalization)
+def generate_xs_model_file(code_file_name, model_name, xspec_function,
+                           model_type, definition):
+    print("Generating code for Xspec model %s..." % model_name)
 
-        if model_type == "add":
+    # If this is an additive model (model_type == 'add') we need to add
+    # one more parameter (normalization)
 
-            definition["parameters"]["norm"] = {
-                "initial value": 1.0,
-                "desc": "(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/"
-                "XspecModels.html)",
-                "min": 0,
-                "max": None,
-                "delta": 0.1,
-                "unit": "keV / (cm2 s)",
-                "free": True,
-            }
+    if model_type == "add":
 
-        assert model_type != "con", "Convolution models are not yet supported"
+        definition["parameters"]["norm"] = {
+            "initial value": 1.0,
+            "desc": "(see https://heasarc.gsfc.nasa.gov/xanadu/xspec/manual/"
+            "XspecModels.html)",
+            "min": 0,
+            "max": None,
+            "delta": 0.1,
+            "unit": "keV / (cm2 s)",
+            "free": True,
+        }
 
-        # Get a list of the parameter names
-        parameters_names = ", ".join(list(definition["parameters"].keys()))
+    assert model_type != "con", "Convolution models are not yet supported"
 
-        # Create the docstring
-        docstring = my_yaml.dump(definition, default_flow_style=False)
+    # Get a list of the parameter names
+    parameters_names = ", ".join(list(definition["parameters"].keys()))
 
-        # Create the class by substituting in the class_definition_code the
-        # relevant things for this model
+    # Create the docstring
+    docstring = my_yaml.dump(definition, default_flow_style=False)
 
-        code = class_definition_code.replace("$MODEL_NAME$", model_name)
-        code = code.replace("$DOCSTRING$", docstring)
-        code = code.replace("$PARAMETERS_NAMES$", parameters_names)
-        code = code.replace("$XSPEC_FUNCTION$", xspec_function)
-        code = code.replace("$MODEL_TYPE$", model_type)
+    # Create the class by substituting in the class_definition_code the
+    # relevant things for this model
 
-        # Write to the file
+    code = class_definition_code.replace("$MODEL_NAME$", model_name)
+    code = code.replace("$DOCSTRING$", docstring)
+    code = code.replace("$PARAMETERS_NAMES$", parameters_names)
+    code = code.replace("$XSPEC_FUNCTION$", xspec_function)
+    code = code.replace("$MODEL_TYPE$", model_type)
 
-        with open(code_file_name, "w+") as f:
+    # Write to the file
 
-            f.write("# This code has been automatically generated. Do not edit.\n")
-            f.write("\n\n%s\n" % code)
+    with open(code_file_name, "w+") as f:
 
-        time.sleep(0.5)
+        f.write("# This code has been automatically generated. Do not edit.\n")
+        f.write("\n\n%s\n" % code)
+
+    time.sleep(0.5)
 
 
 def xspec_model_factory(model_name, xspec_function, model_type, definition):
@@ -763,15 +768,19 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
         if file_time < cutoff:
 
-            sys.stdout.write(f"File for {class_name} is too old and needs to be regenerated. Removing it...\n")
-            
+            sys.stdout.write(
+                f"File for {class_name} is too old and needs to be "
+                "regenerated. Removing it...\n")
+
             os.remove(code_file_name)
 
-            generate_xs_model_file(code_file_name, model_name, xspec_function, model_type, definition)
+            generate_xs_model_file(code_file_name, model_name,
+                                   xspec_function, model_type, definition)
 
     else:
 
-        generate_xs_model_file(code_file_name, model_name, xspec_function, model_type, definition)
+        generate_xs_model_file(code_file_name, model_name,
+                               xspec_function, model_type, definition)
 
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
