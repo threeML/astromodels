@@ -44,18 +44,28 @@ astropy.modeling and the modeling part of sherpa.
   
     **Note for XSPEC users:**
 
-    Starting from version 2.5.0 there is currently support for XSPEC 12.15.0
+    Starting from version 2.5.0 there is currently support for XSPEC
     installed via Conda via the `xspec` conda package (see
     `here <https://heasarc.gsfc.nasa.gov/docs/software/conda.html>`_).
-    
+
+    `astromodels` 2.5.0 is compatible with XSPEC 12.15.0, while 2.5.1 enables 
+    support for XSPEC 12.15.1. XSPEC versions lower than 12.12.0 are no longer
+    supported. 
+
     If you compiled XSPEC from source, please set the environment variable
     ASTRO_XSPEC_VERSION to the version of XSPEC you are using in the build
     process and make sure to have the HEADAS environment variable set.
 
-    XSPEC versions lower than 12.12.0 or greater than 12.15.0 are not supported.
-
     Support for `xspec-modelsonly` conda package has been discontinued.
-    Please use the conda package `xspec` version 12.15.0 instead.
+    Please use the conda package `xspec` instead.
+
+    In `astromodels` 2.5.1 the internal logic for the normalization parameter 
+    for XSPEC additive models has changed to be consistent with `sherpa` and
+    support XSPEC 12.15.1. This means that XS model files in the user data
+    folder (usually `~/.astromodels/data/`) need to be regenerated. This should
+    be automatically taken care of and transparent to the users, but in case of 
+    errors, please remove these files manually and try to import XSPEC models 
+    again to trigger the new generation.
 
 Contents:
 =========
