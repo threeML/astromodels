@@ -16,7 +16,7 @@ import versioneer
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-_default_xspec_version = "12.15.0"  # default when installing xspec according following
+_default_xspec_version = "12.15.1"  # default when installing xspec according following
 # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
 
@@ -317,9 +317,9 @@ def setup_xspec():
         msg += " supported version for astromodels"
         print(msg)
         return None
-    elif xspec_version > packaging_version.Version("12.15.0"):
-        msg = "WARN: XSPEC version is greater than 12.15.0, which is the"
-        msg += " maximal supportedversion for astromodels"
+    elif xspec_version > packaging_version.Version("12.15.1"):
+        msg = "WARN: XSPEC version is greater than 12.15.1, which is the"
+        msg += " maximal supported version for astromodels"
         print(msg)
         return None
 
@@ -334,6 +334,7 @@ def setup_xspec():
         (12, 14, 0),
         (12, 14, 1),
         (12, 15, 0),
+        (12, 15, 1),
     ]:
 
         version = "{}.{}.{}".format(major, minor, patch)
