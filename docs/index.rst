@@ -44,18 +44,20 @@ astropy.modeling and the modeling part of sherpa.
   
     **Note for XSPEC users:**
 
-    Starting from version 2.5.0 there is currently support for XSPEC 12.15.0
+    Starting from version 2.5.0 there is currently support for XSPEC
     installed via Conda via the `xspec` conda package (see
     `here <https://heasarc.gsfc.nasa.gov/docs/software/conda.html>`_).
-    
+
+    `astromodels` 2.5.0 is compatible with XSPEC 12.15.0, while 2.5.1 enables 
+    support to XSPEC 12.15.1. XSPEC versions lower than 12.12.0 are no longer
+    supported. 
+
     If you compiled XSPEC from source, please set the environment variable
     ASTRO_XSPEC_VERSION to the version of XSPEC you are using in the build
     process and make sure to have the HEADAS environment variable set.
 
-    XSPEC versions lower than 12.12.0 or greater than 12.15.0 are not supported.
-
     Support for `xspec-modelsonly` conda package has been discontinued.
-    Please use the conda package `xspec` version 12.15.0 instead.
+    Please use the conda package `xspec` instead.
 
 Contents:
 =========
