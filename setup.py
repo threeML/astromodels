@@ -66,12 +66,10 @@ def find_library(library_root, additional_places=None):
 
     :param library_root: root of the library to search, for example
         "cfitsio_" will match libcfitsio_1.2.3.4.so
-    :return: the name of the library found (NOTE: this is *not* the
-        path), and a directory path if the library is not in the system
-        paths (and None otherwise). The name of libcfitsio_1.2.3.4.so
-        will be cfitsio_1.2.3.4, in other words, it will be what is
-        needed to be passed to the linker during a c/c++ compilation, in
-        the -l option
+    :return: a tuple of (library_name, library_dir, full_path) where:
+        - library_name: the name to be passed to the linker in the -l option
+        - library_dir: the directory path (None if in system paths)
+        - full_path: the full path to the library file (used when unversioned symlink is missing)
     """
 
     # find_library searches for all system paths in a system independent way (but NOT
@@ -88,14 +86,14 @@ def find_library(library_root, additional_places=None):
             # On linux the linker already knows about these paths, so we
             # can return None as path
 
-            return sanitize_lib_name(first_guess), None
+            return sanitize_lib_name(first_guess), None, None
 
         elif sys.platform.lower().find("darwin") >= 0:
 
             # On Mac we still need to return the path, because the linker sometimes
             # does not look into it
 
-            return sanitize_lib_name(first_guess), os.path.dirname(first_guess)
+            return sanitize_lib_name(first_guess), os.path.dirname(first_guess), None
 
         else:
 
@@ -133,6 +131,7 @@ def find_library(library_root, additional_places=None):
 
         library_name = None
         library_dir = None
+        library_full_path = None
 
         for search_path in possible_locations:
 
@@ -170,6 +169,7 @@ def find_library(library_root, additional_places=None):
                         # This is the full path of the library, like
                         # /usr/lib/libcfitsio_1.2.3.4
 
+                        library_full_path = result
                         library_name = result
                         library_dir = search_path
 
@@ -184,14 +184,33 @@ def find_library(library_root, additional_places=None):
 
         if library_name is None:
 
-            return None, None
+            return None, None, None
 
         else:
 
             # Sanitize the library name to get from the fully-qualified path to just
             # the library name (/usr/lib/libgfortran.so.3.0 becomes gfortran)
 
-            return sanitize_lib_name(library_name), library_dir
+            sanitized_name = sanitize_lib_name(library_name)
+            
+            # Check if the unversioned symlink exists
+            # If not, we'll need to pass the full path to the linker
+            base_lib_name = os.path.basename(library_full_path)
+            if sys.platform.lower().find("linux") >= 0:
+                extension = ".so"
+            elif sys.platform.lower().find("darwin") >= 0:
+                extension = ".dylib"
+            else:
+                extension = ".so"
+            
+            unversioned_lib = os.path.join(library_dir, f"lib{sanitized_name}{extension}")
+            
+            if os.path.exists(unversioned_lib):
+                # Unversioned symlink exists, use normal linking
+                return sanitized_name, library_dir, None
+            else:
+                # No unversioned symlink, return the full path for direct linking
+                return sanitized_name, library_dir, library_full_path
 
 
 def get_xspec_conda_version():
@@ -363,10 +382,11 @@ def setup_xspec():
 
     libraries = []
     library_dirs = []
+    extra_objects = []  # For libraries without unversioned symlinks
 
     for lib_root in libraries_root:
 
-        this_library, this_library_path = find_library(
+        this_library, this_library_path, full_lib_path = find_library(
             lib_root, additional_places=[os.path.join(headas_root, "lib")]
         )
 
@@ -380,7 +400,13 @@ def setup_xspec():
 
             print("Found library %s in %s" % (this_library, this_library_path))
 
-            libraries.append(this_library)
+            if full_lib_path is not None:
+                # No unversioned symlink exists, we need to pass the full path directly
+                print("Warning: No unversioned symlink found for %s, using full path %s" % (lib_root, full_lib_path))
+                extra_objects.append(full_lib_path)
+            else:
+                # Normal case: unversioned symlink exists, use -l linking
+                libraries.append(this_library)
 
             if this_library_path is not None:
                 # This library is not in one of the system path library, we need to add
@@ -441,6 +467,7 @@ def setup_xspec():
             library_dirs=library_dirs,
             runtime_library_dirs=library_dirs,
             extra_compile_args=[],
+            extra_objects=extra_objects,  # Add full paths for libraries without unversioned symlinks
             define_macros=macros,
         ),
     ]
