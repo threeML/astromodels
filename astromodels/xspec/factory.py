@@ -113,10 +113,7 @@ def find_model_dat():
     # Lazy check that it exists
     assert os.path.exists(
         headas_env
-    ), (
-        "The HEADAS env. variable point to a non-existent directory: %s"
-        % (headas_env)
-    )
+    ), "The HEADAS env. variable point to a non-existent directory: %s" % (headas_env)
 
     # First try: $HEADAS/spectral/manager/model.dat
     final_path = os.path.join(headas_env, "spectral", "manager", "model.dat")
@@ -699,8 +696,9 @@ class XS_$MODEL_NAME$(Function1D, metaclass=FunctionMeta):
 '''
 
 
-def generate_xs_model_file(code_file_name, model_name, xspec_function,
-                           model_type, definition):
+def generate_xs_model_file(
+    code_file_name, model_name, xspec_function, model_type, definition
+):
     print("Generating code for Xspec model %s..." % model_name)
 
     # If this is an additive model (model_type == 'add') we need to add
@@ -763,24 +761,28 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
     if os.path.exists(code_file_name):
 
-        file_time = datetime.fromtimestamp(os.path.getctime(code_file_name),
-                                           tz=timezone.utc)
+        file_time = datetime.fromtimestamp(
+            os.path.getctime(code_file_name), tz=timezone.utc
+        )
 
         if file_time < cutoff:
 
             sys.stdout.write(
                 f"File for {class_name} is too old and needs to be "
-                "regenerated. Removing it...\n")
+                "regenerated. Removing it...\n"
+            )
 
             os.remove(code_file_name)
 
-            generate_xs_model_file(code_file_name, model_name,
-                                   xspec_function, model_type, definition)
+            generate_xs_model_file(
+                code_file_name, model_name, xspec_function, model_type, definition
+            )
 
     else:
 
-        generate_xs_model_file(code_file_name, model_name,
-                               xspec_function, model_type, definition)
+        generate_xs_model_file(
+            code_file_name, model_name, xspec_function, model_type, definition
+        )
 
     # Add the path to sys.path if it doesn't
     if user_data_path not in sys.path:
