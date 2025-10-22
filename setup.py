@@ -267,7 +267,7 @@ def setup_xspec():
             # Let's see if the package xspec-modelsonly has been installed by checking
             # whether one of the Xspec libraries exists within conda
             conda_lib_path = os.path.join(conda_prefix, "lib")
-            this_lib, this_lib_path = find_library(
+            this_lib, this_lib_path,full_lib_library = find_library(
                 "XSFunctions", additional_places=[conda_lib_path]
             )
 
