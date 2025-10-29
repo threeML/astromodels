@@ -6,16 +6,12 @@ import collections
 
 import astropy.units as u
 
+from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.pretty_list import dict_to_list
 
 # This module keeps the configuration of the units used in astromodels
 
 # Pre-defined values
-
-_ENERGY = u.keV
-_TIME = u.s
-_ANGLE = u.deg
-_AREA = u.cm**2
 
 
 class UnknownUnit(Exception):
@@ -63,13 +59,13 @@ class _AstromodelsUnits(object):
     ):
 
         if energy_unit is None:
-            energy_unit = _ENERGY
+            energy_unit = u.Unit(astromodels_config.units.energy)
         if time_unit is None:
-            time_unit = _TIME
+            time_unit = u.Unit(astromodels_config.units.time)
         if angle_unit is None:
-            angle_unit = _ANGLE
+            angle_unit = u.Unit(astromodels_config.units.angle)
         if area_unit is None:
-            area_unit = _AREA
+            area_unit = u.Unit(astromodels_config.units.area)
 
         self._units = collections.OrderedDict()
 

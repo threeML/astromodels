@@ -27,6 +27,14 @@ class Logging:
     message_style: str = "bold grey78"
 
 
+@dataclass
+class Units:
+    energy: str = "keV"
+    time: str = "s"
+    angle: str = "deg"
+    area: str = "cm2"
+
+
 class AbsTables(Enum):
     WILM = "WILM"
     ASPL = "ASPL"
@@ -60,3 +68,4 @@ class Config:
     logging: Logging = field(default_factory=Logging)
     absorption_models: AbsorptionModels = field(default_factory=AbsorptionModels)
     modeling: Modeling = field(default_factory=Modeling)
+    units: Units = field(default_factory=Units)
