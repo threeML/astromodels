@@ -12,8 +12,6 @@ import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
-from interpolation import interp
-from interpolation.splines import eval_linear
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -63,7 +61,7 @@ class GridInterpolate(object):
         self._values = np.ascontiguousarray(values)
 
     def __call__(self, v):
-        return eval_linear(self._grid, self._values, v)
+        return scipy.interpolate.interpn(self._grid, self._values, v)
 
 
 class UnivariateSpline(object):
@@ -72,7 +70,10 @@ class UnivariateSpline(object):
         self._y = y
 
     def __call__(self, v):
-        return interp(self._x, self._y, v)
+        if isinstance(self._x, np.ndarray) and isinstance(self._y, np.ndarray):
+            return np.interp(v, self._x, self._y.reshape(self._x.shape))
+        else:
+            return np.interp(v, self._x, self._y)
 
 
 class TemplateModelFactory(object):
