@@ -15,7 +15,10 @@ from astromodels.functions import (
     TemplateModelFactory,
     XSPECTableModel,
 )
-from astromodels.functions.template_model import convert_old_table_model
+from astromodels.functions.template_model import (
+    convert_old_table_model,
+    UnivariateSpline,
+)
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.logging import update_logging_level
 
@@ -291,3 +294,13 @@ def test_table_conversion():
     npt.assert_almost_equal(test(xx), old_table(xx))
 
     p.unlink()
+
+
+def test_univariate_spline():
+    univ = UnivariateSpline([0, 1, 2], [3, 4, 5])
+    res = univ(1.5)
+    assert np.isclose(res, 4.5)
+
+    univ_np = UnivariateSpline(np.array([0, 1, 2]), np.array([3, 4, 5]))
+    res_np = univ_np(1.5)
+    assert np.isclose(res_np, 4.5)
