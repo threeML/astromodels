@@ -5,8 +5,6 @@ from omegaconf import OmegaConf
 from astromodels.core.units import get_units, set_units
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.file_utils import get_path_of_user_config
-from astromodels.functions.functions_1D.powerlaws import Powerlaw
-from astromodels.sources.point_source import PointSource
 
 
 def test_config_unit_same():
