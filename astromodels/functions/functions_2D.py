@@ -10,6 +10,7 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
+from astromodels.core.units import get_units
 
 log = setup_logger(__name__)
 
@@ -660,15 +661,15 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
 class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
     r"""
     description :
+        User input normalized Spatial Template.
+        Will be renormlized to the current astromodels angle unit.
 
-        User input Spatial Template.  Expected to be normalized to 1/sr
 
-    latex : $ hi $
+    latex : $ \mathrm{A normalized spatial template}$
 
     parameters :
 
         K :
-
             desc : normalization
             initial value : 1
             fix : yes
@@ -720,6 +721,10 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
             self._wcs = wcs.WCS(header=f[int(self.ihdu.value)].header)
             self._map = f[int(self.ihdu.value)].data
+            if np.nan_to_num(self._map).sum() > 0:
+                log.warning("There are NaNs in your Map - will set them to 0")
+                self._map = np.nan_to_num(self._map, nan=0.0)
+                assert np.isnan(self._map).sum() == 0, "Failed"
 
             self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
             self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
@@ -729,28 +734,12 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             # http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
             assert (
                 self._map.shape[1] == self._nX
-            ), "NAXIS1 = %d in fits header, but %d in map" % (
-                self._nX,
-                self._map.shape[1],
-            )
+            ), f"NAXIS1 = {self._nx} in fits header, but {self._map.shape[1]} in map"
             assert (
                 self._map.shape[0] == self._nY
-            ), "NAXIS2 = %d in fits header, but %d in map" % (
-                self._nY,
-                self._map.shape[0],
-            )
+            ), f"NAXIS1 =  {self._ny} in fits header, but {self._map.shape[0]} in map"
 
-            # test if the map is normalized as expected
-            area = wcs.utils.proj_plane_pixel_area(self._wcs)
-            dOmega = (area * u.deg * u.deg).to(u.sr).value
-            total = self._map.sum() * dOmega
-
-            if not np.isclose(total, 1, rtol=1e-2):
-                log.warning(
-                    "2D template read from {} is normalized to {} (expected: 1)".format(
-                        self._fitsfile, total
-                    )
-                )
+            self._normalize_map()
 
             # hash sum uniquely identifying the template function (defined by its 2D map
             # array and coordinate system) this is needed so that the memoization won't
@@ -760,26 +749,34 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             h.update(repr(self._wcs).encode("utf-8"))
             self.hash = int(h.hexdigest(), 16)
 
-    # def to_dict(self, minimal=False):
+    def _normalize_map(self):
+        """
+        Normalizes the map to the provided unit - defaults to sr
+        """
 
-    #      data = super(Function2D, self).to_dict(minimal)
+        # test if the map is normalized as expected
+        area = wcs.utils.proj_plane_pixel_area(self._wcs)
+        dOmega = (area * u.Unit()).value
 
-    #      if not minimal:
+        total = np.nan_to_num(self._map).sum() * dOmega
 
-    #         data['extra_setup'] = {"_fitsfile": self._fitsfile,"_frame":self._frame}
+        if not np.isclose(total, 1, rtol=1e-2):
+            log.warning(
+                f"2D template read from {self._fitsfile} is normalized to {total}"
+                + " (expected: 1)\n"
+                + f"We will try to normalize it to {get_units().angle**2}"
+            )
 
-    #      return data
+            dOmega = (area * get_units().angle ** 2).value
+            total = np.nan_to_num(self._map).sum() * dOmega
+            self._map = self._map / total
 
-    # def set_frame(self, new_frame):
-    #     """
-    #         Set a new frame for the coordinates (the default is ICRS J2000)
+            total = np.nan_to_num(self._map).sum() * dOmega  # should be 1 now
 
-    #         :param new_frame: a coordinate frame from astropy
-    #         :return: (none)
-    #         """
-    #     assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]
-
-    #     self._frame = new_frame
+            if not np.isclose(total, 1, rtol=1e-2):
+                raise ValueError("Rescaling did not work! Please recheck your map!")
+            else:
+                log.warning("Great success!")
 
     def evaluate(self, x, y, K, hash, ihdu):
 
@@ -802,10 +799,6 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         return np.multiply(K, out)
 
     def get_boundaries(self):
-
-        # if self._map is None:
-
-        #     self.load_file(self._fitsfile)
 
         # We use the max/min RA/Dec of the image corners to define the boundaries.
         # Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed
