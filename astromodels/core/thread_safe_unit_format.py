@@ -15,9 +15,9 @@ from astropy.units.format.base import Base
 try:
     from astropy.units.enums import DeprecatedUnitAction
 except ModuleNotFoundError:
-    from enum import StrEnum, auto
+    from enum import Enum, auto
 
-    class DeprecatedUnitAction(StrEnum):
+    class DeprecatedUnitAction(Enum):
         WARN = auto()
 
 
