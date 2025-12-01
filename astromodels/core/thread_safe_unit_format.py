@@ -9,8 +9,17 @@ from builtins import map, str, zip
 from functools import reduce
 
 import astropy.units as u
+
 from astropy.units.format.base import Base
-from astropy.units.enums import DeprecatedUnitAction
+
+try:
+    from astropy.units.enums import DeprecatedUnitAction
+except ModuleNotFoundError:
+    from enum import StrEnum, auto
+
+    class DeprecatedUnitAction(StrEnum):
+        WARN = auto()
+
 
 # NOTE: the metaclass in Base will take care of registering
 # this format, which will be available in the u.Unit
