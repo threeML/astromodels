@@ -811,9 +811,10 @@ class Function(Node):
 
         if (name is None) or (function_definition is None) or (parameters is None):
 
-            log.error("improper call")
-
-            raise AssertionError()
+            raise AssertionError(
+                "Improper call: Expecting at least one of "
+                + "name, function_defintion or parameters to be not None"
+            )
 
         # Set up the node
 
