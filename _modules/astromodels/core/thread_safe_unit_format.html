@@ -100,7 +100,20 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">reduce</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.units.format.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Base</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.units.enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeprecatedUnitAction</span>
+<span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">auto</span>
+
+<div class="viewcode-block" id="DeprecatedUnitAction">
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.thread_safe_unit_format.DeprecatedUnitAction">[docs]</a>
+    <span class="k">class</span><span class="w"> </span><span class="nc">DeprecatedUnitAction</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="n">WARN</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>
+
+
 
 <span class="c1"># NOTE: the metaclass in Base will take care of registering</span>
 <span class="c1"># this format, which will be available in the u.Unit</span>
@@ -163,7 +176,9 @@
 <div class="viewcode-block" id="ThreadSafe.to_string">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.thread_safe_unit_format.ThreadSafe.to_string">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">unit</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_string</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">deprecations</span><span class="p">:</span> <span class="n">DeprecatedUnitAction</span> <span class="o">=</span> <span class="n">DeprecatedUnitAction</span><span class="o">.</span><span class="n">WARN</span>
+    <span class="p">):</span>
 
         <span class="c1"># The Unit class has two lists: bases (which are primitive units)</span>
         <span class="c1"># and powers (the correspondent powers). Thus we just need to use</span>
