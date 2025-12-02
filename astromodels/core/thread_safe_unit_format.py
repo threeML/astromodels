@@ -9,7 +9,17 @@ from builtins import map, str, zip
 from functools import reduce
 
 import astropy.units as u
+
 from astropy.units.format.base import Base
+
+try:
+    from astropy.units.enums import DeprecatedUnitAction
+except ModuleNotFoundError:
+    from enum import Enum, auto
+
+    class DeprecatedUnitAction(Enum):
+        WARN = auto()
+
 
 # NOTE: the metaclass in Base will take care of registering
 # this format, which will be available in the u.Unit
@@ -65,7 +75,9 @@ class ThreadSafe(Base):
         return reduce(lambda x, y: x * y, r)
 
     @classmethod
-    def to_string(cls, unit):
+    def to_string(
+        cls, unit, *, deprecations: DeprecatedUnitAction = DeprecatedUnitAction.WARN
+    ):
 
         # The Unit class has two lists: bases (which are primitive units)
         # and powers (the correspondent powers). Thus we just need to use
