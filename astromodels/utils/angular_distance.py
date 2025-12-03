@@ -40,7 +40,8 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
 
     result = np.rad2deg(c)
 
-    if isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity):
+    if (isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or
+            isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity)):
         return u.Quantity(result, u.deg, copy=False)
     else:
         return result
@@ -78,7 +79,8 @@ def angular_distance(ra1, dec1, ra2, dec2):
 
     result = np.rad2deg(np.arctan2(np.sqrt(num1**2 + num2**2), denominator))
 
-    if isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity):
+    if (isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or
+            isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity)):
         return u.Quantity(result, u.deg, copy=False)
     else:
         return result
