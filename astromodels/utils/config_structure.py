@@ -33,6 +33,7 @@ class Units:
     time: str = "s"
     angle: str = "deg"
     area: str = "cm2"
+    frame: str = "icrs"
 
 
 class AbsTables(Enum):

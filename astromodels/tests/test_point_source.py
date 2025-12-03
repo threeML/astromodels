@@ -3,6 +3,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
+from astropy.coordinates import SkyCoord
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (
     Band,
@@ -140,6 +141,12 @@ def test_constructor():
         # Illegal b
 
         _ = PointSource("test", l=120.0, b=-180.0, components=[c1, c2])
+
+    # From astropy.coordinates.SkyCoord
+    pos = SkyCoord(ra=0, dec=0, unit="deg", frame="icrs")
+    ps = PointSource("test", sky_position=pos, spectral_shape=Powerlaw())
+    assert ps.position.get_ra() == pos.ra.deg
+    assert ps.position.get_dec() == pos.dec.deg
 
 
 def test_call():
