@@ -1,15 +1,16 @@
 import numpy as np
 from astropy import units as u
 
+
 def _deg2rad(angle):
     # Wrapper around np.deg2rad to reduce the overhead
     # from astropy Quantity.
 
     if isinstance(angle, u.Quantity):
         if angle.unit is u.deg:
-           return np.deg2rad(angle.view(np.ndarray))
+            return np.deg2rad(angle.view(np.ndarray))
         else:
-           return angle.to_value(u.rad)
+            return angle.to_value(u.rad)
     else:
         return np.deg2rad(angle)
 
