@@ -7,8 +7,9 @@ from astropy import wcs
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model
 from astromodels.core.spectral_component import SpectralComponent
+from astromodels.core.units import get_units
 from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
-from astromodels.functions.function import _known_functions
+from astromodels.functions.function import _known_functions, Function2D
 from astromodels.sources.extended_source import ExtendedSource
 
 __author__ = "henrikef"
@@ -314,3 +315,25 @@ def test_free_param():
     for i, param in enumerate(parameters):
         param.free = True
         assert len(source.free_parameters) == i + 1
+
+
+def test_extended_unit():
+    spectrum = Powerlaw()
+    for k, v in _known_functions.items():
+        if isinstance(v, Function2D) and k not in ["SpatialTemplate_2D"]:
+            spat = v()
+            es = ExtendedSource("test", spectral_shape=spectrum, spatial_shape=spat)
+            spectrum.piv = 1 * u.keV
+            spectrum.K = 1 * u.Unit("keV-1 cm-2 s-1")
+            ra = [0] * u.deg
+            dec = [0] * u.deg
+            E = [1] * u.keV
+
+            res = es(ra, dec, E)
+            assert (
+                res.unit == u.Unit("keV-1 cm-2 s-1") * get_units().angle ** -2
+            ), "Unit is not matching"
+            if k == "Disk_on_sphere":
+                assert (
+                    res.to(u.Unit("keV-1 cm-2 s-1 deg-2")).value == 1 / np.pi
+                ), "Value for Disk_on_sphere not matching"
