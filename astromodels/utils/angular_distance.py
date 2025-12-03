@@ -1,5 +1,17 @@
 import numpy as np
+from astropy import units as u
 
+def _deg2rad(angle):
+    # Wrapper around np.deg2rad to reduce the overhead
+    # from astropy Quantity.
+
+    if isinstance(angle, u.Quantity):
+        if angle.unit is u.deg:
+           return np.deg2rad(angle.view(np.ndarray))
+        else:
+            return angle.to_value(u.rad)
+    else:
+        return np.deg2rad(angle)
 
 def angular_distance_fast(ra1, dec1, ra2, dec2):
     """Compute angular distance using the Haversine formula. Use this one when
@@ -14,10 +26,10 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
     :return:
     """
 
-    lon1 = np.deg2rad(ra1)
-    lat1 = np.deg2rad(dec1)
-    lon2 = np.deg2rad(ra2)
-    lat2 = np.deg2rad(dec2)
+    lon1 = _deg2rad(ra1)
+    lat1 = _deg2rad(dec1)
+    lon2 = _deg2rad(ra2)
+    lat2 = _deg2rad(dec2)
     dlon = lon2 - lon1
     dlat = lat2 - lat1
 
@@ -40,10 +52,10 @@ def angular_distance(ra1, dec1, ra2, dec2):
     # Vincenty formula, slower than the Haversine formula in some cases, but stable also
     # at antipodes
 
-    lon1 = np.deg2rad(ra1)
-    lat1 = np.deg2rad(dec1)
-    lon2 = np.deg2rad(ra2)
-    lat2 = np.deg2rad(dec2)
+    lon1 = _deg2rad(ra1)
+    lat1 = _deg2rad(dec1)
+    lon2 = _deg2rad(ra2)
+    lat2 = _deg2rad(dec2)
 
     sdlon = np.sin(lon2 - lon1)
     cdlon = np.cos(lon2 - lon1)
