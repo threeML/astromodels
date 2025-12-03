@@ -446,7 +446,22 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
+        # Handle case with units
+        # In order to keep the function definition intact
+        # and make it backwards compatible,
+        # the radius needs to be in deg,
+        # and the result in 1/sr
+        with_units = isinstance(radius, u.Quantity)
+
+        if with_units:
+            radius = radius.to_value(u.deg)
+
+        result = np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
+
+        if with_units:
+            result = u.Quantity(result, u.sr**-1, copy=False)
+
+        return result
 
     def get_boundaries(self):
 
