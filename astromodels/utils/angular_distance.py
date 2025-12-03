@@ -3,6 +3,7 @@ from astropy import units as u
 
 from astropy.utils.compat import COPY_IF_NEEDED
 
+
 def _deg2rad(angle):
     # Wrapper around np.deg2rad to reduce the overhead
     # from astropy Quantity.
