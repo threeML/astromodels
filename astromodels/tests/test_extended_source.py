@@ -245,6 +245,17 @@ def test_call_with_units():
         spectrum = one + two
         assert np.all(np.abs(total - spectrum * spatial) == 0)
 
+        # With rad
+        total = source(
+            [ra] * u.deg, [dec] * u.deg, [1, 2, 3] * u.keV
+        )
+        spectrum = one + two
+        spatial = source.spatial_shape(
+            [np.deg2rad(ra)] * u.rad, [np.deg2rad(dec)] * u.rad
+        )
+        assert np.allclose(total, spectrum * spatial)
+
+        # With deg
         total = source(
             [ra * 1.01] * 3 * u.deg, [dec * 1.01] * 3 * u.deg, [1, 2, 3] * u.keV
         )
