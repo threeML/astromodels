@@ -9,7 +9,7 @@ from astropy.io import fits
 import astromodels
 from astromodels import update_logging_level
 from astromodels.core.property import SettingUnknownValue
-from astromodels.core.units import get_units, set_units
+from astromodels.core.units import get_units
 from astromodels.functions import (
     Continuous_injection_diffusion,
     Gaussian_on_sphere,
