@@ -1,7 +1,5 @@
 import numpy as np
 from astropy import units as u
-from astropy.units import Quantity
-
 
 def _deg2rad(angle):
     # Wrapper around np.deg2rad to reduce the overhead
@@ -11,9 +9,10 @@ def _deg2rad(angle):
         if angle.unit is u.deg:
            return np.deg2rad(angle.view(np.ndarray))
         else:
-            return angle.to_value(u.rad)
+           return angle.to_value(u.rad)
     else:
         return np.deg2rad(angle)
+
 
 def angular_distance_fast(ra1, dec1, ra2, dec2):
     """Compute angular distance using the Haversine formula. Use this one when

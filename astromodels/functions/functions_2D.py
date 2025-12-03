@@ -459,7 +459,8 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         if isinstance(angsep, u.Quantity):
             angsep = angsep.to_value(u.deg)
 
-        result = np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
+        result = np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2)
+        result *= (angsep <= radius) # Mask
 
         if with_units:
             result = u.Quantity(result, u.sr**-1, copy=False)
