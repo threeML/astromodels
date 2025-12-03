@@ -9,6 +9,7 @@ from astropy.io import fits
 import astromodels
 from astromodels import update_logging_level
 from astromodels.core.property import SettingUnknownValue
+from astromodels.core.units import get_units, set_units
 from astromodels.functions import (
     Continuous_injection_diffusion,
     Gaussian_on_sphere,
@@ -828,17 +829,25 @@ def test_function2D():
     c = Gaussian_on_sphere()
 
     f1 = c(1, 1)
-    assert np.isclose(f1, 5.17276409, rtol=1e-10)
+
+    if get_units().angle == u.deg:
+        norm_factor = np.power(180 / np.pi, -2)
+    else:
+        norm_factor = 1.0
+
+    assert np.isclose(f1, 5.17276409 * norm_factor, rtol=1e-10)
 
     a = np.array([1.0, 2.0])
 
     fa = c(a, a)
-    assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
+    assert np.isclose(
+        fa, np.array([5.17276409, 5.01992404]) * norm_factor, rtol=1e-10
+    ).all()
 
     c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
-    assert np.isclose(f1d.value, 5.17276409, rtol=1e-10)
+    assert np.isclose(f1d.value, 5.17276409 * np.power(180 / np.pi, -2), rtol=1e-10)
     assert f1d.unit == u.deg**-2
 
     assert c.x_unit == u.deg
