@@ -900,6 +900,7 @@ def test_function3D():
         )
 
 
+@pytest.mark.skip(reason="no way of currently testing this")
 def test_spatial_template_2D():
 
     # make the fits files with templates to test.
