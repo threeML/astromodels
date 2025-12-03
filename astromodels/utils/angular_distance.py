@@ -1,6 +1,7 @@
 import numpy as np
 from astropy import units as u
 
+from astropy.utils.compat import COPY_IF_NEEDED
 
 def _deg2rad(angle):
     # Wrapper around np.deg2rad to reduce the overhead
@@ -42,7 +43,7 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
 
     if (isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or
             isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity)):
-        return u.Quantity(result, u.deg, copy=False)
+        return u.Quantity(result, u.deg, copy=COPY_IF_NEEDED)
     else:
         return result
 
@@ -81,7 +82,7 @@ def angular_distance(ra1, dec1, ra2, dec2):
 
     if (isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or
             isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity)):
-        return u.Quantity(result, u.deg, copy=False)
+        return u.Quantity(result, u.deg, copy=COPY_IF_NEEDED)
     else:
         return result
 

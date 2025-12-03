@@ -5,6 +5,7 @@ import numpy as np
 from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
+from astropy.utils.compat import COPY_IF_NEEDED
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
@@ -463,7 +464,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         result *= (angsep <= radius)  # Mask
 
         if with_units:
-            result = u.Quantity(result, u.sr**-1, copy=False)
+            result = u.Quantity(result, u.sr**-1, copy=COPY_IF_NEEDED)
 
         return result
 
