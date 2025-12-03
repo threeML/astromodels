@@ -187,7 +187,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         lon, lat = x, y
         if get_units().angle == u.deg:
             angsep = angular_distance(lon0, lat0, lon, lat)
-        if get_units().angle in u.rad:
+        if get_units().angle == u.rad:
             angsep = angular_distance_rad(lon0, lat0, lon, lat)
 
         s2 = sigma**2
@@ -318,9 +318,12 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         lon, lat = x, y
 
         b = a * np.sqrt(1.0 - e**2)
-
-        dX = np.atleast_1d(angular_distance(lon0, lat0, lon, lat0))
-        dY = np.atleast_1d(angular_distance(lon0, lat0, lon0, lat))
+        if get_units().angle in [u.deg, "deg"]:
+            dX = np.atleast_1d(angular_distance(lon0, lat0, lon, lat0))
+            dY = np.atleast_1d(angular_distance(lon0, lat0, lon0, lat))
+        elif get_units().angle in [u.rad, "rad"]:
+            dX = np.atleast_1d(angular_distance_rad(lon0, lat0, lon, lat0))
+            dY = np.atleast_1d(angular_distance_rad(lon0, lat0, lon0, lat))
 
         dlon = lon - lon0
         if isinstance(dlon, u.Quantity):
@@ -411,7 +414,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional disk/tophat function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm
+    latex : $$ f(\vec{x}) = \frac{1}{\pi~({\rm
             radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0|
             \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm
             radius}} \end{matrix}\right. $$
@@ -457,7 +460,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
+        return 1.0 / (np.pi * radius**2) * (angsep <= radius)
 
     def get_boundaries(self):
 
@@ -695,6 +698,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             min: 0
 
     properties:
+        normalize:
+            desc: if file should be normalized to the current angular unit
+            initial value: false
         fits_file:
             desc: fits file to load
             defer: True
@@ -702,26 +708,11 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         frame:
             desc: coordinate frame
             initial value: icrs
-            allowed values:
-            - icrs
-            - galactic
-            - fk5
-            - fk4
-            - fk4_no_e
     """
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
         self.K.unit = z_unit
-
-    # This is optional, and it is only needed if we need more setup after the
-    # constructor provided by the meta class
-
-    # def _setup(self):
-
-    # self._frame = "icrs"
-    # self._fitsfile = None
-    # self._map = None
 
     def _load_file(self):
 
@@ -748,8 +739,10 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             assert (
                 self._map.shape[0] == self._nY
             ), f"NAXIS1 =  {self._ny} in fits header, but {self._map.shape[0]} in map"
-
-            self._normalize_map()
+            if self.normalize.value:
+                self._normalize_map()
+            else:
+                self._check_normalize()
 
             # hash sum uniquely identifying the template function (defined by its 2D map
             # array and coordinate system) this is needed so that the memoization won't
@@ -759,34 +752,36 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             h.update(repr(self._wcs).encode("utf-8"))
             self.hash = int(h.hexdigest(), 16)
 
+    def _check_normalize(self):
+        area = wcs.utils.proj_plane_pixel_area(self._wcs)
+        dOmega = (area * get_units().angle).value
+
+        total = np.nansum(self._map) * dOmega
+
+        if not np.isclose(total, 1, rtol=1e-2):
+            log.warning(
+                f"2D template read from {self._fitsfile} is normalized to {total}\n"
+            )
+        return np.isclose(total, 1, rtol=1e-2)
+
     def _normalize_map(self):
         """
         Normalizes the map to the provided unit - defaults to sr
         """
 
         # test if the map is normalized as expected
-        area = wcs.utils.proj_plane_pixel_area(self._wcs)
-        dOmega = (area * u.Unit()).value
+        if not self._check_normalize():
+            log.info(f"We will try to renormalize it to {get_units().angle**2}")
 
-        total = np.nan_to_num(self._map).sum() * dOmega
-
-        if not np.isclose(total, 1, rtol=1e-2):
-            log.warning(
-                f"2D template read from {self._fitsfile} is normalized to {total}"
-                + " (expected: 1)\n"
-                + f"We will try to normalize it to {get_units().angle**2}"
-            )
-
+            area = wcs.utils.proj_plane_pixel_area(self._wcs)
             dOmega = (area * get_units().angle ** 2).value
-            total = np.nan_to_num(self._map).sum() * dOmega
+            total = np.nansum(self._map) * dOmega
             self._map = self._map / total
 
             total = np.nan_to_num(self._map).sum() * dOmega  # should be 1 now
 
             if not np.isclose(total, 1, rtol=1e-2):
                 raise ValueError("Rescaling did not work! Please recheck your map!")
-            else:
-                log.warning("Great success!")
 
     def evaluate(self, x, y, K, hash, ihdu):
 
@@ -842,6 +837,14 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             z = z.value
         return np.multiply(self.K.value, np.ones_like(z))
 
+    @property
+    def wcs(self):
+        return self._wcs
+
+    @property
+    def map(self):
+        return self._map
+
 
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
@@ -849,9 +852,9 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A power law function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{
-            \begin{matrix} 0.05^{index} & {\rm if} & ||\vec{x}-\vec{x}_0|| \le 0.05\\
-            ||\vec{x}-\vec{x}_0||^{index} & {\rm if} & 0.05 < ||\vec{x}-\vec{x}_0|| \le
+    latex : $$ f(\vec{x}) = left\{
+            \begin{matrix} minr^{index} & {\rm if} & ||\vec{x}-\vec{x}_0|| \le minr\\
+            ||\vec{x}-\vec{x}_0||^{index} & {\rm if} & minr < ||\vec{x}-\vec{x}_0|| \le
             maxr \\ 0 & {\rm if} & ||\vec{x}-\vec{x}_0||>maxr\end{matrix}\right. $$
 
     parameters :
@@ -957,78 +960,3 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
         if isinstance(z, u.Quantity):
             z = z.value
         return np.ones_like(z)
-
-
-# class FunctionIntegrator(Function2D):
-#     r"""
-#         description :
-#
-#             Returns the average of the integrand function (a 1-d function) over the
-#             interval x-y. The integrand is set
-#             using the .integrand property, like in:
-#
-#             > G = FunctionIntegrator()
-#             > G.integrand = Powerlaw()
-#
-#         latex : $$ G(x,y) = \frac{\int_{x}^{y}~f(x)~dx}{y-x}$$
-#
-#         parameters :
-#
-#             s :
-#
-#                 desc : if s=0, then the integral will *not* be normalized by (y-x),
-#                        otherwise (default) it will.
-#                 initial value : 1
-#                 fix : yes
-#         """
-#
-#     __metaclass__ = FunctionMeta
-#
-#     def _set_units(self, x_unit, y_unit, z_unit):
-#
-#         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
-#         # let's set them up here just to save for the possibility of using the
-#         # formula with other units (although it is probably never going to happen)
-#
-#         self.s = u.dimensionless_unscaled
-#
-#     def evaluate(self, x, y, s):
-#
-#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is
-#                           zero or negative!"
-#
-#         integral = self._integrand.integral(x, y)
-#
-#         if s==0:
-#
-#             return integral
-#
-#         else:
-#
-#             return integral / (y-x)
-#
-#
-#     def get_boundaries(self):
-#
-#         return (-np.inf, +np.inf), (-np.inf, +np.inf)
-#
-#     def _set_integrand(self, function):
-#
-#         self._integrand = function
-#
-#     def _get_integrand(self):
-#
-#         return self._integrand
-#
-#     integrand = property(_get_integrand, _set_integrand,
-#                          doc="""Get/set the integrand""")
-#
-#
-#     def to_dict(self, minimal=False):
-#
-#         data = super(Function2D, self).to_dict(minimal)
-#
-#         if not minimal:
-#             data['extra_setup'] = {'integrand': self.integrand.path}
-#
-#         return data
