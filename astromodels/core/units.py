@@ -188,7 +188,7 @@ def set_units(key: str, value: u.Unit):
     Update the units used
     """
     if getattr(get_units(), key) != value:
-        setattr(get_units(), key, value)
+        get_units()._set_unit(key, value)
 
 
 get_units = _AstromodelsUnitsFactory()
