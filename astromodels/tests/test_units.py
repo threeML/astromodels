@@ -13,17 +13,20 @@ def test_config_unit_same():
         user_conf = OmegaConf.load(user_config_file)
         if "units" in user_conf.keys():
             for k in user_conf["units"].keys():
-                assert u.Unit(user_conf["units"][k]) == getattr(get_units(), k)
-                assert astromodels_config["units"][k] == user_conf["units"][k]
-
-    print(astromodels_config)
-    print(get_units().to_dict())
+                if k not in ["solid_angle_legacy", "frame"]:
+                    assert u.Unit(user_conf["units"][k]) == getattr(get_units(), k)
+                    assert astromodels_config["units"][k] == user_conf["units"][k]
+                elif k in ["frame"]:
+                    assert user_conf["units"][k] == getattr(get_units(), k)
+                    assert astromodels_config["units"][k] == user_conf["units"][k]
 
     for k, v in astromodels_config["units"].items():
-        if k not in ["frame"]:
+        if k not in ["frame", "solid_angle_legacy"]:
             assert u.Unit(v) == getattr(get_units(), k), f"{k} failed"
-        else:
+        elif k in ["frame"]:
             assert v == getattr(get_units(), k), f"{k} failed"
+        else:
+            pass
 
 
 def test_set_units():
@@ -41,7 +44,7 @@ def test_set_units():
             set_units(k, v)
         else:
             not_changed.append(k)
-    print(not_changed)
+
     for k, v in mapping.items():
         if k not in not_changed:
             assert getattr(get_units(), k) == v
@@ -50,3 +53,7 @@ def test_set_units():
     # reset it to the original
     for k, v in mapping.items():
         set_units(k, getattr(ref, k))
+
+
+def test_legacy_setup():
+    pass

@@ -10,9 +10,16 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
+from astromodels.utils.configuration import astromodels_config
 from astromodels.core.units import get_units
 
 log = setup_logger(__name__)
+
+# specify here ONCE when loading if we want to use the
+# legacy Functions2D.evaluate values --> 1/sr at all time
+_SOLID_ANGLE_LEGACY = astromodels_config["units"]["solid_angle_legacy"]
+# if this is the case the angle unit must be deg, as was the previously hardcoded
+# unit before
 
 
 class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
@@ -155,8 +162,8 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
             min : 0.0
             max : 360.0
             unit: deg
-        lat0 :
 
+        lat0 :
             desc : Latitude of the center of the source
             initial value : 0.0
             min : -90.0
@@ -164,7 +171,6 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
             unit: deg
 
         sigma :
-
             desc : Standard deviation of the Gaussian distribution
             initial value : 10
             min : 0
@@ -185,6 +191,14 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, lon0, lat0, sigma):
 
         lon, lat = x, y
+
+        if not _SOLID_ANGLE_LEGACY:
+            norm = 1
+        else:
+            assert (
+                get_units().angle == u.deg
+            ), "Legacy solid angle values only for angles in deg"
+            norm = np.power(180 / np.pi, 2)
         if get_units().angle == u.deg:
             angsep = angular_distance(lon0, lat0, lon, lat)
         if get_units().angle == u.rad:
@@ -192,7 +206,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         s2 = sigma**2
 
-        return 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2 / s2)
+        return norm / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2 / s2)
 
     def get_boundaries(self):
 

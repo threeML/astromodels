@@ -13,6 +13,7 @@ import numpy as np
 import scipy.stats
 
 from astromodels.core.parameter_transformation import ParameterTransformation
+from astromodels.core.units import get_units
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 
@@ -287,6 +288,8 @@ class ParameterBase(Node):
             log.exception("The provided initial value is not a number")
 
             raise TypeError()
+        if str(self.unit.physical_type) == "angle":
+            self._set_unit(get_units().angle)
 
     def _repr__base(self, rich_output):  # pragma: no cover
 
@@ -337,7 +340,6 @@ class ParameterBase(Node):
     def _set_unit(self, input_unit) -> None:
 
         # This will fail if the input is not valid
-
         new_unit = self._safe_assign_unit(input_unit)
 
         # Now transform the current _value in the new unit, unless the current unit is
@@ -350,16 +352,35 @@ class ParameterBase(Node):
             # This will fail if the new unit is not compatible with the old one
 
             try:
-
                 factor = self._unit.to(new_unit)
 
-                if self.min_value is not None:
-                    self.min_value *= factor
+                # the following is needed to bypass the automatic value setting
+                # when the value surpasses the max or min value
+                if factor >= 1:
+                    if self.max_value is not None:
+                        if self.value * factor > self.max_value:
+                            self.max_value *= factor
+                            self.value *= factor
+                        else:
+                            self.max_value *= factor
+                            self.value *= factor
+                        if self.min_value is not None:
+                            self.min_value *= factor
+                    else:
+                        self.value *= factor
+                        if self.min_value is not None:
+                            self.min_value *= factor
 
-                if self.max_value is not None:
-                    self.max_value *= factor
-
-                self.value *= factor
+                else:
+                    if self.min_value is not None:
+                        if self.value * factor < self.min_value:
+                            self.min_value *= factor
+                            self.value *= factor
+                        else:
+                            self.value *= factor
+                            self.min_value *= factor
+                        if self.max_value is not None:
+                            self.max_value *= factor
 
             except u.UnitConversionError:
 
@@ -535,10 +556,6 @@ class ParameterBase(Node):
         else:
 
             # A transformation is set. Transform back from internal value to true value
-            #
-            # print("Interval value is %s" % self._internal_value)
-            # print("Returning %s" % self._transformation.backward(
-            # self._internal_value))
 
             return self._transformation.backward(self._internal_value)
 

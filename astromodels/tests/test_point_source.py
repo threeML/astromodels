@@ -26,6 +26,8 @@ except ImportError:
 
 
 from astromodels.core.model import Model
+from astromodels.core.units import get_units
+
 from astromodels.core.model_parser import clone_model, load_model
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
@@ -68,6 +70,9 @@ def test_constructor():
 
     ra, dec = (125.6, -75.3)
     l, b = (288.44190139183564, -20.717313145391525)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
+        l, b = np.deg2rad((l, b))
 
     # This should throw as we are using Powerlaw instead of Powerlaw()
     with pytest.raises(TypeError):

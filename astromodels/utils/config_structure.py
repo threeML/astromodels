@@ -34,6 +34,7 @@ class Units:
     angle: str = "deg"
     area: str = "cm2"
     frame: str = "icrs"
+    solid_angle_legacy: bool = True
 
 
 class AbsTables(Enum):

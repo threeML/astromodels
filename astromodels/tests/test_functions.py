@@ -8,6 +8,7 @@ from astropy.io import fits
 
 import astromodels
 from astromodels import update_logging_level
+from astromodels.utils.configuration import astromodels_config
 from astromodels.core.property import SettingUnknownValue
 from astromodels.core.units import get_units
 from astromodels.functions import (
@@ -37,6 +38,8 @@ from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 update_logging_level("DEBUG")
 
 __author__ = "giacomov"
+
+_SOLID_ANGLE_LEGACY = astromodels_config["units"]["solid_angle_legacy"]
 
 
 def get_a_function_class():
@@ -827,21 +830,22 @@ def test_list_functions():
 def test_function2D():
 
     c = Gaussian_on_sphere()
+    # test gauss with default parameters: position = (0,0) and sigma = 10deg
+    #
 
-    f1 = c(1, 1)
+    f1 = c(0, 0)  # unit indepenent
 
-    if get_units().angle == u.deg:
-        norm_factor = np.power(180 / np.pi, -2)
-    else:
-        norm_factor = 1.0
+    norm = 1
+    if get_units().angle == u.rad or _SOLID_ANGLE_LEGACY:
+        norm = np.power(180 / np.pi, 2)
 
-    assert np.isclose(f1, 5.17276409 * norm_factor, rtol=1e-10)
+    assert np.isclose(f1, 1.591549431e-3 * norm, rtol=1e-10)
 
-    a = np.array([1.0, 2.0])
+    a = np.array([0.0, 0.0])
 
     fa = c(a, a)
     assert np.isclose(
-        fa, np.array([5.17276409, 5.01992404]) * norm_factor, rtol=1e-10
+        fa, np.array([1.591549431e-3, 1.591549431e-3]) * norm, rtol=1e-10
     ).all()
 
     c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
@@ -934,11 +938,11 @@ def test_spatial_template_2D():
     hdu.writeto("test2.fits", overwrite=True)
 
     # Now load template files and test their evaluation
-    shape1 = SpatialTemplate_2D(fits_file="test1.fits")
+    shape1 = SpatialTemplate_2D(fits_file="test1.fits", frame="galactic")
 
     shape1.K = 1
 
-    shape2 = SpatialTemplate_2D(fits_file="test2.fits")
+    shape2 = SpatialTemplate_2D(fits_file="test2.fits", frame="galactic")
 
     shape2.K = 1
 

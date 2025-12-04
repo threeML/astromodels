@@ -76,6 +76,9 @@ def test_constructor():
     # RA, Dec and L,B of the same point in the sky
 
     ra, dec = (125.6, -75.3)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
+
     # l, b = (288.44190139183564, -20.717313145391525)
 
     # This should throw an error as we are using Powerlaw instead of Powerlaw()
@@ -93,8 +96,9 @@ def test_constructor():
 
     shape = Gaussian_on_sphere()
     source1 = ExtendedSource("my_source", shape, Powerlaw())
-    shape.lon0 = ra * u.degree
-    shape.lat0 = dec * u.degree
+    current_angle = get_units().angle
+    shape.lon0 = ra * current_angle
+    shape.lat0 = dec * current_angle
 
     assert source1.spatial_shape.lon0.value == ra
     assert source1.spatial_shape.lat0.value == dec
@@ -115,6 +119,8 @@ def test_call():
     c2 = SpectralComponent("component2", po2)
 
     ra, dec = (125.6, -75.3)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
 
     def test_one(class_type, name):
 
@@ -193,6 +199,8 @@ def test_call_with_units():
     c2 = SpectralComponent("component2", po2)
 
     ra, dec = (125.6, -75.3)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
 
     def test_one(class_type, name):
 
