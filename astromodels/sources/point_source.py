@@ -1,7 +1,8 @@
 import collections
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 import astropy.units as u
+from astropy.coordinates import SkyCoord
 import numba as nb
 import numpy
 import scipy.integrate
@@ -28,7 +29,7 @@ class PointSource(Source, Node):
     """A point source. You can instance this class in many ways.
 
     - with Equatorial position and a function as spectrum (the component will be
-    automatically called 'main')::
+    automatically called 'main'):
 
         >>> from astromodels import *
         >>> point_source = PointSource('my_source', 125.6, -75.3, Powerlaw())
@@ -40,7 +41,7 @@ class PointSource(Source, Node):
                     'my_source', l=15.67, b=80.75, spectral_shape=Powerlaw()
                 )
 
-    - with Equatorial position or Galactic position and a list of spectral components::
+    - with Equatorial position or Galactic position and a list of spectral components:
 
         >>> c1 = SpectralComponent("component1", Powerlaw())
         >>> c2 = SpectralComponent("component2", Powerlaw())
@@ -51,6 +52,13 @@ class PointSource(Source, Node):
         >>> point_source = PointSource(
                     "test_source",l=15.67, b=80.75,components=[c1,c2]
                 )
+    - with an astropy.coordinates.SkyCoord object:
+        >>> from astropy.coordinates import SkyCoord
+        >>> point_source = PointSource('my_source',
+                                       sky_position=SkyCoord(ra = 125.6, -75.3,
+                                                             unit="deg",frame="icrs"),
+                                       Powerlaw())
+
 
     NOTE: by default the position of the source is fixed (i.e., its positional
     parameters are fixed)
@@ -75,7 +83,7 @@ class PointSource(Source, Node):
         l: Optional[float] = None,
         b: Optional[float] = None,
         components=None,
-        sky_position: Optional[SkyDirection] = None,
+        sky_position: Optional[Union[SkyDirection, SkyCoord]] = None,
         polarization=None,
     ):
 
@@ -99,7 +107,9 @@ class PointSource(Source, Node):
 
         # Gather the position
 
-        if not isinstance(sky_position, SkyDirection):
+        if not isinstance(sky_position, SkyDirection) and not isinstance(
+            sky_position, SkyCoord
+        ):
 
             if (ra is not None) and (dec is not None):
 
@@ -125,6 +135,8 @@ class PointSource(Source, Node):
             else:
 
                 sky_position = SkyDirection(l=l, b=b)
+        elif isinstance(sky_position, SkyCoord):
+            sky_position = SkyDirection(position=sky_position)
 
         self._sky_position: SkyDirection = sky_position
 

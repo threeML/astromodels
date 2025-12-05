@@ -10,11 +10,13 @@ from typing import Dict, Iterable, List, Tuple, Union
 
 import numpy as np
 import pandas as pd
+import astropy.units as u
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import DuplicatedNode, Node
+from astromodels.core.units import get_units
 from astromodels.functions.function import Function, get_function
 from astromodels.sources import (
     ExtendedSource,
@@ -1391,16 +1393,18 @@ class Model(Node):
         return ra_min, ra_max, dec_min, dec_max
 
     def is_inside_any_extended_source(self, j2000_ra: float, j2000_dec: float) -> bool:
-
+        # todo assert that these are the correct unit
+        if get_units().angle == u.deg:
+            ra_hb = 360
+        elif get_units().angle == u.rad:
+            ra_hb = 2 * np.pi
         for ext_source in list(self.extended_sources.values()):
 
             (ra_min, ra_max), (dec_min, dec_max) = ext_source.get_boundaries()
 
-            # Transform from the 0...360 convention to the -180..180 convention, so that
-            # the comparison is easier
-            if ra_min > 180:
+            if ra_min > ra_hb / 2:
 
-                ra_min = -(360 - ra_min)
+                ra_min = -(ra_hb - ra_min)
 
             if ra_min <= j2000_ra <= ra_max and dec_min <= j2000_dec <= dec_max:
 

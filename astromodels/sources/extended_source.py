@@ -61,7 +61,7 @@ class ExtendedSource(Source, Node):
 
             # Set the units of the brightness
             spatial_shape.set_units(
-                current_u.angle, current_u.angle, current_u.angle ** (-2)
+                current_u.angle, current_u.angle, current_u.solid_angle ** (-1)
             )
 
         elif spatial_shape.n_dim == 3:
@@ -82,8 +82,9 @@ class ExtendedSource(Source, Node):
                     current_u.energy
                     * current_u.area
                     * current_u.time
-                    * current_u.angle**2
+                    * current_u.solid_angle
                 ) ** (-1)
+
                 spatial_shape.set_units(
                     current_u.angle,
                     current_u.angle,
@@ -148,11 +149,7 @@ class ExtendedSource(Source, Node):
         self._spatial_shape = spatial_shape
         self._add_child(self._spatial_shape)
 
-        # Add the same node also with the name of the function
-        # self._add_child(self._shape, self._shape.__name__)
-
         # Add a node called 'spectrum'
-
         spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 

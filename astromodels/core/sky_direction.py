@@ -6,6 +6,7 @@ from astropy import coordinates
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
+from astromodels.core.units import get_units
 
 
 class WrongCoordinatePair(ValueError):
@@ -24,7 +25,9 @@ class SkyDirection(Node):
     """This is essentially a wrapper around astropy.coordinates.SkyCoord with a
     possibility for being serialized and deserialized with YAML."""
 
-    def __init__(self, ra=None, dec=None, l=None, b=None, equinox="J2000"):
+    def __init__(
+        self, position=None, ra=None, dec=None, l=None, b=None, equinox="J2000"
+    ):
         """
 
         :param ra: Right Ascension in degrees
@@ -43,7 +46,57 @@ class SkyDirection(Node):
 
         # Check that we have the right pairs of coordinates
 
-        if ra is not None and dec is not None:
+        frame = get_units().frame  # get the current coordinate_frame
+        if isinstance(position, coordinates.SkyCoord):
+            position = position.transform_to(frame)
+            if frame == "icrs":
+                ra = self._get_parameter_from_input(
+                    position.ra.deg, 0, 360, "ra", "Right Ascension"
+                )
+
+                dec = self._get_parameter_from_input(
+                    position.dec.deg, -90, 90, "dec", "Declination"
+                )
+
+                self._coord_type = "equatorial"
+
+                self._add_child(ra)
+                self._add_child(dec)
+            elif frame == "galactic":
+
+                lon = self._get_parameter_from_input(
+                    position.l.deg, 0, 360, "l", "Galactic longitude"
+                )
+
+                lat = self._get_parameter_from_input(
+                    position.b.deg, -90, 90, "b", "Galactic latitude"
+                )
+
+                self._coord_type = "galactic"
+                self._add_child(lon)
+                self._add_child(lat)
+            else:
+                # gonna try to find out the relevant stuff
+                # TODO
+                if hasattr(position, "ra"):
+                    # found ra dec like
+                    ra = self._get_parameter_from_input(
+                        position.ra.deg, 0, 360, "ra", "Right Ascension"
+                    )
+
+                    dec = self._get_parameter_from_input(
+                        position.dec.deg, -90, 90, "dec", "Declination"
+                    )
+
+                    self._coord_type = "equatorial"
+                    if hasattr(position, "equinox"):
+                        self._equinox = position.equinox
+
+                    self._add_child(ra)
+                    self._add_child(dec)
+                raise NotImplementedError
+
+        elif ra is not None and dec is not None:
 
             # This goes against duck typing, but it is needed to provide a means of
             # initiating this class with either Parameter instances or just floats
