@@ -57,6 +57,7 @@ class _AstromodelsUnits(object):
         energy_unit=None,
         time_unit=None,
         angle_unit=None,
+        solid_angle_unit=None,
         area_unit=None,
         frame=None,
     ):
@@ -67,6 +68,8 @@ class _AstromodelsUnits(object):
             time_unit = u.Unit(astromodels_config.units.time)
         if angle_unit is None:
             angle_unit = u.Unit(astromodels_config.units.angle)
+        if solid_angle_unit is None:
+            solid_angle_unit = u.Unit(astromodels_config.units.solid_angle)
         if area_unit is None:
             area_unit = u.Unit(astromodels_config.units.area)
         if frame is None:
@@ -77,6 +80,7 @@ class _AstromodelsUnits(object):
         self._units["energy"] = energy_unit
         self._units["time"] = time_unit
         self._units["angle"] = angle_unit
+        self._units["solid_angle"] = solid_angle_unit
         self._units["area"] = area_unit
         self._units["frame"] = frame
 
@@ -90,6 +94,7 @@ class _AstromodelsUnits(object):
         cls.energy = property(*(cls._create_property("energy")))
         cls.time = property(*(cls._create_property("time")))
         cls.angle = property(*(cls._create_property("angle")))
+        cls.solid_angle = property(*(cls._create_property("solid_angle")))
         cls.area = property(*(cls._create_property("area")))
         cls.frame = property(*(cls._create_property("frame")))
 
@@ -189,15 +194,6 @@ class _AstromodelsUnitsFactory(object):
             # Use the instance already created
 
             return self._instance
-
-
-# Create the factory to be used in the program
-def set_units(key: str, value: u.Unit):
-    """
-    Update the units used
-    """
-    if getattr(get_units(), key) != value:
-        get_units()._set_unit(key, value)
 
 
 get_units = _AstromodelsUnitsFactory()

@@ -8,9 +8,7 @@ from astropy.io import fits
 
 import astromodels
 from astromodels import update_logging_level
-from astromodels.utils.configuration import astromodels_config
 from astromodels.core.property import SettingUnknownValue
-from astromodels.core.units import get_units
 from astromodels.functions import (
     Continuous_injection_diffusion,
     Gaussian_on_sphere,
@@ -38,8 +36,6 @@ from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 update_logging_level("DEBUG")
 
 __author__ = "giacomov"
-
-_SOLID_ANGLE_LEGACY = astromodels_config["units"]["solid_angle_legacy"]
 
 
 def get_a_function_class():
@@ -830,28 +826,19 @@ def test_list_functions():
 def test_function2D():
 
     c = Gaussian_on_sphere()
-    # test gauss with default parameters: position = (0,0) and sigma = 10deg
-    #
 
-    f1 = c(0, 0)  # unit indepenent
+    f1 = c(1, 1)
+    assert np.isclose(f1, 5.17276409, rtol=1e-10)
 
-    norm = 1
-    if get_units().angle == u.rad or _SOLID_ANGLE_LEGACY:
-        norm = np.power(180 / np.pi, 2)
-
-    assert np.isclose(f1, 1.591549431e-3 * norm, rtol=1e-10)
-
-    a = np.array([0.0, 0.0])
+    a = np.array([1.0, 2.0])
 
     fa = c(a, a)
-    assert np.isclose(
-        fa, np.array([1.591549431e-3, 1.591549431e-3]) * norm, rtol=1e-10
-    ).all()
+    assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
 
     c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
-    assert np.isclose(f1d.value, 5.17276409 * np.power(180 / np.pi, -2), rtol=1e-10)
+    assert np.isclose(f1d.value, 5.17276409, rtol=1e-10)
     assert f1d.unit == u.deg**-2
 
     assert c.x_unit == u.deg
@@ -904,75 +891,77 @@ def test_function3D():
         )
 
 
-@pytest.mark.skip(reason="no way of currently testing this")
 def test_spatial_template_2D():
 
     # make the fits files with templates to test.
-    cards = {
-        "SIMPLE": "T",
-        "BITPIX": -32,
-        "NAXIS": 2,
-        "NAXIS1": 360,
-        "NAXIS2": 360,
-        "DATE": "2018-06-15",
-        "CUNIT1": "deg",
-        "CRVAL1": 83,
-        "CRPIX1": 0,
-        "CDELT1": -0.0166667,
-        "CUNIT2": "deg",
-        "CRVAL2": -2.0,
-        "CRPIX2": 0,
-        "CDELT2": 0.0166667,
-        "CTYPE1": "GLON-CAR",
-        "CTYPE2": "GLAT-CAR",
-    }
+    try:
+        cards = {
+            "SIMPLE": "T",
+            "BITPIX": -32,
+            "NAXIS": 2,
+            "NAXIS1": 360,
+            "NAXIS2": 360,
+            "DATE": "2018-06-15",
+            "CUNIT1": "deg",
+            "CRVAL1": 83,
+            "CRPIX1": 0,
+            "CDELT1": -0.0166667,
+            "CUNIT2": "deg",
+            "CRVAL2": -2.0,
+            "CRPIX2": 0,
+            "CDELT2": 0.0166667,
+            "CTYPE1": "GLON-CAR",
+            "CTYPE2": "GLAT-CAR",
+        }
 
-    data = np.zeros([400, 400])
-    data[0:100, 0:100] = 1
-    hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
-    hdu.writeto("test1.fits", overwrite=True)
+        data = np.zeros([400, 400])
+        data[0:100, 0:100] = 1
+        hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
+        hdu.writeto("test1.fits", overwrite=True)
 
-    data[:, :] = 0
-    data[200:300, 200:300] = 1
-    hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
-    hdu.writeto("test2.fits", overwrite=True)
+        data[:, :] = 0
+        data[200:300, 200:300] = 1
+        hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
+        hdu.writeto("test2.fits", overwrite=True)
 
-    # Now load template files and test their evaluation
-    shape1 = SpatialTemplate_2D(fits_file="test1.fits", frame="galactic")
+        # Now load template files and test their evaluation
+        shape1 = SpatialTemplate_2D(fits_file="test1.fits")
 
-    shape1.K = 1
+        shape1.K = 1
 
-    shape2 = SpatialTemplate_2D(fits_file="test2.fits", frame="galactic")
+        shape2 = SpatialTemplate_2D(fits_file="test2.fits")
 
-    shape2.K = 1
+        shape2.K = 1
 
-    assert shape1.hash != shape2.hash
+        assert shape1.hash != shape2.hash
 
-    assert np.all(
-        shape1.evaluate([312, 306], [41, 41], [1, 1], [40, 2], 0) == [1.0, 0.0]
-    )
-    assert np.all(
-        shape2.evaluate([312, 306], [41, 41], [1, 1], [40, 2], 0) == [0.0, 1.0]
-    )
-    assert np.all(
-        shape1.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [1.0, 0.0]
-    )
-    assert np.all(
-        shape2.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [0.0, 10.0]
-    )
+        assert np.all(
+            shape1.evaluate([312, 306], [41, 41], [1, 1], [40, 2], 0) == [1.0, 0.0]
+        )
+        assert np.all(
+            shape2.evaluate([312, 306], [41, 41], [1, 1], [40, 2], 0) == [0.0, 1.0]
+        )
+        assert np.all(
+            shape1.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [1.0, 0.0]
+        )
+        assert np.all(
+            shape2.evaluate([312, 306], [41, 41], [1, 10], [40, 2], 0) == [0.0, 10.0]
+        )
 
-    shape1.K = 1
-    shape2.K = 1
-    assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
-    assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 1.0])
+        shape1.K = 1
+        shape2.K = 1
+        assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
+        assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 1.0])
 
-    shape1.K = 1
-    shape2.K = 10
-    assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
-    assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 10.0])
-
-    os.remove("test1.fits")
-    os.remove("test2.fits")
+        shape1.K = 1
+        shape2.K = 10
+        assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
+        assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 10.0])
+    except Exception as e:
+        raise e
+    finally:
+        os.remove("test1.fits")
+        os.remove("test2.fits")
 
 
 def test_linking_external_functions():

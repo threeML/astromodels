@@ -10,16 +10,9 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
-from astromodels.utils.configuration import astromodels_config
 from astromodels.core.units import get_units
 
 log = setup_logger(__name__)
-
-# specify here ONCE when loading if we want to use the
-# legacy Functions2D.evaluate values --> 1/sr at all time
-_SOLID_ANGLE_LEGACY = astromodels_config["units"]["solid_angle_legacy"]
-# if this is the case the angle unit must be deg, as was the previously hardcoded
-# unit before
 
 
 class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
@@ -191,14 +184,11 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, lon0, lat0, sigma):
 
         lon, lat = x, y
-
-        if not _SOLID_ANGLE_LEGACY:
+        if get_units().solid_angle == u.Unit("deg2"):
             norm = 1
         else:
-            assert (
-                get_units().angle == u.deg
-            ), "Legacy solid angle values only for angles in deg"
             norm = np.power(180 / np.pi, 2)
+
         if get_units().angle == u.deg:
             angsep = angular_distance(lon0, lat0, lon, lat)
         if get_units().angle == u.rad:
@@ -713,7 +703,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
     properties:
         normalize:
-            desc: if file should be normalized to the current angular unit
+            desc: bool if file should be normalized to the current angular unit
             initial value: false
         fits_file:
             desc: fits file to load
@@ -753,7 +743,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             assert (
                 self._map.shape[0] == self._nY
             ), f"NAXIS1 =  {self._ny} in fits header, but {self._map.shape[0]} in map"
-            if self.normalize.value:
+
+            if self.normalize.value.lower() == "true":
                 self._normalize_map()
             else:
                 self._check_normalize()
@@ -768,7 +759,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
     def _check_normalize(self):
         area = wcs.utils.proj_plane_pixel_area(self._wcs)
-        dOmega = (area * get_units().angle).value
+        dOmega = (area * get_units().solid_angle).value
 
         total = np.nansum(self._map) * dOmega
 
@@ -785,7 +776,7 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
         # test if the map is normalized as expected
         if not self._check_normalize():
-            log.info(f"We will try to renormalize it to {get_units().angle**2}")
+            log.info(f"We will try to renormalize it to {get_units().solid_angle}")
 
             area = wcs.utils.proj_plane_pixel_area(self._wcs)
             dOmega = (area * get_units().angle ** 2).value

@@ -32,9 +32,9 @@ class Units:
     energy: str = "keV"
     time: str = "s"
     angle: str = "deg"
+    solid_angle: str = "sr"
     area: str = "cm2"
     frame: str = "icrs"
-    solid_angle_legacy: bool = True
 
 
 class AbsTables(Enum):

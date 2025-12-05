@@ -2,13 +2,11 @@ import os
 import pickle
 import shutil
 from pathlib import Path
-from copy import deepcopy
 
 import numpy as np
 import numpy.testing as npt
 import pytest
 
-import astropy.units as u
 from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filename
 from astropy import wcs
@@ -24,7 +22,7 @@ from astromodels.functions import (
 )
 from astromodels.functions.template_model import convert_old_table_model
 from astromodels.sources import ExtendedSource
-from astromodels.core.units import get_units, set_units
+from astromodels.core.units import get_units
 
 from astromodels.utils import _get_data_file_path
 
@@ -319,7 +317,7 @@ def test_spatial_template():
     )
 
     # check if the unit is set correct for the amplitude
-    assert source.spatial_shape.K.unit == 1 / (get_units().angle ** 2)
+    assert source.spatial_shape.K.unit == 1 / (get_units().solid_angle)
     assert np.isclose(
         total, 0.5680887664160024
     ), "reading in the map yielded wrong result"
@@ -327,20 +325,3 @@ def test_spatial_template():
     assert np.isclose(
         shape.get_total_spatial_integral(), 1, rtol=1e-2
     ), "failed to normalize map"
-
-    old_units = deepcopy(get_units())
-
-    if old_units.angle == u.deg:
-        set_units("angle", u.rad)
-    shape_reloaded = SpatialTemplate_2D(fits_file=df)
-    spectrum_reloaded = Powerlaw()
-
-    source_reloaded = ExtendedSource(
-        "simple_source_reloaded",
-        spectral_shape=spectrum_reloaded,
-        spatial_shape=shape_reloaded,
-    )
-    if old_units.angle == u.deg:
-        set_units("angle", u.deg)
-    print(source_reloaded)
-    # TODO compare the values before and after!

@@ -9,14 +9,9 @@ from astromodels.core.units import get_units
 from astromodels.functions import Constant
 from astromodels.sources.source import Source, SourceType
 from astromodels.utils.logging import setup_logger
-from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.pretty_list import dict_to_list
 
 log = setup_logger(__name__)
-
-# specify here ONCE when loading if we want to use the
-# legacy Functions2D.evaluate values --> 1/sr at all time
-_SOLID_ANGLE_LEGACY = astromodels_config["units"]["solid_angle_legacy"]
 
 
 class ExtendedSource(Source, Node):
@@ -65,15 +60,9 @@ class ExtendedSource(Source, Node):
                 component.shape.set_units(current_u.energy, diff_flux_units)
 
             # Set the units of the brightness
-            if not _SOLID_ANGLE_LEGACY:
-                spatial_shape.set_units(
-                    current_u.angle, current_u.angle, current_u.angle ** (-2)
-                )
-            else:
-                assert (
-                    current_u.angle == u.deg
-                ), "for the legacy solid angle handling the angle MUST be deg"
-                spatial_shape.set_units(current_u.angle, current_u.angle, 1 / u.sr)
+            spatial_shape.set_units(
+                current_u.angle, current_u.angle, current_u.solid_angle ** (-1)
+            )
 
         elif spatial_shape.n_dim == 3:
 
@@ -89,16 +78,11 @@ class ExtendedSource(Source, Node):
                 components = [SpectralComponent("main", spectral_shape)]
 
                 # set the units
-                if not _SOLID_ANGLE_LEGACY:
-                    solid_angle_u = current_u.angle**2
-                else:
-                    assert (
-                        current_u.angle == u.deg
-                    ), "for the legacy solid angle handling the angle MUST be deg"
-                    solid_angle_u = u.sr
-
                 diff_flux_units = (
-                    current_u.energy * current_u.area * current_u.time * solid_angle_u
+                    current_u.energy
+                    * current_u.area
+                    * current_u.time
+                    * current_u.solid_angle
                 ) ** (-1)
 
                 spatial_shape.set_units(
