@@ -156,7 +156,13 @@ jobs:
               run: python -c "import astromodels.xspec"
             - name: Test astromodels
               shell: bash -l {0}
-              run: python -m pytest -vv --cov=astromodels --cov-report=xml
+              run: |
+                echo $DYLD_LIBRARY_PATH
+                echo $LD_LIBRARY_PATH
+                ls $CONDA_PREFIX/lib/libwcs*
+                ls $CONDA_PREFIX/heasoft/lib/libwcs*
+                
+                python -m pytest -vv --cov=astromodels --cov-report=xml
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
