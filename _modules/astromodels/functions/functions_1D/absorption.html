@@ -98,7 +98,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numba</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nb</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">interp</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_get_data_file_path</span>
@@ -295,6 +294,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">phabs</span><span class="o">.</span><span class="n">xsect_table</span>
 
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;xsec_ene must be strictly increasing otherwise interpolation fails&quot;</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">abundance_table_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">phabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
@@ -314,7 +317,7 @@
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span> <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">)</span>
 
         <span class="c1"># evaluate the exponential with numba</span>
 
@@ -391,6 +394,9 @@
         <span class="n">tbabs</span><span class="o">.</span><span class="n">set_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">abundance_table</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">tbabs</span><span class="o">.</span><span class="n">xsect_table</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;xsec_ene must be strictly increasing otherwise interpolation fails&quot;</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;updated the TbAbs table to </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">abundance_table</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -413,7 +419,7 @@
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span> <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">)</span>
 
         <span class="n">spec</span> <span class="o">=</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="n">NH</span><span class="p">,</span> <span class="n">xsect_interp</span><span class="p">)</span> <span class="o">*</span> <span class="n">_y_unit</span>
 
@@ -472,6 +478,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span> <span class="o">=</span> <span class="n">wabs</span><span class="o">.</span><span class="n">xsect_table</span>
 
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="p">),</span> <span class="s2">&quot;xsec_ene must be strictly increasing otherwise interpolation fails&quot;</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">abundance_table_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">wabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
@@ -491,7 +501,7 @@
             <span class="n">_redshift</span> <span class="o">=</span> <span class="n">redshift</span>
             <span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
 
-        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">,</span> <span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">))</span>
+        <span class="n">xsect_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">_x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">_redshift</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_ene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">xsect_val</span><span class="p">)</span>
 
         <span class="n">spec</span> <span class="o">=</span> <span class="n">_numba_eval</span><span class="p">(</span><span class="n">NH</span><span class="p">,</span> <span class="n">xsect_interp</span><span class="p">)</span> <span class="o">*</span> <span class="n">_y_unit</span>
 
