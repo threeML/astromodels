@@ -35,166 +35,6 @@ class My_build_ext(_build_ext):
             conda_include_path = os.path.join(conda_prefix, "include")
             self.include_dirs.append(conda_include_path)
 
-    def run(self):
-        """Build extensions and fix library paths on macOS"""
-        _build_ext.run(self)
-
-        # On macOS, fix library paths for extensions that use extra_objects
-        if sys.platform.lower().find("darwin") >= 0:
-            for ext in self.extensions:
-                if ext.name == "astromodels.xspec._xspec" and ext.extra_objects:
-                    self._fix_macos_library_paths(ext)
-
-    def _fix_macos_library_paths(self, ext):
-        """Fix library install names on macOS using install_name_tool"""
-        import subprocess
-
-        # Get the built extension file
-        build_lib = self.get_ext_fullpath(ext.name)
-        if not os.path.exists(build_lib):
-            return
-
-        # Check what libraries the extension depends on using otool
-        try:
-            otool_output = subprocess.check_output(
-                ["otool", "-L", build_lib], stderr=subprocess.STDOUT
-            ).decode()
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            # otool might not be available, skip fixing
-            return
-
-        # Parse otool output to find library references
-        # otool -L output format:
-        # /path/to/lib.dylib (compatibility version X.Y.Z, current version A.B.C)
-        #     /path/to/another/lib.dylib (compatibility version ...)
-        library_refs = []
-        for line in otool_output.split("\n"):
-            line = line.strip()
-            if line and not line.startswith(build_lib):
-                # Extract the library path/name (everything before the first space or
-                # parent)
-                if "(" in line:
-                    lib_ref = line.split("(")[0].strip()
-                else:
-                    lib_ref = line.strip()
-                if lib_ref:
-                    library_refs.append(lib_ref)
-
-        print(f"Found {len(library_refs)} library references in extension")
-
-        # For each library in extra_objects, fix references to point to
-        # the actual library file that exists
-        for lib_path in ext.extra_objects:
-            if not os.path.exists(lib_path):
-                continue
-
-            lib_dir = os.path.dirname(lib_path)
-            lib_name = os.path.basename(lib_path)
-
-            # Check if this library is referenced in the extension
-            # Look for references that might point to a versioned library
-            # that doesn't exist (e.g., libwcs.8.dylib when only
-            # libwcs.8.3.dylib exists)
-            match = re.match(r"lib(.+?)\.(\d+)\.(\d+)\.dylib$", lib_name)
-            if match:
-                base_name = match.group(1)
-                major_version = match.group(2)
-
-                # Check what install name the library file itself has
-                # This tells us what reference will be embedded in our extension
-                try:
-                    otool_d_output = subprocess.check_output(
-                        ["otool", "-D", lib_path], stderr=subprocess.STDOUT
-                    ).decode()
-                    # otool -D output format:
-                    # lib_path:
-                    #     install_name (or multiple if there are multiple)
-                    install_names = []
-                    for line in otool_d_output.split("\n"):
-                        line = line.strip()
-                        if line and not line.endswith(":"):
-                            install_names.append(line)
-                except (subprocess.CalledProcessError, FileNotFoundError):
-                    install_names = []
-
-                # The major version library name we're looking for
-                major_version_lib = f"lib{base_name}.{major_version}.dylib"
-                new_ref = f"@rpath/{lib_name}"
-
-                # Find all references that match the major version library
-                # Try to fix them by changing to the actual library file
-                fixed = False
-                for lib_ref in library_refs:
-                    # Check if this reference matches the major version library
-                    # (could be full path, relative path, or just the name)
-                    if major_version_lib in lib_ref or lib_ref.endswith(
-                        major_version_lib
-                    ):
-                        # Check if the major version library file doesn't exist
-                        old_ref = None
-                        if lib_ref.startswith("/"):
-                            # Full path reference
-                            if not os.path.exists(lib_ref):
-                                # The referenced file doesn't exist, change it
-                                old_ref = lib_ref
-                        else:
-                            # Relative or just name reference
-                            # Check if it exists in the library directory
-                            potential_path = os.path.join(lib_dir, lib_ref)
-                            if not os.path.exists(potential_path):
-                                old_ref = lib_ref
-
-                        if old_ref:
-                            # Change the reference to point to the actual library file
-                            # using @rpath so it can find it at runtime
-                            try:
-                                subprocess.check_call(
-                                    [
-                                        "install_name_tool",
-                                        "-change",
-                                        old_ref,
-                                        new_ref,
-                                        build_lib,
-                                    ],
-                                    stderr=subprocess.DEVNULL,
-                                )
-                                print(
-                                    f"Fixed library reference: {old_ref} -> {new_ref}"
-                                )
-                                fixed = True
-                            except (subprocess.CalledProcessError, FileNotFoundError):
-                                # install_name_tool might not be available or might fail
-                                print(
-                                    f"Warning: Could not fix library reference "
-                                    f"{old_ref} (install_name_tool failed)"
-                                )
-
-                # If we didn't fix it yet, try a more aggressive approach:
-                # change any reference that contains the major version library name
-                if not fixed:
-                    for lib_ref in library_refs:
-                        if major_version_lib in lib_ref:
-                            try:
-                                subprocess.check_call(
-                                    [
-                                        "install_name_tool",
-                                        "-change",
-                                        lib_ref,
-                                        new_ref,
-                                        build_lib,
-                                    ],
-                                    stderr=subprocess.DEVNULL,
-                                )
-                                print(
-                                    f"Fixed library reference (fallback): "
-                                    f"{lib_ref} -> {new_ref}"
-                                )
-                                fixed = True
-                                break
-                            except (subprocess.CalledProcessError, FileNotFoundError):
-                                # Try next reference
-                                pass
-
 
 def sanitize_lib_name(library_path):
     """Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0,
@@ -356,6 +196,10 @@ def find_library(library_root, additional_places=None):
 
             sanitized_name = sanitize_lib_name(library_name)
 
+            # Extract base library name (without version suffix)
+            # e.g., "wcs.8.3" -> "wcs", "gfortran" -> "gfortran"
+            base_name = sanitized_name.split(".")[0]
+
             # Check if the unversioned symlink exists
             # If not, we'll need to pass the full path to the linker
             if sys.platform.lower().find("linux") >= 0:
@@ -365,32 +209,30 @@ def find_library(library_root, additional_places=None):
             else:
                 extension = ".so"
 
+            # Check for unversioned symlink (e.g., libwcs.so or libwcs.dylib)
             unversioned_lib = os.path.join(
-                library_dir, f"lib{sanitized_name}{extension}"
+                library_dir, f"lib{base_name}{extension}"
             )
+
+            # On macOS, also check for major version symlink (e.g., libwcs.8.dylib)
+            # which is what the runtime linker expects
+            if sys.platform.lower().find("darwin") >= 0:
+                # Extract major version if present (e.g., "8.3" -> "8")
+                version_parts = sanitized_name.split(".")[1:]
+                if version_parts:
+                    major_version = version_parts[0]
+                    major_version_lib = os.path.join(
+                        library_dir, f"lib{base_name}.{major_version}{extension}"
+                    )
+                    if os.path.exists(major_version_lib):
+                        # Major version symlink exists, use normal linking
+                        return f"{base_name}.{major_version}", library_dir, None
 
             if os.path.exists(unversioned_lib):
                 # Unversioned symlink exists, use normal linking
-                return sanitized_name, library_dir, None
+                return base_name, library_dir, None
             else:
-                # No unversioned symlink exists
-                # On macOS, check for major version symlink (e.g., libwcs.8.dylib)
-                if sys.platform.lower().find("darwin") >= 0:
-                    # Extract major version from library name if present
-                    # e.g., libwcs.8.3.dylib -> try libwcs.8.dylib
-                    base_name = os.path.basename(library_full_path)
-                    # Match pattern like libwcs.8.3.dylib or libwcs.so.8.3
-                    version_match = re.search(r"\.(\d+)\.(\d+)\.dylib$", base_name)
-                    if version_match:
-                        major_version = version_match.group(1)
-                        major_version_lib = os.path.join(
-                            library_dir, f"lib{sanitized_name}.{major_version}.dylib"
-                        )
-                        if os.path.exists(major_version_lib):
-                            # Use major version symlink instead of full version
-                            return sanitized_name, library_dir, major_version_lib
-
-                # No suitable symlink found, return the full path for direct
+                # No unversioned symlink, return the full path for direct
                 # linking
                 return sanitized_name, library_dir, library_full_path
 
@@ -646,13 +488,6 @@ def setup_xspec():
         print(f"{h}")
 
     # Configure the variables to build the external module with the C/C++ wrapper
-    # On macOS, we need to set rpath for libraries in extra_objects
-    extra_link_args = []
-    if sys.platform.lower().find("darwin") >= 0 and extra_objects:
-        # Add rpath for each library directory so macOS can find the libraries
-        # at runtime
-        for lib_dir in library_dirs:
-            extra_link_args.append(f"-Wl,-rpath,{lib_dir}")
 
     ext_modules_configuration = [
         Extension(
@@ -665,7 +500,6 @@ def setup_xspec():
             library_dirs=library_dirs,
             runtime_library_dirs=library_dirs,
             extra_compile_args=[],
-            extra_link_args=extra_link_args,
             # Add full paths for libraries without unversioned symlinks
             extra_objects=extra_objects,
             define_macros=macros,
