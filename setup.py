@@ -71,7 +71,8 @@ class My_build_ext(_build_ext):
         for line in otool_output.split("\n"):
             line = line.strip()
             if line and not line.startswith(build_lib):
-                # Extract the library path/name (everything before the first space or paren)
+                # Extract the library path/name (everything before the first space or
+                # parent)
                 if "(" in line:
                     lib_ref = line.split("(")[0].strip()
                 else:
@@ -119,14 +120,16 @@ class My_build_ext(_build_ext):
                 # The major version library name we're looking for
                 major_version_lib = f"lib{base_name}.{major_version}.dylib"
                 new_ref = f"@rpath/{lib_name}"
-                
+
                 # Find all references that match the major version library
                 # Try to fix them by changing to the actual library file
                 fixed = False
                 for lib_ref in library_refs:
                     # Check if this reference matches the major version library
                     # (could be full path, relative path, or just the name)
-                    if major_version_lib in lib_ref or lib_ref.endswith(major_version_lib):
+                    if major_version_lib in lib_ref or lib_ref.endswith(
+                        major_version_lib
+                    ):
                         # Check if the major version library file doesn't exist
                         old_ref = None
                         if lib_ref.startswith("/"):
@@ -140,7 +143,7 @@ class My_build_ext(_build_ext):
                             potential_path = os.path.join(lib_dir, lib_ref)
                             if not os.path.exists(potential_path):
                                 old_ref = lib_ref
-                        
+
                         if old_ref:
                             # Change the reference to point to the actual library file
                             # using @rpath so it can find it at runtime
@@ -165,7 +168,7 @@ class My_build_ext(_build_ext):
                                     f"Warning: Could not fix library reference "
                                     f"{old_ref} (install_name_tool failed)"
                                 )
-                
+
                 # If we didn't fix it yet, try a more aggressive approach:
                 # change any reference that contains the major version library name
                 if not fixed:
@@ -381,8 +384,7 @@ def find_library(library_root, additional_places=None):
                     if version_match:
                         major_version = version_match.group(1)
                         major_version_lib = os.path.join(
-                            library_dir,
-                            f"lib{sanitized_name}.{major_version}.dylib"
+                            library_dir, f"lib{sanitized_name}.{major_version}.dylib"
                         )
                         if os.path.exists(major_version_lib):
                             # Use major version symlink instead of full version
