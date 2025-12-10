@@ -35,6 +35,76 @@ class My_build_ext(_build_ext):
             conda_include_path = os.path.join(conda_prefix, "include")
             self.include_dirs.append(conda_include_path)
 
+    def run(self):
+        """Build extensions and fix library paths on macOS"""
+        _build_ext.run(self)
+
+        # On macOS, fix library paths for extensions that use extra_objects
+        if sys.platform.lower().find("darwin") >= 0:
+            for ext in self.extensions:
+                if ext.name == "astromodels.xspec._xspec" and ext.extra_objects:
+                    self._fix_macos_library_paths(ext)
+
+    def _fix_macos_library_paths(self, ext):
+        """Fix library install names on macOS using install_name_tool"""
+        import subprocess
+
+        # Get the built extension file
+        build_lib = self.get_ext_fullpath(ext.name)
+        if not os.path.exists(build_lib):
+            return
+
+        # Check what libraries the extension depends on using otool
+        try:
+            otool_output = subprocess.check_output(
+                ["otool", "-L", build_lib], stderr=subprocess.STDOUT
+            ).decode()
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            # otool might not be available, skip fixing
+            return
+
+        # For each library in extra_objects, fix references to point to
+        # the actual library file that exists
+        for lib_path in ext.extra_objects:
+            if not os.path.exists(lib_path):
+                continue
+
+            lib_name = os.path.basename(lib_path)
+
+            # Check if this library is referenced in the extension
+            # Look for references that might point to a versioned library
+            # that doesn't exist (e.g., libwcs.8.dylib when only
+            # libwcs.8.3.dylib exists)
+            match = re.match(r"lib(.+?)\.(\d+)\.(\d+)\.dylib$", lib_name)
+            if match:
+                base_name = match.group(1)
+                major_version = match.group(2)
+
+                # Check if the extension references the major version library
+                # that doesn't exist
+                major_version_ref = f"lib{base_name}.{major_version}.dylib"
+                if major_version_ref in otool_output:
+                    # Change the reference to point to the actual library file
+                    # using @rpath so it can find it at runtime
+                    try:
+                        subprocess.check_call(
+                            [
+                                "install_name_tool",
+                                "-change",
+                                major_version_ref,
+                                f"@rpath/{lib_name}",
+                                build_lib,
+                            ],
+                            stderr=subprocess.DEVNULL,
+                        )
+                        print(
+                            f"Fixed library reference: {major_version_ref} -> "
+                            f"@rpath/{lib_name}"
+                        )
+                    except (subprocess.CalledProcessError, FileNotFoundError):
+                        # install_name_tool might not be available or might fail
+                        pass
+
 
 def sanitize_lib_name(library_path):
     """Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0,
@@ -213,7 +283,25 @@ def find_library(library_root, additional_places=None):
                 # Unversioned symlink exists, use normal linking
                 return sanitized_name, library_dir, None
             else:
-                # No unversioned symlink, return the full path for direct
+                # No unversioned symlink exists
+                # On macOS, check for major version symlink (e.g., libwcs.8.dylib)
+                if sys.platform.lower().find("darwin") >= 0:
+                    # Extract major version from library name if present
+                    # e.g., libwcs.8.3.dylib -> try libwcs.8.dylib
+                    base_name = os.path.basename(library_full_path)
+                    # Match pattern like libwcs.8.3.dylib or libwcs.so.8.3
+                    version_match = re.search(r"\.(\d+)\.(\d+)\.dylib$", base_name)
+                    if version_match:
+                        major_version = version_match.group(1)
+                        major_version_lib = os.path.join(
+                            library_dir,
+                            f"lib{sanitized_name}.{major_version}.dylib"
+                        )
+                        if os.path.exists(major_version_lib):
+                            # Use major version symlink instead of full version
+                            return sanitized_name, library_dir, major_version_lib
+
+                # No suitable symlink found, return the full path for direct
                 # linking
                 return sanitized_name, library_dir, library_full_path
 
@@ -469,6 +557,13 @@ def setup_xspec():
         print(f"{h}")
 
     # Configure the variables to build the external module with the C/C++ wrapper
+    # On macOS, we need to set rpath for libraries in extra_objects
+    extra_link_args = []
+    if sys.platform.lower().find("darwin") >= 0 and extra_objects:
+        # Add rpath for each library directory so macOS can find the libraries
+        # at runtime
+        for lib_dir in library_dirs:
+            extra_link_args.append(f"-Wl,-rpath,{lib_dir}")
 
     ext_modules_configuration = [
         Extension(
@@ -481,6 +576,7 @@ def setup_xspec():
             library_dirs=library_dirs,
             runtime_library_dirs=library_dirs,
             extra_compile_args=[],
+            extra_link_args=extra_link_args,
             # Add full paths for libraries without unversioned symlinks
             extra_objects=extra_objects,
             define_macros=macros,
