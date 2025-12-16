@@ -9,6 +9,7 @@
   <title>Welcome to Astromodels’s documentation! &mdash; Astromodels latest documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,6 +21,8 @@
       <script src="_static/documentation_options.js?v=c6e86fd7"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -28,7 +31,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quick start" href="notebooks/Quick_start.html" /> 
+    <link rel="next" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,6 +55,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/function_list.html">Available Functions</a></li>
@@ -102,7 +106,7 @@ Bayesian analysis of astrophysical data.</p>
 it can be used also as a toolbox containing functions of any variable.</p>
 <p>Astromodels is <em>not</em> a modeling package, it only gives you the tools to build a
 model as complex as you need.  You then need a separate package (such as
-<cite>3ML &lt;https://github.com/threeML/threeML&gt;</cite>) to fit that model to the data.</p>
+<a class="reference external" href="https://github.com/threeML/threeML">3ML</a>) to fit that model to the data.</p>
 <p>Some of the features which distinguish astromodels from other similar packages
 are:</p>
 <ul class="simple">
@@ -148,6 +152,16 @@ again to trigger the new generation.</p>
 <h1>Contents:<a class="headerlink" href="#contents" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#tl-dr">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#without-xspec">Without XSPEC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#conda">conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#pip">pip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#with-xspec">With XSPEC</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Configuration.html#Configuration-options">Configuration options</a><ul>
@@ -331,7 +345,7 @@ again to trigger the new generation.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="notebooks/Quick_start.html" class="btn btn-neutral float-right" title="Quick start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

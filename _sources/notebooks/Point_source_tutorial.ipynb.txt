@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "a62bbd6f",
+   "id": "bcbd7bb4",
    "metadata": {},
    "source": [
     "# Point sources #\n",
@@ -19,25 +19,25 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "2adf7e46",
+   "id": "a7eeb383",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:38.379915Z",
-     "iopub.status.busy": "2025-12-11T18:50:38.379793Z",
-     "iopub.status.idle": "2025-12-11T18:50:39.986029Z",
-     "shell.execute_reply": "2025-12-11T18:50:39.985467Z"
+     "iopub.execute_input": "2025-12-16T18:13:43.515283Z",
+     "iopub.status.busy": "2025-12-16T18:13:43.515169Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.380855Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.380156Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:50:39 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">45</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:13:44 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">45</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">available                                                                         </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m18:50:39\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=458095;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=110818;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\u001b\\\u001b[2m45\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m18:13:44\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=107737;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=414525;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\u001b\\\u001b[2m45\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mavailable                                                                        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -52,7 +52,7 @@
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=147276;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=482201;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#67\u001b\\\u001b[2m67\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=635720;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=632391;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#67\u001b\\\u001b[2m67\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mwill not be available.                                                           \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -62,12 +62,15 @@
    ],
    "source": [
     "from astromodels import *\n",
-    "simple_source_icrs = PointSource('simple_source', ra=123.2, dec=-13.2, spectral_shape=Powerlaw())"
+    "\n",
+    "simple_source_icrs = PointSource(\n",
+    "    \"simple_source\", ra=123.2, dec=-13.2, spectral_shape=Powerlaw()\n",
+    ")"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "e23b2f0d",
+   "id": "041374f6",
    "metadata": {},
    "source": [
     "We can also use Galactic coordinates:"
@@ -76,23 +79,25 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "9b8d90dc",
+   "id": "07113bbc",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:39.988937Z",
-     "iopub.status.busy": "2025-12-11T18:50:39.988612Z",
-     "iopub.status.idle": "2025-12-11T18:50:39.996534Z",
-     "shell.execute_reply": "2025-12-11T18:50:39.996085Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.383544Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.383185Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.389561Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.388958Z"
     }
    },
    "outputs": [],
    "source": [
-    "simple_source_gal = PointSource('simple_source', l=234.320573, b=11.365142, spectral_shape=Powerlaw())"
+    "simple_source_gal = PointSource(\n",
+    "    \"simple_source\", l=234.320573, b=11.365142, spectral_shape=Powerlaw()\n",
+    ")"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "7571b0f3",
+   "id": "8c64df98",
    "metadata": {},
    "source": [
     "As spectral shape we can use any function or any composite function (see\n",
@@ -101,7 +106,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "c2a854bc",
+   "id": "6fd9b796",
    "metadata": {},
    "source": [
     "## Getting info about a point source\n",
@@ -114,13 +119,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "e01890a6",
+   "id": "3fe543f4",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:39.998343Z",
-     "iopub.status.busy": "2025-12-11T18:50:39.998246Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.002516Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.002198Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.391591Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.391470Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.398108Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.397560Z"
     }
    },
    "outputs": [
@@ -319,13 +324,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "938fd5b3",
+   "id": "04f3c10c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.004262Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.004140Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.007510Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.007152Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.400062Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.399937Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.404213Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.403860Z"
     }
    },
    "outputs": [
@@ -385,7 +390,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "4d34f1ec",
+   "id": "f22c043e",
    "metadata": {},
    "source": [
     "As you can see we have created a point source with one component automatically named \"main\", with a power law spectrum, at the\n",
@@ -394,7 +399,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "894396be",
+   "id": "57d63985",
    "metadata": {},
    "source": [
     "## Converting between coordinate systems\n",
@@ -407,13 +412,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "dcb4f7b3",
+   "id": "077d70dd",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.009296Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.009193Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.024662Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.024146Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.408419Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.408254Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.437580Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.437188Z"
     }
    },
    "outputs": [
@@ -460,17 +465,17 @@
     "simple_source_icrs.position.display()\n",
     "l = simple_source_icrs.position.get_l()\n",
     "b = simple_source_icrs.position.get_b()\n",
-    "print(l,b)\n",
+    "print(l, b)\n",
     "\n",
     "simple_source_gal.position.display()\n",
     "ra = simple_source_gal.position.get_ra()\n",
     "dec = simple_source_gal.position.get_dec()\n",
-    "print(ra,dec)"
+    "print(ra, dec)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "60b64d82",
+   "id": "1e0762a3",
    "metadata": {},
    "source": [
     "For more control on the output and many more options, such as transform\n",
@@ -482,13 +487,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "0111e3ae",
+   "id": "c1ffc1a1",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.026736Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.026612Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.034735Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.034308Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.439840Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.439654Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.446472Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.444919Z"
     }
    },
    "outputs": [
@@ -502,14 +507,14 @@
    ],
    "source": [
     "sky_coord_instance = simple_source_icrs.position.sky_coord\n",
-    "ra = sky_coord_instance.transform_to('icrs').ra\n",
-    "dec = sky_coord_instance.transform_to('icrs').dec\n",
+    "ra = sky_coord_instance.transform_to(\"icrs\").ra\n",
+    "dec = sky_coord_instance.transform_to(\"icrs\").dec\n",
     "print(ra.deg)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "8e2eeb51",
+   "id": "302c9745",
    "metadata": {},
    "source": [
     "## Gotcha while accessing coordinates\n",
@@ -524,13 +529,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "c4c05c23",
+   "id": "dafe8e79",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.036478Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.036377Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.039783Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.039453Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.448641Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.448484Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.452433Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.452035Z"
     }
    },
    "outputs": [
@@ -574,14 +579,14 @@
     "parameter_ra = simple_source_icrs.position.ra\n",
     "parameter_dec = simple_source_icrs.position.dec\n",
     "\n",
-    "print( type(parameter_ra) )\n",
+    "print(type(parameter_ra))\n",
     "parameter_ra.display()\n",
     "parameter_dec.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "9b2a31a9",
+   "id": "0ea4e98b",
    "metadata": {},
    "source": [
     "The following would instead throw `AttributeError`, since `simple_source_icrs` was instanced using R.A. and Dec. and hence does not have the `l`, `b` parameters:"
@@ -590,13 +595,13 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "4a0d4a46",
+   "id": "99bd5df6",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.041482Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.041363Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.043321Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.042986Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.454325Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.454197Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.456278Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.455952Z"
     }
    },
    "outputs": [
@@ -610,14 +615,14 @@
    ],
    "source": [
     "try:\n",
-    "    print( simple_source_icrs.position.l)\n",
+    "    print(simple_source_icrs.position.l)\n",
     "except Exception as e:\n",
     "    print(e)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "476180d1",
+   "id": "b8146ec6",
    "metadata": {},
    "source": [
     "In all cases, independently on how the source was instanced, you can obtain the *values* of coordinates in degrees\n",
@@ -627,13 +632,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "f2d92ed4",
+   "id": "84026b3f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.045031Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.044905Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.048462Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.047958Z"
+     "iopub.execute_input": "2025-12-16T18:13:45.457940Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.457824Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.461244Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.460909Z"
     }
    },
    "outputs": [
@@ -664,32 +669,33 @@
    ],
    "source": [
     "simple_source_icrs.position.display()\n",
-    "simple_source_icrs.position.ra =   simple_source_icrs.position.ra.value + 1.0\n",
+    "simple_source_icrs.position.ra = simple_source_icrs.position.ra.value + 1.0\n",
     "simple_source_icrs.position.dec = simple_source_icrs.position.dec.value - 1.0\n",
     "simple_source_icrs.position.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "f3f50cf9",
+   "id": "f2d87d9c",
    "metadata": {},
    "source": [
     "## Fitting the source position\n",
     "\n",
-    "Source coordinates, like any parameters, can be set to be free or fixed during the fit. By default, coordinates are set to be fixed. If you would like to fit them as free parameters during the likelihood fit, they can be freed as any other parameter. Note that `param.free = True` and `param.fix = False` are equivalent. "
+    "Source coordinates, like any parameters, can be set to be free or fixed during the fit. By default, coordinates are set to be fixed. If you would like to fit them as free parameters during the likelihood fit, they can be freed as any other parameter. Note that `param.free = True` and `param.fix = False` are equivalent."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "b2aeba68",
+   "id": "6e573443",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.050336Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.050234Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.052979Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.052516Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:45.463369Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.463218Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.465770Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.465425Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
@@ -702,15 +708,21 @@
     }
    ],
    "source": [
-    "print(\"Free parameters (before freeing position):\", simple_source_icrs.free_parameters.keys())\n",
+    "print(\n",
+    "    \"Free parameters (before freeing position):\",\n",
+    "    simple_source_icrs.free_parameters.keys(),\n",
+    ")\n",
     "simple_source_icrs.position.ra.free = True\n",
     "simple_source_icrs.position.dec.fix = False\n",
-    "print(\"Free parameters (after freeing position):\", simple_source_icrs.free_parameters.keys())\n"
+    "print(\n",
+    "    \"Free parameters (after freeing position):\",\n",
+    "    simple_source_icrs.free_parameters.keys(),\n",
+    ")"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "e253fc44",
+   "id": "e75c3803",
    "metadata": {},
    "source": [
     "For a source created in Galactic coordinates, instead use the following:"
@@ -719,14 +731,15 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "5631f8f2",
+   "id": "cb943ca5",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.054833Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.054704Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.061302Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.060769Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:45.467440Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.467301Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.469793Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.469439Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
@@ -739,15 +752,21 @@
     }
    ],
    "source": [
-    "print(\"Free parameters (before freeing position):\", simple_source_gal.free_parameters.keys())\n",
+    "print(\n",
+    "    \"Free parameters (before freeing position):\",\n",
+    "    simple_source_gal.free_parameters.keys(),\n",
+    ")\n",
     "simple_source_gal.position.l.free = True\n",
     "simple_source_gal.position.b.fix = False\n",
-    "print(\"Free parameters (after freeing position):\", simple_source_gal.free_parameters.keys())\n"
+    "print(\n",
+    "    \"Free parameters (after freeing position):\",\n",
+    "    simple_source_gal.free_parameters.keys(),\n",
+    ")"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "3fb00445",
+   "id": "f25763f3",
    "metadata": {},
    "source": [
     "By default, the allowed range for the Right Ascension is from 0˚ to 360˚ and allowed declination values range from -90˚ to 90˚. **If fitting the source position, it is strongly recommended to restrict the coordinates to be inside the region of interest (ROI) at all times.** The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting \"stuck\" due to the likelihood surface being flat. For example:"
@@ -756,14 +775,15 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "1a310e79",
+   "id": "c941d9d6",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.063407Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.063289Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.066992Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.066663Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:45.471510Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.471372Z",
+     "iopub.status.idle": "2025-12-16T18:13:45.475555Z",
+     "shell.execute_reply": "2025-12-16T18:13:45.475213Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
@@ -796,15 +816,21 @@
     }
    ],
    "source": [
-    "simple_source_icrs.position.ra.bounds = ( simple_source_icrs.position.ra.value - 5.0, simple_source_icrs.position.ra.value + 5.0 )\n",
-    "simple_source_icrs.position.dec.bounds = ( simple_source_icrs.position.dec.value - 5.0, simple_source_icrs.position.dec.value + 5.0 )\n",
+    "simple_source_icrs.position.ra.bounds = (\n",
+    "    simple_source_icrs.position.ra.value - 5.0,\n",
+    "    simple_source_icrs.position.ra.value + 5.0,\n",
+    ")\n",
+    "simple_source_icrs.position.dec.bounds = (\n",
+    "    simple_source_icrs.position.dec.value - 5.0,\n",
+    "    simple_source_icrs.position.dec.value + 5.0,\n",
+    ")\n",
     "simple_source_icrs.position.ra.display()\n",
-    "simple_source_icrs.position.dec.display()\n"
+    "simple_source_icrs.position.dec.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "df86276f",
+   "id": "21dcd019",
    "metadata": {},
    "source": [
     "## \"Calling\" a point source\n",
@@ -815,21 +841,28 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "a37f1996",
+   "id": "59fbc98c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:40.068872Z",
-     "iopub.status.busy": "2025-12-11T18:50:40.068749Z",
-     "iopub.status.idle": "2025-12-11T18:50:40.612148Z",
-     "shell.execute_reply": "2025-12-11T18:50:40.611693Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:45.477282Z",
+     "iopub.status.busy": "2025-12-16T18:13:45.477169Z",
+     "iopub.status.idle": "2025-12-16T18:13:46.186817Z",
+     "shell.execute_reply": "2025-12-16T18:13:46.186042Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Energy in keV:\n",
+      "Energy in keV:\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
       "With units: [1.00000000e+00 9.77237221e-03 9.54992586e-05] 1 / (keV s cm2)\n"
      ]
     },
@@ -850,29 +883,28 @@
    ],
    "source": [
     "from astropy import units as u\n",
-    "E = [1, 10, 100]*u.keV\n",
+    "\n",
+    "E = [1, 10, 100] * u.keV\n",
     "\n",
     "print(\"Energy in keV:\")\n",
-    "print( \"With units:\", simple_source_icrs(E) )\n",
-    "print( \"Without units:\", simple_source_icrs(E.value) )\n",
+    "print(\"With units:\", simple_source_icrs(E))\n",
+    "print(\"Without units:\", simple_source_icrs(E.value))\n",
     "\n",
-    "print( \"With units:\", simple_source_icrs.spectrum.main.shape(E) )\n",
-    "print( \"Without units:\", simple_source_icrs.spectrum.main.shape(E.value) )\n",
+    "print(\"With units:\", simple_source_icrs.spectrum.main.shape(E))\n",
+    "print(\"Without units:\", simple_source_icrs.spectrum.main.shape(E.value))\n",
     "\n",
     "print(\"\")\n",
     "print(\"Energy in TeV:\")\n",
     "E_TeV = E.to(u.TeV)\n",
-    "print( \"With units:\", simple_source_icrs(E_TeV) )\n",
-    "print( \"With units:\", simple_source_icrs(E_TeV).to(1/u.cm**2/u.TeV/u.s) )\n",
-    "print( \"Without units:\", simple_source_icrs(E_TeV.value) )\n",
-    "\n",
-    "\n"
+    "print(\"With units:\", simple_source_icrs(E_TeV))\n",
+    "print(\"With units:\", simple_source_icrs(E_TeV).to(1 / u.cm**2 / u.TeV / u.s))\n",
+    "print(\"Without units:\", simple_source_icrs(E_TeV.value))"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "8bcff4cc",
+   "id": "6b1b3953",
    "metadata": {},
    "outputs": [],
    "source": []

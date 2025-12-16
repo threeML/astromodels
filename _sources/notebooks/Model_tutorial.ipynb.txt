@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "fd18fb20",
+   "id": "e2ade4b7",
    "metadata": {},
    "source": [
     "# Model tutorial\n",
@@ -15,13 +15,13 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "c11c40b0",
+   "id": "fe621e1a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:31.025170Z",
-     "iopub.status.busy": "2025-12-11T18:50:31.024969Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.751060Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.749537Z"
+     "iopub.execute_input": "2025-12-16T18:13:34.773496Z",
+     "iopub.status.busy": "2025-12-16T18:13:34.773309Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.689991Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.688745Z"
     }
    },
    "outputs": [],
@@ -36,7 +36,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "cb1417cc",
+   "id": "03f08e02",
    "metadata": {},
    "source": [
     "## Define sources\n",
@@ -47,14 +47,15 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "747922dc",
+   "id": "6ac19162",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.756121Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.755667Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.765507Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.764774Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:36.694968Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.694489Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.707430Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.705783Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
@@ -283,19 +284,18 @@
     "# Let's start by defining a simple point source with a power law spectrum\n",
     "powerlaw = Powerlaw()\n",
     "\n",
-    "pts1 = PointSource('source_1', ra=125.6, dec=-75.3,\n",
-    "                   spectral_shape=powerlaw)\n",
+    "pts1 = PointSource(\"source_1\", ra=125.6, dec=-75.3, spectral_shape=powerlaw)\n",
     "\n",
     "# Get some info about what we just created\n",
     "pts1.display()\n",
     "\n",
     "# Have a quicker look\n",
-    "pts1.plot_tree()\n"
+    "pts1.plot_tree()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "1ee20b5d",
+   "id": "22550dcb",
    "metadata": {},
    "source": [
     "Now let’s define another source, this time at Galactic Coordinates l = 11.25, b = -22.5, and with two spectral components:"
@@ -304,13 +304,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "6bbe020a",
+   "id": "5dd79ee6",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.767983Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.767837Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.774536Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.774195Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.712582Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.712397Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.722649Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.722008Z"
     }
    },
    "outputs": [
@@ -601,12 +601,14 @@
     "# Another point source with two spectral components\n",
     "\n",
     "spectrum1 = Powerlaw(K=0.2, index=-0.75)\n",
-    "component1 = SpectralComponent('synchrotron',spectrum1)\n",
+    "component1 = SpectralComponent(\"synchrotron\", spectrum1)\n",
     "\n",
     "spectrum2 = Powerlaw(K=0.8, index=-1.0)\n",
-    "component2 = SpectralComponent('IC',spectrum2)\n",
+    "component2 = SpectralComponent(\"IC\", spectrum2)\n",
     "\n",
-    "point_source2 = PointSource('source_2', l=11.25, b=-22.5, components=[component1,component2])\n",
+    "point_source2 = PointSource(\n",
+    "    \"source_2\", l=11.25, b=-22.5, components=[component1, component2]\n",
+    ")\n",
     "\n",
     "# Have a look at what we just created\n",
     "\n",
@@ -615,7 +617,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "8a62844f",
+   "id": "96976af9",
    "metadata": {},
    "source": [
     "## Create a model\n",
@@ -626,13 +628,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "35012918",
+   "id": "3595a871",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.779460Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.779170Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.782385Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.781648Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.725068Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.724921Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.732310Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.731800Z"
     }
    },
    "outputs": [],
@@ -644,7 +646,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "bc66242f",
+   "id": "61a1edd5",
    "metadata": {},
    "source": [
     "Of course you can use as many sources as needed, like my_model = Model(pts1, pts2, pts3…)\n",
@@ -657,13 +659,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "075eafde",
+   "id": "2c29754e",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.785982Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.785793Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.812389Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.811870Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.734556Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.734417Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.759831Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.759290Z"
     }
    },
    "outputs": [
@@ -841,7 +843,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "5cb0e52d",
+   "id": "35197bcd",
    "metadata": {},
    "source": [
     "The model tree can be shown as:"
@@ -850,13 +852,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "74c9dbc0",
+   "id": "e8e18a8c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.814577Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.814442Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.820694Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.820244Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.762071Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.761921Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.773416Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.772951Z"
     }
    },
    "outputs": [
@@ -937,7 +939,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ea6a4f98",
+   "id": "217ae790",
    "metadata": {},
    "source": [
     "A dictionary of free parameters can be obtained like this:"
@@ -946,13 +948,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "f31aa660",
+   "id": "bd5afab1",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.822646Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.822527Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.824620Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.824192Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.775333Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.775228Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.777247Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.776774Z"
     }
    },
    "outputs": [],
@@ -962,7 +964,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "25d1fe61",
+   "id": "d1a9149d",
    "metadata": {},
    "source": [
     "We can use such dictionary to loop over all free parameters:"
@@ -971,13 +973,13 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "194f0553",
+   "id": "aa3ab44a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.826625Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.826507Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.828942Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.828592Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.779036Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.778926Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.785493Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.784822Z"
     }
    },
    "outputs": [
@@ -1002,7 +1004,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "74accf9b",
+   "id": "ddebf1ec",
    "metadata": {},
    "source": [
     "More information on a particular source can be obtained like:"
@@ -1011,13 +1013,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "cdfde493",
+   "id": "0d7b69af",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.830677Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.830578Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.835155Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.834751Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.788074Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.787947Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.794945Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.793830Z"
     }
    },
    "outputs": [
@@ -1215,7 +1217,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "82407060",
+   "id": "eac8f0b1",
    "metadata": {},
    "source": [
     "More information about a particular instance of a function can be obtained like:"
@@ -1224,13 +1226,13 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "7cfbe056",
+   "id": "6c22f66d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.837450Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.837297Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.841125Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.840739Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.798642Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.798451Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.808837Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.807240Z"
     }
    },
    "outputs": [
@@ -1364,7 +1366,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ad9311dd",
+   "id": "6eb2fad0",
    "metadata": {},
    "source": [
     "## Accessing and modifying sources and parameters from the model instance\n",
@@ -1377,13 +1379,13 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "c98d1347",
+   "id": "97b578ab",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.842927Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.842830Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.852130Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.851744Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.814552Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.814302Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.830974Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.830248Z"
     }
    },
    "outputs": [
@@ -1562,13 +1564,13 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "5345dccf",
+   "id": "42019d0c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.853943Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.853805Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.856310Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.855942Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.835358Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.835148Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.839337Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.837502Z"
     }
    },
    "outputs": [],
@@ -1584,7 +1586,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "840cc3ec",
+   "id": "f63306f2",
    "metadata": {},
    "source": [
     "The structure of these paths is easy to understand. The model is a tree-like structure. The root of the tree is always the model instance itself. The second level is constituted by the various sources. The structure within a source can be understood by calling the ```.display``` method:"
@@ -1593,13 +1595,13 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "06c5a599",
+   "id": "2d865f0c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.858445Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.858304Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.862833Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.862494Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.843230Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.842975Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.848170Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.847641Z"
     }
    },
    "outputs": [
@@ -1797,7 +1799,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "5986e8eb",
+   "id": "25db8e9c",
    "metadata": {},
    "source": [
     "Each indentation represents one level, so to access the “ra” element we can follow the levels shown by the ```.display()``` method:"
@@ -1806,13 +1808,13 @@
   {
    "cell_type": "code",
    "execution_count": 14,
-   "id": "b362ca92",
+   "id": "3e4778f8",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.864916Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.864771Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.867325Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.866984Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.850922Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.850712Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.859289Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.858484Z"
     }
    },
    "outputs": [
@@ -1839,7 +1841,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "a39cd1e1",
+   "id": "cff3afe4",
    "metadata": {},
    "source": [
     "<div class=\"alert alert-info\">\n",
@@ -1853,7 +1855,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "0e2630f8",
+   "id": "2b34f579",
    "metadata": {},
    "source": [
     "while to access the index parameter of the power law function we can do"
@@ -1862,13 +1864,13 @@
   {
    "cell_type": "code",
    "execution_count": 15,
-   "id": "9d407e2d",
+   "id": "21e1a1fe",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.869080Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.868953Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.871683Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.871217Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.861540Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.861405Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.868586Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.868019Z"
     }
    },
    "outputs": [
@@ -1895,7 +1897,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "420954da",
+   "id": "8bff25b7",
    "metadata": {},
    "source": [
     "You can find much more information in the document “Additional features for scripts and applications”.\n",
@@ -1910,13 +1912,13 @@
   {
    "cell_type": "code",
    "execution_count": 16,
-   "id": "91f3fe5b",
+   "id": "de37a418",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.873421Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.873294Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.881619Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.881046Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.870740Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.870578Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.877256Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.876658Z"
     }
    },
    "outputs": [],
@@ -1939,19 +1941,19 @@
   },
   {
    "cell_type": "markdown",
-   "id": "bd159226",
+   "id": "dd9e6f22",
    "metadata": {},
    "source": [
     "<div class=\"alert alert-info\">\n",
     "\n",
     "**GOTACH:** while it is possible to create shortcuts for parameters, it is not encouraged. Indeed, this will not work:\n",
-    "   \n",
+    "\n",
     "</div>\n",
     "\n",
     "K_1 = my_model.source_1.spectrum.main.powerlaw.K\n",
     "\n",
     "K_1 = 1.2  *WILL NOT WORK*\n",
-    "    \n",
+    "\n",
     "In order to use a shortcut for a parameter to change its value, you have to explicitly\n",
     "set its property 'value':\n",
     "K_1.value = 1.2  *This will work*\n"
@@ -1959,7 +1961,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "40292bfc",
+   "id": "2e1158e8",
    "metadata": {},
    "source": [
     "Shortcut can point at any point of the tree:\n"
@@ -1968,13 +1970,13 @@
   {
    "cell_type": "code",
    "execution_count": 17,
-   "id": "86b983d3",
+   "id": "7a5c1116",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.884000Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.883863Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.886639Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.886195Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.879446Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.879309Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.885980Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.885337Z"
     }
    },
    "outputs": [],
@@ -1995,7 +1997,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "32913924",
+   "id": "aba81b27",
    "metadata": {},
    "source": [
     "If you are ever in doubt of what a particular shortcut stands for, you can always retrieve the full path of the element the shortcut is pointing to like this:"
@@ -2004,13 +2006,13 @@
   {
    "cell_type": "code",
    "execution_count": 18,
-   "id": "691782ed",
+   "id": "2e3bc5b6",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.888632Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.888496Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.894758Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.894132Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.888101Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.887950Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.890385Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.889885Z"
     }
    },
    "outputs": [
@@ -2028,7 +2030,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9153714d",
+   "id": "eac47513",
    "metadata": {},
    "source": [
     "## Saving a model to file\n",
@@ -2039,25 +2041,25 @@
   {
    "cell_type": "code",
    "execution_count": 19,
-   "id": "02206462",
+   "id": "bbc6053a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.897053Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.896924Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.905602Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.905143Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.892416Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.892260Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.903419Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.902791Z"
     }
    },
    "outputs": [],
    "source": [
     "# Save the model to a file, overwriting it if already existing\n",
     "\n",
-    "my_model.save('my_model.yml', overwrite=True)"
+    "my_model.save(\"my_model.yml\", overwrite=True)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "a5ddd8ea",
+   "id": "1650aacf",
    "metadata": {},
    "source": [
     "The content of the file is YAML code, which is human-readable and very easy to understand. Let’s have a look:"
@@ -2066,13 +2068,13 @@
   {
    "cell_type": "code",
    "execution_count": 20,
-   "id": "7b84f004",
+   "id": "9c732ace",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.907828Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.907684Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.914652Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.914183Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.905514Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.905361Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.913515Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.912766Z"
     }
    },
    "outputs": [
@@ -2353,14 +2355,14 @@
     }
    ],
    "source": [
-    "with open('my_model.yml') as yaml_file:\n",
+    "with open(\"my_model.yml\") as yaml_file:\n",
     "\n",
     "    print(\"\".join(yaml_file.readlines()))"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "4bd53427",
+   "id": "cb63f937",
    "metadata": {},
    "source": [
     "## Load a model from a file\n",
@@ -2371,13 +2373,13 @@
   {
    "cell_type": "code",
    "execution_count": 21,
-   "id": "6bf8db94",
+   "id": "effa3abe",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.916532Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.916426Z",
-     "iopub.status.idle": "2025-12-11T18:50:32.937741Z",
-     "shell.execute_reply": "2025-12-11T18:50:32.937341Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.916105Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.915971Z",
+     "iopub.status.idle": "2025-12-16T18:13:36.936292Z",
+     "shell.execute_reply": "2025-12-16T18:13:36.935723Z"
     }
    },
    "outputs": [
@@ -2550,7 +2552,7 @@
     }
    ],
    "source": [
-    "my_model = load_model('my_model.yml')\n",
+    "my_model = load_model(\"my_model.yml\")\n",
     "\n",
     "# Explore the model we just loaded back\n",
     "\n",
@@ -2560,13 +2562,13 @@
   {
    "cell_type": "code",
    "execution_count": 22,
-   "id": "fa6d3fc5",
+   "id": "6808428c",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:32.939588Z",
-     "iopub.status.busy": "2025-12-11T18:50:32.939440Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.759179Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.758719Z"
+     "iopub.execute_input": "2025-12-16T18:13:36.938439Z",
+     "iopub.status.busy": "2025-12-16T18:13:36.938305Z",
+     "iopub.status.idle": "2025-12-16T18:13:37.948685Z",
+     "shell.execute_reply": "2025-12-16T18:13:37.948030Z"
     }
    },
    "outputs": [
@@ -2596,16 +2598,17 @@
     "\n",
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
+    "\n",
     "%matplotlib inline\n",
     "from jupyterthemes import jtplot\n",
-    "jtplot.style(context=\"talk\", fscale=1, ticks=True, grid=False)\n",
     "\n",
+    "jtplot.style(context=\"talk\", fscale=1, ticks=True, grid=False)\n",
     "\n",
     "\n",
     "fig, ax = plt.subplots()\n",
     "# Energies where we want to evaluate the model\n",
     "\n",
-    "e = np.geomspace(1,1000,100)\n",
+    "e = np.geomspace(1, 1000, 100)\n",
     "\n",
     "# Loop over the sources\n",
     "\n",
@@ -2626,7 +2629,7 @@
     "\n",
     "        # Plot this component for this source\n",
     "\n",
-    "        ax.loglog(e, flux,label=\"%s of %s\" % (component.name, src.name))\n",
+    "        ax.loglog(e, flux, label=\"%s of %s\" % (component.name, src.name))\n",
     "\n",
     "ax.legend(loc=0)\n",
     "\n",
@@ -2636,7 +2639,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "790c3e7f",
+   "id": "f9e0117c",
    "metadata": {},
    "source": [
     "## Linking parameters\n",
@@ -2647,13 +2650,13 @@
   {
    "cell_type": "code",
    "execution_count": 23,
-   "id": "ed526370",
+   "id": "d86b7059",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.761197Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.761018Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.772400Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.771993Z"
+     "iopub.execute_input": "2025-12-16T18:13:37.951824Z",
+     "iopub.status.busy": "2025-12-16T18:13:37.951609Z",
+     "iopub.status.idle": "2025-12-16T18:13:37.963151Z",
+     "shell.execute_reply": "2025-12-16T18:13:37.962763Z"
     }
    },
    "outputs": [
@@ -2865,15 +2868,17 @@
     "# Link the photon index of the first source with the\n",
     "# photon index of the IC component of the second source\n",
     "\n",
-    "my_model.link(my_model.source_2.spectrum.IC.Powerlaw.index,\n",
-    "              my_model.source_1.spectrum.main.Powerlaw.index)\n",
+    "my_model.link(\n",
+    "    my_model.source_2.spectrum.IC.Powerlaw.index,\n",
+    "    my_model.source_1.spectrum.main.Powerlaw.index,\n",
+    ")\n",
     "\n",
     "my_model.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "1de22590",
+   "id": "2c9169a1",
    "metadata": {},
    "source": [
     "### Advanced use of linking: arbitrary functions\n",
@@ -2884,13 +2889,13 @@
   {
    "cell_type": "code",
    "execution_count": 24,
-   "id": "82b3ffa1",
+   "id": "21cd9f7f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.774198Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.774075Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.789719Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.789191Z"
+     "iopub.execute_input": "2025-12-16T18:13:37.965017Z",
+     "iopub.status.busy": "2025-12-16T18:13:37.964888Z",
+     "iopub.status.idle": "2025-12-16T18:13:37.982421Z",
+     "shell.execute_reply": "2025-12-16T18:13:37.981751Z"
     }
    },
    "outputs": [
@@ -3113,11 +3118,13 @@
     "# photon index of the first source plus a constant k\n",
     "\n",
     "link_function = Line(a=2, b=1)\n",
-    "link_function.b.fix=True\n",
+    "link_function.b.fix = True\n",
     "\n",
-    "my_model.link(my_model.source_2.spectrum.IC.Powerlaw.index,\n",
-    "              my_model.source_1.spectrum.main.Powerlaw.index,\n",
-    "              link_function)\n",
+    "my_model.link(\n",
+    "    my_model.source_2.spectrum.IC.Powerlaw.index,\n",
+    "    my_model.source_1.spectrum.main.Powerlaw.index,\n",
+    "    link_function,\n",
+    ")\n",
     "\n",
     "# The parameters of the linking function become parameters\n",
     "# of the model, and are put in the model tree under the parameter they are\n",
@@ -3130,7 +3137,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "438889b7",
+   "id": "7ea33bcd",
    "metadata": {},
    "source": [
     "If we want to fix say $p2 = p1 - 1.2$, we can fix k to that:"
@@ -3139,13 +3146,13 @@
   {
    "cell_type": "code",
    "execution_count": 25,
-   "id": "3278ef54",
+   "id": "0ec870ef",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.791743Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.791639Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.801415Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.801084Z"
+     "iopub.execute_input": "2025-12-16T18:13:37.986887Z",
+     "iopub.status.busy": "2025-12-16T18:13:37.986690Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.005211Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.004592Z"
     }
    },
    "outputs": [
@@ -3362,7 +3369,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "40b3eb57",
+   "id": "9408cbd9",
    "metadata": {},
    "source": [
     "As another example, we might link the two parameters using a power law function:"
@@ -3371,13 +3378,13 @@
   {
    "cell_type": "code",
    "execution_count": 26,
-   "id": "6c2f879f",
+   "id": "9e1452da",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.803279Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.803145Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.813653Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.813237Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.007276Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.007161Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.018627Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.018114Z"
     }
    },
    "outputs": [
@@ -3602,16 +3609,18 @@
     }
    ],
    "source": [
-    "my_model.link(my_model.source_2.spectrum.IC.Powerlaw.index,\n",
-    "              my_model.source_1.spectrum.main.Powerlaw.index,\n",
-    "              Powerlaw())\n",
+    "my_model.link(\n",
+    "    my_model.source_2.spectrum.IC.Powerlaw.index,\n",
+    "    my_model.source_1.spectrum.main.Powerlaw.index,\n",
+    "    Powerlaw(),\n",
+    ")\n",
     "\n",
     "my_model.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "d89aa6f9",
+   "id": "1cd28d4e",
    "metadata": {},
    "source": [
     "We can use arbitrarily complex functions as link function, if needed (see “Creating and modifying functions” for more info on how to create composite functions):"
@@ -3620,13 +3629,13 @@
   {
    "cell_type": "code",
    "execution_count": 27,
-   "id": "7ff5b513",
+   "id": "a2d06e27",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.816070Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.815915Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.828631Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.828255Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.021125Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.020960Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.040198Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.039730Z"
     }
    },
    "outputs": [
@@ -3899,16 +3908,18 @@
     "# A random composite function (see \"Creating and modifying functions\" for more info)\n",
     "crazy_link = Powerlaw() + Gaussian()\n",
     "\n",
-    "my_model.link(my_model.source_2.spectrum.IC.Powerlaw.index,\n",
-    "              my_model.source_1.spectrum.main.Powerlaw.index,\n",
-    "              crazy_link)\n",
+    "my_model.link(\n",
+    "    my_model.source_2.spectrum.IC.Powerlaw.index,\n",
+    "    my_model.source_1.spectrum.main.Powerlaw.index,\n",
+    "    crazy_link,\n",
+    ")\n",
     "\n",
     "my_model.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "408976af",
+   "id": "1532f857",
    "metadata": {},
    "source": [
     "## Time-varying models and other independent variables\n",
@@ -3919,27 +3930,27 @@
   {
    "cell_type": "code",
    "execution_count": 28,
-   "id": "b4557490",
+   "id": "27d43d89",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.830436Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.830312Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.838330Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.837973Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.042057Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.041947Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.044033Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.043628Z"
     }
    },
    "outputs": [],
    "source": [
     "# Add the time as an independent variable of the model\n",
     "\n",
-    "time = IndependentVariable(\"time\",0.0, unit='s')\n",
+    "time = IndependentVariable(\"time\", 0.0, unit=\"s\")\n",
     "\n",
     "my_model.add_independent_variable(time)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "c7d46d38",
+   "id": "5c173371",
    "metadata": {},
    "source": [
     "The IndependentVariable instance is inserted at the root of the model tree. In this case, can be accessed as:"
@@ -3948,13 +3959,13 @@
   {
    "cell_type": "code",
    "execution_count": 29,
-   "id": "feb2c15f",
+   "id": "786b4f97",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.840128Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.840023Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.845625Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.845145Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.045975Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.045853Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.048740Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.048384Z"
     }
    },
    "outputs": [
@@ -3979,7 +3990,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "84ab3164",
+   "id": "da67cd08",
    "metadata": {},
    "source": [
     "We can now link any parameter to be a function of time, like this:"
@@ -3988,24 +3999,24 @@
   {
    "cell_type": "code",
    "execution_count": 30,
-   "id": "544eb5c8",
+   "id": "7fb7f17d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.847514Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.847408Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.853584Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.853125Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.050519Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.050393Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.052731Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.052333Z"
     }
    },
    "outputs": [],
    "source": [
     "# First define the function. In this case, a linear function ax+b\n",
-    "law = Line(a=-2,b=-0.02)"
+    "law = Line(a=-2, b=-0.02)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "4345ccd9",
+   "id": "bbaa6555",
    "metadata": {},
    "source": [
     "Now link the index of the sync. component of source_2 to be law(t)\n",
@@ -4015,44 +4026,42 @@
   {
    "cell_type": "code",
    "execution_count": 31,
-   "id": "41da3f85",
+   "id": "12c7e108",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.855936Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.855822Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.862423Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.861925Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.054521Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.054388Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.062080Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.061559Z"
     }
    },
    "outputs": [],
    "source": [
-    "my_model.link(my_model.source_2.spectrum.synchrotron.Powerlaw.index,\n",
-    "             time,\n",
-    "             law)"
+    "my_model.link(my_model.source_2.spectrum.synchrotron.Powerlaw.index, time, law)"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 32,
-   "id": "3a3a0310",
+   "id": "7a23ead3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.864271Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.864162Z",
-     "iopub.status.idle": "2025-12-11T18:50:33.890368Z",
-     "shell.execute_reply": "2025-12-11T18:50:33.889878Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.063926Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.063796Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.096605Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.096023Z"
     }
    },
    "outputs": [],
    "source": [
-    "my_model.save(\"time_dependent.yml\",overwrite=True)\n",
+    "my_model.save(\"time_dependent.yml\", overwrite=True)\n",
     "\n",
     "my_model = load_model(\"time_dependent.yml\")"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "03e67883",
+   "id": "18d9785e",
    "metadata": {},
    "source": [
     "This would show the link:\n",
@@ -4082,13 +4091,13 @@
   {
    "cell_type": "code",
    "execution_count": 33,
-   "id": "6fbb26b9",
+   "id": "6c710a95",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:33.892751Z",
-     "iopub.status.busy": "2025-12-11T18:50:33.892585Z",
-     "iopub.status.idle": "2025-12-11T18:50:34.173757Z",
-     "shell.execute_reply": "2025-12-11T18:50:34.173295Z"
+     "iopub.execute_input": "2025-12-16T18:13:38.098591Z",
+     "iopub.status.busy": "2025-12-16T18:13:38.098480Z",
+     "iopub.status.idle": "2025-12-16T18:13:38.503404Z",
+     "shell.execute_reply": "2025-12-16T18:13:38.502573Z"
     }
    },
    "outputs": [
@@ -4116,11 +4125,11 @@
    "source": [
     "fig, ax = plt.subplots()\n",
     "# Prepare 100 logarithmically distributed energies between 1 and 100 keV\n",
-    "energies = np.geomspace(1,100,100)\n",
+    "energies = np.geomspace(1, 100, 100)\n",
     "\n",
     "# Compute and plot the sync. spectrum every 10 s between 0 and 50 seconds\n",
     "\n",
-    "times = np.linspace(0,50,6)\n",
+    "times = np.linspace(0, 50, 6)\n",
     "\n",
     "my_model.time = 0.0\n",
     "\n",
@@ -4128,9 +4137,13 @@
     "\n",
     "    my_model.time = tt\n",
     "\n",
-    "    ax.loglog(energies, my_model.source_2.spectrum.synchrotron(energies),label='t = %s' % my_model.time.value)\n",
+    "    ax.loglog(\n",
+    "        energies,\n",
+    "        my_model.source_2.spectrum.synchrotron(energies),\n",
+    "        label=\"t = %s\" % my_model.time.value,\n",
+    "    )\n",
     "\n",
-    "ax.legend(loc=1,ncol=2)\n",
+    "ax.legend(loc=1, ncol=2)\n",
     "ax.set_xlabel(\"Energy (keV)\")\n",
     "ax.set_ylabel(r\"Differential flux (ph. cm$^{-2}$ s$^{-1}$ keV$^{-1}$)\")"
    ]
@@ -4138,7 +4151,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "31631d76",
+   "id": "53b4cabb",
    "metadata": {},
    "outputs": [],
    "source": []

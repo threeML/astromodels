@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "cc8daee9",
+   "id": "4c63c579",
    "metadata": {},
    "source": [
     "# Quick start\n",
@@ -15,13 +15,13 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "c6b27233",
+   "id": "5bd84e88",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:44.687251Z",
-     "iopub.status.busy": "2025-12-11T18:50:44.687135Z",
-     "iopub.status.idle": "2025-12-11T18:50:46.217840Z",
-     "shell.execute_reply": "2025-12-11T18:50:46.217147Z"
+     "iopub.execute_input": "2025-12-16T18:13:51.331208Z",
+     "iopub.status.busy": "2025-12-16T18:13:51.331110Z",
+     "iopub.status.idle": "2025-12-16T18:13:53.227208Z",
+     "shell.execute_reply": "2025-12-16T18:13:53.223589Z"
     }
    },
    "outputs": [],
@@ -33,25 +33,27 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "812aea5a",
+   "id": "57831ced",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:46.220236Z",
-     "iopub.status.busy": "2025-12-11T18:50:46.219945Z",
-     "iopub.status.idle": "2025-12-11T18:50:46.223855Z",
-     "shell.execute_reply": "2025-12-11T18:50:46.223417Z"
+     "iopub.execute_input": "2025-12-16T18:13:53.231104Z",
+     "iopub.status.busy": "2025-12-16T18:13:53.230735Z",
+     "iopub.status.idle": "2025-12-16T18:13:53.237841Z",
+     "shell.execute_reply": "2025-12-16T18:13:53.237301Z"
     }
    },
    "outputs": [],
    "source": [
-    "test_source = PointSource('test_source',ra=123.22, dec=-13.56, spectral_shape=Powerlaw_flux())\n",
+    "test_source = PointSource(\n",
+    "    \"test_source\", ra=123.22, dec=-13.56, spectral_shape=Powerlaw_flux()\n",
+    ")\n",
     "\n",
     "my_model = Model(test_source)"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "6d86360c",
+   "id": "9be731fe",
    "metadata": {},
    "source": [
     "Now let’s use it:\n",
@@ -61,14 +63,15 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "bad985ab",
+   "id": "2f6d51ad",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:46.225752Z",
-     "iopub.status.busy": "2025-12-11T18:50:46.225602Z",
-     "iopub.status.idle": "2025-12-11T18:50:46.810208Z",
-     "shell.execute_reply": "2025-12-11T18:50:46.809659Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:53.240312Z",
+     "iopub.status.busy": "2025-12-16T18:13:53.240171Z",
+     "iopub.status.idle": "2025-12-16T18:13:54.105031Z",
+     "shell.execute_reply": "2025-12-16T18:13:54.104049Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
@@ -84,12 +87,15 @@
     "\n",
     "differential_flux_at_1_keV = my_model.test_source(1.0)\n",
     "\n",
-    "print(\"Differential flux @ 1 keV : %.3f photons / ( cm2 s keV)\" % differential_flux_at_1_keV)\n"
+    "print(\n",
+    "    \"Differential flux @ 1 keV : %.3f photons / ( cm2 s keV)\"\n",
+    "    % differential_flux_at_1_keV\n",
+    ")"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "7d773ccb",
+   "id": "a05bb540",
    "metadata": {},
    "source": [
     "Evaluate the model on an array of 100 energies logarithmically distributed between 1 and 100 keV and plot it"
@@ -98,13 +104,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "dc8afcf5",
+   "id": "a848faeb",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:46.812226Z",
-     "iopub.status.busy": "2025-12-11T18:50:46.812098Z",
-     "iopub.status.idle": "2025-12-11T18:50:47.870533Z",
-     "shell.execute_reply": "2025-12-11T18:50:47.869857Z"
+     "iopub.execute_input": "2025-12-16T18:13:54.107663Z",
+     "iopub.status.busy": "2025-12-16T18:13:54.107481Z",
+     "iopub.status.idle": "2025-12-16T18:13:55.514373Z",
+     "shell.execute_reply": "2025-12-16T18:13:55.513866Z"
     }
    },
    "outputs": [
@@ -132,13 +138,15 @@
    "source": [
     "import numpy as np\n",
     "import matplotlib.pyplot as plt\n",
+    "\n",
     "%matplotlib inline\n",
     "from jupyterthemes import jtplot\n",
+    "\n",
     "jtplot.style(context=\"talk\", fscale=1, ticks=True, grid=False)\n",
     "\n",
     "# Set up the energies\n",
     "\n",
-    "energies = np.logspace(0,2,100)\n",
+    "energies = np.logspace(0, 2, 100)\n",
     "\n",
     "# Get the differential flux\n",
     "\n",

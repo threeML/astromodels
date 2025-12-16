@@ -9,6 +9,7 @@
   <title>Point sources &mdash; Astromodels latest documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
@@ -21,6 +22,8 @@
       <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -54,6 +57,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="function_list.html">Available Functions</a></li>
@@ -112,7 +116,10 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="n">simple_source_icrs</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.2</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+
+<span class="n">simple_source_icrs</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
+    <span class="s2">&quot;simple_source&quot;</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.2</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">()</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -120,7 +127,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">18:50:39 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">45</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">18:13:44 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">45</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">available                                                                         </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
 </pre></div>
 </div>
@@ -137,7 +144,9 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_source_gal</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mf">234.320573</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">11.365142</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_source_gal</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
+    <span class="s2">&quot;simple_source&quot;</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mf">234.320573</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">11.365142</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">()</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -364,12 +373,12 @@
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 <span class="n">l</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_l</span><span class="p">()</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_b</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 <span class="n">ra</span> <span class="o">=</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_ra</span><span class="p">()</span>
 <span class="n">dec</span> <span class="o">=</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">get_dec</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span><span class="n">dec</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -407,8 +416,8 @@ Sky direction (l, b) = (234.32057, 11.36514) (J2000)</div>
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sky_coord_instance</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">sky_coord</span>
-<span class="n">ra</span> <span class="o">=</span> <span class="n">sky_coord_instance</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span>
-<span class="n">dec</span> <span class="o">=</span> <span class="n">sky_coord_instance</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s1">&#39;icrs&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="n">sky_coord_instance</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="n">sky_coord_instance</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">ra</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -432,7 +441,7 @@ Sky direction (l, b) = (234.32057, 11.36514) (J2000)</div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">parameter_ra</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span>
 <span class="n">parameter_dec</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span>
 
-<span class="nb">print</span><span class="p">(</span> <span class="nb">type</span><span class="p">(</span><span class="n">parameter_ra</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parameter_ra</span><span class="p">))</span>
 <span class="n">parameter_ra</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 <span class="n">parameter_dec</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
@@ -466,7 +475,7 @@ Parameter dec = -13.2 [deg]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
@@ -486,7 +495,7 @@ Accessing an element l of the node that does not exist
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span>   <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">1.0</span>
+<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">1.0</span>
 <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span> <span class="o">=</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">1.0</span>
 <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
@@ -512,11 +521,17 @@ Sky direction (R.A., Dec.) = (124.20000, -14.20000) (J2000)</div>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (before freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Free parameters (before freeing position):&quot;</span><span class="p">,</span>
+    <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+<span class="p">)</span>
 <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (after freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<br/></pre></div>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Free parameters (after freeing position):&quot;</span><span class="p">,</span>
+    <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -533,11 +548,17 @@ Free parameters (after freeing position): odict_keys([&#39;simple_source.spectru
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (before freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Free parameters (before freeing position):&quot;</span><span class="p">,</span>
+    <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+<span class="p">)</span>
 <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Free parameters (after freeing position):&quot;</span><span class="p">,</span> <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<br/></pre></div>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Free parameters (after freeing position):&quot;</span><span class="p">,</span>
+    <span class="n">simple_source_gal</span><span class="o">.</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+<span class="p">)</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -554,11 +575,17 @@ Free parameters (after freeing position): odict_keys([&#39;simple_source.spectru
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">5.0</span> <span class="p">)</span>
-<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">5.0</span> <span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">5.0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mf">5.0</span><span class="p">,</span>
+    <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span> <span class="o">+</span> <span class="mf">5.0</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -584,22 +611,23 @@ Parameter dec = -14.2 [deg]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
-<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span>
+
+<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy in keV:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
 
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Energy in TeV:&quot;</span><span class="p">)</span>
 <span class="n">E_TeV</span> <span class="o">=</span> <span class="n">E</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">TeV</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">TeV</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">)</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="p">)</span>
-<br/><br/><br/></pre></div>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;With units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">cm</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">TeV</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">s</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Without units:&quot;</span><span class="p">,</span> <span class="n">simple_source_icrs</span><span class="p">(</span><span class="n">E_TeV</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">

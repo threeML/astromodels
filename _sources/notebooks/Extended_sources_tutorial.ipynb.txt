@@ -2,17 +2,19 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "f39a0f22",
+   "id": "32bc566e",
    "metadata": {},
    "source": [
-    "# Extended source tutorial"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "id": "2c29f988",
-   "metadata": {},
-   "source": [
+    "# Extended source tutorial\n",
+    "\n",
+    ":::{note}\n",
+    "\n",
+    "Until `astromodels 2.5.1` all default `astromodels` 2D-Functions return their values as\n",
+    "$\\frac{1}{\\mathrm{sr}}$ but the reported unit was $\\frac{1}{\\mathrm{deg}^2}$.\n",
+    "In 2.5.1 we temporarily fixed the unit to be the correct $\\frac{1}{sr}$. This may change\n",
+    "in the future as we plan to improve the units handling in `astromodels`.\n",
+    ":::\n",
+    "\n",
     "## Introduction\n",
     "\n",
     "Extended sources with constant (not energy-dependent) morphology can be instanced by providing a spectral shape (1D function) and a spatial shape (2D function):"
@@ -21,25 +23,25 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "b26273ae",
+   "id": "1d8c9c4f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:10.484880Z",
-     "iopub.status.busy": "2025-12-11T18:50:10.484719Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.036779Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.036165Z"
+     "iopub.execute_input": "2025-12-16T18:13:11.837757Z",
+     "iopub.status.busy": "2025-12-16T18:13:11.837582Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.033733Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.032702Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:50:11 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">45</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:13:13 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">45</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">available                                                                         </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m18:50:11\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=523032;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=816179;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\u001b\\\u001b[2m45\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m18:13:13\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=724215;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=907498;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45\u001b\\\u001b[2m45\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mavailable                                                                        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -54,7 +56,7 @@
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=474712;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=774915;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#67\u001b\\\u001b[2m67\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=239105;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=778656;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#67\u001b\\\u001b[2m67\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mwill not be available.                                                           \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
       ]
      },
@@ -274,13 +276,16 @@
    ],
    "source": [
     "from astromodels import *\n",
-    "disk_source = ExtendedSource('simple_source', spectral_shape=Powerlaw(), spatial_shape = Disk_on_sphere() )\n",
+    "\n",
+    "disk_source = ExtendedSource(\n",
+    "    \"simple_source\", spectral_shape=Powerlaw(), spatial_shape=Disk_on_sphere()\n",
+    ")\n",
     "disk_source.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "cb5db5e6",
+   "id": "43442f84",
    "metadata": {},
    "source": [
     "Instead of the `position` property, extended sources have a `spatial_shape` property, which contains the function that was specified as the `shape` argument earlier. Information can be printed either with the regular `print` function or using `.display()`:"
@@ -289,13 +294,13 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "268834a0",
+   "id": "af571dc8",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.039230Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.038854Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.043963Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.043517Z"
+     "iopub.execute_input": "2025-12-16T18:13:14.038792Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.037925Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.049136Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.047890Z"
     }
    },
    "outputs": [
@@ -436,13 +441,13 @@
    ],
    "source": [
     "print(\"Name\", disk_source.spatial_shape.name)\n",
-    "print(\"Class\", type(disk_source.spatial_shape) )\n",
+    "print(\"Class\", type(disk_source.spatial_shape))\n",
     "disk_source.spatial_shape.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "942ba0fb",
+   "id": "7d96297c",
    "metadata": {},
    "source": [
     "Spatial shape parameters can be listed, accessed, changed as any function parameters, for example:"
@@ -451,14 +456,15 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "049f3f55",
+   "id": "973e9650",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.045807Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.045710Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.050325Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.049818Z"
-    }
+     "iopub.execute_input": "2025-12-16T18:13:14.053659Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.053214Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.061873Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.061263Z"
+    },
+    "lines_to_next_cell": 2
    },
    "outputs": [
     {
@@ -500,17 +506,18 @@
    ],
    "source": [
     "import astropy.units as u\n",
-    "print( disk_source.spatial_shape.parameters.keys() )\n",
-    "print( disk_source.parameters.keys() )\n",
+    "\n",
+    "print(disk_source.spatial_shape.parameters.keys())\n",
+    "print(disk_source.parameters.keys())\n",
     "disk_source.spatial_shape.radius.display()\n",
     "disk_source.spatial_shape.radius = 0.3 * u.deg\n",
-    "disk_source.spatial_shape.radius.bounds = (0.1, 1.0)*u.deg\n",
-    "disk_source.spatial_shape.radius.display()\n"
+    "disk_source.spatial_shape.radius.bounds = (0.1, 1.0) * u.deg\n",
+    "disk_source.spatial_shape.radius.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "550f7af9",
+   "id": "7dfdbb46",
    "metadata": {},
    "source": [
     "## Available shapes"
@@ -518,7 +525,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "7bc825b4",
+   "id": "0678f36e",
    "metadata": {},
    "source": [
     "Here's a list of available 2D functions:"
@@ -527,13 +534,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "a5f79fb5",
+   "id": "e87f498a",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.052362Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.052257Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.058809Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.058111Z"
+     "iopub.execute_input": "2025-12-16T18:13:14.064047Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.063896Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.066493Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.066099Z"
     }
    },
    "outputs": [
@@ -551,48 +558,48 @@
   },
   {
    "cell_type": "markdown",
-   "id": "d395cb6d",
+   "id": "8224d4cf",
    "metadata": {},
    "source": [
-    "Check the API or use the `display()` function to find out more about the shapes and their free parameters. "
+    "Check the API or use the `display()` function to find out more about the shapes and their free parameters."
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "e3f967a0",
+   "id": "e528cec5",
    "metadata": {},
    "source": [
     "### \"Moveable\" Functions\n",
     "\n",
     "`Gaussian_on_sphere`, `Asymm_Gaussian_on_sphere`, `Disk_on_sphere`, `Ellipse_on_sphere`, and `Power_law_on_sphere` each have parameters called `lat0` and `lon0`, describing the longitude (R.A.) and latitude (Declination) of the function's \"center\" (center of mass/center of symmetry). These parameters can be set free to allow the source position to vary during the fit, or fixed to a known position. **If fitting the source position, it is strongly recommended to restrict these parameters so that source overlaps the region of interest (ROI) at all times.** The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting \"stuck\" due to the likelihood surface being flat.\n",
     "\n",
-    "Each of these functions also has other parameter(s) related to the source's extend and (if applicable) its orientation. \n",
+    "Each of these functions also has other parameter(s) related to the source's extend and (if applicable) its orientation.\n",
     "\n",
     "All of these functions are normalized so that their integral is 1. The 1D `spectrum` function of an extended source can thus be interpreted as the spectrum that would be observed by a non-imaging instrument with a field of view much larger than the source in question.\n"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "290404f9",
+   "id": "f28dbc42",
    "metadata": {},
    "source": [
     "### Fixed-position Functions\n",
     "\n",
-    "`Latitude_galactic_diffuse` and `SpatialTemplate_2D` do not have parameters named `lat0` and `lon0`. Their positions are always fixed throughout the fit. \n",
+    "`Latitude_galactic_diffuse` and `SpatialTemplate_2D` do not have parameters named `lat0` and `lon0`. Their positions are always fixed throughout the fit.\n",
     "\n",
-    "`Latitude_galactic_diffuse` is a function that is constant in Galactic longitude between `l_min` and `l_max` and follows a Gaussian shape in Galactic latitude, with a \"width\" parameter (`sigma_b`). "
+    "`Latitude_galactic_diffuse` is a function that is constant in Galactic longitude between `l_min` and `l_max` and follows a Gaussian shape in Galactic latitude, with a \"width\" parameter (`sigma_b`)."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "79401b88",
+   "id": "301b8ab7",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.061077Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.060950Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.065558Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.065209Z"
+     "iopub.execute_input": "2025-12-16T18:13:14.068461Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.068303Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.077028Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.076530Z"
     }
    },
    "outputs": [
@@ -759,34 +766,34 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ec7111b7",
+   "id": "3b3904a4",
    "metadata": {},
    "source": [
-    "`SpatialTemplate_2D` is designed to read in a user-provided fits file with an image (in WCS coordinates) using the `load_file()` function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/deg2 and normalized so that its integral is 1. If that is not the case, the normalization parameter `K` may be set accordingly so that the overall function is normalized as expected."
+    "`SpatialTemplate_2D` is designed to read in a user-provided fits file with an image (in WCS coordinates) using the `load_file()` function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/sr and normalized so that its integral is 1. If that is not the case, the normalization parameter `K` may be set accordingly so that the overall function is normalized as expected."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "437aac7e",
+   "id": "40b6d830",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.067373Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.067240Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.098492Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.098071Z"
+     "iopub.execute_input": "2025-12-16T18:13:14.078885Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.078770Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.136038Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.135588Z"
     }
    },
    "outputs": [
     {
      "data": {
       "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:50:12 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> 2D template read from spitzer_example_image.fits is normalized to nan        </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions_2D.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#749\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">749</span></a>\n",
+       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">18:13:14 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> 2D template read from spitzer_example_image.fits is normalized to nan        </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions_2D.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#749\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">749</span></a>\n",
        "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">(expected: </span><span style=\"color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold\">1</span><span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">)                                                                 </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">                   </span>\n",
        "</pre>\n"
       ],
       "text/plain": [
-       "\u001b[38;5;46m18:50:12\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m 2D template read from spitzer_example_image.fits is normalized to nan       \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=80463;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py\u001b\\\u001b[2mfunctions_2D.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=864332;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#749\u001b\\\u001b[2m749\u001b[0m\u001b]8;;\u001b\\\n",
+       "\u001b[38;5;46m18:13:14\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m 2D template read from spitzer_example_image.fits is normalized to nan       \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=300753;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py\u001b\\\u001b[2mfunctions_2D.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=277376;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#749\u001b\\\u001b[2m749\u001b[0m\u001b]8;;\u001b\\\n",
        "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251m(\u001b[0m\u001b[1;38;5;251mexpected: \u001b[0m\u001b[1;37m1\u001b[0m\u001b[1;38;5;251m)\u001b[0m\u001b[1;38;5;251m                                                                \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m                   \u001b[0m\n"
       ]
      },
@@ -970,30 +977,30 @@
    ],
    "source": [
     "\n",
-    "temp = SpatialTemplate_2D(fits_file='spitzer_example_image.fits')\n",
+    "temp = SpatialTemplate_2D(fits_file=\"spitzer_example_image.fits\")\n",
     "temp.display()"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "e2a05706",
+   "id": "d1ff2341",
    "metadata": {},
    "source": [
     "## \"Calling\" extended sources\n",
     "\n",
-    "Extended sources can be called as functions. They take 3 arguments: A list or `np.array` of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. **If no units are provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s deg2).**"
+    "Extended sources can be called as functions. They take 3 arguments: A list or `np.array` of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. **If no units are provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s sr).**"
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "d3841352",
+   "id": "5fb1a791",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.100297Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.100174Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.254164Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.253031Z"
+     "iopub.execute_input": "2025-12-16T18:13:14.138216Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.137924Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.309764Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.309197Z"
     }
    },
    "outputs": [
@@ -1008,65 +1015,64 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "[[1.16105524e+04 1.13462640e+02 1.10879915e+00]\n",
-      " [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s cm2 deg2)"
-     ]
-    },
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "\n",
+      "[[3.81151951e+07 3.72475874e+05 3.63997288e+03]\n",
+      " [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s sr cm2)\n",
       "\n",
       "Spatial only:\n",
-      "[11610.55239595     0.        ] 1 / deg2\n",
+      "[38115195.13257469        0.        ] 1 / sr\n",
       "\n",
       "Spectral only:\n",
       "[1.00000000e+00 9.77237221e-03 9.54992586e-05] 1 / (keV s cm2)\n",
       "\n",
       "Spatial transposed times spectral\n",
-      "[[1.16105524e+04 1.13462640e+02 1.10879915e+00]\n",
-      " [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s cm2 deg2)\n"
+      "[[3.81151951e+07 3.72475874e+05 3.63997288e+03]\n",
+      " [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s sr cm2)\n"
      ]
     }
    ],
    "source": [
     "import numpy as np\n",
-    "ra_center, dec_center = disk_source.spatial_shape.lon0.value, disk_source.spatial_shape.lat0.value\n",
     "\n",
-    "ra = [ra_center, ra_center+2]*u.deg\n",
-    "dec = [dec_center, dec_center+2]*u.deg\n",
+    "ra_center, dec_center = (\n",
+    "    disk_source.spatial_shape.lon0.value,\n",
+    "    disk_source.spatial_shape.lat0.value,\n",
+    ")\n",
     "\n",
-    "E = [1, 10, 100]*u.keV\n",
+    "ra = [ra_center, ra_center + 2] * u.deg\n",
+    "dec = [dec_center, dec_center + 2] * u.deg\n",
     "\n",
-    "print( \"Whole source:\" )\n",
-    "print( disk_source(ra, dec, E) )\n",
+    "E = [1, 10, 100] * u.keV\n",
     "\n",
-    "print (\"\")\n",
-    "print (\"Spatial only:\" )\n",
+    "print(\"Whole source:\")\n",
+    "print(disk_source(ra, dec, E))\n",
+    "\n",
+    "print(\"\")\n",
+    "print(\"Spatial only:\")\n",
     "spatial = disk_source.spatial_shape(ra, dec)\n",
-    "print( spatial )\n",
+    "print(spatial)\n",
     "\n",
-    "print (\"\")\n",
-    "print (\"Spectral only:\")\n",
-    "spectral = disk_source.spatial_shape.get_total_spatial_integral( E ) * disk_source.spectrum.main.shape( E )\n",
-    "print ( spectral ) \n",
+    "print(\"\")\n",
+    "print(\"Spectral only:\")\n",
+    "spectral = disk_source.spatial_shape.get_total_spatial_integral(\n",
+    "    E\n",
+    ") * disk_source.spectrum.main.shape(E)\n",
+    "print(spectral)\n",
     "\n",
-    "print (\"\")\n",
-    "print ( \"Spatial transposed times spectral\")\n",
-    "print( np.atleast_2d(spatial).T  * np.atleast_2d(spectral) )"
+    "print(\"\")\n",
+    "print(\"Spatial transposed times spectral\")\n",
+    "print(np.atleast_2d(spatial).T * np.atleast_2d(spectral))"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "e14588e1",
+   "id": "aff0e8ab",
    "metadata": {},
    "source": [
     "## Caveats and gotchas\n",
     "\n",
     "### Large extended sources\n",
     "\n",
-    "The Gaussian shapes provided here (`Gaussian_on_sphere`, `Asymm_Gaussian_on_sphere`) are only valid as long as their width (`sigma`/`a` parameter) is much smaller than 360˚. For very large extended sources, we would need to implement the [Kent distribution](https://en.wikipedia.org/wiki/Kent_distribution), the equivalent of a Gaussian on the sphere. \n",
+    "The Gaussian shapes provided here (`Gaussian_on_sphere`, `Asymm_Gaussian_on_sphere`) are only valid as long as their width (`sigma`/`a` parameter) is much smaller than 360˚. For very large extended sources, we would need to implement the [Kent distribution](https://en.wikipedia.org/wiki/Kent_distribution), the equivalent of a Gaussian on the sphere.\n",
     "\n",
     "### Small extended sources\n",
     "\n",
@@ -1074,19 +1080,19 @@
     "\n",
     "### Source support\n",
     "\n",
-    "Each 2D function class has a member function called `get_boundaries`, which returns the (minimal) range in RA and Dec over which the convolution with the PSF has to be computed (see example below). The exact calculation depends on the function but the range typically depends on the centroid and the **maximum value of the width/radius parameter**. That means that even if the radius or gaussian width parameter is fixed during the fit, it is helpful to set a maximum that is close to the fixed value. This reduces computation time during the likelihood fit. "
+    "Each 2D function class has a member function called `get_boundaries`, which returns the (minimal) range in RA and Dec over which the convolution with the PSF has to be computed (see example below). The exact calculation depends on the function but the range typically depends on the centroid and the **maximum value of the width/radius parameter**. That means that even if the radius or gaussian width parameter is fixed during the fit, it is helpful to set a maximum that is close to the fixed value. This reduces computation time during the likelihood fit."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "bfd82f77",
+   "id": "85e12dd4",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2025-12-11T18:50:12.257396Z",
-     "iopub.status.busy": "2025-12-11T18:50:12.257211Z",
-     "iopub.status.idle": "2025-12-11T18:50:12.263434Z",
-     "shell.execute_reply": "2025-12-11T18:50:12.261240Z"
+     "iopub.execute_input": "2025-12-16T18:13:14.311820Z",
+     "iopub.status.busy": "2025-12-16T18:13:14.311700Z",
+     "iopub.status.idle": "2025-12-16T18:13:14.314649Z",
+     "shell.execute_reply": "2025-12-16T18:13:14.314259Z"
     }
    },
    "outputs": [
@@ -1100,31 +1106,31 @@
     }
    ],
    "source": [
-    "disk_source.spatial_shape.lon0 = 80*u.deg\n",
-    "disk_source.spatial_shape.lat0 = 20*u.deg\n",
-    "disk_source.spatial_shape.radius.bounds = (0.1, 2)*u.deg\n",
-    "bounds =  (disk_source.spatial_shape.get_boundaries() )\n",
-    "print (\"RA range:\", bounds[0])\n",
-    "print (\"Dec range:\", bounds[1])"
+    "disk_source.spatial_shape.lon0 = 80 * u.deg\n",
+    "disk_source.spatial_shape.lat0 = 20 * u.deg\n",
+    "disk_source.spatial_shape.radius.bounds = (0.1, 2) * u.deg\n",
+    "bounds = disk_source.spatial_shape.get_boundaries()\n",
+    "print(\"RA range:\", bounds[0])\n",
+    "print(\"Dec range:\", bounds[1])"
    ]
   },
   {
    "cell_type": "markdown",
-   "id": "50633a86",
+   "id": "5a47eba1",
    "metadata": {},
    "source": [
     "## Energy-Dependent Morphology\n",
     "\n",
-    "`astromodels` functions support energy-dependent morphology in two different ways. \n",
+    "`astromodels` functions support energy-dependent morphology in two different ways.\n",
     "\n",
-    "1. Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/deg2. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example [`Continuous_injection_diffusion`](https:link).\n",
+    "1. Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/sr. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example [`Continuous_injection_diffusion`](https:link).\n",
     "2. Extended sources can be instanced with just a 3D function and no energy spectrum. In that case, the 3D function is interpreted as the double-differential flux dN/dE/dOmega."
    ]
   },
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "6c6c11c0",
+   "id": "a96266b8",
    "metadata": {},
    "outputs": [],
    "source": []
