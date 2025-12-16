@@ -56,7 +56,7 @@ jobs:
 
           mv spitzer_example_image.fits docs/md/
           
-          jupytext --to ipynb --execute docs/md/*.md
+          jupytext --to ipynb --pipe black --execute docs/md/*.md
           mv docs/md/*.ipynb docs/notebooks/
           ls docs/notebooks
         env:
