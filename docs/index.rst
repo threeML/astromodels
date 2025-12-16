@@ -73,6 +73,7 @@ Contents:
 .. toctree::
     :maxdepth: 3
 
+    installation.md
     notebooks/Quick_start.ipynb
     notebooks/Configuration.ipynb
     function_docs/functions.rst

@@ -110,6 +110,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
     "sphinx_gallery.load_style",
     #    "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
@@ -209,6 +210,18 @@ html_show_sourcelink = False
 html_favicon = "media/favicon.ico"
 
 autosectionlabel_prefix_document = True
+
+intersphinx_mapping = {
+    "threeML": ("https://threeml.readthedocs.io/en/stable/", None),
+}
+
+# We recommend adding the following config value.
+# Sphinx defaults to automatically resolve *unresolved* labels using all your Intersphinx mappings.
+# This behavior has unintended side-effects, namely that documentations local references can
+# suddenly resolve to an external location.
+# See also:
+# https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html#confval-intersphinx_disabled_reftypes
+intersphinx_disabled_reftypes = ["*"]
 
 version = "latest"
 # The full version, including alpha/beta/rc tags.
