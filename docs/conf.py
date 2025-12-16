@@ -42,12 +42,13 @@ DOCS = Path(__file__).parent
 def run_apidoc(app):
     """Generage API documentation."""
     import os
-    import pkgutil
+
+    # import pkgutil
     import sys
 
     import better_apidoc
 
-    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+    # astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
 
     sys.path.insert(0, os.path.abspath(".."))
     sys.path.insert(1, os.path.abspath("../astromodels"))
@@ -112,6 +113,7 @@ extensions = [
     "sphinx_gallery.load_style",
     #    "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
+    "sphinx_copybutton",
 ]
 
 # mathjax_config = {
@@ -183,7 +185,7 @@ author = "G.Vianello"
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-language = None
+language = "en"
 
 
 # List of patterns, relative to source directory, that match files and
@@ -196,7 +198,6 @@ html_theme = "sphinx_rtd_dark_mode"
 
 html_theme_options = {
     "logo_only": False,
-    "display_version": False,
     "collapse_navigation": True,
     "navigation_depth": 4,
     "prev_next_buttons_location": "bottom",  # top and bottom
