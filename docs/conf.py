@@ -103,7 +103,7 @@ def run_apidoc(app):
 # ones.
 extensions = [
     "nbsphinx",
-    "recommonmark",
+    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
