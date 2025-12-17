@@ -119,6 +119,7 @@ jobs:
             - name: Init Env
               shell: bash -l {0}
               run: |
+                  conda config --remove channels "https://heasarc.gsfc.nasa.gov/FTP/software/conda/"
                   # Make sure we fail in case of error
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
