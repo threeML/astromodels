@@ -49,7 +49,7 @@ class My_build_ext(_build_ext):
             return
 
         for ext in self.extensions:
-            if not hasattr(ext, 'extra_objects') or not ext.extra_objects:
+            if not hasattr(ext, "extra_objects") or not ext.extra_objects:
                 continue
 
             # Get the output file path
@@ -61,10 +61,10 @@ class My_build_ext(_build_ext):
             # Get library references using otool
             try:
                 result = subprocess.run(
-                    ['otool', '-L', ext_path],
+                    ["otool", "-L", ext_path],
                     capture_output=True,
                     text=True,
-                    check=True
+                    check=True,
                 )
             except (subprocess.CalledProcessError, FileNotFoundError):
                 continue
@@ -77,27 +77,27 @@ class My_build_ext(_build_ext):
 
                 lib_name = os.path.basename(lib_path)
                 # Check if it's a versioned library (e.g., libwcs.8.3.dylib)
-                match = re.match(r'lib(.+)\.(\d+)\.(\d+)\.dylib', lib_name)
+                match = re.match(r"lib(.+)\.(\d+)\.(\d+)\.dylib", lib_name)
                 if match:
                     base_name, major, minor = match.groups()
                     # The library might be referenced as lib{base}.{major}.dylib
-                    broken_ref = f'lib{base_name}.{major}.dylib'
+                    broken_ref = f"lib{base_name}.{major}.dylib"
                     # Use @rpath if library_dirs is set, otherwise use absolute path
-                    if hasattr(ext, 'library_dirs') and ext.library_dirs:
-                        new_ref = f'@rpath/{lib_name}'
+                    if hasattr(ext, "library_dirs") and ext.library_dirs:
+                        new_ref = f"@rpath/{lib_name}"
                     else:
                         new_ref = lib_path
                     ref_map[broken_ref] = new_ref
 
             # Parse otool output to find library references that need fixing
-            for line in result.stdout.split('\n'):
+            for line in result.stdout.split("\n"):
                 line = line.strip()
                 if not line or ext_path in line:
                     continue
 
                 # Extract library path (format: "libname.dylib (compatibility ...)")
                 # After strip(), there's no leading whitespace
-                match = re.match(r'^(.+?)\s+\(', line)
+                match = re.match(r"^(.+?)\s+\(", line)
                 if not match:
                     continue
 
@@ -109,14 +109,14 @@ class My_build_ext(_build_ext):
                     try:
                         subprocess.run(
                             [
-                                'install_name_tool',
-                                '-change',
+                                "install_name_tool",
+                                "-change",
                                 lib_ref,
                                 new_ref,
                                 ext_path,
                             ],
                             check=True,
-                            capture_output=True
+                            capture_output=True,
                         )
                         print(f"Fixed library reference: {lib_ref} -> {new_ref}")
                     except subprocess.CalledProcessError:
@@ -297,9 +297,7 @@ def find_library(library_root, additional_places=None):
                 extension = ".so"
 
             # Check for unversioned symlink (e.g., libwcs.so or libwcs.dylib)
-            unversioned_lib = os.path.join(
-                library_dir, f"lib{base_name}{extension}"
-            )
+            unversioned_lib = os.path.join(library_dir, f"lib{base_name}{extension}")
 
             # On macOS, also check for major version symlink (e.g., libwcs.8.dylib)
             # which is what the runtime linker expects
