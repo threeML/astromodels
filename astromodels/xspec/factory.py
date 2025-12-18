@@ -816,7 +816,7 @@ def setup_xspec_models():
         if not hasattr(_xspec, xspec_function):
 
             # Some function do not exist in the wrapper. Let's ignore them
-
+            print(xspec_function, " not in the wrapper - will skip it")
             continue
 
         this_model = all_models[(model_name, xspec_function, model_type)]
