@@ -1,6 +1,6 @@
 # Installation
 
-If you plan to install `threeML` as well please also refer to its [install instructions](inv:threeML#installation) which are more detailed.
+If you plan to install `threeML` as well please also refer to its [installation instructions](inv:threeML#installation) which are more detailed.
 
 
 ## TL;DR
