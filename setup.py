@@ -325,21 +325,11 @@ def find_library(library_root, additional_places=None):
 def get_xspec_conda_version():
     """Get the version string from conda"""
     try:
-        lines = (
-            subprocess.check_output(["conda", "list", "-f", "xspec"])
-            .decode()
-            .split("\n")
-        )
-    except subprocess.CalledProcessError:
-        lines = subprocess.check_output(["conda", "list", "-f", "xspec"]).split("\n")
-    for l in lines:
-        if not l:
-            continue
-        if l[0] == "#":
-            continue
-        tokens = l.split()
-        return tokens[1]
-    return None
+        import xspec
+
+        return xspec.Xset.version[1]
+    except ModuleNotFoundError:
+        return None
 
 
 def setup_xspec():
