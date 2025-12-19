@@ -9,6 +9,7 @@
   <title>Welcome to Astromodels’s documentation! &mdash; Astromodels latest documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -20,6 +21,8 @@
       <script src="_static/documentation_options.js?v=c6e86fd7"></script>
       <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -28,7 +31,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Quick start" href="notebooks/Quick_start.html" /> 
+    <link rel="next" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,6 +55,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/function_list.html">Available Functions</a></li>
@@ -65,7 +69,7 @@
 <li class="toctree-l1"><a class="reference internal" href="api/API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels">astromodels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels-package">astromodels package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -102,7 +106,7 @@ Bayesian analysis of astrophysical data.</p>
 it can be used also as a toolbox containing functions of any variable.</p>
 <p>Astromodels is <em>not</em> a modeling package, it only gives you the tools to build a
 model as complex as you need.  You then need a separate package (such as
-<cite>3ML &lt;https://github.com/threeML/threeML&gt;</cite>) to fit that model to the data.</p>
+<a class="reference external" href="https://github.com/threeML/threeML">3ML</a>) to fit that model to the data.</p>
 <p>Some of the features which distinguish astromodels from other similar packages
 are:</p>
 <ul class="simple">
@@ -148,6 +152,16 @@ again to trigger the new generation.</p>
 <h1>Contents:<a class="headerlink" href="#contents" title="Link to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#tl-dr">TL;DR</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#without-xspec">Without XSPEC</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#conda">conda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#pip">pip</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#with-xspec">With XSPEC</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/Configuration.html#Configuration-options">Configuration options</a><ul>
@@ -313,14 +327,40 @@ again to trigger the new generation.</p>
 <li class="toctree-l2"><a class="reference internal" href="api/API.html#module-astromodels">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release Notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="release_notes.html#version-2-2">Version 2.2</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="release_notes.html#v2-2-2">v2.2.2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="release_notes.html#v2-2-1">v2.2.1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="release_notes.html#v2-2-0">v2.2.0</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="release_notes.html#version-2-0">Version 2.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-5-1-2025-12-xx">v2.5.1 (2025-12-XX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-5-0-2025-10-03">v2.5.0 (2025-10-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-4-3-2025-02-01">v2.4.3 (2025-02-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-4-2-2024-05-17">v2.4.2 (2024-05-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-4-1-2023-11-01">v2.4.1 (2023-11-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-4-0-2022-09-20">v2.4.0 (2022-09-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-9-2022-08-19">v2.3.9 (2022-08-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-8-2022-08-01">v2.3.8 (2022-08-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-7-2022-07-31">v2.3.7 (2022-07-31)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-6-2022-07-26">v2.3.6 (2022-07-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-5-2022-07-12">v2.3.5 (2022-07-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-2-2022-05-24">v2.3.2 (2022-05-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-1-2022-05-23">v2.3.1 (2022-05-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-3-0-2022-04-08">v2.3.0 (2022-04-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-2-2-2021-08-17">v2.2.2 (2021-08-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-2-1-2021-08-17">v2.2.1 (2021-08-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-2-0-2021-04-06">v2.2.0 (2021-04-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-1-8-2021-02-02">v2.1.8 (2021-02-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-1-7-2021-01-23">v2.1.7 (2021-01-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-1-6-2021-01-22">v2.1.6 (2021-01-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-1-5-2021-01-16">v2.1.5 (2021-01-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-0-2-2020-12-03">v2.0.2 (2020-12-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-0-1-2020-10-27">v2.0.1 (2020-10-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v2-0-0-2020-10-15">v2.0.0 (2020-10-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-5-0-2020-08-26">v1.5.0 (2020-08-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-4-0-2020-06-23">v1.4.0 (2020-06-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-3-0-2020-05-10">v1.3.0 (2020-05-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-2-1-2020-04-29">v1.2.1 (2020-04-29)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-2-0-2020-04-18">v1.2.0 (2020-04-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-1-0-2020-03-13">v1.1.0 (2020-03-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-0-2-2020-03-11">v1.0.2 (2020-03-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#v1-0-2019-12-05">v1.0 (2019-12-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CHANGELOG.html#id1">0.5.1 (2018-06-19)</a></li>
 </ul>
 </li>
 </ul>
@@ -331,7 +371,7 @@ again to trigger the new generation.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="notebooks/Quick_start.html" class="btn btn-neutral float-right" title="Quick start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

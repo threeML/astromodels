@@ -1,0 +1,660 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="astromodels.xspec.xspec_settings module" href="api/astromodels.xspec.xspec_settings.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Astromodels
+              <img src="_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/function_list.html">Available Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels">astromodels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels-package">astromodels package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v2-5-1-2025-12-xx">v2.5.1 (2025-12-XX)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-5-0-2025-10-03">v2.5.0 (2025-10-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-4-3-2025-02-01">v2.4.3 (2025-02-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-4-2-2024-05-17">v2.4.2 (2024-05-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-4-1-2023-11-01">v2.4.1 (2023-11-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-4-0-2022-09-20">v2.4.0 (2022-09-20)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-9-2022-08-19">v2.3.9 (2022-08-19)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-8-2022-08-01">v2.3.8 (2022-08-01)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-7-2022-07-31">v2.3.7 (2022-07-31)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-6-2022-07-26">v2.3.6 (2022-07-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-5-2022-07-12">v2.3.5 (2022-07-12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-2-2022-05-24">v2.3.2 (2022-05-24)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-1-2022-05-23">v2.3.1 (2022-05-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-3-0-2022-04-08">v2.3.0 (2022-04-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-2-2-2021-08-17">v2.2.2 (2021-08-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-2-1-2021-08-17">v2.2.1 (2021-08-17)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-2-0-2021-04-06">v2.2.0 (2021-04-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-1-8-2021-02-02">v2.1.8 (2021-02-02)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-1-7-2021-01-23">v2.1.7 (2021-01-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-1-6-2021-01-22">v2.1.6 (2021-01-22)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-1-5-2021-01-16">v2.1.5 (2021-01-16)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-2-2020-12-03">v2.0.2 (2020-12-03)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-1-2020-10-27">v2.0.1 (2020-10-27)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v2-0-0-2020-10-15">v2.0.0 (2020-10-15)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-5-0-2020-08-26">v1.5.0 (2020-08-26)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-4-0-2020-06-23">v1.4.0 (2020-06-23)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-3-0-2020-05-10">v1.3.0 (2020-05-10)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-2-1-2020-04-29">v1.2.1 (2020-04-29)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-2-0-2020-04-18">v1.2.0 (2020-04-18)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-1-0-2020-03-13">v1.1.0 (2020-03-13)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-2-2020-03-11">v1.0.2 (2020-03-11)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#v1-0-2019-12-05">v1.0 (2019-12-05)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">0.5.1 (2018-06-19)</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Changelog</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<p><em>created with <a class="reference external" href="https://github.com/github-changelog-generator/github-changelog-generator?tab=readme-ov-file#github-token">github-changelog-generator</a></em></p>
+<p>github_changelog_generator -u threeML -p astromodels –exclude-tags-regex “(.+)(dev)([0-9]?)” –base CHANGELOG.md -t $ –&gt; needs to be run again before release!</p>
+<section id="v2-5-1-2025-12-xx">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v.2.5.1">v2.5.1</a> (2025-12-XX)<a class="headerlink" href="#v2-5-1-2025-12-xx" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.5.0...v2.5.1">Full Changelog</a></p>
+<p><strong>Implemented enhancements:</strong></p>
+<ul class="simple">
+<li><p>Drop support for xspec-modelsonly and support conda-based xspec <a class="reference external" href="https://github.com/threeML/astromodels/issues/231">#231</a></p></li>
+<li><p>Feature request: Add conda support for Mac with ARM architecture and Add support for pixi <a class="reference external" href="https://github.com/threeML/astromodels/issues/229">#229</a></p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Testing against XSPEC&gt;=12.15.0 <a class="reference external" href="https://github.com/threeML/astromodels/issues/241">#241</a></p></li>
+<li><p>dev astromodels import error: most likely due to a circular import <a class="reference external" href="https://github.com/threeML/astromodels/issues/230">#230</a></p></li>
+<li><p>Min and max values don’t seem to get the unit conversion <a class="reference external" href="https://github.com/threeML/astromodels/issues/92">#92</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Fix and update readthedocs config <a class="reference external" href="https://github.com/threeML/astromodels/pull/234">#234</a> (<a class="reference external" href="https://github.com/PreisTo">PreisTo</a>)</p></li>
+</ul>
+</section>
+<section id="v2-5-0-2025-10-03">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.5.0">v2.5.0</a> (2025-10-03)<a class="headerlink" href="#v2-5-0-2025-10-03" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.4.3...v2.5.0">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Need for Python 2 support? <a class="reference external" href="https://github.com/threeML/astromodels/issues/222">#222</a></p></li>
+<li><p>Coordinates issue on SpatialTemplate_2D <a class="reference external" href="https://github.com/threeML/astromodels/issues/218">#218</a></p></li>
+<li><p>Installation fails unless using –use-pep517 <a class="reference external" href="https://github.com/threeML/astromodels/issues/209">#209</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/233">#233</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Support xspec conda <a class="reference external" href="https://github.com/threeML/astromodels/pull/232">#232</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Fix error in pyproject.toml <a class="reference external" href="https://github.com/threeML/astromodels/pull/228">#228</a> (<a class="reference external" href="https://github.com/marc-shen">marc-shen</a>)</p></li>
+<li><p>Remove Python 2 compatibility code <a class="reference external" href="https://github.com/threeML/astromodels/pull/227">#227</a> (<a class="reference external" href="https://github.com/PreisTo">PreisTo</a>)</p></li>
+<li><p>Modernize Setuptools Setup <a class="reference external" href="https://github.com/threeML/astromodels/pull/226">#226</a> (<a class="reference external" href="https://github.com/PreisTo">PreisTo</a>)</p></li>
+<li><p>Dev: Refactor find_model_dat function documentation and path <a class="reference external" href="https://github.com/threeML/astromodels/pull/225">#225</a> (<a class="reference external" href="https://github.com/marc-shen">marc-shen</a>)</p></li>
+<li><p>Fix Xspec install for full xspec from conda <a class="reference external" href="https://github.com/threeML/astromodels/pull/223">#223</a> (<a class="reference external" href="https://github.com/PreisTo">PreisTo</a>)</p></li>
+<li><p>Added Hermes diffuse emission template functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/221">#221</a> (<a class="reference external" href="https://github.com/rishibbdb">rishibbdb</a>)</p></li>
+<li><p>Codesytle update <a class="reference external" href="https://github.com/threeML/astromodels/pull/220">#220</a> (<a class="reference external" href="https://github.com/PreisTo">PreisTo</a>)</p></li>
+<li><p>Correction for coordinates system functions_2D.py (issue 218) <a class="reference external" href="https://github.com/threeML/astromodels/pull/219">#219</a> (<a class="reference external" href="https://github.com/GallegoSav">GallegoSav</a>)</p></li>
+<li><p>Send logs to stderr by default <a class="reference external" href="https://github.com/threeML/astromodels/pull/217">#217</a> (<a class="reference external" href="https://github.com/israelmcmc">israelmcmc</a>)</p></li>
+<li><p>Update Parameter bounds when changing units <a class="reference external" href="https://github.com/threeML/astromodels/pull/216">#216</a> (<a class="reference external" href="https://github.com/israelmcmc">israelmcmc</a>)</p></li>
+<li><p>Fix normalization units of Powerlaw_Eflux <a class="reference external" href="https://github.com/threeML/astromodels/pull/215">#215</a> (<a class="reference external" href="https://github.com/israelmcmc">israelmcmc</a>)</p></li>
+</ul>
+</section>
+<section id="v2-4-3-2025-02-01">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.4.3">v2.4.3</a> (2025-02-01)<a class="headerlink" href="#v2-4-3-2025-02-01" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.4.2...v2.4.3">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Installation broken in Python v3.12 <a class="reference external" href="https://github.com/threeML/astromodels/issues/204">#204</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/214">#214</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Remove unused modules <a class="reference external" href="https://github.com/threeML/astromodels/pull/210">#210</a> (<a class="reference external" href="https://github.com/AlexKurek">AlexKurek</a>)</p></li>
+<li><p>Fix installation in Python 3.12 <a class="reference external" href="https://github.com/threeML/astromodels/pull/208">#208</a> (<a class="reference external" href="https://github.com/israelmcmc">israelmcmc</a>)</p></li>
+</ul>
+</section>
+<section id="v2-4-2-2024-05-17">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.4.2">v2.4.2</a> (2024-05-17)<a class="headerlink" href="#v2-4-2-2024-05-17" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.4.1...v2.4.2">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/207">#207</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/206">#206</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Update workflow and doc <a class="reference external" href="https://github.com/threeML/astromodels/pull/205">#205</a> (<a class="reference external" href="https://github.com/omodei">omodei</a>)</p></li>
+</ul>
+</section>
+<section id="v2-4-1-2023-11-01">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.4.1">v2.4.1</a> (2023-11-01)<a class="headerlink" href="#v2-4-1-2023-11-01" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.4.0...v2.4.1">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/203">#203</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Cosmology <a class="reference external" href="https://github.com/threeML/astromodels/pull/202">#202</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>add min values to the norm of a few functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/197">#197</a> (<a class="reference external" href="https://github.com/BjoernBiltzinger">BjoernBiltzinger</a>)</p></li>
+<li><p>bug fix alpha-&gt;beta <a class="reference external" href="https://github.com/threeML/astromodels/pull/196">#196</a> (<a class="reference external" href="https://github.com/BjoernBiltzinger">BjoernBiltzinger</a>)</p></li>
+<li><p>More priors <a class="reference external" href="https://github.com/threeML/astromodels/pull/194">#194</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fix docs <a class="reference external" href="https://github.com/threeML/astromodels/pull/193">#193</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Ixpe dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/174">#174</a> (<a class="reference external" href="https://github.com/omodei">omodei</a>)</p></li>
+</ul>
+</section>
+<section id="v2-4-0-2022-09-20">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.4.0">v2.4.0</a> (2022-09-20)<a class="headerlink" href="#v2-4-0-2022-09-20" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.9...v2.4.0">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Negative Flux in astromodels <a class="reference external" href="https://github.com/threeML/astromodels/issues/163">#163</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/192">#192</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>New fermitools <a class="reference external" href="https://github.com/threeML/astromodels/pull/191">#191</a> (<a class="reference external" href="https://github.com/omodei">omodei</a>)</p></li>
+<li><p>Change default redshift for apec <a class="reference external" href="https://github.com/threeML/astromodels/pull/190">#190</a> (<a class="reference external" href="https://github.com/rwiller">rwiller</a>)</p></li>
+<li><p>Fix internal delta calculation in case of no bounds <a class="reference external" href="https://github.com/threeML/astromodels/pull/189">#189</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Fix super exponential cutoff PL <a class="reference external" href="https://github.com/threeML/astromodels/pull/188">#188</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>log10 transforms for PL normalization and cutoff energies <a class="reference external" href="https://github.com/threeML/astromodels/pull/187">#187</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Flake 8 <a class="reference external" href="https://github.com/threeML/astromodels/pull/185">#185</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Dev robert <a class="reference external" href="https://github.com/threeML/astromodels/pull/183">#183</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-3-9-2022-08-19">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.9">v2.3.9</a> (2022-08-19)<a class="headerlink" href="#v2-3-9-2022-08-19" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.8...v2.3.9">Full Changelog</a></p>
+</section>
+<section id="v2-3-8-2022-08-01">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.8">v2.3.8</a> (2022-08-01)<a class="headerlink" href="#v2-3-8-2022-08-01" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.7...v2.3.8">Full Changelog</a></p>
+</section>
+<section id="v2-3-7-2022-07-31">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.7">v2.3.7</a> (2022-07-31)<a class="headerlink" href="#v2-3-7-2022-07-31" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.6...v2.3.7">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Log transform in Powerlaw functions <a class="reference external" href="https://github.com/threeML/astromodels/issues/186">#186</a></p></li>
+</ul>
+</section>
+<section id="v2-3-6-2022-07-26">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.6">v2.3.6</a> (2022-07-26)<a class="headerlink" href="#v2-3-6-2022-07-26" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.5...v2.3.6">Full Changelog</a></p>
+</section>
+<section id="v2-3-5-2022-07-12">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.5">v2.3.5</a> (2022-07-12)<a class="headerlink" href="#v2-3-5-2022-07-12" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.2...v2.3.5">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Cannot import astromodels <a class="reference external" href="https://github.com/threeML/astromodels/issues/182">#182</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Rich logging <a class="reference external" href="https://github.com/threeML/astromodels/pull/184">#184</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-3-2-2022-05-24">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.2">v2.3.2</a> (2022-05-24)<a class="headerlink" href="#v2-3-2-2022-05-24" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.1...v2.3.2">Full Changelog</a></p>
+</section>
+<section id="v2-3-1-2022-05-23">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.1">v2.3.1</a> (2022-05-23)<a class="headerlink" href="#v2-3-1-2022-05-23" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.3.0...v2.3.1">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/181">#181</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Fix recursion <a class="reference external" href="https://github.com/threeML/astromodels/pull/180">#180</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-3-0-2022-04-08">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.3.0">v2.3.0</a> (2022-04-08)<a class="headerlink" href="#v2-3-0-2022-04-08" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.2.2...v2.3.0">Full Changelog</a></p>
+<p><strong>Implemented enhancements:</strong></p>
+<ul class="simple">
+<li><p>Feature property <a class="reference external" href="https://github.com/threeML/astromodels/pull/170">#170</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Feature native node <a class="reference external" href="https://github.com/threeML/astromodels/pull/169">#169</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Incorrect Numba typing on some CPU architectures in template_model.py <a class="reference external" href="https://github.com/threeML/astromodels/issues/172">#172</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Dev <a class="reference external" href="https://github.com/threeML/astromodels/pull/179">#179</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>updated for new xspec defs <a class="reference external" href="https://github.com/threeML/astromodels/pull/178">#178</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Forgot to delete a line <a class="reference external" href="https://github.com/threeML/astromodels/pull/176">#176</a> (<a class="reference external" href="https://github.com/rwiller">rwiller</a>)</p></li>
+<li><p>Update extracting of XSPEC table models <a class="reference external" href="https://github.com/threeML/astromodels/pull/175">#175</a> (<a class="reference external" href="https://github.com/rwiller">rwiller</a>)</p></li>
+<li><p>Fix for Issue #172 <a class="reference external" href="https://github.com/threeML/astromodels/pull/173">#173</a> (<a class="reference external" href="https://github.com/rwiller">rwiller</a>)</p></li>
+<li><p>2 minor fixes on doc front page <a class="reference external" href="https://github.com/threeML/astromodels/pull/168">#168</a> (<a class="reference external" href="https://github.com/hamogu">hamogu</a>)</p></li>
+</ul>
+</section>
+<section id="v2-2-2-2021-08-17">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.2.2">v2.2.2</a> (2021-08-17)<a class="headerlink" href="#v2-2-2-2021-08-17" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.2.1...v2.2.2">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Fix xspec install <a class="reference external" href="https://github.com/threeML/astromodels/pull/167">#167</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-2-1-2021-08-17">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.2.1">v2.2.1</a> (2021-08-17)<a class="headerlink" href="#v2-2-1-2021-08-17" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.2.0...v2.2.1">Full Changelog</a></p>
+<p><strong>Implemented enhancements:</strong></p>
+<ul class="simple">
+<li><p>Feature config <a class="reference external" href="https://github.com/threeML/astromodels/pull/161">#161</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+<p><strong>Fixed bugs:</strong></p>
+<ul class="simple">
+<li><p>Xsect data not downloaded when installing with pip <a class="reference external" href="https://github.com/threeML/astromodels/issues/152">#152</a></p></li>
+<li><p>Powerlaw_flux bug? <a class="reference external" href="https://github.com/threeML/astromodels/issues/149">#149</a></p></li>
+<li><p>EBLattenuation: EBL model not retained during copying etc.  <a class="reference external" href="https://github.com/threeML/astromodels/issues/114">#114</a></p></li>
+<li><p>extra_setup dictionary lost for composite functions <a class="reference external" href="https://github.com/threeML/astromodels/issues/113">#113</a></p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>memory leak when loading many table models <a class="reference external" href="https://github.com/threeML/astromodels/issues/154">#154</a></p></li>
+<li><p>model.display() weirdness <a class="reference external" href="https://github.com/threeML/astromodels/issues/144">#144</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Prepare release <a class="reference external" href="https://github.com/threeML/astromodels/pull/166">#166</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Ensure xspec models known <a class="reference external" href="https://github.com/threeML/astromodels/pull/164">#164</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>added ability to get the local <a class="reference external" href="https://github.com/threeML/astromodels/pull/162">#162</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Feature enum sources <a class="reference external" href="https://github.com/threeML/astromodels/pull/160">#160</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>CPL added <a class="reference external" href="https://github.com/threeML/astromodels/pull/159">#159</a> (<a class="reference external" href="https://github.com/anastasia-tsvetkova">anastasia-tsvetkova</a>)</p></li>
+<li><p>Added clean() function to delete fits files not closed by pyatomdb <a class="reference external" href="https://github.com/threeML/astromodels/pull/157">#157</a> (<a class="reference external" href="https://github.com/domeckert">domeckert</a>)</p></li>
+<li><p>Doc functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/156">#156</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Feature better table <a class="reference external" href="https://github.com/threeML/astromodels/pull/155">#155</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Clean up functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/153">#153</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Better docs <a class="reference external" href="https://github.com/threeML/astromodels/pull/151">#151</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fix 149 <a class="reference external" href="https://github.com/threeML/astromodels/pull/150">#150</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-2-0-2021-04-06">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.2.0">v2.2.0</a> (2021-04-06)<a class="headerlink" href="#v2-2-0-2021-04-06" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.1.8...v2.2.0">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Bug fix &amp; enhancement to 2D template model <a class="reference external" href="https://github.com/threeML/astromodels/pull/148">#148</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>New structure for model files (clean up) and new power law function <a class="reference external" href="https://github.com/threeML/astromodels/pull/147">#147</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Convenience function: has_free_parameters for astromodels functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/146">#146</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Py3 apec <a class="reference external" href="https://github.com/threeML/astromodels/pull/145">#145</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Stop overwriting point source position bounds when parsing model <a class="reference external" href="https://github.com/threeML/astromodels/pull/94">#94</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+</ul>
+</section>
+<section id="v2-1-8-2021-02-02">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.1.8">v2.1.8</a> (2021-02-02)<a class="headerlink" href="#v2-1-8-2021-02-02" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.1.7...v2.1.8">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Improve logging <a class="reference external" href="https://github.com/threeML/astromodels/pull/143">#143</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-1-7-2021-01-23">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.1.7">v2.1.7</a> (2021-01-23)<a class="headerlink" href="#v2-1-7-2021-01-23" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.1.6...v2.1.7">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>update the logging to work with 3ml <a class="reference external" href="https://github.com/threeML/astromodels/pull/142">#142</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-1-6-2021-01-22">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.1.6">v2.1.6</a> (2021-01-22)<a class="headerlink" href="#v2-1-6-2021-01-22" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.1.5...v2.1.6">Full Changelog</a></p>
+</section>
+<section id="v2-1-5-2021-01-16">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.1.5">v2.1.5</a> (2021-01-16)<a class="headerlink" href="#v2-1-5-2021-01-16" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.0.2...v2.1.5">Full Changelog</a></p>
+<p><strong>Implemented enhancements:</strong></p>
+<ul class="simple">
+<li><p>Feature logging <a class="reference external" href="https://github.com/threeML/astromodels/pull/140">#140</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Add ebltable to the installation <a class="reference external" href="https://github.com/threeML/astromodels/issues/127">#127</a></p></li>
+<li><p>Constant Function returns only one number <a class="reference external" href="https://github.com/threeML/astromodels/issues/109">#109</a></p></li>
+<li><p>Linked spatial parameters and cloning a model <a class="reference external" href="https://github.com/threeML/astromodels/issues/87">#87</a></p></li>
+<li><p>Calling 2D functions with units? <a class="reference external" href="https://github.com/threeML/astromodels/issues/84">#84</a></p></li>
+<li><p>units in log_normal prior <a class="reference external" href="https://github.com/threeML/astromodels/issues/68">#68</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Fix 109 <a class="reference external" href="https://github.com/threeML/astromodels/pull/141">#141</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Update meta <a class="reference external" href="https://github.com/threeML/astromodels/pull/139">#139</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Switch to actions <a class="reference external" href="https://github.com/threeML/astromodels/pull/138">#138</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Update docs <a class="reference external" href="https://github.com/threeML/astromodels/pull/135">#135</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>unlink parameters when deleting a source. <a class="reference external" href="https://github.com/threeML/astromodels/pull/101">#101</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Adding a function in Functions_3D to read galprop-like templates <a class="reference external" href="https://github.com/threeML/astromodels/pull/90">#90</a> (<a class="reference external" href="https://github.com/hayalaso">hayalaso</a>)</p></li>
+</ul>
+</section>
+<section id="v2-0-2-2020-12-03">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.0.2">v2.0.2</a> (2020-12-03)<a class="headerlink" href="#v2-0-2-2020-12-03" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.0.1...v2.0.2">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>pip install fails: “xsFortran.h: no such file or directory” <a class="reference external" href="https://github.com/threeML/astromodels/issues/136">#136</a></p></li>
+<li><p>Problem from astromodels while installing pynchrotron <a class="reference external" href="https://github.com/threeML/astromodels/issues/133">#133</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Xspec setup <a class="reference external" href="https://github.com/threeML/astromodels/pull/137">#137</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-0-1-2020-10-27">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.0.1">v2.0.1</a> (2020-10-27)<a class="headerlink" href="#v2-0-1-2020-10-27" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v2.0.0...v2.0.1">Full Changelog</a></p>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>pyyaml version pinning leads to conflic with fermipy <a class="reference external" href="https://github.com/threeML/astromodels/issues/131">#131</a></p></li>
+<li><p>Issue with LogL values changing for different parameter values using JointLikelihood <a class="reference external" href="https://github.com/threeML/astromodels/issues/130">#130</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>remove pytables to see if tests pass <a class="reference external" href="https://github.com/threeML/astromodels/pull/134">#134</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v2-0-0-2020-10-15">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v2.0.0">v2.0.0</a> (2020-10-15)<a class="headerlink" href="#v2-0-0-2020-10-15" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.5.0...v2.0.0">Full Changelog</a></p>
+<p><strong>Fixed bugs:</strong></p>
+<ul class="simple">
+<li><p>Test error with pandas 1.1.0 <a class="reference external" href="https://github.com/threeML/astromodels/issues/128">#128</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Root6 compatibility <a class="reference external" href="https://github.com/threeML/astromodels/pull/132">#132</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+</ul>
+</section>
+<section id="v1-5-0-2020-08-26">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.5.0">v1.5.0</a> (2020-08-26)<a class="headerlink" href="#v1-5-0-2020-08-26" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.4.0...v1.5.0">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Hdstore fix <a class="reference external" href="https://github.com/threeML/astromodels/pull/129">#129</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>set default minimum for cutoff parameter; fix comments <a class="reference external" href="https://github.com/threeML/astromodels/pull/126">#126</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Update tests: special treatment for EBLattenuation function <a class="reference external" href="https://github.com/threeML/astromodels/pull/125">#125</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Add attenuation parameter to EBL in functions.py <a class="reference external" href="https://github.com/threeML/astromodels/pull/124">#124</a> (<a class="reference external" href="https://github.com/xboluna">xboluna</a>)</p></li>
+</ul>
+</section>
+<section id="v1-4-0-2020-06-23">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.4.0">v1.4.0</a> (2020-06-23)<a class="headerlink" href="#v1-4-0-2020-06-23" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.3.0...v1.4.0">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Phabs <a class="reference external" href="https://github.com/threeML/astromodels/pull/123">#123</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v1-3-0-2020-05-10">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.3.0">v1.3.0</a> (2020-05-10)<a class="headerlink" href="#v1-3-0-2020-05-10" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.2.1...v1.3.0">Full Changelog</a></p>
+<p><strong>Fixed bugs:</strong></p>
+<ul class="simple">
+<li><p>Failed to import XSPEC on 0.5.491 <a class="reference external" href="https://github.com/threeML/astromodels/issues/108">#108</a></p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>XSPEC failing <a class="reference external" href="https://github.com/threeML/astromodels/issues/96">#96</a></p></li>
+<li><p>Python3 <a class="reference external" href="https://github.com/threeML/astromodels/issues/95">#95</a></p></li>
+<li><p>reloading of model with recursively linked parameters failed <a class="reference external" href="https://github.com/threeML/astromodels/issues/82">#82</a></p></li>
+<li><p>with xspec + python3 installation fails <a class="reference external" href="https://github.com/threeML/astromodels/issues/64">#64</a></p></li>
+<li><p>Functions list in the docs <a class="reference external" href="https://github.com/threeML/astromodels/issues/60">#60</a></p></li>
+<li><p>Broken function names in Model_tutorial.ipynb <a class="reference external" href="https://github.com/threeML/astromodels/issues/56">#56</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Numba interp <a class="reference external" href="https://github.com/threeML/astromodels/pull/122">#122</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Numba models <a class="reference external" href="https://github.com/threeML/astromodels/pull/121">#121</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v1-2-1-2020-04-29">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.2.1">v1.2.1</a> (2020-04-29)<a class="headerlink" href="#v1-2-1-2020-04-29" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.2.0...v1.2.1">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Test numeric values <a class="reference external" href="https://github.com/threeML/astromodels/pull/120">#120</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v1-2-0-2020-04-18">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.2.0">v1.2.0</a> (2020-04-18)<a class="headerlink" href="#v1-2-0-2020-04-18" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.1.0...v1.2.0">Full Changelog</a></p>
+<p><strong>Implemented enhancements:</strong></p>
+<ul class="simple">
+<li><p>Xray models <a class="reference external" href="https://github.com/threeML/astromodels/pull/119">#119</a> (<a class="reference external" href="https://github.com/domeckert">domeckert</a>)</p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Feature xspec tm <a class="reference external" href="https://github.com/threeML/astromodels/pull/118">#118</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v1-1-0-2020-03-13">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.1.0">v1.1.0</a> (2020-03-13)<a class="headerlink" href="#v1-1-0-2020-03-13" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.0.2...v1.1.0">Full Changelog</a></p>
+</section>
+<section id="v1-0-2-2020-03-11">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.0.2">v1.0.2</a> (2020-03-11)<a class="headerlink" href="#v1-0-2-2020-03-11" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/v1.0...v1.0.2">Full Changelog</a></p>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Fix tests parameter <a class="reference external" href="https://github.com/threeML/astromodels/pull/117">#117</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Update versioning <a class="reference external" href="https://github.com/threeML/astromodels/pull/116">#116</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fix pandas <a class="reference external" href="https://github.com/threeML/astromodels/pull/115">#115</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="v1-0-2019-12-05">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/v1.0">v1.0</a> (2019-12-05)<a class="headerlink" href="#v1-0-2019-12-05" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/0.5.1...v1.0">Full Changelog</a></p>
+<p><strong>Fixed bugs:</strong></p>
+<ul class="simple">
+<li><p>pyyaml 5.1 <a class="reference external" href="https://github.com/threeML/astromodels/issues/97">#97</a></p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Latitude_galactic_diffuse broken <a class="reference external" href="https://github.com/threeML/astromodels/issues/98">#98</a></p></li>
+<li><p>push access <a class="reference external" href="https://github.com/threeML/astromodels/issues/89">#89</a></p></li>
+<li><p>Parameter class docstring formatting <a class="reference external" href="https://github.com/threeML/astromodels/issues/88">#88</a></p></li>
+<li><p>Linking two nuisance parameters crashes ModelParser via clone_model <a class="reference external" href="https://github.com/threeML/astromodels/issues/80">#80</a></p></li>
+<li><p>polarization node <a class="reference external" href="https://github.com/threeML/astromodels/issues/78">#78</a></p></li>
+<li><p>Several Templates at once <a class="reference external" href="https://github.com/threeML/astromodels/issues/73">#73</a></p></li>
+<li><p>linking more than two parameters <a class="reference external" href="https://github.com/threeML/astromodels/issues/72">#72</a></p></li>
+<li><p>memoization and SpatialTemplate_2D <a class="reference external" href="https://github.com/threeML/astromodels/issues/69">#69</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Travis pypi <a class="reference external" href="https://github.com/threeML/astromodels/pull/112">#112</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fix conflicts <a class="reference external" href="https://github.com/threeML/astromodels/pull/111">#111</a> (<a class="reference external" href="https://github.com/ndilalla">ndilalla</a>)</p></li>
+<li><p>Py2to3 <a class="reference external" href="https://github.com/threeML/astromodels/pull/107">#107</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fix builds nico <a class="reference external" href="https://github.com/threeML/astromodels/pull/106">#106</a> (<a class="reference external" href="https://github.com/omodei">omodei</a>)</p></li>
+<li><p>Update travis <a class="reference external" href="https://github.com/threeML/astromodels/pull/103">#103</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>fixed bug in normalization <a class="reference external" href="https://github.com/threeML/astromodels/pull/102">#102</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>use parameter path rather than name as dictionary key <a class="reference external" href="https://github.com/threeML/astromodels/pull/100">#100</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Update functions.py <a class="reference external" href="https://github.com/threeML/astromodels/pull/91">#91</a> (<a class="reference external" href="https://github.com/binitahona">binitahona</a>)</p></li>
+<li><p>Fix Cloning 2Dtemplate model, fix units in some functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/86">#86</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>fixed rounding error in truncated gaussian by clipping the values to … <a class="reference external" href="https://github.com/threeML/astromodels/pull/85">#85</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>fix bug on norm in power_law_on_sphere <a class="reference external" href="https://github.com/threeML/astromodels/pull/83">#83</a> (<a class="reference external" href="https://github.com/zhoouhaoo">zhoouhaoo</a>)</p></li>
+<li><p>Model parser fix <a class="reference external" href="https://github.com/threeML/astromodels/pull/81">#81</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Polarization <a class="reference external" href="https://github.com/threeML/astromodels/pull/79">#79</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Extended flux <a class="reference external" href="https://github.com/threeML/astromodels/pull/76">#76</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Moving free_parameters convinience function one step up. <a class="reference external" href="https://github.com/threeML/astromodels/pull/75">#75</a> (<a class="reference external" href="https://github.com/colasri">colasri</a>)</p></li>
+<li><p>Simon edit model.link <a class="reference external" href="https://github.com/threeML/astromodels/pull/74">#74</a> (<a class="reference external" href="https://github.com/ssteinmassl">ssteinmassl</a>)</p></li>
+<li><p>Linear intrp <a class="reference external" href="https://github.com/threeML/astromodels/pull/71">#71</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+</section>
+<section id="id1">
+<h2><a class="reference external" href="https://github.com/threeML/astromodels/tree/0.5.1">0.5.1</a> (2018-06-19)<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p><a class="reference external" href="https://github.com/threeML/astromodels/compare/5a2019a2586c3e1d9ea386b3cb22646402cb277b...0.5.1">Full Changelog</a></p>
+<p><strong>Implemented enhancements:</strong></p>
+<ul class="simple">
+<li><p>Use CamelCase for functions <a class="reference external" href="https://github.com/threeML/astromodels/issues/2">#2</a></p></li>
+</ul>
+<p><strong>Closed issues:</strong></p>
+<ul class="simple">
+<li><p>Log Normal prior Negative values <a class="reference external" href="https://github.com/threeML/astromodels/issues/67">#67</a></p></li>
+<li><p>Gaussian Prior minimum hardcoded Crash <a class="reference external" href="https://github.com/threeML/astromodels/issues/66">#66</a></p></li>
+<li><p>Python2 installation issue with numdifftools <a class="reference external" href="https://github.com/threeML/astromodels/issues/65">#65</a></p></li>
+<li><p>log parabola peak energy fix <a class="reference external" href="https://github.com/threeML/astromodels/issues/63">#63</a></p></li>
+<li><p>Latitude_galactic_diffuse <a class="reference external" href="https://github.com/threeML/astromodels/issues/59">#59</a></p></li>
+<li><p>are fits with Log_parabola broken? <a class="reference external" href="https://github.com/threeML/astromodels/issues/52">#52</a></p></li>
+<li><p>order of operations <a class="reference external" href="https://github.com/threeML/astromodels/issues/50">#50</a></p></li>
+<li><p>misleading exception when node name starts with number <a class="reference external" href="https://github.com/threeML/astromodels/issues/49">#49</a></p></li>
+<li><p>“The name for the node cannot be longer than 2 characters” <a class="reference external" href="https://github.com/threeML/astromodels/issues/48">#48</a></p></li>
+<li><p>XSPEC model not working <a class="reference external" href="https://github.com/threeML/astromodels/issues/39">#39</a></p></li>
+<li><p>OrderedDict((‘ra’, self.ra), (‘dec’, self.dec)) in astromodels/core/sky_direction <a class="reference external" href="https://github.com/threeML/astromodels/issues/38">#38</a></p></li>
+<li><p>ModelParser fails on sky position prior <a class="reference external" href="https://github.com/threeML/astromodels/issues/36">#36</a></p></li>
+<li><p>pickle and table models <a class="reference external" href="https://github.com/threeML/astromodels/issues/35">#35</a></p></li>
+<li><p>load analysis results from table model <a class="reference external" href="https://github.com/threeML/astromodels/issues/34">#34</a></p></li>
+<li><p>clone_model and template model <a class="reference external" href="https://github.com/threeML/astromodels/issues/33">#33</a></p></li>
+<li><p>spectrum call is failing for model with linked parameter <a class="reference external" href="https://github.com/threeML/astromodels/issues/25">#25</a></p></li>
+<li><p>Negative flux in pixel not allowed in extended sources <a class="reference external" href="https://github.com/threeML/astromodels/issues/24">#24</a></p></li>
+<li><p>update SciPy requirement to 0.14 or higher <a class="reference external" href="https://github.com/threeML/astromodels/issues/23">#23</a></p></li>
+<li><p>XSPEC models and astromodels import in threeML import <a class="reference external" href="https://github.com/threeML/astromodels/issues/20">#20</a></p></li>
+<li><p>XSPEC Units in composite models <a class="reference external" href="https://github.com/threeML/astromodels/issues/17">#17</a></p></li>
+<li><p>Xspec models are regenerated every time <a class="reference external" href="https://github.com/threeML/astromodels/issues/16">#16</a></p></li>
+<li><p>Fixing values of XSPEC function parameters <a class="reference external" href="https://github.com/threeML/astromodels/issues/15">#15</a></p></li>
+<li><p>Bug in prior assignment <a class="reference external" href="https://github.com/threeML/astromodels/issues/11">#11</a></p></li>
+<li><p>Multiplicative spectral components and Units <a class="reference external" href="https://github.com/threeML/astromodels/issues/10">#10</a></p></li>
+<li><p>Error when using unit energy argument to Band function <a class="reference external" href="https://github.com/threeML/astromodels/issues/9">#9</a></p></li>
+<li><p>Proper access to units <a class="reference external" href="https://github.com/threeML/astromodels/issues/8">#8</a></p></li>
+<li><p>Custom models <a class="reference external" href="https://github.com/threeML/astromodels/issues/7">#7</a></p></li>
+<li><p>Check in setup.py for Xspec libraries in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH <a class="reference external" href="https://github.com/threeML/astromodels/issues/5">#5</a></p></li>
+<li><p>parameter.free() not using property  <a class="reference external" href="https://github.com/threeML/astromodels/issues/3">#3</a></p></li>
+</ul>
+<p><strong>Merged pull requests:</strong></p>
+<ul class="simple">
+<li><p>Added hash sum as dummy parameter for SpatialTemplate_2D <a class="reference external" href="https://github.com/threeML/astromodels/pull/70">#70</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>asymmetric 2d gaussian (spatial model) <a class="reference external" href="https://github.com/threeML/astromodels/pull/62">#62</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Xspec fixes <a class="reference external" href="https://github.com/threeML/astromodels/pull/61">#61</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>added Band_grbm <a class="reference external" href="https://github.com/threeML/astromodels/pull/58">#58</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>added ebl attenuation using ebltable package <a class="reference external" href="https://github.com/threeML/astromodels/pull/55">#55</a> (<a class="reference external" href="https://github.com/rjlauer">rjlauer</a>)</p></li>
+<li><p>A few 2D and 3D functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/54">#54</a> (<a class="reference external" href="https://github.com/zhoouhaoo">zhoouhaoo</a>)</p></li>
+<li><p>2D spatial templates  <a class="reference external" href="https://github.com/threeML/astromodels/pull/53">#53</a> (<a class="reference external" href="https://github.com/henrikef">henrikef</a>)</p></li>
+<li><p>Changed ellipse parameters: now uses eccentricity <a class="reference external" href="https://github.com/threeML/astromodels/pull/47">#47</a> (<a class="reference external" href="https://github.com/rrubenza">rrubenza</a>)</p></li>
+<li><p>1D templates were failing. added np.atleast_1d to fix <a class="reference external" href="https://github.com/threeML/astromodels/pull/46">#46</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fixed Ellipse_on_sphere() <a class="reference external" href="https://github.com/threeML/astromodels/pull/45">#45</a> (<a class="reference external" href="https://github.com/rrubenza">rrubenza</a>)</p></li>
+<li><p>added cosine prior for angular functions <a class="reference external" href="https://github.com/threeML/astromodels/pull/44">#44</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>more print out info in the setup.py <a class="reference external" href="https://github.com/threeML/astromodels/pull/43">#43</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>fixed call to xsect <a class="reference external" href="https://github.com/threeML/astromodels/pull/42">#42</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Move priors <a class="reference external" href="https://github.com/threeML/astromodels/pull/41">#41</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>keep final_value as array so rev_idx works <a class="reference external" href="https://github.com/threeML/astromodels/pull/40">#40</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Revert “adding lookup for macports gfortran” <a class="reference external" href="https://github.com/threeML/astromodels/pull/31">#31</a> (<a class="reference external" href="https://github.com/giacomov">giacomov</a>)</p></li>
+<li><p>adding lookup for macports gfortran <a class="reference external" href="https://github.com/threeML/astromodels/pull/30">#30</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Extend parameters <a class="reference external" href="https://github.com/threeML/astromodels/pull/29">#29</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>stopped overflow errors in blackbody <a class="reference external" href="https://github.com/threeML/astromodels/pull/27">#27</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>fixed hashing of linked parameters <a class="reference external" href="https://github.com/threeML/astromodels/pull/26">#26</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Added Identify and Ellipse_on_sphere classes <a class="reference external" href="https://github.com/threeML/astromodels/pull/22">#22</a> (<a class="reference external" href="https://github.com/sybenzvi">sybenzvi</a>)</p></li>
+<li><p>Kn3 d <a class="reference external" href="https://github.com/threeML/astromodels/pull/21">#21</a> (<a class="reference external" href="https://github.com/zhoouhaoo">zhoouhaoo</a>)</p></li>
+<li><p>add DM Spectra plus minor fixes <a class="reference external" href="https://github.com/threeML/astromodels/pull/19">#19</a> (<a class="reference external" href="https://github.com/physics-andrea">physics-andrea</a>)</p></li>
+<li><p>Spatial Template class added <a class="reference external" href="https://github.com/threeML/astromodels/pull/18">#18</a> (<a class="reference external" href="https://github.com/physics-andrea">physics-andrea</a>)</p></li>
+<li><p>adding additoonal search paths for gfortran because: OS X <a class="reference external" href="https://github.com/threeML/astromodels/pull/14">#14</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>Fixed function3D <a class="reference external" href="https://github.com/threeML/astromodels/pull/13">#13</a> (<a class="reference external" href="https://github.com/zhoouhaoo">zhoouhaoo</a>)</p></li>
+<li><p>Adding models <a class="reference external" href="https://github.com/threeML/astromodels/pull/12">#12</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>New XSPEC uses ‘.’ to separate versions. Added checks for this <a class="reference external" href="https://github.com/threeML/astromodels/pull/6">#6</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+<li><p>added OSX lib lookup <a class="reference external" href="https://github.com/threeML/astromodels/pull/4">#4</a> (<a class="reference external" href="https://github.com/grburgess">grburgess</a>)</p></li>
+</ul>
+<p>* <em>This Changelog was automatically generated by <a class="reference external" href="https://github.com/github-changelog-generator/github-changelog-generator">github_changelog_generator</a></em></p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="api/astromodels.xspec.xspec_settings.html" class="btn btn-neutral float-left" title="astromodels.xspec.xspec_settings module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

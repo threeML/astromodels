@@ -9,6 +9,7 @@
   <title>Extended source tutorial &mdash; Astromodels latest documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
       <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
@@ -21,6 +22,8 @@
       <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
       <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -54,6 +57,7 @@
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Quick_start.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="function_list.html">Available Functions</a></li>
@@ -83,7 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels">astromodels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels-package">astromodels package</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
 </ul>
 
         </div>
@@ -111,6 +115,9 @@
              
   <section id="Extended-source-tutorial">
 <h1>Extended source tutorial<a class="headerlink" href="#Extended-source-tutorial" title="Link to this heading"></a></h1>
+<div class="note docutils container">
+<p>Until <code class="docutils literal notranslate"><span class="pre">astromodels</span> <span class="pre">2.5.1</span></code> all default <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> 2D-Functions return their values as <span class="math notranslate nohighlight">\(\frac{1}{\mathrm{sr}}\)</span> but the reported unit was <span class="math notranslate nohighlight">\(\frac{1}{\mathrm{deg}^2}\)</span>. In 2.5.1 we temporarily fixed the unit to be the correct <span class="math notranslate nohighlight">\(\frac{1}{sr}\)</span>. This may change in the future as we plan to improve the units handling in <code class="docutils literal notranslate"><span class="pre">astromodels</span></code>.</p>
+</div>
 <section id="Introduction">
 <h2>Introduction<a class="headerlink" href="#Introduction" title="Link to this heading"></a></h2>
 <p>Extended sources with constant (not energy-dependent) morphology can be instanced by providing a spectral shape (1D function) and a spatial shape (2D function):</p>
@@ -119,7 +126,10 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="n">disk_source</span> <span class="o">=</span> <span class="n">ExtendedSource</span><span class="p">(</span><span class="s1">&#39;simple_source&#39;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">(),</span> <span class="n">spatial_shape</span> <span class="o">=</span> <span class="n">Disk_on_sphere</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="n">disk_source</span> <span class="o">=</span> <span class="n">ExtendedSource</span><span class="p">(</span>
+    <span class="s2">&quot;simple_source&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">(),</span> <span class="n">spatial_shape</span><span class="o">=</span><span class="n">Disk_on_sphere</span><span class="p">()</span>
+<span class="p">)</span>
 <span class="n">disk_source</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -128,7 +138,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">11:33:27 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">45</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">15:16:55 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#45" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">45</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">available                                                                         </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
 </pre></div>
 </div>
@@ -303,7 +313,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">))</span>
 <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -411,13 +421,14 @@ Class &lt;class &#39;astromodels.functions.functions_2D.Disk_on_sphere&#39;&gt;
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
 <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput docutils container">
@@ -595,13 +606,13 @@ parameters so that source overlaps the region of interest (ROI) at all times.</s
 
 </ul></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">SpatialTemplate_2D</span></code> is designed to read in a user-provided fits file with an image (in WCS coordinates) using the <code class="docutils literal notranslate"><span class="pre">load_file()</span></code> function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/deg2 and normalized so that its integral is 1. If that is not the case, the normalization parameter <code class="docutils literal notranslate"><span class="pre">K</span></code> may be set accordingly so that the overall function is normalized as
+<p><code class="docutils literal notranslate"><span class="pre">SpatialTemplate_2D</span></code> is designed to read in a user-provided fits file with an image (in WCS coordinates) using the <code class="docutils literal notranslate"><span class="pre">load_file()</span></code> function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/sr and normalized so that its integral is 1. If that is not the case, the normalization parameter <code class="docutils literal notranslate"><span class="pre">K</span></code> may be set accordingly so that the overall function is normalized as
 expected.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">SpatialTemplate_2D</span><span class="p">(</span><span class="n">fits_file</span><span class="o">=</span><span class="s1">&#39;spitzer_example_image.fits&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">SpatialTemplate_2D</span><span class="p">(</span><span class="n">fits_file</span><span class="o">=</span><span class="s2">&quot;spitzer_example_image.fits&quot;</span><span class="p">)</span>
 <span class="n">temp</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -610,7 +621,7 @@ expected.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">11:33:28 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> 2D template read from spitzer_example_image.fits is normalized to nan        </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions_2D.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#749" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">749</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">15:16:56 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> 2D template read from spitzer_example_image.fits is normalized to nan        </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions_2D.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_2D.py#749" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">749</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">(expected: </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">)                                                                 </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                   </span>
 </pre></div>
 </div>
@@ -741,35 +752,41 @@ expected.</p>
 <section id="%22Calling%22-extended-sources">
 <h2>“Calling” extended sources<a class="headerlink" href="#%22Calling%22-extended-sources" title="Link to this heading"></a></h2>
 <p>Extended sources can be called as functions. They take 3 arguments: A list or <code class="docutils literal notranslate"><span class="pre">np.array</span></code> of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. <strong>If no units are
-provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s deg2).</strong></p>
+provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s sr).</strong></p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="n">ra_center</span><span class="p">,</span> <span class="n">dec_center</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">value</span>
 
-<span class="n">ra</span> <span class="o">=</span> <span class="p">[</span><span class="n">ra_center</span><span class="p">,</span> <span class="n">ra_center</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">dec</span> <span class="o">=</span> <span class="p">[</span><span class="n">dec_center</span><span class="p">,</span> <span class="n">dec_center</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">ra_center</span><span class="p">,</span> <span class="n">dec_center</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+    <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">keV</span>
+<span class="n">ra</span> <span class="o">=</span> <span class="p">[</span><span class="n">ra_center</span><span class="p">,</span> <span class="n">ra_center</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">dec</span> <span class="o">=</span> <span class="p">[</span><span class="n">dec_center</span><span class="p">,</span> <span class="n">dec_center</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
 
-<span class="nb">print</span><span class="p">(</span> <span class="s2">&quot;Whole source:&quot;</span> <span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">disk_source</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">E</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span>
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Spatial only:&quot;</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Whole source:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">disk_source</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">,</span> <span class="n">E</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spatial only:&quot;</span><span class="p">)</span>
 <span class="n">spatial</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="p">(</span><span class="n">ra</span><span class="p">,</span> <span class="n">dec</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">spatial</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spatial</span><span class="p">)</span>
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Spectral only:&quot;</span><span class="p">)</span>
-<span class="n">spectral</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_total_spatial_integral</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span> <span class="o">*</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span> <span class="n">E</span> <span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span> <span class="n">spectral</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spectral only:&quot;</span><span class="p">)</span>
+<span class="n">spectral</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_total_spatial_integral</span><span class="p">(</span>
+    <span class="n">E</span>
+<span class="p">)</span> <span class="o">*</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">E</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spectral</span><span class="p">)</span>
 
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span> <span class="s2">&quot;Spatial transposed times spectral&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spatial</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>  <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spectral</span><span class="p">)</span> <span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Spatial transposed times spectral&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spatial</span><span class="p">)</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">spectral</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -779,18 +796,18 @@ provided, energies are assumed to be in keV, coordinates in degrees, and fluxes 
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Whole source:
-[[1.16105524e+04 1.13462640e+02 1.10879915e+00]
- [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s cm2 deg2)
+[[3.81151951e+07 3.72475874e+05 3.63997288e+03]
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s sr cm2)
 
 Spatial only:
-[11610.55239595     0.        ] 1 / deg2
+[38115195.13257469        0.        ] 1 / sr
 
 Spectral only:
 [1.00000000e+00 9.77237221e-03 9.54992586e-05] 1 / (keV s cm2)
 
 Spatial transposed times spectral
-[[1.16105524e+04 1.13462640e+02 1.10879915e+00]
- [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s cm2 deg2)
+[[3.81151951e+07 3.72475874e+05 3.63997288e+03]
+ [0.00000000e+00 0.00000000e+00 0.00000000e+00]] 1 / (keV s sr cm2)
 </pre></div></div>
 </div>
 </section>
@@ -812,12 +829,12 @@ value. This reduces computation time during the likelihood fit.</p>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span> <span class="o">=</span> <span class="mi">80</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span> <span class="o">=</span> <span class="mi">20</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span>
-<span class="n">bounds</span> <span class="o">=</span>  <span class="p">(</span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span> <span class="p">)</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;RA range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Dec range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lon0</span> <span class="o">=</span> <span class="mi">80</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">lat0</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="n">disk_source</span><span class="o">.</span><span class="n">spatial_shape</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RA range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dec range:&quot;</span><span class="p">,</span> <span class="n">bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -836,7 +853,7 @@ Dec range: (16.0, 24.0)
 <h2>Energy-Dependent Morphology<a class="headerlink" href="#Energy-Dependent-Morphology" title="Link to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">astromodels</span></code> functions support energy-dependent morphology in two different ways.</p>
 <ol class="arabic simple">
-<li><p>Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/deg2. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example <code class="docutils literal notranslate"><span class="pre">`Continuous_injection_diffusion</span></code> &lt;<a class="reference external" href="https:link">https:link</a>&gt;`__.</p></li>
+<li><p>Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/sr. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example <code class="docutils literal notranslate"><span class="pre">`Continuous_injection_diffusion</span></code> &lt;<a class="reference external" href="https:link">https:link</a>&gt;`__.</p></li>
 <li><p>Extended sources can be instanced with just a 3D function and no energy spectrum. In that case, the 3D function is interpreted as the double-differential flux dN/dE/dOmega.</p></li>
 </ol>
 <div class="nbinput nblast docutils container">
