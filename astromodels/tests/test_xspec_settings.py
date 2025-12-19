@@ -22,12 +22,14 @@ skip_if_xspec_is_not_available = pytest.mark.skipif(
 )
 
 
+@skip_if_xspec_is_not_available
 def test_xspec_abund():
     xspec_abund("lodd")
     current_abund = xspec_abund()
     assert current_abund == "lodd", "Setting abundances failed"
 
 
+@skip_if_xspec_is_not_available
 def test_xspec_cosmo():
     set1 = [80, 0.1, 0.73]
     set2 = [80, None, 0.73]
@@ -37,6 +39,7 @@ def test_xspec_cosmo():
     assert np.isclose(xspec_cosmo(), [80, 0.1, 0.73]).all, "Setting parts failed"
 
 
+@skip_if_xspec_is_not_available
 def test_xspec_xsect():
     xspec_xsect("vern")
     assert xspec_xsect() == "vern"
