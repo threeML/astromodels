@@ -4,6 +4,7 @@ import re
 import sys
 import time
 import warnings
+import logging
 
 import astropy.units as u
 
@@ -13,6 +14,8 @@ from astromodels.utils import get_user_data_path
 from astromodels.xspec import _xspec
 
 from datetime import datetime, timezone
+
+log = logging.getLogger(__name__)
 
 
 class XSpecNotAvailable(ImportWarning):
@@ -816,7 +819,7 @@ def setup_xspec_models():
         if not hasattr(_xspec, xspec_function):
 
             # Some function do not exist in the wrapper. Let's ignore them
-            print(xspec_function, " not in the wrapper - will skip it")
+            log.debug(f"{xspec_function} not in the wrapper - will skip it")
             continue
 
         this_model = all_models[(model_name, xspec_function, model_type)]
