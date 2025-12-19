@@ -7,7 +7,6 @@ import astropy.units as u
 import pytest
 
 from astromodels import Model, PointSource, clone_model, load_model
-from astromodels import utils
 
 try:
 
