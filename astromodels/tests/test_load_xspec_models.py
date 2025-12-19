@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 import collections
+import logging
 
 import astropy.units as u
 import pytest
@@ -14,6 +15,7 @@ try:
         find_model_dat,
         get_models,
         generate_xs_model_file,
+        xspec_model_factory,
     )
 
 except (ImportError, ModuleNotFoundError):
@@ -24,7 +26,7 @@ else:
 
     has_XSPEC = True
 
-
+log = logging.getLogger(__name__)
 # This defines a decorator which can be applied to single tests to
 # skip them if the condition is not met
 skip_if_xspec_is_not_available = pytest.mark.skipif(
@@ -87,6 +89,62 @@ def test_get_models():
         "C_agauss",
         "add",
     ) in model_definitions.keys(), "agauss not in model.dat"
+
+
+@skip_if_xspec_is_not_available
+def test_xspec_model_factory(monkeypatch):
+    # first test the cutoff:
+    with open("XS_agauss_factory.py", "w+") as f:
+        f.write("# dummy_file")
+
+    model_definitions = get_models(find_model_dat())
+
+    monkeypatch.setattr(os.path, "getctime", lambda _: 500)
+    monkeypatch.setattr("astromodels.xspec.factory.get_user_data_path", lambda: "")
+
+    xspec_model_factory(
+        "agauss_factory",
+        "C_agauss",
+        "add",
+        model_definitions[("agauss", "C_agauss", "add")],
+    )
+    with open("XS_agauss_factory.py", "r") as f:
+        cont = f.read()
+
+    if cont == "# dummy_file":
+        raise AssertionError("File was not overridden\n" + cont)
+    os.remove("XS_agauss_factory.py")
+
+    monkeypatch.undo()
+    # now lets test the non-overriding version
+    with open("XS_agauss_factory.py", "w+") as f:
+        f.write("# dummy_file")
+
+    # still need that
+    monkeypatch.setattr("astromodels.xspec.factory.get_user_data_path", lambda: "")
+
+    xspec_model_factory(
+        "agauss_factory",
+        "C_agauss",
+        "add",
+        model_definitions[("agauss", "C_agauss", "add")],
+    )
+    with open("XS_agauss_factory.py", "r") as f:
+        cont = f.read()
+
+    if cont != "# dummy_file":
+        raise AssertionError("File was overridden\n" + cont)
+
+    os.remove("XS_agauss_factory.py")
+
+    # and the create from scratch
+    xspec_model_factory(
+        "agauss_factory",
+        "C_agauss",
+        "add",
+        model_definitions[("agauss", "C_agauss", "add")],
+    )
+    os.remove("XS_agauss_factory.py")
 
 
 @skip_if_xspec_is_not_available
