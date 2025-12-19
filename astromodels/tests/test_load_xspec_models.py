@@ -13,6 +13,7 @@ try:
     from astromodels.xspec.factory import (
         find_model_dat,
         get_models,
+        generate_xs_model_file,
     )
 
 except (ImportError, ModuleNotFoundError):
@@ -86,3 +87,21 @@ def test_get_models():
         "C_agauss",
         "add",
     ) in model_definitions.keys(), "agauss not in model.dat"
+
+
+@skip_if_xspec_is_not_available
+def test_generate_xs_model_file():
+    with pytest.raises(AssertionError):
+        generate_xs_model_file("empty", "test_model", "test_model", "con", {})
+    # get the actual model definitions
+    model_definitions = get_models(find_model_dat())
+
+    # create a temporary agauss file
+    generate_xs_model_file(
+        "test_agauss.py",
+        "agauss",
+        "C_agauss",
+        "add",
+        model_definitions[("agauss", "C_agauss", "add")],
+    )
+    os.remove("test_agauss.py")
