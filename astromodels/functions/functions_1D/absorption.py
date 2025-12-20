@@ -7,7 +7,6 @@ import astropy.units as astropy_units
 import numba as nb
 import numpy as np
 from astropy.io import fits
-from interpolation import interp
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import _get_data_file_path
@@ -190,6 +189,10 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
 
         self.xsect_ene, self.xsect_val = phabs.xsect_table
 
+        assert np.all(
+            np.diff(self.xsect_ene) > 0
+        ), "xsec_ene must be strictly increasing otherwise interpolation fails"
+
     @property
     def abundance_table_info(self):
         print(phabs.info)
@@ -207,7 +210,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(self.xsect_ene, self.xsect_val, _x * (1 + _redshift))
+        xsect_interp = np.interp(_x * (1 + _redshift), self.xsect_ene, self.xsect_val)
 
         # evaluate the exponential with numba
 
@@ -280,6 +283,9 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
         tbabs.set_table(self.abundance_table.value)
 
         self.xsect_ene, self.xsect_val = tbabs.xsect_table
+        assert np.all(
+            np.diff(self.xsect_ene) > 0
+        ), "xsec_ene must be strictly increasing otherwise interpolation fails"
 
         log.debug(f"updated the TbAbs table to {self.abundance_table.value}")
 
@@ -300,7 +306,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(self.xsect_ene, self.xsect_val, _x * (1 + _redshift))
+        xsect_interp = np.interp(_x * (1 + _redshift), self.xsect_ene, self.xsect_val)
 
         spec = _numba_eval(NH, xsect_interp) * _y_unit
 
@@ -355,6 +361,10 @@ class WAbs(Function1D, metaclass=FunctionMeta):
 
         self.xsect_ene, self.xsect_val = wabs.xsect_table
 
+        assert np.all(
+            np.diff(self.xsect_ene) > 0
+        ), "xsec_ene must be strictly increasing otherwise interpolation fails"
+
     @property
     def abundance_table_info(self):
         print(wabs.info)
@@ -372,7 +382,7 @@ class WAbs(Function1D, metaclass=FunctionMeta):
             _redshift = redshift
             _x = x
 
-        xsect_interp = interp(self.xsect_ene, self.xsect_val, _x * (1 + _redshift))
+        xsect_interp = np.interp(_x * (1 + _redshift), self.xsect_ene, self.xsect_val)
 
         spec = _numba_eval(NH, xsect_interp) * _y_unit
 

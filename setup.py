@@ -16,7 +16,7 @@ import versioneer
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-_default_xspec_version = "12.15.0"  # default when installing xspec according following
+_default_xspec_version = "12.15.1"  # default when installing xspec according following
 # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
 
@@ -35,6 +35,93 @@ class My_build_ext(_build_ext):
             conda_include_path = os.path.join(conda_prefix, "include")
             self.include_dirs.append(conda_include_path)
 
+    def run(self):
+        """Build extensions and fix library references on macOS"""
+        _build_ext.run(self)
+
+        # On macOS, fix library references for libraries in extra_objects
+        if sys.platform.lower().find("darwin") >= 0:
+            self._fix_macos_library_references()
+
+    def _fix_macos_library_references(self):
+        """Fix install_name references for libraries without symlinks on macOS"""
+        if not self.extensions:
+            return
+
+        for ext in self.extensions:
+            if not hasattr(ext, "extra_objects") or not ext.extra_objects:
+                continue
+
+            # Get the output file path
+            ext_path = self.get_ext_fullpath(ext.name)
+
+            if not os.path.exists(ext_path):
+                continue
+
+            # Get library references using otool
+            try:
+                result = subprocess.run(
+                    ["otool", "-L", ext_path],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                continue
+
+            # Build a map of expected broken references to actual library paths
+            ref_map = {}
+            for lib_path in ext.extra_objects:
+                if not os.path.exists(lib_path):
+                    continue
+
+                lib_name = os.path.basename(lib_path)
+                # Check if it's a versioned library (e.g., libwcs.8.3.dylib)
+                match = re.match(r"lib(.+)\.(\d+)\.(\d+)\.dylib", lib_name)
+                if match:
+                    base_name, major, minor = match.groups()
+                    # The library might be referenced as lib{base}.{major}.dylib
+                    broken_ref = f"lib{base_name}.{major}.dylib"
+                    # Use @rpath if library_dirs is set, otherwise use absolute path
+                    if hasattr(ext, "library_dirs") and ext.library_dirs:
+                        new_ref = f"@rpath/{lib_name}"
+                    else:
+                        new_ref = lib_path
+                    ref_map[broken_ref] = new_ref
+
+            # Parse otool output to find library references that need fixing
+            for line in result.stdout.split("\n"):
+                line = line.strip()
+                if not line or ext_path in line:
+                    continue
+
+                # Extract library path (format: "libname.dylib (compatibility ...)")
+                # After strip(), there's no leading whitespace
+                match = re.match(r"^(.+?)\s+\(", line)
+                if not match:
+                    continue
+
+                lib_ref = match.group(1)
+
+                # Check if this reference needs to be fixed
+                if lib_ref in ref_map:
+                    new_ref = ref_map[lib_ref]
+                    try:
+                        subprocess.run(
+                            [
+                                "install_name_tool",
+                                "-change",
+                                lib_ref,
+                                new_ref,
+                                ext_path,
+                            ],
+                            check=True,
+                            capture_output=True,
+                        )
+                        print(f"Fixed library reference: {lib_ref} -> {new_ref}")
+                    except subprocess.CalledProcessError:
+                        pass
+
 
 def sanitize_lib_name(library_path):
     """Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0,
@@ -50,7 +137,7 @@ def sanitize_lib_name(library_path):
     # Some regexp magic needed to extract in a system-independent (mac/linux)
     # way the library name
 
-    tokens = re.findall(r"lib(.+)(\.so|\.dylib|\.a)(.+)?", lib_name)
+    tokens = re.findall(r"lib(.+)(\.so|\.dylib|\.a|\.la)(.+)?", lib_name)
 
     if not tokens:
         msg = f"Attempting to find {lib_name} in directory {library_path}"
@@ -66,12 +153,12 @@ def find_library(library_root, additional_places=None):
 
     :param library_root: root of the library to search, for example
         "cfitsio_" will match libcfitsio_1.2.3.4.so
-    :return: the name of the library found (NOTE: this is *not* the
-        path), and a directory path if the library is not in the system
-        paths (and None otherwise). The name of libcfitsio_1.2.3.4.so
-        will be cfitsio_1.2.3.4, in other words, it will be what is
-        needed to be passed to the linker during a c/c++ compilation, in
-        the -l option
+    :return: a tuple of (library_name, library_dir, full_path) where:
+        - library_name: the name to be passed to the linker in the
+          -l option
+        - library_dir: the directory path (None if in system paths)
+        - full_path: the full path to the library file (used when
+          unversioned symlink is missing)
     """
 
     # find_library searches for all system paths in a system independent way (but NOT
@@ -88,14 +175,14 @@ def find_library(library_root, additional_places=None):
             # On linux the linker already knows about these paths, so we
             # can return None as path
 
-            return sanitize_lib_name(first_guess), None
+            return sanitize_lib_name(first_guess), None, None
 
         elif sys.platform.lower().find("darwin") >= 0:
 
             # On Mac we still need to return the path, because the linker sometimes
             # does not look into it
 
-            return sanitize_lib_name(first_guess), os.path.dirname(first_guess)
+            return sanitize_lib_name(first_guess), os.path.dirname(first_guess), None
 
         else:
 
@@ -133,6 +220,7 @@ def find_library(library_root, additional_places=None):
 
         library_name = None
         library_dir = None
+        library_full_path = None
 
         for search_path in possible_locations:
 
@@ -170,6 +258,7 @@ def find_library(library_root, additional_places=None):
                         # This is the full path of the library, like
                         # /usr/lib/libcfitsio_1.2.3.4
 
+                        library_full_path = result
                         library_name = result
                         library_dir = search_path
 
@@ -184,34 +273,63 @@ def find_library(library_root, additional_places=None):
 
         if library_name is None:
 
-            return None, None
+            return None, None, None
 
         else:
 
-            # Sanitize the library name to get from the fully-qualified path to just
-            # the library name (/usr/lib/libgfortran.so.3.0 becomes gfortran)
+            # Sanitize the library name to get from the fully-qualified path
+            # to just the library name (/usr/lib/libgfortran.so.3.0 becomes
+            # gfortran)
 
-            return sanitize_lib_name(library_name), library_dir
+            sanitized_name = sanitize_lib_name(library_name)
+
+            # Extract base library name (without version suffix)
+            # e.g., "wcs.8.3" -> "wcs", "gfortran" -> "gfortran"
+            base_name = sanitized_name.split(".")[0]
+
+            # Check if the unversioned symlink exists
+            # If not, we'll need to pass the full path to the linker
+            if sys.platform.lower().find("linux") >= 0:
+                extension = ".so"
+            elif sys.platform.lower().find("darwin") >= 0:
+                extension = ".dylib"
+            else:
+                extension = ".so"
+
+            # Check for unversioned symlink (e.g., libwcs.so or libwcs.dylib)
+            unversioned_lib = os.path.join(library_dir, f"lib{base_name}{extension}")
+
+            # On macOS, also check for major version symlink (e.g., libwcs.8.dylib)
+            # which is what the runtime linker expects
+            if sys.platform.lower().find("darwin") >= 0:
+                # Extract major version if present (e.g., "8.3" -> "8")
+                version_parts = sanitized_name.split(".")[1:]
+                if version_parts:
+                    major_version = version_parts[0]
+                    major_version_lib = os.path.join(
+                        library_dir, f"lib{base_name}.{major_version}{extension}"
+                    )
+                    if os.path.exists(major_version_lib):
+                        # Major version symlink exists, use normal linking
+                        return f"{base_name}.{major_version}", library_dir, None
+
+            if os.path.exists(unversioned_lib):
+                # Unversioned symlink exists, use normal linking
+                return base_name, library_dir, None
+            else:
+                # No unversioned symlink, return the full path for direct
+                # linking
+                return sanitized_name, library_dir, library_full_path
 
 
 def get_xspec_conda_version():
     """Get the version string from conda"""
     try:
-        lines = subprocess.check_output(
-            ['conda', 'list', '-f', 'xspec']
-        ).decode().split('\n')
-    except subprocess.CalledProcessError:
-        lines = subprocess.check_output(
-            ['conda', 'list', '-f', 'xspec']
-        ).split('\n')
-    for l in lines:
-        if not l:
-            continue
-        if l[0] == '#':
-            continue
-        tokens = l.split()
-        return tokens[1]
-    return None
+        import xspec
+
+        return xspec.Xset.version[1]
+    except ModuleNotFoundError:
+        return None
 
 
 def setup_xspec():
@@ -243,7 +361,7 @@ def setup_xspec():
             # Let's see if the package xspec-modelsonly has been installed by checking
             # whether one of the Xspec libraries exists within conda
             conda_lib_path = os.path.join(conda_prefix, "lib")
-            this_lib, this_lib_path = find_library(
+            this_lib, this_lib_path, full_lib_library = find_library(
                 "XSFunctions", additional_places=[conda_lib_path]
             )
 
@@ -259,9 +377,11 @@ def setup_xspec():
                 return None
 
             else:
-                msg = ("WARN: The xspec-modelsonly package has been installed"
-                       " in Conda, but it's no longer supported."
-                       " Xspec support will not be installed")
+                msg = (
+                    "WARN: The xspec-modelsonly package has been installed"
+                    " in Conda, but it's no longer supported."
+                    " Xspec support will not be installed"
+                )
                 print(msg)
 
                 return None
@@ -277,8 +397,10 @@ def setup_xspec():
             return None
 
     print("HEADAS env. variable detected. Will compile the Xspec extension.")
-    print("NOTICE: If you have issues, manually set the environment variable "
-          "XSPEC_INC_PATH to the location of the XSPEC headers")
+    print(
+        "NOTICE: If you have issues, manually set the environment variable "
+        "XSPEC_INC_PATH to the location of the XSPEC headers"
+    )
     msg = "If you are still having issues, unset HEADAS before installing and"
     msg += "contact the support team"
     print(msg)
@@ -292,7 +414,7 @@ def setup_xspec():
     else:
 
         print("No XSPEC installation found in Conda")
-        print('Xspec was likely compiled from source.')
+        print("Xspec was likely compiled from source.")
 
         xspec_version = os.environ.get("ASTRO_XSPEC_VERSION")
 
@@ -300,9 +422,11 @@ def setup_xspec():
             print("WARN: You have not specified an XSPEC version with the ")
             print("WARN: environment variable ASTRO_XSPEC_VERSION")
             print(f"WARN: we will assume you have {_default_xspec_version}")
-            print("If you are using a different version of XSPEC, please set"
-                  " the environment variable ASTRO_XSPEC_VERSION to the "
-                  "version of XSPEC you are using")
+            print(
+                "If you are using a different version of XSPEC, please set"
+                " the environment variable ASTRO_XSPEC_VERSION to the "
+                "version of XSPEC you are using"
+            )
 
             xspec_version = _default_xspec_version
 
@@ -317,9 +441,9 @@ def setup_xspec():
         msg += " supported version for astromodels"
         print(msg)
         return None
-    elif xspec_version > packaging_version.Version("12.15.0"):
-        msg = "WARN: XSPEC version is greater than 12.15.0, which is the"
-        msg += " maximal supportedversion for astromodels"
+    elif xspec_version > packaging_version.Version("12.15.1"):
+        msg = "WARN: XSPEC version is greater than 12.15.1, which is the"
+        msg += " maximal supported version for astromodels"
         print(msg)
         return None
 
@@ -334,6 +458,7 @@ def setup_xspec():
         (12, 14, 0),
         (12, 14, 1),
         (12, 15, 0),
+        (12, 15, 1),
     ]:
 
         version = "{}.{}.{}".format(major, minor, patch)
@@ -362,10 +487,11 @@ def setup_xspec():
 
     libraries = []
     library_dirs = []
+    extra_objects = []  # For libraries without unversioned symlinks
 
     for lib_root in libraries_root:
 
-        this_library, this_library_path = find_library(
+        this_library, this_library_path, full_lib_path = find_library(
             lib_root, additional_places=[os.path.join(headas_root, "lib")]
         )
 
@@ -379,7 +505,16 @@ def setup_xspec():
 
             print("Found library %s in %s" % (this_library, this_library_path))
 
-            libraries.append(this_library)
+            if full_lib_path is not None:
+                # No unversioned symlink exists, pass the full path directly
+                print(
+                    "Warning: No unversioned symlink found for %s, "
+                    "using full path %s" % (lib_root, full_lib_path)
+                )
+                extra_objects.append(full_lib_path)
+            else:
+                # Normal case: unversioned symlink exists, use -l linking
+                libraries.append(this_library)
 
             if this_library_path is not None:
                 # This library is not in one of the system path library, we need to add
@@ -440,6 +575,8 @@ def setup_xspec():
             library_dirs=library_dirs,
             runtime_library_dirs=library_dirs,
             extra_compile_args=[],
+            # Add full paths for libraries without unversioned symlinks
+            extra_objects=extra_objects,
             define_macros=macros,
         ),
     ]
