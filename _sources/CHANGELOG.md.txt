@@ -1,9 +1,6 @@
 # Changelog
-_created with [github-changelog-generator](https://github.com/github-changelog-generator/github-changelog-generator?tab=readme-ov-file#github-token)_
 
-github_changelog_generator -u threeML -p astromodels --exclude-tags-regex "(.+)(dev)([0-9]?)" --base CHANGELOG.md -t $ --> needs to be run again before release!
-
-## [v2.5.1](https://github.com/threeML/astromodels/tree/v.2.5.1) (2025-12-XX)
+## [v2.5.1](https://github.com/threeML/astromodels/tree/v2.5.1) (2025-12-21)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.5.0...v2.5.1)
 
@@ -20,6 +17,11 @@ github_changelog_generator -u threeML -p astromodels --exclude-tags-regex "(.+)(
 
 **Merged pull requests:**
 
+- Updated docs for the 2.5.1 release + solid angle fix [\#244](https://github.com/threeML/astromodels/pull/244) ([PreisTo](https://github.com/PreisTo))
+- Fix astropy units [\#240](https://github.com/threeML/astromodels/pull/240) ([PreisTo](https://github.com/PreisTo))
+- Replace interpolation package [\#237](https://github.com/threeML/astromodels/pull/237) ([PreisTo](https://github.com/PreisTo))
+- Dev [\#236](https://github.com/threeML/astromodels/pull/236) ([ndilalla](https://github.com/ndilalla))
+- Add support to XSPEC 12.15.1 [\#235](https://github.com/threeML/astromodels/pull/235) ([ndilalla](https://github.com/ndilalla))
 - Fix and update readthedocs config [\#234](https://github.com/threeML/astromodels/pull/234) ([PreisTo](https://github.com/PreisTo))
 
 ## [v2.5.0](https://github.com/threeML/astromodels/tree/v2.5.0) (2025-10-03)
