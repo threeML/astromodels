@@ -341,35 +341,6 @@
 
 
 
-<span class="c1"># @nb.njit(fastmath=True, cache=_cache_functions)</span>
-<span class="c1"># def bbrad_eval(x, K, kT):</span>
-
-<span class="c1">#     tinv = 1./kT</span>
-<span class="c1">#     anorm = 1.0344E-3</span>
-<span class="c1">#     anormh = 0.5*anorm</span>
-
-<span class="c1">#     elow =</span>
-
-<span class="c1">#     xx = elow * tinv</span>
-
-
-<span class="c1"># @nb.njit(fastmath=True, cache=_cache_functions)</span>
-<span class="c1"># def bbrad_eval(x, K, kT):</span>
-
-<span class="c1">#     n = x.shape[0]</span>
-<span class="c1">#     out = np.empty(n)</span>
-
-<span class="c1">#     for idx in range(n):</span>
-
-<span class="c1">#         arg = x[idx]/kT</span>
-<span class="c1">#         out[idx] = K * x[idx] * x[idx] / np.expm1(arg)</span>
-
-<span class="c1">#     return out</span>
-
-
-<span class="c1"># band calderone</span>
-
-
 <div class="viewcode-block" id="ggrb_int_pl">
 <a class="viewcode-back" href="../../../notebooks/api/astromodels.functions.html#astromodels.functions.numba_functions.ggrb_int_pl">[docs]</a>
 <span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="n">_cache_functions</span><span class="p">)</span>
@@ -386,10 +357,6 @@
 
         <span class="k">return</span> <span class="n">pre</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Emax</span> <span class="o">/</span> <span class="n">Emin</span><span class="p">)</span></div>
 
-
-
-<span class="c1"># @nb.njit(fastmath=True, cache=_cache_functions)</span>
-<span class="c1"># def ggrb_int_cpl(a, Ec, Emin, Emax):</span>
 
 
 <div class="viewcode-block" id="non_diss_photoshere_generic">

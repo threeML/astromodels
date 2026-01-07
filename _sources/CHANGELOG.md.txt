@@ -1,6 +1,8 @@
 # Changelog
 
-## [v2.5.1](https://github.com/threeML/astromodels/tree/v2.5.1) (2025-12-21)
+
+## v2.5
+### [v2.5.1](https://github.com/threeML/astromodels/tree/v2.5.1) (2026-01-07)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.5.0...v2.5.1)
 
@@ -24,7 +26,7 @@
 - Add support to XSPEC 12.15.1 [\#235](https://github.com/threeML/astromodels/pull/235) ([ndilalla](https://github.com/ndilalla))
 - Fix and update readthedocs config [\#234](https://github.com/threeML/astromodels/pull/234) ([PreisTo](https://github.com/PreisTo))
 
-## [v2.5.0](https://github.com/threeML/astromodels/tree/v2.5.0) (2025-10-03)
+### [v2.5.0](https://github.com/threeML/astromodels/tree/v2.5.0) (2025-10-03)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.4.3...v2.5.0)
 
@@ -50,7 +52,9 @@
 - Update Parameter bounds when changing units [\#216](https://github.com/threeML/astromodels/pull/216) ([israelmcmc](https://github.com/israelmcmc))
 - Fix normalization units of Powerlaw\_Eflux [\#215](https://github.com/threeML/astromodels/pull/215) ([israelmcmc](https://github.com/israelmcmc))
 
-## [v2.4.3](https://github.com/threeML/astromodels/tree/v2.4.3) (2025-02-01)
+
+## v2.4
+### [v2.4.3](https://github.com/threeML/astromodels/tree/v2.4.3) (2025-02-01)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.4.2...v2.4.3)
 
@@ -64,7 +68,7 @@
 - Remove unused modules [\#210](https://github.com/threeML/astromodels/pull/210) ([AlexKurek](https://github.com/AlexKurek))
 - Fix installation in Python 3.12 [\#208](https://github.com/threeML/astromodels/pull/208) ([israelmcmc](https://github.com/israelmcmc))
 
-## [v2.4.2](https://github.com/threeML/astromodels/tree/v2.4.2) (2024-05-17)
+### [v2.4.2](https://github.com/threeML/astromodels/tree/v2.4.2) (2024-05-17)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.4.1...v2.4.2)
 
@@ -74,7 +78,7 @@
 - Dev [\#206](https://github.com/threeML/astromodels/pull/206) ([ndilalla](https://github.com/ndilalla))
 - Update workflow and doc [\#205](https://github.com/threeML/astromodels/pull/205) ([omodei](https://github.com/omodei))
 
-## [v2.4.1](https://github.com/threeML/astromodels/tree/v2.4.1) (2023-11-01)
+### [v2.4.1](https://github.com/threeML/astromodels/tree/v2.4.1) (2023-11-01)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.4.0...v2.4.1)
 
@@ -88,7 +92,7 @@
 - Fix docs [\#193](https://github.com/threeML/astromodels/pull/193) ([grburgess](https://github.com/grburgess))
 - Ixpe dev [\#174](https://github.com/threeML/astromodels/pull/174) ([omodei](https://github.com/omodei))
 
-## [v2.4.0](https://github.com/threeML/astromodels/tree/v2.4.0) (2022-09-20)
+### [v2.4.0](https://github.com/threeML/astromodels/tree/v2.4.0) (2022-09-20)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.9...v2.4.0)
 
@@ -107,15 +111,17 @@
 - Flake 8 [\#185](https://github.com/threeML/astromodels/pull/185) ([grburgess](https://github.com/grburgess))
 - Dev robert [\#183](https://github.com/threeML/astromodels/pull/183) ([grburgess](https://github.com/grburgess))
 
-## [v2.3.9](https://github.com/threeML/astromodels/tree/v2.3.9) (2022-08-19)
+
+## v2.3
+### [v2.3.9](https://github.com/threeML/astromodels/tree/v2.3.9) (2022-08-19)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.8...v2.3.9)
 
-## [v2.3.8](https://github.com/threeML/astromodels/tree/v2.3.8) (2022-08-01)
+### [v2.3.8](https://github.com/threeML/astromodels/tree/v2.3.8) (2022-08-01)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.7...v2.3.8)
 
-## [v2.3.7](https://github.com/threeML/astromodels/tree/v2.3.7) (2022-07-31)
+### [v2.3.7](https://github.com/threeML/astromodels/tree/v2.3.7) (2022-07-31)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.6...v2.3.7)
 
@@ -123,11 +129,11 @@
 
 - Log transform in Powerlaw functions [\#186](https://github.com/threeML/astromodels/issues/186)
 
-## [v2.3.6](https://github.com/threeML/astromodels/tree/v2.3.6) (2022-07-26)
+### [v2.3.6](https://github.com/threeML/astromodels/tree/v2.3.6) (2022-07-26)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.5...v2.3.6)
 
-## [v2.3.5](https://github.com/threeML/astromodels/tree/v2.3.5) (2022-07-12)
+### [v2.3.5](https://github.com/threeML/astromodels/tree/v2.3.5) (2022-07-12)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.2...v2.3.5)
 
@@ -139,11 +145,11 @@
 
 - Rich logging [\#184](https://github.com/threeML/astromodels/pull/184) ([grburgess](https://github.com/grburgess))
 
-## [v2.3.2](https://github.com/threeML/astromodels/tree/v2.3.2) (2022-05-24)
+### [v2.3.2](https://github.com/threeML/astromodels/tree/v2.3.2) (2022-05-24)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.1...v2.3.2)
 
-## [v2.3.1](https://github.com/threeML/astromodels/tree/v2.3.1) (2022-05-23)
+### [v2.3.1](https://github.com/threeML/astromodels/tree/v2.3.1) (2022-05-23)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.3.0...v2.3.1)
 
@@ -152,7 +158,7 @@
 - Dev [\#181](https://github.com/threeML/astromodels/pull/181) ([ndilalla](https://github.com/ndilalla))
 - Fix recursion [\#180](https://github.com/threeML/astromodels/pull/180) ([grburgess](https://github.com/grburgess))
 
-## [v2.3.0](https://github.com/threeML/astromodels/tree/v2.3.0) (2022-04-08)
+### [v2.3.0](https://github.com/threeML/astromodels/tree/v2.3.0) (2022-04-08)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.2.2...v2.3.0)
 
@@ -174,7 +180,9 @@
 - Fix for Issue \#172 [\#173](https://github.com/threeML/astromodels/pull/173) ([rwiller](https://github.com/rwiller))
 - 2 minor fixes on doc front page [\#168](https://github.com/threeML/astromodels/pull/168) ([hamogu](https://github.com/hamogu))
 
-## [v2.2.2](https://github.com/threeML/astromodels/tree/v2.2.2) (2021-08-17)
+
+## v2.2
+### [v2.2.2](https://github.com/threeML/astromodels/tree/v2.2.2) (2021-08-17)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.2.1...v2.2.2)
 
@@ -182,7 +190,7 @@
 
 - Fix xspec install [\#167](https://github.com/threeML/astromodels/pull/167) ([grburgess](https://github.com/grburgess))
 
-## [v2.2.1](https://github.com/threeML/astromodels/tree/v2.2.1) (2021-08-17)
+### [v2.2.1](https://github.com/threeML/astromodels/tree/v2.2.1) (2021-08-17)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.2.0...v2.2.1)
 
@@ -216,7 +224,7 @@
 - Better docs [\#151](https://github.com/threeML/astromodels/pull/151) ([grburgess](https://github.com/grburgess))
 - Fix 149 [\#150](https://github.com/threeML/astromodels/pull/150) ([grburgess](https://github.com/grburgess))
 
-## [v2.2.0](https://github.com/threeML/astromodels/tree/v2.2.0) (2021-04-06)
+### [v2.2.0](https://github.com/threeML/astromodels/tree/v2.2.0) (2021-04-06)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.1.8...v2.2.0)
 
@@ -228,7 +236,9 @@
 - Py3 apec [\#145](https://github.com/threeML/astromodels/pull/145) ([grburgess](https://github.com/grburgess))
 - Stop overwriting point source position bounds when parsing model [\#94](https://github.com/threeML/astromodels/pull/94) ([henrikef](https://github.com/henrikef))
 
-## [v2.1.8](https://github.com/threeML/astromodels/tree/v2.1.8) (2021-02-02)
+
+## v2.1
+### [v2.1.8](https://github.com/threeML/astromodels/tree/v2.1.8) (2021-02-02)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.1.7...v2.1.8)
 
@@ -236,7 +246,7 @@
 
 - Improve logging [\#143](https://github.com/threeML/astromodels/pull/143) ([grburgess](https://github.com/grburgess))
 
-## [v2.1.7](https://github.com/threeML/astromodels/tree/v2.1.7) (2021-01-23)
+### [v2.1.7](https://github.com/threeML/astromodels/tree/v2.1.7) (2021-01-23)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.1.6...v2.1.7)
 
@@ -244,11 +254,11 @@
 
 - update the logging to work with 3ml [\#142](https://github.com/threeML/astromodels/pull/142) ([grburgess](https://github.com/grburgess))
 
-## [v2.1.6](https://github.com/threeML/astromodels/tree/v2.1.6) (2021-01-22)
+### [v2.1.6](https://github.com/threeML/astromodels/tree/v2.1.6) (2021-01-22)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.1.5...v2.1.6)
 
-## [v2.1.5](https://github.com/threeML/astromodels/tree/v2.1.5) (2021-01-16)
+### [v2.1.5](https://github.com/threeML/astromodels/tree/v2.1.5) (2021-01-16)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.0.2...v2.1.5)
 
@@ -273,7 +283,9 @@
 - unlink parameters when deleting a source. [\#101](https://github.com/threeML/astromodels/pull/101) ([henrikef](https://github.com/henrikef))
 - Adding a function in Functions\_3D to read galprop-like templates [\#90](https://github.com/threeML/astromodels/pull/90) ([hayalaso](https://github.com/hayalaso))
 
-## [v2.0.2](https://github.com/threeML/astromodels/tree/v2.0.2) (2020-12-03)
+
+## v2.0
+### [v2.0.2](https://github.com/threeML/astromodels/tree/v2.0.2) (2020-12-03)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.0.1...v2.0.2)
 
@@ -286,7 +298,7 @@
 
 - Xspec setup [\#137](https://github.com/threeML/astromodels/pull/137) ([grburgess](https://github.com/grburgess))
 
-## [v2.0.1](https://github.com/threeML/astromodels/tree/v2.0.1) (2020-10-27)
+### [v2.0.1](https://github.com/threeML/astromodels/tree/v2.0.1) (2020-10-27)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.0.0...v2.0.1)
 
@@ -299,7 +311,7 @@
 
 - remove pytables to see if tests pass [\#134](https://github.com/threeML/astromodels/pull/134) ([grburgess](https://github.com/grburgess))
 
-## [v2.0.0](https://github.com/threeML/astromodels/tree/v2.0.0) (2020-10-15)
+### [v2.0.0](https://github.com/threeML/astromodels/tree/v2.0.0) (2020-10-15)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.5.0...v2.0.0)
 
@@ -311,7 +323,9 @@
 
 - Root6 compatibility [\#132](https://github.com/threeML/astromodels/pull/132) ([ndilalla](https://github.com/ndilalla))
 
-## [v1.5.0](https://github.com/threeML/astromodels/tree/v1.5.0) (2020-08-26)
+
+## v1.5
+### [v1.5.0](https://github.com/threeML/astromodels/tree/v1.5.0) (2020-08-26)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.4.0...v1.5.0)
 
@@ -322,7 +336,9 @@
 - Update tests: special treatment for EBLattenuation function [\#125](https://github.com/threeML/astromodels/pull/125) ([henrikef](https://github.com/henrikef))
 - Add attenuation parameter to EBL in functions.py [\#124](https://github.com/threeML/astromodels/pull/124) ([xboluna](https://github.com/xboluna))
 
-## [v1.4.0](https://github.com/threeML/astromodels/tree/v1.4.0) (2020-06-23)
+
+## v1.4
+### [v1.4.0](https://github.com/threeML/astromodels/tree/v1.4.0) (2020-06-23)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.3.0...v1.4.0)
 
@@ -330,7 +346,9 @@
 
 - Phabs [\#123](https://github.com/threeML/astromodels/pull/123) ([grburgess](https://github.com/grburgess))
 
-## [v1.3.0](https://github.com/threeML/astromodels/tree/v1.3.0) (2020-05-10)
+
+## v1.3
+### [v1.3.0](https://github.com/threeML/astromodels/tree/v1.3.0) (2020-05-10)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.2.1...v1.3.0)
 
@@ -352,7 +370,9 @@
 - Numba interp [\#122](https://github.com/threeML/astromodels/pull/122) ([grburgess](https://github.com/grburgess))
 - Numba models [\#121](https://github.com/threeML/astromodels/pull/121) ([grburgess](https://github.com/grburgess))
 
-## [v1.2.1](https://github.com/threeML/astromodels/tree/v1.2.1) (2020-04-29)
+
+## v1.2
+### [v1.2.1](https://github.com/threeML/astromodels/tree/v1.2.1) (2020-04-29)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.2.0...v1.2.1)
 
@@ -360,7 +380,7 @@
 
 - Test numeric values [\#120](https://github.com/threeML/astromodels/pull/120) ([grburgess](https://github.com/grburgess))
 
-## [v1.2.0](https://github.com/threeML/astromodels/tree/v1.2.0) (2020-04-18)
+### [v1.2.0](https://github.com/threeML/astromodels/tree/v1.2.0) (2020-04-18)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.1.0...v1.2.0)
 
@@ -372,11 +392,15 @@
 
 - Feature xspec tm [\#118](https://github.com/threeML/astromodels/pull/118) ([grburgess](https://github.com/grburgess))
 
-## [v1.1.0](https://github.com/threeML/astromodels/tree/v1.1.0) (2020-03-13)
+
+## v1.1
+### [v1.1.0](https://github.com/threeML/astromodels/tree/v1.1.0) (2020-03-13)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.0.2...v1.1.0)
 
-## [v1.0.2](https://github.com/threeML/astromodels/tree/v1.0.2) (2020-03-11)
+
+## v1.0
+### [v1.0.2](https://github.com/threeML/astromodels/tree/v1.0.2) (2020-03-11)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v1.0...v1.0.2)
 
@@ -386,7 +410,7 @@
 - Update versioning [\#116](https://github.com/threeML/astromodels/pull/116) ([grburgess](https://github.com/grburgess))
 - Fix pandas [\#115](https://github.com/threeML/astromodels/pull/115) ([grburgess](https://github.com/grburgess))
 
-## [v1.0](https://github.com/threeML/astromodels/tree/v1.0) (2019-12-05)
+### [v1.0](https://github.com/threeML/astromodels/tree/v1.0) (2019-12-05)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/0.5.1...v1.0)
 
@@ -425,7 +449,9 @@
 - Simon edit model.link [\#74](https://github.com/threeML/astromodels/pull/74) ([ssteinmassl](https://github.com/ssteinmassl))
 - Linear intrp [\#71](https://github.com/threeML/astromodels/pull/71) ([grburgess](https://github.com/grburgess))
 
-## [0.5.1](https://github.com/threeML/astromodels/tree/0.5.1) (2018-06-19)
+
+## v0.5
+### [0.5.1](https://github.com/threeML/astromodels/tree/0.5.1) (2018-06-19)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/5a2019a2586c3e1d9ea386b3cb22646402cb277b...0.5.1)
 

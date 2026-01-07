@@ -71,7 +71,7 @@ Contents:
 =========
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
 
     installation.md
     notebooks/Quick_start.ipynb

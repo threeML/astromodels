@@ -520,8 +520,10 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">unit_</span> <span class="o">=</span> <span class="mf">1.0</span>
             <span class="n">K_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">,</span> <span class="n">x_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">xp_</span> <span class="o">=</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">xp</span>
-
-        <span class="n">xc</span> <span class="o">=</span> <span class="n">xp_</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index_</span> <span class="o">!=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">:</span>
+            <span class="n">xc</span> <span class="o">=</span> <span class="n">xp_</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">index_</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">cplaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
 
