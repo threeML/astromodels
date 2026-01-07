@@ -216,35 +216,6 @@ def mbb_eval(x, K, kT):
     return K * out / x
 
 
-# @nb.njit(fastmath=True, cache=_cache_functions)
-# def bbrad_eval(x, K, kT):
-
-#     tinv = 1./kT
-#     anorm = 1.0344E-3
-#     anormh = 0.5*anorm
-
-#     elow =
-
-#     xx = elow * tinv
-
-
-# @nb.njit(fastmath=True, cache=_cache_functions)
-# def bbrad_eval(x, K, kT):
-
-#     n = x.shape[0]
-#     out = np.empty(n)
-
-#     for idx in range(n):
-
-#         arg = x[idx]/kT
-#         out[idx] = K * x[idx] * x[idx] / np.expm1(arg)
-
-#     return out
-
-
-# band calderone
-
-
 @nb.njit(fastmath=True, cache=_cache_functions)
 def ggrb_int_pl(a, b, Ec, Emin, Emax):
 
@@ -258,10 +229,6 @@ def ggrb_int_pl(a, b, Ec, Emin, Emax):
     else:
 
         return pre * math.log(Emax / Emin)
-
-
-# @nb.njit(fastmath=True, cache=_cache_functions)
-# def ggrb_int_cpl(a, Ec, Emin, Emax):
 
 
 @nb.njit(fastmath=True, cache=_cache_functions)
