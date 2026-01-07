@@ -397,8 +397,10 @@ class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
         else:
             unit_ = 1.0
             K_, piv_, x_, index_, xp_ = K, piv, x, index, xp
-
-        xc = xp_ / (2 + index)
+        if index_ != -2.0:
+            xc = xp_ / (2 + index_)
+        else:
+            xc = np.inf
 
         result = nb_func.cplaw_eval(x_, K_, xc, index_, piv_)
 
