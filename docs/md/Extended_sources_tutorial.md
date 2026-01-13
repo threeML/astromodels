@@ -15,6 +15,13 @@ jupyter:
 
 # Extended source tutorial
 
+:::{note}
+
+Until `astromodels 2.5.1` all default `astromodels` 2D-Functions return their values as
+$\frac{1}{\mathrm{sr}}$ but the reported unit was $\frac{1}{\mathrm{deg}^2}$.
+In 2.5.1 we temporarily fixed the unit to be the correct $\frac{1}{sr}$. This may change
+in the future as we plan to improve the units handling in `astromodels`.
+:::
 
 ## Introduction
 
@@ -80,7 +87,7 @@ diff = Latitude_galactic_diffuse()
 diff.display()
 ```
 
-`SpatialTemplate_2D` is designed to read in a user-provided fits file with an image (in WCS coordinates) using the `load_file()` function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/deg2 and normalized so that its integral is 1. If that is not the case, the normalization parameter `K` may be set accordingly so that the overall function is normalized as expected.
+`SpatialTemplate_2D` is designed to read in a user-provided fits file with an image (in WCS coordinates) using the `load_file()` function. The function value will be 0 outside the WCS and equal to the value of the pixel containing the given coordinates inside the WCS. The provided template should be in units of 1/sr and normalized so that its integral is 1. If that is not the case, the normalization parameter `K` may be set accordingly so that the overall function is normalized as expected.
 
 ```python
 
@@ -90,7 +97,7 @@ temp.display()
 
 ## "Calling" extended sources
 
-Extended sources can be called as functions. They take 3 arguments: A list or `np.array` of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. **If no units are provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s deg2).**
+Extended sources can be called as functions. They take 3 arguments: A list or `np.array` of right ascensions, a list of declinations, and a list of energies. The first two lists must have the same dimensions. The result contains the value(s) of the double differential flux dN/dE/dOmega at all combinations of coordinates and energies. See the example below. There, we picked two positions (one at the center of the disk source, one outside of it) and three energy values. **If no units are provided, energies are assumed to be in keV, coordinates in degrees, and fluxes are returned in 1/(cm2 keV s sr).**
 
 ```python
 import numpy as np
@@ -146,7 +153,7 @@ print ("Dec range:", bounds[1])
 
 `astromodels` functions support energy-dependent morphology in two different ways. 
 
-1. Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/deg2. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example [`Continuous_injection_diffusion`](https:link).
+1. Extended sources can be instanced with a 3D function spatial shape and a separate energy spectrum. In that case, the 3D function is expected to be a function of RA, Dec, Energy (in that order) and have units of 1/sr. The double-differential flux dN/dE/dOmega is again given by the product of the spatial and spectral parts. See for example [`Continuous_injection_diffusion`](https:link).
 2. Extended sources can be instanced with just a 3D function and no energy spectrum. In that case, the 3D function is interpreted as the double-differential flux dN/dE/dOmega.
 
 ```python

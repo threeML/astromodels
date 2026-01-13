@@ -15,6 +15,7 @@ from astromodels.functions import (
     Line,
     Powerlaw,
     SpatialTemplate_2D,
+    Cutoff_powerlaw_Ep,
 )
 from astromodels.functions import function as function_module
 from astromodels.functions.function import (
@@ -1085,3 +1086,8 @@ def test_complex_composites():
     d = astromodels.TbAbs(abundance_table="WILM")
 
     a * b + c * d
+
+
+def test_cpl_ep():
+    test = Cutoff_powerlaw_Ep()
+    assert np.isclose(test.evaluate(np.array([1]), 1, 1, -2.0, 100), 1), ""

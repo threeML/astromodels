@@ -20,7 +20,10 @@ from astromodels.functions import (
     XSPECTableModel,
     SpatialTemplate_2D,
 )
-from astromodels.functions.template_model import convert_old_table_model
+from astromodels.functions.template_model import (
+    convert_old_table_model,
+    UnivariateSpline,
+)
 from astromodels.sources import ExtendedSource
 from astromodels.core.units import get_units
 
@@ -325,3 +328,13 @@ def test_spatial_template():
     assert np.isclose(
         shape.get_total_spatial_integral(), 1, rtol=1e-2
     ), "failed to normalize map"
+
+
+def test_univariate_spline():
+    univ = UnivariateSpline([0, 1, 2], [3, 4, 5])
+    res = univ(1.5)
+    assert np.isclose(res, 4.5)
+
+    univ_np = UnivariateSpline(np.array([0, 1, 2]), np.array([3, 4, 5]))
+    res_np = univ_np(1.5)
+    assert np.isclose(res_np, 4.5)

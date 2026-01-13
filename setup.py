@@ -35,6 +35,93 @@ class My_build_ext(_build_ext):
             conda_include_path = os.path.join(conda_prefix, "include")
             self.include_dirs.append(conda_include_path)
 
+    def run(self):
+        """Build extensions and fix library references on macOS"""
+        _build_ext.run(self)
+
+        # On macOS, fix library references for libraries in extra_objects
+        if sys.platform.lower().find("darwin") >= 0:
+            self._fix_macos_library_references()
+
+    def _fix_macos_library_references(self):
+        """Fix install_name references for libraries without symlinks on macOS"""
+        if not self.extensions:
+            return
+
+        for ext in self.extensions:
+            if not hasattr(ext, "extra_objects") or not ext.extra_objects:
+                continue
+
+            # Get the output file path
+            ext_path = self.get_ext_fullpath(ext.name)
+
+            if not os.path.exists(ext_path):
+                continue
+
+            # Get library references using otool
+            try:
+                result = subprocess.run(
+                    ["otool", "-L", ext_path],
+                    capture_output=True,
+                    text=True,
+                    check=True,
+                )
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                continue
+
+            # Build a map of expected broken references to actual library paths
+            ref_map = {}
+            for lib_path in ext.extra_objects:
+                if not os.path.exists(lib_path):
+                    continue
+
+                lib_name = os.path.basename(lib_path)
+                # Check if it's a versioned library (e.g., libwcs.8.3.dylib)
+                match = re.match(r"lib(.+)\.(\d+)\.(\d+)\.dylib", lib_name)
+                if match:
+                    base_name, major, minor = match.groups()
+                    # The library might be referenced as lib{base}.{major}.dylib
+                    broken_ref = f"lib{base_name}.{major}.dylib"
+                    # Use @rpath if library_dirs is set, otherwise use absolute path
+                    if hasattr(ext, "library_dirs") and ext.library_dirs:
+                        new_ref = f"@rpath/{lib_name}"
+                    else:
+                        new_ref = lib_path
+                    ref_map[broken_ref] = new_ref
+
+            # Parse otool output to find library references that need fixing
+            for line in result.stdout.split("\n"):
+                line = line.strip()
+                if not line or ext_path in line:
+                    continue
+
+                # Extract library path (format: "libname.dylib (compatibility ...)")
+                # After strip(), there's no leading whitespace
+                match = re.match(r"^(.+?)\s+\(", line)
+                if not match:
+                    continue
+
+                lib_ref = match.group(1)
+
+                # Check if this reference needs to be fixed
+                if lib_ref in ref_map:
+                    new_ref = ref_map[lib_ref]
+                    try:
+                        subprocess.run(
+                            [
+                                "install_name_tool",
+                                "-change",
+                                lib_ref,
+                                new_ref,
+                                ext_path,
+                            ],
+                            check=True,
+                            capture_output=True,
+                        )
+                        print(f"Fixed library reference: {lib_ref} -> {new_ref}")
+                    except subprocess.CalledProcessError:
+                        pass
+
 
 def sanitize_lib_name(library_path):
     """Get a fully-qualified library name, like /usr/lib/libgfortran.so.3.0,
@@ -196,6 +283,10 @@ def find_library(library_root, additional_places=None):
 
             sanitized_name = sanitize_lib_name(library_name)
 
+            # Extract base library name (without version suffix)
+            # e.g., "wcs.8.3" -> "wcs", "gfortran" -> "gfortran"
+            base_name = sanitized_name.split(".")[0]
+
             # Check if the unversioned symlink exists
             # If not, we'll need to pass the full path to the linker
             if sys.platform.lower().find("linux") >= 0:
@@ -205,13 +296,26 @@ def find_library(library_root, additional_places=None):
             else:
                 extension = ".so"
 
-            unversioned_lib = os.path.join(
-                library_dir, f"lib{sanitized_name}{extension}"
-            )
+            # Check for unversioned symlink (e.g., libwcs.so or libwcs.dylib)
+            unversioned_lib = os.path.join(library_dir, f"lib{base_name}{extension}")
+
+            # On macOS, also check for major version symlink (e.g., libwcs.8.dylib)
+            # which is what the runtime linker expects
+            if sys.platform.lower().find("darwin") >= 0:
+                # Extract major version if present (e.g., "8.3" -> "8")
+                version_parts = sanitized_name.split(".")[1:]
+                if version_parts:
+                    major_version = version_parts[0]
+                    major_version_lib = os.path.join(
+                        library_dir, f"lib{base_name}.{major_version}{extension}"
+                    )
+                    if os.path.exists(major_version_lib):
+                        # Major version symlink exists, use normal linking
+                        return f"{base_name}.{major_version}", library_dir, None
 
             if os.path.exists(unversioned_lib):
                 # Unversioned symlink exists, use normal linking
-                return sanitized_name, library_dir, None
+                return base_name, library_dir, None
             else:
                 # No unversioned symlink, return the full path for direct
                 # linking
@@ -221,21 +325,11 @@ def find_library(library_root, additional_places=None):
 def get_xspec_conda_version():
     """Get the version string from conda"""
     try:
-        lines = (
-            subprocess.check_output(["conda", "list", "-f", "xspec"])
-            .decode()
-            .split("\n")
-        )
-    except subprocess.CalledProcessError:
-        lines = subprocess.check_output(["conda", "list", "-f", "xspec"]).split("\n")
-    for l in lines:
-        if not l:
-            continue
-        if l[0] == "#":
-            continue
-        tokens = l.split()
-        return tokens[1]
-    return None
+        import xspec
+
+        return xspec.Xset.version[1]
+    except ModuleNotFoundError:
+        return None
 
 
 def setup_xspec():

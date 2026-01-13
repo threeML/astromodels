@@ -100,6 +100,7 @@ jobs:
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
                 python-version: [3.9, 3.11]
+                env-file: [ci/environment.yml,ci/environment_heasoft.yml]
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
@@ -112,7 +113,7 @@ jobs:
                   miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.env-file }}
                   use-only-tar-bz2: false
                   channel-priority: true
             - name: Init Env
@@ -153,7 +154,12 @@ jobs:
 
             - name: Test import xspec
               shell: bash -l {0}
-              run: python -c "import astromodels.xspec"
+              run: |
+                echo $DYLD_LIBRARY_PATH
+                echo $LD_LIBRARY_PATH
+                #ls $CONDA_PREFIX/lib/libwcs*
+                ls $CONDA_PREFIX/heasoft/lib/libwcs*
+                python -c "import astromodels.xspec"
             - name: Test astromodels
               shell: bash -l {0}
               run: python -m pytest -vv --cov=astromodels --cov-report=xml
@@ -164,9 +170,7 @@ jobs:
                   MPLBACKEND: "Agg"
 
             - name: Upload coverage to Codecov
-              uses: codecov/codecov-action@v4
+              uses: codecov/codecov-action@v5
               with:
-                  file: ./coverage.xml
-                  files: ./coverage1.xml,./coverage2.xml
-                  directory: ./coverage/reports/
+                  token: ${{ secrets.CODECOV_TOKEN }}
 

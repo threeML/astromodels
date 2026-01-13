@@ -128,7 +128,7 @@ class ExtendedSource(Source, Node):
                     current_u.angle,
                     current_u.angle,
                     current_u.energy,
-                    current_u.angle ** (-2),
+                    u.sr**-1,
                 )
 
         else:
