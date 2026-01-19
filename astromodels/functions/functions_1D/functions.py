@@ -13,8 +13,6 @@ __author__ = "giacomov"
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,
 # 2016
 
-erg2keV = 6.24151e8
-
 
 class GSLNotAvailable(ImportWarning):
     pass
@@ -307,7 +305,14 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
 
         return  at zero_point
 
-    latex : $ value $
+    latex : $
+                \delta(x) =
+                \begin{cases}
+                \mathrm{value}, & x = \mathrm{zero\_point}, \\
+                0, & x \neq \mathrm{zero\_point}
+                \end{cases}
+                
+            $
 
     parameters :
 
@@ -595,7 +600,9 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A log-parabolic function. NOTE that we use the high-energy convention of using
+        A log-parabolic function.
+
+        NOTE that we use the high-energy convention of using
         the natural log in place of the base-10 logarithm. This means that beta is a
         factor 1 / log10(e) larger than what returned by those software using the other
         convention.
