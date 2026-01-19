@@ -311,7 +311,6 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
                 \mathrm{value}, & x = \mathrm{zero\_point}, \\
                 0, & x \neq \mathrm{zero\_point}
                 \end{cases}
-                
             $
 
     parameters :
