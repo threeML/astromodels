@@ -39,41 +39,39 @@ DOCS = Path(__file__).parent
 # -- Generate API documentation ------------------------------------------------
 
 
-def run_apidoc(app):
-    """Generage API documentation."""
-    import os
-
-    # import pkgutil
-    import sys
-
-    import better_apidoc
-
-    # astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-
-    sys.path.insert(0, os.path.abspath(".."))
-    sys.path.insert(1, os.path.abspath("../astromodels"))
-
-    # Add the path to the C extension
-    # lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-    # lib_path = os.path.abspath('%s/core' % astro_path)
-    # sys.path.insert(2, lib_path)
-    # This must work now
-    #    import node_ctype
-
-    better_apidoc.APP = app
-    better_apidoc.main(
-        [
-            "better-apidoc",
-            # "-t",
-            # str(docs / "_templates"),
-            "--force",
-            "--no-toc",
-            "--separate",
-            "-o",
-            str(DOCS / "api"),
-            str(DOCS / ".." / "astromodels"),
-        ]
-    )
+# def run_apidoc(app):
+#     """Generage API documentation."""
+#     import os
+#
+#     # import pkgutil
+#     import sys
+#
+#     # astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
+#
+#     sys.path.insert(0, os.path.abspath(".."))
+#     sys.path.insert(1, os.path.abspath("../astromodels"))
+#
+#     # Add the path to the C extension
+#     # lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
+#     # lib_path = os.path.abspath('%s/core' % astro_path)
+#     # sys.path.insert(2, lib_path)
+#     # This must work now
+#     #    import node_ctype
+#
+#     better_apidoc.APP = app
+#     better_apidoc.main(
+#         [
+#             "better-apidoc",
+#             # "-t",
+#             # str(docs / "_templates"),
+#             "--force",
+#             "--no-toc",
+#             "--separate",
+#             "-o",
+#             str(DOCS / "api"),
+#             str(DOCS / ".." / "astromodels"),
+#         ]
+#     )
 
 
 # #import astromodels
@@ -112,7 +110,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
     "sphinx_gallery.load_style",
-    #    "sphinx_math_dollar",
+    # "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
     "sphinx_copybutton",
 ]
@@ -230,5 +228,5 @@ release = "latest"
 print("Done.")
 
 
-def setup(app):
-    app.connect("builder-inited", run_apidoc)
+# def setup(app):
+#    app.connect("builder-inited", run_apidoc)
