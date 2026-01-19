@@ -18,8 +18,8 @@
       <script src="../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
-      <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -63,8 +63,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels">astromodels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOG.html">Changelog</a></li>
 </ul>
 
@@ -110,7 +108,7 @@
 
 
 <div class="viewcode-block" id="ParticleSource">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.ParticleSource">[docs]</a>
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.particle_source.ParticleSource">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParticleSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A source of particles with a certain distribution. This source does not</span>
 <span class="sd">    produce any electromagnetic signal, but it is useful if used in conjuction</span>
@@ -166,7 +164,7 @@
             <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ParticleSource.get_flux">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.ParticleSource.get_flux">[docs]</a>
+<a class="viewcode-back" href="../../../notebooks/api/astromodels.sources.html#astromodels.sources.particle_source.ParticleSource.get_flux">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the total flux of this particle source at the given energies</span>
 <span class="sd">        (summed over the components)&quot;&quot;&quot;</span>

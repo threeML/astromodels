@@ -18,8 +18,8 @@
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../../_static/documentation_options.js?v=c6e86fd7"></script>
-      <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -63,8 +63,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOG.html">Changelog</a></li>
 </ul>
 
@@ -122,7 +120,7 @@
 
 <span class="sd">        A simple power-law</span>
 
-<span class="sd">    latex : $ K~\frac{x}{piv}^{index} $</span>
+<span class="sd">    latex : $ K~\left(\frac{x}{piv}\right)^{index} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -283,7 +281,7 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 <span class="sd">        A  power-law where the normalization is the energy flux defined between a and b</span>
-<span class="sd">    latex : $F~\frac{x}{piv}^{index} $</span>
+<span class="sd">    latex : $F~\left(\frac{x}{piv}\right)^{index} $</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        F :</span>
 <span class="sd">            desc : Normalization (energy flux at the between a and b) erg /cm2 s</span>
@@ -371,7 +369,7 @@
 
 <span class="sd">        A power law multiplied by an exponential cutoff</span>
 
-<span class="sd">    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/xc} $</span>
+<span class="sd">    latex : $ K~\left(\frac{x}{piv}\right)^{index}~\exp{-x/xc} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -453,7 +451,7 @@
 
 <span class="sd">        A power law multiplied by an exponential cutoff parametrized with Ep</span>
 
-<span class="sd">    latex : $ K~\frac{x}{piv}^{index}~\exp{-x(2+index)/xp} $</span>
+<span class="sd">    latex : $ K~\left(\frac{x}{piv}\right)^{index}~\exp{-\left(x~(2+index)\right)/xp} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -538,7 +536,7 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description : A power law multiplied by an exponential cutoff</span>
 <span class="sd">        Note, instead of cutoff energy energy parameter xc, b = 1/xc is used</span>
-<span class="sd">    latex : $K \frac{x}{piv}^{index}\exp{(-x~b)} $</span>
+<span class="sd">    latex : $K~\left(\frac{x}{piv}\right)^{index}\exp{(-x~b)} $</span>
 <span class="sd">    parameters :</span>
 <span class="sd">        K :</span>
 <span class="sd">            desc : Normalization (differential flux at the pivot value)</span>
@@ -608,7 +606,7 @@
 
 <span class="sd">        A power law with a super-exponential cutoff</span>
 
-<span class="sd">    latex : $ K~\frac{x}{piv}^{index}~\exp{(-x/xc)^{\gamma}} $</span>
+<span class="sd">    latex : $ K~\left(\frac{x}{piv}\right)^{index}~\exp{(-x/xc)^{\gamma}} $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -900,9 +898,9 @@
 <span class="sd">        Band model from Band et al., 1993, parametrized with the peak energy</span>
 
 <span class="sd">    latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-</span>
-<span class="sd">            \frac{(2+\alpha) x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}</span>
+<span class="sd">            \frac{(2+\alpha)~x}{x_{p}}\right) &amp; x \leq (\alpha-\beta) \frac{x_{p}}</span>
 <span class="sd">            {(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)</span>
-<span class="sd">            \left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;</span>
+<span class="sd">            \left[\frac{(\alpha-\beta)~x_{p}}{piv~(2+\alpha)}\right]^{\alpha-\beta} &amp;x&gt;</span>
 <span class="sd">            (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $</span>
 
 <span class="sd">    parameters :</span>
@@ -1288,7 +1286,7 @@
 <span class="sd">            }}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}</span>
 <span class="sd">            \right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}</span>
 <span class="sd">            {n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot</span>
-<span class="sd">            \left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}</span>
+<span class="sd">            \left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left(\beta-\alpha_{2}</span>
 <span class="sd">            \right) n_{2}}}\end{array}$</span>
 
 <span class="sd">    parameters :</span>

@@ -18,8 +18,8 @@
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../../../../_static/documentation_options.js?v=c6e86fd7"></script>
-      <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../../../../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -63,8 +63,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels">astromodels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../CHANGELOG.html">Changelog</a></li>
 </ul>
 
@@ -107,8 +105,6 @@
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 <span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,</span>
 <span class="c1"># 2016</span>
-
-<span class="n">erg2keV</span> <span class="o">=</span> <span class="mf">6.24151e8</span>
 
 
 <div class="viewcode-block" id="GSLNotAvailable">
@@ -446,7 +442,13 @@
 
 <span class="sd">        return  at zero_point</span>
 
-<span class="sd">    latex : $ value $</span>
+<span class="sd">    latex : $</span>
+<span class="sd">                \delta(x) =</span>
+<span class="sd">                \begin{cases}</span>
+<span class="sd">                \mathrm{value}, &amp; x = \mathrm{zero\_point}, \\</span>
+<span class="sd">                0, &amp; x \neq \mathrm{zero\_point}</span>
+<span class="sd">                \end{cases}</span>
+<span class="sd">            $</span>
 
 <span class="sd">    parameters :</span>
 
@@ -740,7 +742,9 @@
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
 
-<span class="sd">        A log-parabolic function. NOTE that we use the high-energy convention of using</span>
+<span class="sd">        A log-parabolic function.</span>
+
+<span class="sd">        NOTE that we use the high-energy convention of using</span>
 <span class="sd">        the natural log in place of the base-10 logarithm. This means that beta is a</span>
 <span class="sd">        factor 1 / log10(e) larger than what returned by those software using the other</span>
 <span class="sd">        convention.</span>

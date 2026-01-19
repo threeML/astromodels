@@ -19,8 +19,8 @@
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=c6e86fd7"></script>
-      <script src="_static/doctools.js?v=9a2dae69"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -75,8 +75,6 @@
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels">astromodels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Changelog</a></li>
 </ul>
 
@@ -137,8 +135,29 @@ conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> <
 <section id="conda">
 <h3>conda<a class="headerlink" href="#conda" title="Link to this heading"></a></h3>
 <p>We here assume that you have a basic knowledge of <code class="docutils literal notranslate"><span class="pre">conda</span></code>. If this is not the case and
-you have no <code class="docutils literal notranslate"><span class="pre">conda</span></code> installation</p>
-<p>Simply create</p>
+you have no <code class="docutils literal notranslate"><span class="pre">conda</span></code> installation please first of all refer to
+<a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html">installing conda</a>.
+Usually Miniconda or Miniforge are a good start. Follow their installation instructions.</p>
+<p>After installing <code class="docutils literal notranslate"><span class="pre">conda</span></code> you are good to go:</p>
+<ol class="arabic simple">
+<li><p>create an environment and activate it</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>&lt;name_of_your_environment&gt;<span class="w"> </span><span class="nv">python</span><span class="o">=</span><span class="m">3</span>.11
+conda<span class="w"> </span>activate<span class="w"> </span>&lt;name_of_your_environment&gt;
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>install <code class="docutils literal notranslate"><span class="pre">astromodels</span></code></p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>threeml<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>astromodels<span class="w"> </span>
+</pre></div>
+</div>
+<p>or in case you want the latest development version</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>threeml/label/dev<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>astromodels
+</pre></div>
+</div>
+<p>Please make sure that the <code class="docutils literal notranslate"><span class="pre">threeml</span></code> channel has a higher priority than the <code class="docutils literal notranslate"><span class="pre">conda-forge</span></code>
+one.</p>
 </section>
 <section id="pip">
 <h3>pip<a class="headerlink" href="#pip" title="Link to this heading"></a></h3>
@@ -157,11 +176,27 @@ you have no <code class="docutils literal notranslate"><span class="pre">conda</
 <p>The easiest way to install <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> with <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> support is via <code class="docutils literal notranslate"><span class="pre">conda</span></code>.
 Note that you first need to install <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> before installing <code class="docutils literal notranslate"><span class="pre">astromodels</span></code>.</p>
 <p>First let’s create a new environment</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>threeml
-conda<span class="w"> </span>activate<span class="w"> </span>threeml
-conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>https://heasarc.gsfc.nasa.gov/FTP/sofware/conda<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>xspec
-conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>https://heasarc.gsfc.nasa.gov/FTP/sofware/conda<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>xspec-data
-conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>threeml<span class="w"> </span>astromodels
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>&lt;name_of_your_environment&gt;
+conda<span class="w"> </span>activate<span class="w"> </span>&lt;name_of_your_environment&gt;
+</pre></div>
+</div>
+<p>and then install <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code>. You also might want the <code class="docutils literal notranslate"><span class="pre">xspec-data</span></code> package, please check
+with the official manual.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>https://heasarc.gsfc.nasa.gov/FTP/sofware/conda<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>xspec
+conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>https://heasarc.gsfc.nasa.gov/FTP/sofware/conda<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>xspec-data<span class="w"> </span><span class="c1"># optional</span>
+</pre></div>
+</div>
+<p>Install <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> using either <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">pip</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>threeml<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>astromodels
+</pre></div>
+</div>
+<p>and finally test it by importing all the models</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from astromodels.xspec import *&quot;</span>
+</pre></div>
+</div>
+<p>The last step will build all the models and save it to your disk, usually on
+<code class="docutils literal notranslate"><span class="pre">$HOME/.astromodels/data</span></code>. You can also get this path by running</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from astromodels.utils.file_utils import get_user_data_path; print(get_user_data_path())&quot;</span>
 </pre></div>
 </div>
 </section>

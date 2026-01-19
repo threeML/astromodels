@@ -20,13 +20,13 @@
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
-      <script src="../_static/doctools.js?v=9a2dae69"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
       <script src="../_static/copybutton.js?v=f281be69"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
       <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
       <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
     <script src="../_static/js/theme.js"></script>
@@ -87,8 +87,6 @@
 <li class="toctree-l1"><a class="reference internal" href="Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/API.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels">astromodels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/API.html#astromodels-package">astromodels package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
 </ul>
 
@@ -141,7 +139,7 @@
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div><table id="table4358292912">
+<div><table id="table4554255504">
 <thead><tr><th>name</th><th>Description</th></tr></thead>
 <tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates) see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>
 <tr><td>Band</td><td>Band model from Band et al., 1993, parametrized with the peak energy</td></tr>
@@ -153,7 +151,45 @@
 <tr><td>Cauchy</td><td>The Cauchy distribution</td></tr>
 <tr><td>Constant</td><td>Return k</td></tr>
 <tr><td>Continuous_injection_diffusion</td><td>Positron and electrons diffusing away from the accelerator</td></tr>
-<tr><td>...</td><td>...</td></tr>
+<tr><td>Continuous_injection_diffusion_ellipse</td><td>Positron and electrons diffusing away from the accelerator</td></tr>
+<tr><td>Continuous_injection_diffusion_legacy</td><td>Positron and electrons diffusing away from the accelerator</td></tr>
+<tr><td>Cosine_Prior</td><td>A function which is constant on the interval angular interval of cosine</td></tr>
+<tr><td>Cubic</td><td>A cubic function</td></tr>
+<tr><td>Cutoff_powerlaw</td><td>A power law multiplied by an exponential cutoff</td></tr>
+<tr><td>Cutoff_powerlaw_Ep</td><td>A power law multiplied by an exponential cutoff parametrized with Ep</td></tr>
+<tr><td>DMFitFunction</td><td>Class that evaluates the spectrum for a DM particle of a given mass, channel, cross section, and J-factor. Based on standard Fermi Science Tools function DMFitFunction. Note input table only calculated spectra up to m_DM of 10 TeV\nThe parameterization is given by\nF(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)</td></tr>
+<tr><td>DMSpectra</td><td>Class that evaluates the spectrum for a DM particle of a given mass, channel, cross section, and J-factor. Combines Pythia-based tables from both Fermi (2 GeV &lt; m_DM &lt; 10 TeV) and HAWC (10 TeV &lt; m_dm &lt; 1 PeV)\nThe parameterization is given by\nF(x) = 1 / (8 * pi) * (1/mass^2) * sigmav * J * dN/dE(E,mass,i)\nNote that this class assumes that mass and J-factor are provided in units of GeV and GeV^2 cm^-5</td></tr>
+<tr><td>DiracDelta</td><td>return  at zero_point</td></tr>
+<tr><td>Disk_on_sphere</td><td>A bidimensional disk/tophat function on a sphere (in spherical coordinates)</td></tr>
+<tr><td>DoubleSmoothlyBrokenPowerlaw</td><td>A smoothly broken power law with two breaks as parameterized in Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</td></tr>
+<tr><td>EBLattenuation</td><td>Attenuation factor for absorption in the extragalactic background light (EBL), to be used for extragalactic source spectra. Based on package &quot;ebltable&quot; by Manuel Meyer, https://github.com/me-manu/ebltable .</td></tr>
+<tr><td>Ellipse_on_sphere</td><td>An ellipse function on a sphere (in spherical coordinates)</td></tr>
+<tr><td>Exponential</td><td>An exponential distribution function</td></tr>
+<tr><td>Exponential_cutoff</td><td>An exponential cutoff</td></tr>
+<tr><td>Gamma</td><td>A gamma distribution function</td></tr>
+<tr><td>Gaussian</td><td>A Gaussian function</td></tr>
+<tr><td>Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates)</td></tr>
+<tr><td>GenericFunction</td><td>Return k*f(x)</td></tr>
+<tr><td>Hermes</td><td>Use a 3D template that has morphology and flux information created using the HERMES sky-maps in fits format. Only parameter is the normalization scale factor N.</td></tr>
+<tr><td>Inverse_cutoff_powerlaw</td><td>A power law multiplied by an exponential cutoff Note, instead of cutoff energy energy parameter xc, b = 1/xc is used</td></tr>
+<tr><td>Latitude_galactic_diffuse</td><td>A Gaussian distribution in Galactic latitude around the Galactic plane</td></tr>
+<tr><td>Line</td><td>A linear function</td></tr>
+<tr><td>Log_normal</td><td>A log normal function</td></tr>
+<tr><td>Log_parabola</td><td>A log-parabolic function.\nNOTE that we use the high-energy convention of using the natural log in place of the base-10 logarithm. This means that beta is a factor 1 / log10(e) larger than what returned by those software using the other convention.</td></tr>
+<tr><td>Log_uniform_prior</td><td>A function which is K/x on the interval lower_bound - upper_bound and 0 outside the interval. The extremes of the interval are NOT counted as part of the interval. Lower_bound must be &gt;= 0.</td></tr>
+<tr><td>ModifiedBlackbody</td><td>A blackbody function</td></tr>
+<tr><td>NonDissipativePhotosphere</td><td>Non-dissipative photosphere of a GRB occuring above the saturation radius Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</td></tr>
+<tr><td>NonDissipativePhotosphere_Deep</td><td>Non-dissipative photosphere of a GRB occuring BELOW the saturation radius. Acuner, Z., Ryde, F. &amp; Yu, H.-F. Mon Not R Astron Soc 487, 5508–5519 (2019).</td></tr>
+<tr><td>PhAbs</td><td>Photometric absorption (phabs implementation), f(E) = exp(- NH * sigma(E)) contributed by Dominique Eckert</td></tr>
+<tr><td>Power_law_on_sphere</td><td>A power law function on a sphere (in spherical coordinates)</td></tr>
+<tr><td>Powerlaw</td><td>A simple power-law</td></tr>
+<tr><td>Powerlaw_Eflux</td><td>A  power-law where the normalization is the energy flux defined between a and b</td></tr>
+<tr><td>Powerlaw_Prior</td><td>An power law distribution function between a-b</td></tr>
+<tr><td>Powerlaw_flux</td><td>A simple power-law with the photon flux in a band used as normalization. This will reduce the correlation between the index and the normalization.</td></tr>
+<tr><td>Quadratic</td><td>A Quadratic function</td></tr>
+<tr><td>Quartic</td><td>A quartic function</td></tr>
+<tr><td>Sin</td><td>A sinusodial function</td></tr>
+<tr><td>SmoothlyBrokenPowerLaw</td><td>A Smoothly Broken Power Law</td></tr>
 <tr><td>SpatialTemplate_2D</td><td>User input Spatial Template.  Expected to be normalized to 1/sr</td></tr>
 <tr><td>StepFunction</td><td>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The extremes of the interval are counted as part of the interval.</td></tr>
 <tr><td>StepFunctionUpper</td><td>A function which is constant on the interval lower_bound - upper_bound and 0 outside the interval. The upper interval is open.</td></tr>
@@ -184,7 +220,7 @@
 
 <li>description: A Gaussian function</li>
 
-<li>formula: $ K \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~(\sigma)^2}} $</li>
+<li>formula: $ F \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~(\sigma)^2}} $</li>
 
 <li>default parameters:
 <ul>
@@ -306,7 +342,7 @@
 
 <li>description: A simple power-law</li>
 
-<li>formula: $ K~\frac{x}{piv}^{index} $</li>
+<li>formula: $ K~\left(\frac{x}{piv}\right)^{index} $</li>
 
 <li>parameters:
 <ul>
@@ -401,7 +437,7 @@
 <div class="output_area docutils container">
 <div class="highlight"><pre>
   * description: A simple power-law
-  * formula: $ K~\frac{x}{piv}^{index} $
+  * formula: $ K~\left(\frac{x}{piv}\right)^{index} $
   * parameters:
     * K:
       * value: 0.01
@@ -483,7 +519,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">         </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of Powerlaw.K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive    </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#715" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">715</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">21:03:34 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> We have set the min_value of Powerlaw.K to </span><span style="color: #c0c0c0; text-decoration-color: #c0c0c0; font-weight: bold">1e-99</span><span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> because there was a postive    </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">parameter.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/core/parameter.py#715" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">715</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">transform                                                                        </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">                </span>
 </pre></div>
 </div>
@@ -527,7 +563,7 @@ Parameter K = 1.2 []
 
 <li>description: A simple power-law</li>
 
-<li>formula: $ K~\frac{x}{piv}^{index} $</li>
+<li>formula: $ K~\left(\frac{x}{piv}\right)^{index} $</li>
 
 <li>parameters:
 <ul>
@@ -685,7 +721,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-6.12 µs ± 241 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+4.32 μs ± 297 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -701,7 +737,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-100 µs ± 2.7 µs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+109 μs ± 20.2 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
 <p>As you can see using <strong>astropy.units requires about 10x more than using a plain assignment</strong>. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. <strong>Note that this is a feature of astropy.units, not of astromodels.</strong></p>
@@ -1202,7 +1238,7 @@ cosine
 0.0024262173759824015
 </pre></div></div>
 </div>
-<p>We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members <code class="docutils literal notranslate"><span class="pre">f.link_external_function(func,</span> <span class="pre">'internal_name')</span></code> and <code class="docutils literal notranslate"><span class="pre">f.unlink_external_function('internal_name')</span></code>. You can link as many functions as needed and they are accessed via an internal dictionary <code class="docutils literal notranslate"><span class="pre">self._extranal_functions</span></code>. As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all
+<p>We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members <code class="docutils literal notranslate"><span class="pre">f.link_external_function(func,</span> <span class="pre">'internal_name')</span></code> and <code class="docutils literal notranslate"><span class="pre">f.unlink_external_function('internal_name')</span></code>. You can link as many functions as needed and they are accessed via an internal dictionary <code class="docutils literal notranslate"><span class="pre">self._external_functions</span></code>. As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all
 the complexity you built.</p>
 </section>
 </section>
