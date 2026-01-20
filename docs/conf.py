@@ -19,7 +19,6 @@ import os
 import sys
 from pathlib import Path
 
-import mock
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -36,64 +35,9 @@ for f in files:
 
 DOCS = Path(__file__).parent
 
-# -- Generate API documentation ------------------------------------------------
+sys.path.insert(0, str(Path("..").resolve()))
+sys.path.insert(1, str(Path("..", "astromodels").resolve()))
 
-
-# def run_apidoc(app):
-#     """Generage API documentation."""
-#     import os
-#
-#     # import pkgutil
-#     import sys
-#
-#     # astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-#
-#     sys.path.insert(0, os.path.abspath(".."))
-#     sys.path.insert(1, os.path.abspath("../astromodels"))
-#
-#     # Add the path to the C extension
-#     # lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-#     # lib_path = os.path.abspath('%s/core' % astro_path)
-#     # sys.path.insert(2, lib_path)
-#     # This must work now
-#     #    import node_ctype
-#
-#     better_apidoc.APP = app
-#     better_apidoc.main(
-#         [
-#             "better-apidoc",
-#             # "-t",
-#             # str(docs / "_templates"),
-#             "--force",
-#             "--no-toc",
-#             "--separate",
-#             "-o",
-#             str(DOCS / "api"),
-#             str(DOCS / ".." / "astromodels"),
-#         ]
-#     )
-
-
-# #import astromodels
-# import pkgutil
-# astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-
-# sys.path.insert(1, os.path.abspath('../astromodels'))
-
-# # Add the path to the C extension
-# #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-# lib_path = os.path.abspath('%s/core' % astro_path)
-
-# sys.path.insert(2, lib_path)
-
-
-# #this must work now
-# import node_ctype
-
-# print(f" current dir {os.getcwd()}")
-# files = [f for f in os.listdir('.') if os.path.isfile(f)]
-# for f in files:
-#     print(f)
 
 # -- General configuration ---------------------------------------------------
 
@@ -110,25 +54,9 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.intersphinx",
     "sphinx_gallery.load_style",
-    # "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
     "sphinx_copybutton",
 ]
-
-# mathjax_config = {
-#     "tex2jax": {
-#         "inlineMath": [["\\(", "\\)"]],
-#         "displayMath": [["\\[", "\\]"]],
-#     },
-# }
-
-# mathjax3_config = {
-#     "tex": {
-#         "inlineMath": [["\\(", "\\)"]],
-#         "displayMath": [["\\[", "\\]"]],
-#     }
-# }
-# from sphinx_math_dollar import NODE_BLACKLIST
 
 
 napoleon_google_docstring = True
