@@ -1495,7 +1495,7 @@ class Function1D(Function):
                 msg = "Looks like you didn't provide all the units, or you provided the"
                 msg += " wrong ones, when calling function %s" % self.name
 
-                log.error()
+                log.error(msg)
 
                 raise u.UnitsError()
 
