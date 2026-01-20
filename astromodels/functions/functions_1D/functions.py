@@ -139,9 +139,13 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
         outside the interval. The extremes of the interval are counted as part of the
         interval.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
-        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound}
-        \end{cases}$
+    latex : $ f(x)=
+            \begin{cases}
+                0 & x < \text{lower\_bound} \\
+                \text{value} & \text{lower\_bound} \le x \le \text{upper\_bound} \\
+                0 & x > \text{upper\_bound}
+            \end{cases}
+            $
 
     parameters :
 
