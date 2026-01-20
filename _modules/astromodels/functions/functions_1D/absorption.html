@@ -129,21 +129,21 @@
 
 
 <div class="viewcode-block" id="EBLTableNotAvailable">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.EBLTableNotAvailable">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.EBLTableNotAvailable">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">EBLTableNotAvailable</span><span class="p">(</span><span class="ne">ImportWarning</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidUsageForFunction">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidUsageForFunction</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 
 <div class="viewcode-block" id="AbundanceTable">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">AbundanceTable</span><span class="p">:</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
@@ -151,7 +151,7 @@
     <span class="n">_current_table</span><span class="p">:</span> <span class="nb">str</span>
 
 <div class="viewcode-block" id="AbundanceTable.set_table">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.AbundanceTable.set_table">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">table</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the current table from AG89, WILM or ASPL.</span>
 
@@ -233,7 +233,7 @@
 
 
 <div class="viewcode-block" id="PhAbs">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PhAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -305,7 +305,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">phabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="PhAbs.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.PhAbs.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -334,7 +334,7 @@
 
 
 <div class="viewcode-block" id="TbAbs">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TbAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -407,7 +407,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">tbabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TbAbs.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.TbAbs.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -434,7 +434,7 @@
 
 
 <div class="viewcode-block" id="WAbs">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">WAbs</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -489,7 +489,7 @@
         <span class="nb">print</span><span class="p">(</span><span class="n">wabs</span><span class="o">.</span><span class="n">info</span><span class="p">)</span>
 
 <div class="viewcode-block" id="WAbs.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.WAbs.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">NH</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -626,7 +626,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+    <p>&#169; Copyright 2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -126,21 +126,21 @@
 
 
 <div class="viewcode-block" id="ModelFileExists">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.ModelFileExists">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.ModelFileExists">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModelFileExists</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidInput">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.InvalidInput">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.InvalidInput">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidInput</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 
 <div class="viewcode-block" id="CannotWriteModel">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.CannotWriteModel">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.CannotWriteModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CannotWriteModel</span><span class="p">(</span><span class="ne">IOError</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="c1"># Add a report on disk usage to the message</span>
@@ -157,7 +157,7 @@
 
 
 <div class="viewcode-block" id="ModelInternalError">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.ModelInternalError">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.ModelInternalError">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ModelInternalError</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
 
     <span class="k">pass</span></div>
@@ -191,7 +191,7 @@
 
 
 <div class="viewcode-block" id="Model">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">sources</span><span class="p">):</span>
 
@@ -458,7 +458,7 @@
         <span class="k">return</span> <span class="n">all_functions</span>
 
 <div class="viewcode-block" id="Model.set_free_parameters">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.set_free_parameters">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.set_free_parameters">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the free parameters in the model to the provided values.</span>
 
@@ -581,7 +581,7 @@
         <span class="k">return</span> <span class="n">sources</span>
 
 <div class="viewcode-block" id="Model.add_source">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.add_source">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.add_source">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_source</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">new_source</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -598,7 +598,7 @@
 
 
 <div class="viewcode-block" id="Model.remove_source">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.remove_source">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.remove_source">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a new model with the provided source removed from the</span>
 <span class="sd">        current model. Any parameters linked to the source to be removed are</span>
@@ -616,7 +616,7 @@
 
 
 <div class="viewcode-block" id="Model.unlink_all_from_source">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.unlink_all_from_source">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.unlink_all_from_source">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unlink_all_from_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">warn</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Unlink all parameters of the current model that are linked to a</span>
 <span class="sd">        parameter of a given source. To be called before removing a source from</span>
@@ -654,7 +654,7 @@
 
 
 <div class="viewcode-block" id="Model.add_independent_variable">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.add_independent_variable">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.add_independent_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_independent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">:</span> <span class="n">IndependentVariable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a global independent variable to this model, such as time.</span>
 
@@ -678,7 +678,7 @@
 
 
 <div class="viewcode-block" id="Model.remove_independent_variable">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.remove_independent_variable">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.remove_independent_variable">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_independent_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove an independent variable which was added with</span>
 <span class="sd">        add_independent_variable.</span>
@@ -694,7 +694,7 @@
 
 
 <div class="viewcode-block" id="Model.add_external_parameter">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.add_external_parameter">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.add_external_parameter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_external_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a parameter that comes from something other than a function, to</span>
 <span class="sd">        the model.</span>
@@ -730,7 +730,7 @@
 
 
 <div class="viewcode-block" id="Model.remove_external_parameter">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.remove_external_parameter">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.remove_external_parameter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">remove_external_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove an external parameter which was added with</span>
 <span class="sd">        add_external_parameter.</span>
@@ -743,7 +743,7 @@
 
 
 <div class="viewcode-block" id="Model.link">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.link">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.link">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_1</span><span class="p">,</span> <span class="n">parameter_2</span><span class="p">,</span> <span class="n">link_function</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Link the value of the provided parameters through the provided</span>
 <span class="sd">        function (identity is the default, i.e., parameter_1 = parameter_2).</span>
@@ -798,7 +798,7 @@
 
 
 <div class="viewcode-block" id="Model.unlink">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.unlink">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.unlink">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unlink</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="n">Parameter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets free one or more parameters which have been linked previously.</span>
 
@@ -828,7 +828,7 @@
 
 
 <div class="viewcode-block" id="Model.display">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.display">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.display">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">complete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Display information about the point source.</span>
 
@@ -1364,7 +1364,7 @@
         <span class="k">return</span> <span class="n">representation</span>
 
 <div class="viewcode-block" id="Model.to_dict_with_types">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.to_dict_with_types">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.to_dict_with_types">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict_with_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Get the serialization dictionary</span>
@@ -1414,7 +1414,7 @@
 
 
 <div class="viewcode-block" id="Model.save">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.save">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.save">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the model to disk.&quot;&quot;&quot;</span>
 
@@ -1454,7 +1454,7 @@
 
 
 <div class="viewcode-block" id="Model.get_number_of_point_sources">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_number_of_point_sources">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_number_of_point_sources">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_point_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of point sources.</span>
 
@@ -1464,7 +1464,7 @@
 
 
 <div class="viewcode-block" id="Model.get_point_source_position">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_point_source_position">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_point_source_position">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_point_source_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the point source position (R.A., Dec)</span>
 
@@ -1478,7 +1478,7 @@
 
 
 <div class="viewcode-block" id="Model.get_point_source_fluxes">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_point_source_fluxes">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_point_source_fluxes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_point_source_fluxes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -1503,14 +1503,14 @@
 
 
 <div class="viewcode-block" id="Model.get_point_source_name">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_point_source_name">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_point_source_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_point_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="Model.get_number_of_extended_sources">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_number_of_extended_sources">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_number_of_extended_sources">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_extended_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of extended sources.</span>
 
@@ -1520,7 +1520,7 @@
 
 
 <div class="viewcode-block" id="Model.get_extended_source_fluxes">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_fluxes">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_fluxes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_extended_source_fluxes</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -1538,7 +1538,7 @@
 
 
 <div class="viewcode-block" id="Model.get_extended_source_name">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_name">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_extended_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the name of the n-th extended source.</span>
 
@@ -1550,7 +1550,7 @@
 
 
 <div class="viewcode-block" id="Model.get_extended_source_boundaries">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_boundaries">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_extended_source_boundaries">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_extended_source_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 
         <span class="p">(</span><span class="n">ra_min</span><span class="p">,</span> <span class="n">ra_max</span><span class="p">),</span> <span class="p">(</span><span class="n">dec_min</span><span class="p">,</span> <span class="n">dec_max</span><span class="p">)</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span>
@@ -1561,7 +1561,7 @@
 
 
 <div class="viewcode-block" id="Model.is_inside_any_extended_source">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.is_inside_any_extended_source">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.is_inside_any_extended_source">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_inside_any_extended_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">j2000_ra</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">j2000_dec</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 
         <span class="k">for</span> <span class="n">ext_source</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extended_sources</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
@@ -1585,7 +1585,7 @@
 
 
 <div class="viewcode-block" id="Model.get_number_of_particle_sources">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_number_of_particle_sources">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_number_of_particle_sources">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_number_of_particle_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of particle sources.</span>
 
@@ -1596,7 +1596,7 @@
 
 
 <div class="viewcode-block" id="Model.get_particle_source_fluxes">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_fluxes">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_fluxes">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_source_fluxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the fluxes from the id-th point source.</span>
 
@@ -1609,14 +1609,14 @@
 
 
 <div class="viewcode-block" id="Model.get_particle_source_name">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_name">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_particle_source_name">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_source_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">name</span></div>
 
 
 <div class="viewcode-block" id="Model.get_total_flux">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.core.html#astromodels.core.model.Model.get_total_flux">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model.Model.get_total_flux">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total differential flux at the provided energies from</span>
 <span class="sd">        all *point* sources.</span>
@@ -1642,7 +1642,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+    <p>&#169; Copyright 2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

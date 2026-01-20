@@ -108,21 +108,21 @@
 
 
 <div class="viewcode-block" id="GSLNotAvailable">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.GSLNotAvailable">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GSLNotAvailable">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GSLNotAvailable</span><span class="p">(</span><span class="ne">ImportWarning</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 
 <div class="viewcode-block" id="NaimaNotAvailable">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.NaimaNotAvailable">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.NaimaNotAvailable">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">NaimaNotAvailable</span><span class="p">(</span><span class="ne">ImportWarning</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
 
 
 <div class="viewcode-block" id="InvalidUsageForFunction">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.InvalidUsageForFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">InvalidUsageForFunction</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="k">pass</span></div>
 
@@ -177,7 +177,7 @@
 
 
 <div class="viewcode-block" id="GenericFunction">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GenericFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -195,13 +195,13 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="GenericFunction.set_function">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.set_function">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.set_function">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_function</span> <span class="o">=</span> <span class="n">f</span></div>
 
 
 <div class="viewcode-block" id="GenericFunction.get_function">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.get_function">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.get_function">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_function</span></div>
 
@@ -216,7 +216,7 @@
     <span class="p">)</span>
 
 <div class="viewcode-block" id="GenericFunction.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -231,7 +231,7 @@
 
 
 <div class="viewcode-block" id="GenericFunction.to_dict">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.to_dict">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
@@ -249,7 +249,7 @@
 
 
 <div class="viewcode-block" id="StepFunction">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunction">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StepFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -294,7 +294,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
 <div class="viewcode-block" id="StepFunction.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunction.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunction.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># The value * 0 is to keep the units right</span>
 
@@ -309,7 +309,7 @@
 
 
 <div class="viewcode-block" id="StepFunctionUpper">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunctionUpper">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunctionUpper">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StepFunctionUpper</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -355,7 +355,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
 <div class="viewcode-block" id="StepFunctionUpper.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunctionUpper.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunctionUpper.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># The value * 0 is to keep the units right</span>
 
@@ -376,7 +376,7 @@
 
 
 <div class="viewcode-block" id="Sin">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Sin">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Sin">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Sin</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -427,7 +427,7 @@
 
     <span class="c1"># noinspection PyPep8Naming</span>
 <div class="viewcode-block" id="Sin.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Sin.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Sin.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">phi</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">phi</span><span class="p">)</span></div>
 </div>
@@ -435,7 +435,7 @@
 
 
 <div class="viewcode-block" id="DiracDelta">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DiracDelta">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.DiracDelta">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DiracDelta</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -472,7 +472,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">zero_point</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
 <div class="viewcode-block" id="DiracDelta.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.DiracDelta.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.DiracDelta.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">zero_point</span><span class="p">):</span>
 
         <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">0</span>
@@ -737,7 +737,7 @@
 
 
 <div class="viewcode-block" id="Log_parabola">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Log_parabola</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -793,7 +793,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">dimensionless_unscaled</span>
 
 <div class="viewcode-block" id="Log_parabola.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
 
         <span class="c1"># print(&quot;Receiving %s&quot; % ([K, piv, alpha, beta]))</span>
@@ -908,7 +908,7 @@
 
 
 <div class="viewcode-block" id="Exponential_cutoff">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Exponential_cutoff">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Exponential_cutoff">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Exponential_cutoff</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -941,7 +941,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">xc</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
 
 <div class="viewcode-block" id="Exponential_cutoff.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Exponential_cutoff.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Exponential_cutoff.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">xc</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">xc</span><span class="p">))</span></div>
 </div>
@@ -955,7 +955,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+    <p>&#169; Copyright 2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

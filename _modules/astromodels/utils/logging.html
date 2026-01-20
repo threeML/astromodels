@@ -121,7 +121,7 @@
 
 
 <div class="viewcode-block" id="debug_node">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.debug_node">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.debug_node">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">debug_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kws</span><span class="p">):</span>
     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isEnabledFor</span><span class="p">(</span><span class="n">DEBUG_NODE_LEVEL</span><span class="p">):</span>
         <span class="c1"># Yes, logger takes its &#39;*args&#39; as &#39;args&#39;.</span>
@@ -133,7 +133,7 @@
 
 
 <div class="viewcode-block" id="get_path_of_log_dir">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_dir">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_dir">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_path_of_log_dir</span><span class="p">():</span>
 
     <span class="c1"># we use the 3ML log path to simplify things</span>
@@ -160,7 +160,7 @@
 
 
 <div class="viewcode-block" id="get_path_of_log_file">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.get_path_of_log_file">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_path_of_log_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the path of the log files.&quot;&quot;&quot;</span>
     <span class="k">assert</span> <span class="n">log_file</span> <span class="ow">in</span> <span class="n">_log_file_names</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">log_file</span><span class="si">}</span><span class="s2"> is not one of </span><span class="si">{</span><span class="n">_log_file_names</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -170,13 +170,13 @@
 
 
 <div class="viewcode-block" id="LogFilter">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LogFilter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__level</span> <span class="o">=</span> <span class="n">level</span>
 
 <div class="viewcode-block" id="LogFilter.filter">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.LogFilter.filter">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logRecord</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">logRecord</span><span class="o">.</span><span class="n">levelno</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__level</span></div>
 </div>
@@ -256,7 +256,7 @@
 
 
 <div class="viewcode-block" id="silence_console_log">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_console_log">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.silence_console_log">[docs]</a>
 <span class="nd">@contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">silence_console_log</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Temporarily silence the console and progress bars.&quot;&quot;&quot;</span>
@@ -278,7 +278,7 @@
 
 
 <div class="viewcode-block" id="silence_warnings">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.silence_warnings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">silence_warnings</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supress warning messages in console and file usr logs.&quot;&quot;&quot;</span>
 
@@ -288,7 +288,7 @@
 
 
 <div class="viewcode-block" id="activate_warnings">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.activate_warnings">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">activate_warnings</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Supress warning messages in console and file usr logs.&quot;&quot;&quot;</span>
 
@@ -298,7 +298,7 @@
 
 
 <div class="viewcode-block" id="update_logging_level">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.update_logging_level">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.update_logging_level">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">update_logging_level</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
 
     <span class="n">astromodels_console_log_handler</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span></div>
@@ -306,7 +306,7 @@
 
 
 <div class="viewcode-block" id="setup_logger">
-<a class="viewcode-back" href="../../../notebooks/api/astromodels.utils.html#astromodels.utils.logging.setup_logger">[docs]</a>
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.setup_logger">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
 
     <span class="c1"># A logger with name name will be created</span>
@@ -338,7 +338,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+    <p>&#169; Copyright 2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

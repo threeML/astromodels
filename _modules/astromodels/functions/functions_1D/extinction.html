@@ -118,7 +118,7 @@
 
 
 <div class="viewcode-block" id="ZDust">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ZDust">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.ZDust">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ZDust</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    description :</span>
@@ -192,7 +192,7 @@
         <span class="p">]</span>
 
 <div class="viewcode-block" id="ZDust.evaluate">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ZDust.evaluate">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.ZDust.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">e_bmv</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">redshift</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
@@ -234,7 +234,7 @@
 
 
 <div class="viewcode-block" id="ms_dust">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ms_dust">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.ms_dust">[docs]</a>
 <span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">ms_dust</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">e_bmv</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 
@@ -261,7 +261,7 @@
 
 
 <div class="viewcode-block" id="ms_dust_xspec">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.ms_dust_xspec">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.ms_dust_xspec">[docs]</a>
 <span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">ms_dust_xspec</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">e_bmv</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
 
@@ -302,7 +302,7 @@
 
 
 <div class="viewcode-block" id="pei">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.pei">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.pei">[docs]</a>
 <span class="nd">@nb</span><span class="o">.</span><span class="n">njit</span><span class="p">(</span><span class="n">fastmath</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">pei</span><span class="p">(</span><span class="n">rlambda</span><span class="p">,</span> <span class="n">a_b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Ported from XSPEC originally by Martin.Still@gsfc.nasa.gov.&quot;&quot;&quot;</span>
@@ -338,7 +338,7 @@
 
 
 <div class="viewcode-block" id="Standard_Rv">
-<a class="viewcode-back" href="../../../../notebooks/api/astromodels.functions.functions_1D.html#astromodels.functions.Standard_Rv">[docs]</a>
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Standard_Rv">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Standard_Rv</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 
     <span class="n">MW</span> <span class="o">=</span> <span class="mf">3.08</span>
@@ -385,7 +385,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+    <p>&#169; Copyright 2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

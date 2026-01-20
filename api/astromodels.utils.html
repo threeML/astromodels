@@ -1,0 +1,653 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.utils package &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="astromodels.xspec package" href="astromodels.xspec.html" />
+    <link rel="prev" title="astromodels.sources package" href="astromodels.sources.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/function_list.html">Available Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="API.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="astromodels.html">astromodels package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="astromodels.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="astromodels.core.html">astromodels.core package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.functions.html">astromodels.functions package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.sources.html">astromodels.sources package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">astromodels.utils package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.xspec.html">astromodels.xspec package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="astromodels.html#module-astromodels">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="reference internal" href="modules.html">astromodels</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="astromodels.html">astromodels package</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="astromodels.html#subpackages">Subpackages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="astromodels.html#module-astromodels">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="API.html">API</a></li>
+          <li class="breadcrumb-item"><a href="astromodels.html">astromodels package</a></li>
+      <li class="breadcrumb-item active">astromodels.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="astromodels-utils-package">
+<h1>astromodels.utils package<a class="headerlink" href="#astromodels-utils-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-astromodels.utils.angular_distance">
+<span id="astromodels-utils-angular-distance-module"></span><h2>astromodels.utils.angular_distance module<a class="headerlink" href="#module-astromodels.utils.angular_distance" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.angular_distance.angular_distance">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.angular_distance.</span></span><span class="sig-name descname"><span class="pre">angular_distance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/angular_distance.html#angular_distance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.angular_distance.angular_distance" title="Link to this definition"></a></dt>
+<dd><p>Returns the angular distance between two points, two sets of points, or
+a set of points and one point.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra1</strong> – array or float, longitude of first point(s)</p></li>
+<li><p><strong>dec1</strong> – array or float, latitude of first point(s)</p></li>
+<li><p><strong>ra2</strong> – array or float, longitude of second point(s)</p></li>
+<li><p><strong>dec2</strong> – array or float, latitude of second point(s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>angular distance(s) in degrees</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.angular_distance.angular_distance_fast">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.angular_distance.</span></span><span class="sig-name descname"><span class="pre">angular_distance_fast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/angular_distance.html#angular_distance_fast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.angular_distance.angular_distance_fast" title="Link to this definition"></a></dt>
+<dd><p>Compute angular distance using the Haversine formula. Use this one when
+you know you will never ask for points at their antipodes. If this is not
+the case, use the angular_distance function which is slower, but works also
+for antipodes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>lon1</strong></p></li>
+<li><p><strong>lat1</strong></p></li>
+<li><p><strong>lon2</strong></p></li>
+<li><p><strong>lat2</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.angular_distance.spherical_angle">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.angular_distance.</span></span><span class="sig-name descname"><span class="pre">spherical_angle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ra0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ra2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dec2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/angular_distance.html#spherical_angle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.angular_distance.spherical_angle" title="Link to this definition"></a></dt>
+<dd><p>Returns the spherical angle distance between two sets of great circles
+defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ra0</strong> – array or float, longitude of intersection point(s)</p></li>
+<li><p><strong>dec0</strong> – array or float, latitude of intersection point(s)</p></li>
+<li><p><strong>ra1</strong> – array or float, longitude of first point(s)</p></li>
+<li><p><strong>dec1</strong> – array or float, latitude of first point(s)</p></li>
+<li><p><strong>ra2</strong> – array or float, longitude of second point(s)</p></li>
+<li><p><strong>dec2</strong> – array or float, latitude of second point(s)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>spherical angle in degrees</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.config_structure">
+<span id="astromodels-utils-config-structure-module"></span><h2>astromodels.utils.config_structure module<a class="headerlink" href="#module-astromodels.utils.config_structure" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsTables">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">AbsTables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#AbsTables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.AbsTables" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsTables.AG89">
+<span class="sig-name descname"><span class="pre">AG89</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'AG89'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.AbsTables.AG89" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsTables.ASPL">
+<span class="sig-name descname"><span class="pre">ASPL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'ASPL'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.AbsTables.ASPL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsTables.WILM">
+<span class="sig-name descname"><span class="pre">WILM</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WILM'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.AbsTables.WILM" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsorptionModels">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">AbsorptionModels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tbabs_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.AbsTables" title="astromodels.utils.config_structure.AbsTables"><span class="pre">astromodels.utils.config_structure.AbsTables</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;AbsTables.WILM:</span> <span class="pre">'WILM'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phabs_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.AbsTables" title="astromodels.utils.config_structure.AbsTables"><span class="pre">astromodels.utils.config_structure.AbsTables</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;AbsTables.AG89:</span> <span class="pre">'AG89'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebl_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.EBLTable" title="astromodels.utils.config_structure.EBLTable"><span class="pre">astromodels.utils.config_structure.EBLTable</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;EBLTable.dominguez:</span> <span class="pre">'dominguez'&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#AbsorptionModels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.AbsorptionModels" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsorptionModels.ebl_table">
+<span class="sig-name descname"><span class="pre">ebl_table</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.EBLTable" title="astromodels.utils.config_structure.EBLTable"><span class="pre">EBLTable</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'dominguez'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.AbsorptionModels.ebl_table" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsorptionModels.phabs_table">
+<span class="sig-name descname"><span class="pre">phabs_table</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.AbsTables" title="astromodels.utils.config_structure.AbsTables"><span class="pre">AbsTables</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'AG89'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.AbsorptionModels.phabs_table" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.AbsorptionModels.tbabs_table">
+<span class="sig-name descname"><span class="pre">tbabs_table</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.AbsTables" title="astromodels.utils.config_structure.AbsTables"><span class="pre">AbsTables</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'WILM'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.AbsorptionModels.tbabs_table" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Config">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">Config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logging</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.Logging" title="astromodels.utils.config_structure.Logging"><span class="pre">astromodels.utils.config_structure.Logging</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absorption_models</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.AbsorptionModels" title="astromodels.utils.config_structure.AbsorptionModels"><span class="pre">astromodels.utils.config_structure.AbsorptionModels</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">modeling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.Modeling" title="astromodels.utils.config_structure.Modeling"><span class="pre">astromodels.utils.config_structure.Modeling</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.Config" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Config.absorption_models">
+<span class="sig-name descname"><span class="pre">absorption_models</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.AbsorptionModels" title="astromodels.utils.config_structure.AbsorptionModels"><span class="pre">AbsorptionModels</span></a></span><a class="headerlink" href="#astromodels.utils.config_structure.Config.absorption_models" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Config.logging">
+<span class="sig-name descname"><span class="pre">logging</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.Logging" title="astromodels.utils.config_structure.Logging"><span class="pre">Logging</span></a></span><a class="headerlink" href="#astromodels.utils.config_structure.Config.logging" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Config.modeling">
+<span class="sig-name descname"><span class="pre">modeling</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.Modeling" title="astromodels.utils.config_structure.Modeling"><span class="pre">Modeling</span></a></span><a class="headerlink" href="#astromodels.utils.config_structure.Config.modeling" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.EBLTable">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">EBLTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#EBLTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.EBLTable" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.EBLTable.dominguez">
+<span class="sig-name descname"><span class="pre">dominguez</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'dominguez'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.EBLTable.dominguez" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.EBLTable.franceschini">
+<span class="sig-name descname"><span class="pre">franceschini</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'franceschini'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.EBLTable.franceschini" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.EBLTable.gilmore">
+<span class="sig-name descname"><span class="pre">gilmore</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'gilmore'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.EBLTable.gilmore" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.EBLTable.inuoe">
+<span class="sig-name descname"><span class="pre">inuoe</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'inuoe'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.EBLTable.inuoe" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.EBLTable.kneiske">
+<span class="sig-name descname"><span class="pre">kneiske</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'kneiske'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.EBLTable.kneiske" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">Logging</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'~/.astromodels/log'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">developer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'off'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'on'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">console</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'on'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#astromodels.utils.config_structure.LoggingLevel" title="astromodels.utils.config_structure.LoggingLevel"><span class="pre">astromodels.utils.config_structure.LoggingLevel</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;LoggingLevel.INFO:</span> <span class="pre">20&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">startup_warnings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'on'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">info_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'medium_spring_green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warn_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'medium_orchid'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blink</span> <span class="pre">bold</span> <span class="pre">bright_red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debug_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'blue_violet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message_style</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'bold</span> <span class="pre">grey78'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#Logging"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.Logging" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.console">
+<span class="sig-name descname"><span class="pre">console</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'on'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.console" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.debug_style">
+<span class="sig-name descname"><span class="pre">debug_style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'blue_violet'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.debug_style" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.developer">
+<span class="sig-name descname"><span class="pre">developer</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'off'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.developer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.error_style">
+<span class="sig-name descname"><span class="pre">error_style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'blink</span> <span class="pre">bold</span> <span class="pre">bright_red'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.error_style" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.info_style">
+<span class="sig-name descname"><span class="pre">info_style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'medium_spring_green'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.info_style" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.level">
+<span class="sig-name descname"><span class="pre">level</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#astromodels.utils.config_structure.LoggingLevel" title="astromodels.utils.config_structure.LoggingLevel"><span class="pre">LoggingLevel</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.level" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.message_style">
+<span class="sig-name descname"><span class="pre">message_style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'bold</span> <span class="pre">grey78'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.message_style" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.path">
+<span class="sig-name descname"><span class="pre">path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'~/.astromodels/log'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.startup_warnings">
+<span class="sig-name descname"><span class="pre">startup_warnings</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'on'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.startup_warnings" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.usr">
+<span class="sig-name descname"><span class="pre">usr</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'on'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.usr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Logging.warn_style">
+<span class="sig-name descname"><span class="pre">warn_style</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'medium_orchid'</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Logging.warn_style" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.LoggingLevel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">LoggingLevel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#LoggingLevel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.LoggingLevel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.LoggingLevel.CRITICAL">
+<span class="sig-name descname"><span class="pre">CRITICAL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></span><a class="headerlink" href="#astromodels.utils.config_structure.LoggingLevel.CRITICAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.LoggingLevel.DEBUG">
+<span class="sig-name descname"><span class="pre">DEBUG</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></span><a class="headerlink" href="#astromodels.utils.config_structure.LoggingLevel.DEBUG" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.LoggingLevel.ERROR">
+<span class="sig-name descname"><span class="pre">ERROR</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">40</span></span><a class="headerlink" href="#astromodels.utils.config_structure.LoggingLevel.ERROR" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.LoggingLevel.INFO">
+<span class="sig-name descname"><span class="pre">INFO</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">20</span></span><a class="headerlink" href="#astromodels.utils.config_structure.LoggingLevel.INFO" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.LoggingLevel.WARNING">
+<span class="sig-name descname"><span class="pre">WARNING</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">30</span></span><a class="headerlink" href="#astromodels.utils.config_structure.LoggingLevel.WARNING" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Modeling">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.config_structure.</span></span><span class="sig-name descname"><span class="pre">Modeling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_memoization</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_parameter_transforms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_parameter_bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/config_structure.html#Modeling"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.config_structure.Modeling" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Modeling.ignore_parameter_bounds">
+<span class="sig-name descname"><span class="pre">ignore_parameter_bounds</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Modeling.ignore_parameter_bounds" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Modeling.use_memoization">
+<span class="sig-name descname"><span class="pre">use_memoization</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Modeling.use_memoization" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="astromodels.utils.config_structure.Modeling.use_parameter_transforms">
+<span class="sig-name descname"><span class="pre">use_parameter_transforms</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></span><a class="headerlink" href="#astromodels.utils.config_structure.Modeling.use_parameter_transforms" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.configuration">
+<span id="astromodels-utils-configuration-module"></span><h2>astromodels.utils.configuration module<a class="headerlink" href="#module-astromodels.utils.configuration" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.configuration.recurse_dict">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.configuration.</span></span><span class="sig-name descname"><span class="pre">recurse_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tree</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/configuration.html#recurse_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.configuration.recurse_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.configuration.show_configuration">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.configuration.</span></span><span class="sig-name descname"><span class="pre">show_configuration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sub_menu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/configuration.html#show_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.configuration.show_configuration" title="Link to this definition"></a></dt>
+<dd><p>Display the current configuration or a sub menu if provided.</p>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.disk_usage">
+<span id="astromodels-utils-disk-usage-module"></span><h2>astromodels.utils.disk_usage module<a class="headerlink" href="#module-astromodels.utils.disk_usage" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.disk_usage.disk_usage">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.disk_usage.</span></span><span class="sig-name descname"><span class="pre">disk_usage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/disk_usage.html#disk_usage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.disk_usage.disk_usage" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-astromodels.utils.file_utils">
+<span id="astromodels-utils-file-utils-module"></span><h2>astromodels.utils.file_utils module<a class="headerlink" href="#module-astromodels.utils.file_utils" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.file_utils.get_path_of_user_config">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">get_path_of_user_config</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/astromodels/utils/file_utils.html#get_path_of_user_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.file_utils.get_path_of_user_config" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.file_utils.get_user_data_path">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">get_user_data_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/astromodels/utils/file_utils.html#get_user_data_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.file_utils.get_user_data_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.file_utils.get_user_path">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.file_utils.</span></span><span class="sig-name descname"><span class="pre">get_user_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/astromodels/utils/file_utils.html#get_user_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.file_utils.get_user_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-astromodels.utils.io">
+<span id="astromodels-utils-io-module"></span><h2>astromodels.utils.io module<a class="headerlink" href="#module-astromodels.utils.io" title="Link to this heading"></a></h2>
+</section>
+<section id="module-astromodels.utils.logging">
+<span id="astromodels-utils-logging-module"></span><h2>astromodels.utils.logging module<a class="headerlink" href="#module-astromodels.utils.logging" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.logging.LogFilter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">LogFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#LogFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.LogFilter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.utils.logging.LogFilter.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logRecord</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#LogFilter.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.LogFilter.filter" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.activate_warnings">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">activate_warnings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#activate_warnings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.activate_warnings" title="Link to this definition"></a></dt>
+<dd><p>Supress warning messages in console and file usr logs.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.debug_node">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">debug_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kws</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#debug_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.debug_node" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.get_path_of_log_dir">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">get_path_of_log_dir</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#get_path_of_log_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.get_path_of_log_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.get_path_of_log_file">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">get_path_of_log_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#get_path_of_log_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.get_path_of_log_file" title="Link to this definition"></a></dt>
+<dd><p>Returns the path of the log files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.setup_logger">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">setup_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#setup_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.setup_logger" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.silence_console_log">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">silence_console_log</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#silence_console_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.silence_console_log" title="Link to this definition"></a></dt>
+<dd><p>Temporarily silence the console and progress bars.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.silence_warnings">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">silence_warnings</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#silence_warnings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.silence_warnings" title="Link to this definition"></a></dt>
+<dd><p>Supress warning messages in console and file usr logs.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.logging.update_logging_level">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.logging.</span></span><span class="sig-name descname"><span class="pre">update_logging_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/logging.html#update_logging_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.logging.update_logging_level" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-astromodels.utils.long_path_formatter">
+<span id="astromodels-utils-long-path-formatter-module"></span><h2>astromodels.utils.long_path_formatter module<a class="headerlink" href="#module-astromodels.utils.long_path_formatter" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.long_path_formatter.long_path_formatter">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.long_path_formatter.</span></span><span class="sig-name descname"><span class="pre">long_path_formatter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/long_path_formatter.html#long_path_formatter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.long_path_formatter.long_path_formatter" title="Link to this definition"></a></dt>
+<dd><p>If a path is longer than max_width, it substitute it with the first and
+last element, joined by “…”. For example
+‘this.is.a.long.path.which.we.want.to.shorten’ becomes ‘this…shorten’.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>line</strong></p></li>
+<li><p><strong>max_width</strong></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.pretty_list">
+<span id="astromodels-utils-pretty-list-module"></span><h2>astromodels.utils.pretty_list module<a class="headerlink" href="#module-astromodels.utils.pretty_list" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.pretty_list.dict_to_list">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.pretty_list.</span></span><span class="sig-name descname"><span class="pre">dict_to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">html</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/pretty_list.html#dict_to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.pretty_list.dict_to_list" title="Link to this definition"></a></dt>
+<dd><p>Convert a dictionary into a unordered list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictionary</strong> – a dictionary</p></li>
+<li><p><strong>html</strong> – whether to output HTML or simple text (True or False)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.table">
+<span id="astromodels-utils-table-module"></span><h2>astromodels.utils.table module<a class="headerlink" href="#module-astromodels.utils.table" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.table.NumericMatrix">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.table.</span></span><span class="sig-name descname"><span class="pre">NumericMatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descriptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/table.html#NumericMatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.table.NumericMatrix" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.utils.table.Table" title="astromodels.utils.table.Table"><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></a></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.utils.table.Table">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.utils.table.</span></span><span class="sig-name descname"><span class="pre">Table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">masked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descriptions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/table.html#Table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.table.Table" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></p>
+<p>Wrapper around the astropy table to remove some useless clutter (like
+the format of each column)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.table.dict_to_table">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.table.</span></span><span class="sig-name descname"><span class="pre">dict_to_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">list_of_keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/table.html#dict_to_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.table.dict_to_table" title="Link to this definition"></a></dt>
+<dd><p>Return a table representing the dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dictionary</strong> – the dictionary to represent</p></li>
+<li><p><strong>list_of_keys</strong> – optionally, only the keys in this list will be
+inserted in the table</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a Table instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.valid_variable">
+<span id="astromodels-utils-valid-variable-module"></span><h2>astromodels.utils.valid_variable module<a class="headerlink" href="#module-astromodels.utils.valid_variable" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.valid_variable.is_valid_variable_name">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.valid_variable.</span></span><span class="sig-name descname"><span class="pre">is_valid_variable_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string_to_check</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/valid_variable.html#is_valid_variable_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.valid_variable.is_valid_variable_name" title="Link to this definition"></a></dt>
+<dd><p>Returns whether the provided name is a valid variable name in Python.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>string_to_check</strong> – the string to be checked</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True or False</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils.vincenty">
+<span id="astromodels-utils-vincenty-module"></span><h2>astromodels.utils.vincenty module<a class="headerlink" href="#module-astromodels.utils.vincenty" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="astromodels.utils.vincenty.vincenty">
+<span class="sig-prename descclassname"><span class="pre">astromodels.utils.vincenty.</span></span><span class="sig-name descname"><span class="pre">vincenty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/utils/vincenty.html#vincenty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.utils.vincenty.vincenty" title="Link to this definition"></a></dt>
+<dd><p>Returns the coordinates of a new point that is a given angular distance
+s away from a starting point (lon0, lat0) at bearing (angle from north)
+a1), to within a given precision.</p>
+<p>Note that this calculation is a simplified version of the full vincenty problem,
+which solves for the coordinates on the surface on an arbitrary ellipsoid. Here we
+only care about the surface of a sphere.</p>
+<p>Note: All parameters are assumed to be given in DEGREES
+:param lon0: float, longitude of starting point
+:param lat0: float, latitude of starting point
+:param a1: float, bearing to second point, i.e. angle between due north and line
+connecting 2 points
+:param s: float, angular distance between the two points
+:return: coordinates of second point in degrees</p>
+</dd></dl>
+
+</section>
+<section id="module-astromodels.utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-astromodels.utils" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="astromodels.sources.html" class="btn btn-neutral float-left" title="astromodels.sources package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="astromodels.xspec.html" class="btn btn-neutral float-right" title="astromodels.xspec package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
