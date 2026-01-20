@@ -196,8 +196,11 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
         A function which is constant on the interval lower_bound - upper_bound and 0
         outside the interval. The upper interval is open.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
-        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound}
+    latex : $ f(x)=
+                \begin{cases}
+                    0 & x < \text{lower\_bound} \\
+                    \text{value} &\text{lower\_bound} \le x \le \text{upper\_bound} \\ 
+                    0 & x > \text{upper\_bound}
         \end{cases}$
 
     parameters :
