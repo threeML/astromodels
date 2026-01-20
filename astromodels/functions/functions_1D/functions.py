@@ -199,7 +199,7 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
     latex : $ f(x)=
                 \begin{cases}
                     0 & x < \text{lower\_bound} \\
-                    \text{value} &\text{lower\_bound} \le x \le \text{upper\_bound} \\ 
+                    \text{value} &\text{lower\_bound} \le x \le \text{upper\_bound} \\
                     0 & x > \text{upper\_bound}
         \end{cases}$
 
