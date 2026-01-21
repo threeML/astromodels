@@ -2,7 +2,7 @@
 
 
 ## v2.5
-### [v2.5.1](https://github.com/threeML/astromodels/tree/v2.5.1) (2026-01-07)
+### [v2.5.1](https://github.com/threeML/astromodels/tree/v2.5.1) (2026-01-21)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.5.0...v2.5.1)
 
@@ -19,6 +19,7 @@
 
 **Merged pull requests:**
 
+- Dev [\#245](https://github.com/threeML/astromodels/pull/245) ([ndilalla](https://github.com/ndilalla))
 - Updated docs for the 2.5.1 release + solid angle fix [\#244](https://github.com/threeML/astromodels/pull/244) ([PreisTo](https://github.com/PreisTo))
 - Fix astropy units [\#240](https://github.com/threeML/astromodels/pull/240) ([PreisTo](https://github.com/PreisTo))
 - Replace interpolation package [\#237](https://github.com/threeML/astromodels/pull/237) ([PreisTo](https://github.com/PreisTo))
