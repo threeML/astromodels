@@ -1,4 +1,20 @@
 import numpy as np
+from astropy import units as u
+
+from astropy.utils.compat import COPY_IF_NEEDED
+
+
+def _deg2rad(angle):
+    # Wrapper around np.deg2rad to reduce the overhead
+    # from astropy Quantity.
+
+    if isinstance(angle, u.Quantity):
+        if angle.unit is u.deg:
+            return np.deg2rad(angle.view(np.ndarray))
+        else:
+            return angle.to_value(u.rad)
+    else:
+        return np.deg2rad(angle)
 
 
 def angular_distance_fast(ra1, dec1, ra2, dec2):
@@ -14,16 +30,23 @@ def angular_distance_fast(ra1, dec1, ra2, dec2):
     :return:
     """
 
-    lon1 = np.deg2rad(ra1)
-    lat1 = np.deg2rad(dec1)
-    lon2 = np.deg2rad(ra2)
-    lat2 = np.deg2rad(dec2)
+    lon1 = _deg2rad(ra1)
+    lat1 = _deg2rad(dec1)
+    lon2 = _deg2rad(ra2)
+    lat2 = _deg2rad(dec2)
     dlon = lon2 - lon1
     dlat = lat2 - lat1
 
     a = np.sin(dlat / 2.0) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2.0) ** 2
     c = 2 * np.arcsin(np.sqrt(a))
-    return np.rad2deg(c)
+
+    result = np.rad2deg(c)
+
+    if (isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or
+            isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity)):
+        return u.Quantity(result, u.deg, copy=COPY_IF_NEEDED)
+    else:
+        return result
 
 
 def angular_distance(ra1, dec1, ra2, dec2):
@@ -40,10 +63,10 @@ def angular_distance(ra1, dec1, ra2, dec2):
     # Vincenty formula, slower than the Haversine formula in some cases, but stable also
     # at antipodes
 
-    lon1 = np.deg2rad(ra1)
-    lat1 = np.deg2rad(dec1)
-    lon2 = np.deg2rad(ra2)
-    lat2 = np.deg2rad(dec2)
+    lon1 = _deg2rad(ra1)
+    lat1 = _deg2rad(dec1)
+    lon2 = _deg2rad(ra2)
+    lat2 = _deg2rad(dec2)
 
     sdlon = np.sin(lon2 - lon1)
     cdlon = np.cos(lon2 - lon1)
@@ -56,7 +79,13 @@ def angular_distance(ra1, dec1, ra2, dec2):
     num2 = clat1 * slat2 - slat1 * clat2 * cdlon
     denominator = slat1 * slat2 + clat1 * clat2 * cdlon
 
-    return np.rad2deg(np.arctan2(np.sqrt(num1**2 + num2**2), denominator))
+    result = np.rad2deg(np.arctan2(np.sqrt(num1**2 + num2**2), denominator))
+
+    if (isinstance(ra1, u.Quantity) or isinstance(dec1, u.Quantity) or
+            isinstance(ra2, u.Quantity) or isinstance(dec1, u.Quantity)):
+        return u.Quantity(result, u.deg, copy=COPY_IF_NEEDED)
+    else:
+        return result
 
 
 def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):

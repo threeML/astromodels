@@ -5,6 +5,7 @@ import numpy as np
 from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
+from astropy.utils.compat import COPY_IF_NEEDED
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
@@ -446,7 +447,26 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         angsep = angular_distance(lon0, lat0, lon, lat)
 
-        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
+        # Handle case with units
+        # In order to keep the function definition intact
+        # and make it backwards compatible,
+        # the radius needs to be in deg,
+        # and the result in 1/sr
+        with_units = isinstance(radius, u.Quantity)
+
+        if with_units:
+            radius = radius.to_value(u.deg)
+
+        if isinstance(angsep, u.Quantity):
+            angsep = angsep.to_value(u.deg)
+
+        result = np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2)
+        result *= (angsep <= radius)  # Mask
+
+        if with_units:
+            result = u.Quantity(result, u.sr**-1, copy=COPY_IF_NEEDED)
+
+        return result
 
     def get_boundaries(self):
 
