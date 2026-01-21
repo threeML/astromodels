@@ -25,7 +25,7 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
 
         A simple power-law
 
-    latex : $ K~\frac{x}{piv}^{index} $
+    latex : $ K~\left(\frac{x}{piv}\right)^{index} $
 
     parameters :
 
@@ -174,7 +174,7 @@ class Powerlaw_Eflux(Function1D, metaclass=FunctionMeta):
     r"""
     description :
         A  power-law where the normalization is the energy flux defined between a and b
-    latex : $F~\frac{x}{piv}^{index} $
+    latex : $F~\left(\frac{x}{piv}\right)^{index} $
     parameters :
         F :
             desc : Normalization (energy flux at the between a and b) erg /cm2 s
@@ -256,7 +256,7 @@ class Cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
 
         A power law multiplied by an exponential cutoff
 
-    latex : $ K~\frac{x}{piv}^{index}~\exp{-x/xc} $
+    latex : $ K~\left(\frac{x}{piv}\right)^{index}~\exp{-x/xc} $
 
     parameters :
 
@@ -332,7 +332,7 @@ class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
 
         A power law multiplied by an exponential cutoff parametrized with Ep
 
-    latex : $ K~\frac{x}{piv}^{index}~\exp{-x(2+index)/xp} $
+    latex : $ K~\left(\frac{x}{piv}\right)^{index}~\exp{-\left(x~(2+index)\right)/xp} $
 
     parameters :
 
@@ -397,8 +397,10 @@ class Cutoff_powerlaw_Ep(Function1D, metaclass=FunctionMeta):
         else:
             unit_ = 1.0
             K_, piv_, x_, index_, xp_ = K, piv, x, index, xp
-
-        xc = xp_ / (2 + index)
+        if index_ != -2.0:
+            xc = xp_ / (2 + index_)
+        else:
+            xc = np.inf
 
         result = nb_func.cplaw_eval(x_, K_, xc, index_, piv_)
 
@@ -409,7 +411,7 @@ class Inverse_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
     r"""
     description : A power law multiplied by an exponential cutoff
         Note, instead of cutoff energy energy parameter xc, b = 1/xc is used
-    latex : $K \frac{x}{piv}^{index}\exp{(-x~b)} $
+    latex : $K~\left(\frac{x}{piv}\right)^{index}\exp{(-x~b)} $
     parameters :
         K :
             desc : Normalization (differential flux at the pivot value)
@@ -473,7 +475,7 @@ class Super_cutoff_powerlaw(Function1D, metaclass=FunctionMeta):
 
         A power law with a super-exponential cutoff
 
-    latex : $ K~\frac{x}{piv}^{index}~\exp{(-x/xc)^{\gamma}} $
+    latex : $ K~\left(\frac{x}{piv}\right)^{index}~\exp{(-x/xc)^{\gamma}} $
 
     parameters :
 
@@ -747,9 +749,9 @@ class Band(Function1D, metaclass=FunctionMeta):
         Band model from Band et al., 1993, parametrized with the peak energy
 
     latex : $K \begin{cases} \left(\frac{x}{piv}\right)^{\alpha} \exp \left(-
-            \frac{(2+\alpha) x}{x_{p}}\right) & x \leq (\alpha-\beta) \frac{x_{p}}
+            \frac{(2+\alpha)~x}{x_{p}}\right) & x \leq (\alpha-\beta) \frac{x_{p}}
             {(\alpha+2)} \\ \left(\frac{x}{piv}\right)^{\beta} \exp (\beta-\alpha)
-            \left[\frac{(\alpha-\beta) x_{p}}{piv(2+\alpha)}\right]^{\alpha-\beta} &x>
+            \left[\frac{(\alpha-\beta)~x_{p}}{piv~(2+\alpha)}\right]^{\alpha-\beta} &x>
             (\alpha-\beta) \frac{x_{p}}{(\alpha+2)} \end{cases} $
 
     parameters :
@@ -1114,7 +1116,7 @@ class DoubleSmoothlyBrokenPowerlaw(Function1D, metaclass=FunctionMeta):
             }}\right)^{-\alpha_{1} n_{1}}+\left(\frac{x_{\mathrm{j}}}{x_{\mathrm{b}}}
             \right)^{-\alpha_{2} n_{1}}\right]^{\frac{n_{2}}{n_{1}}}\right]^{-\frac{1}
             {n_{2}}}\end{aligned}\\\text { where }\\x_{\mathrm{j}}=x_{\mathrm{p}} \cdot
-            \left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left.\beta-\alpha_{2}
+            \left(-\frac{\alpha_{2}+2}{\beta+2}\right)^{\frac{1}{\left(\beta-\alpha_{2}
             \right) n_{2}}}\end{array}$
 
     parameters :

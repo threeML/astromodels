@@ -20,12 +20,6 @@ from astromodels.functions.template_model import (
     UnivariateSpline,
 )
 from astromodels.utils import _get_data_file_path
-from astromodels.utils.logging import update_logging_level
-
-update_logging_level("DEBUG")
-
-
-update_logging_level("DEBUG")
 
 __author__ = "giacomov"
 
