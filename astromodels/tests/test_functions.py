@@ -7,7 +7,6 @@ import pytest
 from astropy.io import fits
 
 import astromodels
-from astromodels import update_logging_level
 from astromodels.core.property import SettingUnknownValue
 from astromodels.functions import (
     Continuous_injection_diffusion,
@@ -33,8 +32,6 @@ from astromodels.functions.function import (
 )
 from astromodels.functions.functions_1D.absorption import phabs, tbabs
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
-
-update_logging_level("DEBUG")
 
 __author__ = "giacomov"
 

@@ -1,14 +1,11 @@
 import math
 import os
 
-from astromodels import update_logging_level
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model
 from astromodels.core.polarization import LinearPolarization, StokesPolarization
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
-
-update_logging_level("DEBUG")
 
 
 def test_linear_polarization_parameters():

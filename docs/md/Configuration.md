@@ -61,7 +61,7 @@ There are a few special configuration options
 
 ### use_memoization
 
-By default, astromodels functions *memoize* or cache their output. This is useful for various processes like optimization as speeds of the evaluation of repeated function calls with the same values. However, there is a slight overhead when caching values and when performing Bayesian fits, this can slow down the evaluation as chance of hitting the exact same values more than once should be low. Thus, it is possible to turn of memoization directly in the configuration.
+By default, astromodels functions *memoize* or cache their output. This is useful for various processes like optimization as speeds of the evaluation of repeated function calls with the same values. However, there is a slight overhead when caching values and when performing Bayesian fits, this can slow down the evaluation as chance of hitting the exact same values more than once should be low. Thus, it is possible to turn off memoization directly in the configuration.
 
 ### use\_parameter_transforms
 

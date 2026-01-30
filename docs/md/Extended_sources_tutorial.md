@@ -19,7 +19,7 @@ jupyter:
 
 Until `astromodels 2.5.1` all default `astromodels` 2D-Functions return their values as
 $\frac{1}{\mathrm{sr}}$ but the reported unit was $\frac{1}{\mathrm{deg}^2}$.
-In 2.5.1 we temporarily fixed the unit to be the correct $\frac{1}{sr}$. This may change
+In 2.5.1 we temporarily fixed the unit to be the correct $\frac{1}{\mathrm{sr}}$. This may change
 in the future as we plan to improve the units handling in `astromodels`.
 :::
 

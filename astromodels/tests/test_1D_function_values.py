@@ -78,3 +78,9 @@ def test_function_values_have_not_changed():
                     old_values = f[key][()]
 
                     npt.assert_almost_equal(new_values, old_values)
+
+            if key == "Cutoff_powerlaw_Ep":
+                func = this_function()
+                func.index.value = -3
+                func.xp.value = 10
+                assert np.isclose(func(1), 1.10517)
