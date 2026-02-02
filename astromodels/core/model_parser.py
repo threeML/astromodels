@@ -648,7 +648,6 @@ class SourceParser(object):
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
             par_dict = {"degree": None, "angle": None}
             par_names = list(polarization_definititon.keys())
-            par_bounds = {"degree": (0, 100), "angle": (0, 180)}
 
             for par in par_names:
 
@@ -658,7 +657,10 @@ class SourceParser(object):
 
                     par_dict[par] = par_parser.get_variable()
 
-                    par_dict[par].bounds = par_bounds[par]
+                    par_dict[par].bounds = (
+                        polarization_definititon[par].get("min_value", None),
+                        polarization_definititon[par].get("max_value", None),
+                    )
 
                 else:
 
