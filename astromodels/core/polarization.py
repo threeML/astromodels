@@ -1,14 +1,21 @@
 __author__ = "giacomov"
 
-
 import numpy as np
 
+import astropy.units as u
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
+from astromodels.core.units import get_units
 
 
 class Polarization(Node):
-    def __init__(self, polarization_type="linear"):
+    def __init__(self, polarization_type: str = "linear"):
+        """
+        A node that handles Polarization
+
+        :param polarization_type: Type of polarization, must be linear or stokes
+        :tpye polarization_type: str
+        """
 
         assert polarization_type in [
             "linear",
@@ -21,51 +28,51 @@ class Polarization(Node):
 
     @staticmethod
     def _get_parameter_from_input(
-        number_or_parameter, minimum, maximum, what, desc, unit
+        number_or_parameter, minimum, maximum, name, desc, unit
     ):
 
         # Try to transform it to float, if it works than we transform it to a parameter
-
-        try:
-
-            number_or_parameter = float(number_or_parameter)
-
-        except TypeError:
-
-            assert isinstance(number_or_parameter, Parameter), (
-                "%s must be either a number or a " "parameter instance" % what
-            )
-
+        parameter = None
+        if isinstance(number_or_parameter, Parameter):
             # So this is a Parameter instance already. Enforce that it has the right
             # maximum and minimum
 
             parameter = number_or_parameter
+            assert (
+                parameter.min_value == minimum
+            ), f"{name} must have a minimum of {minimum} but has {parameter.min_value}"
 
-            assert parameter.min_value == minimum, "%s must have a minimum of %s" % (
-                what,
-                minimum,
-            )
-            assert parameter.max_value == maximum, "%s must have a maximum of %s" % (
-                what,
-                maximum,
-            )
-
+            assert (
+                parameter.max_value == maximum
+            ), f"{name} must have a maximum of {maximum} but has {parameter.max_value}"
+        elif isinstance(number_or_parameter, u.Quantity):
+            number_or_parameter = number_or_parameter.to(
+                unit
+            ).value  # here we convert it to the used unit
         else:
+            try:
+                number_or_parameter = float(number_or_parameter)
+            except TypeError:
+                raise TypeError(
+                    "number_or_parameter must be a number,"
+                    + " Parameter or astropy.Quantity"
+                )
 
+        if parameter is None:
             # This was a float. Enforce that it has a legal value
 
             assert (
                 minimum <= number_or_parameter <= maximum
             ), "%s cannot have a value of %s, " "it must be %s <= %s <= %s" % (
-                what,
+                name,
                 number_or_parameter,
                 minimum,
-                what,
+                name,
                 maximum,
             )
 
             parameter = Parameter(
-                what,
+                name,
                 number_or_parameter,
                 desc=desc,
                 min_value=minimum,
@@ -101,11 +108,21 @@ class LinearPolarization(Polarization):
                 "dimensionless_unscaled",
             )
 
-        if callable(angle):
+        if callable(angle) and not isinstance(angle, u.Quantity):
             self.angle = LinearParameter("angle", angle)
         else:
+            # define the maximum value mv
+            if get_units().angle == "deg":
+                mv = 180
+            elif get_units().angle == "rad":
+                mv = np.pi
+            else:
+                raise ValueError(
+                    f"The current angle unit is {get_units().angle} which "
+                    + "is not supported"
+                )
             self.angle = self._get_parameter_from_input(
-                angle, 0, 180, "angle", "Polarization angle", "deg"
+                angle, 0, mv, "angle", "Polarization angle", get_units().angle
             )
 
         self._add_child(self.degree)
