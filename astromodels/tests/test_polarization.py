@@ -1,6 +1,8 @@
 import math
 import os
 
+import numpy as np
+import astropy.units as u
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model
 from astromodels.core.polarization import LinearPolarization, StokesPolarization
@@ -10,7 +12,7 @@ from astromodels.sources.point_source import PointSource
 
 def test_linear_polarization_parameters():
     degree = 50.0
-    angle = 30.0
+    angle = np.pi / 6 * u.rad
     ps = PointSource(
         "PS",
         0,
@@ -28,7 +30,9 @@ def test_linear_polarization_parameters():
         mp.sources["PS"].spectrum.main.polarization.degree.value, degree, rel_tol=0.02
     )
     assert math.isclose(
-        mp.sources["PS"].spectrum.main.polarization.angle.value, angle, rel_tol=0.02
+        mp.sources["PS"].spectrum.main.polarization.angle.value,
+        angle.to(mp.sources["PS"].spectrum.main.polarization.angle.unit).value,
+        rel_tol=0.02,
     )
     mp.display()
 

@@ -72,11 +72,9 @@ class ModelParser(object):
 
         if not ((model_file is not None) or (model_dict is not None)):
 
-            log.error(
+            raise AssertionError(
                 "You have to provide either a model file or a " "model dictionary"
             )
-
-            raise AssertionError()
 
         if model_file is not None:
 
@@ -89,18 +87,14 @@ class ModelParser(object):
                     self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
             except IOError:
-                msg = "File %s cannot be read. " % model_file
+                msg = f"File {model_file} cannot be read. "
                 msg += "Check path and permissions for current user."
 
-                log.error(msg)
-
-                raise ModelIOError()
+                raise ModelIOError(msg)
 
             except my_yaml.YAMLError:
-
-                log.error("Could not parse file %s. Check your syntax." % model_file)
-
-                raise ModelYAMLError()
+                raise ModelYAMLError(
+                    f"Could not parse file {model_file}. Check your syntax."
 
         else:
 
