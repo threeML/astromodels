@@ -6,6 +6,8 @@ import re
 import warnings
 from typing import Dict, List
 
+import numpy as np
+
 from astromodels.core import (
     model,
     parameter,
@@ -18,6 +20,7 @@ from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
 from astromodels.utils.logging import setup_logger
+from astromodels.core.units import get_units
 
 log = setup_logger(__name__)
 
@@ -71,7 +74,6 @@ class ModelParser(object):
     def __init__(self, model_file=None, model_dict=None):
 
         if not ((model_file is not None) or (model_dict is not None)):
-
             raise AssertionError(
                 "You have to provide either a model file or a " "model dictionary"
             )
@@ -95,6 +97,7 @@ class ModelParser(object):
             except my_yaml.YAMLError:
                 raise ModelYAMLError(
                     f"Could not parse file {model_file}. Check your syntax."
+                )
 
         else:
 
@@ -575,14 +578,28 @@ class SourceParser(object):
             ra = par_parser.get_variable()
 
             if ra.bounds == (None, None):
-                ra.bounds = (0, 360)
+                if get_units().angle == "deg":
+                    ra.bounds = (0, 360)
+                    assert ra.unit == "deg"
+                elif get_units().angle == "rad":
+                    ra.bounds = (0, 2 * np.pi)
+                    assert ra.unit == "rad"
+                else:
+                    raise NotImplementedError(
+                        f"The unit {get_units().angle} is not supported"
+                    )
 
             par_parser = ParameterParser("dec", sky_direction_definition["dec"])
 
             dec = par_parser.get_variable()
 
             if dec.bounds == (None, None):
-                dec.bounds = (-90, 90)
+                if get_units().angle == "deg":
+                    dec.bounds = (-90, 90)
+                    assert dec.unit == "deg"
+                elif get_units().angle == "rad":
+                    dec.bounds = (-np.pi / 2, np.pi / 2)
+                    assert dec.unit == "rad"
 
             coordinates["ra"] = ra
             coordinates["dec"] = dec
@@ -594,14 +611,28 @@ class SourceParser(object):
             l = par_parser.get_variable()
 
             if l.bounds == (None, None):
-                l.bounds = (0, 360)
+                if get_units().angle == "deg":
+                    l.bounds = (0, 360)
+                    assert l.unit == "deg"
+                elif get_units().angle == "rad":
+                    l.bounds = (0, 2 * np.pi)
+                    assert l.unit == "rad"
+                else:
+                    raise NotImplementedError(
+                        f"The unit {get_units().angle} is not supported"
+                    )
 
             par_parser = ParameterParser("b", sky_direction_definition["b"])
 
             b = par_parser.get_variable()
 
             if b.bounds == (None, None):
-                b.bounds = (-90, 90)
+                if get_units().angle == "deg":
+                    b.bounds = (-90, 90)
+                    assert b.unit == "deg"
+                elif get_units().angle == "rad":
+                    b.bounds = (-np.pi / 2, np.pi / 2)
+                    assert b.unit == "rad"
 
             coordinates["l"] = l
             coordinates["b"] = b
