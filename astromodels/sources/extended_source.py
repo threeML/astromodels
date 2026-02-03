@@ -229,14 +229,14 @@ class ExtendedSource(Source, Node):
             # We need to sum like this (slower) because using np.sum will not preserve
             # the units (thanks astropy.units)
 
-            differential_flux = sum(results)
+            differential_flux = np.atleast_1d(sum(results))
 
         else:
 
             # Fast version without units, where x is supposed to be in the same units as
             # currently defined in units.get_units()
 
-            differential_flux = np.sum(results, 0)
+            differential_flux = np.atleast_1d(np.sum(results, 0))
 
         # Get brightness from spatial model
 
