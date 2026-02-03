@@ -19,7 +19,6 @@ import os
 import sys
 from pathlib import Path
 
-import mock
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -36,65 +35,9 @@ for f in files:
 
 DOCS = Path(__file__).parent
 
-# -- Generate API documentation ------------------------------------------------
+sys.path.insert(0, str(Path("..").resolve()))
+sys.path.insert(1, str(Path("..", "astromodels").resolve()))
 
-
-def run_apidoc(app):
-    """Generage API documentation."""
-    import os
-    import pkgutil
-    import sys
-
-    import better_apidoc
-
-    astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-
-    sys.path.insert(0, os.path.abspath(".."))
-    sys.path.insert(1, os.path.abspath("../astromodels"))
-
-    # Add the path to the C extension
-    # lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-    # lib_path = os.path.abspath('%s/core' % astro_path)
-    # sys.path.insert(2, lib_path)
-    # This must work now
-    #    import node_ctype
-
-    better_apidoc.APP = app
-    better_apidoc.main(
-        [
-            "better-apidoc",
-            # "-t",
-            # str(docs / "_templates"),
-            "--force",
-            "--no-toc",
-            "--separate",
-            "-o",
-            str(DOCS / "api"),
-            str(DOCS / ".." / "astromodels"),
-        ]
-    )
-
-
-# #import astromodels
-# import pkgutil
-# astro_path = os.path.dirname(pkgutil.get_loader("astromodels").get_filename())
-
-# sys.path.insert(1, os.path.abspath('../astromodels'))
-
-# # Add the path to the C extension
-# #lib_path = os.path.abspath('%s/core' % astromodels.__path__[0])
-# lib_path = os.path.abspath('%s/core' % astro_path)
-
-# sys.path.insert(2, lib_path)
-
-
-# #this must work now
-# import node_ctype
-
-# print(f" current dir {os.getcwd()}")
-# files = [f for f in os.listdir('.') if os.path.isfile(f)]
-# for f in files:
-#     print(f)
 
 # -- General configuration ---------------------------------------------------
 
@@ -103,31 +46,17 @@ def run_apidoc(app):
 # ones.
 extensions = [
     "nbsphinx",
-    "recommonmark",
+    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
     "sphinx_gallery.load_style",
-    #    "sphinx_math_dollar",
     "sphinx_rtd_dark_mode",
+    "sphinx_copybutton",
 ]
-
-# mathjax_config = {
-#     "tex2jax": {
-#         "inlineMath": [["\\(", "\\)"]],
-#         "displayMath": [["\\[", "\\]"]],
-#     },
-# }
-
-# mathjax3_config = {
-#     "tex": {
-#         "inlineMath": [["\\(", "\\)"]],
-#         "displayMath": [["\\[", "\\]"]],
-#     }
-# }
-# from sphinx_math_dollar import NODE_BLACKLIST
 
 
 napoleon_google_docstring = True
@@ -173,7 +102,7 @@ master_doc = "index"
 
 project = "Astromodels"
 copyright = (
-    "2016--2025, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack"
+    "2016--2026, G.Vianello, J. M. Burgess, N. Di Lalla, N. Omodei, H. Fleischhack"
 )
 author = "G.Vianello"
 
@@ -183,7 +112,7 @@ author = "G.Vianello"
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-language = None
+language = "en"
 
 
 # List of patterns, relative to source directory, that match files and
@@ -196,7 +125,6 @@ html_theme = "sphinx_rtd_dark_mode"
 
 html_theme_options = {
     "logo_only": False,
-    "display_version": False,
     "collapse_navigation": True,
     "navigation_depth": 4,
     "prev_next_buttons_location": "bottom",  # top and bottom
@@ -209,6 +137,18 @@ html_favicon = "media/favicon.ico"
 
 autosectionlabel_prefix_document = True
 
+intersphinx_mapping = {
+    "threeML": ("https://threeml.readthedocs.io/en/stable/", None),
+}
+
+# We recommend adding the following config value.
+# Sphinx defaults to automatically resolve *unresolved* labels using all your Intersphinx mappings.
+# This behavior has unintended side-effects, namely that documentations local references can
+# suddenly resolve to an external location.
+# See also:
+# https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html#confval-intersphinx_disabled_reftypes
+intersphinx_disabled_reftypes = ["*"]
+
 version = "latest"
 # The full version, including alpha/beta/rc tags.
 release = "latest"
@@ -216,5 +156,5 @@ release = "latest"
 print("Done.")
 
 
-def setup(app):
-    app.connect("builder-inited", run_apidoc)
+# def setup(app):
+#    app.connect("builder-inited", run_apidoc)

@@ -19,7 +19,7 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
 
         A Gaussian function
 
-    latex : $ K \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~(\sigma)^2}} $
+    latex : $ F \frac{1}{\sigma \sqrt{2 \pi}}\exp{\frac{(x-\mu)^2}{2~(\sigma)^2}} $
 
     parameters :
 
@@ -430,7 +430,7 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
 
         A log normal function
 
-    latex : $K\frac{1}{x\sigma\sqrt{2\pi}}\exp{\frac{(\log x/piv-\mu/piv)^2}
+    latex : $F~\frac{1}{x\sigma\sqrt{2\pi}}\exp{\frac{(\log x/piv-\mu/piv)^2}
             {2~(\sigma)^2}} $
 
     parameters :
@@ -541,9 +541,14 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
         outside the interval. The extremes of the interval are counted as part of the
         interval.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
-            \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x >
-            \text{upper_bound} \end{cases}$
+    latex : $$
+                f(x)=~
+                \begin{cases}
+                0 & x < \text{lower\_bound} \\
+                \text{value} & \text{lower\_bound} \le x \le \text{upper\_bound} \\
+                0 & x > \text{upper\_bound}
+                \end{cases}
+            $$
 
     parameters :
 
@@ -621,9 +626,15 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
         the interval. The extremes of the interval are NOT counted as part of the
         interval. Lower_bound must be >= 0.
 
-    latex : $ f(x)=K~\begin{cases}0 & x \le \text{lower_bound} \\\frac{1}{x} &
-            \text{lower_bound} < x < \text{upper_bound} \\ 0 & x \ge \text{upper_bound}
-            \end{cases}$
+    latex : $$  f(x)=K~
+                \begin{cases}
+                0 & x \le \text{lower\_bound} \\
+                \frac{1}{x} & \text{lower\_bound} < x < \text{upper\_bound} \\
+                0 & x \ge \text{upper\_bound}
+                \end{cases}
+            $$
+
+
 
     parameters :
 
@@ -848,7 +859,7 @@ class Powerlaw_Prior(Function1D, metaclass=FunctionMeta):
 
         An power law distribution function between a-b
 
-    latex : $ f(x, \alpha) = \alpha x^{\alpha-1)$
+    latex : $f(x, \alpha) = \alpha x^{\alpha-1} $
 
     parameters :
 

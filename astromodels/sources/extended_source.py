@@ -60,9 +60,7 @@ class ExtendedSource(Source, Node):
                 component.shape.set_units(current_u.energy, diff_flux_units)
 
             # Set the units of the brightness
-            spatial_shape.set_units(
-                current_u.angle, current_u.angle, current_u.angle ** (-2)
-            )
+            spatial_shape.set_units(current_u.angle, current_u.angle, u.sr**-1)
 
         elif spatial_shape.n_dim == 3:
 
@@ -79,10 +77,7 @@ class ExtendedSource(Source, Node):
 
                 # set the units
                 diff_flux_units = (
-                    current_u.energy
-                    * current_u.area
-                    * current_u.time
-                    * current_u.angle**2
+                    current_u.energy * current_u.area * current_u.time * u.sr
                 ) ** (-1)
                 spatial_shape.set_units(
                     current_u.angle,
@@ -127,7 +122,7 @@ class ExtendedSource(Source, Node):
                     current_u.angle,
                     current_u.angle,
                     current_u.energy,
-                    current_u.angle ** (-2),
+                    u.sr**-1,
                 )
 
         else:

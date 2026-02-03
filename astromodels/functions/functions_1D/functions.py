@@ -13,8 +13,6 @@ __author__ = "giacomov"
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,
 # 2016
 
-erg2keV = 6.24151e8
-
 
 class GSLNotAvailable(ImportWarning):
     pass
@@ -141,9 +139,13 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
         outside the interval. The extremes of the interval are counted as part of the
         interval.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
-        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound}
-        \end{cases}$
+    latex : $ f(x)=
+            \begin{cases}
+                0 & x < \text{lower\_bound} \\
+                \text{value} & \text{lower\_bound} \le x \le \text{upper\_bound} \\
+                0 & x > \text{upper\_bound}
+            \end{cases}
+            $
 
     parameters :
 
@@ -194,8 +196,11 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
         A function which is constant on the interval lower_bound - upper_bound and 0
         outside the interval. The upper interval is open.
 
-    latex : $ f(x)=\begin{cases}0 & x < \text{lower_bound} \\\text{value} &
-        \text{lower_bound} \le x \le \text{upper_bound} \\ 0 & x > \text{upper_bound}
+    latex : $ f(x)=
+                \begin{cases}
+                    0 & x < \text{lower\_bound} \\
+                    \text{value} &\text{lower\_bound} \le x \le \text{upper\_bound} \\
+                    0 & x > \text{upper\_bound}
         \end{cases}$
 
     parameters :
@@ -307,7 +312,13 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
 
         return  at zero_point
 
-    latex : $ value $
+    latex : $
+                \delta(x) =
+                \begin{cases}
+                \mathrm{value}, & x = \mathrm{zero\_point}, \\
+                0, & x \neq \mathrm{zero\_point}
+                \end{cases}
+            $
 
     parameters :
 
@@ -595,7 +606,9 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
     r"""
     description :
 
-        A log-parabolic function. NOTE that we use the high-energy convention of using
+        A log-parabolic function.
+
+        NOTE that we use the high-energy convention of using
         the natural log in place of the base-10 logarithm. This means that beta is a
         factor 1 / log10(e) larger than what returned by those software using the other
         convention.

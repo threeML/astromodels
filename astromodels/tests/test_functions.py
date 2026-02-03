@@ -7,7 +7,6 @@ import pytest
 from astropy.io import fits
 
 import astromodels
-from astromodels import update_logging_level
 from astromodels.core.property import SettingUnknownValue
 from astromodels.functions import (
     Continuous_injection_diffusion,
@@ -15,6 +14,7 @@ from astromodels.functions import (
     Line,
     Powerlaw,
     SpatialTemplate_2D,
+    Cutoff_powerlaw_Ep,
 )
 from astromodels.functions import function as function_module
 from astromodels.functions.function import (
@@ -32,8 +32,6 @@ from astromodels.functions.function import (
 )
 from astromodels.functions.functions_1D.absorption import phabs, tbabs
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
-
-update_logging_level("DEBUG")
 
 __author__ = "giacomov"
 
@@ -1082,3 +1080,8 @@ def test_complex_composites():
     d = astromodels.TbAbs(abundance_table="WILM")
 
     a * b + c * d
+
+
+def test_cpl_ep():
+    test = Cutoff_powerlaw_Ep()
+    assert np.isclose(test.evaluate(np.array([1]), 1, 1, -2.0, 100), 1), ""
