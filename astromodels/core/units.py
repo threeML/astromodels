@@ -1,13 +1,16 @@
 from builtins import object
+from typing import NamedTuple
 
 __author__ = "giacomov"
 
 import collections
+import numpy as np
 
 import astropy.units as u
 
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.pretty_list import dict_to_list
+from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 
 # This module keeps the configuration of the units used in astromodels
 
@@ -175,6 +178,11 @@ class _AstromodelsUnits(object):
 # class
 
 
+class Bounds(NamedTuple):
+    lower_bound: float
+    upper_bound: float
+
+
 class _AstromodelsUnitsFactory(object):
 
     _instance = None
@@ -187,6 +195,16 @@ class _AstromodelsUnitsFactory(object):
 
             self._instance = _AstromodelsUnits(*args, **kwds)
 
+            # set the angular separation function and angle bounds for the session
+            if str(self._instance.angle) == "deg":
+                self._angular_separation = angular_distance
+                self._lon_bounds = Bounds(0, 360)
+                self._lat_bounds = Bounds(-90, 90)
+            elif str(self._instance.angle) == "rad":
+                self._angular_separation = angular_distance_rad
+                self._lon_bounds = Bounds(0, 2 * np.pi)
+                self._lat_bounds = Bounds(-np.pi / 2, np.pi / 2)
+
             return self._instance
 
         else:
@@ -194,6 +212,17 @@ class _AstromodelsUnitsFactory(object):
             # Use the instance already created
 
             return self._instance
+
+    def angular_separation(self, a, b, x, z):
+        return self._angular_separation(a, b, x, z)
+
+    @property
+    def lon_bounds(self):
+        return self._lon_bounds
+
+    @property
+    def lat_bounds(self):
+        return self._lat_bounds
 
 
 get_units = _AstromodelsUnitsFactory()
