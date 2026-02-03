@@ -9,7 +9,7 @@ from astromodels.core.model_parser import clone_model
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.units import get_units
 from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
-from astromodels.functions.function import _known_functions, Function2D
+from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
 
 __author__ = "henrikef"
