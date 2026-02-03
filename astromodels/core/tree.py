@@ -57,7 +57,9 @@ class Node(NodeBase):
         return hash(self._get_path())
 
     def to_dict(self, minimal: bool = False) -> Dict[str, Any]:
-        """"""
+        """
+        Recursively transforms the node and its children into a dictionary.
+        """
         this_dict: Dict[str, Any] = collections.OrderedDict()
 
         for child in self._get_children():

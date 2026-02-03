@@ -1,11 +1,18 @@
 __author__ = "giacomov"
+from typing import Optional, Union
 
 import collections
 
+import astropy
 from astropy import coordinates
+import astropy.units as u
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
+from astromodels.core.units import get_units
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 
 class WrongCoordinatePair(ValueError):
@@ -24,14 +31,32 @@ class SkyDirection(Node):
     """This is essentially a wrapper around astropy.coordinates.SkyCoord with a
     possibility for being serialized and deserialized with YAML."""
 
-    def __init__(self, ra=None, dec=None, l=None, b=None, equinox="J2000"):
+    def __init__(
+        self,
+        position: Optional[astropy.coordinates.SkyCoord] = None,
+        ra: Optional[float] = None,
+        dec: Optional[float] = None,
+        l: Optional[float] = None,
+        b: Optional[float] = None,
+        unit: Union[astropy.units.Unit, str, None] = None,
+        equinox: str = "J2000",
+    ) -> None:
         """
+        :param position: the position on the sky
+        :type position: astropy.coordinates.SkyCoord
+        :param ra: Right Ascension
+        :type ra: float
+        :param dec: Declination
+        :type dec: float
+        :param l: Galactic latitude
+        :type l: float
+        :param b: Galactic longitude
+        :type b: float
+        :param unit: astropy.units.Unit or string of the unit for the coordinates
+        :type unit: astropy.units.Unit or str
+        :param equinox: the equinox for the coordinates
+        :type equinox: str
 
-        :param ra: Right Ascension in degrees
-        :param dec: Declination in degrees
-        :param l: Galactic latitude in degrees
-        :param b: Galactic longitude in degrees
-        :param equinox: string
         :return:
         """
 
@@ -43,17 +68,89 @@ class SkyDirection(Node):
 
         # Check that we have the right pairs of coordinates
 
-        if ra is not None and dec is not None:
+        if ra is not None or dec is not None:
+            assert l is None and b is None, WrongCoordinatePair(
+                "You have to specify either (ra, dec) or (l, b)."
+            )
+
+        frame = get_units().frame  # get the current coordinate_frame
+        if isinstance(position, coordinates.SkyCoord):
+            position = position.transform_to(frame)
+            if frame == "icrs":
+                ra = self._get_parameter_from_input(
+                    position.ra.to(get_units().angle).value,
+                    get_units.lon_bounds.lower_bound,
+                    get_units.lon_bounds.upper_bound,
+                    "ra",
+                    "Right Ascension",
+                )
+                dec = self._get_parameter_from_input(
+                    position.dec.to(get_units().angle).value,
+                    get_units.lat_bounds.lower_bound,
+                    get_units.lat_bounds.upper_bound,
+                    "dec",
+                    "Declination",
+                )
+                self._coord_type = "equatorial"
+                self._add_child(ra)
+                self._add_child(dec)
+            elif frame == "galactic":
+
+                lon = self._get_parameter_from_input(
+                    position.l.to(get_units().angle).value,
+                    get_units.lon_bounds.lower_bound,
+                    get_units.lon_bounds.upper_bound,
+                    "l",
+                    "Galactic longitude",
+                )
+                lat = self._get_parameter_from_input(
+                    position.b.to(get_units().angle).value,
+                    get_units.lat_bounds.lower_bound,
+                    get_units.lat_bounds.upper_bound,
+                    "b",
+                    "Galactic latitude",
+                )
+
+                self._coord_type = "galactic"
+                self._add_child(lon)
+                self._add_child(lat)
+            else:
+                raise NotImplementedError()
+
+        elif ra is not None and dec is not None:
 
             # This goes against duck typing, but it is needed to provide a means of
             # initiating this class with either Parameter instances or just floats
 
             # Try to transform it to float, if it works than we transform it to a
             # parameter
+            if unit is not None:
+                if not isinstance(unit, u.Unit):
+                    unit = u.Unit(unit)
+                if not isinstance(ra, Parameter):
+                    ra = (ra * unit).to(get_units().angle).value
+                else:
+                    ra = (ra.value * ra.unit).to(get_units().angle).value
+                if not isinstance(dec, Parameter):
+                    dec = (dec * unit).to(get_units().angle).value
+                else:
+                    dec = (dec.value * dec.unit).to(get_units().angle).value
 
-            ra = self._get_parameter_from_input(ra, 0, 360, "ra", "Right Ascension")
+            ra = self._get_parameter_from_input(
+                ra,
+                get_units.lon_bounds.lower_bound,
+                get_units.lon_bounds.upper_bound,
+                "ra",
+                "Right Ascension",
+            )
 
-            dec = self._get_parameter_from_input(dec, -90, 90, "dec", "Declination")
+            dec = self._get_parameter_from_input(
+                dec,
+                get_units.lat_bounds.lower_bound,
+                get_units.lat_bounds.upper_bound,
+                "dec",
+                "Declination",
+            )
 
             self._coord_type = "equatorial"
 
@@ -67,21 +164,40 @@ class SkyDirection(Node):
 
             # Try to transform it to float, if it works than we transform it to a
             # parameter
+            if unit is not None:
+                if not isinstance(unit, u.Unit):
+                    unit = u.Unit(unit)
+                if not isinstance(l, Parameter):
+                    l = (l * unit).to(get_units().angle).value
+                else:
+                    l = (l.value * l.unit).to(get_units().angle).value
+                if not isinstance(b, Parameter):
+                    b = (b * unit).to(get_units().angle).value
+                else:
+                    b = (b.value * b.unit).to(get_units().angle).value
 
-            l = self._get_parameter_from_input(l, 0, 360, "l", "Galactic longitude")
+            l = self._get_parameter_from_input(
+                l,
+                get_units.lon_bounds.lower_bound,
+                get_units.lon_bounds.upper_bound,
+                "l",
+                "Galactic longitude",
+            )
 
-            b = self._get_parameter_from_input(b, -90, 90, "b", "Galactic latitude")
+            b = self._get_parameter_from_input(
+                b,
+                get_units.lat_bounds.lower_bound,
+                get_units.lat_bounds.upper_bound,
+                "b",
+                "Galactic latitude",
+            )
 
             self._coord_type = "galactic"
             self._add_child(l)
             self._add_child(b)
 
-        else:
-
-            raise WrongCoordinatePair("You have to specify either (ra, dec) or (l, b).")
-
     @staticmethod
-    def _get_parameter_from_input(number_or_parameter, minimum, maximum, what, desc):
+    def _get_parameter_from_input(number_or_parameter, minimum, maximum, name, desc):
 
         # Try to transform it to float, if it works than we transform it to a parameter
 
@@ -92,7 +208,7 @@ class SkyDirection(Node):
         except TypeError:
 
             assert isinstance(number_or_parameter, Parameter), (
-                "%s must be either a number or a " "parameter instance" % what
+                "%s must be either a number or a " "parameter instance" % name
             )
 
             # So this is a Parameter instance already. Enforce that it has the right
@@ -103,13 +219,13 @@ class SkyDirection(Node):
             assert (
                 parameter.min_value >= minimum
             ), "%s must have a minimum greater than or equal to %s" % (
-                what,
+                name,
                 minimum,
             )
             assert (
                 parameter.max_value <= maximum
             ), "%s must have a maximum less than or equal to %s" % (
-                what,
+                name,
                 maximum,
             )
 
@@ -120,20 +236,20 @@ class SkyDirection(Node):
             assert (
                 minimum <= number_or_parameter <= maximum
             ), "%s cannot have a value of %s, " "it must be %s <= %s <= %s" % (
-                what,
+                name,
                 number_or_parameter,
                 minimum,
-                what,
+                name,
                 maximum,
             )
 
             parameter = Parameter(
-                what,
+                name,
                 number_or_parameter,
                 desc=desc,
                 min_value=minimum,
                 max_value=maximum,
-                unit="deg",
+                unit=get_units().angle,
                 free=False,
             )
 

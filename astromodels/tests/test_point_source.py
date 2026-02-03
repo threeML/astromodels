@@ -3,6 +3,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
+from astropy.coordinates import SkyCoord
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (
     Band,
@@ -25,6 +26,8 @@ except ImportError:
 
 
 from astromodels.core.model import Model
+from astromodels.core.units import get_units
+
 from astromodels.core.model_parser import clone_model, load_model
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
@@ -67,6 +70,9 @@ def test_constructor():
 
     ra, dec = (125.6, -75.3)
     l, b = (288.44190139183564, -20.717313145391525)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
+        l, b = np.deg2rad((l, b))
 
     # This should throw as we are using Powerlaw instead of Powerlaw()
     with pytest.raises(TypeError):
@@ -140,6 +146,12 @@ def test_constructor():
         # Illegal b
 
         _ = PointSource("test", l=120.0, b=-180.0, components=[c1, c2])
+
+    # From astropy.coordinates.SkyCoord
+    pos = SkyCoord(ra=0, dec=0, unit="deg", frame="icrs")
+    ps = PointSource("test", sky_position=pos, spectral_shape=Powerlaw())
+    assert ps.position.get_ra() == pos.ra.deg
+    assert ps.position.get_dec() == pos.dec.deg
 
 
 def test_call():
