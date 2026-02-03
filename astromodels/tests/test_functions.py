@@ -32,6 +32,7 @@ from astromodels.functions.function import (
 )
 from astromodels.functions.functions_1D.absorption import phabs, tbabs
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
+from astromodels.core.units import get_units
 
 __author__ = "giacomov"
 
@@ -826,18 +827,31 @@ def test_function2D():
     c = Gaussian_on_sphere()
 
     f1 = c(1, 1)
-    assert np.isclose(f1, 5.17276409, rtol=1e-10)
+    if get_units().solid_angle == u.sr:
+        assert np.isclose(f1, 5.17276409 / (180 / np.pi) ** 2, rtol=1e-10)
+    elif get_units().solid_angle == u.deg**2:
+        assert np.isclose(f1, 5.17276409, rtol=1e-10)
 
     a = np.array([1.0, 2.0])
 
     fa = c(a, a)
-    assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
 
+    if get_units().solid_angle == u.sr:
+        assert np.allclose(
+            fa, np.array([5.17276409, 5.01992404]) / (180 / np.pi) ** 2, rtol=1e-10
+        )
+    elif get_units().solid_angle == u.deg**2:
+        assert np.allclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
+
+    # TODO: need solution for set_units
     c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
-    assert np.isclose(f1d.value, 5.17276409, rtol=1e-10)
-    assert f1d.unit == u.deg**-2
+
+    if get_units().solid_angle == u.sr:
+        assert np.isclose(f1d, 5.17276409 / (180 / np.pi) ** 2 * u.sr**-1, rtol=1e-10)
+    elif get_units().solid_angle == u.deg**2:
+        assert np.isclose(f1d, 5.17276409 * u.deg**-2, rtol=1e-10)
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg

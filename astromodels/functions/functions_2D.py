@@ -184,19 +184,10 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, lon0, lat0, sigma):
 
         lon, lat = x, y
-        if get_units().solid_angle == u.Unit("deg2"):
-            norm = 1
-        else:
-            norm = np.power(180 / np.pi, 2)
-
-        if get_units().angle == u.deg:
-            angsep = angular_distance(lon0, lat0, lon, lat)
-        if get_units().angle == u.rad:
-            angsep = angular_distance_rad(lon0, lat0, lon, lat)
-
         s2 = sigma**2
+        d = get_units.angular_separation(lon0, lat0, lon, lat)
 
-        return norm / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2 / s2)
+        return 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * d**2 / s2)
 
     def get_boundaries(self):
 
@@ -462,7 +453,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         lon, lat = x, y
 
-        angsep = angular_distance(lon0, lat0, lon, lat)
+        angsep = get_units.angular_separation(lon0, lat0, lon, lat)
 
         return 1.0 / (np.pi * radius**2) * (angsep <= radius)
 
@@ -472,14 +463,19 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         max_radius = self.radius.max_value
 
-        min_lat = max(-90.0, self.lat0.value - 2 * max_radius)
-        max_lat = min(90.0, self.lat0.value + 2 * max_radius)
+        min_lat = max(
+            get_units.lat_bounds.lower_bound, self.lat0.value - 2 * max_radius
+        )
+        max_lat = min(
+            get_units.lat_bounds.upper_bound, self.lat0.value + 2 * max_radius
+        )
 
         max_abs_lat = max(np.absolute(min_lat), np.absolute(max_lat))
 
         if (
-            max_abs_lat > 89.0
-            or 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
+            max_abs_lat > get_units.lat_bounds.upper_bound * 89 / 90
+            or 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.0)
+            >= 180.0  # TODO: fix that
         ):
 
             min_lon = 0.0

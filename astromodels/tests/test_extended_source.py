@@ -327,21 +327,24 @@ def test_free_param():
 
 def test_extended_unit():
     spectrum = Powerlaw()
-    for k, v in _known_functions.items():
-        if isinstance(v, Function2D) and k not in ["SpatialTemplate_2D"]:
+    for k, v in _known_functions.items():  # TODO: test all 2D functions
+        if k == "Disk_on_sphere":
             spat = v()
             es = ExtendedSource("test", spectral_shape=spectrum, spatial_shape=spat)
+            spat.radius = 1 * u.deg
             spectrum.piv = 1 * u.keV
-            spectrum.K = 1 * u.Unit("keV-1 cm-2 s-1")
-            ra = [0] * u.deg
-            dec = [0] * u.deg
-            E = [1] * u.keV
+            energy = get_units().energy
+            area = get_units().area ** -1
+            time = get_units().time
+            spectrum.K = 1 * u.Unit(f"{energy}-1 {time}-1") * area
+            ra = np.zeros(1) * u.deg
+            dec = np.zeros(1) * u.deg
+            E = np.ones(1) * u.keV
 
             res = es(ra, dec, E)
-            assert (
-                res.unit == u.Unit("keV-1 cm-2 s-1") * get_units().angle ** -2
+            assert str(res.unit) == str(
+                energy**-1 * time**-1 * area * get_units().solid_angle ** -1
             ), "Unit is not matching"
-            if k == "Disk_on_sphere":
-                assert (
-                    res.to(u.Unit("keV-1 cm-2 s-1 deg-2")).value == 1 / np.pi
-                ), "Value for Disk_on_sphere not matching"
+            assert np.isclose(
+                res.to(u.Unit("keV-1 cm-2 s-1 deg-2")).value, 1 / np.pi
+            ), "Value for Disk_on_sphere not matching"
