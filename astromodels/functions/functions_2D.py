@@ -5,6 +5,7 @@ import numpy as np
 from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
+from mhealpy import HealpixMap
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
