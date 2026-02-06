@@ -5,6 +5,7 @@ import numpy as np
 from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
+from mhealpy import HealpixMap
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
@@ -745,6 +746,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             dOmega = (area * u.deg * u.deg).to(u.sr).value
             total = self._map.sum() * dOmega
 
+            log.warning("SpatialTemplate_2D is accurates for only small region model"
+                       +" please consider using SpatialTemplate_2D_Healpix otherwise")
+        
             if not np.isclose(total, 1, rtol=1e-2):
                 log.warning(
                     "2D template read from {} is normalized to {} (expected: 1)".format(
@@ -839,7 +843,98 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             z = z.value
         return np.multiply(self.K.value, np.ones_like(z))
 
+class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
+    r"""
+    description :
+        User input Spatial Template using HealpixMap from mhealpy.
+    
+    latex : $hi$
 
+    parameters :
+        K :
+            desc : normalization
+            initial value : 1
+            fix : yes
+        hash :
+            desc: hash of model map
+            initial value: 1
+            fix: yes
+            
+    properties:
+        fits_file:
+            desc: fits file name which contain HealpixMap object from mhealpy package
+            defer: True
+            function: _load_file  
+        
+    """
+
+    def _set_units(self, x_unit, y_unit, z_unit):
+
+        self.K.unit = z_unit
+
+    # This is optional, and it is only needed if we need more setup after the
+    # constructor provided by the meta class
+
+    def _load_file(self):
+        
+        self._fitsfile = self.fits_file.value
+        
+        self._hpmap = HealpixMap.read_map(self._fitsfile)
+            
+        
+    
+        # test if the map is normalized as expected
+        area = self._hpmap.pixarea().value
+            
+        total = np.sum(self._hpmap) * area
+
+        if not np.isclose(total, 1, rtol=1e-2):
+                log.warning(
+                    "2D template read from HealPixMap is normalized to {} (expected: 1)".format(
+                         total
+                    )
+                )
+
+        # hash sum uniquely identifying the template function (defined by its 2D map
+        # array and coordinate system) this is needed so that the memoization won't
+        # confuse different SpatialTemplate_2D objects.
+        h = hashlib.sha224()
+        h.update(np.asarray(self._hpmap).tobytes())
+        self.hash = int(h.hexdigest(), 16)
+
+    
+
+    def evaluate(self, x, y, K,hash):
+
+       
+         # X and Y are defined by the frame (ICRS,galactic, etc..)
+        coord = SkyCoord(x, y, frame=self._hpmap.coordsys, unit="deg")
+
+        # transform input coordinates to pixel coordinates;
+        pix = self._hpmap.ang2pix(coord)
+
+        out = self._hpmap[pix]
+
+        return np.multiply(K, out)
+
+    def get_boundaries(self):
+
+        return self._hpmap.boundaries
+
+    def get_total_spatial_integral(self, z=None):
+        """Returns the total integral (for 2D functions) or the integral over
+        the spatial components (for 3D functions). needs to be implemented in
+        subclasses.
+
+        :return: an array of values of the integral (same dimension as
+            z).
+        """
+
+        if isinstance(z, u.Quantity):
+            z = z.value
+        return np.multiply(self.K.value, np.ones_like(z))
+
+        
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
     description :
