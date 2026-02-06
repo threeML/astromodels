@@ -724,7 +724,6 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
             self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
 
-            
             # note: map coordinates are switched compared to header. NAXIS1 is
             # coordinate 1, not 0. see
             # http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
