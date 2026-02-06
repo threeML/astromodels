@@ -845,33 +845,31 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
     r"""
     description :
-
-        User input Spatial Template using HealpixMap from mhealpy
-        instead of fits file. Expected to be normalized to 1/sr
-
-    latex : $ hi $
+        User input Spatial Template using HealpixMap from mhealpy.
+    
+    latex : $hi$
 
     parameters :
-
         K :
-
             desc : normalization
             initial value : 1
             fix : yes
         hash :
-
-            desc: hash of model map [needed for memoization]
+            desc: hash of model map
             initial value: 1
             fix: yes
-        
-
-    properties:
-        healpix_map:
-            desc: HealpixMap object from mhealpy package 
-            defer: True
-            function: _load_map
-        
+        ihdu:
+            desc: header unit index of fits file
+            initial value: 0
+            fix: True
+            min: 0
             
+    properties:
+        fits_file:
+            desc: fits file name which contain HealpixMap object from mhealpy package
+            defer: True
+            function: _load_file  
+        
     """
 
     def _set_units(self, x_unit, y_unit, z_unit):
@@ -881,9 +879,12 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
     # This is optional, and it is only needed if we need more setup after the
     # constructor provided by the meta class
 
-    def _load_map(self):
-
-        self._hpmap = self.healpix_map
+    def _load_file(self):
+        
+        self._fitsfile = self.fits_file.value
+        
+        self._hpmap = HealpixMap.read_map(self._fitsfile)
+            
         
     
         # test if the map is normalized as expected
@@ -902,12 +903,12 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
         # array and coordinate system) this is needed so that the memoization won't
         # confuse different SpatialTemplate_2D objects.
         h = hashlib.sha224()
-        h.update(self._hpmap)
+        h.update(np.asarray(self._hpmap).tobytes())
         self.hash = int(h.hexdigest(), 16)
 
     
 
-    def evaluate(self, x, y, K,hash):
+    def evaluate(self, x, y, K,hash,ihdu):
 
        
          # X and Y are defined by the frame (ICRS,galactic, etc..)
@@ -936,6 +937,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
         if isinstance(z, u.Quantity):
             z = z.value
         return np.multiply(self.K.value, np.ones_like(z))
+
         
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
