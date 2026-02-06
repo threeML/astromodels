@@ -724,10 +724,6 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
             self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
 
-            #Check if we have CAR coordinates
-            fits_coord = f[int(self.ihdu.value)].header["CTYPE1"]
-            if len(fits_coord.split("-"))<2 or fits_coord.split("-")[1] != "CAR" :
-                raise ValueError(f"The coord sys of the fits file ({fits_coord}) is not supported by SpatialTemplate_2D class (only CAR).")
             
             # note: map coordinates are switched compared to header. NAXIS1 is
             # coordinate 1, not 0. see
@@ -746,18 +742,13 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             )
 
             # test if the map is normalized as expected
-            area_deg2 = wcs.utils.proj_plane_pixel_area(self._wcs) * u.deg**2
-            d_lon = np.sqrt(area_deg2).to(u.rad).value
-            
-            #For CAR, pixels are rectangular and constant
-            #we assume CAR coordinates in the fits file
-            d_lat = d_lon
-            
-            y, x = np.mgrid[:self._nY, :self._nX]
-            lon, lat = self._wcs.pixel_to_world_values(x, y)
-            dOmega = np.cos(np.deg2rad(lat)) * d_lon * d_lat  #dOmega = cos(b) x db x dl
-            total = np.sum(self._map * dOmega)
+            area = wcs.utils.proj_plane_pixel_area(self._wcs)
+            dOmega = (area * u.deg * u.deg).to(u.sr).value
+            total = self._map.sum() * dOmega
 
+            log.warning("SpatialTemplate_2D is accurates for only small region model"
+                       +" please consider using SpatialTemplate_2D_Healpix otherwise")
+        
             if not np.isclose(total, 1, rtol=1e-2):
                 log.warning(
                     "2D template read from {} is normalized to {} (expected: 1)".format(
