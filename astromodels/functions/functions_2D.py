@@ -859,11 +859,6 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
             desc: hash of model map
             initial value: 1
             fix: yes
-        ihdu:
-            desc: header unit index of fits file
-            initial value: 0
-            fix: True
-            min: 0
             
     properties:
         fits_file:
@@ -909,7 +904,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
     
 
-    def evaluate(self, x, y, K,hash,ihdu):
+    def evaluate(self, x, y, K,hash):
 
        
          # X and Y are defined by the frame (ICRS,galactic, etc..)
