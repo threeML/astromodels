@@ -1,21 +1,18 @@
 from builtins import object
+from typing import NamedTuple
 
 __author__ = "giacomov"
 
 import collections
+import numpy as np
 
 import astropy.units as u
 
+from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.pretty_list import dict_to_list
+from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 
 # This module keeps the configuration of the units used in astromodels
-
-# Pre-defined values
-
-_ENERGY = u.keV
-_TIME = u.s
-_ANGLE = u.deg
-_AREA = u.cm**2
 
 
 class UnknownUnit(Exception):
@@ -59,24 +56,36 @@ class _AstromodelsUnits(object):
     in astromodels."""
 
     def __init__(
-        self, energy_unit=None, time_unit=None, angle_unit=None, area_unit=None
+        self,
+        energy_unit=None,
+        time_unit=None,
+        angle_unit=None,
+        solid_angle_unit=None,
+        area_unit=None,
+        frame=None,
     ):
-
+        # TODO assert physical types!
         if energy_unit is None:
-            energy_unit = _ENERGY
+            energy_unit = u.Unit(astromodels_config.units.energy)
         if time_unit is None:
-            time_unit = _TIME
+            time_unit = u.Unit(astromodels_config.units.time)
         if angle_unit is None:
-            angle_unit = _ANGLE
+            angle_unit = u.Unit(astromodels_config.units.angle)
+        if solid_angle_unit is None:
+            solid_angle_unit = u.Unit(astromodels_config.units.solid_angle)
         if area_unit is None:
-            area_unit = _AREA
+            area_unit = u.Unit(astromodels_config.units.area)
+        if frame is None:
+            frame = astromodels_config.units.frame
 
         self._units = collections.OrderedDict()
 
         self._units["energy"] = energy_unit
         self._units["time"] = time_unit
         self._units["angle"] = angle_unit
+        self._units["solid_angle"] = solid_angle_unit
         self._units["area"] = area_unit
+        self._units["frame"] = frame
 
     # This __new__ method add the properties to the class. We could have achieved the
     # same with a metaclass, but this method is more clearer, for a tiny performance
@@ -88,7 +97,9 @@ class _AstromodelsUnits(object):
         cls.energy = property(*(cls._create_property("energy")))
         cls.time = property(*(cls._create_property("time")))
         cls.angle = property(*(cls._create_property("angle")))
+        cls.solid_angle = property(*(cls._create_property("solid_angle")))
         cls.area = property(*(cls._create_property("area")))
+        cls.frame = property(*(cls._create_property("frame")))
 
         obj = super(_AstromodelsUnits, cls).__new__(cls)
 
@@ -112,12 +123,12 @@ class _AstromodelsUnits(object):
             )
 
         # This allows to use strings in place of Unit instances as new_unit
-
-        new_unit = u.Unit(new_unit)
+        if isinstance(old_unit, u.Quantity):
+            new_unit = u.Unit(new_unit)
 
         # Check that old and new unit are for the appropriate quantity
-
-        _check_unit(new_unit, old_unit)
+        if not what == "frame":
+            _check_unit(new_unit, old_unit)
 
         # set the new unit
         self._units[what] = new_unit
@@ -167,6 +178,11 @@ class _AstromodelsUnits(object):
 # class
 
 
+class Bounds(NamedTuple):
+    lower_bound: float
+    upper_bound: float
+
+
 class _AstromodelsUnitsFactory(object):
 
     _instance = None
@@ -179,6 +195,16 @@ class _AstromodelsUnitsFactory(object):
 
             self._instance = _AstromodelsUnits(*args, **kwds)
 
+            # set the angular separation function and angle bounds for the session
+            if str(self._instance.angle) == "deg":
+                self._angular_separation = angular_distance
+                self._lon_bounds = Bounds(0, 360)
+                self._lat_bounds = Bounds(-90, 90)
+            elif str(self._instance.angle) == "rad":
+                self._angular_separation = angular_distance_rad
+                self._lon_bounds = Bounds(0, 2 * np.pi)
+                self._lat_bounds = Bounds(-np.pi / 2, np.pi / 2)
+
             return self._instance
 
         else:
@@ -187,7 +213,16 @@ class _AstromodelsUnitsFactory(object):
 
             return self._instance
 
+    def angular_separation(self, a, b, x, z):
+        return self._angular_separation(a, b, x, z)
 
-# Create the factory to be used in the program
+    @property
+    def lon_bounds(self):
+        return self._lon_bounds
+
+    @property
+    def lat_bounds(self):
+        return self._lat_bounds
+
 
 get_units = _AstromodelsUnitsFactory()

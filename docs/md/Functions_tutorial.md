@@ -116,7 +116,7 @@ powerlaw_instance.K.free = True
 powerlaw_instance.K.display()
 ```
 
-## Using physical units
+## Using physical units  [//]: # ( TODO: add a linkt to the Units notebook here )
 
 Astromodels uses the facility defined in astropy.units to make easier to convert between units during interactive analysis, when assigning to parameters. In order for functions to be aware of their units, they must be part of a ```Source``. Let's create one:
 

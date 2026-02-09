@@ -60,7 +60,9 @@ class ExtendedSource(Source, Node):
                 component.shape.set_units(current_u.energy, diff_flux_units)
 
             # Set the units of the brightness
-            spatial_shape.set_units(current_u.angle, current_u.angle, u.sr**-1)
+            spatial_shape.set_units(
+                current_u.angle, current_u.angle, current_u.solid_angle ** (-1)
+            )
 
         elif spatial_shape.n_dim == 3:
 
@@ -77,8 +79,12 @@ class ExtendedSource(Source, Node):
 
                 # set the units
                 diff_flux_units = (
-                    current_u.energy * current_u.area * current_u.time * u.sr
+                    current_u.energy
+                    * current_u.area
+                    * current_u.time
+                    * current_u.solid_angle
                 ) ** (-1)
+
                 spatial_shape.set_units(
                     current_u.angle,
                     current_u.angle,
@@ -143,11 +149,7 @@ class ExtendedSource(Source, Node):
         self._spatial_shape = spatial_shape
         self._add_child(self._spatial_shape)
 
-        # Add the same node also with the name of the function
-        # self._add_child(self._shape, self._shape.__name__)
-
         # Add a node called 'spectrum'
-
         spectrum_node = Node("spectrum")
         spectrum_node._add_children(list(self._components.values()))
 
@@ -227,14 +229,14 @@ class ExtendedSource(Source, Node):
             # We need to sum like this (slower) because using np.sum will not preserve
             # the units (thanks astropy.units)
 
-            differential_flux = sum(results)
+            differential_flux = np.atleast_1d(sum(results))
 
         else:
 
             # Fast version without units, where x is supposed to be in the same units as
             # currently defined in units.get_units()
 
-            differential_flux = np.sum(results, 0)
+            differential_flux = np.atleast_1d(np.sum(results, 0))
 
         # Get brightness from spatial model
 

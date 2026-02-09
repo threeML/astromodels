@@ -983,7 +983,7 @@ def test_time_domain_integration():
 
     src = PointSource("test", ra=0.0, dec=0.0, spectral_shape=po)
 
-    m = Model(src)  # type: model.Model
+    m = Model(src)  # type: Model
 
     # Add time independent variable
     time = IndependentVariable("time", 0.0, u.s)

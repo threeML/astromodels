@@ -7,9 +7,10 @@ from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
 
 from astromodels.functions.function import Function2D, FunctionMeta
-from astromodels.utils.angular_distance import angular_distance
+from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
+from astromodels.core.units import get_units
 
 log = setup_logger(__name__)
 
@@ -71,6 +72,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         self.l_max.unit = y_unit
 
     def evaluate(self, x, y, K, sigma_b, l_min, l_max):
+        # TODO: make this comptabile with other frames
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
@@ -138,9 +140,9 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional Gaussian function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180^\circ}{\pi}\right)^2 \frac{1}{2\pi
-            \sqrt{\det{\Sigma}}} \, {\rm exp}\left( -\frac{1}{2} (\vec{x}-
-            \vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}-\vec{x}_0)\right) \\
+    latex : $$ f(\vec{x}) = \frac{1}{2\pi\sqrt{\det{\Sigma}}} \, {\rm exp}\left(
+            -\frac{1}{2} (\vec{x}-\vec{x}_0)^\intercal \cdot \Sigma^{-1}\cdot (\vec{x}
+            -\vec{x}_0)\right) \\
             \vec{x}_0 = ({\rm RA}_0,{\rm Dec}_0)\\ \Lambda = \left( \begin{array}{cc}
             \sigma^2 & 0 \\ 0 & \sigma^2 (1-e^2) \end{array}\right) \\ U = \left(
             \begin{array}{cc} \cos \theta & -\sin \theta \\ \sin \theta & cos \theta
@@ -149,30 +151,28 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     parameters :
 
         lon0 :
-
             desc : Longitude of the center of the source
             initial value : 0.0
             min : 0.0
             max : 360.0
 
         lat0 :
-
             desc : Latitude of the center of the source
             initial value : 0.0
             min : -90.0
             max : 90.0
 
         sigma :
-
             desc : Standard deviation of the Gaussian distribution
-            initial value : 10
+            initial value : 1
             min : 0
             max : 20
 
     """
 
-    def _set_units(self, x_unit, y_unit, z_unit):
+    # NOTE: changed the default values
 
+    def _set_units(self, x_unit, y_unit, z_unit):
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
         # let's set them up here just to save for the possibility of using the
         # formula with other units (although it is probably never going to happen)
@@ -184,50 +184,60 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, lon0, lat0, sigma):
 
         lon, lat = x, y
-
-        angsep = angular_distance(lon0, lat0, lon, lat)
-
         s2 = sigma**2
+        d = get_units.angular_separation(lon0, lat0, lon, lat)  # this calls the correct
 
-        return (
-            (180 / np.pi) ** 2 * 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * angsep**2 / s2)
-        )
+        return 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * d**2 / s2)
 
     def get_boundaries(self):
 
-        # Truncate the gaussian at 2 times the max of sigma allowed
+        # this should take care of the max and min values
+        angle_unit = get_units().angle
+        self.set_units(angle_unit, angle_unit, angle_unit)
 
+        lon_lb = 0.0
+        if angle_unit == u.deg:
+            lat_lb = -90.0
+            lat_hb = 90.0
+            lon_hb = 360.0
+        elif angle_unit == u.rad:
+            lat_lb = -np.pi / 2
+            lat_hb = np.pi / 2
+            lon_hb = 2 * np.pi
+
+        # Truncate the gaussian at 2 times the max of sigma allowed
         max_sigma = self.sigma.max_value
 
-        min_lat = max(-90.0, self.lat0.value - 2 * max_sigma)
-        max_lat = min(90.0, self.lat0.value + 2 * max_sigma)
+        min_lat = max(lat_lb, self.lat0.value - 2 * max_sigma)
+        max_lat = min(lat_hb, self.lat0.value + 2 * max_sigma)
 
         max_abs_lat = max(np.absolute(min_lat), np.absolute(max_lat))
+        max_abs_lat_curr = max_abs_lat
+
+        if angle_unit == u.deg:
+            # max_abs_lat is only used in np trigonometric functions so always in rad
+            max_abs_lat = np.deg2rad(max_abs_lat)
 
         if (
-            max_abs_lat > 89.0
-            or 2 * max_sigma / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
+            max_abs_lat_curr > lat_hb
+            or 2 * max_sigma / np.cos(max_abs_lat) >= lon_hb / 2
         ):
 
-            min_lon = 0.0
-            max_lon = 360.0
+            min_lon = lon_lb
+            max_lon = lon_hb
 
         else:
 
-            min_lon = self.lon0.value - 2 * max_sigma / np.cos(
-                max_abs_lat * np.pi / 180.0
-            )
-            max_lon = self.lon0.value + 2 * max_sigma / np.cos(
-                max_abs_lat * np.pi / 180.0
-            )
+            min_lon = self.lon0.value - 2 * max_sigma / np.cos(max_abs_lat)
+            max_lon = self.lon0.value + 2 * max_sigma / np.cos(max_abs_lat)
 
-            if min_lon < 0.0:
+            if min_lon < lon_lb:
 
-                min_lon = min_lon + 360.0
+                min_lon = min_lon + lon_hb
 
-            elif max_lon > 360.0:
+            elif max_lon > lon_hb:
 
-                max_lon = max_lon - 360.0
+                max_lon = max_lon - lon_hb
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
@@ -292,10 +302,6 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
-        # lon0 and lat0 and a have most probably all units of degrees. However,
-        # let's set them up here just to save for the possibility of using the
-        # formula with other units (although it is probably never going to happen)
-
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
         self.a.unit = x_unit
@@ -307,9 +313,12 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         lon, lat = x, y
 
         b = a * np.sqrt(1.0 - e**2)
-
-        dX = np.atleast_1d(angular_distance(lon0, lat0, lon, lat0))
-        dY = np.atleast_1d(angular_distance(lon0, lat0, lon0, lat))
+        if get_units().angle in [u.deg, "deg"]:
+            dX = np.atleast_1d(angular_distance(lon0, lat0, lon, lat0))
+            dY = np.atleast_1d(angular_distance(lon0, lat0, lon0, lat))
+        elif get_units().angle in [u.rad, "rad"]:
+            dX = np.atleast_1d(angular_distance_rad(lon0, lat0, lon, lat0))
+            dY = np.atleast_1d(angular_distance_rad(lon0, lat0, lon0, lat))
 
         dlon = lon - lon0
         if isinstance(dlon, u.Quantity):
@@ -400,7 +409,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         A bidimensional disk/tophat function on a sphere (in spherical coordinates)
 
-    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^2 \frac{1}{\pi~({\rm
+    latex : $$ f(\vec{x}) = \frac{1}{\pi~({\rm
             radius})^2} ~\left\{\begin{matrix} 1 & {\rm if}& {\rm | \vec{x} - \vec{x}_0|
             \le {\rm radius}} \\ 0 & {\rm if}& {\rm | \vec{x} - \vec{x}_0| > {\rm
             radius}} \end{matrix}\right. $$
@@ -424,7 +433,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         radius :
 
             desc : Radius of the disk
-            initial value : 15
+            initial value : 1
             min : 0
             max : 20
 
@@ -443,10 +452,8 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, lon0, lat0, radius):
 
         lon, lat = x, y
-
-        angsep = angular_distance(lon0, lat0, lon, lat)
-
-        return np.power(180 / np.pi, 2) * 1.0 / (np.pi * radius**2) * (angsep <= radius)
+        angsep = get_units.angular_separation(lon0, lat0, lon, lat)
+        return 1.0 / (np.pi * radius**2) * (angsep <= radius)
 
     def get_boundaries(self):
 
@@ -454,14 +461,19 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
 
         max_radius = self.radius.max_value
 
-        min_lat = max(-90.0, self.lat0.value - 2 * max_radius)
-        max_lat = min(90.0, self.lat0.value + 2 * max_radius)
+        min_lat = max(
+            get_units.lat_bounds.lower_bound, self.lat0.value - 2 * max_radius
+        )
+        max_lat = min(
+            get_units.lat_bounds.upper_bound, self.lat0.value + 2 * max_radius
+        )
 
         max_abs_lat = max(np.absolute(min_lat), np.absolute(max_lat))
 
         if (
-            max_abs_lat > 89.0
-            or 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.0) >= 180.0
+            max_abs_lat > get_units.lat_bounds.upper_bound * 89 / 90
+            or 2 * max_radius / np.cos(max_abs_lat * np.pi / 180.0)
+            >= 180.0  # TODO: fix that
         ):
 
             min_lon = 0.0
@@ -660,15 +672,15 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
 class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
     r"""
     description :
+        User input normalized Spatial Template.
+        Will be renormlized to the current astromodels angle unit.
 
-        User input Spatial Template.  Expected to be normalized to 1/sr
 
-    latex : $ hi $
+    latex : $ \mathrm{A normalized spatial template}$
 
     parameters :
 
         K :
-
             desc : normalization
             initial value : 1
             fix : yes
@@ -684,6 +696,9 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             min: 0
 
     properties:
+        normalize:
+            desc: bool if file should be normalized to the current angular unit
+            initial value: false
         fits_file:
             desc: fits file to load
             defer: True
@@ -691,26 +706,11 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         frame:
             desc: coordinate frame
             initial value: icrs
-            allowed values:
-            - icrs
-            - galactic
-            - fk5
-            - fk4
-            - fk4_no_e
     """
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
         self.K.unit = z_unit
-
-    # This is optional, and it is only needed if we need more setup after the
-    # constructor provided by the meta class
-
-    # def _setup(self):
-
-    # self._frame = "icrs"
-    # self._fitsfile = None
-    # self._map = None
 
     def _load_file(self):
 
@@ -720,6 +720,10 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
 
             self._wcs = wcs.WCS(header=f[int(self.ihdu.value)].header)
             self._map = f[int(self.ihdu.value)].data
+            if np.nan_to_num(self._map).sum() > 0:
+                log.warning("There are NaNs in your Map - will set them to 0")
+                self._map = np.nan_to_num(self._map, nan=0.0)
+                assert np.isnan(self._map).sum() == 0, "Failed"
 
             self._nX = f[int(self.ihdu.value)].header["NAXIS1"]
             self._nY = f[int(self.ihdu.value)].header["NAXIS2"]
@@ -729,28 +733,15 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             # http://docs.astropy.org/en/stable/io/fits/#working-with-image-data
             assert (
                 self._map.shape[1] == self._nX
-            ), "NAXIS1 = %d in fits header, but %d in map" % (
-                self._nX,
-                self._map.shape[1],
-            )
+            ), f"NAXIS1 = {self._nx} in fits header, but {self._map.shape[1]} in map"
             assert (
                 self._map.shape[0] == self._nY
-            ), "NAXIS2 = %d in fits header, but %d in map" % (
-                self._nY,
-                self._map.shape[0],
-            )
+            ), f"NAXIS1 =  {self._ny} in fits header, but {self._map.shape[0]} in map"
 
-            # test if the map is normalized as expected
-            area = wcs.utils.proj_plane_pixel_area(self._wcs)
-            dOmega = (area * u.deg * u.deg).to(u.sr).value
-            total = self._map.sum() * dOmega
-
-            if not np.isclose(total, 1, rtol=1e-2):
-                log.warning(
-                    "2D template read from {} is normalized to {} (expected: 1)".format(
-                        self._fitsfile, total
-                    )
-                )
+            if self.normalize.value.lower() == "true":
+                self._normalize_map()
+            else:
+                self._check_normalize()
 
             # hash sum uniquely identifying the template function (defined by its 2D map
             # array and coordinate system) this is needed so that the memoization won't
@@ -760,26 +751,36 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             h.update(repr(self._wcs).encode("utf-8"))
             self.hash = int(h.hexdigest(), 16)
 
-    # def to_dict(self, minimal=False):
+    def _check_normalize(self):
+        area = wcs.utils.proj_plane_pixel_area(self._wcs)
+        dOmega = (area * get_units().solid_angle).value
 
-    #      data = super(Function2D, self).to_dict(minimal)
+        total = np.nansum(self._map) * dOmega
 
-    #      if not minimal:
+        if not np.isclose(total, 1, rtol=1e-2):
+            log.warning(
+                f"2D template read from {self._fitsfile} is normalized to {total}\n"
+            )
+        return np.isclose(total, 1, rtol=1e-2)
 
-    #         data['extra_setup'] = {"_fitsfile": self._fitsfile,"_frame":self._frame}
+    def _normalize_map(self):
+        """
+        Normalizes the map to the provided unit - defaults to sr
+        """
 
-    #      return data
+        # test if the map is normalized as expected
+        if not self._check_normalize():
+            log.info(f"We will try to renormalize it to {get_units().solid_angle}")
 
-    # def set_frame(self, new_frame):
-    #     """
-    #         Set a new frame for the coordinates (the default is ICRS J2000)
+            area = wcs.utils.proj_plane_pixel_area(self._wcs)
+            dOmega = (area * get_units().angle ** 2).value
+            total = np.nansum(self._map) * dOmega
+            self._map = self._map / total
 
-    #         :param new_frame: a coordinate frame from astropy
-    #         :return: (none)
-    #         """
-    #     assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]
+            total = np.nan_to_num(self._map).sum() * dOmega  # should be 1 now
 
-    #     self._frame = new_frame
+            if not np.isclose(total, 1, rtol=1e-2):
+                raise ValueError("Rescaling did not work! Please recheck your map!")
 
     def evaluate(self, x, y, K, hash, ihdu):
 
@@ -802,10 +803,6 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         return np.multiply(K, out)
 
     def get_boundaries(self):
-
-        # if self._map is None:
-
-        #     self.load_file(self._fitsfile)
 
         # We use the max/min RA/Dec of the image corners to define the boundaries.
         # Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed
@@ -838,6 +835,14 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
         if isinstance(z, u.Quantity):
             z = z.value
         return np.multiply(self.K.value, np.ones_like(z))
+
+    @property
+    def wcs(self):
+        return self._wcs
+
+    @property
+    def map(self):
+        return self._map
 
 
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
@@ -954,78 +959,3 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
         if isinstance(z, u.Quantity):
             z = z.value
         return np.ones_like(z)
-
-
-# class FunctionIntegrator(Function2D):
-#     r"""
-#         description :
-#
-#             Returns the average of the integrand function (a 1-d function) over the
-#             interval x-y. The integrand is set
-#             using the .integrand property, like in:
-#
-#             > G = FunctionIntegrator()
-#             > G.integrand = Powerlaw()
-#
-#         latex : $$ G(x,y) = \frac{\int_{x}^{y}~f(x)~dx}{y-x}$$
-#
-#         parameters :
-#
-#             s :
-#
-#                 desc : if s=0, then the integral will *not* be normalized by (y-x),
-#                        otherwise (default) it will.
-#                 initial value : 1
-#                 fix : yes
-#         """
-#
-#     __metaclass__ = FunctionMeta
-#
-#     def _set_units(self, x_unit, y_unit, z_unit):
-#
-#         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
-#         # let's set them up here just to save for the possibility of using the
-#         # formula with other units (although it is probably never going to happen)
-#
-#         self.s = u.dimensionless_unscaled
-#
-#     def evaluate(self, x, y, s):
-#
-#         assert y-x >= 0, "Cannot obtain the integral if the integration interval is
-#                           zero or negative!"
-#
-#         integral = self._integrand.integral(x, y)
-#
-#         if s==0:
-#
-#             return integral
-#
-#         else:
-#
-#             return integral / (y-x)
-#
-#
-#     def get_boundaries(self):
-#
-#         return (-np.inf, +np.inf), (-np.inf, +np.inf)
-#
-#     def _set_integrand(self, function):
-#
-#         self._integrand = function
-#
-#     def _get_integrand(self):
-#
-#         return self._integrand
-#
-#     integrand = property(_get_integrand, _set_integrand,
-#                          doc="""Get/set the integrand""")
-#
-#
-#     def to_dict(self, minimal=False):
-#
-#         data = super(Function2D, self).to_dict(minimal)
-#
-#         if not minimal:
-#             data['extra_setup'] = {'integrand': self.integrand.path}
-#
-#         return data
