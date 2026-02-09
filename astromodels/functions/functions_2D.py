@@ -72,6 +72,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         self.l_max.unit = y_unit
 
     def evaluate(self, x, y, K, sigma_b, l_min, l_max):
+        # TODO: make this comptabile with other frames
 
         # We assume x and y are R.A. and Dec
         _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
@@ -154,23 +155,22 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
             initial value : 0.0
             min : 0.0
             max : 360.0
-            unit: deg
 
         lat0 :
             desc : Latitude of the center of the source
             initial value : 0.0
             min : -90.0
             max : 90.0
-            unit: deg
 
         sigma :
             desc : Standard deviation of the Gaussian distribution
-            initial value : 10
+            initial value : 1
             min : 0
             max : 20
-            unit: deg
 
     """
+
+    # NOTE: changed the default values
 
     def _set_units(self, x_unit, y_unit, z_unit):
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
@@ -185,7 +185,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         lon, lat = x, y
         s2 = sigma**2
-        d = get_units.angular_separation(lon0, lat0, lon, lat)
+        d = get_units.angular_separation(lon0, lat0, lon, lat)  # this calls the correct
 
         return 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * d**2 / s2)
 
@@ -433,7 +433,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
         radius :
 
             desc : Radius of the disk
-            initial value : 15
+            initial value : 1
             min : 0
             max : 20
 
@@ -452,9 +452,7 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, lon0, lat0, radius):
 
         lon, lat = x, y
-
         angsep = get_units.angular_separation(lon0, lat0, lon, lat)
-
         return 1.0 / (np.pi * radius**2) * (angsep <= radius)
 
     def get_boundaries(self):
