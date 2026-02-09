@@ -844,14 +844,11 @@ def test_function2D():
         assert np.allclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
 
     # TODO: need solution for set_units
-    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
+    c.set_units(u.deg, u.deg, u.deg**-2)
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
 
-    if get_units().solid_angle == u.sr:
-        assert np.isclose(f1d, 5.17276409 / (180 / np.pi) ** 2 * u.sr**-1, rtol=1e-10)
-    elif get_units().solid_angle == u.deg**2:
-        assert np.isclose(f1d, 5.17276409 * u.deg**-2, rtol=1e-10)
+    assert np.isclose(f1d, 5.17276409 * u.deg**-2, rtol=1e-10)
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
