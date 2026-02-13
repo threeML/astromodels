@@ -124,3 +124,7 @@ def test_unpolarized():
 
     mp.display()
     temp_path.unlink()
+
+    assert ps.spectrum.main(1, stokes="Q") == ps.spectrum.main(
+        1
+    ), "Unpolarized changes the value!"
