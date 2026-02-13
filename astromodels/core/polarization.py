@@ -153,6 +153,12 @@ class StokesPolarization(Polarization):
 #         #angle = 0.5 * np.arctan2(se)
 #
 #
+class Unpolarized(Polarization):
+    def __init__(self):
+        super(Unpolarized, self).__init__(polarization_type="unpolarized")
+
+    def __call__(self, *args, **kwargs):
+        return 1
 
 
 class StokesParameter(Node):
