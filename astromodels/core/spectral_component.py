@@ -1,6 +1,6 @@
 __author__ = "giacomov"
 
-from astromodels.core.polarization import Polarization
+from astromodels.core.polarization import Unpolarized
 from astromodels.core.tree import Node
 
 
@@ -25,7 +25,7 @@ class SpectralComponent(Node):
 
         if polarization is None:
 
-            self._polarization = Polarization()
+            self._polarization = Unpolarized()
 
         else:
 
