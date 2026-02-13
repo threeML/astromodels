@@ -103,13 +103,12 @@
 <div class="viewcode-block" id="Polarization">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Polarization">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Polarization</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_type</span><span class="o">=</span><span class="s2">&quot;unpolarized&quot;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">polarization_type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">):</span>
 
         <span class="k">assert</span> <span class="n">polarization_type</span> <span class="ow">in</span> <span class="p">[</span>
-            <span class="s2">&quot;unpolarized&quot;</span><span class="p">,</span>
             <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
             <span class="s2">&quot;stokes&quot;</span><span class="p">,</span>
-        <span class="p">],</span> <span class="s2">&quot;polarization must be unpolarized, linear or stokes&quot;</span>
+        <span class="p">],</span> <span class="s2">&quot;polarization must be linear or stokes&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_polarization_type</span> <span class="o">=</span> <span class="n">polarization_type</span>
 
@@ -256,15 +255,6 @@
 <span class="c1">#         #angle = 0.5 * np.arctan2(se)</span>
 <span class="c1">#</span>
 <span class="c1">#</span>
-<div class="viewcode-block" id="Unpolarized">
-<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Unpolarized">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Unpolarized</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Unpolarized</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">polarization_type</span><span class="o">=</span><span class="s2">&quot;unpolarized&quot;</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">1</span></div>
-
 
 
 <div class="viewcode-block" id="StokesParameter">
