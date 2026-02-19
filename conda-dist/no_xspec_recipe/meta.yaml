@@ -10,19 +10,13 @@ source:
 
 requirements:
   build:
-    #- {{ compiler('c') }} # [linux]
-    #- {{ compiler('cxx') }} # [linux]
-    #- {{ compiler('fortran') }} # [linux]
-    #- krb5==1.14.6
-
 
   host:
-    - python<=2.7.16 # [py2k]
-    - python # [py3k]
+    - python {{ python }}
     - setuptools
     - pip
     - numpy
-    - pyyaml>=5.1
+    - pyyaml>=5.3
     - astropy
     #- scipy
     - numdifftools
@@ -31,7 +25,7 @@ requirements:
     - pandas>=0.23
     - future
     #- krb5==1.14.6
-    - numba
+    - numba>=0.54
     - h5py
 
   run:
@@ -52,9 +46,8 @@ requirements:
     - rich
     
 build:
-  script: python -m pip install --verbose --no-deps --ignore-installed .
-  skip: true  # [win]
-  #skip: true  # [py3k]
+  script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
+  skip: true
 
 test:
   # Python imports

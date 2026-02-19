@@ -10,23 +10,14 @@ source:
 
 requirements:
   build:
-    - python
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-    - xspec==12.15.1
-    - versioneer
-    - setuptools
-    - pip
-    - numpy
 
   host:
-    - python
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - setuptools
+    - python {{ python }}
     - pip
+    - setuptools
     - numpy
     - pyyaml>=5.1
     - pandas>=0.23
@@ -38,11 +29,10 @@ requirements:
     - omegaconf
     - rich
     - joblib
-    - versioneer
-    
+
   run:
     - python
-    - numpy>1.6
+    - numpy
     - pyyaml>=5.1
     - astropy>=1.2
     - scipy>=0.14
@@ -56,32 +46,11 @@ requirements:
     - omegaconf
     - rich
     - joblib
-    - versioneer
-    
+    - xspec==12.15.1    
+
 build:
   script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
-#  skip: true  # [py3k]
-
-#test:
-#  # Python imports
-#  imports:
-#    - astromodels
-#    - astromodels.core
-#    - astromodels.functions
-#    - astromodels.functions.dark_matter
-#    - astromodels.sources
-#    - astromodels.utils
-#    - astromodels.xspec
-
-#  commands:
-#    - pytest -vv --pyargs {{ name }}
-
-  # You can also put a file called run_test.py in the recipe that will be run
-  # at test time.
-
-#  requires:
-#    - xspec-modelsonly
 
 
 about:

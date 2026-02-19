@@ -75,7 +75,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
-                python-version: [3.9, 3.11]
+                python-version: [3.11]
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -138,8 +138,7 @@ jobs:
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  #conda build --python=${{matrix.python-version}} conda-dist/recipe
-                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
+                  conda mambabuild conda-dist/recipe
 
                   ls -l ${CONDA}/envs/test_env/conda-bld/*/*
 
@@ -171,7 +170,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
-                python-version: [3.9, 3.11]
+                python-version: [3.11]
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -226,8 +225,7 @@ jobs:
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  #conda build --python=${{matrix.python-version}} conda-dist/recipe
-                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
+                  conda mambabuild conda-dist/recipe
 
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
             - name: Install it
