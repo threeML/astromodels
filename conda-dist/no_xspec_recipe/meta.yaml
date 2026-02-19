@@ -5,7 +5,6 @@ package:
   version: {{ os.environ.get('PKG_VERSION') }}
 
 source:
-#  git_url: https://github.com/threeml/{{ name }}.git
   path: ../../
 
 requirements:
@@ -22,26 +21,22 @@ requirements:
     - numdifftools
     #- hdf5
     - pytables
-    - pandas>=0.23
+    - pandas
     - future
-    #- krb5==1.14.6
-    - numba>=0.54
+    - numba
     - h5py>=3.9
 
   run:
     - python
     - numpy
-    - pyyaml>=5.3
+    - pyyaml
     - astropy
-    #- scipy
     - numdifftools
-    #- hdf5
     - pytables
-    - pandas>=0.23
+    - pandas
     - dill
     - future
-    #- krb5==1.14.6
-    - numba>=0.54
+    - numba
     - h5py>=3.9
     - rich
     
