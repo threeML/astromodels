@@ -185,7 +185,7 @@ def test_call():
 
         this_function = _known_functions[key]
 
-        if key in ["SpatialTemplate_2D"]:
+        if key in ["SpatialTemplate_2D","SpatialTemplate_2D_Healpix"]:
 
             test_one(this_function, key)
 
@@ -303,7 +303,7 @@ def test_call_with_units():
 
         this_function = _known_functions[key]
 
-        if key in ["SpatialTemplate_2D"]:
+        if key in ["SpatialTemplate_2D","SpatialTemplate_2D"]:
 
             test_one(this_function, key)
 
