@@ -244,7 +244,7 @@ class FunctionMeta(type):
 
                 if parameter_name in dct["_properties"]:
 
-                    log.error("you must specify unique parameters and propert names")
+                    log.error("You must specify unique parameters and property names")
 
                     raise DesignViolation()
 
