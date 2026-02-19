@@ -143,10 +143,6 @@ jobs:
                   ls -l ${CONDA}/envs/test_env/conda-bld/*/*
 
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
-            - name: List Builds
-              shell: bash -l {0}
-              run: |
-                  ls ${CONDA}/envs/test_env/conda-bld/
             - name: Install it
               shell: bash -l {0}
               run: |
