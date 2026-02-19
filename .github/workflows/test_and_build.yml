@@ -55,13 +55,9 @@ jobs:
                   then
                     brew update
                     brew install hdf5 lzo c-blosc
-                  else
-                    apt-get update
-                    apt-get install -y --no-install-recommends libhdf5-dev
                   fi
 
                   pip install git+https://github.com/PyTables/PyTables.git
-
 
                   pip install -e .
             - name: Lint with flake8
@@ -105,7 +101,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
-                python-version: [3.9, 3.10, 3.11, 3.12, 3.13, 3.14]
+                python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
                 env-file: [ci/environment.yml,ci/environment_heasoft.yml]
         runs-on: ${{ matrix.os }}
         steps:
@@ -128,11 +124,11 @@ jobs:
                   # Make sure we fail in case of error
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
-                  miniconda_os=Linux
-                  compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
+                    miniconda_os=Linux
+                    compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
                   else  # osx
-                  miniconda_os=MacOSX
-                  compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
+                    miniconda_os=MacOSX
+                    compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
 
                   # On macOS we also need the conda libx11 libraries used to build xspec
                   # We also need to pin down ncurses, for now only on macos.
