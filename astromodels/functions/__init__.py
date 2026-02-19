@@ -132,6 +132,7 @@ __all__ = [
     "Latitude_galactic_diffuse",
     "Power_law_on_sphere",
     "SpatialTemplate_2D",
+    "SpatialTemplate_2D_Healpix",
     "Continuous_injection_diffusion",
     "Continuous_injection_diffusion_ellipse",
     "Continuous_injection_diffusion_legacy",
