@@ -16,16 +16,17 @@ __author__ = "henrikef"
 
 
 def make_test_healpix_template(fitsfile):
-    #Test template function with healpix map
-    skymap = HealpixMap(nside = 8, scheme = "ring", dtype = float, coordsys='G')
+    # Test template function with healpix map
+    skymap = HealpixMap(nside=8, scheme="ring", dtype=float, coordsys="G")
     skymap[:] = 1
-    
-    #normalise to the pixel area 
-    area = skymap.pixarea().value
-    skymap[:] = np.sum(skymap)/area
 
-    #write the fits file
-    skymap.write_map(fitsfile,overwrite=True)
+    # normalise to the pixel area
+    area = skymap.pixarea().value
+    skymap[:] = np.sum(skymap) / area
+
+    # write the fits file
+    skymap.write_map(fitsfile, overwrite=True)
+
 
 def make_test_template(ra, dec, fitsfile):
 
@@ -146,14 +147,14 @@ def test_call():
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.K = 1.0
-            
+
         if name == "SpatialTemplate_2D_Healpix":
             make_test_healpix_template("__test.fits")
             shape = class_type(fits_file="__test.fits")
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.K = 1.0
-    
+
         assert np.all(source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
         assert np.all(source.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
 
@@ -240,7 +241,7 @@ def test_call_with_units():
             )
 
             shape.K = 1.0
-            
+
         if name == "SpatialTemplate_2D_Healpix":
             make_test_healpix_template("__test.fits")
 
@@ -252,7 +253,7 @@ def test_call_with_units():
             )
 
             shape.K = 1.0
-    
+
         assert np.all(
             source.spectrum.component1([1, 2, 3] * u.keV) == po1([1, 2, 3] * u.keV)
         )
