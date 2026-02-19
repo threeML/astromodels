@@ -10,10 +10,15 @@ source:
 
 requirements:
   build:
+    - python
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-
+    - xspec==12.15.1
+    - versioneer
+    - setuptools
+    - pip
+    - numpy
   host:
     - python {{ python }}
     - pip
