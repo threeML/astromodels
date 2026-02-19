@@ -736,7 +736,7 @@ class SourceParser(object):
 
             # just make a default polarization
 
-            this_polarization = polarization.Polarization()
+            this_polarization = polarization.Unpolarized()
             # raise ModelSyntaxError("Polarization specification for source %s has an
             # invalid parameters. You need to specify either 'angle' and 'degree', or
             # 'I' ,'Q', 'U' and 'V'." % self._source_name)
@@ -790,7 +790,7 @@ class SourceParser(object):
 
         else:
 
-            this_polarization = polarization.Polarization()
+            this_polarization = polarization.Unpolarized()
 
         this_spectral_component = spectral_component.SpectralComponent(
             component_name, shape, this_polarization
