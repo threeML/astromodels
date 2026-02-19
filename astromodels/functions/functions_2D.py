@@ -891,7 +891,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
         if not np.isclose(total, 1, rtol=1e-2):
             log.warning(
-                "2D template read from HealPixMap is normalized to {} (expected: 1)".format(
+                "2D template is normalized to {} (expected: 1)".format(
                     total
                 )
             )
