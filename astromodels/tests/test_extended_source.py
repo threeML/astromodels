@@ -17,7 +17,7 @@ __author__ = "henrikef"
 
 def make_test_healpix_template(fitsfile):
     # Test template function with healpix map
-    skymap = HealpixMap(nside=8, scheme="ring", dtype=float, coordsys="G")
+    skymap = HealpixMap(nside=8, scheme="ring", dtype=float)
     skymap[:] = 1
 
     # normalise to the pixel area
