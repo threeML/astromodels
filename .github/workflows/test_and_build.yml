@@ -55,7 +55,13 @@ jobs:
                   then
                     brew update
                     brew install hdf5 lzo c-blosc
+                  else
+                    apt-get update
+                    apt-get install -y --no-install-recommends libhdf5-dev
                   fi
+
+                  pip install git+https://github.com/PyTables/PyTables.git
+
 
                   pip install -e .
             - name: Lint with flake8
@@ -132,6 +138,10 @@ jobs:
                   # We also need to pin down ncurses, for now only on macos.
                   xorg="xorg-libx11"
                   fi
+
+                  mamba install h5py c-blosc2
+
+                  pip install git+https://github.com/PyTables/PyTables.git
 
 
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
