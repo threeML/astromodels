@@ -741,20 +741,10 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                 self._map.shape[0],
             )
 
-            # test if the map is normalized as expected
-            # area = wcs.utils.proj_plane_pixel_area(self._wcs)
-            # dOmega = (area * u.deg * u.deg).to(u.sr).value
-            # total = self._map.sum() * dOmega
-
-            area_deg2 = wcs.utils.proj_plane_pixel_area(self._wcs) * u.deg**2
-            d_lon = np.sqrt(area_deg2).to(u.rad).value
-            d_lat = d_lon  # For CAR, pixels are rectangular and constant
-            y, x = np.mgrid[: self._nY, : self._nX]
-            lon, lat = self._wcs.pixel_to_world_values(x, y)
-            dOmega = (
-                np.cos(np.deg2rad(lat)) * d_lon * d_lat
-            )  # dOmega = cos(b) x db x dl
-            total = np.sum(self._map * dOmega)
+            log.warning(
+                "SpatialTemplate_2D is accurates for only small region model"
+                + " please consider using SpatialTemplate_2D_Healpix otherwise"
+            )
 
             if not np.isclose(total, 1, rtol=1e-2):
                 log.warning(
