@@ -741,6 +741,11 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
                 self._map.shape[0],
             )
 
+            # test if the map is normalized as expected
+            area = wcs.utils.proj_plane_pixel_area(self._wcs)
+            dOmega = (area * u.deg * u.deg).to(u.sr).value
+            total = self._map.sum() * dOmega
+
             log.warning(
                 "SpatialTemplate_2D is accurates for only small region model"
                 + " please consider using SpatialTemplate_2D_Healpix otherwise"
