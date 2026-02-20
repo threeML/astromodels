@@ -578,28 +578,14 @@ class SourceParser(object):
             ra = par_parser.get_variable()
 
             if ra.bounds == (None, None):
-                if get_units().angle == "deg":
-                    ra.bounds = (0, 360)
-                    assert ra.unit == "deg"
-                elif get_units().angle == "rad":
-                    ra.bounds = (0, 2 * np.pi)
-                    assert ra.unit == "rad"
-                else:
-                    raise NotImplementedError(
-                        f"The unit {get_units().angle} is not supported"
-                    )
+                ra.bounds = get_units.lon_bounds
 
             par_parser = ParameterParser("dec", sky_direction_definition["dec"])
 
             dec = par_parser.get_variable()
 
             if dec.bounds == (None, None):
-                if get_units().angle == "deg":
-                    dec.bounds = (-90, 90)
-                    assert dec.unit == "deg"
-                elif get_units().angle == "rad":
-                    dec.bounds = (-np.pi / 2, np.pi / 2)
-                    assert dec.unit == "rad"
+                dec.bounds = get_units.lat_bounds
 
             coordinates["ra"] = ra
             coordinates["dec"] = dec
