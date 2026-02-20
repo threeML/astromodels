@@ -170,12 +170,9 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
     """
 
-    # NOTE: changed the default values
-
     def _set_units(self, x_unit, y_unit, z_unit):
-        # lon0 and lat0 and rdiff have most probably all units of degrees. However,
-        # let's set them up here just to save for the possibility of using the
-        # formula with other units (although it is probably never going to happen)
+
+        assert x_unit == y_unit, "You can not mix angular units :("
 
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
@@ -185,7 +182,7 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
         lon, lat = x, y
         s2 = sigma**2
-        d = get_units.angular_separation(lon0, lat0, lon, lat)  # this calls the correct
+        d = get_units.angular_separation(lon0, lat0, lon, lat)
 
         return 1 / (2.0 * np.pi * s2) * np.exp(-0.5 * d**2 / s2)
 
@@ -195,16 +192,8 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
         angle_unit = get_units().angle
         self.set_units(angle_unit, angle_unit, angle_unit)
 
-        lon_lb = 0.0
-        if angle_unit == u.deg:
-            lat_lb = -90.0
-            lat_hb = 90.0
-            lon_hb = 360.0
-        elif angle_unit == u.rad:
-            lat_lb = -np.pi / 2
-            lat_hb = np.pi / 2
-            lon_hb = 2 * np.pi
-
+        lon_lb, lon_hb = get_units.lon_bounds
+        lat_lb, lat_hb = get_units.lat_bounds
         # Truncate the gaussian at 2 times the max of sigma allowed
         max_sigma = self.sigma.max_value
 
