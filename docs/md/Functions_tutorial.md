@@ -56,7 +56,7 @@ If you don’t remember the names of the parameters just call the .info() method
 
 ## Getting information about an instance
 
-Using the ```.display()``` method we get a representation of the instance which exploits the features of the environment we are using. If we are running inside a IPython notebook, a rich representation with the formula of the function will be displayed (if available). Otherwise, in a normal terminal, the latex formula will not be rendered:
+Using the `.display()` method we get a representation of the instance which exploits the features of the environment we are using. If we are running inside a IPython notebook, a rich representation with the formula of the function will be displayed (if available). Otherwise, in a normal terminal, the latex formula will not be rendered:
 
 ```python
 powerlaw_instance.display()
@@ -70,7 +70,7 @@ print(powerlaw_instance)
 
 <div class="alert alert-info">
 
-**Note:** the ```.display()``` method of an instance displays the current values of the parameters, while the .info() method demonstrated above (for which you don’t need an instance) displays the default values of the parameters.
+**Note:** the `.display()` method of an instance displays the current values of the parameters, while the .info() method demonstrated above (for which you don’t need an instance) displays the default values of the parameters.
 
 </div>
 
@@ -118,7 +118,21 @@ powerlaw_instance.K.display()
 
 ## Using physical units  [//]: # ( TODO: add a linkt to the Units notebook here )
 
-Astromodels uses the facility defined in astropy.units to make easier to convert between units during interactive analysis, when assigning to parameters. In order for functions to be aware of their units, they must be part of a ```Source``. Let's create one:
+Astromodels uses the facility defined in astropy.units to make easier to convert between units during interactive analysis, when assigning to parameters.
+In order for functions to be aware of their units, they must be part of a `Source`.
+Before creating one let's first have a look at a `Powerlaw` that is not assigned to a `Source`:
+
+```python
+a_simple_powerlaw = Powerlaw()
+powerlaw_instance.display()
+powerlaw_instance.x_unit
+powerlaw_instance.y_unit
+```
+
+See that the units are all empty?
+
+Now let's have a look at what happens when we assign the `Powerlaw` instance to a `PointSource`:
+
 
 ```python
 powerlaw_instance = Powerlaw()
@@ -191,7 +205,7 @@ crazy_function = 3 * Sin() + Powerlaw()**2 * (5+Gaussian()) / 3.0
 print(crazy_function.description)
 ```
 
-The numbers between ```{}``` enumerate the unique functions which constitute a composite function. This is useful because composite functions can be created starting from pre-existing instances of functions, in which case the same instance can be used more than once. For example:
+The numbers between `{}` enumerate the unique functions which constitute a composite function. This is useful because composite functions can be created starting from pre-existing instances of functions, in which case the same instance can be used more than once. For example:
 
 ```python
 a_powerlaw = Powerlaw()
@@ -227,7 +241,7 @@ To build a custom spectral 1D function in astromodels, we need to import a few t
 from astromodels.functions.function import Function1D, FunctionMeta, ModelAssertionViolation
 ```
 
-```Function1D``` is the base class for 1D spectral models and ```FunctionMeta``` is a python meta type class that ensures all the needed parts of a model are in the class as well as making the class function as it should.
+`Function1D` is the base class for 1D spectral models and `FunctionMeta` is a python meta type class that ensures all the needed parts of a model are in the class as well as making the class function as it should.
 
 
 There are three basic parts to declaring a model:
@@ -299,7 +313,7 @@ We have used the docstring interface to provide a YAML description of the functi
 - parameters
     - For each parameter, a description and initial value must be included. Transformations for fitting, min/max values and fixing the parameter can also be described here.
 
-Optionally, there can be an additional ```properties``` category that we will cover later.
+Optionally, there can be an additional `properties` category that we will cover later.
 
     
 Keep in mind that this is in YAML format.
@@ -475,7 +489,7 @@ f.switch = 'cosine'
 ```
 
 
-In the docstring, one can also specify ```defer: True``` which allows you to not set a value until instancing an object. This is useful if you have a model that reads in file at runtime, but the file name is not known until then. Check out the source code of astromodels to see how properties can be used to expand the functionality of your custom models. For example, the absorption models such as ```TbAbs``` take advantage of this to set their abundance tables.
+In the docstring, one can also specify `defer: True` which allows you to not set a value until instancing an object. This is useful if you have a model that reads in file at runtime, but the file name is not known until then. Check out the source code of astromodels to see how properties can be used to expand the functionality of your custom models. For example, the absorption models such as `TbAbs` take advantage of this to set their abundance tables.
 
 ### Linking functions
 
@@ -562,4 +576,6 @@ print(rs(10.))
 ```
 
 
-We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members ```f.link_external_function(func, 'internal_name')```  and ```f.unlink_external_function('internal_name')```. You can link as many functions as needed and they are accessed via an internal dictionary ```self._external_functions```. As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all the complexity you built. 
+We have added a lot of syntax sugar to make it easier for users to handle the function, but every function in astromodels has the members `f.link_external_function(func, 'internal_name')`  and `f.unlink_external_function('internal_name')`.
+You can link as many functions as needed and they are accessed via an internal dictionary `self._external_functions`.
+As long as all functions used are part of the model, all the linking is saved when a model is saved to disk allowing you to restore all the complexity you built. 
