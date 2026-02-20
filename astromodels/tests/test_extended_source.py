@@ -336,7 +336,8 @@ def test_extended_unit():
             energy = get_units().energy
             area = get_units().area ** -1
             time = get_units().time
-            spectrum.K = 1 * u.Unit(f"{energy}-1 {time}-1") * area
+            spectrum.K.max_value = 1e20  # the test config uses TeV-1 m-2 h-1 ...
+            spectrum.K = 1 * u.Unit("keV-1 cm-2 s-1")
             ra = np.zeros(1) * u.deg
             dec = np.zeros(1) * u.deg
             E = np.ones(1) * u.keV
