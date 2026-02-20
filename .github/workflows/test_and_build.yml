@@ -66,6 +66,10 @@ jobs:
             - name: Test pip on ${{ matrix.python-version }}
               run: |
                   python -m pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml
+
+                  # rerun with different config
+                  cp ci/config_test.yml $HOME/.config/astromodels
+                  python -m pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml --cov-append
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
@@ -162,7 +166,13 @@ jobs:
                 python -c "import astromodels.xspec"
             - name: Test astromodels
               shell: bash -l {0}
-              run: python -m pytest -vv --cov=astromodels --cov-report=xml
+              run: |
+                python -m pytest -vv --cov=astromodels --cov-report=xml
+
+                # rerun with different config
+                cp ci/config_test.yml $HOME/.config/astromodels
+                python -m pytest -vv --cov=astromodels --cov-report=xml --cov-append
+
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
