@@ -476,7 +476,6 @@ def test_function_meta():
             def evaluate(self, y, x, a, b, c):
                 return a * x + b
 
-
     with pytest.raises(AssertionError):
 
         # no parameters in the definition
@@ -870,30 +869,36 @@ def test_list_functions():
 def test_function2D():
 
     c = Gaussian_on_sphere()
+    if get_units().angle == u.deg:
+        f1 = c(1, 1)
+    elif get_units().angle == u.rad:
+        c.sigma.value = np.deg2rad(1)
+        f1 = c(np.deg2rad(1), np.deg2rad(1))
 
-    f1 = c(1, 1)
-    if get_units().solid_angle == u.sr:
-        assert np.isclose(f1, 5.17276409 / (180 / np.pi) ** 2, rtol=1e-10)
-    elif get_units().solid_angle == u.deg**2:
-        assert np.isclose(f1, 5.17276409, rtol=1e-10)
+    # separation to lon0,lat0: 1.4141776609521137deg
+    val = 1 / (2.0 * np.pi * c.sigma.value**2) * np.exp(-0.5 * 1.4141776609521137**2)
+    assert np.isclose(f1, val, rtol=1e-10)
 
     a = np.array([1.0, 2.0])
 
-    fa = c(a, a)
+    # separation to lon0,lat0 for 2deg : 2.8281398674429297deg
+    if get_units().angle == u.deg:
+        fa = c(a, a)
+    elif get_units().angle == u.rad:
+        fa = c(np.deg2rad(a), np.deg2rad(a))
 
-    if get_units().solid_angle == u.sr:
-        assert np.allclose(
-            fa, np.array([5.17276409, 5.01992404]) / (180 / np.pi) ** 2, rtol=1e-10
-        )
-    elif get_units().solid_angle == u.deg**2:
-        assert np.allclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
+    val2 = 1 / (2.0 * np.pi * c.sigma.value**2) * np.exp(-0.5 * 2.8281398674429297**2)
+    assert np.isclose(fa, np.array([val, val2]), rtol=1e-10).all()
 
-    # TODO: need solution for set_units
     c.set_units(u.deg, u.deg, u.deg**-2)
+    if get_units().angle == u.rad:
+        c.sigma.value = 1
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
 
-    assert np.isclose(f1d, 5.17276409 * u.deg**-2, rtol=1e-10)
+    val = 1 / (2.0 * np.pi) * np.exp(-0.5 * 1.4141776609521137**2)
+
+    assert np.isclose(f1d, val * u.deg**-2, rtol=1e-10)
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
@@ -902,9 +907,20 @@ def test_function2D():
     assert c.get_total_spatial_integral(1) == 1
     assert np.isclose(c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10).all()
 
+    c.set_units(u.deg, u.deg, u.sr**-1)
+
+    test_pos = np.deg2rad(1)
+    f1r = c(test_pos * u.rad, test_pos * u.rad)
+    print(f1r.to(u.deg**-2))
+    print(val * u.deg**-2)
+    assert np.isclose(f1r, val * u.deg**-2, rtol=1e-10)
+
     with pytest.raises(TypeError):
 
         c.set_units("not existent", u.deg, u.keV)
+
+    with pytest.raises(AssertionError):
+        c.set_units(u.deg, u.rad, u.deg**-2)
 
 
 def test_function3D():

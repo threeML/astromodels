@@ -1549,9 +1549,6 @@ class Function2D(Function):
         self._x_unit = None
         self._y_unit = None
         self._z_unit = None
-        self._factor = (
-            1.0  # this factor is used for rescaling when setting a custom z_unit
-        )
 
     def evaluate(self, x, y, *args):  # pragma: no cover
 
@@ -1686,7 +1683,7 @@ class Function2D(Function):
 
         else:
 
-            return results
+            return results.to(self.z_unit)
 
     @memoize
     def _call_without_units(self, x, y):
