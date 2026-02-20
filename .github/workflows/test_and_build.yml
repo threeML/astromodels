@@ -69,6 +69,7 @@ jobs:
 
                   # rerun with different config
                   cp ci/config_test.yml $HOME/.config/astromodels
+                  python -c "from astromodels.utils.configuration import astromodels_config; print(astromodels_config)"
                   python -m pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml --cov-append
               env:
                   OMP_NUM_THREADS: 1
@@ -171,6 +172,7 @@ jobs:
 
                 # rerun with different config
                 cp ci/config_test.yml $HOME/.config/astromodels
+                python -c "from astromodels.utils.configuration import astromodels_config; print(astromodels_config)"
                 python -m pytest -vv --cov=astromodels --cov-report=xml --cov-append
 
               env:
