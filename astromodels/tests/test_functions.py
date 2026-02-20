@@ -476,6 +476,51 @@ def test_function_meta():
             def evaluate(self, y, x, a, b, c):
                 return a * x + b
 
+
+    with pytest.raises(AssertionError):
+
+        # no parameters in the definition
+
+        class Wrong_test_function15(Function2D, metaclass=FunctionMeta):
+            """
+
+            description: useless
+
+            latex : $ a * x + b $
+
+            """
+
+            def _set_units(self, x_unit, y_unit, z_unit):
+                self.a.unit = y_unit / x_unit
+                self.b.unit = y_unit
+
+            def evaluate(self, y, x, a, b, c):
+                return a * x + b
+
+    with pytest.raises(AssertionError):
+
+        # no parameters in the definition
+
+        class Wrong_test_function16(Function2D, metaclass=FunctionMeta):
+            """
+
+            description: useless
+
+            latex : $ a * x + b $
+
+            parameters :
+
+                a
+
+            """
+
+            def _set_units(self, x_unit, y_unit, z_unit):
+                self.a.unit = y_unit / x_unit
+                self.b.unit = y_unit
+
+            def evaluate(self, y, x, a, b, c):
+                return a * x + b
+
     # A function with no latex formula (which is optional)
 
     class NoLatex_test_function11(Function1D, metaclass=FunctionMeta):

@@ -1496,8 +1496,6 @@ class Function1D(Function):
 
         # NOTE: it is important to use value, and not _value, to support linking
 
-        # values = list(map(attrgetter("value"), self._get_children()))
-
         values = list(map(attrgetter("value"), self._get_parameters()))
 
         return self.evaluate(x, *values)
@@ -1534,7 +1532,7 @@ class Function1D(Function):
 @nb.njit
 def _local_deriv(a, b, epsilon):
 
-    return np.log(b / a) / math.log(1.0 + epsilon)
+    return np.log(b / a) / math.log(1.0 + epsilon)  # pragma: no cover
 
 
 class Function2D(Function):
