@@ -589,7 +589,7 @@ class ParameterBase(Node):
 
             log.error(
                 f"Trying to set parameter {self.name} = {new_value},"
-                f" which is less than the maximum allowed {self.max_value}"
+                f" which is more than the maximum allowed {self.max_value}"
             )
 
             raise SettingOutOfBounds()
