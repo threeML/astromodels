@@ -150,8 +150,8 @@ def test_constructor():
     # From astropy.coordinates.SkyCoord
     pos = SkyCoord(ra=0, dec=0, unit="deg", frame="icrs")
     ps = PointSource("test", sky_position=pos, spectral_shape=Powerlaw())
-    assert ps.position.get_ra() == pos.ra.deg
-    assert ps.position.get_dec() == pos.dec.deg
+    assert ps.position.get_ra() * get_units().angle == pos.ra
+    assert ps.position.get_dec() * get_units().angle == pos.dec
 
 
 def test_call():
@@ -164,7 +164,9 @@ def test_call():
     c1 = SpectralComponent("component1", po1)
     c2 = SpectralComponent("component2", po2)
 
-    point_source = PointSource("test_source", 125.4, -22.3, components=[c1, c2])
+    point_source = PointSource(
+        "test_source", 125.4 * u.deg, -22.3 * u.deg, components=[c1, c2]
+    )
 
     assert np.all(point_source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
     assert np.all(point_source.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
@@ -405,7 +407,9 @@ def test_call_with_composite_function_with_units():
 def test_free_param():
 
     spectrum = Log_parabola()
-    source = PointSource("test_source", ra=123.4, dec=56.7, spectral_shape=spectrum)
+    source = PointSource(
+        "test_source", ra=123.4 * u.deg, dec=56.7 * u.deg, spectral_shape=spectrum
+    )
 
     parameters = [
         spectrum.alpha,

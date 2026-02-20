@@ -77,11 +77,11 @@ class PointSource(Source, Node):
     def __init__(
         self,
         source_name: str,
-        ra: Optional[float] = None,
-        dec: Optional[float] = None,
+        ra: Optional[Union[float, u.Quantity]] = None,
+        dec: Optional[Union[float, u.Quantity]] = None,
         spectral_shape: Optional[Function1D] = None,
-        l: Optional[float] = None,
-        b: Optional[float] = None,
+        l: Optional[Union[float, u.Quantity]] = None,
+        b: Optional[Union[float, u.Quantity]] = None,
         components=None,
         sky_position: Optional[Union[SkyDirection, SkyCoord]] = None,
         polarization=None,
@@ -112,27 +112,16 @@ class PointSource(Source, Node):
         ):
 
             if (ra is not None) and (dec is not None):
-
-                # Check that ra and dec are actually numbers
-
-                try:
-
+                if not isinstance(ra, u.Quantity):
                     ra = float(ra)
+                if not isinstance(dec, u.Quantity):
                     dec = float(dec)
-
-                except (TypeError, ValueError):
-
-                    log.error(
-                        "RA and Dec must be numbers. If you are confused by this "
-                        "message, you are likely using the constructor in the wrong "
-                        "way. Check the documentation."
-                    )
-
-                    raise AssertionError()
-
                 sky_position = SkyDirection(ra=ra, dec=dec)
-
             else:
+                if not isinstance(l, u.Quantity):
+                    l = float(l)
+                if not isinstance(b, u.Quantity):
+                    b = float(b)
 
                 sky_position = SkyDirection(l=l, b=b)
         elif isinstance(sky_position, SkyCoord):

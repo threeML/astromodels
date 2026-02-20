@@ -661,7 +661,10 @@ def test_input_output_with_complex_functions():
     synch_spectrum.particle_distribution = my_particle_distribution
 
     synch_source = PointSource(
-        "synch_source", ra=12.6, dec=-13.5, spectral_shape=synch_spectrum
+        "synch_source",
+        ra=12.6 * u.deg,
+        dec=-13.5 * u.deg,
+        spectral_shape=synch_spectrum,
     )
 
     my_model = Model(electrons, synch_source)
@@ -708,7 +711,7 @@ def test_input_output_with_complex_functions_as_composites():
     photon_spec.dummy_1 = "love"
 
     synch_source = PointSource(
-        "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
+        "synch_source", ra=12.6 * u.deg, dec=-13.5 * u.deg, spectral_shape=photon_spec
     )
 
     my_model = Model(electrons, synch_source)

@@ -34,10 +34,10 @@ class SkyDirection(Node):
     def __init__(
         self,
         position: Optional[astropy.coordinates.SkyCoord] = None,
-        ra: Optional[float] = None,
-        dec: Optional[float] = None,
-        l: Optional[float] = None,
-        b: Optional[float] = None,
+        ra: Optional[Union[float, u.Quantity]] = None,
+        dec: Optional[Union[float, u.Quantity]] = None,
+        l: Optional[Union[float, u.Quantity]] = None,
+        b: Optional[Union[float, u.Quantity]] = None,
         unit: Union[astropy.units.Unit, str, None] = None,
         equinox: str = "J2000",
     ) -> None:
@@ -127,14 +127,18 @@ class SkyDirection(Node):
             if unit is not None:
                 if not isinstance(unit, u.Unit):
                     unit = u.Unit(unit)
-                if not isinstance(ra, Parameter):
-                    ra = (ra * unit).to(get_units().angle).value
-                else:
-                    ra = (ra.value * ra.unit).to(get_units().angle).value
-                if not isinstance(dec, Parameter):
-                    dec = (dec * unit).to(get_units().angle).value
-                else:
-                    dec = (dec.value * dec.unit).to(get_units().angle).value
+            else:
+                unit = get_units().angle
+
+            if isinstance(ra, u.Quantity):
+                ra = ra.to(get_units().angle).value
+            elif not isinstance(ra, Parameter):
+                ra = (ra * unit).to(get_units().angle).value
+
+            if isinstance(dec, u.Quantity):
+                dec = dec.to(get_units().angle).value
+            elif not isinstance(dec, Parameter):
+                dec = (dec * unit).to(get_units().angle).value
 
             ra = self._get_parameter_from_input(
                 ra,
@@ -167,14 +171,18 @@ class SkyDirection(Node):
             if unit is not None:
                 if not isinstance(unit, u.Unit):
                     unit = u.Unit(unit)
-                if not isinstance(l, Parameter):
-                    l = (l * unit).to(get_units().angle).value
-                else:
-                    l = (l.value * l.unit).to(get_units().angle).value
-                if not isinstance(b, Parameter):
-                    b = (b * unit).to(get_units().angle).value
-                else:
-                    b = (b.value * b.unit).to(get_units().angle).value
+            else:
+                unit = get_units().angle
+
+            if isinstance(l, u.Quantity):
+                l = l.to(get_units().angle).value
+            elif not isinstance(l, Parameter):
+                l = (l * unit).to(get_units().angle).value
+
+            if isinstance(b, u.Quantity):
+                b = b.to(get_units().angle).value
+            elif not isinstance(b, Parameter):
+                b = (b * unit).to(get_units().angle).value
 
             l = self._get_parameter_from_input(
                 l,
@@ -269,7 +277,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to("icrs").ra.value
+            return self.sky_coord.transform_to("icrs").ra.to(get_units().angle).value
 
     def get_dec(self):
         """Get Dec. corresponding to the current position (ICRS, J2000)
@@ -285,7 +293,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to("icrs").dec.value
+            return self.sky_coord.transform_to("icrs").dec.to(get_units().angle).value
 
     def get_l(self):
         """Get Galactic Longitude (l) corresponding to the current position.
@@ -301,7 +309,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to("galactic").l.value
+            return self.sky_coord.transform_to("galactic").l.to(get_units().angle).value
 
     def get_b(self):
         """Get Galactic latitude (b) corresponding to the current position.
@@ -317,7 +325,7 @@ class SkyDirection(Node):
 
             # Transform from L,B to R.A., Dec
 
-            return self.sky_coord.transform_to("galactic").b.value
+            return self.sky_coord.transform_to("galactic").b.to(get_units().angle).value
 
     def _get_sky_coord(self):
 
@@ -327,7 +335,11 @@ class SkyDirection(Node):
             b = self.b.value
 
             return coordinates.SkyCoord(
-                l=l, b=b, frame="galactic", equinox=self._equinox, unit="deg"
+                l=l,
+                b=b,
+                frame="galactic",
+                equinox=self._equinox,
+                unit=get_units().angle,
             )
 
         else:
@@ -336,7 +348,11 @@ class SkyDirection(Node):
             dec = self.dec.value
 
             return coordinates.SkyCoord(
-                ra=ra, dec=dec, frame="icrs", equinox=self._equinox, unit="deg"
+                ra=ra,
+                dec=dec,
+                frame="icrs",
+                equinox=self._equinox,
+                unit=get_units().angle,
             )
 
     @property
