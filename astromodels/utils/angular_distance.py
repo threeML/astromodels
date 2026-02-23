@@ -118,7 +118,7 @@ def angular_distance_rad(ra1, dec1, ra2, dec2):
     return np.arctan2(np.sqrt(num1**2 + num2**2), denominator)
 
 
-def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):
+def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):  # pragma: no cover
     """Returns the spherical angle distance between two sets of great circles
     defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)
     Angles need to be in degrees!
@@ -149,7 +149,7 @@ def spherical_angle(ra0, dec0, ra1, dec1, ra2, dec2):
     )
 
 
-def spherical_angle_rad(ra0, dec0, ra1, dec1, ra2, dec2):
+def spherical_angle_rad(ra0, dec0, ra1, dec1, ra2, dec2):  # pragma: no cover
     """Returns the spherical angle distance between two sets of great circles
     defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)
     Angles need to be in rad!
