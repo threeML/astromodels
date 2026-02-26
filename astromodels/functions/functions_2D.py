@@ -879,11 +879,11 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
     def _load_file(self):
 
-        try: 
+        try:
             from mhealpy import HealpixMap
         except:
             print("You need to install mhealpy with pip for using this class")
-        
+
         self._fitsfile = self.fits_file.value
 
         self._hpmap = HealpixMap.read_map(self._fitsfile)
@@ -894,11 +894,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
         total = np.sum(self._hpmap) * area
 
         if not np.isclose(total, 1, rtol=1e-2):
-            log.warning(
-                "2D template is normalized to {} (expected: 1)".format(
-                    total
-                )
-            )
+            log.warning("2D template is normalized to {} (expected: 1)".format(total))
 
         # hash sum uniquely identifying the template function (defined by its 2D map
         # array and coordinate system) this is needed so that the memoization won't
