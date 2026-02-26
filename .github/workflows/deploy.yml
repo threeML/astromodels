@@ -144,57 +144,19 @@ jobs:
                   ls -l ${CONDA}/envs/test_env/conda-bld/*/*
 
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
-
-            - name: Install and Test
-            - name: Test all built variants with CI environment
+            - name: Install it
               shell: bash -l {0}
               run: |
-                  set -e
-          
-                  PKG_DIR="${CONDA}/envs/test_env/conda-bld/linux-64"
-          
-                  for PKG in $PKG_DIR/astromodels-*.conda; do
-          
-                      echo "========================================="
-                      echo "Testing $PKG"
-                      echo "========================================="
-          
-                      PY_VER=$(basename $PKG | sed -E 's/.*py([0-9]{2,3}).*/\1/')
-          
-                      if [ "$PY_VER" = "39" ]; then PY="3.9"; fi
-                      if [ "$PY_VER" = "310" ]; then PY="3.10"; fi
-                      if [ "$PY_VER" = "311" ]; then PY="3.11"; fi
-                      if [ "$PY_VER" = "312" ]; then PY="3.12"; fi
-                      if [ "$PY_VER" = "313" ]; then PY="3.13"; fi
-          
-                      ENV_NAME="test_py${PY_VER}"
-          
-                      # Create env from your CI environment file
-                      mamba create -n $ENV_NAME python=$PY
-          
-                      conda activate $ENV_NAME
-          
-                      # install your built package from local channel
-                      conda install -y \
-                          -c ${PKG_DIR} \
-                          --strict-channel-priority \
-                          --use-local astromodels \
-                          astromodels
-
-                      mamba install \
-                          -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ \
-                          -c conda-forge xspec 
-                      
-                      mamba install pytest pytest-cov coverage
-          
-                      # run tests
-                      python -c "import astromodels.xspec"
-                      python -m pytest -vv --cov=astromodels --cov-report=xml
-          
-                      conda deactivate
-                      conda remove -y -n $ENV_NAME --all
-          
-                  done
+                  #conda install --use-local astromodels
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
+            - name: Test import xspec
+              shell: bash -l {0}
+              run: |
+                  cd astromodels/tests
+                  python -c "import astromodels.xspec"
+            - name: Test astromodels
+              shell: bash -l {0}
+              run: python -m pytest -vv --cov=astromodels --cov-report=xml
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
