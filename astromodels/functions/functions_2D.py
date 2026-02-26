@@ -881,7 +881,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
         try:
             from mhealpy import HealpixMap
-        except:
+        except ValueError:
             print("You need to install mhealpy with pip for using this class")
 
         self._fitsfile = self.fits_file.value
