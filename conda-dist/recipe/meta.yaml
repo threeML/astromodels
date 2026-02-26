@@ -67,6 +67,7 @@ test: # already uses requirements from "run"
     - coverage
   source_files:
     - astromodels/tests
+    - pyproject.toml # needed for pytest setup e.g. marks
   commands:
     - pytest -vv astromodels/tests --cov=astromodels --cov-report=term
 
