@@ -60,6 +60,16 @@ build:
   script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
 
+test: # already uses requirements from "run"
+  requires:
+    - pytest
+    - pytest-cov
+    - coverage
+  source_files:
+    - astromodels/tests
+  commands:
+    - pytest -vv astromodels/tests --cov=astromodels --cov-report=term
+
 
 about:
   home: https://github.com/threeml/astromodels
