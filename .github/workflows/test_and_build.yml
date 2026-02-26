@@ -50,6 +50,7 @@ jobs:
               run: |
                   python -m pip install --upgrade pip wheel
                   pip install --upgrade flake8 coverage pytest-cov cython
+                  pip install mhealpy
                   
                   if [[ ${{matrix.os}} != ubuntu-latest ]];
                   then
@@ -137,7 +138,9 @@ jobs:
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
 
                   mamba install ${PKG} codecov pytest-cov git flake8
-
+                  
+                  pip install mhealpy
+            
             - name: Conda list
               shell: bash -l {0}
               run: |
