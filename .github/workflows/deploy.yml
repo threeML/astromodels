@@ -112,6 +112,8 @@ jobs:
                       # We also need to pin down ncurses, for now only on macos.
                       xorg="xorg-libx11"
                   fi
+
+
                   pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
@@ -119,8 +121,6 @@ jobs:
                   echo "HOME= ${HOME}"
                   echo "Conda installation path ${CONDA}"
                   echo "Building ${PKG_VERSION}"
-                  
-                  #echo "Python version: ${{matrix.python-version}}"
 
                   conda install codecov pytest-cov
             - name: Conda list
@@ -131,18 +131,15 @@ jobs:
               shell: bash -l {0}
               run: |
                   # Build package
-
-                  #conda install conda-build -n base
+                  #
                   mamba install -c conda-forge boa
 
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
                   conda mambabuild conda-dist/recipe
-
-                  ls -l ${CONDA}/envs/test_env/conda-bld/*/*
-
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
+
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
@@ -205,21 +202,20 @@ jobs:
               shell: bash -l {0}
               run: |
                   # Build package
-
-                  #conda install conda-build -n base
+                  #
                   mamba install -c conda-forge boa
 
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  conda mambabuild conda-dist/recipe
-
+                  conda mambabuild conda-dist/recipe 
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
-            - name: Install it
-              shell: bash -l {0}
-              run: |
-                  #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
+
+              env:
+                  OMP_NUM_THREADS: 1
+                  MKL_NUM_THREADS: 1
+                  NUMEXPR_NUM_THREADS: 1
+                  MPLBACKEND: "Agg"
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
