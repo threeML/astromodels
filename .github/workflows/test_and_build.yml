@@ -138,8 +138,6 @@ jobs:
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
 
                   mamba install ${PKG} codecov pytest-cov git flake8
-                  
-                  pip install mhealpy
             
             - name: Conda list
               shell: bash -l {0}
@@ -149,6 +147,7 @@ jobs:
               shell: bash -l {0}
               run: |
                   pip install -e .
+                  pip install mhealpy
             - name: Lint with flake8
               shell: bash -l {0}
               run: |
