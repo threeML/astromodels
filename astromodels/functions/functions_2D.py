@@ -10,7 +10,6 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
-from mhealpy import HealpixMap
 
 log = setup_logger(__name__)
 
@@ -880,6 +879,11 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
     def _load_file(self):
 
+        try: 
+            from mhealpy import HealpixMap
+        except:
+            print("You need to install mhealpy with pip for using this class")
+        
         self._fitsfile = self.fits_file.value
 
         self._hpmap = HealpixMap.read_map(self._fitsfile)
