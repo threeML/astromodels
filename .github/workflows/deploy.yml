@@ -149,6 +149,7 @@ jobs:
               run: |
                   #conda install --use-local astromodels
                   conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
+                  pip install mhealpy
             - name: Test import xspec
               shell: bash -l {0}
               run: |
