@@ -65,9 +65,6 @@ test: # already uses requirements from "run"
     - pytest
     - pytest-cov
     - coverage
-  source_files:
-    - astromodels/tests
-    - astromodels/data/past_1D_values.h5
   commands:
     - pytest -vv astromodels/tests --cov=astromodels --cov-report=term
 
