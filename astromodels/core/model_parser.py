@@ -1189,3 +1189,6 @@ class ShapeParser(object):
             )
 
         return function_instance
+
+
+__all__ = ["clone_model", "load_model"]

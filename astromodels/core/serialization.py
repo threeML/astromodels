@@ -1,8 +1,6 @@
 from astromodels.core.model import Model
 from astromodels.core.model_parser import ModelParser
 
-# We do not want to actually import anything from this module
-__all__ = []
 
 # copyreg is called copy_reg in python2
 try:
@@ -30,3 +28,6 @@ def unserialize_model(dict_with_types):
 # Register serialization/unserialization for Model
 copyreg.constructor(unserialize_model)
 copyreg.pickle(Model, serialize_model, unserialize_model)
+
+
+__all__ = ["serialize_model", "unserialize_model"]

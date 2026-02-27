@@ -184,3 +184,6 @@ class LinearParameter(Node):
 
     def __call__(self, energies):
         return self.value(energies)
+
+
+__all__ = ["LinearPolarization", "StokesPolarization", "Unpolarized"]

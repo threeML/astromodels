@@ -1447,3 +1447,6 @@ class Model(Node):
             fluxes.append(self._point_sources[src](energies))
 
         return np.sum(fluxes, axis=0)
+
+
+__all__ = ["Model"]

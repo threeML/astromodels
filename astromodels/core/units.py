@@ -191,3 +191,5 @@ class _AstromodelsUnitsFactory(object):
 # Create the factory to be used in the program
 
 get_units = _AstromodelsUnitsFactory()
+
+__all__ = ["get_units"]

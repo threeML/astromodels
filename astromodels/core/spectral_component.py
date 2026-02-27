@@ -71,3 +71,6 @@ class SpectralComponent(Node):
         if stokes == "Q" or stokes == "U":
             spec *= self._polarization(energies, stokes)
         return spec
+
+
+__all__ = ["SpectralComponent"]

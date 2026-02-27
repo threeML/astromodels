@@ -91,3 +91,6 @@ def memoize(method):
     memoizer.input_object = method
 
     return memoizer
+
+
+__all__ = ["use_astromodels_memoization"]
