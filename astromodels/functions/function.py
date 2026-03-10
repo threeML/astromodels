@@ -23,10 +23,19 @@ from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
+from astromodels.utils import check_import
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
+from astromodels.utils.exceptions import (
+    DesignViolation,
+    UnknownParameter,
+    UnknownFunction,
+    FunctionDefinitionError,
+    FunctionInstanceError,
+    DocstringIsNotRaw,
+)
 
 log = setup_logger(__name__)
 
@@ -34,60 +43,14 @@ __author__ = "giacomov"
 
 
 try:
-
-    from IPython.display import HTML, display
-
-except ImportError:
-
-    has_ipython = False
-
-else:
+    check_import("IPython")
 
     has_ipython = True
+    from IPython.display import HTML, display
 
+except RuntimeError:
 
-class WarningNoTests(ImportWarning):
-    pass
-
-
-class FunctionDefinitionError(Exception):
-    pass
-
-
-class FunctionInstanceError(Exception):
-    pass
-
-
-class DesignViolation(Exception):
-    pass
-
-
-class ModelAssertionViolation(Exception):
-    pass
-
-
-class WrongDimensionality(Exception):
-    pass
-
-
-class TestSpecificationError(Exception):
-    pass
-
-
-class TestFailed(Exception):
-    pass
-
-
-class DocstringIsNotRaw(ValueError):
-    pass
-
-
-class UnknownFunction(ValueError):
-    pass
-
-
-class UnknownParameter(ValueError):
-    pass
+    has_ipython = False
 
 
 # Value to indicate that no latex formula has been given

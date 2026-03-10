@@ -6,3 +6,6 @@ from .file_utils import (
     get_user_data_path,
     get_user_path,
 )
+from .check_import import check_import
+
+__all__ = ["check_import"]
