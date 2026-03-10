@@ -1580,6 +1580,18 @@ class Parameter(ParameterBase):
 
             return np.random.normal(value, abs(variance * value))
 
+    def __mul__(self, other):
+        if not isinstance(other, u.Quantity):
+            return self._get_value() * other
+        else:
+            return self._get_value() * other.value * (self._get_unit() * other.unit)
+
+    def __truediv__(self, other):
+        if not isinstance(other, u.Quantity):
+            return self._get_value() / other
+        else:
+            return self._get_value() / other.value * (self._get_unit() / other.unit)
+
 
 class IndependentVariable(ParameterBase):
     """An independent variable like time or energy."""
