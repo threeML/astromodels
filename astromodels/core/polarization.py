@@ -1,6 +1,5 @@
 __author__ = "giacomov"
 
-
 import numpy as np
 
 from astromodels.core.parameter import Parameter

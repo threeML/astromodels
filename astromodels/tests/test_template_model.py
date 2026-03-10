@@ -16,8 +16,8 @@ from astromodels.functions import (
     XSPECTableModel,
 )
 from astromodels.functions.template_model import (
-    convert_old_table_model,
     UnivariateSpline,
+    convert_old_table_model,
 )
 from astromodels.utils import _get_data_file_path
 

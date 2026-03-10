@@ -1,7 +1,4 @@
-from builtins import zip
-
 __author__ = "giacomov"
-
 import collections
 import os
 import warnings

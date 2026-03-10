@@ -11,9 +11,7 @@ from astromodels.functions import (
     Log_parabola,
     Powerlaw,
 )
-from astromodels.functions.functions_1D.functions import (
-    _ComplexTestFunction,
-)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 try:
     from astromodels.functions import PhAbs, TbAbs, WAbs

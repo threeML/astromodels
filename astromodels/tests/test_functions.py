@@ -10,11 +10,11 @@ import astromodels
 from astromodels.core.property import SettingUnknownValue
 from astromodels.functions import (
     Continuous_injection_diffusion,
+    Cutoff_powerlaw_Ep,
     Gaussian_on_sphere,
     Line,
     Powerlaw,
     SpatialTemplate_2D,
-    Cutoff_powerlaw_Ep,
 )
 from astromodels.functions import function as function_module
 from astromodels.functions.function import (

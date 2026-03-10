@@ -1,5 +1,4 @@
 __author__ = "giacomov"
-
 import collections
 
 from astropy import coordinates

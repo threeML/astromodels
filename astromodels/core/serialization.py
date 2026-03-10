@@ -1,7 +1,6 @@
 from astromodels.core.model import Model
 from astromodels.core.model_parser import ModelParser
 
-
 # copyreg is called copy_reg in python2
 try:
 

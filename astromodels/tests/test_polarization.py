@@ -1,5 +1,6 @@
 import math
 import os
+from pathlib import Path
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model
@@ -10,7 +11,6 @@ from astromodels.core.polarization import (
 )
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
-from pathlib import Path
 
 
 def test_linear_polarization_parameters():
