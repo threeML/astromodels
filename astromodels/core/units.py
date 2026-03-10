@@ -51,7 +51,7 @@ def _check_unit(new_unit, old_unit):
         )
 
 
-class _AstromodelsUnits(object):
+class _AstromodelsUnits:
     """Store the fundamental units of time, energy, angle and area to be used
     in astromodels."""
 
@@ -183,7 +183,7 @@ class Bounds(NamedTuple):
     upper_bound: float
 
 
-class _AstromodelsUnitsFactory(object):
+class _AstromodelsUnitsFactory:
 
     _instance = None
 
