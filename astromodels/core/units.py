@@ -216,6 +216,16 @@ class _AstromodelsUnitsFactory(object):
     def angular_separation(self, a, b, x, z):
         return self._angular_separation(a, b, x, z)
 
+    def to_dict(self):
+        cu = self()._units
+        for k, v in cu.items():
+            if type(v) not in [str, float, int]:
+                try:
+                    cu[k] = str(v)
+                except Exception as e:
+                    TypeError(f"{type(v)} as unit for {k} is not permitted")
+        return cu
+
     @property
     def lon_bounds(self):
         return self._lon_bounds
