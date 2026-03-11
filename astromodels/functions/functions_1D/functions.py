@@ -5,7 +5,6 @@ import numpy as np
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import check_import
-from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.exceptions import (
     InvalidUsageForFunction,

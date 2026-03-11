@@ -10,7 +10,8 @@ __version__ = get_versions()["version"]
 del get_versions
 
 # Map top-level public names to (module, attribute)
-# These include the legacy function/prior names so that __all__ matches historical behavior.
+# These include the legacy function/prior names so that __all__ matches historical
+# behavior.
 _functions = {
     # 1D functions
     "Blackbody": ("astromodels.functions.functions_1D.blackbody", "Blackbody"),

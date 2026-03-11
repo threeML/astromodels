@@ -8,6 +8,7 @@ from astromodels.functions.function import (
     FunctionMeta,
 )
 from astromodels.utils.logging import setup_logger
+from astromodels.utils.exceptions import ModelAssertionViolation
 
 log = setup_logger(__name__)
 

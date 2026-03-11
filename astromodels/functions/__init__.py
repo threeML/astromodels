@@ -3,9 +3,6 @@ from __future__ import annotations
 
 from importlib import import_module
 
-# Map public names to the module that defines them.
-# No optional-dependency checks here: the target module will raise a clear ImportError
-# if its own dependencies are missing.
 _exports = {
     # functions_1D
     "Band": (".functions_1D",),
@@ -105,8 +102,6 @@ def __getattr__(name: str):
     try:
         obj = getattr(mod, name)
     except AttributeError as e:
-        # Bubble up a clearer error if the submodule gated the symbol due to missing deps
-        # (e.g., functions_1D may raise ImportError instead; we don't mask those)
         raise AttributeError(
             f"{name} is not present in {mod.__name__}. "
             "This may indicate a missing optional dependency or an internal mismatch."
