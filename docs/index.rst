@@ -11,6 +11,22 @@ About astromodels
 
 .. image:: media/large_logo.png
 
+.. warning::
+   :name: Deprecation!
+
+   **Deprecation Warning!**
+   
+   In version 2.5.2 we will start to deprecate importing classes and functions from
+   the top-level, meaning e.g. `from astromodels import Powerlaw` will be deprecated.
+   Please use the correct level for your imports, e.g. 
+   `from astromodels.functions import Powerlaw`.
+   The deprecations will be enforced in 2.5.3.
+
+   In 2.5.2 you will get deprecation warnings which hint you to the correct import.
+
+   This is done in effort to use a more standard way of loading our modules, increase
+   import speed, reduce warnings on start-up and to ensure namespaces not being mixed.
+
 
 Astromodels is a very flexible framework to define models for likelihood or
 Bayesian analysis of astrophysical data.
