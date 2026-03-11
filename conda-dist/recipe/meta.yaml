@@ -14,7 +14,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-    - xspec==12.15.1
+    - xspec==12.15.1 # [not (linux and aarch64)]
     - versioneer
     - setuptools
     - pip
@@ -27,7 +27,7 @@ requirements:
     - numpy
     - pyyaml
     - pandas
-    - xspec==12.15.1
+    - xspec==12.15.1 # [not (linux and aarch64)]
     - future
     - numba
     - h5py>=3.9
@@ -53,7 +53,7 @@ requirements:
     - omegaconf
     - rich
     - joblib
-    - xspec==12.15.1    
+    - xspec==12.15.1 # [not (linux and aarch64)]    
     - versioneer
 
 build:
