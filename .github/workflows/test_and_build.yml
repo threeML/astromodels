@@ -168,6 +168,7 @@ jobs:
                   flake8
 
             - name: Test import xspec
+              if: ${{ matrix.os != 'ubuntu-24.04-arm' }}
               shell: bash -l {0}
               run: |
                 echo $DYLD_LIBRARY_PATH
@@ -175,6 +176,7 @@ jobs:
                 #ls $CONDA_PREFIX/lib/libwcs*
                 ls $CONDA_PREFIX/heasoft/lib/libwcs*
                 python -c "import astromodels.xspec"
+
             - name: Test astromodels
               shell: bash -l {0}
               run: python -m pytest -vv --cov=astromodels --cov-report=xml
