@@ -148,6 +148,7 @@ _functions = {
     "DMSpectra": ("astromodels.functions.dark_matter.dm_models", "DMSpectra"),
     "show_configuration": ("astromodels.utils.configuration", "show_configuration"),
     "functions": ("astromodels.functions", "functions"),
+    "list_functions": ("astromodels.functions.function", "list_functions"),
 }
 
 _public = {
