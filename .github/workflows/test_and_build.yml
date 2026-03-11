@@ -102,6 +102,21 @@ jobs:
                 os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
                 python-version: [3.9, 3.11]
                 env-file: [ci/environment.yml,ci/environment_heasoft.yml]
+                
+                exclude:
+                  - os: ubuntu-24.04-arm
+                    env-file: ci/environment.yml
+                  - os: ubuntu-24.04-arm
+                    env-file: ci/environment_heasoft.yml
+            
+                include:
+                  - os: ubuntu-24.04-arm
+                    python-version: 3.9
+                    env-file: ci/environment_aarch64.yml
+                  - os: ubuntu-24.04-arm
+                    python-version: 3.11
+                    env-file: ci/environment_aarch64.yml
+
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
