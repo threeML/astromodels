@@ -99,8 +99,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
-                python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+                os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+                python-version: [3.9, 3.11]
                 env-file: [ci/environment.yml,ci/environment_heasoft.yml]
         runs-on: ${{ matrix.os }}
         steps:
