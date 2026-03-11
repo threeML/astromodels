@@ -146,6 +146,8 @@ _functions = {
     # Dark matter
     "DMFitFunction": ("astromodels.functions.dark_matter.dm_models", "DMFitFunction"),
     "DMSpectra": ("astromodels.functions.dark_matter.dm_models", "DMSpectra"),
+    "show_configuration": ("astromodels.utils.configuration", "show_configuration"),
+    "functions": ("astromodels.functions", "functions"),
 }
 
 _public = {
