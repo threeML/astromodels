@@ -174,7 +174,8 @@ one.</p>
 <section id="with-xspec">
 <h2>With XSPEC<a class="headerlink" href="#with-xspec" title="Link to this heading"></a></h2>
 <p>The easiest way to install <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> with <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> support is via <code class="docutils literal notranslate"><span class="pre">conda</span></code>.
-Note that you first need to install <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> before installing <code class="docutils literal notranslate"><span class="pre">astromodels</span></code>.</p>
+Note that you first need to install <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> before installing <code class="docutils literal notranslate"><span class="pre">astromodels</span></code>, otherwise
+the relevant parts will not be compiled.</p>
 <p>First let’s create a new environment</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>&lt;name_of_your_environment&gt;
 conda<span class="w"> </span>activate<span class="w"> </span>&lt;name_of_your_environment&gt;
@@ -194,11 +195,16 @@ conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> <
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from astromodels.xspec import *&quot;</span>
 </pre></div>
 </div>
-<p>The last step will build all the models and save it to your disk, usually on
+<p>This last step will build all the models and save it to your disk, usually on
 <code class="docutils literal notranslate"><span class="pre">$HOME/.astromodels/data</span></code>. You can also get this path by running</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from astromodels.utils.file_utils import get_user_data_path; print(get_user_data_path())&quot;</span>
 </pre></div>
 </div>
+<p>Please note that <code class="docutils literal notranslate"><span class="pre">XSEPC</span></code> support for Linux arm64 is not possible, as there is currently
+no <code class="docutils literal notranslate"><span class="pre">conda</span></code> <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> package for that architecture available.
+You <em>might</em> get it to work by building and installing <code class="docutils literal notranslate"><span class="pre">XSPEC</span></code> from source and then
+installing <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.
+We did not test this and therefore can not provide any support.</p>
 </section>
 </section>
 
