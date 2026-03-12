@@ -1,22 +1,16 @@
 __author__ = "giacomov"
+from importlib.util import find_spec
 
 # Import IPython display facility, if available. Otherwise,
 # create a wrapper which just uses print
-
 try:
-    from IPython.display import display
-
-except ImportError:
+    find_spec("IPython.display")
+    from IPython.display import display, Latex
+except ModuleNotFoundError:
 
     def display(*args):
         """Mock version of display, used if there is no ipython installed."""
         print(args)
-
-
-try:
-    from IPython.display import Latex
-
-except ImportError:
 
     class Latex(object):
         """Mock version of the IPython Latex object, used if there is no

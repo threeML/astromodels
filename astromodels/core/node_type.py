@@ -1,4 +1,4 @@
-import collections
+from collections import OrderedDict
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Type
 
@@ -202,7 +202,7 @@ class NodeBase:
 
     def _recursively_gather_node_type(self, node, node_type) -> Dict[str, "NodeBase"]:
 
-        instances = collections.OrderedDict()
+        instances = OrderedDict()
 
         for child in node._get_children():
 
@@ -409,7 +409,7 @@ def _recurse_dict(d: Dict[str, Any], tree: Tree, branch_color: Optional[str] = N
 
     for k, v in d.items():
 
-        if isinstance(v, collections.OrderedDict):
+        if isinstance(v, OrderedDict):
 
             if branch_color is not None:
 

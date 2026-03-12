@@ -1,7 +1,7 @@
 __author__ = "giacomov"
 import collections
 
-from astropy import coordinates
+from astropy.coordinates import SkyCoord
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
@@ -209,7 +209,7 @@ class SkyDirection(Node):
             l = self.l.value
             b = self.b.value
 
-            return coordinates.SkyCoord(
+            return SkyCoord(
                 l=l, b=b, frame="galactic", equinox=self._equinox, unit="deg"
             )
 
@@ -218,7 +218,7 @@ class SkyDirection(Node):
             ra = self.ra.value
             dec = self.dec.value
 
-            return coordinates.SkyCoord(
+            return SkyCoord(
                 ra=ra, dec=dec, frame="icrs", equinox=self._equinox, unit="deg"
             )
 

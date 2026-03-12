@@ -4,7 +4,7 @@ __author__ = "giacomov"
 # dictionaries instead of normal ones. This way the order in which things are expressed
 # in the file is maintained.
 
-import collections
+from collections import OrderedDict
 
 import yaml as my_yaml
 
@@ -16,8 +16,8 @@ def dict_representer(dumper, data):
 
 
 def dict_constructor(loader, node):
-    return collections.OrderedDict(loader.construct_pairs(node))
+    return OrderedDict(loader.construct_pairs(node))
 
 
-my_yaml.add_representer(collections.OrderedDict, dict_representer)
+my_yaml.add_representer(OrderedDict, dict_representer)
 my_yaml.add_constructor(_mapping_tag, dict_constructor)

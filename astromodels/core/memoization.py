@@ -1,6 +1,6 @@
-import collections
-import contextlib
-import functools
+from collections import OrderedDict
+from contextlib import contextmanager
+from functools import wraps
 
 import astropy.units as u
 
@@ -8,7 +8,7 @@ _WITH_MEMOIZATION = False
 _CACHE_SIZE = 20
 
 
-@contextlib.contextmanager
+@contextmanager
 def use_astromodels_memoization(switch, cache_size=_CACHE_SIZE):
     """Activate/deactivate memoization temporarily.
 
@@ -41,13 +41,13 @@ def memoize(method):
     :return: the decorated method
     """
 
-    cache = method.cache = collections.OrderedDict()
+    cache = method.cache = OrderedDict()
 
     # Put these two methods in the local space (faster)
     _get = cache.get
     _popitem = cache.popitem
 
-    @functools.wraps(method)
+    @wraps(method)
     def memoizer(instance, x, *args, **kwargs):
 
         if not _WITH_MEMOIZATION or isinstance(x, u.Quantity):
