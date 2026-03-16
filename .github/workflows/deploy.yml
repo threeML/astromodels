@@ -154,6 +154,7 @@ jobs:
               if: matrix.os != 'ubuntu-24.04-arm'
               shell: bash -l {0}
               run: |
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
                   cd astromodels/tests
                   python -c "import astromodels.xspec"
 
@@ -237,6 +238,7 @@ jobs:
               if: matrix.os != 'ubuntu-24.04-arm'
               shell: bash -l {0}
               run: |
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
                   cd astromodels/tests
                   python -c "import astromodels.xspec"
 

@@ -51,7 +51,7 @@ jobs:
                   python -m pip install --upgrade pip wheel
                   pip install --upgrade flake8 coverage pytest-cov cython
                   
-                  if [[ ${{matrix.os}} != ubuntu-latest ]];
+                  if [[ ${{matrix.os}} != ubuntu-latest && ${{matrix.os}} != ubuntu-24.04-arm ]];
                   then
                     brew update
                     brew install hdf5 lzo c-blosc
