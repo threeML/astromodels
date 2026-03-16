@@ -67,14 +67,14 @@ jobs:
     build-conda:
         name: Build in Conda
         if: startsWith(github.event.ref, 'refs/tags') == false
-        matrix:
-          os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
         runs-on: ${{ matrix.os }}
         defaults:
           run:
             shell: bash -l {0}
         strategy:
             fail-fast: false
+            matrix:
+              os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
 
         steps:
             - name: Checkout
@@ -154,8 +154,6 @@ jobs:
     publish-conda:
         name: Publish to Conda
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-        matrix:
-          os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
 
         runs-on: ${{ matrix.os }}
         defaults:
@@ -163,6 +161,9 @@ jobs:
             shell: bash -l {0}
         strategy:
             fail-fast: false
+            matrix:
+              os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+
 
         steps:
             - name: Checkout
