@@ -150,6 +150,17 @@ jobs:
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
 
+            - name: Test import xspec
+
+              shell: bash -l {0}
+              run: |
+                  if [[ ${{matrix.os}} != ubuntu-24.04-arm]];
+                  then
+                    cd astromodels/tests
+                    python -c "import astromodels.xspec"
+                  fi;
+
+
     publish-conda:
         name: Publish to Conda
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
@@ -224,6 +235,17 @@ jobs:
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
+
+            - name: Test import xspec
+
+              shell: bash -l {0}
+              run: |
+                  if [[ ${{matrix.os}} != ubuntu-24.04-arm]];
+                  then
+                    cd astromodels/tests
+                    python -c "import astromodels.xspec"
+                  fi;
+                  
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
