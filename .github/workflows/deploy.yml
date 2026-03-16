@@ -74,25 +74,28 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-              os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+                os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+                python-version: [3.11]
+                include:
+                  - os: ubuntu-24.04-arm
+                    env_file: "ci/environment_aarch64.yml"
 
         steps:
             - name: Checkout
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-
-            - name: Set up micromamba
-              uses: mamba-org/setup-micromamba@v2
+            - name: Add conda ${{ matrix.python-version }} to system path
+              uses: conda-incubator/setup-miniconda@v3
               with:
-                environment-name: build
-                create-args: >-
-                  python=3.11
-                  conda-build
-                  boa
-                  anaconda-client
-                channels: conda-forge
-                cache-environment: true
+                  activate-environment: "test_env"
+                  auto-activate-base: false
+                  miniforge-variant: Miniforge3
+                  python-version: ${{ matrix.python-version }}
+                  auto-update-conda: true
+                  environment-file: ${{ matrix.env_file || 'ci/environment.yml' }} 
+                  use-only-tar-bz2: false
+                  channel-priority: true
 
             - name: Init Env
               shell: bash -l {0}
@@ -115,6 +118,7 @@ jobs:
                   fi
 
 
+                  pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
@@ -122,6 +126,7 @@ jobs:
                   echo "Conda installation path ${CONDA}"
                   echo "Building ${PKG_VERSION}"
 
+                  conda install codecov pytest-cov
             - name: Conda list
               shell: bash -l {0}
               run: |
@@ -131,6 +136,8 @@ jobs:
               run: |
                   # Build package
                   #
+                  mamba install -c conda-forge boa
+
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
@@ -142,89 +149,74 @@ jobs:
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
-            - name: Test import xspec
-
-              shell: bash -l {0}
-              run: |
-                  if [[ ${{matrix.os}} != ubuntu-24.04-arm]];
-                  then
-                    cd astromodels/tests
-                    python -c "import astromodels.xspec"
 
     publish-conda:
         name: Publish to Conda
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
-
         runs-on: ${{ matrix.os }}
-        defaults:
-          run:
-            shell: bash -l {0}
         strategy:
             fail-fast: false
             matrix:
-              os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
-
+                os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+                python-version: [3.11]
+                include:
+                  - os: ubuntu-24.04-arm
+                    env_file: "ci/environment_aarch64.yml"
 
         steps:
             - name: Checkout
               uses: actions/checkout@v4
               with:
                   fetch-depth: 0
-
-            - name: Set up micromamba
-              uses: mamba-org/setup-micromamba@v2
+            - name: Add conda ${{ matrix.python-version }} to system path
+              uses: conda-incubator/setup-miniconda@v3
               with:
-                environment-name: build
-                create-args: >-
-                  python=3.11
-                  conda-build
-                  boa
-                  anaconda-client
-                channels: conda-forge
-                cache-environment: true
+                  activate-environment: "test_env"
+                  auto-activate-base: false
+                  #architecture: "x64"
+                  miniforge-variant: Miniforge3
+                  #miniforge-version: latest
+                  python-version: ${{ matrix.python-version }}
+                  auto-update-conda: true
+                  environment-file: ${{ matrix.env_file || 'ci/environment.yml' }} 
+                  use-only-tar-bz2: false
+                  channel-priority: true
 
             - name: Init Env
               shell: bash -l {0}
               run: |
-
                   # Make sure we fail in case of error
                   if [[ ${{matrix.os}} == ubuntu-latest ]];
                   then
-                      
-                      miniconda_os=Linux
-                      compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
-                  else
-                      
-                      miniconda_os=MacOSX
-                      compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
+                  miniconda_os=Linux
+                  compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
+                  else  # osx
+                  miniconda_os=MacOSX
+                  compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
 
-                      # On macOS we also need the conda libx11 libraries used to build xspec
-                      # We also need to pin down ncurses, for now only on macos.
-                      xorg="xorg-libx11"
+                  # On macOS we also need the conda libx11 libraries used to build xspec
+                  # We also need to pin down ncurses, for now only on macos.
+                  xorg="xorg-libx11"
                   fi
-
-
+                  
+                  pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
 
                   echo "HOME= ${HOME}"
                   echo "Conda installation path ${CONDA}"
                   echo "Building ${PKG_VERSION}"
-
-            - name: Conda list
-              shell: bash -l {0}
-              run: |
-                  conda list
             - name: Build the Distribution
               shell: bash -l {0}
               run: |
                   # Build package
                   #
+                  mamba install -c conda-forge boa
+
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  conda mambabuild conda-dist/recipe
-                  # try to find and install corresponding local package
+                  conda mambabuild conda-dist/recipe 
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
 
               env:
@@ -232,17 +224,6 @@ jobs:
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
-            - name: Test import xspec
-
-              shell: bash -l {0}
-              run: |
-                  if [[ ${{matrix.os}} != ubuntu-24.04-arm]];
-                  then
-                    cd astromodels/tests
-                    python -c "import astromodels.xspec"
-
-        steps:
-
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
