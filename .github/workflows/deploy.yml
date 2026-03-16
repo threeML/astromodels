@@ -25,7 +25,7 @@ jobs:
           id-token: write
         steps:
             - name: Checkout source
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             - name: Set up Python 3.11
               uses: actions/setup-python@v5
               with:
@@ -44,7 +44,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: actions/setup-python@v5
               with:
                   python-version: 3.11
@@ -82,7 +82,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                   fetch-depth: 0
             - name: Add conda ${{ matrix.python-version }} to system path
@@ -151,15 +151,11 @@ jobs:
                   MPLBACKEND: "Agg"
 
             - name: Test import xspec
-
+              if: matrix.os != 'ubuntu-24.04-arm'
               shell: bash -l {0}
               run: |
-                  if [[ ${{matrix.os}} != ubuntu-24.04-arm]]
-                  then
-                    cd astromodels/tests
-                    python -c "import astromodels.xspec"
-                  fi
-
+                  cd astromodels/tests
+                  python -c "import astromodels.xspec"
 
     publish-conda:
         name: Publish to Conda
@@ -176,7 +172,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                   fetch-depth: 0
             - name: Add conda ${{ matrix.python-version }} to system path
@@ -236,16 +232,14 @@ jobs:
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
 
-            - name: Test import xspec
 
+            - name: Test import xspec
+              if: matrix.os != 'ubuntu-24.04-arm'
               shell: bash -l {0}
               run: |
-                  if [[ ${{matrix.os}} != ubuntu-24.04-arm]]
-                  then
-                    cd astromodels/tests
-                    python -c "import astromodels.xspec"
-                  fi
-                  
+                  cd astromodels/tests
+                  python -c "import astromodels.xspec"
+
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
