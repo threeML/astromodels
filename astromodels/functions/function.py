@@ -8,7 +8,9 @@ import re
 import sys
 import textwrap
 import uuid
+import warnings
 from builtins import chr, map, str
+from importlib.util import find_spec
 from operator import attrgetter
 from typing import Dict, List, Optional, Tuple
 
@@ -23,32 +25,50 @@ from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
-from astromodels.utils import check_import
+from astromodels.utils.exceptions import (
+    DesignViolation,
+    DocstringIsNotRaw,
+    FunctionDefinitionError,
+    FunctionInstanceError,
+    UnknownFunction,
+    UnknownParameter,
+)
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
-from astromodels.utils.exceptions import (
-    DesignViolation,
-    UnknownParameter,
-    UnknownFunction,
-    FunctionDefinitionError,
-    FunctionInstanceError,
-    DocstringIsNotRaw,
-)
+
+_DEPRECATED = {
+    "ModelAssertionViolation": "astromodels.utils.exceptions.ModelAssertionViolation",
+}
+
+
+def __getattr__(name: str):
+    target = _DEPRECATED.get(name)
+    if target:
+        warnings.warn(
+            f"astromodels.functions.function.{name} is deprecated; use {target} instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        module_name, attr = target.rsplit(".", 1)
+        mod = __import__(module_name, fromlist=[attr])
+        return getattr(mod, attr)
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+__all__ = list(_DEPRECATED)
 
 log = setup_logger(__name__)
 
 __author__ = "giacomov"
 
-
-try:
-    check_import("IPython")
+if find_spec("IPython") is not None:
 
     has_ipython = True
     from IPython.display import HTML, display
 
-except RuntimeError:
+else:
 
     has_ipython = False
 
