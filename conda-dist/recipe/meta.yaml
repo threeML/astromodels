@@ -14,82 +14,72 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
-    - xspec==12.15.1
+    - xspec==12.15.1 # [not (linux and aarch64)]
     - versioneer
     - setuptools
     - pip
     - numpy
 
   host:
-    - python
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - setuptools
+    - python {{ python }}
     - pip
+    - setuptools
     - numpy
-    - pyyaml>=5.1
-    - pandas>=0.23
-    - xspec==12.15.1
+    - pyyaml
+    - pandas
+    - xspec==12.15.1 # [not (linux and aarch64)]
     - future
-    - numba>=0.54
-    - h5py
+    - numba
+    - h5py>=3.9
     - colorama
     - omegaconf
     - rich
     - joblib
     - versioneer
-    
+
   run:
     - python
-    - numpy>1.6
-    - pyyaml>=5.1
-    - astropy>=1.2
-    - scipy>=0.14
+    - numpy
+    - pyyaml
+    - astropy
+    - scipy
     - pytables
-    - pandas>=0.23
+    - pandas
     - dill
     - future
-    - numba>=0.54
-    - h5py
+    - numba
+    - h5py>=3.9
     - colorama
     - omegaconf
     - rich
     - joblib
+    - xspec==12.15.1 # [not (linux and aarch64)]    
     - versioneer
-    
+
 build:
   script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
   skip: true  # [win]
-#  skip: true  # [py3k]
 
-#test:
-#  # Python imports
-#  imports:
-#    - astromodels
-#    - astromodels.core
-#    - astromodels.functions
-#    - astromodels.functions.dark_matter
-#    - astromodels.sources
-#    - astromodels.utils
-#    - astromodels.xspec
-
-#  commands:
-#    - pytest -vv --pyargs {{ name }}
-
-  # You can also put a file called run_test.py in the recipe that will be run
-  # at test time.
-
-#  requires:
-#    - xspec-modelsonly
-
+test: # already uses requirements from "run"
+  requires:
+    - pytest
+    - pytest-cov
+    - coverage
+  source_files:
+    - astromodels/tests
+    - pyproject.toml # needed for pytest setup e.g. marks
+  commands:
+    - pytest -vv astromodels/tests --cov=astromodels --cov-report=term
 
 about:
   home: https://github.com/threeml/astromodels
-  license: UNKNOWN
-  summary: 'Astromodels contains models to be used in likelihood or Bayesian analysis in astronomy'
-  license_family: OTHER
+  license: BSD 3-Clause
+  license_file: LICENSE
+  license_family: BSD
+  summary: Models for astronomy and astrophysics
+  description: |
+    Astromodels contains models to be used in likelihood or 
+    Bayesian analysis in astronomy and astrophysics
 
-# See
-# http://docs.continuum.io/conda/build.html for
-# more information about meta.yaml
+  dev_url: https://github.com/threeML/astromodels
+  doc_url: https://astromodels.readthedocs.io
