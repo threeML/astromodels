@@ -27,13 +27,20 @@ jobs:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Add conda to system path
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: 3.11
+            activate-environment: "test_env"
+            auto-activate-base: false
+            miniforge-version: latest
+            python-version: "3.11"
+            auto-update-conda: true
+            environment-file: "ci/environment.yml"
+            use-only-tar-bz2: false
+            channel-priority: true
 
       - name: Init Environment
-        #shell: bash -l {0}
+        shell: bash -l {0}
         run: |
           
           brew update
@@ -41,15 +48,9 @@ jobs:
 
           eval "$(/usr/libexec/path_helper)"
 
-      - name: Setup base pkgs
-        shell: bash -l {0}
-        run: |
-          brew install hdf5 lzo c-blosc
+          brew install lzo c-blosc
 
-          python -m pip install --upgrade pip wheel
-
-          python -m pip install numpy numba tempita jupytext jupyterthemes jupyter_latex_envs papermill matplotlib astropy pandas tables healpy
-          python -m pip install ebltable black cython pkgconfig h5py
+          pip install tempita jupytext jupyterthemes jupyter_latex_envs jupyter notebook papermill matplotlib tables healpy ebltable black cython pkgconfig wheel
 
       - name: Install the package
         shell: bash -l {0}
@@ -78,7 +79,7 @@ jobs:
           MPLBACKEND: "Agg"
 
       - name: Create function gallery
-        #shell: bash -l {0}
+        shell: bash -l {0}
         run: |
           # move to the scripts directory
           cd scripts
