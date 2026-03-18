@@ -6,7 +6,7 @@ import numpy as np
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
-from astromodels.functions import Constant
+from astromodels.functions.functions_1D import Constant
 from astromodels.sources.source import Source, SourceType
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
