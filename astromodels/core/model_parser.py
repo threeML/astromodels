@@ -6,13 +6,13 @@ import re
 import warnings
 from typing import Dict, List
 
-from astromodels.core import (
+from astromodels.core import (  # TODO!
     model,
     parameter,
     polarization,
     sky_direction,
     spectral_component,
-)  # TODO!
+)
 from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source

@@ -24,18 +24,18 @@ from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
 from astromodels.utils import check_import
+from astromodels.utils.exceptions import (
+    DesignViolation,
+    DocstringIsNotRaw,
+    FunctionDefinitionError,
+    FunctionInstanceError,
+    UnknownFunction,
+    UnknownParameter,
+)
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
-from astromodels.utils.exceptions import (
-    DesignViolation,
-    UnknownParameter,
-    UnknownFunction,
-    FunctionDefinitionError,
-    FunctionInstanceError,
-    DocstringIsNotRaw,
-)
 
 log = setup_logger(__name__)
 

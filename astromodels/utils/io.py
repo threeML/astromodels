@@ -5,7 +5,7 @@ from importlib.util import find_spec
 # create a wrapper which just uses print
 try:
     find_spec("IPython.display")
-    from IPython.display import display, Latex
+    from IPython.display import Latex, display
 except ModuleNotFoundError:
 
     def display(*args):
