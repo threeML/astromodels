@@ -12,144 +12,77 @@ del get_versions
 # Map top-level public names to (module, attribute)
 # These include the legacy function/prior names so that __all__ matches historical
 # behavior.
-_functions = {
-    # 1D functions
-    "Blackbody": ("astromodels.functions.functions_1D.blackbody", "Blackbody"),
-    "ModifiedBlackbody": (
-        "astromodels.functions.functions_1D.blackbody",
-        "ModifiedBlackbody",
-    ),
-    "NonDissipativePhotosphere": (
-        "astromodels.functions.functions_1D.blackbody",
-        "NonDissipativePhotosphere",
-    ),
-    "NonDissipativePhotosphere_Deep": (
-        "astromodels.functions.functions_1D.blackbody",
-        "NonDissipativePhotosphere_Deep",
-    ),
-    "GenericFunction": (
-        "astromodels.functions.functions_1D.functions",
-        "GenericFunction",
-    ),
-    "StepFunction": ("astromodels.functions.functions_1D.functions", "StepFunction"),
-    "StepFunctionUpper": (
-        "astromodels.functions.functions_1D.functions",
-        "StepFunctionUpper",
-    ),
-    "Sin": ("astromodels.functions.functions_1D.functions", "Sin"),
-    "DiracDelta": ("astromodels.functions.functions_1D.functions", "DiracDelta"),
-    "Log_parabola": ("astromodels.functions.functions_1D.functions", "Log_parabola"),
-    "Exponential_cutoff": (
-        "astromodels.functions.functions_1D.functions",
-        "Exponential_cutoff",
-    ),
-    "PhAbs": ("astromodels.functions.functions_1D.absorption", "PhAbs"),
-    "TbAbs": ("astromodels.functions.functions_1D.absorption", "TbAbs"),
-    "WAbs": ("astromodels.functions.functions_1D.absorption", "WAbs"),
-    "ZDust": ("astromodels.functions.functions_1D.extinction", "ZDust"),
-    "Constant": ("astromodels.functions.functions_1D.polynomials", "Constant"),
-    "Line": ("astromodels.functions.functions_1D.polynomials", "Line"),
-    "Quadratic": ("astromodels.functions.functions_1D.polynomials", "Quadratic"),
-    "Cubic": ("astromodels.functions.functions_1D.polynomials", "Cubic"),
-    "Quartic": ("astromodels.functions.functions_1D.polynomials", "Quartic"),
-    "Powerlaw": ("astromodels.functions.functions_1D.powerlaws", "Powerlaw"),
-    "Powerlaw_flux": ("astromodels.functions.functions_1D.powerlaws", "Powerlaw_flux"),
-    "Powerlaw_Eflux": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Powerlaw_Eflux",
-    ),
-    "Cutoff_powerlaw": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Cutoff_powerlaw",
-    ),
-    "Cutoff_powerlaw_Ep": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Cutoff_powerlaw_Ep",
-    ),
-    "Inverse_cutoff_powerlaw": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Inverse_cutoff_powerlaw",
-    ),
-    "Super_cutoff_powerlaw": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Super_cutoff_powerlaw",
-    ),
-    "SmoothlyBrokenPowerLaw": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "SmoothlyBrokenPowerLaw",
-    ),
-    "Broken_powerlaw": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Broken_powerlaw",
-    ),
-    "Band": ("astromodels.functions.functions_1D.powerlaws", "Band"),
-    "Band_grbm": ("astromodels.functions.functions_1D.powerlaws", "Band_grbm"),
-    "Band_Calderone": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "Band_Calderone",
-    ),
-    "DoubleSmoothlyBrokenPowerlaw": (
-        "astromodels.functions.functions_1D.powerlaws",
-        "DoubleSmoothlyBrokenPowerlaw",
-    ),
-    # 2D functions
-    "Latitude_galactic_diffuse": (
-        "astromodels.functions.functions_2D",
-        "Latitude_galactic_diffuse",
-    ),
-    "Gaussian_on_sphere": ("astromodels.functions.functions_2D", "Gaussian_on_sphere"),
-    "Asymm_Gaussian_on_sphere": (
-        "astromodels.functions.functions_2D",
-        "Asymm_Gaussian_on_sphere",
-    ),
-    "Disk_on_sphere": ("astromodels.functions.functions_2D", "Disk_on_sphere"),
-    "Ellipse_on_sphere": ("astromodels.functions.functions_2D", "Ellipse_on_sphere"),
-    "SpatialTemplate_2D": ("astromodels.functions.functions_2D", "SpatialTemplate_2D"),
-    "Power_law_on_sphere": (
-        "astromodels.functions.functions_2D",
-        "Power_law_on_sphere",
-    ),
-    # 3D functions
-    "Continuous_injection_diffusion_ellipse": (
-        "astromodels.functions.functions_3D",
-        "Continuous_injection_diffusion_ellipse",
-    ),
-    "Continuous_injection_diffusion": (
-        "astromodels.functions.functions_3D",
-        "Continuous_injection_diffusion",
-    ),
-    "Continuous_injection_diffusion_legacy": (
-        "astromodels.functions.functions_3D",
-        "Continuous_injection_diffusion_legacy",
-    ),
-    "Hermes": ("astromodels.functions.functions_3D", "Hermes"),
-    # Priors
-    "Gaussian": ("astromodels.functions.priors", "Gaussian"),
-    "Truncated_gaussian": ("astromodels.functions.priors", "Truncated_gaussian"),
-    "Cauchy": ("astromodels.functions.priors", "Cauchy"),
-    "Cosine_Prior": ("astromodels.functions.priors", "Cosine_Prior"),
-    "Log_normal": ("astromodels.functions.priors", "Log_normal"),
-    "Uniform_prior": ("astromodels.functions.priors", "Uniform_prior"),
-    "Log_uniform_prior": ("astromodels.functions.priors", "Log_uniform_prior"),
-    "Beta": ("astromodels.functions.priors", "Beta"),
-    "Gamma": ("astromodels.functions.priors", "Gamma"),
-    "Exponential": ("astromodels.functions.priors", "Exponential"),
-    "Powerlaw_Prior": ("astromodels.functions.priors", "Powerlaw_Prior"),
-    # Templates
-    "TemplateModel": ("astromodels.functions.template_model", "TemplateModel"),
-    "TemplateModelFactory": (
-        "astromodels.functions.template_model",
-        "TemplateModelFactory",
-    ),
-    "XSPECTableModel": ("astromodels.functions.template_model", "XSPECTableModel"),
-    "MissingDataFile": ("astromodels.functions.template_model", "MissingDataFile"),
-    # Dark matter
-    "DMFitFunction": ("astromodels.functions.dark_matter.dm_models", "DMFitFunction"),
-    "DMSpectra": ("astromodels.functions.dark_matter.dm_models", "DMSpectra"),
-    "show_configuration": ("astromodels.utils.configuration", "show_configuration"),
-    "functions": ("astromodels.functions", "functions"),
-    "list_functions": ("astromodels.functions.function", "list_functions"),
-}
+_func_names = [
+    "Blackbody",
+    "ModifiedBlackbody",
+    "NonDissipativePhotosphere",
+    "NonDissipativePhotosphere_Deep",
+    "GenericFunction",
+    "StepFunction",
+    "StepFunctionUpper",
+    "Sin",
+    "DiracDelta",
+    "Log_parabola",
+    "Exponential_cutoff",
+    "PhAbs",
+    "TbAbs",
+    "WAbs",
+    "ZDust",
+    "Constant",
+    "Line",
+    "Quadratic",
+    "Cubic",
+    "Quartic",
+    "Powerlaw",
+    "Powerlaw_flux",
+    "Powerlaw_Eflux",
+    "Cutoff_powerlaw",
+    "Cutoff_powerlaw_Ep",
+    "Inverse_cutoff_powerlaw",
+    "Super_cutoff_powerlaw",
+    "SmoothlyBrokenPowerLaw",
+    "Broken_powerlaw",
+    "Band",
+    "Band_grbm",
+    "Band_Calderone",
+    "DoubleSmoothlyBrokenPowerlaw",
+    "Latitude_galactic_diffuse",
+    "Gaussian_on_sphere",
+    "Asymm_Gaussian_on_sphere",
+    "Disk_on_sphere",
+    "Ellipse_on_sphere",
+    "SpatialTemplate_2D",
+    "Power_law_on_sphere",
+    "Continuous_injection_diffusion_ellipse",
+    "Continuous_injection_diffusion",
+    "Continuous_injection_diffusion_legacy",
+    "Hermes",
+    "Gaussian",
+    "Truncated_gaussian",
+    "Cauchy",
+    "Cosine_Prior",
+    "Log_normal",
+    "Uniform_prior",
+    "Log_uniform_prior",
+    "Beta",
+    "Gamma",
+    "Exponential",
+    "Powerlaw_Prior",
+    "TemplateModel",
+    "TemplateModelFactory",
+    "XSPECTableModel",
+    "MissingDataFile",
+    "DMFitFunction",
+    "DMSpectra",
+    "show_configuration",
+    "functions",
+    "list_functions",
+]
+
+_functions = {}
+for f in _func_names:
+    _functions[f] = ("astromodels.functions", f)
+
 
 _public = {
     # core
