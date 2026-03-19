@@ -1,9 +1,10 @@
 # astromodels/functions/__init__.py
 from __future__ import annotations
 
-from importlib import import_module
 import warnings
+from importlib import import_module
 
+# lists in case we get external dependencies also at this level
 _exports = {
     # functions_1D
     "Band": (".functions_1D",),
