@@ -47,7 +47,8 @@ def __getattr__(name: str):
     target = _DEPRECATED.get(name)
     if target:
         warnings.warn(
-            f"astromodels.functions.function.{name} is deprecated; use {target} instead.",
+            f"astromodels.functions.function.{name} is deprecated; "
+            f"use {target} instead.",
             DeprecationWarning,
             stacklevel=2,
         )
