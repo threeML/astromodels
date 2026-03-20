@@ -74,7 +74,6 @@ _func_names = [
     "MissingDataFile",
     "DMFitFunction",
     "DMSpectra",
-    "show_configuration",
     "functions",
     "list_functions",
 ]
@@ -86,6 +85,7 @@ for f in _func_names:
 
 _public = {
     # core
+    "get_units": ("astromodels.core.units", "get_units"),
     "Model": ("astromodels.core.model", "Model"),
     "clone_model": ("astromodels.core.model_parser", "clone_model"),
     "load_model": ("astromodels.core.model_parser", "load_model"),
@@ -97,6 +97,7 @@ _public = {
     ),
     "LinearPolarization": ("astromodels.core.polarization", "LinearPolarization"),
     "StokesPolarization": ("astromodels.core.polarization", "StokesPolarization"),
+    "Unpolarized": ("astromodels.core.polarization", "Unpolarized"),
     "serialize_model": ("astromodels.core.serialization", "serialize_model"),
     "unserialize_model": ("astromodels.core.serialization", "unserialize_model"),
     "SpectralComponent": ("astromodels.core.spectral_component", "SpectralComponent"),
@@ -113,6 +114,7 @@ _public = {
     "ExtendedSource": ("astromodels.sources.extended_source", "ExtendedSource"),
     "ParticleSource": ("astromodels.sources.particle_source", "ParticleSource"),
     "PointSource": ("astromodels.sources.point_source", "PointSource"),
+    "show_configuration": ("astromodels.utils.configuration", "show_configuration"),
 }
 
 # Merge everything we want to expose at top level
