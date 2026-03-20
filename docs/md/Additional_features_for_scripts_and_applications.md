@@ -21,6 +21,7 @@ First let’s import astromodels and let’s load a model from a file, which we 
 
 ```python
 from astromodels import *
+import astropy.units as u
 ```
 
 ```python
