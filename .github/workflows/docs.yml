@@ -1,5 +1,20 @@
 name: Docs
-on: [push, release]
+on:
+  push:
+    branches:
+      - master
+      - dev
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - master
+      - dev
+  release:
+
+permissions:
+  contents: write       # 'write' access to repository contents
+  pull-requests: write  # 'write' access to pull requests
 
 jobs:
   notebooks:
@@ -12,13 +27,20 @@ jobs:
           persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Add conda to system path
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          python-version: 3.11
+            activate-environment: "test_env"
+            auto-activate-base: false
+            miniforge-version: latest
+            python-version: "3.11"
+            auto-update-conda: true
+            environment-file: "ci/environment.yml"
+            use-only-tar-bz2: false
+            channel-priority: true
 
       - name: Init Environment
-        #shell: bash -l {0}
+        shell: bash -l {0}
         run: |
           
           brew update
@@ -26,26 +48,18 @@ jobs:
 
           eval "$(/usr/libexec/path_helper)"
 
-      - name: Setup base pkgs
-        #shell: bash -l {0}
-        run: |
-          brew install hdf5 lzo c-blosc
+          brew install lzo c-blosc
 
-          python -m pip install --upgrade pip wheel
+          pip install tempita jupytext jupyterthemes jupyter_latex_envs jupyter notebook papermill matplotlib tables healpy ebltable black cython pkgconfig wheel
 
-          python -m pip install numpy numba tempita jupytext jupyterthemes jupyter_latex_envs papermill "matplotlib<3.9" astropy pandas tables healpy
-          python -m pip install ebltable black cython pkgconfig h5py
-
-          
       - name: Install the package
-        #shell: bash -l {0}
+        shell: bash -l {0}
         run: |
 
-          #python setup.py develop
-          pip3 install -e .
+          pip install -e .
           
       - name: Execute the notebooks
-        #shell: bash -l {0}
+        shell: bash -l {0}
         run: |
           # Make sure we fail in case of error
           set -e
@@ -63,12 +77,12 @@ jobs:
           MKL_NUM_THREADS: 1
           NUMEXPR_NUM_THREADS: 1
           MPLBACKEND: "Agg"
+
       - name: Create function gallery
-        #shell: bash -l {0}
+        shell: bash -l {0}
         run: |
           # move to the scripts directory
           cd scripts
-
 
           # now generate the function docs
           python generate_func_docs.py
@@ -76,10 +90,19 @@ jobs:
           cd ..
 
           ls docs/notebooks
+
+      - name: Set commit sha for RTD
+        id: set_commit_sha
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "commit_sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
           
       - uses: actions/upload-artifact@v6
         with:
-          name: notebooks-for-${{ github.sha }}
+          name: notebooks-for-${{ steps.set_commit_sha.outputs.commit_sha }}
           path: docs/notebooks
 
 
@@ -88,12 +111,36 @@ jobs:
         with:
           time: 10m
 
-      - name: Trigger RTDs build
+      - name: Trigger RTDs build (Branches)
+        if: github.event_name != 'pull_request'
         uses: dfm/rtds-action@main
         with:
           webhook_url: ${{ secrets.RTDS_WEBHOOK_URL }}
           webhook_token: ${{ secrets.RTDS_WEBHOOK_TOKEN }}
           commit_ref: ${{ github.ref }}
+      
+      - name: Trigger RTDs Build (Pull Requests)
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          RTD_TOKEN: ${{ secrets.RTD_AUTH_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          RTD_PROJECT: "astromodels" 
+        run: |
+          VERSION_SLUG="${PR_NUMBER}"
+          echo "Triggering build for PR version: $VERSION_SLUG"
+          
+          # We use curl to hit the API v3 directly
+          curl -X POST \
+            -H "Authorization: Token $RTD_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://readthedocs.org/api/v3/projects/$RTD_PROJECT/versions/$VERSION_SLUG/builds/"
+
+      - name: Documentation link for pull request
+        if: github.event_name == 'pull_request'
+        uses: readthedocs/actions/preview@v1
+        with:
+          project-slug: "astromodels"
 
   api_doc:
     name: "Create the API stubs"
@@ -132,10 +179,18 @@ jobs:
 
           sphinx-apidoc -f -o docs/api/ astromodels
 
-
+      - name: Set commit sha for RTD
+        id: set_commit_sha
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "commit_sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+      
       - uses: actions/upload-artifact@v6
         with:
-          name: api-stubs-for-${{ github.sha }}
+          name: api-stubs-for-${{ steps.set_commit_sha.outputs.commit_sha }}
           path: docs/api
 
 
@@ -178,17 +233,24 @@ jobs:
 
           rm -rf docs/md/*
 
-
+      - name: Set commit sha for RTD
+        id: set_commit_sha
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "commit_sha=${{ github.event.pull_request.head.sha }}" >> $GITHUB_OUTPUT
+          else
+            echo "commit_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
 
       - uses: actions/download-artifact@v7
         with:
-          name: notebooks-for-${{ github.sha }}
+          name: notebooks-for-${{ steps.set_commit_sha.outputs.commit_sha }}
           path: docs/notebooks
 
 
       - uses: actions/download-artifact@v7
         with:
-          name: api-stubs-for-${{ github.sha }}
+          name: api-stubs-for-${{ steps.set_commit_sha.outputs.commit_sha }}
           path: docs/api
 
       - name: Build and Commit
