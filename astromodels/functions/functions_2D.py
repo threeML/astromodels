@@ -883,9 +883,9 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
         if find_spec("mhealpy") is not None:
             from mhealpy import HealpixMap
         else:
-            raise ModuleNotFoundError("You need to install mhealpy" +
-                            "via pip for using this class"
-                                     )
+            raise ModuleNotFoundError(
+                "You need to install mhealpy via pip for using this class"
+            )
 
         self._fitsfile = self.fits_file.value
 
@@ -938,9 +938,10 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
     @property
     def frame(self):
         """Return the coordinate frame of the map."""
-        #This maps the internal coordsys to the 'frame' property
+        # This maps the internal coordsys to the 'frame' property
         return self._hpmap.coordsys
-        
+
+
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
     description :
