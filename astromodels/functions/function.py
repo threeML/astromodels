@@ -15,6 +15,7 @@ from typing import Dict, List, Optional, Tuple
 import astropy.units as u
 import numba as nb
 import numpy as np
+from scipy.integrate import quad
 from yaml.reader import ReaderError
 
 from astromodels.core.memoization import memoize
@@ -1544,6 +1545,25 @@ class Function1D(Function):
         b = self(x * (1 + epsilon))
 
         return _local_deriv(a, b, epsilon)
+
+    def integrate(self, a, b, *args, **kwargs):
+        """
+        Integrates the function from a to b. If an analytically integral is available
+        will use this, otherwise fall back to the numerical integration using scipys
+        quadrature rule.
+
+        :param a: lower integration boundary
+        :type a: float or astropy.Quantity
+        :param b: upper integration boundary
+        :type b: float or astropy.Quantity
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+
+        returns: value of integral
+        """
+        return quad(self.__call__, a, b, *args, **kwargs)[0]
 
 
 @nb.njit
