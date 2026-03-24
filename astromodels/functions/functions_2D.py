@@ -10,6 +10,7 @@ from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
+from importlib.util import find_spec
 
 log = setup_logger(__name__)
 
@@ -879,17 +880,17 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
     def _load_file(self):
 
-        try:
+        if find_spec("mhealpy") is not None:
             from mhealpy import HealpixMap
-        except ValueError:
-            print("You need to install mhealpy with pip for using this class")
+        else:
+            raise ModuleNotFoundError("You need to install mhealpy via pip for using this class")
 
         self._fitsfile = self.fits_file.value
 
         self._hpmap = HealpixMap.read_map(self._fitsfile)
 
         # test if the map is normalized as expected
-        area = self._hpmap.pixarea().value
+        area = self._hpmap.pixarea().to_value(u.sr)
 
         total = np.sum(self._hpmap) * area
 
@@ -898,15 +899,15 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
         # hash sum uniquely identifying the template function (defined by its 2D map
         # array and coordinate system) this is needed so that the memoization won't
-        # confuse different SpatialTemplate_2D objects.
+        # confuse different SpatialTemplate_2D_Healpix objects.
         h = hashlib.sha224()
-        h.update(np.asarray(self._hpmap).tobytes())
+        h.update(repr(self._hpmap).encode("utf-8"))
         self.hash = int(h.hexdigest(), 16)
 
     def evaluate(self, x, y, K, hash):
 
         # X and Y are defined by the frame (ICRS,galactic, etc..)
-        coord = SkyCoord(x, y, frame=self._hpmap.coordsys, unit="deg")
+        coord = SkyCoord(x, y, frame=self.frame, unit="deg")
 
         # transform input coordinates to pixel coordinates;
         pix = self._hpmap.ang2pix(coord)
@@ -932,7 +933,12 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
             z = z.value
         return np.multiply(self.K.value, np.ones_like(z))
 
-
+    @property
+    def frame(self):
+        """Return the coordinate frame of the map."""
+        # This maps the internal coordsys to the 'frame' property
+        return self._hpmap.coordsys
+        
 class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
     r"""
     description :
