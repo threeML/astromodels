@@ -883,7 +883,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
         if find_spec("mhealpy") is not None:
             from mhealpy import HealpixMap
         else:
-            raise ModuleNotFoundError("You need to install mhealpy +
+            raise ModuleNotFoundError("You need to install mhealpy" +
                             "via pip for using this class"
                                      )
 
