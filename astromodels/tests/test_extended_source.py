@@ -158,7 +158,7 @@ def test_call():
         if name == "SpatialTemplate_2D_Healpix":
             if not has_mhealpy:
                 pytest.skip(
-                    "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
+                "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
                 )
             make_test_healpix_template("__test.fits")
             shape = class_type(fits_file="__test.fits")
@@ -256,7 +256,7 @@ def test_call_with_units():
         if name == "SpatialTemplate_2D_Healpix":
             if not has_mhealpy:
                 pytest.skip(
-                    "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
+                "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
                 )
             make_test_healpix_template("__test.fits")
 
