@@ -294,7 +294,7 @@ class ExtendedSource(Source, Node):
 
         :return:
         """
-        free_parameters = collections.OrderedDict()
+        free_parameters = dict()
 
         for component in list(self._components.values()):
 
@@ -320,7 +320,7 @@ class ExtendedSource(Source, Node):
 
         :return:
         """
-        all_parameters = collections.OrderedDict()
+        all_parameters = dict()
 
         for component in list(self._components.values()):
 
@@ -343,13 +343,13 @@ class ExtendedSource(Source, Node):
 
         # Make a dictionary which will then be transformed in a list
 
-        repr_dict = collections.OrderedDict()
+        repr_dict = dict()
 
         key = "%s (extended source)" % self.name
 
-        repr_dict[key] = collections.OrderedDict()
+        repr_dict[key] = dict()
         repr_dict[key]["shape"] = self._spatial_shape.to_dict(minimal=True)
-        repr_dict[key]["spectrum"] = collections.OrderedDict()
+        repr_dict[key]["spectrum"] = dict()
 
         for component_name, component in list(self.components.items()):
             repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)

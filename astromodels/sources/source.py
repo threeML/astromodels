@@ -30,7 +30,7 @@ class Source(object):
     ):
 
         # Make the dictionary of components
-        self._components: Dict[str, Any] = collections.OrderedDict()
+        self._components: Dict[str, Any] = dict()
 
         for component in list_of_components:
 

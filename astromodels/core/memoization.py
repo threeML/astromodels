@@ -41,7 +41,7 @@ def memoize(method):
     :return: the decorated method
     """
 
-    cache = method.cache = collections.OrderedDict()
+    cache = method.cache = dict()
 
     # Put these two methods in the local space (faster)
     _get = cache.get

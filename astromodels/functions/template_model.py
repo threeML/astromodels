@@ -137,7 +137,7 @@ class TemplateModelFactory(object):
         # We create a dictionary which will contain the grid for each parameter
 
         self._parameters_grids: Dict[str, Optional[np.ndarray]] = (
-            collections.OrderedDict()
+            dict()
         )
 
         for parameter_name in names_of_parameters:
@@ -456,7 +456,7 @@ class TemplateFile:
 
             grid = f["grid"][()]
 
-            parameters = collections.OrderedDict()
+            parameters = dict()
 
             for k in parameter_order:
                 parameters[k] = f["parameters"][k][()]
@@ -546,7 +546,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         except Exception:
             raise InvalidTemplateModelFile()
 
-        self._parameters_grids = collections.OrderedDict()
+        self._parameters_grids = dict()
 
         for key in template_file.parameter_order:
             try:
@@ -578,7 +578,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         # Make the dictionary of parameters
 
-        function_definition = collections.OrderedDict()
+        function_definition = dict()
 
         function_definition["description"] = description
 
@@ -586,7 +586,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         # Now build the parameters according to the content of the parameter grid
 
-        parameters = collections.OrderedDict()
+        parameters = dict()
 
         parameters["K"] = Parameter("K", 1.0)
         parameters["scale"] = Parameter("scale", 1.0)
@@ -962,7 +962,7 @@ def convert_old_table_model(model_name: str):
     with HDFStore(filename_sanitized) as store:
         data_frame = store["data_frame"]
 
-        parameters_grids = collections.OrderedDict()
+        parameters_grids = dict()
 
         processed_parameters = 0
 
@@ -1014,7 +1014,7 @@ def convert_old_table_model(model_name: str):
 
         # Make the dictionary of parameters
 
-        function_definition = collections.OrderedDict()
+        function_definition = dict()
 
         function_definition["description"] = description
 

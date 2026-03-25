@@ -71,7 +71,7 @@ class _AstromodelsUnits(object):
         if area_unit is None:
             area_unit = _AREA
 
-        self._units = collections.OrderedDict()
+        self._units = dict()
 
         self._units["energy"] = energy_unit
         self._units["time"] = time_unit
