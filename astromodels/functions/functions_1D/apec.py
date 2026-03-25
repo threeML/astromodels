@@ -6,14 +6,11 @@ import numpy as np
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import check_import
 
-try:
-
-    check_import("pyatomdb", "APEC")
+if check_import("pyatomdb", "APEC"):  # this one raises a RuntimeError if not available
     import pyatomdb
 
     has_atomdb = True
-
-except RuntimeError:
+else:
 
     has_atomdb = False
 
@@ -114,41 +111,13 @@ class APEC(Function1D, metaclass=FunctionMeta):
         sess.set_response(ebounds, raw=True)
 
         sess.set_abund(
-            [
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12,
-                13,
-                14,
-                16,
-                17,
-                18,
-                19,
-                20,
-                21,
-                22,
-                23,
-                24,
-                25,
-                26,
-                27,
-                28,
-                29,
-                30,
-            ],
+            list(map(int, range(6, 31, 1))),
             abund,
         )
 
         spec = sess.return_spectrum(kT) / binsize / 1e-14
 
         return K * spec
-
-
-# VAPEC class
 
 
 class VAPEC(Function1D, metaclass=FunctionMeta):
