@@ -1030,7 +1030,13 @@ def test_function_properties():
 
 def test_abs_model():
 
-    for i, m in enumerate([astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]):
+    for i, m in enumerate(
+        [
+            astromodels.functions.functions_1D.TbAbs,
+            astromodels.functions.functions_1D.WAbs,
+            astromodels.functions.functions_1D.PhAbs,
+        ]
+    ):
 
         instance = m()
 
@@ -1055,11 +1061,11 @@ def test_complex_composites():
 
     # now make sure that we can do some really crazy stuff
 
-    a = astromodels.TbAbs(abundance_table="ASPL")
-    b = astromodels.PhAbs()
+    a = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="ASPL")
+    b = astromodels.functions.functions_1D.PhAbs()
 
-    c = astromodels.Powerlaw()
-    d = astromodels.Blackbody()
+    c = astromodels.functions.functions_1D.powerlaws.Powerlaw()
+    d = astromodels.functions.functions_1D.Blackbody()
 
     f = a * (c + b * d)
 
@@ -1073,11 +1079,11 @@ def test_complex_composites():
 
     assert tbabs._current_table == "WILM"
 
-    a = astromodels.TbAbs(abundance_table="ASPL")
-    b = astromodels.PhAbs()
+    a = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="ASPL")
+    b = astromodels.functions.functions_1D.absorption.PhAbs()
 
-    c = astromodels.TbAbs(abundance_table="ASPL")
-    d = astromodels.TbAbs(abundance_table="WILM")
+    c = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="ASPL")
+    d = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="WILM")
 
     a * b + c * d
 

@@ -49,7 +49,7 @@ if (
 # should not have)
 
 
-illegal_variable_names = [
+_illegal_variable_names = [
     "and",
     "assert",
     "break",
@@ -394,7 +394,7 @@ def get_models(model_dat_path):
                 par_name = "y1"
 
             # Check that the parameter name is not an illegal Python name
-            if par_name in illegal_variable_names:
+            if par_name in _illegal_variable_names:
 
                 par_name = "xs_%s" % par_name
 
@@ -843,7 +843,7 @@ def setup_xspec_models():
 new_functions = setup_xspec_models()
 
 # Now import the new classes in the local namespace (if any)
-# This is needed to make the classes pickeable
+# This is needed to make the classes pickleable
 
 __all__ = []
 

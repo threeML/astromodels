@@ -1,8 +1,10 @@
 # astromodels/functions/__init__.py
 from __future__ import annotations
 
+import warnings
 from importlib import import_module
 
+# lists in case we get external dependencies also at this level
 _exports = {
     # functions_1D
     "Band": (".functions_1D",),
@@ -51,7 +53,6 @@ _exports = {
     "Function2D": (".function",),
     "Function3D": (".function",),
     "FunctionMeta": (".function",),
-    "ModelAssertionViolation": (".function",),
     # functions_2D
     "Asymm_Gaussian_on_sphere": (".functions_2D",),
     "Disk_on_sphere": (".functions_2D",),
@@ -86,7 +87,14 @@ _exports = {
     # dark_matter
     "DMFitFunction": (".dark_matter.dm_models",),
     "DMSpectra": (".dark_matter.dm_models",),
+    "list_functions": ("astromodels.utils.list_functions",),
+    "has_atomdb": (".functions_1D",),
+    "has_ebltable": (".functions_1D",),
 }
+_depcrecated = {
+    "ModelAssertionViolation": ("astromodels.utils.exceptions",),
+}
+_exports.update(_depcrecated)
 
 # Public API surface: stable list of names
 __all__ = sorted(_exports.keys())
@@ -95,6 +103,13 @@ __all__ = sorted(_exports.keys())
 def __getattr__(name: str):
     # Lazy re-export: import the defining module only when the symbol is accessed
     mod_path = _exports.get(name)
+    dep_path = _depcrecated.get(name)
+    if dep_path:
+        warnings.warn(
+            f"astromodels.functions.{name} is deprecated; use {dep_path} instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
     if mod_path is None:
         # Unknown name
         raise AttributeError(name)

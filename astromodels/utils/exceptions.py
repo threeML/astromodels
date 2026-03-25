@@ -56,3 +56,19 @@ class NaimaNotAvailable(ImportWarning):
 
 class InvalidUsageForFunction(Exception):
     pass
+
+
+class IncompleteGrid(RuntimeError):
+    pass
+
+
+class ValuesNotInGrid(ValueError):
+    pass
+
+
+class MissingDataFile(RuntimeError):
+    pass
+
+
+class InvalidTemplateModelFile(RuntimeError):
+    pass
