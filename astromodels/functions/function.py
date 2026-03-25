@@ -5,7 +5,6 @@ import inspect
 import math
 import os
 import re
-import sys
 import textwrap
 import uuid
 import warnings
@@ -34,9 +33,9 @@ from astromodels.utils.exceptions import (
     UnknownParameter,
 )
 from astromodels.utils.file_utils import copy_if_needed
+from astromodels.utils.list_functions import list_functions  # noqa: F401
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
-from astromodels.utils.table import dict_to_table
 
 _DEPRECATED = {
     "ModelAssertionViolation": "astromodels.utils.exceptions.ModelAssertionViolation",
@@ -76,21 +75,6 @@ else:
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = "(no latex formula available)"
-
-
-# A function to find the calling sequence of a function, compatible
-# with both python2 and 3
-def _py2to3_getargspec(function):
-    if sys.version_info[0] < 3:
-
-        argspec = inspect.getargspec(function)
-
-    else:  # PY3
-
-        argspec = inspect.getfullargspec(function)
-
-    return argspec
-
 
 # This dictionary will contain the known function by name, so that the model_parser can
 # instance them by looking into this dictionary. It will be filled by the FunctionMeta
@@ -533,13 +517,13 @@ class FunctionMeta(type):
 
         try:
 
-            calling_sequence = _py2to3_getargspec(function.input_object).args
+            calling_sequence = inspect.getfullargspec(function.input_object).args
 
         except AttributeError:
 
             # This might happen if the function is without memoization
 
-            calling_sequence = _py2to3_getargspec(function).args
+            calling_sequence = inspect.getfullargspec(function).args
 
         if not calling_sequence[0] == "self":
 
@@ -2466,26 +2450,6 @@ def get_function_class(function_name):
         raise UnknownFunction()
 
 
-def list_functions():
-
-    # Gather all defined functions and their descriptions
-
-    functions_and_descriptions = {
-        key: {"Description": value._function_definition["description"]}
-        for key, value in list(_known_functions.items())
-    }
-
-    # Order by key (i.e., by function name)
-
-    ordered = collections.OrderedDict(sorted(functions_and_descriptions.items()))
-
-    # Format in a table
-
-    table = dict_to_table(ordered)
-
-    return table
-
-
 def _parse_function_expression(function_specification):
     """
     Parse a complex function expression like:
@@ -2620,6 +2584,7 @@ def _parse_function_expression(function_specification):
             except astromodels.functions.template_model.InvalidTemplateModelFile:
 
                 # It's not a template
+                # i
 
                 try:
 
