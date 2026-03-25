@@ -27,6 +27,3 @@ def unserialize_model(dict_with_types):
 # Register serialization/unserialization for Model
 copyreg.constructor(unserialize_model)
 copyreg.pickle(Model, serialize_model, unserialize_model)
-
-
-__all__ = ["serialize_model", "unserialize_model"]
