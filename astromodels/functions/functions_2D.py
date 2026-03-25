@@ -904,6 +904,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
         # confuse different SpatialTemplate_2D_Healpix objects.
         h = hashlib.sha224()
         h.update(repr(self._hpmap).encode("utf-8"))
+        h.update(np.asarray(self._hpmap).tobytes())
         self.hash = int(h.hexdigest(), 16)
 
     def evaluate(self, x, y, K, hash):
