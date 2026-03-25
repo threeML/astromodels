@@ -3,9 +3,14 @@ import os
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model
-from astromodels.core.polarization import LinearPolarization, StokesPolarization
+from astromodels.core.polarization import (
+    LinearPolarization,
+    StokesPolarization,
+    Unpolarized,
+)
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
+from pathlib import Path
 
 
 def test_linear_polarization_parameters():
@@ -96,3 +101,30 @@ def test_Stokes_polarization_functions():
     mp.display()
 
     os.remove("__test.yml")
+
+
+def test_unpolarized():
+    # should be unpolarized at startupo
+    temp_path = Path("__test.yml")
+    ps = PointSource("PS", 0, 0, spectral_shape=Powerlaw())
+
+    assert isinstance(
+        ps.spectrum.main.polarization, Unpolarized
+    ), "Source was not unpolarized after init"
+    m1 = Model(ps)
+    m1.display()
+
+    m1.save(temp_path, overwrite=True)
+
+    mp = load_model(temp_path)
+    assert type(m1.sources["PS"].spectrum.main.polarization) is type(
+        mp.sources["PS"].spectrum.main.polarization
+    )
+    assert isinstance(mp.sources["PS"].spectrum.main.polarization, Unpolarized)
+
+    mp.display()
+    temp_path.unlink()
+
+    assert ps.spectrum.main(1, stokes="Q") == ps.spectrum.main(
+        1
+    ), "Unpolarized changes the value!"

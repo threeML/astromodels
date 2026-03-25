@@ -42,7 +42,9 @@ astropy.modeling and the modeling part of sherpa.
 
 .. note:: 
   
-    **Note for XSPEC users:**
+    **Notes for XSPEC users:**
+
+    `astromodels` XSPEC support is *not* available for Linux arm64.
 
     Starting from version 2.5.0 there is currently support for XSPEC
     installed via Conda via the `xspec` conda package (see
