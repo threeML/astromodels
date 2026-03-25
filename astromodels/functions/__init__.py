@@ -87,7 +87,9 @@ _exports = {
     # dark_matter
     "DMFitFunction": (".dark_matter.dm_models",),
     "DMSpectra": (".dark_matter.dm_models",),
-    "list_functions": (".function",),
+    "list_functions": ("astromodels.utils.list_functions",),
+    "has_atomdb": (".functions_1D",),
+    "has_ebltable": (".functions_1D",),
 }
 _depcrecated = {
     "ModelAssertionViolation": ("astromodels.utils.exceptions",),
