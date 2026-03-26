@@ -202,7 +202,4 @@ def setup_logger(name):
 
     log.addHandler(astromodels_usr_log_handler)
 
-    # we do not want to duplicate teh messages in the parents
-    log.propagate = False
-
     return log
