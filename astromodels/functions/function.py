@@ -47,14 +47,12 @@ log = setup_logger(__name__)
 __author__ = "giacomov"
 
 
-try:
-    check_import("IPython")
+if check_import("IPython"):
 
     has_ipython = True
     from IPython.display import HTML, display
 
-except RuntimeError:
-
+else:
     has_ipython = False
 
 # astromodels/functions/function.py
