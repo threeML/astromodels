@@ -7,6 +7,7 @@ skip_if_pyatomdb_not_availale = pytest.mark.skipif(
 )
 
 
+@skip_if_pyatomdb_not_availale
 def test_import_APEC():
     # check if we can actually import and intialize them
     from astromodels.functions import APEC, VAPEC
