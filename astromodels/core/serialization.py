@@ -1,14 +1,7 @@
+import copyreg
+
 from astromodels.core.model import Model
 from astromodels.core.model_parser import ModelParser
-
-# copyreg is called copy_reg in python2
-try:
-
-    import copyreg  # py3
-
-except ImportError:
-
-    import copyreg as copyreg  # py2
 
 
 # Model serializer
