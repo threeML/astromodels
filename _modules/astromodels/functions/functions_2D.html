@@ -103,6 +103,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.angular_distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">angular_distance</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.vincenty</span><span class="w"> </span><span class="kn">import</span> <span class="n">vincenty</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_spec</span>
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -906,6 +907,11 @@
             <span class="n">dOmega</span> <span class="o">=</span> <span class="p">(</span><span class="n">area</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
             <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="n">dOmega</span>
 
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;SpatialTemplate_2D is accurates for only small region model&quot;</span>
+                <span class="o">+</span> <span class="s2">&quot; please consider using SpatialTemplate_2D_Healpix otherwise&quot;</span>
+            <span class="p">)</span>
+
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                     <span class="s2">&quot;2D template read from </span><span class="si">{}</span><span class="s2"> is normalized to </span><span class="si">{}</span><span class="s2"> (expected: 1)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -1011,6 +1017,115 @@
 
 
 
+<div class="viewcode-block" id="SpatialTemplate_2D_Healpix">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SpatialTemplate_2D_Healpix</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        User input Spatial Template using HealpixMap from mhealpy.</span>
+
+<span class="sd">    latex : $hi$</span>
+
+<span class="sd">    parameters :</span>
+<span class="sd">        K :</span>
+<span class="sd">            desc : normalization</span>
+<span class="sd">            initial value : 1</span>
+<span class="sd">            fix : yes</span>
+<span class="sd">        hash :</span>
+<span class="sd">            desc: hash of model map</span>
+<span class="sd">            initial value: 1</span>
+<span class="sd">            fix: yes</span>
+
+<span class="sd">    properties:</span>
+<span class="sd">        fits_file:</span>
+<span class="sd">            desc: fits file name which contain HealpixMap object from mhealpy package</span>
+<span class="sd">            defer: True</span>
+<span class="sd">            function: _load_file</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">z_unit</span>
+
+    <span class="c1"># This is optional, and it is only needed if we need more setup after the</span>
+    <span class="c1"># constructor provided by the meta class</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;mhealpy&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">mhealpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealpixMap</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;You need to install mhealpy via pip for using this class&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_file</span><span class="o">.</span><span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span> <span class="o">=</span> <span class="n">HealpixMap</span><span class="o">.</span><span class="n">read_map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">)</span>
+
+        <span class="c1"># test if the map is normalized as expected</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="o">.</span><span class="n">pixarea</span><span class="p">()</span><span class="o">.</span><span class="n">to_value</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span>
+
+        <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span> <span class="o">*</span> <span class="n">area</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;2D template is normalized to </span><span class="si">{}</span><span class="s2"> (expected: 1)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+
+        <span class="c1"># hash sum uniquely identifying the template function (defined by its 2D map</span>
+        <span class="c1"># array and coordinate system) this is needed so that the memoization won&#39;t</span>
+        <span class="c1"># confuse different SpatialTemplate_2D_Healpix objects.</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SpatialTemplate_2D_Healpix.evaluate">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">):</span>
+
+        <span class="c1"># X and Y are defined by the frame (ICRS,galactic, etc..)</span>
+        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+
+        <span class="c1"># transform input coordinates to pixel coordinates;</span>
+        <span class="n">pix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="o">.</span><span class="n">ang2pix</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">[</span><span class="n">pix</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">out</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SpatialTemplate_2D_Healpix.get_boundaries">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="o">.</span><span class="n">boundaries</span></div>
+
+
+<div class="viewcode-block" id="SpatialTemplate_2D_Healpix.get_total_spatial_integral">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_total_spatial_integral">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
+<span class="sd">        subclasses.</span>
+
+<span class="sd">        :return: an array of values of the integral (same dimension as</span>
+<span class="sd">            z).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinate frame of the map.&quot;&quot;&quot;</span>
+        <span class="c1"># This maps the internal coordsys to the &#39;frame&#39; property</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="o">.</span><span class="n">coordsys</span></div>
+
+
+
 <div class="viewcode-block" id="Power_law_on_sphere">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Power_law_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
@@ -1019,7 +1134,7 @@
 
 <span class="sd">        A power law function on a sphere (in spherical coordinates)</span>
 
-<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1~index}  \left\{</span>
+<span class="sd">    latex : $$ f(\vec{x}) = \left(\frac{180}{\pi}\right)^{-1.*index}  \left\{</span>
 <span class="sd">            \begin{matrix} 0.05^{index} &amp; {\rm if} &amp; ||\vec{x}-\vec{x}_0|| \le 0.05\\</span>
 <span class="sd">            ||\vec{x}-\vec{x}_0||^{index} &amp; {\rm if} &amp; 0.05 &lt; ||\vec{x}-\vec{x}_0|| \le</span>
 <span class="sd">            maxr \\ 0 &amp; {\rm if} &amp; ||\vec{x}-\vec{x}_0||&gt;maxr\end{matrix}\right. $$</span>

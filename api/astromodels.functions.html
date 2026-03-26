@@ -1610,7 +1610,7 @@ z).</p>
 <div><p>A power law function on a sphere (in spherical coordinates)</p>
 </div></blockquote>
 <dl class="simple">
-<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^{-1~index}  left{</span></dt><dd><p>begin{matrix} 0.05^{index} &amp; {rm if} &amp; ||vec{x}-vec{x}_0|| le 0.05\
+<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^{-1.*index}  left{</span></dt><dd><p>begin{matrix} 0.05^{index} &amp; {rm if} &amp; ||vec{x}-vec{x}_0|| le 0.05\
 ||vec{x}-vec{x}_0||^{index} &amp; {rm if} &amp; 0.05 &lt; ||vec{x}-vec{x}_0|| le
 maxr \ 0 &amp; {rm if} &amp; ||vec{x}-vec{x}_0||&gt;maxrend{matrix}right. $$</p>
 </dd>
@@ -1774,6 +1774,80 @@ z).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D.info">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.functions_2D.</span></span><span class="sig-name descname"><span class="pre">SpatialTemplate_2D_Healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function2D" title="astromodels.functions.function.Function2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function2D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>User input Spatial Template using HealpixMap from mhealpy.</p>
+</dd>
+</dl>
+<p>latex : $hi$</p>
+<dl class="simple">
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>K :</dt><dd><p>desc : normalization
+initial value : 1
+fix : yes</p>
+</dd>
+<dt>hash :</dt><dd><p>desc: hash of model map
+initial value: 1
+fix: yes</p>
+</dd>
+</dl>
+</dd>
+<dt>properties:</dt><dd><dl class="simple">
+<dt>fits_file:</dt><dd><p>desc: fits file name which contain HealpixMap object from mhealpy package
+defer: True
+function: _load_file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.evaluate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.frame">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">frame</span></span><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.frame" title="Link to this definition"></a></dt>
+<dd><p>Return the coordinate frame of the map.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_boundaries" title="Link to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_total_spatial_integral" title="Link to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.info">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.info" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -6155,7 +6229,7 @@ function: _init_xsect</p>
 <div><p>A power law function on a sphere (in spherical coordinates)</p>
 </div></blockquote>
 <dl class="simple">
-<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^{-1~index}  left{</span></dt><dd><p>begin{matrix} 0.05^{index} &amp; {rm if} &amp; ||vec{x}-vec{x}_0|| le 0.05\
+<dt>latex<span class="classifier">$$ f(vec{x}) = left(frac{180}{pi}right)^{-1.*index}  left{</span></dt><dd><p>begin{matrix} 0.05^{index} &amp; {rm if} &amp; ||vec{x}-vec{x}_0|| le 0.05\
 ||vec{x}-vec{x}_0||^{index} &amp; {rm if} &amp; 0.05 &lt; ||vec{x}-vec{x}_0|| le
 maxr \ 0 &amp; {rm if} &amp; ||vec{x}-vec{x}_0||&gt;maxrend{matrix}right. $$</p>
 </dd>
@@ -6745,6 +6819,80 @@ z).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D.info">
 <span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D_Healpix">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">SpatialTemplate_2D_Healpix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D_Healpix" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function2D" title="astromodels.functions.function.Function2D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function2D</span></code></a></p>
+<dl class="simple">
+<dt>description :</dt><dd><p>User input Spatial Template using HealpixMap from mhealpy.</p>
+</dd>
+</dl>
+<p>latex : $hi$</p>
+<dl class="simple">
+<dt>parameters :</dt><dd><dl class="simple">
+<dt>K :</dt><dd><p>desc : normalization
+initial value : 1
+fix : yes</p>
+</dd>
+<dt>hash :</dt><dd><p>desc: hash of model map
+initial value: 1
+fix: yes</p>
+</dd>
+</dl>
+</dd>
+<dt>properties:</dt><dd><dl class="simple">
+<dt>fits_file:</dt><dd><p>desc: fits file name which contain HealpixMap object from mhealpy package
+defer: True
+function: _load_file</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D_Healpix.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hash</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D_Healpix.evaluate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D_Healpix.frame">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">frame</span></span><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D_Healpix.frame" title="Link to this definition"></a></dt>
+<dd><p>Return the coordinate frame of the map.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D_Healpix.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D_Healpix.get_boundaries" title="Link to this definition"></a></dt>
+<dd><p>Returns the boundaries of this function. By default there is no
+boundary, but subclasses can override this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a tuple of tuples containing the boundaries for each
+coordinate (ra_min, ra_max), (dec_min, dec_max)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D_Healpix.get_total_spatial_integral">
+<span class="sig-name descname"><span class="pre">get_total_spatial_integral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_2D.html#SpatialTemplate_2D_Healpix.get_total_spatial_integral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D_Healpix.get_total_spatial_integral" title="Link to this definition"></a></dt>
+<dd><p>Returns the total integral (for 2D functions) or the integral over
+the spatial components (for 3D functions). needs to be implemented in
+subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of values of the integral (same dimension as
+z).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.SpatialTemplate_2D_Healpix.info">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.SpatialTemplate_2D_Healpix.info" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
