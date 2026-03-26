@@ -1,3 +1,5 @@
+import logging
+
 import collections
 
 import astropy.units as u
@@ -8,10 +10,10 @@ from astromodels.core.tree import Node
 from astromodels.core.units import get_units
 from astromodels.functions import Constant
 from astromodels.sources.source import Source, SourceType
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.pretty_list import dict_to_list
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class ExtendedSource(Source, Node):

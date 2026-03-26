@@ -1,3 +1,5 @@
+import logging
+
 from builtins import object, str
 
 __author__ = "giacomov"
@@ -17,9 +19,9 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 class ModelIOError(IOError):

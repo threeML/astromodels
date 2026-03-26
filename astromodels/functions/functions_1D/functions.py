@@ -1,3 +1,5 @@
+import logging
+
 import astropy.units as astropy_units
 import astropy.units as u
 import numpy as np
@@ -5,9 +7,9 @@ import numpy as np
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.configuration import astromodels_config
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+
+log = logging.getLogger(__name__)
 
 __author__ = "giacomov"
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,

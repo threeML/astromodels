@@ -1,12 +1,14 @@
+import logging
+
 import collections
 import copy
 from typing import Any, Dict, List, Optional
 
-from astromodels.utils.logging import setup_logger
+
 
 from .tree import Node
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 # Exception for when a parameter is out of its bounds
 

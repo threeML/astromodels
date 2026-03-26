@@ -1,3 +1,5 @@
+import logging
+
 import ast
 import collections
 import copy
@@ -24,11 +26,11 @@ from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
 from astromodels.utils.file_utils import copy_if_needed
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 __author__ = "giacomov"
 

@@ -1,3 +1,5 @@
+import logging
+
 import math
 from dataclasses import dataclass
 from pathlib import Path
@@ -11,9 +13,9 @@ from astropy.io import fits
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.configuration import astromodels_config
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+
+log = logging.getLogger(__name__)
 
 try:
 

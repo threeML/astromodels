@@ -1,14 +1,16 @@
+import logging
+
 import collections
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 from rich.tree import Tree
 
-from astromodels.utils.logging import setup_logger
+
 
 from .cpickle_compatibility_layer import cPickle
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 # This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)

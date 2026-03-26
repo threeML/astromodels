@@ -1,3 +1,5 @@
+import logging
+
 from builtins import zip
 
 __author__ = "giacomov"
@@ -24,10 +26,10 @@ from astromodels.sources import (
     SourceType,
 )
 from astromodels.utils.disk_usage import disk_usage
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.long_path_formatter import long_path_formatter
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 pd.options.display.float_format = "{:.6g}".format
 
