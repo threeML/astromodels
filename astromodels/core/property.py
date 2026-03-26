@@ -4,8 +4,6 @@ import collections
 import copy
 from typing import Any, Dict, List, Optional
 
-
-
 from .tree import Node
 
 log = logging.getLogger(__name__)

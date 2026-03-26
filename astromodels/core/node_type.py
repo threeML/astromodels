@@ -6,8 +6,6 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 
 from rich.tree import Tree
 
-
-
 from .cpickle_compatibility_layer import cPickle
 
 log = logging.getLogger(__name__)
