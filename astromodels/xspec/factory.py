@@ -1,16 +1,15 @@
 import collections
+import importlib
 import logging
 import os
 import re
 import sys
-import time
 import warnings
 from datetime import datetime, timezone
 
 import astropy.units as u
 
 from astromodels.core.my_yaml import my_yaml
-from astromodels.functions.function import get_function_class
 from astromodels.utils import get_user_data_path
 from astromodels.xspec import _xspec
 
@@ -743,8 +742,6 @@ def generate_xs_model_file(
         f.write("# This code has been automatically generated. Do not edit.\n")
         f.write("\n\n%s\n" % code)
 
-    time.sleep(0.5)
-
 
 def xspec_model_factory(model_name, xspec_function, model_type, definition):
 
@@ -790,18 +787,23 @@ def xspec_model_factory(model_name, xspec_function, model_type, definition):
     if user_data_path not in sys.path:
 
         sys.path.append(user_data_path)
+    importlib.invalidate_caches()
 
-    namespace = {}
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        exec(f"from {class_name} import {class_name}", globals(), namespace)
+        # Load or reload the module named like the class (e.g., 'XS_bbody')
+        if class_name in sys.modules:
+            mod = importlib.reload(sys.modules[class_name])
+        else:
+            mod = importlib.import_module(class_name)
 
+    # Populate the namespace in the same shape as before
+    namespace = {class_name: getattr(mod, class_name)}
     # Return the class we just imported
     return class_name, namespace[class_name]
 
 
 def setup_xspec_models():
-
     classes = []
 
     sys.stdout.write("Loading xspec models...")
@@ -809,46 +811,33 @@ def setup_xspec_models():
     all_models = get_models(find_model_dat())
 
     for model_name, xspec_function, model_type in all_models:
-
         if model_type == "con":
-
             # convolution models are not supported
             continue
 
         if not hasattr(_xspec, xspec_function):
-
-            # Some function do not exist in the wrapper. Let's ignore them
+            # Some functions do not exist in the wrapper. Skip them.
             log.debug(f"{xspec_function} not in the wrapper - will skip it")
             continue
 
         this_model = all_models[(model_name, xspec_function, model_type)]
 
-        # When the class is created it is registered among the known functions in the
-        # function module (it happens in the metaclass), so we don't need to do
-        # anything special here after the class type is created
-
-        this_class_name, this_class = xspec_model_factory(
+        # Create (or regenerate) the class and import it
+        class_name, cls = xspec_model_factory(
             model_name, xspec_function, model_type, this_model
         )
 
-        classes.append(this_class_name)
+        # Expose the class in this module's namespace so it's pickleable and importable
+        globals()[class_name] = cls
+        __all__.append(class_name)
+
+        classes.append(class_name)
 
     sys.stdout.write("done\n")
-
     return classes
 
 
 # This will either work or issue a warning if XSpec is not available
 
-new_functions = setup_xspec_models()
-
-# Now import the new classes in the local namespace (if any)
-# This is needed to make the classes pickleable
-
 __all__ = []
-
-for function_name in new_functions:
-
-    __all__.append(function_name)
-
-    locals()[function_name] = get_function_class(function_name)
+setup_xspec_models()

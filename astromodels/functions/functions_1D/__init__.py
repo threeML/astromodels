@@ -45,6 +45,8 @@ _exports = {
     "TbAbs": (".absorption", []),
     "has_ebltable": (".absorption", []),
     "has_atomdb": (".apec", []),
+    "has_naima": (".functions", []),
+    "has_gsl": (".functions", []),
 }
 
 

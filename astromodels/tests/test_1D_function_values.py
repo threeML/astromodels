@@ -2,8 +2,11 @@ import h5py
 import numpy as np
 import numpy.testing as npt
 
-from astromodels.functions.function import _known_functions
 from astromodels.utils import _get_data_file_path
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_function_names,
+)
 
 _multiplicative_models = [
     "PhAbs",
@@ -21,9 +24,9 @@ def test_function_values_have_not_changed():
 
         eval_x = f["eval_values"][()]
 
-    for key in _known_functions:
+    for key in list_function_names():
 
-        this_function = _known_functions[key]
+        this_function = get_function_class(key)
 
         # Test only the power law of XSpec, which is the only one we know we can test
         # at 1 keV

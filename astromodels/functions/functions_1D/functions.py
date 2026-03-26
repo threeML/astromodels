@@ -20,28 +20,23 @@ __author__ = "giacomov"
 # Now let's try and import optional dependencies
 
 
-try:
-
-    # Naima is for numerical computation of Synch. and Inverse compton spectra in
-    # randomly oriented magnetic fields
-    check_import("naima", "Synchrotron")
+# Naima is for numerical computation of Synch. and Inverse compton spectra in
+# randomly oriented magnetic fields
+if check_import("naima", "Synchrotron"):
     import naima
 
     has_naima = True
-except RuntimeError:
-
+else:
     has_naima = False
 
 
-try:
-
-    # GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used
-    # by some functions for faster computation
-    check_import("pygsl", "Cutoff_powerlaw_flux")
+# GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used
+# by some functions for faster computation
+if check_import("pygsl", "Cutoff_powerlaw_flux"):
     from pygsl.testing.sf import gamma_inc
 
     has_gsl = True
-except RuntimeError:
+else:
     has_gsl = False
 
 
