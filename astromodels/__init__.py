@@ -78,13 +78,9 @@ _func_names = [
     "list_functions",
 ]
 
-_functions = {}
-for f in _func_names:
-    _functions[f] = ("astromodels.functions", f)
+_functions = {f: ("astromodels.functions", f) for f in _func_names}
 
-
-_public = {
-    # core
+_core = {
     "get_units": ("astromodels.core.units", "get_units"),
     "Model": ("astromodels.core.model", "Model"),
     "clone_model": ("astromodels.core.model_parser", "clone_model"),
@@ -95,6 +91,19 @@ _public = {
         "astromodels.core.parameter",
         "turn_off_parameter_transforms",
     ),
+    "SettingOutOfBounds": ("astromodels.core.parameter", "SettingOutOfBounds"),
+}
+
+_utils = {}
+
+_sources = {
+    "ExtendedSource": ("astromodels.sources.extended_source", "ExtendedSource"),
+    "ParticleSource": ("astromodels.sources.particle_source", "ParticleSource"),
+    "PointSource": ("astromodels.sources.point_source", "PointSource"),
+}
+_xspec = {}
+_public = {
+    # core
     "LinearPolarization": ("astromodels.core.polarization", "LinearPolarization"),
     "StokesPolarization": ("astromodels.core.polarization", "StokesPolarization"),
     "Unpolarized": ("astromodels.core.polarization", "Unpolarized"),
@@ -107,19 +116,20 @@ _public = {
         "astromodels.utils.exceptions",
         "ModelAssertionViolation",
     ),
-    "SettingOutOfBounds": ("astromodels.core.parameter", "SettingOutOfBounds"),
     # sources
-    "ExtendedSource": ("astromodels.sources.extended_source", "ExtendedSource"),
-    "ParticleSource": ("astromodels.sources.particle_source", "ParticleSource"),
-    "PointSource": ("astromodels.sources.point_source", "PointSource"),
     "show_configuration": ("astromodels.utils.configuration", "show_configuration"),
 }
 
 # Merge everything we want to expose at top level
 _public.update(_functions)
+_public.update(_core)
+_public.update(_utils)
+_public.update(_sources)
+
 
 # Which top-level names are deprecated (emit warnings when accessed)
 DEPRECATED_TOPLEVEL = set(_functions.keys())
+DEPRECATED_TOPLEVEL.update(_sources.keys())
 
 # Export everything (historic behavior), plus convenience names
 __all__ = sorted(set(_public.keys()) | {"__version__", "astromodels_config"})
