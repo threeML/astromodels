@@ -6,8 +6,8 @@ import jupytext
 import papermill as pm
 
 from astromodels.utils.list_functions import (
-    list_available_function_names,
     get_function_class,
+    list_available_function_names,
 )
 
 num_cpus = os.cpu_count()

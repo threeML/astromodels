@@ -1,8 +1,8 @@
+import pickle
 from builtins import object
 
 import astropy.units as u
 import pytest
-import pickle
 
 from astromodels.functions import Log_uniform_prior, Uniform_prior
 

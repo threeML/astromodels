@@ -1,3 +1,4 @@
+import pickle
 from collections import OrderedDict
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Type
@@ -5,7 +6,6 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 from rich.tree import Tree
 
 from astromodels.utils.logging import setup_logger
-import pickle
 
 log = setup_logger(__name__)
 

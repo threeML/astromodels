@@ -1,8 +1,8 @@
 from pathlib import Path
 
 from astromodels.utils.list_functions import (
-    list_available_function_names,
     get_function_class,
+    list_available_function_names,
 )
 
 narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]

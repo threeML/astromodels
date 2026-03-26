@@ -9,12 +9,12 @@ import sys
 import h5py
 import numpy as np
 
-from astromodels.utils.list_functions import (
-    list_available_function_names,
-    get_function_class,
-)
 from astromodels.functions.priors import *
 from astromodels.utils.file_utils import _get_data_file_path
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_available_function_names,
+)
 
 eval_x = np.logspace(-1, 3, 10)
 _multiplicative_models = ["PhAbs", "TbAbs", "WAbs", "APEC", "VAPEC"]

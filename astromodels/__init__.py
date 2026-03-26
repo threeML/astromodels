@@ -98,8 +98,6 @@ _public = {
     "LinearPolarization": ("astromodels.core.polarization", "LinearPolarization"),
     "StokesPolarization": ("astromodels.core.polarization", "StokesPolarization"),
     "Unpolarized": ("astromodels.core.polarization", "Unpolarized"),
-    "serialize_model": ("astromodels.core.serialization", "serialize_model"),
-    "unserialize_model": ("astromodels.core.serialization", "unserialize_model"),
     "SpectralComponent": ("astromodels.core.spectral_component", "SpectralComponent"),
     "use_astromodels_memoization": (
         "astromodels.core.memoization",

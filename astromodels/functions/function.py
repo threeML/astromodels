@@ -30,9 +30,9 @@ from astromodels.utils.exceptions import (  # noqa: F401
     DocstringIsNotRaw,
     FunctionDefinitionError,
     FunctionInstanceError,
+    ModelAssertionViolation,
     UnknownFunction,
     UnknownParameter,
-    ModelAssertionViolation,
 )
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.list_functions import (
