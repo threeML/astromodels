@@ -25,13 +25,14 @@ from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
 from astromodels.utils import check_import
-from astromodels.utils.exceptions import (
+from astromodels.utils.exceptions import (  # noqa: F401
     DesignViolation,
     DocstringIsNotRaw,
     FunctionDefinitionError,
     FunctionInstanceError,
     UnknownFunction,
     UnknownParameter,
+    ModelAssertionViolation,
 )
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.list_functions import (
