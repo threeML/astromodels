@@ -8,8 +8,11 @@ from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
-from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_function_names,
+)
 
 __author__ = "henrikef"
 
@@ -156,13 +159,13 @@ def test_call():
         spatial = source.spatial_shape([ra * 1.01] * 3, [dec * 1.01] * 3)
         assert np.all(np.abs(total - spectrum * spatial) == 0)
 
-    for key in _known_functions:
+    for key in list_function_names():
 
         if key in ["Latitude_galactic_diffuse"]:
             # not testing latitude galactic diffuse for now.
             continue
 
-        this_function = _known_functions[key]
+        this_function = get_function_class(key)
 
         if key in ["SpatialTemplate_2D"]:
 
@@ -176,7 +179,7 @@ def test_call():
         # this will fail because the Latitude_galactic_diffuse function isn't
         # normalized.
         test_one(
-            _known_functions["Latitude_galactic_diffuse"],
+            get_function_class("Latitude_galactic_diffuse"),
             "Latitude_galactic_diffuse",
         )
 
@@ -262,13 +265,13 @@ def test_call_with_units():
         )
         assert np.all(np.abs(total - new_total) == 0)
 
-    for key in _known_functions:
+    for key in list_function_names():
 
         if key in ["Latitude_galactic_diffuse"]:
             # not testing latitude galactic diffuse for now.
             continue
 
-        this_function = _known_functions[key]
+        this_function = get_function_class(key)
 
         if key in ["SpatialTemplate_2D"]:
 
@@ -282,7 +285,7 @@ def test_call_with_units():
         # this will fail because the Latitude_galactic_diffuse function isn't
         # normalized.
         test_one(
-            _known_functions["Latitude_galactic_diffuse"],
+            get_function_class("Latitude_galactic_diffuse"),
             "Latitude_galactic_diffuse",
         )
 

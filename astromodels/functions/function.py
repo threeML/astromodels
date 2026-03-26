@@ -1,3 +1,4 @@
+import abc
 import ast
 import collections
 import copy
@@ -11,7 +12,7 @@ import warnings
 from builtins import chr, map, str
 from importlib.util import find_spec
 from operator import attrgetter
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Type
 
 import astropy.units as u
 import numba as nb
@@ -33,7 +34,11 @@ from astromodels.utils.exceptions import (
     UnknownParameter,
 )
 from astromodels.utils.file_utils import copy_if_needed
-from astromodels.utils.list_functions import list_functions  # noqa: F401
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_function_names,
+    list_functions,
+)
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
 
@@ -72,6 +77,29 @@ else:
 
     has_ipython = False
 
+# astromodels/functions/function.py
+
+
+# Public name -> class (authoritative)
+_FUNCTION_REGISTRY: Dict[str, Type] = {}
+
+
+def register_function_class(name: str, cls: type) -> None:
+    _FUNCTION_REGISTRY[name] = cls
+
+
+def unregister_function_class(name: str) -> None:
+    _FUNCTION_REGISTRY.pop(name, None)
+
+
+def get_registered_function_class(name: str) -> Optional[type]:
+    return _FUNCTION_REGISTRY.get(name)
+
+
+def iter_registered_functions() -> Dict[str, Type]:
+    # Return a shallow copy to prevent external mutation
+    return dict(_FUNCTION_REGISTRY)
+
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = "(no latex formula available)"
@@ -80,11 +108,9 @@ NO_LATEX_FORMULA = "(no latex formula available)"
 # instance them by looking into this dictionary. It will be filled by the FunctionMeta
 # meta-class.
 
-_known_functions = {}
-
 
 # The following is a metaclass for all the functions
-class FunctionMeta(type):
+class FunctionMeta(abc.ABCMeta):
     """A metaclass for the models, which takes care of setting up the
     parameters and the other attributes according to the definition given in
     the documentation of the function class."""
@@ -349,15 +375,28 @@ class FunctionMeta(type):
         # This is the MetaClass init, which is called after the __new__ is done
 
         # Store the name of the function in the type
-        cls._name = cls.__name__
 
         # Add this as a known function
 
-        _known_functions[name] = cls
-
         # Finally call the init of the type class
-
+        cls._name = cls.__name__
         super(FunctionMeta, cls).__init__(name, bases, dct)
+
+        # Skip scaffolding/base helpers
+        if name in {"Function1D", "Function2D", "Function3D", "TemplateModel"}:
+            return
+
+        # Allow opt‑out
+        if getattr(cls, "__register__", True) is False:
+            return
+
+        # Optional: skip abstracts
+        # import inspect
+        # if inspect.isabstract(cls):
+        #     return
+
+        public_name = getattr(cls, "__public_name__", name)
+        register_function_class(public_name, cls)
 
     @staticmethod
     def class_init(instance, **kwargs):
@@ -2334,9 +2373,9 @@ def get_function(function_name, composite_function_expression=None):
 
     else:
 
-        if function_name in _known_functions:
+        if function_name in list_function_names():
 
-            function_class = _known_functions[function_name]
+            function_class = get_function_class(function_name)
 
             deferred_properites = collections.OrderedDict()
 
@@ -2387,7 +2426,10 @@ def get_function(function_name, composite_function_expression=None):
 
                 log.error(
                     "Function %s is not known. Known functions are: %s"
-                    % (function_name, ",".join(list(_known_functions.keys())))
+                    % (
+                        function_name,
+                        ",".join(list(list_functions(return_dict=True).keys())),
+                    )
                 )
 
                 raise UnknownFunction()
@@ -2413,7 +2455,7 @@ def get_function(function_name, composite_function_expression=None):
                         "Function %s is not known. Known functions are: %s"
                         % (
                             function_name,
-                            ",".join(list(_known_functions.keys())),
+                            ",".join(list(list_functions(return_dict=True).keys())),
                         )
                     )
 
@@ -2426,28 +2468,6 @@ def get_function(function_name, composite_function_expression=None):
             else:
 
                 return instance
-
-
-def get_function_class(function_name):
-    """Return the type for the requested function.
-
-    :param function_name: the function to return
-    :return: the type for that function (i.e., this is a class, not an
-        instance)
-    """
-
-    if function_name in _known_functions:
-
-        return _known_functions[function_name]
-
-    else:
-
-        log.error(
-            "Function %s is not known. Known functions are: %s"
-            % (function_name, ",".join(list(_known_functions.keys())))
-        )
-
-        raise UnknownFunction()
 
 
 def _parse_function_expression(function_specification):
@@ -2503,14 +2523,14 @@ def _parse_function_expression(function_specification):
         complete_function_specification = "%s{%s}" % (unique_function, number)
 
         # As first safety measure, check that the unique function is in the dictionary
-        # of _known_functions. This could still be easily hacked, so it won't be the
+        # of known functions. This could still be easily hacked, so it won't be the
         # only check
 
-        if unique_function in _known_functions:
+        if unique_function in list_function_names():
 
             # Get the function class and check that it is indeed a proper Function class
 
-            function_class = _known_functions[unique_function]
+            function_class = get_function_class(unique_function)
 
             if issubclass(function_class, Function):
 
