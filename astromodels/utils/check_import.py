@@ -1,5 +1,5 @@
-from importlib.util import find_spec
 import warnings
+from importlib.util import find_spec
 
 
 def check_import(module_name, class_name="Function"):
