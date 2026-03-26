@@ -50,6 +50,7 @@ jobs:
               run: |
                   python -m pip install --upgrade pip wheel
                   pip install --upgrade flake8 coverage pytest-cov cython
+                  pip install mhealpy
                   
                   if [[ ${{matrix.os}} != ubuntu-latest && ${{matrix.os}} != ubuntu-24.04-arm ]];
                   then
@@ -152,7 +153,7 @@ jobs:
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
 
                   mamba install ${PKG} codecov pytest-cov git flake8
-
+            
             - name: Conda list
               shell: bash -l {0}
               run: |
@@ -160,6 +161,7 @@ jobs:
             - name: install it
               shell: bash -l {0}
               run: |
+                  pip install mhealpy
                   pip install -e .
             - name: Lint with flake8
               shell: bash -l {0}
