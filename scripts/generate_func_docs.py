@@ -5,7 +5,10 @@ from pathlib import Path
 import jupytext
 import papermill as pm
 
-from astromodels.functions.function import _known_functions
+from astromodels.utils.list_functions import (
+    list_available_function_names,
+    get_function_class,
+)
 
 num_cpus = os.cpu_count()
 num_workers = max(1, int(num_cpus * 0.8))
@@ -197,7 +200,8 @@ if __name__ == "__main__":
 
     with ThreadPoolExecutor(max_workers=num_workers) as executor:
         futures = [
-            executor.submit(generate_the_docs, x) for x in _known_functions.items()
+            executor.submit(generate_the_docs, (x, get_function_class(x)))
+            for x in list_available_function_names()
         ]
 
     # Now we generate the gallery notebook

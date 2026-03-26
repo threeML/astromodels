@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter("ignore")
 
-from astromodels.functions.function import _known_functions
+from astromodels.utils.list_functions import get_function_class 
 
 import healpy as hp
 
@@ -48,7 +48,7 @@ func_name = "Latitude_galactic_diffuse"
 ```
 
 ```python nbsphinx="hidden" tags=[]
-func = _known_functions[func_name]()
+func = get_function_class(func_name)()
 
 NSIDE = 2**7
 NPIX = hp.nside2npix(NSIDE)

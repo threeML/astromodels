@@ -9,7 +9,10 @@ import sys
 import h5py
 import numpy as np
 
-from astromodels.functions.function import _known_functions
+from astromodels.utils.list_functions import (
+    list_available_function_names,
+    get_function_class,
+)
 from astromodels.functions.priors import *
 from astromodels.utils.file_utils import _get_data_file_path
 
@@ -47,13 +50,13 @@ with h5py.File(file_path, flag) as f:
 
         f.create_dataset("eval_values", data=eval_x, compression="lzf")
 
-    for key in _known_functions:
+    for key in list_available_function_names():
 
         if key in already_known_functions:
 
             continue
 
-        this_function = _known_functions[key]
+        this_function = get_function_class(key)
 
         # Test only the power law of XSpec, which is the only one we know we can test at 1 keV
 
