@@ -90,6 +90,8 @@ _exports = {
     "list_functions": ("astromodels.utils.list_functions",),
     "has_atomdb": (".functions_1D",),
     "has_ebltable": (".functions_1D",),
+    "has_naima": (".functions_1D",),
+    "has_gsl": (".functions_1D",),
 }
 _depcrecated = {
     "ModelAssertionViolation": ("astromodels.utils.exceptions",),

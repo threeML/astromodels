@@ -14,13 +14,11 @@ from astromodels.utils.exceptions import InvalidUsageForFunction
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
-try:
-    check_import("ebltable", "EBLattenuation")
+if check_import("ebltable", "EBLattenuation"):
     import ebltable.tau_from_model as ebltau
 
     has_ebltable = True
-
-except RuntimeError:
+else:
     has_ebltable = False
 
 
