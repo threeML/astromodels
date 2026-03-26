@@ -2,6 +2,7 @@ from builtins import object
 
 import astropy.units as u
 import pytest
+import pickle
 
 from astromodels.functions import Log_uniform_prior, Uniform_prior
 
@@ -841,8 +842,6 @@ class Callback(object):
 
 def test_pickle():
 
-    from astromodels.core.cpickle_compatibility_layer import cPickle
-
     p_orig = Parameter(
         "test_parameter",
         1.0,
@@ -863,9 +862,9 @@ def test_pickle():
 
     # Now pickle and unpickle
 
-    d = cPickle.dumps(p_orig)
+    d = pickle.dumps(p_orig)
 
-    p = cPickle.loads(d)
+    p = pickle.loads(d)
 
     # Check that everything is fine
 
