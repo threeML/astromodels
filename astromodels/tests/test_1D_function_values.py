@@ -17,7 +17,7 @@ _multiplicative_models = [
 
 def test_function_values_have_not_changed():
 
-    with h5py.File(_get_data_file_path("past_1D_values.h5"), "r") as f:
+    with h5py.File(_get_data_file_path("tests/past_1D_values.h5"), "r") as f:
 
         eval_x = f["eval_values"][()]
 
@@ -67,7 +67,7 @@ def test_function_values_have_not_changed():
 
             new_values = np.atleast_1d(func(eval_x))
 
-            with h5py.File(_get_data_file_path("past_1D_values.h5"), "r") as f:
+            with h5py.File(_get_data_file_path("tests/past_1D_values.h5"), "r") as f:
                 if key not in f.keys():
                     msg = f"the function {key} does not exist in the past data. You"
                     msg += " must run a script to add it"

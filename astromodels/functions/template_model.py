@@ -318,9 +318,6 @@ class TemplateModelFactory(object):
             )
 
             raise AssertionError()
-
-            raise AssertionError()
-
         # Get the data directory
 
         data_dir_path: Path = get_user_data_path()
