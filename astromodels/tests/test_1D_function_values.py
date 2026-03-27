@@ -1,7 +1,6 @@
 import h5py
 import numpy as np
 import numpy.testing as npt
-from scipy.integrate import quad
 
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.list_functions import (

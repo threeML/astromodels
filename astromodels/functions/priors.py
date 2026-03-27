@@ -249,7 +249,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
         The Cauchy distribution
 
-    latex : $K \frac{1}{\gamma \pi} \left[ \frac{\gamma^2}{(x-x_0)^2 + \gamma^2} \right]$
+    latex : $K \frac{1}{\gamma \pi} \left[ \frac{\gamma^2}{(x-x_0)^2 + \gamma^2}\right]$
 
     parameters :
 
