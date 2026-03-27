@@ -1,8 +1,10 @@
 import logging
 
-from astromodels.utils.logging import add_startup_warning, log_astromodels_startup_warnings
+from astromodels.utils.logging import (add_startup_warning,
+                                       log_astromodels_startup_warnings)
 
 logger = logging.getLogger(__name__)
+
 
 def test_startup_warnings(caplog):
 
