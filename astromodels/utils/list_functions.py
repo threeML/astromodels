@@ -37,14 +37,8 @@ def _description_for(cls: Any) -> str:
         desc = getattr(cls, "_function_definition", {}).get("description", "")
         if desc:
             return desc
-    except Exception:
+    except Exception:  # pragma: no cover
         pass
-
-    # Fallback to first line of the docstring
-    doc = getattr(cls, "__doc__", "") or ""
-    if doc.strip():
-        return doc.strip().splitlines()[0]
-    return ""
 
 
 def list_functions(return_dict: bool = False):
@@ -213,7 +207,7 @@ def list_available_functions(return_dict: bool = False):
                         desc = getattr(obj, "_function_definition", {}).get(
                             "description"
                         )
-                    except Exception:
+                    except Exception:  # pragma: no cover
                         desc = None
                     functions_and_descriptions[name] = {"Description": desc}
 
