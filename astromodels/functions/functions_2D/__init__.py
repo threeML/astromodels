@@ -9,6 +9,7 @@ _exports = {
     "Latitude_galactic_diffuse": (".functions_2D", []),
     "Power_law_on_sphere": (".functions_2D", []),
     "SpatialTemplate_2D": (".functions_2D", []),
+    "SpatialTemplate_2D_Healpix": (".functions_2D", ["mhealpy"]),
 }
 
 
