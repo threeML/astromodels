@@ -4,8 +4,8 @@ import ctypes.util
 import glob
 import os
 import re
-import sys
 import subprocess
+import sys
 
 from packaging import version as packaging_version
 from setuptools import Extension, setup

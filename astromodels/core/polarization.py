@@ -1,8 +1,8 @@
 __author__ = "giacomov"
 
+import astropy.units as u
 import numpy as np
 
-import astropy.units as u
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units

@@ -2,8 +2,8 @@ import astropy.units as u
 import numpy as np
 import numpy.testing as npt
 import pytest
-
 from astropy.coordinates import SkyCoord
+
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (
     Band,
@@ -12,9 +12,7 @@ from astromodels.functions import (
     Log_parabola,
     Powerlaw,
 )
-from astromodels.functions.functions_1D.functions import (
-    _ComplexTestFunction,
-)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 try:
     from astromodels.functions import PhAbs, TbAbs, WAbs
@@ -26,9 +24,8 @@ except ImportError:
 
 
 from astromodels.core.model import Model
-from astromodels.core.units import get_units
-
 from astromodels.core.model_parser import clone_model, load_model
+from astromodels.core.units import get_units
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
 

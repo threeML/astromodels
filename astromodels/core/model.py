@@ -8,9 +8,9 @@ import warnings
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Tuple, Union
 
+import astropy.units as u
 import numpy as np
 import pandas as pd
-import astropy.units as u
 
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter

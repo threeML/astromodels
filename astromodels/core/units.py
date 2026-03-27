@@ -1,16 +1,15 @@
-from builtins import object
 from typing import NamedTuple
 
 __author__ = "giacomov"
 
 import collections
-import numpy as np
 
 import astropy.units as u
+import numpy as np
 
+from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.pretty_list import dict_to_list
-from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 
 # This module keeps the configuration of the units used in astromodels
 

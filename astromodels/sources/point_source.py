@@ -2,10 +2,10 @@ import collections
 from typing import Dict, Optional, Union
 
 import astropy.units as u
-from astropy.coordinates import SkyCoord
 import numba as nb
 import numpy
 import scipy.integrate
+from astropy.coordinates import SkyCoord
 
 from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.parameter import Parameter

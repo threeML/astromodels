@@ -1,3 +1,5 @@
+from importlib.util import find_spec
+
 import astropy.io.fits as fits
 import astropy.units as u
 import numpy as np
@@ -11,8 +13,6 @@ from astromodels.core.units import get_units
 from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
-
-from importlib.util import find_spec
 
 if find_spec("mhealpy") is not None:
     has_mhealpy = True
@@ -165,7 +165,8 @@ def test_call():
         if name == "SpatialTemplate_2D_Healpix":
             if not has_mhealpy:
                 pytest.skip(
-                  "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
+                    "Skipping SpatialTemplate_2D_Healpix test because"
+                    " mhealpy is missing"
                 )
             make_test_healpix_template("__test.fits")
             shape = class_type(fits_file="__test.fits")
@@ -265,7 +266,8 @@ def test_call_with_units():
         if name == "SpatialTemplate_2D_Healpix":
             if not has_mhealpy:
                 pytest.skip(
-                  "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
+                    "Skipping SpatialTemplate_2D_Healpix test because"
+                    " mhealpy is missing"
                 )
             make_test_healpix_template("__test.fits")
 

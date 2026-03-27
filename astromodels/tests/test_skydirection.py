@@ -1,9 +1,10 @@
-import pytest
+import astropy.units as u
 import numpy as np
+import pytest
+from astropy.coordinates import SkyCoord
+
 from astromodels.core.sky_direction import SkyDirection
 from astromodels.core.units import get_units
-from astropy.coordinates import SkyCoord
-import astropy.units as u
 
 
 def test_from_skycoord():

@@ -7,9 +7,9 @@ __author__ = "giacomov"
 
 import copy
 
+import astropy.units as u
 import numpy as np
 
-import astropy.units as u
 from astromodels.core.model import (
     CannotWriteModel,
     DuplicatedNode,
@@ -24,12 +24,7 @@ from astromodels.core.model_parser import (
     load_model,
 )
 from astromodels.core.parameter import IndependentVariable, Parameter
-from astromodels.functions import (
-    Gaussian_on_sphere,
-    Line,
-    Powerlaw,
-    Uniform_prior,
-)
+from astromodels.functions import Gaussian_on_sphere, Line, Powerlaw, Uniform_prior
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource

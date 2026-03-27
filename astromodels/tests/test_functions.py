@@ -8,13 +8,14 @@ from astropy.io import fits
 
 import astromodels
 from astromodels.core.property import SettingUnknownValue
+from astromodels.core.units import get_units
 from astromodels.functions import (
     Continuous_injection_diffusion,
+    Cutoff_powerlaw_Ep,
     Gaussian_on_sphere,
     Line,
     Powerlaw,
     SpatialTemplate_2D,
-    Cutoff_powerlaw_Ep,
 )
 from astromodels.functions import function as function_module
 from astromodels.functions.function import (
@@ -32,7 +33,6 @@ from astromodels.functions.function import (
 )
 from astromodels.functions.functions_1D.absorption import phabs, tbabs
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
-from astromodels.core.units import get_units
 
 __author__ = "giacomov"
 

@@ -1,4 +1,5 @@
 import hashlib
+from importlib.util import find_spec
 
 import astropy.units as u
 import numpy as np
@@ -6,12 +7,11 @@ from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
 
+from astromodels.core.units import get_units
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance, angular_distance_rad
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
-from astromodels.core.units import get_units
-from importlib.util import find_spec
 
 log = setup_logger(__name__)
 

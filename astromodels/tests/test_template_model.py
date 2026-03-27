@@ -6,27 +6,25 @@ from pathlib import Path
 import numpy as np
 import numpy.testing as npt
 import pytest
-
+from astropy import wcs
 from astropy.io import fits
 from astropy.utils.data import get_pkg_data_filename
-from astropy import wcs
 
 from astromodels import Model, PointSource, clone_model, load_model
+from astromodels.core.units import get_units
 from astromodels.functions import (
     Band,
     Powerlaw,
+    SpatialTemplate_2D,
     TemplateModel,
     TemplateModelFactory,
     XSPECTableModel,
-    SpatialTemplate_2D,
 )
 from astromodels.functions.template_model import (
-    convert_old_table_model,
     UnivariateSpline,
+    convert_old_table_model,
 )
 from astromodels.sources import ExtendedSource
-from astromodels.core.units import get_units
-
 from astromodels.utils import _get_data_file_path
 
 __author__ = "giacomov"

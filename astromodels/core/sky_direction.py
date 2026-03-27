@@ -1,11 +1,10 @@
 __author__ = "giacomov"
+import collections
 from typing import Optional, Union
 
-import collections
-
 import astropy
-from astropy import coordinates
 import astropy.units as u
+from astropy import coordinates
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node

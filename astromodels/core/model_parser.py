@@ -6,8 +6,6 @@ import re
 import warnings
 from typing import Dict, List
 
-import numpy as np
-
 from astromodels.core import (
     model,
     parameter,
@@ -16,11 +14,11 @@ from astromodels.core import (
     spectral_component,
 )
 from astromodels.core.my_yaml import my_yaml
+from astromodels.core.units import get_units
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
 from astromodels.utils.logging import setup_logger
-from astromodels.core.units import get_units
 
 log = setup_logger(__name__)
 

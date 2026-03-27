@@ -30,14 +30,7 @@ if has_ebltable:
     from .absorption import EBLattenuation
 
 from .extinction import Standard_Rv, ZDust
-from .polynomials import (
-    Constant,
-    Cubic,
-    Line,
-    Quadratic,
-    Quartic,
-    get_polynomial,
-)
+from .polynomials import Constant, Cubic, Line, Quadratic, Quartic, get_polynomial
 from .powerlaws import (
     Band,
     Band_Calderone,

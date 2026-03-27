@@ -1,10 +1,11 @@
 import collections
+import logging
 import os
 import re
 import sys
 import time
 import warnings
-import logging
+from datetime import datetime, timezone
 
 import astropy.units as u
 
@@ -12,8 +13,6 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.functions.function import get_function_class
 from astromodels.utils import get_user_data_path
 from astromodels.xspec import _xspec
-
-from datetime import datetime, timezone
 
 log = logging.getLogger(__name__)
 
