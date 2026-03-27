@@ -6,7 +6,6 @@ import inspect
 import math
 import os
 import re
-import sys
 import textwrap
 import uuid
 from builtins import chr, map, str
@@ -82,20 +81,6 @@ def iter_registered_functions() -> Dict[str, Type]:
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = "(no latex formula available)"
-
-
-# A function to find the calling sequence of a function, compatible
-# with both python2 and 3
-def _py2to3_getargspec(function):
-    if sys.version_info[0] < 3:
-
-        argspec = inspect.getargspec(function)
-
-    else:  # PY3
-
-        argspec = inspect.getfullargspec(function)
-
-    return argspec
 
 
 # This dictionary will contain the known function by name, so that the model_parser can
@@ -549,14 +534,13 @@ class FunctionMeta(abc.ABCMeta):
         # If the function has been memoized, it will have a "input_object" member
 
         try:
-
-            calling_sequence = _py2to3_getargspec(function.input_object).args
+            calling_sequence = inspect.getfullargspec(function.input_object).args
 
         except AttributeError:
 
             # This might happen if the function is without memoization
 
-            calling_sequence = _py2to3_getargspec(function).args
+            calling_sequence = inspect.getfullargspec(function).args
 
         if not calling_sequence[0] == "self":
 
