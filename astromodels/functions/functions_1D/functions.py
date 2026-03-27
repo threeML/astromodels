@@ -6,7 +6,6 @@ import numpy as np
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import add_startup_warning
 
 log = logging.getLogger(__name__)
@@ -41,7 +40,8 @@ try:
 except ImportError:
 
     add_startup_warning(log,
-                        "The naima package is not available. Models that depend on it will not be"
+                        "The naima package is not available. Models "
+                        "that depend on it will not be"
                         " available")
 
     has_naima = False
@@ -60,7 +60,8 @@ try:
 except ImportError:
 
     add_startup_warning(log,
-                        "The GSL library or the pygsl wrapper cannot be loaded. Models that depend"
+                        "The GSL library or the pygsl wrapper "
+                        "cannot be loaded. Models that depend"
                         " on it will not be available."
                         )
 
