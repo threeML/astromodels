@@ -10,6 +10,7 @@ import copy
 import astropy.units as u
 import numpy as np
 
+import astromodels.core.serialization  # noqa: F401
 from astromodels.core.model import (
     CannotWriteModel,
     DuplicatedNode,
@@ -29,7 +30,6 @@ from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
-import astromodels.core.serialization  # noqa: F401
 
 
 def _get_point_source(name="test"):
