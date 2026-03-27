@@ -1,6 +1,7 @@
 import h5py
 import numpy as np
 import numpy.testing as npt
+from scipy.integrate import quad
 
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.list_functions import (
@@ -87,3 +88,12 @@ def test_function_values_have_not_changed():
                 func.index.value = -3
                 func.xp.value = 10
                 assert np.isclose(func(1), 1.10517)
+
+
+def test_priors():
+    np.random.seed = 123
+    for key in list_function_names():
+        this_function = get_function_class(key)
+
+        if hasattr(this_function, "from_unit_cube"):
+            assert np.isclose(quad(this_function().from_unit_cube, 0, 1)[0], 1.0)
