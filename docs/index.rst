@@ -25,7 +25,9 @@ About astromodels
    In 2.5.2 you will get deprecation warnings which hint you to the correct import.
 
    This is done in effort to use a more standard way of loading our modules, increase
-   import speed, reduce warnings on start-up and to ensure namespaces not being mixed.
+   import speeds, reduce warnings on start-up and to ensure namespaces not being mixed.
+   
+   The same is being done for `threeML`.
 
 
 Astromodels is a very flexible framework to define models for likelihood or
