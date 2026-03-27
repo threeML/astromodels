@@ -1,3 +1,5 @@
+from importlib.util import find_spec
+
 import astropy.io.fits as fits
 import astropy.units as u
 import numpy as np
@@ -14,7 +16,26 @@ from astromodels.utils.list_functions import (
     list_function_names,
 )
 
+if find_spec("mhealpy") is not None:
+    has_mhealpy = True
+    from mhealpy import HealpixMap
+else:
+    has_mhealpy = False
+
 __author__ = "henrikef"
+
+
+def make_test_healpix_template(fitsfile):
+    # Test template function with healpix map
+    skymap = HealpixMap(nside=8, scheme="ring", dtype=float, coordsys="G")
+    skymap[:] = 1
+
+    # normalise to the pixel area
+    area = skymap.pixarea().value
+    skymap[:] = np.sum(skymap) / area
+
+    # write the fits file
+    skymap.write_map(fitsfile, overwrite=True)
 
 
 def make_test_template(ra, dec, fitsfile):
@@ -122,7 +143,7 @@ def test_call():
 
         print("testing %s ..." % name)
 
-        if name != "SpatialTemplate_2D":
+        if not name.startswith("SpatialTemplate_2D"):
 
             shape = class_type()
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
@@ -130,8 +151,20 @@ def test_call():
             shape.lon0 = ra * u.degree
             shape.lat0 = dec * u.degree
 
-        else:
+        if name == "SpatialTemplate_2D":
             make_test_template(ra, dec, "__test.fits")
+            shape = class_type(fits_file="__test.fits")
+            source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
+
+            shape.K = 1.0
+
+        if name == "SpatialTemplate_2D_Healpix":
+            if not has_mhealpy:
+                pytest.skip(
+                    "Skipping SpatialTemplate_2D_Healpix test because"
+                    " mhealpy is missing"
+                )
+            make_test_healpix_template("__test.fits")
             shape = class_type(fits_file="__test.fits")
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
@@ -167,7 +200,7 @@ def test_call():
 
         this_function = get_function_class(key)
 
-        if key in ["SpatialTemplate_2D"]:
+        if key in ["SpatialTemplate_2D", "SpatialTemplate_2D_Healpix"]:
 
             test_one(this_function, key)
 
@@ -200,7 +233,7 @@ def test_call_with_units():
 
         print("testing %s ..." % name)
 
-        if name != "SpatialTemplate_2D":
+        if not name.startswith("SpatialTemplate_2D"):
 
             shape = class_type()
             source = ExtendedSource(
@@ -212,8 +245,25 @@ def test_call_with_units():
             shape.lon0 = ra * u.degree
             shape.lat0 = dec * u.degree
 
-        else:
+        if name == "SpatialTemplate_2D":
             make_test_template(ra, dec, "__test.fits")
+
+            shape = class_type(fits_file="__test.fits")
+            source = ExtendedSource(
+                "test_source_%s" % name,
+                spatial_shape=shape,
+                components=[c1, c2],
+            )
+
+            shape.K = 1.0
+
+        if name == "SpatialTemplate_2D_Healpix":
+            if not has_mhealpy:
+                pytest.skip(
+                    "Skipping SpatialTemplate_2D_Healpix test because"
+                    " mhealpy is missing"
+                )
+            make_test_healpix_template("__test.fits")
 
             shape = class_type(fits_file="__test.fits")
             source = ExtendedSource(
@@ -273,7 +323,7 @@ def test_call_with_units():
 
         this_function = get_function_class(key)
 
-        if key in ["SpatialTemplate_2D"]:
+        if key in ["SpatialTemplate_2D", "SpatialTemplate_2D_Healpix"]:
 
             test_one(this_function, key)
 
