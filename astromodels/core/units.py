@@ -222,7 +222,9 @@ class _AstromodelsUnitsFactory:
                 try:
                     cu[k] = str(v)
                 except Exception as e:
-                    TypeError(f"{type(v)} as unit for {k} is not permitted")
+                    raise TypeError(
+                        f"{type(v)} as unit for {k} is not permitted"
+                    ) from e
         return cu
 
     @property
