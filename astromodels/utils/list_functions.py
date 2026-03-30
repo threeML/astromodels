@@ -83,6 +83,10 @@ def list_functions(return_dict: bool = False):
         "Function2D",
         "Function3D",
         "get_polynomial",
+        "IncompleteGrid",
+        "MissingDataFile",
+        "ModelAssertionViolation",
+        "ValuesNotInGrid",
     }
 
     for name in public_funcs + public_xs:
@@ -176,6 +180,10 @@ def list_available_functions(return_dict: bool = False):
             "Function2D",
             "Function3D",
             "get_polynomial",
+            "IncompleteGrid",
+            "MissingDataFile",
+            "ModelAssertionViolation",
+            "ValuesNotInGrid",
         }
 
         functions_and_descriptions: Dict[str, Dict[str, str]] = {}

@@ -16,6 +16,12 @@ import scipy.interpolate
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
+from astromodels.utils.exceptions import (
+    IncompleteGrid,
+    InvalidTemplateModelFile,
+    MissingDataFile,
+    ValuesNotInGrid,
+)
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 
@@ -32,22 +38,6 @@ __all__ = [
     "TemplateModelFactory",
     "TemplateModel",
 ]
-
-
-class IncompleteGrid(RuntimeError):
-    pass
-
-
-class ValuesNotInGrid(ValueError):
-    pass
-
-
-class MissingDataFile(RuntimeError):
-    pass
-
-
-class InvalidTemplateModelFile(RuntimeError):
-    pass
 
 
 # This dictionary will keep track of the new classes already created in the current

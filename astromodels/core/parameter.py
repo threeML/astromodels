@@ -1,7 +1,5 @@
 __author__ = "giacomov"
 
-__doc__ = """"""
-
 import collections
 import contextlib
 import copy
@@ -16,7 +14,7 @@ from astromodels.core.parameter_transformation import ParameterTransformation
 from astromodels.utils.configuration import astromodels_config
 from astromodels.utils.logging import setup_logger
 
-from .thread_safe_unit_format import ThreadSafe
+from .thread_safe_unit_format import ThreadSafe  # noqa: F401
 from .tree import Node
 
 log = setup_logger(__name__)

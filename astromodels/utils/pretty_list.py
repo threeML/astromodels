@@ -1,5 +1,3 @@
-from builtins import str
-
 __author__ = "giacomov"
 
 import re

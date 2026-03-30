@@ -81,7 +81,6 @@ _exports = {
     "Truncated_gaussian": (".priors",),
     "Uniform_prior": (".priors",),
     # template_model
-    "MissingDataFile": (".template_model",),
     "TemplateModel": (".template_model",),
     "TemplateModelFactory": (".template_model",),
     "XSPECTableModel": (".template_model",),
@@ -96,6 +95,9 @@ _exports = {
 }
 _depcrecated = {
     "ModelAssertionViolation": ("astromodels.utils.exceptions",),
+    "MissingDataFile": ("astromodels.utils.exceptions",),
+    "IncompleteGrid": ("astromodels.utils.exceptions",),
+    "ValuesNotInGrid": ("astromodels.utils.exceptions",),
 }
 _exports.update(_depcrecated)
 

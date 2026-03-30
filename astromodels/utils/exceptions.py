@@ -1,3 +1,7 @@
+from astromodels.core.my_yaml import my_yaml
+from astromodels.utils.disk_usage import disk_usage
+
+
 class WarningNoTests(ImportWarning):
     pass
 
@@ -71,4 +75,75 @@ class MissingDataFile(RuntimeError):
 
 
 class InvalidTemplateModelFile(RuntimeError):
+    pass
+
+
+class ModelFileExists(IOError):
+    pass
+
+
+class InvalidInput(ValueError):
+    pass
+
+
+class CannotWriteModel(IOError):
+    def __init__(self, directory, message):
+        # Add a report on disk usage to the message
+
+        free_space = disk_usage(directory).free
+
+        message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (
+            directory,
+            free_space / 1024.0 / 1024.0,
+        )
+
+        super(CannotWriteModel, self).__init__(message)
+
+
+class ModelInternalError(ValueError):
+
+    pass
+
+
+class ModelIOError(IOError):
+    pass
+
+
+class ModelYAMLError(my_yaml.YAMLError):
+    pass
+
+
+class ModelSyntaxError(RuntimeError):
+    pass
+
+
+class WrongCoordinatePair(ValueError):
+    pass
+
+
+class IllegalCoordinateValue(ValueError):
+    pass
+
+
+class WrongCoordinateSystem(ValueError):
+    pass
+
+
+class DuplicatedNode(Exception):
+    pass
+
+
+class ProtectedAttribute(RuntimeError):
+    pass
+
+
+class NonExistingAttribute(RuntimeWarning):
+    pass
+
+
+class UnknownUnit(Exception):
+    pass
+
+
+class UnitMismatch(Exception):
     pass

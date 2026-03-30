@@ -1,5 +1,3 @@
-from builtins import object, str
-
 __author__ = "giacomov"
 
 import re
@@ -17,21 +15,10 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
+from astromodels.utils.exceptions import ModelIOError, ModelSyntaxError, ModelYAMLError
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
-
-
-class ModelIOError(IOError):
-    pass
-
-
-class ModelYAMLError(my_yaml.YAMLError):
-    pass
-
-
-class ModelSyntaxError(RuntimeError):
-    pass
 
 
 def load_model(filename):
@@ -67,7 +54,7 @@ def model_unpickler(state):
     return ModelParser(model_dict=state).get_model()
 
 
-class ModelParser(object):
+class ModelParser:
     def __init__(self, model_file=None, model_dict=None):
 
         if not ((model_file is not None) or (model_dict is not None)):
@@ -264,7 +251,7 @@ class ModelParser(object):
         return new_model
 
 
-class IndependentVariableParser(object):
+class IndependentVariableParser:
     def __init__(self, name, definition):
 
         self._variable = parameter.IndependentVariable(name, **definition)
@@ -274,7 +261,7 @@ class IndependentVariableParser(object):
         return self._variable
 
 
-class ParameterParser(object):
+class ParameterParser:
     def __init__(self, name, definition):
 
         self._links = []
@@ -372,7 +359,7 @@ class ParameterParser(object):
         return self._links
 
 
-class SourceParser(object):
+class SourceParser:
     def __init__(self, source_name, source_definition):
 
         # Get the type of the source
@@ -836,7 +823,7 @@ class SourceParser(object):
         return this_ext_source
 
 
-class ShapeParser(object):
+class ShapeParser:
     def __init__(self, source_name):
 
         self._source_name = source_name

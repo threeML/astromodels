@@ -6,7 +6,8 @@ from pathlib import Path
 import astropy.units as u
 import pytest
 
-from astromodels import Model, PointSource, clone_model, load_model
+from astromodels import Model, clone_model, load_model
+from astromodels.sources import PointSource
 
 try:
 

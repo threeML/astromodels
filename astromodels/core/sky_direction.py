@@ -5,18 +5,7 @@ from astropy.coordinates import SkyCoord
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
-
-
-class WrongCoordinatePair(ValueError):
-    pass
-
-
-class IllegalCoordinateValue(ValueError):
-    pass
-
-
-class WrongCoordinateSystem(ValueError):
-    pass
+from astromodels.utils.exceptions import WrongCoordinatePair
 
 
 class SkyDirection(Node):

@@ -29,6 +29,8 @@ from astromodels.utils.exceptions import (  # noqa: F401
     DocstringIsNotRaw,
     FunctionDefinitionError,
     FunctionInstanceError,
+    InvalidTemplateModelFile,
+    MissingDataFile,
     ModelAssertionViolation,
     UnknownFunction,
     UnknownParameter,
@@ -2391,8 +2393,6 @@ def get_function(function_name, composite_function_expression=None):
             # NOTE: import here to avoid circular import
 
             from astromodels.functions.template_model import (
-                InvalidTemplateModelFile,
-                MissingDataFile,
                 TemplateModel,
             )
 

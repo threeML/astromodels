@@ -155,12 +155,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
-        """Set the abundance table.
-
-        :param abund_table: "ASPL", "AG89"
-        :returns:
-        :rtype:
-        """
+        """Set the abundance table."""
 
         # load cross section data
 

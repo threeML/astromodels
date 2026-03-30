@@ -17,9 +17,6 @@ __author__ = "giacomov"
 # 2016
 
 
-# Now let's try and import optional dependencies
-
-
 # Naima is for numerical computation of Synch. and Inverse compton spectra in
 # randomly oriented magnetic fields
 if check_import("naima", "Synchrotron"):

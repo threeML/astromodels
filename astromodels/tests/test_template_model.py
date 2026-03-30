@@ -7,7 +7,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from astromodels import Model, PointSource, clone_model, load_model
+from astromodels import Model, clone_model, load_model
 from astromodels.functions import (
     Band,
     Powerlaw,
@@ -19,6 +19,7 @@ from astromodels.functions.template_model import (
     UnivariateSpline,
     convert_old_table_model,
 )
+from astromodels.sources import PointSource
 from astromodels.utils import _get_data_file_path
 
 __author__ = "giacomov"

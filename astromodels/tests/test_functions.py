@@ -1073,7 +1073,7 @@ def test_complex_composites():
 
     assert tbabs._current_table == "ASPL"
 
-    _ = astromodels.PointSource("test", 0, 0, spectral_shape=f)
+    _ = astromodels.sources.PointSource("test", 0, 0, spectral_shape=f)
 
     f.abundance_table_1 = "WILM"
 

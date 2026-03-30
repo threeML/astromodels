@@ -6,19 +6,6 @@ from astromodels.utils.io import display
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.valid_variable import is_valid_variable_name
 
-
-class DuplicatedNode(Exception):
-    pass
-
-
-class ProtectedAttribute(RuntimeError):
-    pass
-
-
-class NonExistingAttribute(RuntimeWarning):
-    pass
-
-
 log = setup_logger(__name__)
 
 

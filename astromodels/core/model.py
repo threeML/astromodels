@@ -11,7 +11,7 @@ import pandas as pd
 from astromodels.core.my_yaml import my_yaml
 from astromodels.core.parameter import IndependentVariable, Parameter
 from astromodels.core.property import FunctionProperty
-from astromodels.core.tree import DuplicatedNode, Node
+from astromodels.core.tree import Node
 from astromodels.functions.function import Function, get_function
 from astromodels.sources import (
     ExtendedSource,
@@ -20,40 +20,19 @@ from astromodels.sources import (
     Source,
     SourceType,
 )
-from astromodels.utils.disk_usage import disk_usage
+from astromodels.utils.exceptions import (
+    CannotWriteModel,
+    DuplicatedNode,
+    InvalidInput,
+    ModelFileExists,
+    ModelInternalError,
+)
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.long_path_formatter import long_path_formatter
 
 log = setup_logger(__name__)
 
 pd.options.display.float_format = "{:.6g}".format
-
-
-class ModelFileExists(IOError):
-    pass
-
-
-class InvalidInput(ValueError):
-    pass
-
-
-class CannotWriteModel(IOError):
-    def __init__(self, directory, message):
-        # Add a report on disk usage to the message
-
-        free_space = disk_usage(directory).free
-
-        message += "\nFree space on the file system hosting %s was %.2f Mbytes" % (
-            directory,
-            free_space / 1024.0 / 1024.0,
-        )
-
-        super(CannotWriteModel, self).__init__(message)
-
-
-class ModelInternalError(ValueError):
-
-    pass
 
 
 @dataclass(frozen=True)

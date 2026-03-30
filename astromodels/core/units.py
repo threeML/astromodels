@@ -1,11 +1,10 @@
-from builtins import object
-
 __author__ = "giacomov"
 
 import collections
 
 import astropy.units as u
 
+from astromodels.utils.exceptions import UnitMismatch, UnknownUnit
 from astromodels.utils.pretty_list import dict_to_list
 
 # This module keeps the configuration of the units used in astromodels
@@ -16,14 +15,6 @@ _ENERGY = u.keV
 _TIME = u.s
 _ANGLE = u.deg
 _AREA = u.cm**2
-
-
-class UnknownUnit(Exception):
-    pass
-
-
-class UnitMismatch(Exception):
-    pass
 
 
 def _check_unit(new_unit, old_unit):
@@ -54,7 +45,7 @@ def _check_unit(new_unit, old_unit):
         )
 
 
-class _AstromodelsUnits(object):
+class _AstromodelsUnits:
     """Store the fundamental units of time, energy, angle and area to be used
     in astromodels."""
 
@@ -167,7 +158,7 @@ class _AstromodelsUnits(object):
 # class
 
 
-class _AstromodelsUnitsFactory(object):
+class _AstromodelsUnitsFactory:
 
     _instance = None
 
