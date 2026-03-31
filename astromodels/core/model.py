@@ -2,7 +2,6 @@ from builtins import zip
 
 __author__ = "giacomov"
 
-import collections
 import os
 import warnings
 from dataclasses import dataclass
@@ -456,9 +455,7 @@ class Model(Node):
         :return: dict()
         """
 
-        sources: Dict[str, Union[PointSource, ExtendedSource, ParticleSource]] = (
-            dict()
-        )
+        sources: Dict[str, Union[PointSource, ExtendedSource, ParticleSource]] = dict()
 
         for d in (
             self.point_sources,

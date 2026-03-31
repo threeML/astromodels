@@ -19,7 +19,6 @@ import os
 import sys
 from pathlib import Path
 
-
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
@@ -78,7 +77,9 @@ def run_apidoc(app):
                 "Accept": "application/vnd.github.v3+json",
             }
             # Get PR details to find the Head SHA
-            pr_url = f"https://api.github.com/repos/threeML/astromodels/pulls/{pr_number}"
+            pr_url = (
+                f"https://api.github.com/repos/threeML/astromodels/pulls/{pr_number}"
+            )
             pr_res = requests.get(pr_url, headers=headers, timeout=10)
 
             if pr_res.status_code == 200:
@@ -184,6 +185,7 @@ def run_apidoc(app):
         raise RuntimeError(
             "Failed to generate API stubs locally using sphinx-apidoc. Aborting build."
         )
+
 
 # -- General configuration ---------------------------------------------------
 
@@ -305,4 +307,4 @@ print("Done.")
 
 
 def setup(app):
-   app.connect("builder-inited", run_apidoc)
+    app.connect("builder-inited", run_apidoc)

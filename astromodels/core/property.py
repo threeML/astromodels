@@ -1,4 +1,3 @@
-import collections
 import copy
 from typing import Any, Dict, List, Optional
 

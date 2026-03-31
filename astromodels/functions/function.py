@@ -1,5 +1,4 @@
 import ast
-import collections
 import copy
 import inspect
 import math
@@ -853,9 +852,7 @@ class Function(Node):
 
         if properties is not None:
 
-            self._properties: Optional[Dict[str, FunctionProperty]] = (
-                dict()
-            )
+            self._properties: Optional[Dict[str, FunctionProperty]] = dict()
 
             for child_name, child in properties.items():
 

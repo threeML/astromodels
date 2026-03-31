@@ -1,6 +1,5 @@
 __author__ = "giacomov"
 
-import collections
 
 import numpy
 

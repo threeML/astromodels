@@ -1,4 +1,3 @@
-import collections
 import gc
 import os
 import re
@@ -136,9 +135,7 @@ class TemplateModelFactory(object):
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids: Dict[str, Optional[np.ndarray]] = (
-            dict()
-        )
+        self._parameters_grids: Dict[str, Optional[np.ndarray]] = dict()
 
         for parameter_name in names_of_parameters:
             self._parameters_grids[parameter_name] = None

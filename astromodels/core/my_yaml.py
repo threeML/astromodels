@@ -4,8 +4,6 @@ __author__ = "giacomov"
 # dictionaries instead of normal ones. This way the order in which things are expressed
 # in the file is maintained.
 
-import collections
-
 import yaml as my_yaml
 
 _mapping_tag = my_yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG

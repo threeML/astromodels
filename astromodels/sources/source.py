@@ -1,6 +1,5 @@
 __author__ = "giacomov"
 
-import collections
 from enum import Enum, unique
 from typing import Any, Dict, List
 

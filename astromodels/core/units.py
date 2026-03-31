@@ -2,8 +2,6 @@ from builtins import object
 
 __author__ = "giacomov"
 
-import collections
-
 import astropy.units as u
 
 from astromodels.utils.pretty_list import dict_to_list
