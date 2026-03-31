@@ -27,7 +27,6 @@ requirements:
     - numpy
     - pyyaml
     - pandas
-    - xspec==12.15.1 # [not (linux and aarch64)]
     - numba
     - h5py>=3.9
     - omegaconf
@@ -48,6 +47,10 @@ requirements:
     - omegaconf
     - rich
     - versioneer
+    run_constrained:
+      - xspec=12.15.1 # [not (linux and aarch64)]
+
+
 
 build:
   script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
