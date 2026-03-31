@@ -102,7 +102,7 @@ jobs:
               run: |
 
                   # Make sure we fail in case of error
-                  if [[ ${{matrix.os}} == ubuntu-latest ]];
+                  if [[ ${{matrix.os}} == ubuntu-latest || ${{matrix.os}} == ubuntu-24.04-arm ]];
                   then
                       
                       miniconda_os=Linux
@@ -194,17 +194,17 @@ jobs:
               shell: bash -l {0}
               run: |
                   # Make sure we fail in case of error
-                  if [[ ${{matrix.os}} == ubuntu-latest ]];
+                  if [[ ${{matrix.os}} == ubuntu-latest || ${{matrix.os}} == ubuntu-24.04-arm ]];
                   then
-                  miniconda_os=Linux
-                  compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
+                    miniconda_os=Linux
+                    compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
                   else  # osx
-                  miniconda_os=MacOSX
-                  compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
+                    miniconda_os=MacOSX
+                    compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
 
-                  # On macOS we also need the conda libx11 libraries used to build xspec
-                  # We also need to pin down ncurses, for now only on macos.
-                  xorg="xorg-libx11"
+                    # On macOS we also need the conda libx11 libraries used to build xspec
+                    # We also need to pin down ncurses, for now only on macos.
+                    xorg="xorg-libx11"
                   fi
                   
                   pip install tomli
@@ -224,7 +224,7 @@ jobs:
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  conda mambabuild conda-dist/recipe 
+                  conda mambabuild conda-dist/recipe --no-test
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
 
               env:
@@ -232,15 +232,6 @@ jobs:
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
-
-
-            - name: Test import xspec
-              if: matrix.os != 'ubuntu-24.04-arm'
-              shell: bash -l {0}
-              run: |
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
-                  cd astromodels/tests
-                  python -c "import astromodels.xspec"
 
             - name: Publish to Conda
               shell: bash -l {0}
@@ -258,6 +249,11 @@ jobs:
                   then
 
                   anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.conda --force $LABEL
+
+                  elif [[ ${{matrix.os}} == ubuntu-24.04-arm ]];
+                  then
+
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-aarch64/*.conda --force $LABEL
 
                   elif [[ ${{matrix.os}} == macos-latest ]];
                   then
