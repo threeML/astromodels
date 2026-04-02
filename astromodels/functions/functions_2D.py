@@ -76,7 +76,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         # TODO: make this comptabile with other frames
 
         # We assume x and y are R.A. and Dec
-        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit="deg")
+        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit=get_units().angle)
 
         b = _coord.transform_to("galactic").b.value
         l = _coord.transform_to("galactic").l.value
@@ -100,10 +100,11 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
             l=[l_min, l_min, l_max, l_max],
             b=[max_b * -2.0, max_b * 2.0, max_b * 2.0, max_b * -2.0],
             frame="galactic",
-            unit="deg",
+            unit=get_units().angle,
         )
 
         # no dealing with 0 360 overflow
+        # TODO: fix unit issue here
         min_lat = min(_coord.transform_to("icrs").dec.value)
         max_lat = max(_coord.transform_to("icrs").dec.value)
         min_lon = min(_coord.transform_to("icrs").ra.value)
@@ -123,7 +124,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         dL = (
             self.l_max.value - self.l_min.value
             if self.l_max.value > self.l_min.value
-            else 360 + self.l_max.value - self.l_max.value
+            else get_units.lon_bounds.upper_bound + self.l_max.value - self.l_max.value
         )
 
         # integral -inf to inf exp(-b**2 / 2*sigma_b**2 ) db = sqrt(2pi)*sigma_b
@@ -132,7 +133,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
         if isinstance(z, u.Quantity):
             z = z.value
-        return integral * np.power(180.0 / np.pi, -2) * np.ones_like(z)
+        return integral * np.ones_like(z)
 
 
 class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
