@@ -11,7 +11,7 @@ else:
         """Mock version of display, used if there is no ipython installed."""
         print(args)
 
-    class Latex(object):
+    class Latex:
         """Mock version of the IPython Latex object, used if there is no
         ipython installed."""
 

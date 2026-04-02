@@ -15,7 +15,7 @@ def _log10(x):
     return math.log10(x)
 
 
-class ParameterTransformation(object):
+class ParameterTransformation:
     def __init__(self, is_positive=False):
 
         self._is_positive = is_positive
