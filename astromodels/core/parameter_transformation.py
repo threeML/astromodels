@@ -1,5 +1,4 @@
 import math
-from builtins import object
 
 import numpy as np
 from numba import vectorize  # TODO: can we get rid of that somehow?
