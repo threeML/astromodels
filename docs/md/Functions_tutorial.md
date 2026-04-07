@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.11.2
+      jupytext_version: 1.19.1
   kernelspec:
     display_name: Python 3
     language: python
@@ -215,6 +215,36 @@ we will end up with two independent sets of parameters for the two power laws. T
 ```python
 print(len(another_composite.parameters)) # 6 parameters
 print(len(another_composite2.parameters)) # 9 parameters
+```
+
+## Integrating Functions
+
+### Function1D
+Since `astromodels v2.6.1` we provide the `.integrate(a, b)` function on 1D functions.
+This returns the analytical integral from `a` to `b` if the integral is known and otherwise
+uses `scipy.integrate.quad` to numerically integrate the function.
+The latter is the default and in case you want to provide your own analytical solution
+for your custom function you need to overwrite it.
+
+```python
+from astromodels.functions import Powerlaw
+
+pl = Powerlaw()
+pl.index.value = -2
+pl.K.value = 1
+pl.piv.value = 1
+print(pl.integrate(a = 1, b = 10))
+```
+
+### Function2D and Function3D
+
+For multidimensional functions we do not provide a integrate function, as the user might
+want to only integrate over one or two dimensions.
+However doing that numerically with `scipy.integrate.nquad` is straigforward:
+
+```python
+from scipy.integrate import nquad
+
 ```
 
 ## Creating custom functions
