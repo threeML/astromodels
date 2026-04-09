@@ -1305,7 +1305,7 @@ class Function(Node):
 
 
 class Function1D(Function):
-    _integral_error = None
+    _integral_numerical_error = None
 
     def __init__(
         self,
@@ -1566,13 +1566,13 @@ class Function1D(Function):
         returns: value of integral
         """
         res = quad(self.__call__, a, b, *args, **kwargs)
-        self._integral_error = res[1]
+        self._integral_numerical_error = res[1]
         return res[0]
 
     @property
-    def integral_error(self):
-        if hasattr(self, "_integral_error"):
-            return self._integral_error
+    def integral_numerical_error(self):
+        if hasattr(self, "_integral_numerical_error"):
+            return self._integral_numerical_error
         else:
             return None
 
