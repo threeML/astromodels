@@ -6,6 +6,7 @@ def test_analytical_integral():
     pl = Powerlaw()
     pl.index.value = -2
     assert np.isclose(pl.integrate(0.1, 1), 9)
+    assert pl.integral_error is None
 
 
 def test_numerical_integral():
@@ -13,3 +14,4 @@ def test_numerical_integral():
     line.a.value = 0
     line.b.value = 1
     assert np.isclose(line.integrate(0, 1), 0.5)
+    assert line.integral_error is not None
