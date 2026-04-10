@@ -40,6 +40,9 @@ class Constant(Function1D, metaclass=FunctionMeta):
 
         return k * np.ones(np.shape(x))
 
+    def integrate(self, a, b):
+        return self.k.value * (b - a)
+
 
 class Line(Function1D, metaclass=FunctionMeta):
     r"""
@@ -72,6 +75,13 @@ class Line(Function1D, metaclass=FunctionMeta):
 
     def evaluate(self, x, a, b):
         return b * x + a
+
+    def integrate(self, a, b, use_scipy=False):
+        if use_scipy:
+            return super().integrate(a, b)
+        return self.a.value * (b - a) + 0.5 * self.b.value * (
+            np.power(b, 2) - np.power(a, 2)
+        )
 
 
 class Quadratic(Function1D, metaclass=FunctionMeta):
@@ -113,6 +123,13 @@ class Quadratic(Function1D, metaclass=FunctionMeta):
 
     def evaluate(self, x, a, b, c):
         return a + b * x + c * x * x
+
+    def integrate(self, a, b):
+        return (
+            self.a.value * (b - a)
+            + 0.5 * self.b.value * (np.power(b, 2) - np.power(a, 2))
+            + 1 / 3 * self.c.value * (np.power(b, 3) - np.power(a, 3))
+        )
 
 
 class Cubic(Function1D, metaclass=FunctionMeta):
@@ -166,6 +183,14 @@ class Cubic(Function1D, metaclass=FunctionMeta):
         x3 = x2 * x
 
         return a + b * x + c * x2 + d * x3
+
+    def integrate(self, a, b):
+        return (
+            self.a.value * (b - a)
+            + 0.5 * self.b.value * (np.power(b, 2) - np.power(a, 2))
+            + 1 / 3 * self.c.value * (np.power(b, 3) - np.power(a, 3))
+            + 0.25 * self.d.value * (np.power(b, 4) - np.power(a, 4))
+        )
 
 
 class Quartic(Function1D, metaclass=FunctionMeta):
@@ -228,3 +253,12 @@ class Quartic(Function1D, metaclass=FunctionMeta):
         x4 = x3 * x
 
         return a + b * x + c * x2 + d * x3 + e * x4
+
+    def integrate(self, a, b):
+        return (
+            self.a.value * (b - a)
+            + 0.5 * self.b.value * (np.power(b, 2) - np.power(a, 2))
+            + 1 / 3 * self.c.value * (np.power(b, 3) - np.power(a, 3))
+            + 0.25 * self.d.value * (np.power(b, 4) - np.power(a, 4))
+            + 0.2 * self.e.value * (np.power(b, 5) - np.power(a, 5))
+        )
