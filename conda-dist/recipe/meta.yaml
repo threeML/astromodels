@@ -22,7 +22,7 @@ requirements:
     - numpy
 
   host:
-    - python
+    - python {{ python }}
     - pip
     - setuptools
     - numpy
@@ -33,6 +33,7 @@ requirements:
     - omegaconf
     - rich
     - versioneer
+    - xspec==12.15.1 # [not (linux and aarch64)]
 
   run:
     - python
