@@ -1,10 +1,11 @@
 import hashlib
 from importlib.util import find_spec
+from typing import Union
 
 import astropy.units as u
 import numpy as np
 from astropy import wcs
-from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
+from astropy.coordinates import BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
 
 from astromodels.core.units import get_units
@@ -30,21 +31,23 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
             desc : normalization
             initial value : 1
+            is_normalization: True
 
         sigma_b :
 
-            desc : Sigma for
+            desc : Sigma for b
             initial value : 1
+
 
         l_min :
 
             desc : min Longtitude
-            initial value : 10
+            initial value : 0
 
         l_max :
 
             desc : max Longtitude
-            initial value : 30
+            initial value : 3.14
 
     """
 
@@ -53,16 +56,14 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
     def _setup(self):
 
-        self._frame = ICRS()
+        self._frame = "icrs"
 
-    def set_frame(self, new_frame):
+    def set_frame(self, new_frame: Union[str, BaseCoordinateFrame]) -> None:
         """Set a new frame for the coordinates (the default is ICRS J2000)
 
         :param new_frame: a coordinate frame from astropy
         :return: (none)
         """
-        assert isinstance(new_frame, BaseCoordinateFrame)
-
         self._frame = new_frame
 
     def _set_units(self, x_unit, y_unit, z_unit):
@@ -75,8 +76,20 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
     def evaluate(self, x, y, K, sigma_b, l_min, l_max):
         # TODO: make this comptabile with other frames
 
-        # We assume x and y are R.A. and Dec
-        _coord = SkyCoord(ra=x, dec=y, frame=self._frame, unit=get_units().angle)
+        # We assume x and y are the correct parameters for the frame
+        # so ra, dec for icrs
+        # l, b for galactic
+
+        if isinstance(x, u.Quantity) and isinstance(y, u.Quantity):
+            _coord = SkyCoord(x, y, frame=self._frame)
+
+        elif not isinstance(x, u.Quantity) and not isinstance(y, u.Quantity):
+            _coord = SkyCoord(x, y, frame=self._frame, unit=get_units().angle)
+        else:
+            raise NotImplementedError(
+                "You either need to supply both x  & y as astropy Quantities or ",
+                "without a unit but cannot mix.",
+            )
 
         b = _coord.transform_to("galactic").b.value
         l = _coord.transform_to("galactic").l.value
