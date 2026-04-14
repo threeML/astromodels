@@ -238,8 +238,10 @@ class PointSource(Source, Node):
             else:
 
                 # Integrate between a and b
-
-                integrals = numpy.zeros(len(x))
+                if hasattr(x, "__len__"):
+                    integrals = np.zeros(len(x))
+                else:
+                    integrals = np.zeros(1)
 
                 # TODO: implement an integration scheme avoiding the for loop
 
