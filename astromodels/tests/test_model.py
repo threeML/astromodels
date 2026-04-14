@@ -1031,6 +1031,9 @@ def test_time_domain_integration():
 
     assert np.allclose(results, default_powerlaw(energies))
 
+    # check if we can call the tagged PointSource with a float
+    src(0, tag=(time, 0, 10))
+
     # Now make something actually happen
     line2.a = 1.0
     line2.b = 1.0
