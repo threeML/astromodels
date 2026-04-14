@@ -250,7 +250,8 @@ class PointSource(Source, Node):
                 with use_astromodels_memoization(False):
 
                     reentrant_call = self.__call__
-
+                    if not hasattr(x, "__len__"):
+                        x = [x]
                     for i, e in enumerate(x):
 
                         def integral(y):
