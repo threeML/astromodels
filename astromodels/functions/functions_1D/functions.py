@@ -188,6 +188,17 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
 
         return result
 
+    def integrate(self, a, b):
+        sign = 1
+        if a > b:
+            a, b = b, a
+            sign = -1
+        if a < self.lower_bound:
+            a = self.lower_bound
+        if b > self.upper_bound:
+            b = self.upper_bound
+        return sign * (b - a) * self._value
+
 
 class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
     r"""
@@ -247,12 +258,6 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
         return result
 
 
-# noinspection PyPep8Naming
-
-
-# noinspection PyPep8Naming
-
-
 class Sin(Function1D, metaclass=FunctionMeta):
     r"""
     description :
@@ -305,6 +310,16 @@ class Sin(Function1D, metaclass=FunctionMeta):
     def evaluate(self, x, K, f, phi):
         return K * np.sin(2 * np.pi * f * x + phi)
 
+    def integrate(self, a, b):
+        return (
+            -self.K
+            / (2 * np.pi * self.f)
+            * (
+                np.cos(2 * np.pi * self.f * b + self.phi)
+                - np.cos(2 * np.pi * self.f * a + self.phi)
+            )
+        )
+
 
 class DiracDelta(Function1D, metaclass=FunctionMeta):
     r"""
@@ -348,6 +363,12 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
         out[x == zero_point] = value
 
         return out
+
+    def integrate(self, a, b):
+        if a <= self.zero_point <= b:
+            return self.value
+        else:
+            return 0
 
 
 if has_naima:
