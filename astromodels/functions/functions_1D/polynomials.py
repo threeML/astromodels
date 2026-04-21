@@ -40,7 +40,7 @@ class Constant(Function1D, metaclass=FunctionMeta):
 
         return k * np.ones(np.shape(x))
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         return self.k.value * (b - a)
 
 
@@ -76,9 +76,9 @@ class Line(Function1D, metaclass=FunctionMeta):
     def evaluate(self, x, a, b):
         return b * x + a
 
-    def integrate(self, a, b, use_scipy=False):
+    def integral(self, a, b, use_scipy=False):
         if use_scipy:
-            return super().integrate(a, b)
+            return super().integral(a, b)
         return self.a.value * (b - a) + 0.5 * self.b.value * (
             np.power(b, 2) - np.power(a, 2)
         )
@@ -124,7 +124,7 @@ class Quadratic(Function1D, metaclass=FunctionMeta):
     def evaluate(self, x, a, b, c):
         return a + b * x + c * x * x
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         return (
             self.a.value * (b - a)
             + 0.5 * self.b.value * (np.power(b, 2) - np.power(a, 2))
@@ -184,7 +184,7 @@ class Cubic(Function1D, metaclass=FunctionMeta):
 
         return a + b * x + c * x2 + d * x3
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         return (
             self.a.value * (b - a)
             + 0.5 * self.b.value * (np.power(b, 2) - np.power(a, 2))
@@ -254,7 +254,7 @@ class Quartic(Function1D, metaclass=FunctionMeta):
 
         return a + b * x + c * x2 + d * x3 + e * x4
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         return (
             self.a.value * (b - a)
             + 0.5 * self.b.value * (np.power(b, 2) - np.power(a, 2))

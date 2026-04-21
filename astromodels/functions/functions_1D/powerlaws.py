@@ -87,7 +87,7 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
 
         return result * unit_
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         if isinstance(a, astropy_units.Quantity) and isinstance(
             b, astropy_units.Quantity
         ):
@@ -1055,7 +1055,7 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
         Esplit = (alpha - beta) * Ec
 
-        # Evaluate model integrated flux and normalization
+        # Evaluate model integrald flux and normalization
 
         if isinstance(alpha, astropy_units.Quantity):
 

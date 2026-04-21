@@ -188,7 +188,7 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
 
         return result
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         sign = 1
         if a > b:
             a, b = b, a
@@ -310,7 +310,7 @@ class Sin(Function1D, metaclass=FunctionMeta):
     def evaluate(self, x, K, f, phi):
         return K * np.sin(2 * np.pi * f * x + phi)
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         return (
             -self.K
             / (2 * np.pi * self.f)
@@ -364,7 +364,7 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
 
         return out
 
-    def integrate(self, a, b):
+    def integral(self, a, b):
         if a <= self.zero_point <= b:
             return self.value
         else:

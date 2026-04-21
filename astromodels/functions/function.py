@@ -1565,6 +1565,31 @@ class Function1D(Function):
 
         returns: value of integral
         """
+        if isinstance(a, u.Quantity) and isinstance(b, u.Quantity):
+            pass
+
+        elif (isinstance(a, u.Quantity) and not isinstance(b, u.Quantity)) or (
+            not isinstance(a, u.Quantity) and isinstance(b, u.Quantity)
+        ):
+            raise TypeError(
+                "a and b must either be astropy Quantities or floats. "
+                "You can not mix."
+            )
+
+        return self.integral(a, b, *args, **kwargs)
+
+    def integral(self, a, b, *args, **kwargs):
+        """
+        The actual integral defintion. Needs to be overwritten for analytical integrals
+        :param a: lower integration boundary
+        :type a: float
+        :param b: upper integration boundary
+        :type b: float
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+        """
         res = quad(self.__call__, a, b, *args, **kwargs)
         self._integral_numerical_error = res[1]
         return res[0]
