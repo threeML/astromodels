@@ -732,7 +732,7 @@ def test_input_output_with_complex_functions_as_composites(tmp_path):
 
     assert new_model.synch_source.spectrum.main.shape.dummy_1.value == "love"
 
-    os.remove("__test.yml")
+    os.remove(tmp_path / "__test.yml")
 
 
 def test_add_remove_sources():
