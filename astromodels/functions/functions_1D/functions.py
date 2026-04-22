@@ -193,11 +193,11 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
         if a > b:
             a, b = b, a
             sign = -1
-        if a < self.lower_bound:
-            a = self.lower_bound
-        if b > self.upper_bound:
-            b = self.upper_bound
-        return sign * (b - a) * self._value
+        if a < self.lower_bound.value:
+            a = self.lower_bound.value
+        if b > self.upper_bound.value:
+            b = self.upper_bound.value
+        return sign * (b - a) * self.value.value
 
 
 class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
@@ -312,11 +312,11 @@ class Sin(Function1D, metaclass=FunctionMeta):
 
     def integral(self, a, b):
         return (
-            -self.K
-            / (2 * np.pi * self.f)
+            -self.K.value
+            / (2 * np.pi * self.f.value)
             * (
-                np.cos(2 * np.pi * self.f * b + self.phi)
-                - np.cos(2 * np.pi * self.f * a + self.phi)
+                np.cos(2 * np.pi * self.f.value * b + self.phi.value)
+                - np.cos(2 * np.pi * self.f.value * a + self.phi.value)
             )
         )
 
@@ -365,8 +365,8 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
         return out
 
     def integral(self, a, b):
-        if a <= self.zero_point <= b:
-            return self.value
+        if a <= self.zero_point.value <= b:
+            return self.value.value
         else:
             return 0
 
