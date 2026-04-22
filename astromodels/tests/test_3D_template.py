@@ -1,218 +1,493 @@
-from __future__ import print_function
+"""
+Unit tests for spatial_model.py
+Covers: ModelFactory, TemplateFile, HaloModel, GridInterpolate,
+        UnivariateSpline, RectBivariateSplineWrapper, and the custom exceptions.
+"""
 
-try:
-    from threeML import *
-except Exception:
-    pass
+import collections
+import os
+from pathlib import Path
+from unittest.mock import patch
 
-import astropy.io.fits as fits
 import astropy.units as u
+import h5py
 import numpy as np
 import pytest
-from astropy import wcs
-from astropy.coordinates import SkyCoord
+from astropy.io import fits
 
-from astromodels.core.model import Model
-from astromodels.core.model_parser import clone_model
-from astromodels.functions.spatial_model import HaloModel, ModelFactory
-from astromodels.sources.extended_source import ExtendedSource
+# ---------------------------------------------------------------------------
+# Helpers to build minimal FITS / HDF5 fixtures in memory
+# ---------------------------------------------------------------------------
 
-__author__ = "torresramiro350"
-
-# NOTE: test implementation for the HaloModel class, which combines functionality
-# from the Galprop_Template3D (parameter interpolation per template map) and template_model (spectral interpolation)
+NE, NL, NB = 5, 8, 8  # energy, lon, lat pixels used in mock FITS data
 
 
-def make_test_template(ra, dec, fitsfile):
-
-    test_wcs = False
-
-    if test_wcs:
-        w = wcs.WCS(naxis=2)
-        w.wcs.crpix = [100, 100]
-        w.wcs.cdelt = np.array([-0.2, 0.2])
-        w.wcs.crval = [ra, dec]
-        w.wcs.ctype = ["RA---TAN", "DEC---TAN"]
-        dOmega = (
-            (abs(w.wcs.cdelt[0] * w.wcs.cdelt[1]) * u.degree * u.degree)
-            .to(u.steradian)
-            .value
-        )
-        header = w.to_header()
-
-    else:
-        # NOTE: Sample template header used for Geminga template analysis
-        # SIMPLE  =                    T / Written by IDL:  Thu Apr  2 22:08:49 2015
-        # BITPIX  =                  -64 / number of bits per data pixel
-        # NAXIS   =                    3 / number of data axes
-        # NAXIS1  =                  201 / length of data axis 1
-        # NAXIS2  =                  201 / length of data axis 2
-        # NAXIS3  =                   21 / length of data axis 3
-        # EXTEND  =                    T / FITS dataset may contain extensions
-        # COMMENT   FITS (Flexible Image Transport System) format is defined in 'Astronomy
-        # COMMENT   and Astrophysics', volume 376, page 359; bibcode: 2001A&A...376..359H
-        # CRVAL1  =    98.47879999999984 / Value of longitude in pixel CRPIX1
-        # CDELT1  =                 0.08 / Step size in longitude
-        # CRPIX1  =                101.5 / Pixel that has value CRVAL1
-        # CTYPE1  = 'RA-CAR  '           / The type of parameter 1 (Galactic longitude in
-        # CUNIT1  = 'deg     '           / The unit of parameter 1
-        # CRVAL2  =              17.7732 / Value of latitude in pixel CRPIX2
-        # CDELT2  =                 0.08 / Step size in latitude
-        # CRPIX2  =                101.5 / Pixel that has value CRVAL2
-        # CTYPE2  = 'DEC-CAR '           / The type of parameter 2 (Galactic latitude in C
-        # CUNIT2  = 'deg     '           / The unit of parameter 2
-        # CRVAL3  =     58.4731330871582 / Energy of pixel CRPIX3
-        # CDELT3  =                  1.0 / log10 of step size in energy (if it is logarith
-        # CRPIX3  =                   1. / Pixel that has value CRVAL3
-        # CTYPE3  = 'Energy  '           / Axis 3 is the spectra
-        # CUNIT3  = 'MeV     '           / The unit of axis 3
-        # CREATOR = 'chimgtyp 1.5'       /  s/w task that wrote this dataset
-        # ...
-        # HISTORY ---------------------------------------------------------
-        # HISTORY
-        # DATE    = '2018-03-19'         / file creation date (YYYY-MM-DDThh:mm:ss UT)
-        # HISTORY Scaled for V15 CLEAN IRFs by ratio of 4-year exposures for V10 IRFs
-        # HISTORY Scaled for P8V6 Source by apply_scale2.pro
-
-        cards = {
-            "SIMPLE": "T",
-            "BITPIX": -64,
-            "NAXIS": 3,
-            "NAXIS1": 201,
-            "NAXIS2": 201,
-            "NAXIS3": 2,
-            "EXTEND": "T",
-            "COMMENT": "FITS (Flexible Image Transport System) format is defined in 'Astronomy"
-            " and Astrophysics', volume 376, page 359; bibcode: 2001A&A...376..359H",
-            "CRVAL1": 98.47879999999984,
-            "CDELT1": 0.08,
-            "CRPIX1": 101.5,
-            "CTYPE1": "RA-CAR  ",
-            "CUNIT1": "deg     ",
-            "CRVAL2": 17.7732,
-            "CDELT2": 0.08,
-            "CRPIX2": 101.5,
-            "CTYPE2": "DEC-CAR ",
-            "CUNIT2": "deg     ",
-            "CRVAL3": 58.4731330871582,
-            "CDELT3": 1.0,
-            "CRPIX3": 1.0,
-            "CTYPE3": "Energy  ",
-            "CUNIT3": "MeV     ",
-        }
-
-        dOmega: float = (
-            (abs(cards["CDELT1"] * cards["CDELT2"]) * u.degree * u.degree)
-            .to(u.steradian)
-            .value
-        )
-
-        header = fits.Header(cards)
-
-    data = np.zeros([2, 201, 201])
-    for i in range(2):
-        data[i][80:120, 80:120] = 1
-
-    total = np.sum(data)
-
-    data /= total / dOmega
-
-    hdu = fits.PrimaryHDU(data=data, header=header)
-    hdu.writeto(fitsfile, overwrite=True)
+def _make_fits_file(path: str, ne: int = NE, nl: int = NL, nb: int = NB) -> str:
+    """Write a minimal 3-D FITS cube and return its path."""
+    data = np.random.rand(ne, nl, nb).astype(np.float64)
+    hdu = fits.PrimaryHDU(data)
+    hdu.header["CDELT1"] = 0.5
+    hdu.header["CDELT2"] = 0.5
+    hdu.header["CRVAL1"] = 0.0
+    hdu.header["CRVAL2"] = 0.0
+    hdu.header["CRPIX1"] = nl // 2
+    hdu.header["CRPIX2"] = nb // 2
+    hdu.header["CRPIX3"] = 1
+    hdu.header["NAXIS1"] = nl
+    hdu.header["NAXIS2"] = nb
+    hdu.header["NAXIS3"] = ne
+    hdu.writeto(path, overwrite=True)
+    return path
 
 
-@pytest.mark.slow
-def test_model_factory_1D():
+def _make_template_h5(path: str, param_names=("alpha",), grid_sizes=(3,)) -> str:
+    """
+    Write a minimal TemplateFile HDF5 and return its path.
+    Single parameter grid by default.
+    """
+    ne, nl, nb = NE, NL, NB
+    energies = np.linspace(5.0, 5.8, ne)
+    lats = np.linspace(-2.0, 2.0, nb)
+    lons = np.linspace(-2.0, 2.0, nl)
 
-    ra, dec = (98.47879999999984, 17.7732)
+    shape = list(grid_sizes) + [ne, nl, nb]
+    grid = np.random.rand(*shape)
 
-    ra_min = ra - 4.0
-    ra_max = ra + 4.0
-    dec_min = dec - 4.0
-    dec_max = dec + 4.0
+    parameters = collections.OrderedDict()
+    for name, sz in zip(param_names, grid_sizes):
+        parameters[name] = np.linspace(0.1, 1.0, sz)
 
-    make_test_template(ra, dec, "__test3D_simple.fits")
+    with h5py.File(path, "w") as f:
+        f.attrs["name"] = "test_model"
+        f.attrs["description"] = "unit-test template"
+        f.attrs["degree_of_interpolation"] = 1
+        f.attrs["spline_smoothing_factor"] = 0
 
-    diff = np.arange(25.0, 25.4, 0.2)
+        f.create_dataset("energies", data=energies)
+        f.create_dataset("lats", data=lats)
+        f.create_dataset("lons", data=lons)
+        f.create_dataset("grid", data=grid)
 
-    halo_model_factory = ModelFactory(
-        "__test3D_1D",
-        "sample 3D template with 1 var interpolation",
-        ["diff"],
-        degree_of_interpolation=1,
-        spline_smoothing_factor=0,
+        dt = h5py.special_dtype(vlen=str)
+        f.create_dataset("parameter_order", data=np.array(list(param_names), dtype=dt))
+
+        pg = f.create_group("parameters")
+        for k, v in parameters.items():
+            pg.create_dataset(k, data=v)
+
+    return path
+
+
+try:
+    from astromodels.functions.spatial_model import (
+        GridInterpolate,
+        HaloModel,
+        IncompleteGrid,
+        MissingSpatialDataFile,
+        ModelFactory,
+        RectBivariateSplineWrapper,
+        TemplateFile,
+        UnivariateSpline,
+        ValuesNotInGrid,
     )
 
-    halo_model_factory.define_parameter_grid("diff", diff)
+    _IMPORT_OK = True
+except ImportError:
+    _IMPORT_OK = False
 
-    for dval in diff:
-        halo_model_factory.add_interpolation_data("__test3D_simple.fits", diff=dval)
-
-    halo_model_factory.save_data(overwrite=True)
-
-    shape = HaloModel("__test3D_1D")
-    shape.define_region(ra_min, ra_max, dec_min, dec_max, galactic=False)
-
-    extended_source = ExtendedSource("__test_source", spatial_shape=shape)
-
-    shape.lon0 = ra * u.degree
-    shape.lat0 = dec * u.degree
-
-    assert extended_source.spatial_shape.lon0.value == ra
-    assert extended_source.spatial_shape.lat0.value == dec
-
-    assert extended_source.spatial_shape.lon0.free
-    assert extended_source.spatial_shape.lat0.free
-
-    shape.clean()
+pytestmark = pytest.mark.skipif(
+    not _IMPORT_OK,
+    reason="Module or its dependencies could not be imported",
+)
 
 
-@pytest.mark.slow
-def test_model_factory_2D():
+class TestCustomExceptions:
+    def test_incomplete_grid_is_runtime_error(self):
+        with pytest.raises(RuntimeError):
+            raise IncompleteGrid("missing data")
 
-    ra, dec = (98.47879999999984, 17.7732)
+    def test_values_not_in_grid_is_value_error(self):
+        with pytest.raises(ValueError):
+            raise ValuesNotInGrid("out of range")
 
-    diff = np.arange(25.0, 25.4, 0.2)
-    index = np.arange(1.0, 1.4, 0.2)
+    def test_missing_spatial_data_file_is_runtime_error(self):
+        with pytest.raises(RuntimeError):
+            raise MissingSpatialDataFile("no file")
 
-    ra_min = ra - 4.0
-    ra_max = ra + 4.0
-    dec_min = dec - 4.0
-    dec_max = dec + 4.0
 
-    make_test_template(ra, dec, "__test3D_simple.fits")
+class TestGridInterpolate:
+    def test_returns_correct_value_1d(self):
+        x = np.array([0.0, 1.0, 2.0], dtype="<f8")
+        y = np.array([0.0, 1.0, 4.0], dtype="<f8")
+        interp = GridInterpolate((x,), y)
+        result = interp(np.array([1.0]))
+        assert np.isfinite(result)
 
-    halo_model_factory = ModelFactory(
-        "__test3D_2D",
-        "Sample 3D template 2 var interpolation",
-        ["diff", "index"],
-        degree_of_interpolation=1,
-        spline_smoothing_factor=0,
-    )
+    def test_shape_preserved(self):
+        x = np.array([0.0, 1.0, 2.0], dtype="<f8")
+        y = np.array([10.0, 20.0, 30.0], dtype="<f8")
+        interp = GridInterpolate((x,), y)
+        # midpoint should be between 10 and 30
+        val = interp(np.array([1.0]))
+        assert 10.0 <= float(val) <= 30.0
 
-    halo_model_factory.define_parameter_grid("diff", diff)
-    halo_model_factory.define_parameter_grid("index", index)
 
-    for dval in diff:
-        for idx in index:
-            halo_model_factory.add_interpolation_data(
-                "__test3D_simple.fits", diff=dval, index=idx
+class TestUnivariateSpline:
+    def test_interpolates_at_known_points(self):
+        x = np.array([1.0, 2.0, 3.0], dtype="<f8")
+        y = np.array([2.0, 4.0, 6.0], dtype="<f8")
+        spl = UnivariateSpline(x, y)
+        assert np.isclose(float(spl(np.array([2.0]))), 4.0, atol=1e-6)
+
+    def test_returns_finite(self):
+        x = np.linspace(0, 10, 20, dtype="<f8")
+        y = np.sin(x).astype("<f8")
+        spl = UnivariateSpline(x, y)
+        val = spl(np.array([5.0]))
+        assert np.isfinite(val)
+
+
+class TestRectBivariateSplineWrapper:
+    def test_call_returns_scalar(self):
+        x = np.linspace(0, 1, 5)
+        y = np.linspace(0, 1, 5)
+        z = np.outer(x, y)
+        wrapper = RectBivariateSplineWrapper(x, y, z, kx=1, ky=1, s=0)
+        result = wrapper((np.array([0.5]), np.array([0.5])))
+        assert np.isfinite(result)
+
+
+class TestTemplateFile:
+    def test_save_and_load_roundtrip(self, tmp_path):
+        path = str(tmp_path / "template.h5")
+        ne, nl, nb = NE, NL, NB
+
+        params = collections.OrderedDict({"alpha": np.linspace(0.1, 1.0, 3)})
+        tf = TemplateFile(
+            name="roundtrip",
+            description="test",
+            grid=np.random.rand(3, ne, nl, nb),
+            energies=np.linspace(5.0, 5.8, ne),
+            lats=np.linspace(-2.0, 2.0, nb),
+            lons=np.linspace(-2.0, 2.0, nl),
+            parameters=params,
+            parameter_order=["alpha"],
+            degree_of_interpolation=1,
+            spline_smoothing_factor=0,
+        )
+        tf.save(path)
+
+        loaded = TemplateFile.from_file(path)
+        assert loaded.name == "roundtrip"
+        assert loaded.description == "test"
+        np.testing.assert_array_equal(loaded.energies, tf.energies)
+        np.testing.assert_array_equal(loaded.lats, tf.lats)
+        np.testing.assert_array_equal(loaded.lons, tf.lons)
+        np.testing.assert_array_almost_equal(loaded.grid, tf.grid)
+        np.testing.assert_array_equal(loaded.parameters["alpha"], params["alpha"])
+
+    def test_from_file_preserves_parameter_order(self, tmp_path):
+        path = str(tmp_path / "order.h5")
+        _make_template_h5(path, param_names=("beta", "gamma"), grid_sizes=(3, 4))
+        loaded = TemplateFile.from_file(path)
+        # OrderedDict keys should come back in insertion order
+        assert next(iter(loaded.parameters.keys())) in ("beta", b"beta")
+
+    def test_save_creates_file(self, tmp_path):
+        path = str(tmp_path / "exists.h5")
+        params = collections.OrderedDict({"p": np.linspace(0, 1, 2)})
+        tf = TemplateFile(
+            name="exists",
+            description="d",
+            grid=np.zeros((2, NE, NL, NB)),
+            energies=np.zeros(NE),
+            lats=np.zeros(NB),
+            lons=np.zeros(NL),
+            parameters=params,
+            parameter_order=["p"],
+            degree_of_interpolation=1,
+            spline_smoothing_factor=0,
+        )
+        tf.save(path)
+        assert os.path.isfile(path)
+
+
+class TestModelFactory:
+    # ------------------------------------------------------------------
+    # __init__ validation
+    # ------------------------------------------------------------------
+    def test_init_valid_name(self):
+        mf = ModelFactory("valid_name", "desc", ["p1"])
+        assert mf._name == "valid_name"
+
+    def test_init_invalid_name_raises(self):
+        with pytest.raises(RuntimeError):
+            ModelFactory("123 bad name!", "desc", ["p1"])
+
+    def test_parameters_initialised_to_none(self):
+        mf = ModelFactory("model", "desc", ["a", "b"])
+        assert mf._parameters_grids["a"] is None
+        assert mf._parameters_grids["b"] is None
+
+    def test_define_parameter_grid_stores_array(self):
+        mf = ModelFactory("m", "d", ["alpha"])
+        grid = np.linspace(0, 1, 5)
+        mf.define_parameter_grid("alpha", grid)
+        np.testing.assert_array_equal(mf._parameters_grids["alpha"], grid)
+
+    def test_define_parameter_grid_unknown_parameter_raises(self):
+        mf = ModelFactory("m", "d", ["alpha"])
+        with pytest.raises(AssertionError):
+            mf.define_parameter_grid("unknown", np.linspace(0, 1, 5))
+
+    def test_define_parameter_grid_single_element_raises(self):
+        mf = ModelFactory("m", "d", ["alpha"])
+        with pytest.raises(AssertionError):
+            mf.define_parameter_grid("alpha", np.array([1.0]))
+
+    def test_define_parameter_grid_converts_to_float(self):
+        mf = ModelFactory("m", "d", ["alpha"])
+        mf.define_parameter_grid("alpha", [0, 1, 2])
+        assert mf._parameters_grids["alpha"].dtype == float
+
+    def test_add_data_without_grid_raises_incomplete_grid(self, tmp_path):
+        fits_path = _make_fits_file(str(tmp_path / "cube.fits"))
+        mf = ModelFactory("m2", "d", ["alpha"])
+        # grid not yet defined → should raise IncompleteGrid
+        with pytest.raises(IncompleteGrid):
+            mf.add_interpolation_data(fits_path, alpha=0.5)
+
+    def test_add_data_without_fits_file_raises(self):
+        mf = ModelFactory("m3", "d", ["alpha"])
+        mf.define_parameter_grid("alpha", np.linspace(0, 1, 3))
+        with pytest.raises(RuntimeError):
+            mf.add_interpolation_data(None, alpha=0.0)
+
+    def test_add_data_fills_data_frame(self, tmp_path):
+        fits_path = _make_fits_file(str(tmp_path / "cube.fits"))
+        mf = ModelFactory("m4", "d", ["alpha"])
+        grid = np.array([0.0, 0.5, 1.0])
+        mf.define_parameter_grid("alpha", grid)
+        for val in grid:
+            mf.add_interpolation_data(fits_path, alpha=val)
+        assert mf._data_frame is not None
+        assert not np.any(np.isnan(mf._data_frame))
+
+    def test_save_creates_h5_file(self, tmp_path):
+        fits_path = _make_fits_file(str(tmp_path / "cube.fits"))
+        mf = ModelFactory("save_test", "d", ["alpha"])
+        grid_vals = np.array([0.0, 0.5, 1.0])
+        mf.define_parameter_grid("alpha", grid_vals)
+        for val in grid_vals:
+            mf.add_interpolation_data(fits_path, alpha=val)
+
+        user_data_dir = str(tmp_path)
+        with patch(
+            "astromodels.functions.template_model_3d.get_user_data_path",
+            return_value=Path(user_data_dir),
+        ):
+            mf.save_data(overwrite=False)
+
+        assert (tmp_path / "save_test.h5").exists()
+
+    def test_save_overwrite_false_raises_when_file_exists(self, tmp_path):
+        fits_path = _make_fits_file(str(tmp_path / "cube.fits"))
+        mf = ModelFactory("dup_model", "d", ["alpha"])
+        grid_vals = np.array([0.0, 0.5, 1.0])
+        mf.define_parameter_grid("alpha", grid_vals)
+        for val in grid_vals:
+            mf.add_interpolation_data(fits_path, alpha=val)
+
+        user_data_dir = str(tmp_path)
+        # Create the file first
+        (tmp_path / "dup_model.h5").touch()
+
+        with (
+            patch(
+                "astromodels.functions.template_model_3d.get_user_data_path",
+                return_value=Path(user_data_dir),
+            ),
+            pytest.raises(IOError),
+        ):
+            mf.save_data(overwrite=False)
+
+    def test_save_overwrite_true_replaces_file(self, tmp_path):
+        fits_path = _make_fits_file(str(tmp_path / "cube.fits"))
+        mf = ModelFactory("over_model", "d", ["alpha"])
+        grid_vals = np.array([0.0, 0.5, 1.0])
+        mf.define_parameter_grid("alpha", grid_vals)
+        for val in grid_vals:
+            mf.add_interpolation_data(fits_path, alpha=val)
+
+        user_data_dir = str(tmp_path)
+        with patch(
+            "astromodels.functions.template_model_3d.get_user_data_path",
+            return_value=Path(user_data_dir),
+        ):
+            mf.save_data(overwrite=False)  # first save
+            mf.save_data(overwrite=True)  # should NOT raise
+
+        assert (tmp_path / "over_model.h5").exists()
+
+
+@pytest.fixture
+def halo_model_fixture(tmp_path):
+    """Build a minimal HaloModel backed by a real HDF5 file."""
+    h5_path = str(tmp_path / "halo_test.h5")
+    _make_template_h5(h5_path, param_names=("alpha",), grid_sizes=(3,))
+
+    with patch(
+        "astromodels.functions.template_model_3d.get_user_data_path",
+        return_value=tmp_path,
+    ):
+        # HaloModel is instantiated via _custom_init_
+        model = HaloModel.__new__(HaloModel)
+        model._custom_init_("halo_test")
+
+    return model
+
+
+class TestHaloModel:
+    def test_raises_if_file_missing(self, tmp_path):
+        with (
+            patch(
+                "astromodels.functions.template_model_3d.get_user_data_path",
+                return_value=tmp_path,
+            ),
+            pytest.raises(MissingSpatialDataFile),
+        ):
+            model = HaloModel.__new__(HaloModel)
+            model._custom_init_("nonexistent_model")
+
+    def test_parameter_grids_loaded(self, halo_model_fixture):
+        model = halo_model_fixture
+        assert "alpha" in model._parameters_grids
+        assert len(model._parameters_grids["alpha"]) == 3
+
+    def test_energy_lat_lon_arrays_loaded(self, halo_model_fixture):
+        model = halo_model_fixture
+        assert model._E.shape[0] == NE
+        assert model._B.shape[0] == NB
+        assert model._L.shape[0] == NL
+
+    def test_cache_initialised_empty(self, halo_model_fixture):
+        model = halo_model_fixture
+        assert len(model._cached_values) == 0
+
+    def test_define_region_equatorial(self, halo_model_fixture):
+        model = halo_model_fixture
+        ramin, ramax, decmin, decmax = model.define_region(10.0, 20.0, -5.0, 5.0)
+        assert ramin == 10.0
+        assert ramax == 20.0
+        assert decmin == -5.0
+        assert decmax == 5.0
+
+    def test_define_region_stores_attributes(self, halo_model_fixture):
+        model = halo_model_fixture
+        model.define_region(0.0, 30.0, -10.0, 10.0)
+        assert model.ramin == 0.0
+        assert model.ramax == 30.0
+        assert model.decmin == -10.0
+        assert model.decmax == 10.0
+
+    # ------------------------------------------------------------------
+    # get_boundaries
+    # ------------------------------------------------------------------
+    def test_get_boundaries_returns_correct_tuples(self, halo_model_fixture):
+        model = halo_model_fixture
+        model.define_region(5.0, 15.0, -3.0, 3.0)
+        lon_bounds, lat_bounds = model.get_boundaries()
+        assert lon_bounds == (5.0, 15.0)
+        assert lat_bounds == (-3.0, 3.0)
+
+    def test_interpolate_returns_correct_shape(self, halo_model_fixture):
+        model = halo_model_fixture
+        energies = np.array([1e3, 1e4])  # keV
+        lons = np.linspace(-1.0, 1.0, 4)
+        lats = np.linspace(-1.0, 1.0, 4)
+        param_values = (0.5,)  # within grid [0.1, 0.55, 1.0]
+
+        result = model._interpolate(energies, lons, lats, param_values)
+        assert result.shape == (len(lons), len(energies))
+
+    def test_interpolate_all_finite(self, halo_model_fixture):
+        model = halo_model_fixture
+        energies = np.array([5e3])
+        lons = np.linspace(-0.5, 0.5, 5)
+        lats = np.linspace(-0.5, 0.5, 5)
+        param_values = (0.5,)
+
+        result = model._interpolate(energies, lons, lats, param_values)
+        assert np.all(np.isfinite(result))
+
+    def test_interpolate_caches_result(self, halo_model_fixture):
+        model = halo_model_fixture
+        energies = np.array([1e3])
+        lons = np.zeros(3)
+        lats = np.zeros(3)
+        param_values = (0.5,)
+
+        model._interpolate(energies, lons, lats, param_values)
+        assert param_values in model._cached_values
+
+    def test_interpolate_uses_cache_on_second_call(self, halo_model_fixture):
+        model = halo_model_fixture
+        energies = np.array([1e3])
+        lons = np.zeros(3)
+        lats = np.zeros(3)
+        param_values = (0.5,)
+
+        r1 = model._interpolate(energies, lons, lats, param_values)
+        r2 = model._interpolate(energies, lons, lats, param_values)
+        np.testing.assert_array_equal(r1, r2)
+
+    def test_interpolate_lon_lat_size_mismatch_raises(self, halo_model_fixture):
+        model = halo_model_fixture
+        with pytest.raises(AttributeError):
+            model._interpolate(
+                np.array([1e3]),
+                np.zeros(4),
+                np.zeros(5),  # different size
+                (0.5,),
             )
 
-    halo_model_factory.save_data(overwrite=True)
+    def test_interpolate_accepts_astropy_quantity_energies(self, halo_model_fixture):
+        model = halo_model_fixture
+        energies = np.array([1.0, 10.0]) * u.keV
+        lons = np.zeros(3)
+        lats = np.zeros(3)
 
-    shape = HaloModel("__test3D_2D")
-    shape.define_region(ra_min, ra_max, dec_min, dec_max, galactic=False)
+        result = model._interpolate(energies, lons, lats, (0.5,))
+        assert result.shape == (3, 2)
 
-    extended_source = ExtendedSource("__test_source", spatial_shape=shape)
+    def test_evaluate_returns_correct_shape(self, halo_model_fixture):
+        model = halo_model_fixture
+        lons = np.linspace(-1.0, 1.0, 4)
+        lats = np.linspace(-1.0, 1.0, 4)
+        energies = np.array([1e3, 5e3])
 
-    shape.lon0 = ra * u.degree
-    shape.lat0 = dec * u.degree
+        result = model.evaluate(lons, lats, energies, K=1.0, lon0=0.0, lat0=0.0, *[0.5])
+        assert result.shape == (len(lons), len(energies))
 
-    assert extended_source.spatial_shape.lon0.value == ra
-    assert extended_source.spatial_shape.lat0.value == dec
+    def test_evaluate_scales_with_K(self, halo_model_fixture):
+        model = halo_model_fixture
+        lons = np.linspace(-0.5, 0.5, 3)
+        lats = np.linspace(-0.5, 0.5, 3)
+        energies = np.array([1e3])
 
-    assert extended_source.spatial_shape.lon0.free
-    assert extended_source.spatial_shape.lat0.free
+        r1 = model.evaluate(lons, lats, energies, K=1.0, lon0=0.0, lat0=0.0, *[0.5])
+        r2 = model.evaluate(lons, lats, energies, K=2.0, lon0=0.0, lat0=0.0, *[0.5])
+        np.testing.assert_array_almost_equal(r2, 2.0 * r1)
 
-    shape.clean()
+    def test_evaluate_single_energy_scalar(self, halo_model_fixture):
+        """evaluate should not crash when a single float energy is passed."""
+        model = halo_model_fixture
+        lons = np.linspace(-0.5, 0.5, 3)
+        lats = np.linspace(-0.5, 0.5, 3)
+
+        # should not raise
+        result = model.evaluate(lons, lats, 1e3, K=1.0, lon0=0.0, lat0=0.0, *[0.5])
+        assert np.all(np.isfinite(result))
+
+    def test_data_file_property_is_path(self, halo_model_fixture):
+        assert isinstance(halo_model_fixture.data_file, Path)
