@@ -64,12 +64,13 @@ test: # already uses requirements from "run"
   requires:
     - pytest
     - pytest-cov
+    - pytest-xdist
     - coverage
   source_files:
     - astromodels/tests
     - pyproject.toml # needed for pytest setup e.g. marks
   commands:
-    - pytest -vv astromodels/tests --cov=astromodels --cov-report=term
+    - pytest -vv astromodels/tests --cov=astromodels --cov-report=term -n auto
 
 about:
   home: https://github.com/threeml/astromodels

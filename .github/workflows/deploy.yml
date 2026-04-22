@@ -126,7 +126,7 @@ jobs:
                   echo "Conda installation path ${CONDA}"
                   echo "Building ${PKG_VERSION}"
 
-                  conda install codecov pytest-cov
+                  conda install codecov pytest-cov pytest-xdist
             - name: Conda list
               shell: bash -l {0}
               run: |
