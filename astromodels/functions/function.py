@@ -1566,7 +1566,15 @@ class Function1D(Function):
         returns: value of integral
         """
         if isinstance(a, u.Quantity) and isinstance(b, u.Quantity):
-            pass
+            try:
+                a = a.to(self._x_unit).value
+                b = b.to(self._x_unit).value
+            except Exception as e:
+                raise ValueError(
+                    "You integral boundary unit must be converatble to "
+                    f"{self._x_unit}."
+                ) from e
+            return self.integral(a, b, *args, **kwargs) * self._y_unit * self._x_unit
 
         elif (isinstance(a, u.Quantity) and not isinstance(b, u.Quantity)) or (
             not isinstance(a, u.Quantity) and isinstance(b, u.Quantity)
@@ -1575,8 +1583,8 @@ class Function1D(Function):
                 "a and b must either be astropy Quantities or floats. "
                 "You can not mix."
             )
-
-        return self.integral(a, b, *args, **kwargs)
+        else:
+            return self.integral(a, b, *args, **kwargs)
 
     def integral(self, a, b, *args, **kwargs):
         """
