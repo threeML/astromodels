@@ -150,7 +150,7 @@ def test_template_function():
 
 
 @pytest.mark.slow
-def test_input_output():
+def test_input_output(tmp_path):
 
     tm = TemplateModel("__test")
     tm.alpha = -0.95
@@ -208,10 +208,10 @@ def test_input_output():
 
     fake_model2 = Model(fake_source2)
 
-    fake_model2.save("__test.yml", overwrite=True)
+    fake_model2.save(tmp_path / "__test.yml", overwrite=True)
 
     # Now try to reload
-    reloaded_model = load_model("__test.yml")
+    reloaded_model = load_model(tmp_path / "__test.yml")
 
     assert reloaded_model.get_number_of_point_sources() == 1
     assert np.allclose(
@@ -240,10 +240,10 @@ def test_input_output():
 
     fake_model2 = Model(fake_source2)
 
-    fake_model2.save("__test.yml", overwrite=True)
+    fake_model2.save(tmp_path / "__test.yml", overwrite=True)
 
     # Now try to reload
-    reloaded_model = load_model("__test.yml")
+    reloaded_model = load_model(tmp_path / "__test.yml")
 
     assert reloaded_model.get_number_of_point_sources() == 1
     assert np.allclose(
@@ -251,7 +251,7 @@ def test_input_output():
         reloaded_model.test.spectrum.main.shape(xx),
     )
 
-    os.remove("__test.yml")
+    os.remove(tmp_path / "__test.yml")
 
 
 def test_xspec_table_model():
