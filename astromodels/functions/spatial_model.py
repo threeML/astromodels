@@ -543,7 +543,7 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         K:
 
             desc: Normalization (freeze this to 1 if the template provides the
-                    normalization by itself).
+                    normalization by itself)
             initial value: 1
             fix: yes
 
