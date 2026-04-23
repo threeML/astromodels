@@ -9,7 +9,6 @@ from builtins import range, str
 from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
-from typing import List, Optional, OrderedDict, Sequence, TypeAlias
 
 import astropy.units as u
 import h5py
@@ -21,6 +20,7 @@ from interpolation import interp
 from interpolation.splines import eval_linear
 from numpy.typing import NDArray
 from scipy.interpolate import RectBivariateSpline, RegularGridInterpolator
+from typing_extensions import List, Optional, OrderedDict, Sequence, TypeAlias
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function3D, FunctionMeta
