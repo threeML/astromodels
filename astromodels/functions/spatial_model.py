@@ -75,7 +75,8 @@ _classes_cache = {}
 
 
 class GridInterpolate:
-    """Interpolation over a regular grid of n dimension (limited to linear interpolation)"""
+    """Interpolation over a regular grid of n dimension (limited to linear
+    interpolation)"""
 
     def __init__(self, grid: ndarray, values: ndarray) -> None:
         self._grid = grid
@@ -118,9 +119,10 @@ class ModelFactory:
         :param name: Name of output HDF5 file
         :param description: A brief summary of the template model for reference
         :param names_of_parameters: unique name for parameters to interpolate over
-        :param degree_of_interpolation: Polynomial degree for interpolating, defaults to 1
-        :param spline_smoothing_factor: Smoothing factor used during spline interpolation,
-        defaults to 0
+        :param degree_of_interpolation: Polynomial degree for interpolating,
+        defaults to 1
+        :param spline_smoothing_factor: Smoothing factor used during spline
+        interpolation, defaults to 0
         :raises RuntimeError: Raised if name of the file cannot contain spaces or
         special characters.
         Example:
@@ -190,12 +192,14 @@ class ModelFactory:
             self._parameters_grids[parameter_name] = None  # type: ignore
 
     def define_parameter_grid(self, parameter_name: str, grid: ndarray) -> None:
-        """Defines the user provider parameter grid for a given parameter with its associated name
+        """Defines the user provider parameter grid for a given parameter with its
+        associated name
 
         :param parameter_name: Name of parameter for later access when using model
         :param grid: Array of allowed values for the paremter
         :raises AssertionError: Check that the parameter is part of the model
-        :raises AssertionError: Ensure all parameter values in the grid are non-repeating
+        :raises AssertionError: Ensure all parameter values in the grid are
+        non-repeating
         """
 
         if parameter_name not in self._parameters_grids:
@@ -320,7 +324,8 @@ class ModelFactory:
 
             # log.info("Creating the multi-indices....")
 
-        # Make sure we have all parameters and order the values in the same way as the dictionary
+        # Make sure we have all parameters and order the values in the same way
+        # as the dictionary
         parameter_idx = []
         for l, (key, val) in enumerate(self._parameters_grids.items()):
             if key not in parameters_values_input:
@@ -343,7 +348,8 @@ class ModelFactory:
     def save_data(self, overwrite: bool = False) -> None:
         """Save the table into a file for later usage with SpatialModel.
 
-        :param overwrite: Allows the overwriting of an already existing file, defaults to False
+        :param overwrite: Allows the overwriting of an already existing file,
+        defaults to False
         :raises AssertionError: Raised if there are any strange values within the table
         :raises IOError: Raised if the filed exists and deleting it not permitted
         :raises IOError: Raised if the filed exists and overriting it is not enabled
@@ -429,7 +435,8 @@ class RectBivariateSplineWrapper:
     """
 
     def __init__(self, *args, **kwargs) -> None:
-        # We can use interp2, which features spline interpolation instead of linear interpolation
+        # We can use interp2, which features spline interpolation instead of
+        # linear interpolation
         self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
 
     def __call__(self, x):
@@ -491,10 +498,10 @@ class TemplateFile:
         :return: TemplateFile holding the data from the file
         """
         with h5py.File(file_name, "r") as f:
-            name: str = f.attrs["name"]  # type: ignore
-            description: str = f.attrs["description"]  # type: ignore
-            degree_of_interpolation: int = f.attrs["degree_of_interpolation"]  # type: ignore
-            spline_smoothing_factor: int = f.attrs["spline_smoothing_factor"]  # type: ignore
+            name: str = f.attrs["name"]
+            description: str = f.attrs["description"]
+            degree_of_interpolation: int = f.attrs["degree_of_interpolation"]
+            spline_smoothing_factor: int = f.attrs["spline_smoothing_factor"]
 
             parameter_order: List[str] = f["parameter_order"][()]  # type: ignore
             energies: ndarray = f["energies"][()]  # type: ignore
@@ -535,7 +542,8 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
 
         K:
 
-            desc: Normalization (freeze this to 1 if the template provides the normalization by itself)
+            desc: Normalization (freeze this to 1 if the template provides the
+            normalization by itself)
             initial value: 1
             fix: yes
 
@@ -642,10 +650,10 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
             )
 
         if other_name is None:
-            super().__init__(name, function_definition, parameters)  # type: ignore
+            super().__init__(name, function_definition, parameters)
 
         else:
-            super().__init__(other_name, function_definition, parameters)  # type: ignore
+            super().__init__(other_name, function_definition, parameters)
 
         self._setup()
 
@@ -783,8 +791,10 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         :param energies: Energy values
         :param lons: Longitudes within the extended source boundaries
         :param lats: Latitutdes within the extended source boundaries
-        :param parameter_values: User provided morphology parameters defined in ModelFactory
-        :raises AttributeError: Longitudes and latitudes do not have the same dimensions
+        :param parameter_values: User provided morphology parameters defined in
+        ModelFactory
+        :raises AttributeError: Longitudes and latitudes do not have the same
+        dimensions
         :return: Map of interpolated values over energies, longitudes, and latitudes
         """
 
@@ -889,12 +899,12 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         self.clean()
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit) -> None:
-        self.lon0.unit = x_unit  # type: ignore
-        self.lat0.unit = y_unit  # type: ignore
+        self.lon0.unit = x_unit
+        self.lat0.unit = y_unit
 
         # self.K.unit = 1 / (u.MeV * u.cm**2 * u.s * u.sr)
         # keep this units to if templates have been normalized
-        self.K.unit = 1 / (u.sr)  # type: ignore
+        self.K.unit = 1 / (u.sr)
 
     def evaluate(self, x, y, z, K, lon0, lat0, *args):
         lons = x
@@ -909,7 +919,7 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
 
         interpolated_image = self._interpolate(energies, lons, lats, args)
 
-        # return np.multiply(K, self._interpolate(log_energies, lons, lats, args))  # type: ignore
+        # return np.multiply(K, self._interpolate(log_energies, lons, lats, args))
         # return np.multiply(K, interpolated_image/1000)  # type: ignore
         # to go from MeV to keV
         # return np.multiply(K, interpolated_image / 1000)
@@ -975,10 +985,10 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
                 l=[lmin, lmin, lmax, lmax], b=[bmin, bmax, bmax, bmin], frame="galactic"
             )
 
-            self.ramin: float = min(_coord.transform_to(self.frame.value).ra.value)  # type: ignore
-            self.ramax: float = max(_coord.transform_to(self.frame.value).ra.value)  # type: ignore
-            self.decmin: float = min(_coord.transform_to(self.frame.value).dec.value)  # type: ignore
-            self.decmax: float = max(_coord.transform_to(self.frame.value).dec.value)  # type: ignore
+            self.ramin: float = min(_coord.transform_to(self.frame.value).ra.value)
+            self.ramax: float = max(_coord.transform_to(self.frame.value).ra.value)
+            self.decmin: float = min(_coord.transform_to(self.frame.value).dec.value)
+            self.decmax: float = max(_coord.transform_to(self.frame.value).dec.value)
 
         else:
             self.ramin = xcoord_start

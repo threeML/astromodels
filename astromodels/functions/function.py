@@ -2183,7 +2183,8 @@ def get_function(function_name, composite_function_expression=None):
                 # % (function_name, ",".join(list(_known_functions.keys())))
                 # )
                 log.error(
-                    f"Function {function_name} is not known. Known functions are: {','.join(list(_known_functions.keys()))}"
+                    f"Function {function_name} is not known. "
+                    "Known functions are: {','.join(list(_known_functions.keys()))}"
                 )
 
                 raise UnknownFunction()
@@ -2200,7 +2201,8 @@ def get_function(function_name, composite_function_expression=None):
                     loaded_template = False
 
                     log.error(
-                        f"Function {function_name} is not known. Known functions are: {','.join(list(_known_functions.keys()))}"
+                        f"Function {function_name} is not known. "
+                        "Known functions are: {','.join(list(_known_functions.keys()))}"
                     )
 
                     raise UnknownFunction()
