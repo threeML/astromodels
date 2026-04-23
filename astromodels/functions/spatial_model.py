@@ -20,7 +20,7 @@ from interpolation import interp
 from interpolation.splines import eval_linear
 from numpy.typing import NDArray
 from scipy.interpolate import RectBivariateSpline, RegularGridInterpolator
-from typing_extensions import List, Optional, OrderedDict, Sequence, TypeAlias
+from typing_extensions import List, Optional, OrderedDict, Sequence, Tuple, TypeAlias
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function3D, FunctionMeta
@@ -553,7 +553,9 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
             max: 90.0
     """
 
-    def _custom_init_(self, model_name: str, other_name: str | None = None) -> None:
+    def _custom_init_(
+        self, model_name: str, other_name: Optional[str, None] = None
+    ) -> None:
         """
         Custom initialization for this model
         :param model_name: the name of the model, corresponding to the
@@ -654,7 +656,7 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         # clean things up a bit
 
         # Setup cache to avoid unnecessary computations
-        self._cached_values: OrderedDict[tuple[float, ...], ndarray] = (
+        self._cached_values: OrderedDict[Tuple[float, ...], ndarray] = (
             collections.OrderedDict()
         )
 
@@ -699,10 +701,10 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         parameter_values_len: int = len(parameter_grid_values)
 
         # interpolate over the parameters
-        self._interpolators: List[RectBivariateSpline | GridInterpolate] = []
+        self._interpolators: List[Optional[RectBivariateSpline, GridInterpolate]] = []
 
         this_interpolator: Optional[
-            UnivariateSpline | RectBivariateSpline | GridInterpolate
+            UnivariateSpline, RectBivariateSpline, GridInterpolate
         ] = None
 
         indices = product(
