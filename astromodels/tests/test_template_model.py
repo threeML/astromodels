@@ -1,3 +1,4 @@
+import os
 import pickle
 import shutil
 from pathlib import Path
@@ -31,7 +32,6 @@ def get_comparison_function():
     return mo
 
 
-@pytest.mark.xdist_group(name="template")
 @pytest.mark.slow
 def test_template_factory_1D():
 
@@ -59,7 +59,6 @@ def test_template_factory_1D():
     t.save_data(overwrite=True)
 
 
-@pytest.mark.xdist_group(name="template")
 @pytest.mark.slow
 def test_template_factory():
 
@@ -146,7 +145,6 @@ def test_template_factory():
 
 
 @pytest.mark.slow
-@pytest.mark.xdist_group(name="template")
 def test_input_output(tmp_path):
 
     tm = TemplateModel("__test")
@@ -247,6 +245,21 @@ def test_input_output(tmp_path):
         fake_model2.test.spectrum.main.shape(xx),
         reloaded_model.test.spectrum.main.shape(xx),
     )
+
+    os.remove(tmp_path / "__test.yml")
+
+
+def test_xspec_table_model():
+
+    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
+
+    xtm = XSPECTableModel(test_table)
+
+    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
+
+
+def test_table_conversion():
+
     old_table_file = _get_data_file_path("tests/old_table.h5")
 
     p = Path.home() / ".astromodels" / "data" / "old_table.h5"
@@ -270,15 +283,6 @@ def test_input_output(tmp_path):
     npt.assert_almost_equal(test(xx), old_table(xx))
 
     p.unlink()
-
-
-def test_xspec_table_model():
-
-    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
-
-    xtm = XSPECTableModel(test_table)
-
-    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
 
 
 def test_univariate_spline():
