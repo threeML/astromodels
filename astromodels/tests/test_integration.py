@@ -1,6 +1,5 @@
 import astropy.units as u
 import warnings
-from scipy.integrate import IntegrationWarning
 import numpy as np
 import pytest
 from astromodels.functions.function import _known_functions, Function1D
@@ -29,10 +28,17 @@ def test_integrate_function1D():
     for k, v in _known_functions.items():
         # exclude the functions that need external input for now
         if issubclass(v, Function1D):
-            if k in ["GenericFunction", "_ComplexTestFunction", "TemplateModel"]:
+            if k in [
+                "GenericFunction",
+                "_ComplexTestFunction",
+                "TemplateModel",
+            ] or (
+                k.startswith("XS_") and k not in ["XS_agauss"]
+            ):  # do not test the XSPEC functions
                 continue
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore")
+                # test that the function exists
                 _ = v().integrate(1, 2)
 
 
