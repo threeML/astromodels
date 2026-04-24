@@ -100,15 +100,9 @@ def test_template_factory():
 
     tm.clean()
 
+    tm1 = TemplateModel("__test")
 
-# This will be run second, so the template will exist
-@pytest.mark.xdist_group(name="template")
-@pytest.mark.slow
-def test_template_function():
-
-    tm = TemplateModel("__test")
-
-    mo = get_comparison_function()
+    mo1 = get_comparison_function()
 
     new_alpha_grid = np.linspace(-1.5, 1, 15)
     new_beta_grid = np.linspace(-3.5, -1.6, 15)
@@ -116,9 +110,9 @@ def test_template_function():
 
     new_energies = np.logspace(1, 3, 40)
 
-    tm.K = 1
+    tm1.K = 1
 
-    mo.K = 1
+    mo1.K = 1
 
     for a in new_alpha_grid:
 
@@ -126,16 +120,16 @@ def test_template_function():
 
             for xp in new_xp_grid:
 
-                mo.alpha = a
-                mo.beta = b
-                mo.xp = xp
+                mo1.alpha = a
+                mo1.beta = b
+                mo1.xp = xp
 
-                tm.alpha = a
-                tm.beta = b
-                tm.xp = xp
+                tm1.alpha = a
+                tm1.beta = b
+                tm1.xp = xp
 
-                res1 = mo(new_energies)
-                res2 = tm(new_energies)
+                res1 = mo1(new_energies)
+                res2 = tm1(new_energies)
 
                 deltas = np.abs((res2 - res1) / res1)
 
