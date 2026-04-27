@@ -9,7 +9,7 @@ from builtins import range, str
 from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
-from typing import List, Optional, OrderedDict, Sequence, Tuple
+from typing import List, Optional, OrderedDict, Sequence, Tuple, TypeAlias
 
 import astropy.units as u
 import h5py
@@ -33,7 +33,7 @@ from astromodels.functions.template_model import (
 from astromodels.utils import get_user_data_path
 from astromodels.utils.logging import setup_logger
 
-ndarray = NDArray[np.float64]
+ndarray: TypeAlias = NDArray[np.float64]
 
 log = setup_logger(__name__)
 
