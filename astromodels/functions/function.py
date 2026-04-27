@@ -1700,7 +1700,23 @@ class Function2D(Function):
         # microseconds or so), so we perform this transformation only when strictly
         # required
 
-        assert type(x) is type(y), "You have to use the same type for x and y"
+        if not type(x) is type(y):
+            if type(x) in [float, int, str] or type(y) is [float, int, str]:
+                x_type = type(x)
+                y_type = type(y)
+                try:
+                    x = float(x)
+                    y = float(y)
+                except Exception as e:
+                    raise TypeError(
+                        "You have to use the same type for x and y or they need to be "
+                        f"convertible to float. Got {x_type} and {y_type}"
+                    ) from e
+            else:
+                raise TypeError(
+                    "You have to use the same type for x and y or they need to be "
+                    f"convertible to float. Got {x_type} and {y_type}"
+                )
 
         if isinstance(x, np.ndarray):
 
