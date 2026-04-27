@@ -8,12 +8,13 @@ from astromodels.core.tree import Node
 
 
 class Polarization(Node):
-    def __init__(self, polarization_type="linear"):
+    def __init__(self, polarization_type="unpolarized"):
 
         assert polarization_type in [
+            "unpolarized",
             "linear",
             "stokes",
-        ], "polarization must be linear or stokes"
+        ], "polarization must be unpolarized, linear or stokes"
 
         self._polarization_type = polarization_type
 
@@ -153,6 +154,12 @@ class StokesPolarization(Polarization):
 #         #angle = 0.5 * np.arctan2(se)
 #
 #
+class Unpolarized(Polarization):
+    def __init__(self):
+        super(Unpolarized, self).__init__(polarization_type="unpolarized")
+
+    def __call__(self, *args, **kwargs):
+        return 1
 
 
 class StokesParameter(Node):

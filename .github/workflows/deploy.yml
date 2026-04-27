@@ -25,7 +25,7 @@ jobs:
           id-token: write
         steps:
             - name: Checkout source
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
             - name: Set up Python 3.11
               uses: actions/setup-python@v5
               with:
@@ -44,7 +44,7 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v6
             - uses: actions/setup-python@v5
               with:
                   python-version: 3.11
@@ -74,11 +74,15 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
-                python-version: [3.9, 3.11]
+                os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+                python-version: [3.11]
+                include:
+                  - os: ubuntu-24.04-arm
+                    env_file: "ci/environment_aarch64.yml"
+
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                   fetch-depth: 0
             - name: Add conda ${{ matrix.python-version }} to system path
@@ -89,7 +93,7 @@ jobs:
                   miniforge-variant: Miniforge3
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.env_file || 'ci/environment.yml' }} 
                   use-only-tar-bz2: false
                   channel-priority: true
 
@@ -98,7 +102,7 @@ jobs:
               run: |
 
                   # Make sure we fail in case of error
-                  if [[ ${{matrix.os}} == ubuntu-latest ]];
+                  if [[ ${{matrix.os}} == ubuntu-latest || ${{matrix.os}} == ubuntu-24.04-arm ]];
                   then
                       
                       miniconda_os=Linux
@@ -112,6 +116,8 @@ jobs:
                       # We also need to pin down ncurses, for now only on macos.
                       xorg="xorg-libx11"
                   fi
+
+
                   pip install tomli
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
                   echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV
@@ -119,8 +125,6 @@ jobs:
                   echo "HOME= ${HOME}"
                   echo "Conda installation path ${CONDA}"
                   echo "Building ${PKG_VERSION}"
-                  
-                  #echo "Python version: ${{matrix.python-version}}"
 
                   conda install codecov pytest-cov
             - name: Conda list
@@ -131,37 +135,28 @@ jobs:
               shell: bash -l {0}
               run: |
                   # Build package
-
-                  #conda install conda-build -n base
+                  #
                   mamba install -c conda-forge boa
 
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  #conda build --python=${{matrix.python-version}} conda-dist/recipe
-                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
-
-                  ls -l ${CONDA}/envs/test_env/conda-bld/*/*
-
+                  conda mambabuild conda-dist/recipe
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
-            - name: Install it
-              shell: bash -l {0}
-              run: |
-                  #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
-            - name: Test import xspec
-              shell: bash -l {0}
-              run: |
-                  cd astromodels/tests
-                  python -c "import astromodels.xspec"
-            - name: Test astromodels
-              shell: bash -l {0}
-              run: python -m pytest -vv --cov=astromodels --cov-report=xml
+
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
+
+            - name: Test import xspec
+              if: matrix.os != 'ubuntu-24.04-arm'
+              shell: bash -l {0}
+              run: |
+                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
+                  cd astromodels/tests
+                  python -c "import astromodels.xspec"
 
     publish-conda:
         name: Publish to Conda
@@ -170,11 +165,15 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: ["ubuntu-latest", "macos-latest", "macos-15-intel"]
-                python-version: [3.9, 3.11]
+                os: ["ubuntu-latest", "macos-latest", "macos-15-intel", "ubuntu-24.04-arm"]
+                python-version: [3.11]
+                include:
+                  - os: ubuntu-24.04-arm
+                    env_file: "ci/environment_aarch64.yml"
+
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
               with:
                   fetch-depth: 0
             - name: Add conda ${{ matrix.python-version }} to system path
@@ -187,7 +186,7 @@ jobs:
                   #miniforge-version: latest
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
-                  environment-file: ci/environment.yml
+                  environment-file: ${{ matrix.env_file || 'ci/environment.yml' }} 
                   use-only-tar-bz2: false
                   channel-priority: true
 
@@ -195,17 +194,17 @@ jobs:
               shell: bash -l {0}
               run: |
                   # Make sure we fail in case of error
-                  if [[ ${{matrix.os}} == ubuntu-latest ]];
+                  if [[ ${{matrix.os}} == ubuntu-latest || ${{matrix.os}} == ubuntu-24.04-arm ]];
                   then
-                  miniconda_os=Linux
-                  compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
+                    miniconda_os=Linux
+                    compilers="gcc_linux-64 gxx_linux-64 gfortran_linux-64"
                   else  # osx
-                  miniconda_os=MacOSX
-                  compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
+                    miniconda_os=MacOSX
+                    compilers="clang_osx-64 clangxx_osx-64 gfortran_osx-64"
 
-                  # On macOS we also need the conda libx11 libraries used to build xspec
-                  # We also need to pin down ncurses, for now only on macos.
-                  xorg="xorg-libx11"
+                    # On macOS we also need the conda libx11 libraries used to build xspec
+                    # We also need to pin down ncurses, for now only on macos.
+                    xorg="xorg-libx11"
                   fi
                   
                   pip install tomli
@@ -219,22 +218,21 @@ jobs:
               shell: bash -l {0}
               run: |
                   # Build package
-
-                  #conda install conda-build -n base
+                  #
                   mamba install -c conda-forge boa
 
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  #conda build --python=${{matrix.python-version}} conda-dist/recipe
-                  conda mambabuild --python=${{matrix.python-version}} conda-dist/recipe
-
+                  conda mambabuild conda-dist/recipe --no-test
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
-            - name: Install it
-              shell: bash -l {0}
-              run: |
-                  #conda install --use-local astromodels
-                  conda install -c ${CONDA}/envs/test_env/conda-bld/ --strict-channel-priority --use-local astromodels
+
+              env:
+                  OMP_NUM_THREADS: 1
+                  MKL_NUM_THREADS: 1
+                  NUMEXPR_NUM_THREADS: 1
+                  MPLBACKEND: "Agg"
+
             - name: Publish to Conda
               shell: bash -l {0}
               run: |
@@ -251,6 +249,11 @@ jobs:
                   then
 
                   anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-64/*.conda --force $LABEL
+
+                  elif [[ ${{matrix.os}} == ubuntu-24.04-arm ]];
+                  then
+
+                  anaconda -v --show-traceback -t $UPLOAD_TOKEN upload -u threeml ${CONDA}/envs/test_env/conda-bld/linux-aarch64/*.conda --force $LABEL
 
                   elif [[ ${{matrix.os}} == macos-latest ]];
                   then

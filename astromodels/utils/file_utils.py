@@ -14,7 +14,8 @@ copy_if_needed: Optional[bool]
 
 if np.lib.NumpyVersion(np.__version__) >= "2.0.0":
     copy_if_needed = None
-else:
+else:  # pragma: no cover
+    # in case if we use numpy <2.0
     copy_if_needed = False
 
 
