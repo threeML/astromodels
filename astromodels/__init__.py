@@ -8,7 +8,6 @@ from ._version import get_versions
 #
 
 if os.environ.get("ASTROMODELS_DEBUG", None) is None:
-
     from .core.memoization import use_astromodels_memoization
     from .core.model import Model
     from .core.model_parser import clone_model, load_model
@@ -18,6 +17,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         SettingOutOfBounds,
         turn_off_parameter_transforms,
     )
+
     # from .functions.spatial_model import HaloModel, ModelFactory
     from .core.polarization import LinearPolarization, StokesPolarization
     from .core.serialization import serialize_model, unserialize_model
@@ -53,11 +53,9 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         GalPropTemplate_3D,
         Gaussian,
         Gaussian_on_sphere,
-        HaloModel,
-        ModelFactory,
-        MissingSpatialDataFile,
-        Hermes,
         GenericFunction,
+        HaloModel,
+        Hermes,
         Inverse_cutoff_powerlaw,
         Latitude_galactic_diffuse,
         Line,
@@ -66,6 +64,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         Log_uniform_prior,
         MissingDataFile,
         ModelAssertionViolation,
+        ModelFactory,
         ModifiedBlackbody,
         NonDissipativePhotosphere,
         NonDissipativePhotosphere_Deep,
@@ -101,19 +100,15 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
     from .utils.configuration import astromodels_config, show_configuration
 
     if has_ebltable:
-
         from .functions import EBLattenuation
 
     if has_gsl:
-
         from .functions import Cutoff_powerlaw_flux
 
     if has_naima:
-
         from .functions import Synchrotron
 
     if has_atomdb:
-
         from .functions import APEC, VAPEC
 
     from .functions.function import get_function_class, list_functions
@@ -121,10 +116,10 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
 
     astromodels_units = get_units()
     from astromodels.utils.logging import (
-        setup_logger,
-        update_logging_level,
-        silence_warnings,
         activate_warnings,
+        setup_logger,
+        silence_warnings,
+        update_logging_level,
     )
 
 import astropy.units as u

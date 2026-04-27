@@ -50,7 +50,6 @@ if has_ebltable:
     from .functions_1D import EBLattenuation
 
 if has_atomdb:
-
     from .functions_1D import APEC, VAPEC
 
 from .dark_matter.dm_models import DMFitFunction, DMSpectra
@@ -91,17 +90,12 @@ from .priors import (
     Truncated_gaussian,
     Uniform_prior,
 )
+from .spatial_model import HaloModel, ModelFactory
 from .template_model import (
     MissingDataFile,
     TemplateModel,
     TemplateModelFactory,
     XSPECTableModel,
-)
-
-from .spatial_model import (
-    HaloModel,
-    ModelFactory,
-    MissingSpatialDataFile
 )
 
 __all__ = [
@@ -150,7 +144,6 @@ __all__ = [
     "Gaussian",
     "HaloModel",
     "ModelFactory",
-    "MissingSpatialDataFile",
     "Log_normal",
     "Log_uniform_prior",
     "Truncated_gaussian",
@@ -184,13 +177,10 @@ if has_atomdb:
     __all__.extend(["APEC", "VAPEC"])
 
 if has_gsl:
-
     __all__.extend(["Cutoff_powerlaw_flux"])
 
 if has_naima:
-
     __all__.extend(["Synchrotron"])
 
 if has_ebltable:
-
     __all__.extend(["EBLattenuation"])

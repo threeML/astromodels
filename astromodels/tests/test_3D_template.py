@@ -86,7 +86,7 @@ try:
         GridInterpolate,
         HaloModel,
         IncompleteGrid,
-        MissingSpatialDataFile,
+        MissingDataFile,
         ModelFactory,
         RectBivariateSplineWrapper,
         TemplateFile,
@@ -114,7 +114,7 @@ class TestCustomExceptions:
 
     def test_missing_spatial_data_file_is_runtime_error(self):
         with pytest.raises(RuntimeError):
-            raise MissingSpatialDataFile("no file")
+            raise MissingDataFile("no file")
 
 
 class TestGridInterpolate:
@@ -358,7 +358,7 @@ class TestHaloModel:
                 "astromodels.functions.spatial_model.get_user_data_path",
                 return_value=tmp_path,
             ),
-            pytest.raises(MissingSpatialDataFile),
+            pytest.raises(MissingDataFile),
         ):
             model = HaloModel.__new__(HaloModel)
             model._custom_init_("nonexistent_model")
