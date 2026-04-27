@@ -67,7 +67,7 @@ jobs:
 
             - name: Test pip on ${{ matrix.python-version }}
               run: |
-                  python -m pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml -n auto
+                  pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml -n auto --dist worksteal
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
@@ -182,7 +182,7 @@ jobs:
 
             - name: Test astromodels
               shell: bash -l {0}
-              run: python -m pytest -vv --cov=astromodels --cov-report=xml -n auto
+              run: pytest -vv --cov=astromodels --cov-report=xml -n auto --dist worksteal
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
