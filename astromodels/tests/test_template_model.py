@@ -1,6 +1,5 @@
 import pickle
 import shutil
-from pathlib import Path
 
 import numpy as np
 import numpy.testing as npt
@@ -19,6 +18,7 @@ from astromodels.functions.template_model import (
     UnivariateSpline,
 )
 from astromodels.utils import _get_data_file_path
+from astromodels.utils.file_utils import get_user_data_path
 
 __author__ = "giacomov"
 
@@ -59,7 +59,7 @@ def test_template_factory_1D():
 
 
 @pytest.mark.slow
-def test_template_factory():
+def test_template_factory(tmp_path):
 
     mo = get_comparison_function()
 
@@ -87,8 +87,6 @@ def test_template_factory():
                 mo.xp = xp
 
                 t.add_interpolation_data(mo(energies), alpha=a, xp=xp, beta=b)
-
-    print("Data has been prepared")
 
     t.save_data(overwrite=True)
 
@@ -142,10 +140,6 @@ def test_template_factory():
                         % (new_energies[idx], deltas[idx], [a, b, xp])
                     )
 
-
-@pytest.mark.slow
-def test_input_output(tmp_path):
-
     tm = TemplateModel("__test")
     tm.alpha = -0.95
     tm.beta = -2.23
@@ -181,12 +175,6 @@ def test_input_output(tmp_path):
         fake_model.test.spectrum.main.shape(xx),
     )
 
-    # Test pickling with other functions
-
-    # tm = TemplateModel('__test')
-    # tm.alpha = -0.95
-    # tm.beta = -2.23
-
     new_shape = tm + Powerlaw()
 
     new_shape.index_2 = -2.256
@@ -212,12 +200,6 @@ def test_input_output(tmp_path):
         fake_model2.test.spectrum.main.shape(xx),
         reloaded_model.test.spectrum.main.shape(xx),
     )
-
-    # test that the inversion works
-
-    # tm = TemplateModel('__test')
-    # tm.alpha = -0.95
-    # tm.beta = -2.23
 
     new_shape2 = Powerlaw() + tm
 
@@ -247,7 +229,7 @@ def test_input_output(tmp_path):
 
     old_table_file = _get_data_file_path("tests/old_table.h5")
 
-    p = Path.home() / ".astromodels" / "data" / "old_table.h5"
+    p = get_user_data_path() / "old_table.h5"
 
     shutil.copy(old_table_file, p)
 
