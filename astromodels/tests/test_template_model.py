@@ -246,20 +246,6 @@ def test_input_output(tmp_path):
         reloaded_model.test.spectrum.main.shape(xx),
     )
 
-    os.remove(tmp_path / "__test.yml")
-
-
-def test_xspec_table_model():
-
-    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
-
-    xtm = XSPECTableModel(test_table)
-
-    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
-
-
-def test_table_conversion():
-
     old_table_file = _get_data_file_path("tests/old_table.h5")
 
     p = Path.home() / ".astromodels" / "data" / "old_table.h5"
@@ -283,6 +269,15 @@ def test_table_conversion():
     npt.assert_almost_equal(test(xx), old_table(xx))
 
     p.unlink()
+
+
+def test_xspec_table_model():
+
+    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
+
+    xtm = XSPECTableModel(test_table)
+
+    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
 
 
 def test_univariate_spline():
