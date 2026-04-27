@@ -1085,3 +1085,51 @@ def test_complex_composites():
 def test_cpl_ep():
     test = Cutoff_powerlaw_Ep()
     assert np.isclose(test.evaluate(np.array([1]), 1, 1, -2.0, 100), 1), ""
+
+
+def test_call_parameters():
+    """
+    Tests if we can use different types for x and y in a Function2D for calling
+    """
+
+    class TestFunc2D(Function2D, metaclass=FunctionMeta):
+        r"""
+
+        description: useless
+
+        latex : $ a * x + b * y$
+
+        parameters :
+
+            a :
+
+                desc : blah
+                initial value : 1
+
+
+            b :
+
+                desc : intercept
+                initial value : 1
+
+            c :
+
+                desc : dumb
+                initial value : 1
+
+        """
+
+        def _set_units(self, x_unit, y_unit, z_unit):
+            self.a.unit = y_unit / x_unit
+            self.b.unit = y_unit
+
+        def evaluate(self, x, y, a, b, c):
+            return a * x + b * y
+
+    func = TestFunc2D()
+    with pytest.raises(TypeError):
+        func(0, func)
+    with pytest.raises(TypeError):
+        func(0, "abc")
+    _ = func(0, "0")
+    _ = func(0.0, 0)
