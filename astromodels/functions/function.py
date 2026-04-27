@@ -148,10 +148,7 @@ class FunctionMeta(type):
             if not yaml_string.startswith("---"):
                 yaml_string = f"---\n{yaml_string}"
 
-            function_definition = my_yaml.load(
-                yaml_string,
-                Loader=my_yaml.FullLoader,
-            )
+            function_definition = my_yaml.load(yaml_string, Loader=my_yaml.FullLoader)
 
         except ReaderError:  # pragma: no cover
             log.error(
@@ -251,11 +248,10 @@ class FunctionMeta(type):
 
         # Now perform a minimal check of the 'evaluate' function
 
-        (
-            variables,
-            parameters_in_calling_sequence,
-        ) = FunctionMeta.check_calling_sequence(
-            name, "evaluate", dct["evaluate"], ["x", "y", "z"]
+        (variables, parameters_in_calling_sequence) = (
+            FunctionMeta.check_calling_sequence(
+                name, "evaluate", dct["evaluate"], ["x", "y", "z"]
+            )
         )
 
         # Now check that all the parameters used in 'evaluate' are part of the
@@ -701,12 +697,7 @@ class FunctionMeta(type):
         desc = definition["desc"]
 
         new_property = FunctionProperty(
-            prop_name,
-            desc,
-            value,
-            allowed_values,
-            defer=deferred,
-            eval_func=eval_func,
+            prop_name, desc, value, allowed_values, defer=deferred, eval_func=eval_func
         )
 
         return new_property
@@ -1762,11 +1753,7 @@ class CompositeFunction(Function):
         # Save this to make the class pickeable (see the __setstate__ and
         # __getstate__ methods)
 
-        self._calling_sequence = (
-            operation,
-            function_or_scalar_1,
-            function_or_scalar_2,
-        )
+        self._calling_sequence = (operation, function_or_scalar_1, function_or_scalar_2)
 
         self._requested_x_unit = None
         self._requested_y_unit = None
@@ -1901,10 +1888,7 @@ class CompositeFunction(Function):
                 parameter._change_name(new_name, clear_parent=False)
 
             if function.properties is not None:
-                for (
-                    property_name,
-                    function_property,
-                ) in function.properties.items():
+                for property_name, function_property in function.properties.items():
                     # New name to avoid possible duplicates
 
                     match = re.match("(.+)_[0-9]+$", property_name)
@@ -2108,6 +2092,26 @@ class CompositeFunction(Function):
         return data
 
 
+def _load_template_or_spatial(name):
+    """Check the file attribute `model_type` to distinguish between a 3D
+    template and a spectral template.
+    """
+    import h5py
+
+    from astromodels.functions import HaloModel, TemplateModel
+    from astromodels.functions.template_model import MissingDataFile
+    from astromodels.utils import get_user_data_path
+
+    path = get_user_data_path() / f"{name}.h5"
+    if not path.exists():
+        raise MissingDataFile()
+    with h5py.File(path, "r") as f:
+        model_type = f.attrs.get("model_type", "spectral")
+    if model_type == "spatial":
+        return HaloModel(name)
+    return TemplateModel(name)
+
+
 def get_function(function_name, composite_function_expression=None):
     """Returns the function "name", which must be among the known functions or
     a composite function.
@@ -2164,27 +2168,20 @@ def get_function(function_name, composite_function_expression=None):
 
             # NOTE: import here to avoid circular import
 
-            from astromodels.functions.spatial_model import (
-                HaloModel,
-                MissingSpatialDataFile,
-            )
             from astromodels.functions.template_model import (
                 InvalidTemplateModelFile,
                 MissingDataFile,
-                TemplateModel,
             )
 
             try:
-                instance = TemplateModel(function_name)
+                # instance = TemplateModel(function_name)
+                instance = _load_template_or_spatial(function_name)
+                # loaded_template = True
 
             except MissingDataFile:
-                # log.error(
-                # "Function %s is not known. Known functions are: %s"
-                # % (function_name, ",".join(list(_known_functions.keys())))
-                # )
                 log.error(
                     f"Function {function_name} is not known. "
-                    "Known functions are: {','.join(list(_known_functions.keys()))}"
+                    f"Known functions are: {','.join(list(_known_functions.keys()))}"
                 )
 
                 raise UnknownFunction()
@@ -2193,42 +2190,25 @@ def get_function(function_name, composite_function_expression=None):
             # netspec
 
             except InvalidTemplateModelFile:
+                # if not loaded_template:
                 try:
-                    instance = HaloModel(function_name)
-                    loaded_template = True
+                    log.debug("check if it is an emulator")
 
-                except MissingSpatialDataFile:
-                    loaded_template = False
+                    from netspec import EmulatorModel
+
+                    instance = EmulatorModel(function_name)
+
+                except Exception as e:
+                    log.debug(e)
 
                     log.error(
-                        f"Function {function_name} is not known. "
-                        "Known functions are: {','.join(list(_known_functions.keys()))}"
+                        "Function %s is not known. Known functions are: %s"
+                        % (function_name, ",".join(list(_known_functions.keys())))
                     )
 
-                    raise UnknownFunction()
+                    raise UnknownFunction() from e
 
-                if not loaded_template:
-                    try:
-                        log.debug("check if it is an emulator")
-
-                        from netspec import EmulatorModel
-
-                        instance = EmulatorModel(function_name)
-
-                    except Exception as e:
-                        log.debug(e)
-
-                        log.error(
-                            "Function %s is not known. Known functions are: %s"
-                            % (
-                                function_name,
-                                ",".join(list(_known_functions.keys())),
-                            )
-                        )
-
-                        raise UnknownFunction() from e
-
-                return instance
+                # return instance
             return instance
 
 
@@ -2377,9 +2357,10 @@ def _parse_function_expression(function_specification):
             import astromodels.functions.template_model
 
             try:
-                instance = astromodels.functions.template_model.TemplateModel(
-                    unique_function
-                )
+                # instance = astromodels.functions.template_model.TemplateModel(
+                #     unique_function
+                # )
+                instance = _load_template_or_spatial(unique_function)
 
             except astromodels.functions.template_model.MissingDataFile:
                 # It's not a template

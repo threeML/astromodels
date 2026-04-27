@@ -9,23 +9,31 @@ from builtins import range, str
 from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
+from typing import List, Optional, OrderedDict, Sequence, Tuple
 
 import astropy.units as u
 import h5py
 import numpy as np
-import scipy.interpolate
 from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from numpy.typing import NDArray
 from scipy.interpolate import RectBivariateSpline, RegularGridInterpolator
-from typing_extensions import List, Optional, OrderedDict, Sequence, Tuple, TypeAlias
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function3D, FunctionMeta
+from astromodels.functions.template_model import (
+    GridInterpolate,
+    IncompleteGrid,
+    InvalidTemplateModelFile,
+    MissingDataFile,
+    RectBivariateSplineWrapper,
+    UnivariateSpline,
+    ValuesNotInGrid,
+)
 from astromodels.utils import get_user_data_path
 from astromodels.utils.logging import setup_logger
 
-ndarray: TypeAlias = NDArray[np.float64]
+ndarray = NDArray[np.float64]
 
 log = setup_logger(__name__)
 
@@ -39,65 +47,16 @@ __comment__ = "Aims to be part of the astromodels package"
 __all__ = [
     "IncompleteGrid",
     "ValuesNotInGrid",
-    "MissingSpatialDataFile",
+    "InvalidTemplateModelFile",
+    "MissingDataFile",
     "ModelFactory",
     "HaloModel",
 ]
 
 
-class IncompleteGrid(RuntimeError):
-    """Check that the grid has been correctly filled in the add_data() method
-
-    :raises if: Raised if the grid contains any Nans or None values
-    :type RuntimeError: Exception
-    """
-
-
-class ValuesNotInGrid(ValueError):
-    """Check whether there are values not contained within the user defined grid
-
-    :raises if: There are values not contained within the grid
-    :type ValueError: Exception
-    """
-
-
-class MissingSpatialDataFile(RuntimeError):
-    """Checks if the file exists
-
-    :raises if: File is not present
-    :type RuntimeError: Exception
-    """
-
-
 # This dictionary will keep track of the new classes already
 # created in the current session
 _classes_cache = {}
-
-
-class GridInterpolate:
-    """Interpolation over a regular grid of n dimension (limited to linear
-    interpolation)"""
-
-    def __init__(self, grid: ndarray, values: ndarray) -> None:
-        self._grid = grid
-        self._values = np.ascontiguousarray(values)
-
-    def __call__(self, v) -> None:
-        return scipy.interpolate.interpn(self._grid, self._values, v)
-
-
-class UnivariateSpline:
-    """Simple one dimensional spline interpolation"""
-
-    def __init__(self, x, y) -> None:
-        self._x = x
-        self._y = y
-
-    def __call__(self, v):
-        if isinstance(self._x, np.ndarray) and isinstance(self._y, np.ndarray):
-            return np.interp(v, self._x, self._y.reshape(self._x.shape))
-        else:
-            np.interp(v, self._x, self._y)
 
 
 # This class builds a dataframe from morphology parameters for a source
@@ -189,7 +148,7 @@ class ModelFactory:
         self._parameters_grids: OrderedDict[str, ndarray] = collections.OrderedDict()
 
         for parameter_name in names_of_parameters:
-            self._parameters_grids[parameter_name] = None  # type: ignore
+            self._parameters_grids[parameter_name] = None
 
     def define_parameter_grid(self, parameter_name: str, grid: ndarray) -> None:
         """Defines the user provider parameter grid for a given parameter with its
@@ -261,22 +220,22 @@ class ModelFactory:
         self._fits_file: Path = Path(fits_file)
 
         with fits.open(self._fits_file) as f:
-            self._delLon = f[ihdu].header["CDELT1"]  # type: ignore
-            self._delLat = f[ihdu].header["CDELT2"]  # type: ignore
-            self._delEn = 0.2  # f[ihdu].header["CDELT3"]
-            self._refLon = f[ihdu].header["CRVAL1"]  # type: ignore
-            self._refLat = f[ihdu].header["CRVAL2"]  # type: ignore
-            self._refEn = 5  # f[ihdu].header["CRVAL3"]  # Log(E/MeV) -> GeV to MeV
-            self._refLonPix = f[ihdu].header["CRPIX1"]  # type: ignore
-            self._refLatPix = f[ihdu].header["CRPIX2"]  # type: ignore
-            self._refEnPix = f[ihdu].header["CRPIX3"]  # type: ignore
+            self._delLon = f[ihdu].header["CDELT1"]
+            self._delLat = f[ihdu].header["CDELT2"]
+            self._delEn = f[ihdu].header["CDELT3"]
+            self._refLon = f[ihdu].header["CRVAL1"]
+            self._refLat = f[ihdu].header["CRVAL2"]
+            self._refEn = f[ihdu].header["CRVAL3"]  # Log(E/MeV) -> GeV to MeV
+            self._refLonPix = f[ihdu].header["CRPIX1"]
+            self._refLatPix = f[ihdu].header["CRPIX2"]
+            self._refEnPix = f[ihdu].header["CRPIX3"]
 
             # 3D array containing the flux values
-            self._map: ndarray = np.array(f[ihdu].data, dtype=float)  # type: ignore
+            self._map: ndarray = np.array(f[ihdu].data, dtype=float)
 
-            self._nl = f[ihdu].header["NAXIS1"]  # Longitude # type: ignore
-            self._nb = f[ihdu].header["NAXIS2"]  # Latitude # type: ignore
-            self._ne = f[ihdu].header["NAXIS3"]  # Energy # type: ignore
+            self._nl = f[ihdu].header["NAXIS1"]  # Longitude
+            self._nb = f[ihdu].header["NAXIS2"]  # Latitude
+            self._ne = f[ihdu].header["NAXIS3"]  # Energy
 
             self._L = np.linspace(
                 self._refLon - self._refLonPix * self._delLon,
@@ -416,35 +375,6 @@ class ModelFactory:
             raise RuntimeError("No data frame to save")
 
 
-# This adds a method to a class at run time
-def add_method(self, method, name=None) -> None:
-    """Add a method to a class at run time
-
-    :param method: function to add to the class
-    :param name: method name, defaults to None
-    """
-    if name is None:
-        name = method.func_name
-
-    setattr(self.__class__, name, method)
-
-
-class RectBivariateSplineWrapper:
-    """Wrapper class around RectBivariateSpline which supplies a __call__ method
-    which accepts the same syntax as other interpolation methods
-    """
-
-    def __init__(self, *args, **kwargs) -> None:
-        # We can use interp2, which features spline interpolation instead of
-        # linear interpolation
-        self._interpolator = scipy.interpolate.RectBivariateSpline(*args, **kwargs)
-
-    def __call__(self, x):
-        res = self._interpolator(*x)
-
-        return res[0][0]
-
-
 @dataclass
 class TemplateFile:
     """
@@ -476,6 +406,7 @@ class TemplateFile:
             f.attrs["description"] = self.description
             f.attrs["degree_of_interpolation"] = self.degree_of_interpolation
             f.attrs["spline_smoothing_factor"] = self.spline_smoothing_factor
+            f.attrs["model_type"] = "spatial"
 
             f.create_dataset("energies", data=self.energies, compression="gzip")
             f.create_dataset("lats", data=self.lats, compression="gzip")
@@ -503,17 +434,17 @@ class TemplateFile:
             degree_of_interpolation: int = f.attrs["degree_of_interpolation"]
             spline_smoothing_factor: int = f.attrs["spline_smoothing_factor"]
 
-            parameter_order: List[str] = f["parameter_order"][()]  # type: ignore
-            energies: ndarray = f["energies"][()]  # type: ignore
-            lats: ndarray = f["lats"][()]  # type: ignore
-            lons: ndarray = f["lons"][()]  # type: ignore
+            parameter_order: List[str] = f["parameter_order"][()]
+            energies: ndarray = f["energies"][()]
+            lats: ndarray = f["lats"][()]
+            lons: ndarray = f["lons"][()]
 
-            grid: ndarray = f["grid"][()]  # type: ignore
+            grid: ndarray = f["grid"][()]
 
             parameters: OrderedDict[str, ndarray] = collections.OrderedDict()
 
             for k in parameter_order:
-                parameters[k] = f["parameters"][k][()]  # type: ignore
+                parameters[k] = f["parameters"][k][()]
 
         return cls(
             name=name,
@@ -585,15 +516,16 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
                 " Did you use the ModelFactory?"
             )
 
-            raise MissingSpatialDataFile
+            raise MissingDataFile
 
         # Open the template definition and read from it
         self._data_file = filename_sanitized
 
         # use the file shadow to read
-        template_file: TemplateFile = TemplateFile.from_file(
-            filename_sanitized.as_posix()
-        )
+        try:
+            template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
+        except Exception:
+            raise InvalidTemplateModelFile()
 
         self._parameters_grids = collections.OrderedDict()
 
@@ -755,7 +687,7 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
 
                     raise RuntimeError()
 
-                this_interpolator = RectBivariateSplineWrapper(  # type: ignore
+                this_interpolator = RectBivariateSplineWrapper(
                     x,
                     y,
                     this_data,
@@ -920,12 +852,12 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         interpolated_image = self._interpolate(energies, lons, lats, args)
 
         # return np.multiply(K, self._interpolate(log_energies, lons, lats, args))
-        # return np.multiply(K, interpolated_image/1000)  # type: ignore
+        # return np.multiply(K, interpolated_image/1000)
         # to go from MeV to keV
         # return np.multiply(K, interpolated_image / 1000)
 
         # if templates are normalized no need to convert back
-        return np.multiply(K, interpolated_image)  # type: ignore
+        return np.multiply(K, interpolated_image)
 
     # def set_frame(self, new_frame):
     # """
