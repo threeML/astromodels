@@ -141,7 +141,7 @@ jobs:
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  conda mambabuild conda-dist/recipe
+                  conda mambabuild conda-dist/recipe -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
 
               env:
@@ -224,7 +224,7 @@ jobs:
                   conda config --set conda_build.pkg_format 2
                   conda config --set conda_build.zstd_compression_level 19
 
-                  conda mambabuild conda-dist/recipe --no-test
+                  conda mambabuild conda-dist/recipe --no-test -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/
                   conda search -c ${CONDA}/envs/test_env/conda-bld/ astromodels --offline --use-local --info
 
               env:
