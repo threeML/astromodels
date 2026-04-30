@@ -5,8 +5,9 @@ package:
   version: {{ os.environ.get('PKG_VERSION') }}
 
 source:
-#  git_url: https://github.com/threeml/{{ name }}.git
-  path: ../../
+  git_url: ../../    # path to your local git repo OR a remote URL
+  git_rev: HEAD
+  git_depth: 0       # make sure tags are available for describe
 
 requirements:
   build:
@@ -27,15 +28,12 @@ requirements:
     - numpy
     - pyyaml
     - pandas
-    - xspec==12.15.1 # [not (linux and aarch64)]
-    - future
     - numba
     - h5py>=3.9
-    - colorama
     - omegaconf
     - rich
-    - joblib
     - versioneer
+    - xspec==12.15.1 # [not (linux and aarch64)]
 
   run:
     - python
@@ -46,15 +44,15 @@ requirements:
     - pytables
     - pandas
     - dill
-    - future
     - numba
     - h5py>=3.9
-    - colorama
     - omegaconf
     - rich
-    - joblib
-    - xspec==12.15.1 # [not (linux and aarch64)]    
     - versioneer
+  run_constrained:
+    - xspec>=12.15.1 # [not (linux and aarch64)]
+
+
 
 build:
   script: $PYTHON -m pip install --verbose --no-deps --ignore-installed .
@@ -66,6 +64,8 @@ test: # already uses requirements from "run"
     - pytest-cov
     - pytest-xdist
     - coverage
+    - xspec # [not (linux and aarch64)]
+
   source_files:
     - astromodels/tests
     - pyproject.toml # needed for pytest setup e.g. marks
