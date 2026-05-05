@@ -59,21 +59,21 @@ requirements:
       then: xspec>=12.15.1
 
 tests:
-  - files:
-      source:
+  - python:
+      imports:
         - astromodels
+  - script:
+      - if: not (linux and aarch64)
+        then: python -c "import astromodels.xspec"
+      - python -m pytest -vv --pyargs astromodels -c pyproject.toml 
+    files:
+      source:
         - pyproject.toml
     requirements:
       run:
         - pytest
-        - pytest-cov
-        - coverage
         - if: not (linux and aarch64)
           then: xspec
-    script:
-      - if: not (linux and aarch64)
-        then: python -c 'from astromodels.xspec import *'
-      - pytest -vv astromodels/tests --cov=astromodels --cov-report=term
 
 about:
   license: BSD-3-Clause
