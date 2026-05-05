@@ -77,20 +77,27 @@ jobs:
               target-platform: linux-aarch64
             - os: macos-15-intel
               target-platform: osx-64
- 
+
       steps:
         - uses: actions/checkout@v6
         
         - name: Clean workspace
           run: |
-            # Remove any long-named directories that might interfere
-            find . -type d -name "*build*" -o -name "*dist*" | xargs rm -rf 2>/dev/null || true
+            # Remove any long-named directories and caches
+            find . -type d \( -name "*build*" -o -name "*dist*" -o -name ".rattler*" -o -name ".conda*" \) -exec rm -rf {} + 2>/dev/null || true
+            # Clear package caches
+            rm -rf ~/.cache/pip ~/.cache/conda 2>/dev/null || true
         
         - name: Build conda package
           uses: prefix-dev/rattler-build-action@v0.2.34
           with:
             upload-artifact: false
             build-args: --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
+            # Add environment variables to control build temp location
+          env:
+            TMPDIR: /tmp/rattler-build-${{ github.run_id }}
+            TMP: /tmp/rattler-build-${{ github.run_id }}
+
 #     publish-conda:
 #         name: Publish to Conda
 #         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
