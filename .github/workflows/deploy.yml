@@ -84,8 +84,9 @@ jobs:
         - name: Build conda package
           uses: prefix-dev/rattler-build-action@v0.2.34
           with:
-            artifact-name: astromodels-${{ matrix.target-platform }}
-            build-args: --target-platform ${{ matrix.target-platform }} --recipe conda-dist/recipe.yaml -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
+            upload-artifact: false
+            recipe-path: conda-dist/recipe.yaml
+            build-args: --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
 
 #     publish-conda:
 #         name: Publish to Conda
