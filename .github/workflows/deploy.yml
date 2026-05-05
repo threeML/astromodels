@@ -86,11 +86,12 @@ jobs:
               with:
                   fetch-depth: 0
             - name: Add conda ${{ matrix.python-version }} to system path
-              uses: conda-incubator/setup-miniconda@v3
+              uses: conda-incubator/setup-miniconda@v4
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
                   miniforge-variant: Miniforge3
+                  mamba-version: "2.5"
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ${{ matrix.env_file || 'ci/environment.yml' }} 
@@ -177,13 +178,12 @@ jobs:
               with:
                   fetch-depth: 0
             - name: Add conda ${{ matrix.python-version }} to system path
-              uses: conda-incubator/setup-miniconda@v3
+              uses: conda-incubator/setup-miniconda@v4
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
-                  #architecture: "x64"
                   miniforge-variant: Miniforge3
-                  #miniforge-version: latest
+                  mamba-version: "2.5"
                   python-version: ${{ matrix.python-version }}
                   auto-update-conda: true
                   environment-file: ${{ matrix.env_file || 'ci/environment.yml' }} 

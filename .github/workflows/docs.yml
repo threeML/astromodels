@@ -28,11 +28,12 @@ jobs:
           fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
 
       - name: Add conda to system path
-        uses: conda-incubator/setup-miniconda@v3
+        uses: conda-incubator/setup-miniconda@v4
         with:
             activate-environment: "test_env"
             auto-activate-base: false
             miniforge-version: latest
+            mamba-version: "2.5"
             python-version: "3.11"
             auto-update-conda: true
             environment-file: "ci/environment.yml"

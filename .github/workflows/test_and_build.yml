@@ -123,7 +123,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
             - name: Add conda ${{ matrix.python-version }} to system path
-              uses: conda-incubator/setup-miniconda@v3
+              uses: conda-incubator/setup-miniconda@v4
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
@@ -133,6 +133,9 @@ jobs:
                   environment-file: ${{ matrix.env-file }}
                   use-only-tar-bz2: false
                   channel-priority: true
+                  mamba-version: "2.5"
+                  miniforge-version: latest
+
             - name: Init Env
               shell: bash -l {0}
               run: |
