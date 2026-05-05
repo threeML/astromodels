@@ -2,16 +2,15 @@ schema_version: 1
 
 context:
   name: astromodels
+  version: v2.6.0.dev1 
 
 package:
   name: ${{ name }}
-  version: 2.6.0
+  version: ${{ version}}
 
 source:
-  git: ../
-  rev: HEAD
-  depth: 0
-
+  path: ../
+ 
 build:
   skip: win
   script:
