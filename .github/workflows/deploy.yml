@@ -40,30 +40,29 @@ jobs:
                   skip-existing: true
 
     test-publish-pypi:
-        name: Build & verify PyPi
-        runs-on: ubuntu-latest
+      name: Build & verify PyPi
+      runs-on: ubuntu-latest
 
-        steps:
-            - uses: actions/checkout@v6
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: 3.11
+      steps:
+          - uses: actions/checkout@v6
+          - uses: actions/setup-python@v5
+            with:
+                python-version: 3.11
 
-            - name: Install twine
-              run: |
-                  python -m pip install twine
-            - name: Build package
-              run: |
-                pip install wheel setuptools -U
-                python setup.py sdist
+          - name: Install twine
+            run: |
+                python -m pip install twine
+          - name: Build package
+            run: |
+              pip install wheel setuptools -U
+              python setup.py sdist
 
-            - name: List result
-              run: |
-                  ls -lh dist
-            - name: Check long_description
-              run: |
-                  python -m twine check dist/*
-
+          - name: List result
+            run: |
+                ls -lh dist
+          - name: Check long_description
+            run: |
+                python -m twine check dist/*
     build-conda:
       name: Build for Conda
       runs-on: ${{ matrix.os }}
@@ -78,16 +77,21 @@ jobs:
               target-platform: linux-aarch64
             - os: macos-15-intel
               target-platform: osx-64
-
+ 
       steps:
         - uses: actions/checkout@v6
+        
+        - name: Clean workspace
+          run: |
+            # Remove any long-named directories that might interfere
+            find . -type d -name "*build*" -o -name "*dist*" | xargs rm -rf 2>/dev/null || true
+        
         - name: Build conda package
           uses: prefix-dev/rattler-build-action@v0.2.34
           with:
             upload-artifact: false
             recipe-path: conda-dist/recipe.yaml
             build-args: --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
-
 #     publish-conda:
 #         name: Publish to Conda
 #         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
