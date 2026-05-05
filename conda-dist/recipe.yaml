@@ -20,22 +20,12 @@ build:
 
 requirements:
   build:
-    - python
-    - if: linux
-      then: 
-        - gcc
-        - gxx
-      else:
-        - clang
-        - clangxx
-
-    - gfortran
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('fortran') }}
     - if: not (linux and aarch64)
       then: xspec==12.15.1
-    - versioneer
-    - setuptools
-    - pip
-    - numpy
+
   host:
     - python
     - pip
@@ -48,8 +38,7 @@ requirements:
     - omegaconf
     - rich
     - versioneer
-    - if: not (linux and aarch64)
-      then: xspec==12.15.1
+
   run:
     - python
     - numpy
@@ -64,6 +53,7 @@ requirements:
     - omegaconf
     - rich
     - versioneer
+
   run_constraints:
     - if: not (linux and aarch64)
       then: xspec>=12.15.1
