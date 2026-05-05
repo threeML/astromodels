@@ -1,4 +1,3 @@
-import collections
 import copy
 from typing import Any, Dict, List, Optional
 
@@ -166,7 +165,7 @@ class PropertyBase(Node):
     def to_dict(self, minimal=False) -> Dict[str, Any]:
         """Returns the representation for serialization."""
 
-        data = collections.OrderedDict()
+        data = dict()
 
         if minimal:
             # In the minimal representation we just output the value

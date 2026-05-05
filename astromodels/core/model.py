@@ -2,7 +2,6 @@ from builtins import zip
 
 __author__ = "giacomov"
 
-import collections
 import os
 import warnings
 from dataclasses import dataclass
@@ -67,9 +66,9 @@ class _LinkedFunctionContainer:
 
     def output(self, rich=True):
 
-        this_dict = collections.OrderedDict()
+        this_dict = dict()
 
-        tmp = collections.OrderedDict()
+        tmp = dict()
         tmp["linked function"] = self.linked_path
         tmp["internal name"] = self.internal_name
         this_dict[self.function_name] = tmp
@@ -95,15 +94,15 @@ class Model(Node):
 
         # Dictionary to keep point sources
 
-        self._point_sources: Dict[str, PointSource] = collections.OrderedDict()
+        self._point_sources: Dict[str, PointSource] = dict()
 
         # Dictionary to keep extended sources
 
-        self._extended_sources: Dict[str, ExtendedSource] = collections.OrderedDict()
+        self._extended_sources: Dict[str, ExtendedSource] = dict()
 
         # Dictionary to keep particle sources
 
-        self._particle_sources: Dict[str, ParticleSource] = collections.OrderedDict()
+        self._particle_sources: Dict[str, ParticleSource] = dict()
 
         # Loop over the provided sources and process them
 
@@ -234,7 +233,7 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        free_parameters_dictionary: Dict[str, Parameter] = collections.OrderedDict()
+        free_parameters_dictionary: Dict[str, Parameter] = dict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -272,7 +271,7 @@ class Model(Node):
 
         # Filter selecting only free parameters
 
-        linked_parameter_dictionary: Dict[str, Parameter] = collections.OrderedDict()
+        linked_parameter_dictionary: Dict[str, Parameter] = dict()
 
         for parameter_name, parameter in list(self._parameters.items()):
 
@@ -427,7 +426,7 @@ class Model(Node):
     def point_sources(self) -> Dict[str, PointSource]:
         """Returns the dictionary of all defined point sources.
 
-        :return: collections.OrderedDict()
+        :return: dict()
         """
         return self._point_sources
 
@@ -435,7 +434,7 @@ class Model(Node):
     def extended_sources(self) -> Dict[str, ExtendedSource]:
         """Returns the dictionary of all defined extended sources.
 
-        :return: collections.OrderedDict()
+        :return: dict()
         """
         return self._extended_sources
 
@@ -443,7 +442,7 @@ class Model(Node):
     def particle_sources(self) -> Dict[str, ParticleSource]:
         """Returns the dictionary of all defined particle sources.
 
-        :return: collections.OrderedDict()
+        :return: dict()
         """
         return self._particle_sources
 
@@ -453,12 +452,10 @@ class Model(Node):
     ) -> Dict[str, Union[PointSource, ExtendedSource, ParticleSource]]:
         """Returns a dictionary containing all defined sources (of any kind)
 
-        :return: collections.OrderedDict()
+        :return: dict()
         """
 
-        sources: Dict[str, Union[PointSource, ExtendedSource, ParticleSource]] = (
-            collections.OrderedDict()
-        )
+        sources: Dict[str, Union[PointSource, ExtendedSource, ParticleSource]] = dict()
 
         for d in (
             self.point_sources,
@@ -511,7 +508,7 @@ class Model(Node):
         """
 
         tempmodel = Model(self[source_name])
-        unlinked_parameters = collections.OrderedDict()
+        unlinked_parameters = dict()
 
         for par in self.linked_parameters.values():
 
@@ -722,7 +719,7 @@ class Model(Node):
 
         # Table with the summary of the various kind of sources
         sources_summary = pd.DataFrame.from_dict(
-            collections.OrderedDict(
+            dict(
                 [
                     ("Point sources", [self.get_number_of_point_sources()]),
                     (
@@ -750,7 +747,7 @@ class Model(Node):
         # Summary of free parameters
         if len(free_parameters) > 0:
 
-            parameter_dict = collections.OrderedDict()
+            parameter_dict = dict()
 
             for parameter_name, parameter in list(free_parameters.items()):
                 # Generate table with only a minimal set of info
@@ -767,7 +764,7 @@ class Model(Node):
                     this_name = long_path_formatter(parameter_name, 40)
 
                 d = parameter.to_dict()
-                parameter_dict[this_name] = collections.OrderedDict()
+                parameter_dict[this_name] = dict()
 
                 for key in ["value", "unit", "min_value", "max_value"]:
 
@@ -785,7 +782,7 @@ class Model(Node):
 
         if len(parameters) - len(free_parameters) - len(linked_parameters) > 0:
 
-            fixed_parameter_dict = collections.OrderedDict()
+            fixed_parameter_dict = dict()
 
             for parameter_name, parameter in list(parameters.items()):
 
@@ -805,7 +802,7 @@ class Model(Node):
                     this_name = long_path_formatter(parameter_name, 40)
 
                 d = parameter.to_dict()
-                fixed_parameter_dict[this_name] = collections.OrderedDict()
+                fixed_parameter_dict[this_name] = dict()
 
                 for key in ["value", "unit", "min_value", "max_value"]:
 
@@ -830,13 +827,13 @@ class Model(Node):
 
             for parameter_name, parameter in list(linked_parameters.items()):
 
-                parameter_dict = collections.OrderedDict()
+                parameter_dict = dict()
 
                 # Generate table with only a minimal set of info
 
                 variable, law = parameter.auxiliary_variable
 
-                this_dict = collections.OrderedDict()
+                this_dict = dict()
 
                 this_dict["linked to"] = variable.path
                 this_dict["function"] = law.name
@@ -860,7 +857,7 @@ class Model(Node):
         # Summary of free parameters
         if len(properties) > 0:
 
-            property_dict = collections.OrderedDict()
+            property_dict = dict()
 
             for property_name, prop in properties.items():
 
@@ -876,7 +873,7 @@ class Model(Node):
                     this_name = long_path_formatter(property_name, 40)
 
                 d = prop.to_dict()
-                property_dict[this_name] = collections.OrderedDict()
+                property_dict[this_name] = dict()
 
                 for key in ["value", "allowed values"]:
 
@@ -903,11 +900,11 @@ class Model(Node):
                 self._independent_variables.items()
             ):
 
-                v_dict = collections.OrderedDict()
+                v_dict = dict()
 
                 # Generate table with only a minimal set of info
 
-                this_dict = collections.OrderedDict()
+                this_dict = dict()
 
                 this_dict["current value"] = variable_instance.value
                 this_dict["unit"] = variable_instance.unit

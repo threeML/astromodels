@@ -1,7 +1,5 @@
 __author__ = "giacomov"
 
-import collections
-
 from astropy import coordinates
 
 from astromodels.core.parameter import Parameter
@@ -241,11 +239,11 @@ class SkyDirection(Node):
 
         if self._coord_type == "galactic":
 
-            return collections.OrderedDict((("l", self.l), ("b", self.b)))
+            return dict((("l", self.l), ("b", self.b)))
 
         else:
 
-            return collections.OrderedDict((("ra", self.ra), ("dec", self.dec)))
+            return dict((("ra", self.ra), ("dec", self.dec)))
 
     @property
     def equinox(self):
@@ -257,7 +255,7 @@ class SkyDirection(Node):
 
     def to_dict(self, minimal=False):
 
-        data = collections.OrderedDict()
+        data = dict()
 
         if self._coord_type == "equatorial":
 
