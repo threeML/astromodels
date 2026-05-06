@@ -92,7 +92,7 @@ jobs:
 
         - name: Build package
           run: |
-            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
+            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml --experimental
 
           env:
               OMP_NUM_THREADS: 1
@@ -131,7 +131,7 @@ jobs:
         - name: Build package
           run: |
 
-            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
+            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml --experimental
 
             echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
             if [[ "${ISDEV}" == "true" ]]; then
