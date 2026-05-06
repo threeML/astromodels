@@ -88,12 +88,11 @@ jobs:
           with:
             upload-artifact: false
             setup-only: true
-            recipe-path: conda-dist/recipe.yaml
-            artifact-name: package-${{ matrix.target-platform }}
+            artifact-name: astromodels-${{ matrix.target-platform }}
 
         - name: Build package
           run: |
-            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
+            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
           env:
               OMP_NUM_THREADS: 1
               MKL_NUM_THREADS: 1
@@ -124,21 +123,20 @@ jobs:
         - name: Setup rattler-build 
           uses: prefix-dev/rattler-build-action@v0.2.37
           with:
-            upload-artifact: true
+            upload-artifact: false
             setup-only: true
-            recipe-path: conda-dist/recipe.yaml
-            artifact-name: package-${{ matrix.target-platform }}
+            artifact-name: astromodels-${{ matrix.target-platform }}
 
         - name: Build package
           run: |
-            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge 
+            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
             echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
 
             if [[ "${ISDEV}" == "true" ]]; then
               LABEL="--channel dev"
             fi
 
-            rattler-build upload anaconda --owner threeml
+            rattler-build upload anaconda --owner threeml --recipe conda-dist/recipe.yaml
 
           env:
               OMP_NUM_THREADS: 1
@@ -147,6 +145,7 @@ jobs:
               MPLBACKEND: "Agg"
               ANACONDA_API_KEY: ${{secrets.CONDA_UPLOAD_TOKEN}}
               ISDEV: ${{contains(github.ref, 'dev')}}
+              CONDA_BLD_PATH: 
 
 
 
