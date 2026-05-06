@@ -82,7 +82,7 @@ jobs:
       steps:
         - uses: actions/checkout@v6
         
-        - name: Build conda package
+        - name: Setup rattler-build 
           uses: prefix-dev/rattler-build-action@v0.2.37
           with:
             upload-artifact: false
@@ -90,7 +90,7 @@ jobs:
             recipe-path: conda-dist/recipe.yaml
             artifact-name: package-${{ matrix.target-platform }}
 
-        - name: Build it
+        - name: Build package
           run: |
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda.recipe/recipe.yaml 
 
