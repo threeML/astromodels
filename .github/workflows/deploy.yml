@@ -87,6 +87,7 @@ jobs:
           with:
             upload-artifact: false
             setup-only: true
+            recipe-path: conda-dist/recipe.yaml
             artifact-name: package-${{ matrix.target-platform }}
 
         - name: Build it
