@@ -82,6 +82,8 @@ jobs:
 
       steps:
         - uses: actions/checkout@v6
+          with:
+            fetch-depth: 0        
         
         - name: Setup rattler-build 
           uses: prefix-dev/rattler-build-action@v0.2.37
@@ -120,6 +122,8 @@ jobs:
 
       steps:
         - uses: actions/checkout@v6
+          with:
+            fetch-depth: 0
         
         - name: Setup rattler-build 
           uses: prefix-dev/rattler-build-action@v0.2.37
