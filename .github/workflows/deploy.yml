@@ -83,12 +83,12 @@ jobs:
         - uses: actions/checkout@v6
         
         - name: Build conda package
-          uses: prefix-dev/rattler-build-action@v0.2.34
+          uses: prefix-dev/rattler-build-action@v0.2.37
           with:
             upload-artifact: false
             setup-only: true
             artifact-name: package-${{ matrix.target-platform }}
-            # build-args: --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
+
         - name: Build it
           run: |
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda.recipe/recipe.yaml 
