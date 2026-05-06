@@ -92,15 +92,6 @@ jobs:
 
         - name: Build package
           run: |
-            tag=$(git describe --tags --abbrev=0 2>/dev/null || true)
-            if [[ -z "$tag" ]]; then
-              echo "No tags found" >&2
-              exit 1
-            fi
-
-            export PKG_VERSION=${tag#v}
-            echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV # not sure if necessary
-
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
 
           env:
@@ -139,14 +130,6 @@ jobs:
 
         - name: Build package
           run: |
-            tag=$(git describe --tags --abbrev=0 2>/dev/null || true)
-            if [[ -z "$tag" ]]; then
-              echo "No tags found" >&2
-              exit 1
-            fi
-
-            export PKG_VERSION=${tag#v}
-            echo "PKG_VERSION=$PKG_VERSION" >> $GITHUB_ENV # not sure if necessary
 
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
 

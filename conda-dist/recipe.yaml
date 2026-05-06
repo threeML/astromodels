@@ -2,7 +2,7 @@ schema_version: 1
 
 context:
   name: astromodels
-  version: ${{ env.get("PKG_VERSION") }}
+  version: ${{ git.latest_tag('../')[1:] if git.latest_tag('../') and git.latest_tag('../')[0] == 'v' else git.latest_tag('../') }}
 
 package:
   name: ${{ name }}
