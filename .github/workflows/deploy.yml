@@ -130,13 +130,12 @@ jobs:
         - name: Build package
           run: |
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml
-            echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
 
+            echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
             if [[ "${ISDEV}" == "true" ]]; then
               LABEL="--channel dev"
             fi
-
-            rattler-build upload anaconda --owner threeml --recipe conda-dist/recipe.yaml
+            rattler-build upload anaconda ${CONDA_BLD_PATH}/${{ matrix.target-platform }}/*.conda --force --owner threeml ${LABEL}
 
           env:
               OMP_NUM_THREADS: 1
