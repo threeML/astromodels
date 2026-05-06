@@ -63,6 +63,7 @@ jobs:
           - name: Check long_description
             run: |
                 python -m twine check dist/*
+
     build-conda:
       name: Build for Conda
       runs-on: ${{ matrix.os }}
@@ -92,7 +93,7 @@ jobs:
 
         - name: Build package
           run: |
-            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda.recipe/recipe.yaml 
+            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge
           env:
               OMP_NUM_THREADS: 1
               MKL_NUM_THREADS: 1
