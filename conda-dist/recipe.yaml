@@ -37,6 +37,8 @@ requirements:
     - omegaconf
     - rich
     - versioneer
+    - if: (osx and x86_64)
+      then: llvmlite<0.46
 
   run:
     - python
@@ -52,6 +54,9 @@ requirements:
     - omegaconf
     - rich
     - versioneer
+    - if: (osx and x86_64)
+      then: llvmlite<0.46
+
 
   run_constraints:
     - if: not (linux and aarch64)
