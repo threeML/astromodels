@@ -2,11 +2,11 @@ schema_version: 1
 
 context:
   name: astromodels
-  version: v2.6.0.dev1 
+  version: ${{ env.get("PKG_VERSION") }}
 
 package:
   name: ${{ name }}
-  version: ${{ version}}
+  version: ${{ version }}
 
 source:
   path: ../
