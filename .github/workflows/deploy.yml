@@ -93,6 +93,61 @@ jobs:
         - name: Build package
           run: |
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda.recipe/recipe.yaml 
+          env:
+              OMP_NUM_THREADS: 1
+              MKL_NUM_THREADS: 1
+              NUMEXPR_NUM_THREADS: 1
+              MPLBACKEND: "Agg"
+
+
+    publish-conda:
+      name: Publish to Conda
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      runs-on: ${{ matrix.os }}
+      strategy:
+        fail-fast: false
+        matrix:
+          include:
+            - os: ubuntu-latest
+              target-platform: linux-64
+            - os: macos-latest
+              target-platform: osx-arm64
+            - os: ubuntu-24.04-arm
+              target-platform: linux-aarch64
+            - os: macos-15-intel
+              target-platform: osx-64
+
+      steps:
+        - uses: actions/checkout@v6
+        
+        - name: Setup rattler-build 
+          uses: prefix-dev/rattler-build-action@v0.2.37
+          with:
+            upload-artifact: true
+            setup-only: true
+            recipe-path: conda-dist/recipe.yaml
+            artifact-name: package-${{ matrix.target-platform }}
+
+        - name: Build package
+          run: |
+            rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge 
+            echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
+
+            if [[ "${ISDEV}" == "true" ]]; then
+              LABEL="--channel dev"
+            fi
+
+            rattler-build upload anaconda --owner threeml
+
+          env:
+              OMP_NUM_THREADS: 1
+              MKL_NUM_THREADS: 1
+              NUMEXPR_NUM_THREADS: 1
+              MPLBACKEND: "Agg"
+              ANACONDA_API_KEY: ${{secrets.CONDA_UPLOAD_TOKEN}}
+              ISDEV: ${{contains(github.ref, 'dev')}}
+
+
 
 
 #     publish-conda:
