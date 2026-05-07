@@ -2,7 +2,7 @@ from typing import Dict, Optional
 
 import astropy.units as u
 import numba as nb
-import numpy
+import numpy as np
 import scipy.integrate
 
 from astromodels.core.memoization import use_astromodels_memoization
@@ -205,7 +205,7 @@ class PointSource(Source, Node):
                 # Fast version without units, where x is supposed to be in the same
                 # units as currently defined in units.get_units()
 
-                results = numpy.array(
+                results = np.array(
                     [
                         component(x, stokes)
                         for component in list(self.components.values())
@@ -237,8 +237,10 @@ class PointSource(Source, Node):
             else:
 
                 # Integrate between a and b
-
-                integrals = numpy.zeros(len(x))
+                if hasattr(x, "__len__"):
+                    integrals = np.zeros(len(x))
+                else:
+                    integrals = np.zeros(1)
 
                 # TODO: implement an integration scheme avoiding the for loop
 
@@ -247,7 +249,8 @@ class PointSource(Source, Node):
                 with use_astromodels_memoization(False):
 
                     reentrant_call = self.__call__
-
+                    if not hasattr(x, "__len__"):
+                        x = [x]
                     for i, e in enumerate(x):
 
                         def integral(y):
@@ -360,4 +363,4 @@ class PointSource(Source, Node):
 
 @nb.njit(fastmath=True)
 def _sum(x):
-    return numpy.sum(x, axis=0)
+    return np.sum(x, axis=0)
