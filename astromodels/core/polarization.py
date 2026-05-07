@@ -129,9 +129,21 @@ class StokesPolarization(Polarization):
     def __init__(self, I=None, Q=None, U=None, V=None):
         """Stokes parameterization of polarization."""
         super(StokesPolarization, self).__init__(polarization_type="stokes")
-        self._Q = StokesParameter("Q", Q)
+
+        if callable(Q):
+            self._Q = StokesParameter("Q", Q)
+        else:
+            self._Q = self._get_parameter_from_input(
+                Q, 0, 1, "Q", "Stokes Polarization Q", ""
+            )
+        if callable(U):
+            self._U = StokesParameter("U", U)
+        else:
+            self._U = self._get_parameter_from_input(
+                U, 0, 1, "U", "Stokes Polarization U", ""
+            )
+
         self._add_child(self._Q)
-        self._U = StokesParameter("U", U)
         self._add_child(self._U)
 
     def __call__(self, energies, stokes):
