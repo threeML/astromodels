@@ -93,8 +93,6 @@
   <h1>Source code for astromodels.core.sky_direction</h1><div class="highlight"><pre>
 <span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">astropy</span><span class="w"> </span><span class="kn">import</span> <span class="n">coordinates</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
@@ -357,11 +355,11 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s2">&quot;galactic&quot;</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(((</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(((</span><span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">)))</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(((</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(((</span><span class="s2">&quot;ra&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ra</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;dec&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dec</span><span class="p">)))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">equinox</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -375,7 +373,7 @@
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.sky_direction.SkyDirection.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coord_type</span> <span class="o">==</span> <span class="s2">&quot;equatorial&quot;</span><span class="p">:</span>
 

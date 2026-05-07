@@ -91,8 +91,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.core.memoization</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">functools</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
@@ -139,7 +138,7 @@
 <span class="sd">    :return: the decorated method</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">cache</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
     <span class="c1"># Put these two methods in the local space (faster)</span>
     <span class="n">_get</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span>

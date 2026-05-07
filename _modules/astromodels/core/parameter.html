@@ -1086,7 +1086,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the representation for serialization.&quot;&quot;&quot;</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">minimal</span><span class="p">:</span>
 
@@ -1661,7 +1661,7 @@
 
                 <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;f(</span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;variable&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span>
 
-                <span class="n">aux_variable_law_data</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">aux_variable_law_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
                 <span class="n">aux_variable_law_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_aux_variable</span><span class="p">[</span><span class="s2">&quot;law&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
                 <span class="p">)</span>

@@ -95,8 +95,6 @@
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.pretty_list</span><span class="w"> </span><span class="kn">import</span> <span class="n">dict_to_list</span>
@@ -170,7 +168,7 @@
         <span class="k">if</span> <span class="n">area_unit</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">area_unit</span> <span class="o">=</span> <span class="n">_AREA</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy_unit</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_unit</span>

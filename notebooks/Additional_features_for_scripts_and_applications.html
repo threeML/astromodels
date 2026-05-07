@@ -117,7 +117,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">20:53:45 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#43" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">43</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">21:01:20 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#43" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">43</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">available                                                                         </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
 </pre></div>
 </div>
@@ -160,8 +160,8 @@
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-odict_keys([&#39;source_1&#39;, &#39;source_2&#39;])
-odict_keys([])
+dict_keys([&#39;source_1&#39;, &#39;source_2&#39;])
+dict_keys([])
 </pre></div></div>
 </div>
 <p>You can use these dictionaries as usual. For example, you can loop over all point sources and print their position:</p>
@@ -204,7 +204,7 @@ The model contain point source source_2 at Sky direction (l, b) = (11.25000, -22
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-odict_keys([&#39;synchrotron&#39;, &#39;IC&#39;])
+dict_keys([&#39;synchrotron&#39;, &#39;IC&#39;])
 </pre></div></div>
 </div>
 <p>So now we can loop over all the sources and print their components:</p>
@@ -226,8 +226,8 @@ odict_keys([&#39;synchrotron&#39;, &#39;IC&#39;])
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Point source source_1 has components odict_keys([&#39;main&#39;])
-Point source source_2 has components odict_keys([&#39;synchrotron&#39;, &#39;IC&#39;])
+Point source source_1 has components dict_keys([&#39;main&#39;])
+Point source source_2 has components dict_keys([&#39;synchrotron&#39;, &#39;IC&#39;])
 </pre></div></div>
 </div>
 <p>With a fully-qualified path, you would need to know the name of the function to access its parameters. Instead, you can use the generic name “shape”. For example these two statements point to the same function instance:</p>
@@ -263,7 +263,7 @@ True
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-odict_keys([&#39;K&#39;, &#39;piv&#39;, &#39;index&#39;])
+dict_keys([&#39;K&#39;, &#39;piv&#39;, &#39;index&#39;])
 </pre></div></div>
 </div>
 <p>Putting it all together, let’s loop over all sources in our model, then over each component in each source, then over each parameter in each component:</p>

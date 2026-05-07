@@ -95,7 +95,6 @@
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
@@ -172,9 +171,9 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 
-        <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">this_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-        <span class="n">tmp</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">tmp</span><span class="p">[</span><span class="s2">&quot;linked function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linked_path</span>
         <span class="n">tmp</span><span class="p">[</span><span class="s2">&quot;internal name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">internal_name</span>
         <span class="n">this_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">function_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
@@ -202,15 +201,15 @@
 
         <span class="c1"># Dictionary to keep point sources</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="c1"># Dictionary to keep extended sources</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="c1"># Dictionary to keep particle sources</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="c1"># Loop over the provided sources and process them</span>
 
@@ -341,7 +340,7 @@
 
         <span class="c1"># Filter selecting only free parameters</span>
 
-        <span class="n">free_parameters_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">free_parameters_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -379,7 +378,7 @@
 
         <span class="c1"># Filter selecting only free parameters</span>
 
-        <span class="n">linked_parameter_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">linked_parameter_dictionary</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -537,7 +536,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">point_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PointSource</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of all defined point sources.</span>
 
-<span class="sd">        :return: collections.OrderedDict()</span>
+<span class="sd">        :return: dict()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_point_sources</span>
 
@@ -545,7 +544,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">extended_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of all defined extended sources.</span>
 
-<span class="sd">        :return: collections.OrderedDict()</span>
+<span class="sd">        :return: dict()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extended_sources</span>
 
@@ -553,7 +552,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">particle_sources</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the dictionary of all defined particle sources.</span>
 
-<span class="sd">        :return: collections.OrderedDict()</span>
+<span class="sd">        :return: dict()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_particle_sources</span>
 
@@ -563,12 +562,10 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary containing all defined sources (of any kind)</span>
 
-<span class="sd">        :return: collections.OrderedDict()</span>
+<span class="sd">        :return: dict()</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
-        <span class="p">)</span>
+        <span class="n">sources</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">ExtendedSource</span><span class="p">,</span> <span class="n">ParticleSource</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">point_sources</span><span class="p">,</span>
@@ -629,7 +626,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">tempmodel</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">source_name</span><span class="p">])</span>
-        <span class="n">unlinked_parameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">unlinked_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">linked_parameters</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
 
@@ -862,7 +859,7 @@
 
         <span class="c1"># Table with the summary of the various kind of sources</span>
         <span class="n">sources_summary</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
-            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="nb">dict</span><span class="p">(</span>
                 <span class="p">[</span>
                     <span class="p">(</span><span class="s2">&quot;Point sources&quot;</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_number_of_point_sources</span><span class="p">()]),</span>
                     <span class="p">(</span>
@@ -890,7 +887,7 @@
         <span class="c1"># Summary of free parameters</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
-            <span class="n">parameter_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">parameter_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">free_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
                 <span class="c1"># Generate table with only a minimal set of info</span>
@@ -907,7 +904,7 @@
                     <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
 
                 <span class="n">d</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-                <span class="n">parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">]:</span>
 
@@ -925,7 +922,7 @@
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">free_parameters</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">linked_parameters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
-            <span class="n">fixed_parameter_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">fixed_parameter_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
@@ -945,7 +942,7 @@
                     <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">parameter_name</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
 
                 <span class="n">d</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-                <span class="n">fixed_parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">fixed_parameter_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">,</span> <span class="s2">&quot;min_value&quot;</span><span class="p">,</span> <span class="s2">&quot;max_value&quot;</span><span class="p">]:</span>
 
@@ -970,13 +967,13 @@
 
             <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">linked_parameters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
-                <span class="n">parameter_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">parameter_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="c1"># Generate table with only a minimal set of info</span>
 
                 <span class="n">variable</span><span class="p">,</span> <span class="n">law</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">auxiliary_variable</span>
 
-                <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">this_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;linked to&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable</span><span class="o">.</span><span class="n">path</span>
                 <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">law</span><span class="o">.</span><span class="n">name</span>
@@ -1000,7 +997,7 @@
         <span class="c1"># Summary of free parameters</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">properties</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
 
-            <span class="n">property_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="n">property_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
@@ -1016,7 +1013,7 @@
                     <span class="n">this_name</span> <span class="o">=</span> <span class="n">long_path_formatter</span><span class="p">(</span><span class="n">property_name</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
 
                 <span class="n">d</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-                <span class="n">property_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">property_dict</span><span class="p">[</span><span class="n">this_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;allowed values&quot;</span><span class="p">]:</span>
 
@@ -1043,11 +1040,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_independent_variables</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">):</span>
 
-                <span class="n">v_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">v_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="c1"># Generate table with only a minimal set of info</span>
 
-                <span class="n">this_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+                <span class="n">this_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
                 <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;current value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_instance</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">this_dict</span><span class="p">[</span><span class="s2">&quot;unit&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable_instance</span><span class="o">.</span><span class="n">unit</span>

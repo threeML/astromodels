@@ -91,9 +91,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.sources.extended_source</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.spectral_component</span><span class="w"> </span><span class="kn">import</span> <span class="n">SpectralComponent</span>
@@ -392,7 +390,7 @@
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">free_parameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">free_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
 
@@ -418,7 +416,7 @@
 
 <span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">all_parameters</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">all_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
 
@@ -441,13 +439,13 @@
 
         <span class="c1"># Make a dictionary which will then be transformed in a list</span>
 
-        <span class="n">repr_dict</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">repr_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (extended source)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spatial_shape</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

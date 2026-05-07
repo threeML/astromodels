@@ -97,8 +97,6 @@
 <span class="c1"># dictionaries instead of normal ones. This way the order in which things are expressed</span>
 <span class="c1"># in the file is maintained.</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">my_yaml</span>
 
 <span class="n">_mapping_tag</span> <span class="o">=</span> <span class="n">my_yaml</span><span class="o">.</span><span class="n">resolver</span><span class="o">.</span><span class="n">BaseResolver</span><span class="o">.</span><span class="n">DEFAULT_MAPPING_TAG</span>
@@ -114,11 +112,11 @@
 <div class="viewcode-block" id="dict_constructor">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.my_yaml.dict_constructor">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dict_constructor</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">construct_pairs</span><span class="p">(</span><span class="n">node</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">loader</span><span class="o">.</span><span class="n">construct_pairs</span><span class="p">(</span><span class="n">node</span><span class="p">))</span></div>
 
 
 
-<span class="n">my_yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">,</span> <span class="n">dict_representer</span><span class="p">)</span>
+<span class="n">my_yaml</span><span class="o">.</span><span class="n">add_representer</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="n">dict_representer</span><span class="p">)</span>
 <span class="n">my_yaml</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span><span class="n">_mapping_tag</span><span class="p">,</span> <span class="n">dict_constructor</span><span class="p">)</span>
 </pre></div>
 

@@ -125,7 +125,7 @@
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area rendered_html docutils container">
-<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">20:54:43 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#43" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">43</span></a>
+<pre style="white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><span style="color: #00ff00; text-decoration-color: #00ff00">21:02:18 </span><span style="color: #af5fd7; text-decoration-color: #af5fd7">WARNING </span> <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold"> The naima package is not available. Models that depend on it will not be         </span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">functions.py</span></a><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">:</span><a href="file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#43" target="_blank"><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">43</span></a>
 <span style="color: #00ff00; text-decoration-color: #00ff00">         </span>         <span style="color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold">available                                                                         </span><span style="color: #7f7f7f; text-decoration-color: #7f7f7f">               </span>
 </pre></div>
 </div>
@@ -537,8 +537,8 @@ Sky direction (R.A., Dec.) = (124.20000, -14.20000) (J2000)</div>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Free parameters (before freeing position): odict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;])
-Free parameters (after freeing position): odict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;, &#39;simple_source.position.ra&#39;, &#39;simple_source.position.dec&#39;])
+Free parameters (before freeing position): dict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;])
+Free parameters (after freeing position): dict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;, &#39;simple_source.position.ra&#39;, &#39;simple_source.position.dec&#39;])
 </pre></div></div>
 </div>
 <p>For a source created in Galactic coordinates, instead use the following:</p>
@@ -564,8 +564,8 @@ Free parameters (after freeing position): odict_keys([&#39;simple_source.spectru
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Free parameters (before freeing position): odict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;])
-Free parameters (after freeing position): odict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;, &#39;simple_source.position.l&#39;, &#39;simple_source.position.b&#39;])
+Free parameters (before freeing position): dict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;])
+Free parameters (after freeing position): dict_keys([&#39;simple_source.spectrum.main.Powerlaw.K&#39;, &#39;simple_source.spectrum.main.Powerlaw.index&#39;, &#39;simple_source.position.l&#39;, &#39;simple_source.position.b&#39;])
 </pre></div></div>
 </div>
 <p>By default, the allowed range for the Right Ascension is from 0˚ to 360˚ and allowed declination values range from -90˚ to 90˚. <strong>If fitting the source position, it is strongly recommended to restrict the coordinates to be inside the region of interest (ROI) at all times.</strong> The source moving far enough from the ROI during the fit can lead to issues such as the minimizer getting “stuck” due to the likelihood surface being flat. For example:</p>
