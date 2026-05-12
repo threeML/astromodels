@@ -29,23 +29,15 @@ requirements:
     - python
     - pip
     - setuptools
-    - numpy
-    - pyyaml
-    - pandas
-    - numba
-    - h5py>=3.9
-    - omegaconf
-    - rich
+    - numpy >=2.1
     - versioneer
-    - if: (osx and x86_64)
-      then: llvmlite<0.46
 
   run:
     - python
-    - numpy
-    - pyyaml
-    - astropy
-    - scipy
+    - numpy >=2.1
+    - pyyaml >=6.0
+    - astropy >=1.2
+    - scipy >=1.13
     - pytables
     - pandas
     - dill
