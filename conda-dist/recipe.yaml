@@ -29,12 +29,17 @@ requirements:
     - python
     - pip
     - setuptools
-    - numpy==1.26
+    - if: (python>=3.13)
+      then: numpy==2.1
+      else: numpy==1.26
     - versioneer
 
   run:
     - python
-    - numpy
+    - numpy>=1.26
+    - if: (python>=3.13)
+      then: numpy>=2.1
+      else: numpy>=1.26
     - pyyaml
     - astropy
     - scipy
