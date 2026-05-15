@@ -66,13 +66,15 @@ tests:
   - script:
       - if: not (linux and aarch64)
         then: python -c "import astromodels.xspec"
-      - python -m pytest -vv --pyargs astromodels -c pyproject.toml 
+      - python -m pytest -vv --pyargs astromodels -c pyproject.toml -n auto --dist worksteal
+
     files:
       source:
         - pyproject.toml
     requirements:
       run:
         - pytest
+        - pytest-xdist
         - if: not (linux and aarch64)
           then: xspec
 
