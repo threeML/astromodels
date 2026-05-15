@@ -101,6 +101,8 @@ def test_Stokes_polarization_functions(tmp_path):
 
     os.remove(temp_file)
 
+    _ = StokesPolarization(Q=0.5, U=0.5)
+
 
 def test_unpolarized(tmp_path):
     # should be unpolarized at startupo

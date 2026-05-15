@@ -1,0 +1,90 @@
+schema_version: 1
+
+context:
+  name: astromodels
+  version: ${{ git.latest_tag('../')[1:] if git.latest_tag('../') and git.latest_tag('../')[0] == 'v' else git.latest_tag('../') }}
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  path: ../
+ 
+build:
+  skip: win
+  script:
+    - rm -rf pfiles
+    - pip install --verbose --no-deps --no-build-isolation --ignore-installed .
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('fortran') }}
+    - if: not (linux and aarch64)
+      then: xspec==12.15.1
+
+  host:
+    - python
+    - pip
+    - setuptools
+    - if: (python>=3.13)
+      then: numpy==2.1
+      else: numpy==1.26
+    - versioneer
+
+  run:
+    - python
+    - numpy>=1.26
+    - if: (python>=3.13)
+      then: numpy>=2.1
+      else: numpy>=1.26
+    - pyyaml
+    - astropy
+    - scipy
+    - pytables
+    - pandas
+    - dill
+    - numba
+    - h5py>=3.9
+    - omegaconf
+    - rich
+    - versioneer
+    - if: (osx and x86_64)
+      then: llvmlite<0.46
+
+
+  run_constraints:
+    - if: not (linux and aarch64)
+      then: xspec>=12.15.1
+
+tests:
+  - python:
+      imports:
+        - astromodels
+  - script:
+      - if: not (linux and aarch64)
+        then: python -c "import astromodels.xspec"
+      - python -m pytest -vv --pyargs astromodels -c pyproject.toml 
+    files:
+      source:
+        - pyproject.toml
+    requirements:
+      run:
+        - pytest
+        - if: not (linux and aarch64)
+          then: xspec
+
+about:
+  license: BSD-3-Clause
+  license_file: LICENSE
+  summary: Models for astronomy and astrophysics
+  description: |
+    Astromodels contains models to be used in likelihood or
+    Bayesian analysis in astronomy and astrophysics
+
+  homepage: https://github.com/threeml/astromodels
+  repository: https://github.com/threeML/astromodels
+  documentation: https://astromodels.readthedocs.io
+
