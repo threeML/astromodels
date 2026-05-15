@@ -1,8 +1,6 @@
 from pathlib import Path
 import os
 import logging
-import os
-from pathlib import Path
 
 import astropy.units as u
 import pytest

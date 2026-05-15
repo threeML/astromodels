@@ -1,6 +1,5 @@
 __author__ = "giacomov"
 
-import collections
 import contextlib
 import copy
 import warnings
