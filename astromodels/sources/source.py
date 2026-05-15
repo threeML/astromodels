@@ -1,6 +1,5 @@
 __author__ = "giacomov"
 
-import collections
 from enum import Enum, unique
 from typing import Any, Dict, List
 
@@ -30,7 +29,7 @@ class Source:
     ):
 
         # Make the dictionary of components
-        self._components: Dict[str, Any] = collections.OrderedDict()
+        self._components: Dict[str, Any] = dict()
 
         for component in list_of_components:
 

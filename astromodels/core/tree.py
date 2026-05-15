@@ -1,4 +1,3 @@
-import collections
 from typing import Any, Dict
 
 from astromodels.core.node_type import NodeBase
@@ -45,7 +44,7 @@ class Node(NodeBase):
 
     def to_dict(self, minimal: bool = False) -> Dict[str, Any]:
         """"""
-        this_dict: Dict[str, Any] = collections.OrderedDict()
+        this_dict: Dict[str, Any] = dict()
 
         for child in self._get_children():
 

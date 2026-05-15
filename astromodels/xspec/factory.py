@@ -1,4 +1,3 @@
-import collections
 import importlib
 import logging
 import os
@@ -169,7 +168,7 @@ def get_models(model_dat_path):
 
     lines = model_dat.split("\n")
 
-    model_definitions = collections.OrderedDict()
+    model_definitions = dict()
 
     for line in lines:
 
@@ -206,14 +205,14 @@ def get_models(model_dat_path):
                     flag_2,
                 ) = line.split()
 
-            this_model = collections.OrderedDict()
+            this_model = dict()
 
             this_model["description"] = (
                 "The %s model from XSpec (https://heasarc.gsfc.nasa.gov/xanadu/"
                 "xspec/manual/XspecModels.html)" % model_name
             )
 
-            this_model["parameters"] = collections.OrderedDict()
+            this_model["parameters"] = dict()
 
             model_definitions[(model_name, library_function, model_type)] = this_model
 

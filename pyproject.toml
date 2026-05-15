@@ -18,23 +18,20 @@
     ]
 
 
-    requires-python = ">=3.9.0"
+    requires-python = ">=3.11.0"
     dependencies = [
-	"numpy>=1.6",
+	"numpy>=1.26",
 	"PyYAML>=5.1",
 	"scipy>=0.14",
 	"astropy>=1.2",
 	"dill",
-	"future",
 	"numba",
 	"llvmlite<0.46; platform_system == 'Darwin' and platform_machine == 'x86_64'",
 	"h5py",
 	"pandas",
 	"tables",
-	"colorama",
 	"omegaconf",
 	"rich",
-	"joblib",
 	"versioneer"
     ]
     classifiers =[
@@ -42,7 +39,9 @@
 	"Topic :: Scientific/Engineering :: Astronomy",
 	"Intended Audience :: Science/Research",
 	"Operating System :: POSIX",
-	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
 	"Environment :: Console",
     ]
 
@@ -62,6 +61,9 @@
 
 [tool.setuptools]
     include-package-data = true
+
+[tool.setuptools.packages.find]
+    exclude = ["output"]
 
 [tool.setuptools.package-data]
     astromodels = [

@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from contextlib import contextmanager
 from functools import wraps
 
@@ -41,7 +40,7 @@ def memoize(method):
     :return: the decorated method
     """
 
-    cache = method.cache = OrderedDict()
+    cache = method.cache = dict()
 
     # Put these two methods in the local space (faster)
     _get = cache.get

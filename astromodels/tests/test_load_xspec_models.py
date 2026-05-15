@@ -1,4 +1,5 @@
-import collections
+from pathlib import Path
+import os
 import logging
 import os
 from pathlib import Path
@@ -82,7 +83,7 @@ def test_find_model_dat():
 @skip_if_xspec_is_not_available
 def test_get_models():
     model_definitions = get_models(find_model_dat())
-    assert isinstance(model_definitions, collections.OrderedDict)
+    assert isinstance(model_definitions, dict)
 
     # the gaussian line should be available in all versions supported
     assert (

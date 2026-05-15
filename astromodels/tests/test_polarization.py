@@ -102,6 +102,8 @@ def test_Stokes_polarization_functions():
 
     os.remove("__test.yml")
 
+    _ = StokesPolarization(Q=0.5, U=0.5)
+
 
 def test_unpolarized():
     # should be unpolarized at startupo

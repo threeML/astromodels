@@ -154,6 +154,7 @@ def test_call():
     two = point_source.spectrum.component2([1, 2, 3])
 
     assert np.all(np.abs(one + two - point_source([1, 2, 3])) == 0)
+    assert np.all(np.abs(one[0] + two[0] - point_source(1) == 0))
 
 
 def test_call_with_units():
