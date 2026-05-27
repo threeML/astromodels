@@ -3,6 +3,7 @@ import os
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model
+from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.polarization import (
     LinearPolarization,
     StokesPolarization,
@@ -145,3 +146,18 @@ def test_transform():
         np.isclose(linear(np.array([0, 1, 2, 3, 4]), stokes="U"), np.ones(5) * 0.5)
     )
     assert np.isclose(linear.degree.value(0), 0.7071067812)
+
+
+def test_non_callable():
+    linear = LinearPolarization(degree=0.2, angle=90)
+    spec = SpectralComponent("test", Powerlaw(), polarization=linear)
+    spec(0.1, stokes="U")
+
+    assert np.isclose(spec.polarization(0, "U"), 0.0)
+    assert np.isclose(spec.polarization(0, "Q"), -0.2)
+
+    stokes = StokesPolarization(Q=0.2, U=0.8)
+    spec = SpectralComponent("test", Powerlaw(), polarization=stokes)
+    spec(0.1, stokes="U")
+    assert spec.polarization(0, "Q") == 0.2
+    assert spec.polarization(0, "U") == 0.8
