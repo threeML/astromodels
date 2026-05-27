@@ -5,6 +5,7 @@ import numpy as np
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
+from astromodels.functions.function import Function
 
 
 class Polarization(Node):
@@ -153,19 +154,16 @@ class StokesPolarization(Polarization):
             return self._U(energies)
         return 1
 
+    def to_linear_polarization(self):
+        if isinstance(self._Q.value, Function):
+            degree = (self._Q.value**2 + self._U.value**2) ** (0.5)
+            angle = self._U.value.arctan2(self._Q.value) * 90 / np.pi
+        else:
+            raise NotImplementedError("Q has to be a function right now")
 
-#     def to_linear_polarization(self):
-#         # polarization angle
-# #        psi = 0.5 * np.arctan2(U_bin, Q_bin)
-#
-#         # polarization fraction
-# #        frac = np.sqrt(Q_bin ** 2 + U_bin ** 2) / I_bin
-#
-#         pass
-#
-#         #angle = 0.5 * np.arctan2(se)
-#
-#
+        return LinearPolarization(degree=degree, angle=angle)
+
+
 class Unpolarized(Polarization):
     def __init__(self):
         super(Unpolarized, self).__init__(polarization_type="unpolarized")
