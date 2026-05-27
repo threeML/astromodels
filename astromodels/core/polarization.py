@@ -6,6 +6,9 @@ import numpy as np
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
 from astromodels.functions.function import Function
+from astromodels.utils.logging import setup_logger
+
+log = setup_logger(__name__)
 
 
 class Polarization(Node):
@@ -79,9 +82,6 @@ class Polarization(Node):
         return parameter
 
 
-# TODO: add transform between polarizations
-
-
 class LinearPolarization(Polarization):
     def __init__(self, degree, angle):
         """Linear parameterization of polarization.
@@ -127,8 +127,12 @@ class LinearPolarization(Polarization):
 
 
 class StokesPolarization(Polarization):
-    def __init__(self, I=None, Q=None, U=None, V=None):
+    def __init__(self, Q=None, U=None, **kwargs):
         """Stokes parameterization of polarization."""
+
+        if len(kwargs.keys()) > 0:
+            log.warning("Only support Stokes parameters Q and U currently")
+
         super(StokesPolarization, self).__init__(polarization_type="stokes")
 
         if callable(Q):
@@ -176,7 +180,7 @@ class StokesParameter(Node):
 
     def __init__(self, name, value):
 
-        assert name in ["I", "Q", "U", "V"]
+        assert name in ["Q", "U"], "Stokes Parameter must have name 'Q' or 'U'"
         Node.__init__(self, name)
         self._add_child(value)
         self.value = value
