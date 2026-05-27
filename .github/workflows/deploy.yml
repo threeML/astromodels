@@ -101,6 +101,10 @@ jobs:
               MKL_NUM_THREADS: 1
               NUMEXPR_NUM_THREADS: 1
               MPLBACKEND: "Agg"
+        
+        - name: List built packages
+          run: |
+            ls -lh output/${{ matrix.target-platform }}/*.conda
 
 
     publish-conda:
@@ -136,17 +140,21 @@ jobs:
           run: |
 
             rattler-build build --target-platform ${{ matrix.target-platform }} -c https://heasarc.gsfc.nasa.gov/FTP/software/conda/ -c conda-forge --recipe conda-dist/recipe.yaml --experimental
-
-            echo "Uploading ${{matrix.os}} IsDev: ${ISDEV} "
-            if [[ "${ISDEV}" == "true" ]]; then
-              LABEL="--channel dev"
-            fi
-            rattler-build upload anaconda ${CONDA_BLD_PATH}/${{ matrix.target-platform }}/*.conda --force --owner threeml ${LABEL}
-
           env:
               OMP_NUM_THREADS: 1
               MKL_NUM_THREADS: 1
               NUMEXPR_NUM_THREADS: 1
               MPLBACKEND: "Agg"
+        
+        - name: Publish packages
+          run: |
+            echo "Uploading packages for ${{matrix.os}} (IsDev: ${ISDEV})"
+            if [[ "${ISDEV}" == "true" ]]; then
+              LABEL="--channel dev"
+            fi
+            echo "Listing packages to upload:"
+            ls -lh output/${{ matrix.target-platform }}/*.conda
+            rattler-build upload anaconda output/${{ matrix.target-platform }}/*.conda --force --owner threeml ${LABEL}
+          env:
               ANACONDA_API_KEY: ${{secrets.CONDA_UPLOAD_TOKEN}}
               ISDEV: ${{contains(github.ref, 'dev')}}
