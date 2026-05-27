@@ -11,6 +11,7 @@ from astromodels.core.polarization import (
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
 from pathlib import Path
+import numpy as np
 
 
 def test_linear_polarization_parameters():
@@ -130,3 +131,17 @@ def test_unpolarized():
     assert ps.spectrum.main(1, stokes="Q") == ps.spectrum.main(
         1
     ), "Unpolarized changes the value!"
+
+
+def test_transform():
+    u = Constant()
+    q = Constant()
+    u.k = 0.5
+    q.k = 0.5
+    polarization = StokesPolarization(Q=q, U=u)
+    linear = polarization.to_linear_polarization()
+    assert np.isclose(linear(0, stokes="Q"), 0.5)
+    assert np.all(
+        np.isclose(linear(np.array([0, 1, 2, 3, 4]), stokes="U"), np.ones(5) * 0.5)
+    )
+    assert np.isclose(linear.degree.value(0), 0.7071067812)
