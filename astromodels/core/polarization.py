@@ -90,9 +90,11 @@ class LinearPolarization(Polarization):
         :param angle: The polarization angle
         """
         super(LinearPolarization, self).__init__(polarization_type="linear")
+        self._callable = False
 
         if callable(degree):
             self.degree = LinearParameter("degree", degree)
+            self._callable = True
         else:
             self.degree = self._get_parameter_from_input(
                 degree,
@@ -109,27 +111,34 @@ class LinearPolarization(Polarization):
             self.angle = self._get_parameter_from_input(
                 angle, 0, 180, "angle", "Polarization angle", "deg"
             )
+            self._callable = False
 
         self._add_child(self.degree)
         self._add_child(self.angle)
 
     def __call__(self, energies, stokes):
-
-        if stokes == "Q":
-            return self.degree(energies) * np.cos(
-                2.0 * np.radians(self.angle(energies))
-            )
-        elif stokes == "U":
-            return self.degree(energies) * np.sin(
-                2.0 * np.radians(self.angle(energies))
-            )
-        return 1
+        if self._callable:
+            if stokes == "Q":
+                return self.degree(energies) * np.cos(
+                    2.0 * np.radians(self.angle(energies))
+                )
+            elif stokes == "U":
+                return self.degree(energies) * np.sin(
+                    2.0 * np.radians(self.angle(energies))
+                )
+            return 1
+        else:
+            if stokes == "Q":
+                return self.degree.value * np.cos(2.0 * np.radians(self.angle.value))
+            elif stokes == "U":
+                return self.degree.value * np.sin(2.0 * np.radians(self.angle.value))
+            return 1
 
 
 class StokesPolarization(Polarization):
     def __init__(self, Q=None, U=None, **kwargs):
         """Stokes parameterization of polarization."""
-
+        self._callable = False
         if len(kwargs.keys()) > 0:
             log.warning("Only support Stokes parameters Q and U currently")
 
@@ -137,6 +146,7 @@ class StokesPolarization(Polarization):
 
         if callable(Q):
             self._Q = StokesParameter("Q", Q)
+            self._callable = True
         else:
             self._Q = self._get_parameter_from_input(
                 Q, 0, 1, "Q", "Stokes Polarization Q", ""
@@ -144,6 +154,7 @@ class StokesPolarization(Polarization):
         if callable(U):
             self._U = StokesParameter("U", U)
         else:
+            self._callable = False
             self._U = self._get_parameter_from_input(
                 U, 0, 1, "U", "Stokes Polarization U", ""
             )
@@ -152,18 +163,28 @@ class StokesPolarization(Polarization):
         self._add_child(self._U)
 
     def __call__(self, energies, stokes):
-        if stokes == "Q":
-            return self._Q(energies)
-        elif stokes == "U":
-            return self._U(energies)
-        return 1
+        if self._callable:
+            if stokes == "Q":
+                return self._Q(energies)
+            elif stokes == "U":
+                return self._U(energies)
+            return 1
+        else:
+            if stokes == "Q":
+                return self._Q.value
+            elif stokes == "U":
+                return self._U.value
+            return 1
 
     def to_linear_polarization(self):
         if isinstance(self._Q.value, Function):
             degree = (self._Q.value**2 + self._U.value**2) ** (0.5)
             angle = self._U.value.arctan2(self._Q.value) * 90 / np.pi
+
         else:
-            raise NotImplementedError("Q has to be a function right now")
+            raise NotImplementedError(
+                "Either Q has to be a function or both Q and U need to be values"
+            )
 
         return LinearPolarization(degree=degree, angle=angle)
 
