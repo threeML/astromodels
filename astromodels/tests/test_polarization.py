@@ -155,9 +155,36 @@ def test_non_callable():
 
     assert np.isclose(spec.polarization(0, "U"), 0.0)
     assert np.isclose(spec.polarization(0, "Q"), -0.2)
+    assert np.isclose(spec.polarization(0, None), 1)
 
     stokes = StokesPolarization(Q=0.2, U=0.8)
     spec = SpectralComponent("test", Powerlaw(), polarization=stokes)
     spec(0.1, stokes="U")
     assert spec.polarization(0, "Q") == 0.2
     assert spec.polarization(0, "U") == 0.8
+    assert np.isclose(spec.polarization(0, None), 1)
+
+
+def test_callable():
+    deg = Constant()
+    deg.k = 0.2
+    ang = Constant()
+    ang.k = 90
+    linear = LinearPolarization(degree=deg, angle=ang)
+    spec = SpectralComponent("test", Powerlaw(), polarization=linear)
+    spec(0.1, stokes="U")
+
+    assert np.isclose(spec.polarization(0, "U"), 0.0)
+    assert np.isclose(spec.polarization(0, "Q"), -0.2)
+    assert np.isclose(spec.polarization(0, None), 1)
+
+    q = Constant()
+    q.k = 0.2
+    u = Constant()
+    u.k = 0.8
+    stokes = StokesPolarization(Q=q, U=u)
+    spec = SpectralComponent("test", Powerlaw(), polarization=stokes)
+    spec(0.1, stokes="U")
+    assert spec.polarization(0, "Q") == 0.2
+    assert spec.polarization(0, "U") == 0.8
+    assert np.isclose(spec.polarization(0, None), 1)
