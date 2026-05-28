@@ -10,10 +10,9 @@ from astromodels.core.polarization import (
 )
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
-from pathlib import Path
 
 
-def test_linear_polarization_parameters():
+def test_linear_polarization_parameters(tmp_path):
     degree = 50.0
     angle = 30.0
     ps = PointSource(
@@ -25,10 +24,10 @@ def test_linear_polarization_parameters():
     )
     m1 = Model(ps)
     m1.display()
+    temp_file = tmp_path / "__test.yml"
+    m1.save(temp_file, overwrite=True)
 
-    m1.save("__test.yml", overwrite=True)
-
-    mp = load_model("__test.yml")
+    mp = load_model(temp_file)
     assert math.isclose(
         mp.sources["PS"].spectrum.main.polarization.degree.value, degree, rel_tol=0.02
     )
@@ -37,10 +36,10 @@ def test_linear_polarization_parameters():
     )
     mp.display()
 
-    os.remove("__test.yml")
+    os.remove(temp_file)
 
 
-def test_linear_polarization_functions():
+def test_linear_polarization_functions(tmp_path):
     degree = Constant()
     angle = Constant()
     degree.k = 50
@@ -54,10 +53,10 @@ def test_linear_polarization_functions():
     )
     m1 = Model(ps)
     m1.display()
+    temp_file = tmp_path / "__test.yml"
+    m1.save(temp_file, overwrite=True)
 
-    m1.save("__test.yml", overwrite=True)
-
-    mp = load_model("__test.yml")
+    mp = load_model(temp_file)
     assert math.isclose(
         mp.sources["PS"].spectrum.main.polarization.degree.Constant.k.value,
         degree.k.value,
@@ -70,10 +69,10 @@ def test_linear_polarization_functions():
     )
     mp.display()
 
-    os.remove("__test.yml")
+    os.remove(temp_file)
 
 
-def test_Stokes_polarization_functions():
+def test_Stokes_polarization_functions(tmp_path):
     u = Constant()
     q = Constant()
     u.k = 0.5
@@ -84,10 +83,10 @@ def test_Stokes_polarization_functions():
     )
     m1 = Model(ps)
     m1.display()
+    temp_file = tmp_path / "__test.yml"
+    m1.save(temp_file, overwrite=True)
 
-    m1.save("__test.yml", overwrite=True)
-
-    mp = load_model("__test.yml")
+    mp = load_model(temp_file)
     assert math.isclose(
         mp.sources["PS"].spectrum.main.polarization.Q.Constant.k.value,
         q.k.value,
@@ -100,14 +99,14 @@ def test_Stokes_polarization_functions():
     )
     mp.display()
 
-    os.remove("__test.yml")
+    os.remove(temp_file)
 
     _ = StokesPolarization(Q=0.5, U=0.5)
 
 
-def test_unpolarized():
+def test_unpolarized(tmp_path):
     # should be unpolarized at startupo
-    temp_path = Path("__test.yml")
+    temp_path = tmp_path / "__test.yml"
     ps = PointSource("PS", 0, 0, spectral_shape=Powerlaw())
 
     assert isinstance(
