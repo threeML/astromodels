@@ -1,4 +1,3 @@
-import os
 import pickle
 
 import astropy.units as u

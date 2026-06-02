@@ -1,6 +1,5 @@
 import math
 import os
-from pathlib import Path
 
 import astropy.units as u
 import numpy as np

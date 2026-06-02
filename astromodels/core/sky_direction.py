@@ -3,7 +3,6 @@ from typing import Optional, Union
 
 import astropy
 import astropy.units as u
-
 from astropy import coordinates
 
 from astromodels.core.parameter import Parameter
