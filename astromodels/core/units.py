@@ -2,8 +2,6 @@ from typing import NamedTuple
 
 __author__ = "giacomov"
 
-import collections
-
 import astropy.units as u
 import numpy as np
 
@@ -77,7 +75,7 @@ class _AstromodelsUnits:
         if frame is None:
             frame = astromodels_config.units.frame
 
-        self._units = collections.OrderedDict()
+        self._units = dict()
 
         self._units["energy"] = energy_unit
         self._units["time"] = time_unit

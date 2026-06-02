@@ -20,7 +20,7 @@
 
     requires-python = ">=3.11.0"
     dependencies = [
-	"numpy>=1.6",
+	"numpy>=1.26",
 	"PyYAML>=5.1",
 	"scipy>=0.14",
 	"astropy>=1.2",
@@ -61,6 +61,9 @@
 
 [tool.setuptools]
     include-package-data = true
+
+[tool.setuptools.packages.find]
+    exclude = ["output"]
 
 [tool.setuptools.package-data]
     astromodels = [

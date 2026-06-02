@@ -1,5 +1,4 @@
 import ast
-import collections
 import copy
 import inspect
 import math
@@ -204,7 +203,7 @@ class FunctionMeta(type):
 
             # parse the properties
 
-            dct["_properties"] = collections.OrderedDict()
+            dct["_properties"] = dict()
 
             for property_name, property_definition in function_definition[
                 "properties"
@@ -234,7 +233,7 @@ class FunctionMeta(type):
         # below this dictionary will be used to create a copy of each parameter which
         # will be made available as child of the *instance*.
 
-        dct["_parameters"] = collections.OrderedDict()
+        dct["_parameters"] = dict()
 
         for parameter_name, parameter_definition in list(
             function_definition["parameters"].items()
@@ -318,7 +317,7 @@ class FunctionMeta(type):
 
         def info():
 
-            repr_dict = collections.OrderedDict()
+            repr_dict = dict()
 
             repr_dict["description"] = function_definition["description"]
 
@@ -326,7 +325,7 @@ class FunctionMeta(type):
                 repr_dict["formula"] = function_definition["latex"]
 
             # Add the description of each parameter and their current value
-            repr_dict["default parameters"] = collections.OrderedDict()
+            repr_dict["default parameters"] = dict()
 
             for parameter_name in list(dct["_parameters"].keys()):
 
@@ -337,7 +336,7 @@ class FunctionMeta(type):
             if dct["_properties"] is not None:
 
                 # Add the description of each parameter and their current value
-                repr_dict["default properties"] = collections.OrderedDict()
+                repr_dict["default properties"] = dict()
 
                 for property_name in list(dct["_properties"].keys()):
 
@@ -384,7 +383,7 @@ class FunctionMeta(type):
         # Create a copy of the parameters dictionary which is in the type,
         # otherwise every instance would share the same dictionary
 
-        copy_of_parameters = collections.OrderedDict()
+        copy_of_parameters = dict()
 
         # Fill it by duplicating the parameters contained in the dictionary in the type
 
@@ -404,7 +403,7 @@ class FunctionMeta(type):
 
         if type(instance)._properties is not None:
 
-            copy_of_properties = collections.OrderedDict()
+            copy_of_properties = dict()
 
             for key, value in type(instance)._properties.items():
 
@@ -824,7 +823,7 @@ class Function(Node):
         # might be different than the actual name of the parameter, use the .add_child
         # method instead of the add_children method
 
-        self._parameters: Dict[str, Parameter] = collections.OrderedDict()
+        self._parameters: Dict[str, Parameter] = dict()
 
         for child_name, child in list(parameters.items()):
 
@@ -838,9 +837,7 @@ class Function(Node):
 
         if properties is not None:
 
-            self._properties: Optional[Dict[str, FunctionProperty]] = (
-                collections.OrderedDict()
-            )
+            self._properties: Optional[Dict[str, FunctionProperty]] = dict()
 
             for child_name, child in properties.items():
 
@@ -869,7 +866,7 @@ class Function(Node):
 
         # stores any extrernally linked functions
 
-        self._external_functions: Dict[str, "Function"] = collections.OrderedDict()
+        self._external_functions: Dict[str, "Function"] = dict()
 
     @property
     def n_dim(self) -> int:
@@ -885,7 +882,7 @@ class Function(Node):
         :return: dictionary of free parameters
         """
 
-        free_parameters = collections.OrderedDict(
+        free_parameters = dict(
             [(k, v) for k, v in list(self.parameters.items()) if v.free]
         )
 
@@ -995,7 +992,7 @@ class Function(Node):
 
             if self._external_functions:
 
-                data["external_functions"] = collections.OrderedDict()
+                data["external_functions"] = dict()
 
                 for k, v in self._external_functions.items():
 
@@ -1196,7 +1193,7 @@ class Function(Node):
 
     def _repr__base(self, rich_output):
 
-        repr_dict = collections.OrderedDict()
+        repr_dict = dict()
 
         repr_dict["description"] = self._function_definition["description"]
 
@@ -1205,7 +1202,7 @@ class Function(Node):
             repr_dict["formula"] = self._function_definition["latex"]
 
         # Add the description of each parameter and their current value
-        repr_dict["parameters"] = collections.OrderedDict()
+        repr_dict["parameters"] = dict()
 
         for parameter in self._get_children():
 
@@ -2040,11 +2037,11 @@ class CompositeFunction(Function):
         # Build the parameters dictionary assigning a new name to each parameter to
         # account for possible duplicates.
 
-        parameters = collections.OrderedDict()
+        parameters = dict()
 
-        properties = collections.OrderedDict()
+        properties = dict()
 
-        self._sub_children = collections.OrderedDict()
+        self._sub_children = dict()
 
         log.debug_node(f"we now have {len(self._functions)}")
 
@@ -2111,7 +2108,7 @@ class CompositeFunction(Function):
 
             # now, some functions may have children and we want to keep track of those
 
-            self._sub_children[function.name] = collections.OrderedDict()
+            self._sub_children[function.name] = dict()
 
             for child_name, child in function._children.items():
 
@@ -2308,11 +2305,11 @@ class CompositeFunction(Function):
 
             if flag:
 
-                data["external_functions"] = collections.OrderedDict()
+                data["external_functions"] = dict()
 
                 for i, function in enumerate(self._functions):
 
-                    this_function = collections.OrderedDict()
+                    this_function = dict()
 
                     for k, v in function.external_functions.items():
 
@@ -2353,7 +2350,7 @@ def get_function(function_name, composite_function_expression=None):
 
             function_class = _known_functions[function_name]
 
-            deferred_properites = collections.OrderedDict()
+            deferred_properites = dict()
 
             if function_class._properties is not None:
 
@@ -2476,7 +2473,7 @@ def list_functions():
 
     # Order by key (i.e., by function name)
 
-    ordered = collections.OrderedDict(sorted(functions_and_descriptions.items()))
+    ordered = dict(sorted(functions_and_descriptions.items()))
 
     # Format in a table
 
@@ -2552,7 +2549,7 @@ def _parse_function_expression(function_specification):
                 # let's see if there are any deferred
                 # properties
 
-                deferred_properites = collections.OrderedDict()
+                deferred_properites = dict()
 
                 if function_class._properties is not None:
 
