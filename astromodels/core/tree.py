@@ -1,4 +1,3 @@
-import collections
 from typing import Any, Dict
 
 from astromodels.core.node_type import NodeBase
@@ -60,7 +59,7 @@ class Node(NodeBase):
         """
         Recursively transforms the node and its children into a dictionary.
         """
-        this_dict: Dict[str, Any] = collections.OrderedDict()
+        this_dict: Dict[str, Any] = dict()
 
         for child in self._get_children():
 

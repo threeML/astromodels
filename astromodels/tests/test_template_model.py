@@ -1,7 +1,5 @@
-import os
 import pickle
 import shutil
-from pathlib import Path
 
 import numpy as np
 import numpy.testing as npt
@@ -26,6 +24,7 @@ from astromodels.functions.template_model import (
 )
 from astromodels.sources import ExtendedSource
 from astromodels.utils import _get_data_file_path
+from astromodels.utils.file_utils import get_user_data_path
 
 __author__ = "giacomov"
 
@@ -66,7 +65,7 @@ def test_template_factory_1D():
 
 
 @pytest.mark.slow
-def test_template_factory():
+def test_template_factory(tmp_path):
 
     mo = get_comparison_function()
 
@@ -95,8 +94,6 @@ def test_template_factory():
 
                 t.add_interpolation_data(mo(energies), alpha=a, xp=xp, beta=b)
 
-    print("Data has been prepared")
-
     t.save_data(overwrite=True)
 
     tm = TemplateModel("__test")
@@ -105,14 +102,9 @@ def test_template_factory():
 
     tm.clean()
 
+    tm1 = TemplateModel("__test")
 
-# This will be run second, so the template will exist
-@pytest.mark.slow
-def test_template_function():
-
-    tm = TemplateModel("__test")
-
-    mo = get_comparison_function()
+    mo1 = get_comparison_function()
 
     new_alpha_grid = np.linspace(-1.5, 1, 15)
     new_beta_grid = np.linspace(-3.5, -1.6, 15)
@@ -120,9 +112,9 @@ def test_template_function():
 
     new_energies = np.logspace(1, 3, 40)
 
-    tm.K = 1
+    tm1.K = 1
 
-    mo.K = 1
+    mo1.K = 1
 
     for a in new_alpha_grid:
 
@@ -130,16 +122,16 @@ def test_template_function():
 
             for xp in new_xp_grid:
 
-                mo.alpha = a
-                mo.beta = b
-                mo.xp = xp
+                mo1.alpha = a
+                mo1.beta = b
+                mo1.xp = xp
 
-                tm.alpha = a
-                tm.beta = b
-                tm.xp = xp
+                tm1.alpha = a
+                tm1.beta = b
+                tm1.xp = xp
 
-                res1 = mo(new_energies)
-                res2 = tm(new_energies)
+                res1 = mo1(new_energies)
+                res2 = tm1(new_energies)
 
                 deltas = np.abs((res2 - res1) / res1)
 
@@ -153,10 +145,6 @@ def test_template_function():
                         "with parameters %s!"
                         % (new_energies[idx], deltas[idx], [a, b, xp])
                     )
-
-
-@pytest.mark.slow
-def test_input_output():
 
     tm = TemplateModel("__test")
     tm.alpha = -0.95
@@ -193,12 +181,6 @@ def test_input_output():
         fake_model.test.spectrum.main.shape(xx),
     )
 
-    # Test pickling with other functions
-
-    # tm = TemplateModel('__test')
-    # tm.alpha = -0.95
-    # tm.beta = -2.23
-
     new_shape = tm + Powerlaw()
 
     new_shape.index_2 = -2.256
@@ -214,22 +196,16 @@ def test_input_output():
 
     fake_model2 = Model(fake_source2)
 
-    fake_model2.save("__test.yml", overwrite=True)
+    fake_model2.save(tmp_path / "__test.yml", overwrite=True)
 
     # Now try to reload
-    reloaded_model = load_model("__test.yml")
+    reloaded_model = load_model(tmp_path / "__test.yml")
 
     assert reloaded_model.get_number_of_point_sources() == 1
     assert np.allclose(
         fake_model2.test.spectrum.main.shape(xx),
         reloaded_model.test.spectrum.main.shape(xx),
     )
-
-    # test that the inversion works
-
-    # tm = TemplateModel('__test')
-    # tm.alpha = -0.95
-    # tm.beta = -2.23
 
     new_shape2 = Powerlaw() + tm
 
@@ -246,10 +222,10 @@ def test_input_output():
 
     fake_model2 = Model(fake_source2)
 
-    fake_model2.save("__test.yml", overwrite=True)
+    fake_model2.save(tmp_path / "__test.yml", overwrite=True)
 
     # Now try to reload
-    reloaded_model = load_model("__test.yml")
+    reloaded_model = load_model(tmp_path / "__test.yml")
 
     assert reloaded_model.get_number_of_point_sources() == 1
     assert np.allclose(
@@ -257,23 +233,9 @@ def test_input_output():
         reloaded_model.test.spectrum.main.shape(xx),
     )
 
-    os.remove("__test.yml")
-
-
-def test_xspec_table_model():
-
-    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
-
-    xtm = XSPECTableModel(test_table)
-
-    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
-
-
-def test_table_conversion():
-
     old_table_file = _get_data_file_path("tests/old_table.h5")
 
-    p = Path.home() / ".astromodels" / "data" / "old_table.h5"
+    p = get_user_data_path() / "old_table.h5"
 
     shutil.copy(old_table_file, p)
 
@@ -326,6 +288,15 @@ def test_spatial_template():
     assert np.isclose(
         shape.get_total_spatial_integral(), 1, rtol=1e-2
     ), "failed to normalize map"
+
+
+def test_xspec_table_model():
+
+    test_table = _get_data_file_path("tests/test_xspec_table_model.fits")
+
+    xtm = XSPECTableModel(test_table)
+
+    xtm.to_table_model("xspectm_test", "xspec model", overwrite=True)
 
 
 def test_univariate_spline():

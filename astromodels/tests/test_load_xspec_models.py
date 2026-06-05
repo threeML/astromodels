@@ -1,4 +1,3 @@
-import collections
 import logging
 import os
 from pathlib import Path
@@ -45,7 +44,7 @@ def test_xspec_load():
 
 
 @skip_if_xspec_is_not_available
-def test_xspec_saving():
+def test_xspec_saving(tmp_path):
 
     s = XS_powerlaw() + XS_bbody()
 
@@ -55,7 +54,7 @@ def test_xspec_saving():
 
     _ = clone_model(model)
 
-    filename = "_test_xspec_model.yml"
+    filename = tmp_path / "_test_xspec_model.yml"
 
     model.save(filename)
 
@@ -81,7 +80,7 @@ def test_find_model_dat():
 @skip_if_xspec_is_not_available
 def test_get_models():
     model_definitions = get_models(find_model_dat())
-    assert isinstance(model_definitions, collections.OrderedDict)
+    assert isinstance(model_definitions, dict)
 
     # the gaussian line should be available in all versions supported
     assert (
