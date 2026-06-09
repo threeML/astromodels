@@ -1462,7 +1462,7 @@ class Function1D(Function):
                 x.to(self.x_unit, equivalencies=u.spectral()), *values
             )
 
-        except u.UnitsError:  # pragma: no cover
+        except u.UnitsError as e:  # pragma: no cover
 
             # see if this is a dimensionless function
 
@@ -1477,14 +1477,14 @@ class Function1D(Function):
                     msg += " the wrong ones, when calling function %s" % self.name
                     log.error(msg)
 
-                    raise u.UnitsError()
+                    raise u.UnitsError() from e
             else:
                 msg = "Looks like you didn't provide all the units, or you provided the"
                 msg += " wrong ones, when calling function %s" % self.name
 
                 log.error(msg)
 
-                raise u.UnitsError()
+                raise u.UnitsError() from e
 
         else:
 
@@ -1732,8 +1732,7 @@ class Function2D(Function):
         try:
             results = self.evaluate(x.to(self._x_unit), y.to(self._y_unit), *values)
 
-
-        except u.UnitsError:  # pragma: no cover
+        except u.UnitsError:
 
             log.error(
                 "Looks like you didn't provide all the units, or you provided the wrong"
