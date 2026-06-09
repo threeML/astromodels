@@ -918,7 +918,7 @@ def test_function2D():
 
         c.set_units("not existent", u.deg, u.keV)
 
-    with pytest.raises(AssertionError):
+    with pytest.raises(NotImplementedError):
         c.set_units(u.deg, u.rad, u.deg**-2)
 
 
