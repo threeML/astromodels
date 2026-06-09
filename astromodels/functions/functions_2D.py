@@ -58,10 +58,10 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
     def _setup(self):
 
-        self._frame = "icrs"
+        self._frame = get_units().frame
 
     def set_frame(self, new_frame: Union[str, BaseCoordinateFrame]) -> None:
-        """Set a new frame for the coordinates (the default is ICRS J2000)
+        """Set a new frame for the coordinates
 
         :param new_frame: a coordinate frame from astropy
         :return: (none)
@@ -76,14 +76,12 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
         self.l_max.unit = y_unit
 
     def evaluate(self, x, y, K, sigma_b, l_min, l_max):
-        # TODO: make this comptabile with other frames
-
-        # We assume x and y are the correct parameters for the frame
-        # so ra, dec for icrs
-        # l, b for galactic
-
         if isinstance(x, u.Quantity) and isinstance(y, u.Quantity):
+            # we are now in the _call_with_units case --> every input will be a quantity
             _coord = SkyCoord(x, y, frame=self._frame)
+            sigma_b = sigma_b.to(get_units().angle).value
+            l_min = l_min.to(get_units().angle).value
+            l_max = l_max.to(get_units().angle).value
 
         elif not isinstance(x, u.Quantity) and not isinstance(y, u.Quantity):
             _coord = SkyCoord(x, y, frame=self._frame, unit=get_units().angle)
@@ -93,21 +91,26 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
                 "without a unit but cannot mix.",
             )
 
-        b = _coord.transform_to("galactic").b.value
-        l = _coord.transform_to("galactic").l.value
+        b = _coord.transform_to("galactic").b.to(get_units().angle).value
+        l = _coord.transform_to("galactic").l.to(get_units().angle).value
 
         return (
             K
             * np.exp(-(b**2) / (2 * sigma_b**2))
             * np.logical_or(
-                np.logical_and(l > l_min, l < l_max),
-                np.logical_and(l_min > l_max, np.logical_or(l > l_min, l < l_max)),
+                np.logical_and(l >= l_min, l < l_max),
+                np.logical_and(l_min >= l_max, np.logical_or(l >= l_min, l < l_max)),
             )
         )
 
     def get_boundaries(self):
 
         max_b = self.sigma_b.max_value
+
+        if max_b is None:
+            self.sigma_b.max_value = get_units.lat_bounds[1] / 2.0
+            max_b = self.sigma_b.max_value
+
         l_min = self.l_min.value
         l_max = self.l_max.value
 
@@ -120,10 +123,14 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
         # no dealing with 0 360 overflow
         # TODO: fix unit issue here
-        min_lat = min(_coord.transform_to("icrs").dec.value)
-        max_lat = max(_coord.transform_to("icrs").dec.value)
-        min_lon = min(_coord.transform_to("icrs").ra.value)
-        max_lon = max(_coord.transform_to("icrs").ra.value)
+        names = list(_coord.representation_component_names)
+        first_value = getattr(_coord, names[0])
+        second_value = getattr(_coord, names[1])
+
+        min_lat = min(first_value.to(get_units().angle).value)
+        max_lat = max(first_value.to(get_units().angle).value)
+        min_lon = min(second_value.to(get_units().angle).value)
+        max_lon = max(second_value.to(get_units().angle).value)
 
         return (min_lon, max_lon), (min_lat, max_lat)
 
@@ -189,7 +196,8 @@ class Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
 
     def _set_units(self, x_unit, y_unit, z_unit):
 
-        assert x_unit == y_unit, "You can not mix angular units :("
+        if x_unit != y_unit:
+            raise NotImplementedError("You can not mix angular units (yet)")
 
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
@@ -307,6 +315,9 @@ class Asymm_Gaussian_on_sphere(Function2D, metaclass=FunctionMeta):
     """
 
     def _set_units(self, x_unit, y_unit, z_unit):
+
+        if x_unit != y_unit:
+            raise NotImplementedError("You can not mix angular units (yet)")
 
         self.lon0.unit = x_unit
         self.lat0.unit = y_unit
@@ -446,6 +457,8 @@ class Disk_on_sphere(Function2D, metaclass=FunctionMeta):
     """
 
     def _set_units(self, x_unit, y_unit, z_unit):
+        if x_unit != y_unit:
+            raise NotImplementedError("You can not mix angular units (yet)")
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
         # let's set them up here just to save for the possibility of using the
@@ -574,6 +587,8 @@ class Ellipse_on_sphere(Function2D, metaclass=FunctionMeta):
     focal_pts = False
 
     def _set_units(self, x_unit, y_unit, z_unit):
+        if x_unit != y_unit:
+            raise NotImplementedError("You can not mix angular units (yet)")
 
         # lon0 and lat0 have most probably all units of degrees.
         # However, let's set them up here just to save for the possibility of
@@ -1013,6 +1028,8 @@ class Power_law_on_sphere(Function2D, metaclass=FunctionMeta):
     """
 
     def _set_units(self, x_unit, y_unit, z_unit):
+        if x_unit != y_unit:
+            raise NotImplementedError("You can not mix angular units (yet)")
 
         # lon0 and lat0 and rdiff have most probably all units of degrees. However,
         # let's set them up here just to save for the possibility of using the
