@@ -37,17 +37,19 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
             desc : Sigma for b
             initial value : 1
-
+            unit : angle
 
         l_min :
 
             desc : min Longtitude
             initial value : 0
+            unit : angle
 
         l_max :
 
             desc : max Longtitude
             initial value : 3.14
+            unit : angle
 
     """
 
