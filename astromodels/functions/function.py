@@ -623,6 +623,8 @@ class FunctionMeta(type):
         ):
 
             du = u.dimensionless_unscaled
+        elif definition["unit"] == "angle":
+            du = get_units().angle
 
         else:
 
