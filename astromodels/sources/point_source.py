@@ -1,9 +1,10 @@
-from typing import Dict, Optional
+from typing import Dict, Optional, Union
 
 import astropy.units as u
 import numba as nb
 import numpy as np
 import scipy.integrate
+from astropy.coordinates import SkyCoord
 
 from astromodels.core.memoization import use_astromodels_memoization
 from astromodels.core.parameter import Parameter
@@ -27,7 +28,7 @@ class PointSource(Source, Node):
     """A point source. You can instance this class in many ways.
 
     - with Equatorial position and a function as spectrum (the component will be
-    automatically called 'main')::
+    automatically called 'main'):
 
         >>> from astromodels import *
         >>> point_source = PointSource('my_source', 125.6, -75.3, Powerlaw())
@@ -39,7 +40,7 @@ class PointSource(Source, Node):
                     'my_source', l=15.67, b=80.75, spectral_shape=Powerlaw()
                 )
 
-    - with Equatorial position or Galactic position and a list of spectral components::
+    - with Equatorial position or Galactic position and a list of spectral components:
 
         >>> c1 = SpectralComponent("component1", Powerlaw())
         >>> c2 = SpectralComponent("component2", Powerlaw())
@@ -50,6 +51,13 @@ class PointSource(Source, Node):
         >>> point_source = PointSource(
                     "test_source",l=15.67, b=80.75,components=[c1,c2]
                 )
+    - with an astropy.coordinates.SkyCoord object:
+        >>> from astropy.coordinates import SkyCoord
+        >>> point_source = PointSource('my_source',
+                                       sky_position=SkyCoord(ra = 125.6, -75.3,
+                                                             unit="deg",frame="icrs"),
+                                       Powerlaw())
+
 
     NOTE: by default the position of the source is fixed (i.e., its positional
     parameters are fixed)
@@ -68,13 +76,13 @@ class PointSource(Source, Node):
     def __init__(
         self,
         source_name: str,
-        ra: Optional[float] = None,
-        dec: Optional[float] = None,
+        ra: Optional[Union[float, u.Quantity]] = None,
+        dec: Optional[Union[float, u.Quantity]] = None,
         spectral_shape: Optional[Function1D] = None,
-        l: Optional[float] = None,
-        b: Optional[float] = None,
+        l: Optional[Union[float, u.Quantity]] = None,
+        b: Optional[Union[float, u.Quantity]] = None,
         components=None,
-        sky_position: Optional[SkyDirection] = None,
+        sky_position: Optional[Union[SkyDirection, SkyCoord]] = None,
         polarization=None,
     ):
 
@@ -98,32 +106,25 @@ class PointSource(Source, Node):
 
         # Gather the position
 
-        if not isinstance(sky_position, SkyDirection):
+        if not isinstance(sky_position, SkyDirection) and not isinstance(
+            sky_position, SkyCoord
+        ):
 
             if (ra is not None) and (dec is not None):
-
-                # Check that ra and dec are actually numbers
-
-                try:
-
+                if not isinstance(ra, u.Quantity):
                     ra = float(ra)
+                if not isinstance(dec, u.Quantity):
                     dec = float(dec)
-
-                except (TypeError, ValueError):
-
-                    log.error(
-                        "RA and Dec must be numbers. If you are confused by this "
-                        "message, you are likely using the constructor in the wrong "
-                        "way. Check the documentation."
-                    )
-
-                    raise AssertionError()
-
                 sky_position = SkyDirection(ra=ra, dec=dec)
-
             else:
+                if not isinstance(l, u.Quantity):
+                    l = float(l)
+                if not isinstance(b, u.Quantity):
+                    b = float(b)
 
                 sky_position = SkyDirection(l=l, b=b)
+        elif isinstance(sky_position, SkyCoord):
+            sky_position = SkyDirection(position=sky_position)
 
         self._sky_position: SkyDirection = sky_position
 

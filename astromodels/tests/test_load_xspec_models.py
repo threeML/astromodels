@@ -1,6 +1,6 @@
-from pathlib import Path
-import os
 import logging
+import os
+from pathlib import Path
 
 import astropy.units as u
 import pytest
@@ -12,8 +12,8 @@ try:
     from astromodels.xspec import XS_bbody, XS_phabs, XS_powerlaw
     from astromodels.xspec.factory import (
         find_model_dat,
-        get_models,
         generate_xs_model_file,
+        get_models,
         xspec_model_factory,
     )
 

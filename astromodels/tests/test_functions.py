@@ -1,4 +1,3 @@
-import os
 import pickle
 
 import astropy.units as u
@@ -8,13 +7,14 @@ from astropy.io import fits
 
 import astromodels
 from astromodels.core.property import SettingUnknownValue
+from astromodels.core.units import get_units
 from astromodels.functions import (
     Continuous_injection_diffusion,
+    Cutoff_powerlaw_Ep,
     Gaussian_on_sphere,
     Line,
     Powerlaw,
     SpatialTemplate_2D,
-    Cutoff_powerlaw_Ep,
 )
 from astromodels.functions import function as function_module
 from astromodels.functions.function import (
@@ -475,6 +475,50 @@ def test_function_meta():
             def evaluate(self, y, x, a, b, c):
                 return a * x + b
 
+    with pytest.raises(AssertionError):
+
+        # no parameters in the definition
+
+        class Wrong_test_function15(Function2D, metaclass=FunctionMeta):
+            """
+
+            description: useless
+
+            latex : $ a * x + b $
+
+            """
+
+            def _set_units(self, x_unit, y_unit, z_unit):
+                self.a.unit = y_unit / x_unit
+                self.b.unit = y_unit
+
+            def evaluate(self, y, x, a, b, c):
+                return a * x + b
+
+    with pytest.raises(AssertionError):
+
+        # no parameters in the definition
+
+        class Wrong_test_function16(Function2D, metaclass=FunctionMeta):
+            """
+
+            description: useless
+
+            latex : $ a * x + b $
+
+            parameters :
+
+                a
+
+            """
+
+            def _set_units(self, x_unit, y_unit, z_unit):
+                self.a.unit = y_unit / x_unit
+                self.b.unit = y_unit
+
+            def evaluate(self, y, x, a, b, c):
+                return a * x + b
+
     # A function with no latex formula (which is optional)
 
     class NoLatex_test_function11(Function1D, metaclass=FunctionMeta):
@@ -824,20 +868,36 @@ def test_list_functions():
 def test_function2D():
 
     c = Gaussian_on_sphere()
+    if get_units().angle == u.deg:
+        f1 = c(1, 1)
+    elif get_units().angle == u.rad:
+        c.sigma.value = np.deg2rad(1)
+        f1 = c(np.deg2rad(1), np.deg2rad(1))
 
-    f1 = c(1, 1)
-    assert np.isclose(f1, 5.17276409, rtol=1e-10)
+    # separation to lon0,lat0: 1.4141776609521137deg
+    val = 1 / (2.0 * np.pi * c.sigma.value**2) * np.exp(-0.5 * 1.4141776609521137**2)
+    assert np.isclose(f1, val, rtol=1e-10)
 
     a = np.array([1.0, 2.0])
 
-    fa = c(a, a)
-    assert np.isclose(fa, [5.17276409, 5.01992404], rtol=1e-10).all()
+    # separation to lon0,lat0 for 2deg : 2.8281398674429297deg
+    if get_units().angle == u.deg:
+        fa = c(a, a)
+    elif get_units().angle == u.rad:
+        fa = c(np.deg2rad(a), np.deg2rad(a))
 
-    c.set_units(u.deg, u.deg, 1.0 / u.deg**2)
+    val2 = 1 / (2.0 * np.pi * c.sigma.value**2) * np.exp(-0.5 * 2.8281398674429297**2)
+    assert np.isclose(fa, np.array([val, val2]), rtol=1e-10).all()
+
+    c.set_units(u.deg, u.deg, u.deg**-2)
+    if get_units().angle == u.rad:
+        c.sigma.value = 1
 
     f1d = c(1 * u.deg, 1.0 * u.deg)
-    assert np.isclose(f1d.value, 5.17276409, rtol=1e-10)
-    assert f1d.unit == u.deg**-2
+
+    val = 1 / (2.0 * np.pi) * np.exp(-0.5 * 1.4141776609521137**2)
+
+    assert np.isclose(f1d, val * u.deg**-2, rtol=1e-10)
 
     assert c.x_unit == u.deg
     assert c.y_unit == u.deg
@@ -846,9 +906,20 @@ def test_function2D():
     assert c.get_total_spatial_integral(1) == 1
     assert np.isclose(c.get_total_spatial_integral([1, 1]), [1, 1], rtol=1e-10).all()
 
+    c.set_units(u.deg, u.deg, u.sr**-1)
+
+    test_pos = np.deg2rad(1)
+    f1r = c(test_pos * u.rad, test_pos * u.rad)
+    print(f1r.to(u.deg**-2))
+    print(val * u.deg**-2)
+    assert np.isclose(f1r, val * u.deg**-2, rtol=1e-10)
+
     with pytest.raises(TypeError):
 
         c.set_units("not existent", u.deg, u.keV)
+
+    with pytest.raises(NotImplementedError):
+        c.set_units(u.deg, u.rad, u.deg**-2)
 
 
 def test_function3D():
@@ -954,9 +1025,6 @@ def test_spatial_template_2D(tmp_path):
     shape2.K = 10
     assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
     assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 10.0])
-
-    os.remove(tmp_path / "test1.fits")
-    os.remove(tmp_path / "test2.fits")
 
 
 def test_linking_external_functions():

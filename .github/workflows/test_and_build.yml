@@ -68,6 +68,11 @@ jobs:
             - name: Test pip on ${{ matrix.python-version }}
               run: |
                   pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml -n auto --dist worksteal
+
+                  # rerun with different config
+                  cp ci/config_test.yml $HOME/.config/astromodels
+                  python -c "from astromodels.utils.configuration import astromodels_config; print(astromodels_config)"
+                  pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml -n auto --dist worksteal
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
@@ -184,7 +189,13 @@ jobs:
 
             - name: Test astromodels
               shell: bash -l {0}
-              run: pytest -vv --cov=astromodels --cov-report=xml -n auto --dist worksteal
+              run: |
+                pytest -vv --cov=astromodels --cov-report=xml -n auto --dist worksteal
+
+                # rerun with different config
+                cp ci/config_test.yml $HOME/.config/astromodels
+                python -c "from astromodels.utils.configuration import astromodels_config; print(astromodels_config)"
+                pytest -vv --cov=astromodels --cov-report=xml -n auto --dist worksteal
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1

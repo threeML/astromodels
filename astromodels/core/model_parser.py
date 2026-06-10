@@ -14,6 +14,7 @@ from astromodels.core import (
     spectral_component,
 )
 from astromodels.core.my_yaml import my_yaml
+from astromodels.core.units import get_units
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
@@ -71,12 +72,9 @@ class ModelParser(object):
     def __init__(self, model_file=None, model_dict=None):
 
         if not ((model_file is not None) or (model_dict is not None)):
-
-            log.error(
+            raise AssertionError(
                 "You have to provide either a model file or a " "model dictionary"
             )
-
-            raise AssertionError()
 
         if model_file is not None:
 
@@ -89,18 +87,15 @@ class ModelParser(object):
                     self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
             except IOError:
-                msg = "File %s cannot be read. " % model_file
+                msg = f"File {model_file} cannot be read. "
                 msg += "Check path and permissions for current user."
 
-                log.error(msg)
-
-                raise ModelIOError()
+                raise ModelIOError(msg)
 
             except my_yaml.YAMLError:
-
-                log.error("Could not parse file %s. Check your syntax." % model_file)
-
-                raise ModelYAMLError()
+                raise ModelYAMLError(
+                    f"Could not parse file {model_file}. Check your syntax."
+                )
 
         else:
 
@@ -581,14 +576,14 @@ class SourceParser(object):
             ra = par_parser.get_variable()
 
             if ra.bounds == (None, None):
-                ra.bounds = (0, 360)
+                ra.bounds = get_units.lon_bounds
 
             par_parser = ParameterParser("dec", sky_direction_definition["dec"])
 
             dec = par_parser.get_variable()
 
             if dec.bounds == (None, None):
-                dec.bounds = (-90, 90)
+                dec.bounds = get_units.lat_bounds
 
             coordinates["ra"] = ra
             coordinates["dec"] = dec
@@ -600,14 +595,14 @@ class SourceParser(object):
             l = par_parser.get_variable()
 
             if l.bounds == (None, None):
-                l.bounds = (0, 360)
+                l.bounds = get_units.lon_bounds
 
             par_parser = ParameterParser("b", sky_direction_definition["b"])
 
             b = par_parser.get_variable()
 
             if b.bounds == (None, None):
-                b.bounds = (-90, 90)
+                b.bounds = get_units.lat_bounds
 
             coordinates["l"] = l
             coordinates["b"] = b
@@ -648,7 +643,6 @@ class SourceParser(object):
         if "degree" in polarization_definititon and "angle" in polarization_definititon:
             par_dict = {"degree": None, "angle": None}
             par_names = list(polarization_definititon.keys())
-            par_bounds = {"degree": (0, 100), "angle": (0, 180)}
 
             for par in par_names:
 
@@ -658,7 +652,10 @@ class SourceParser(object):
 
                     par_dict[par] = par_parser.get_variable()
 
-                    par_dict[par].bounds = par_bounds[par]
+                    par_dict[par].bounds = (
+                        polarization_definititon[par].get("min_value", None),
+                        polarization_definititon[par].get("max_value", None),
+                    )
 
                 else:
 

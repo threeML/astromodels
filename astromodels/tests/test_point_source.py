@@ -2,6 +2,7 @@ import astropy.units as u
 import numpy as np
 import numpy.testing as npt
 import pytest
+from astropy.coordinates import SkyCoord
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import (
@@ -11,9 +12,7 @@ from astromodels.functions import (
     Log_parabola,
     Powerlaw,
 )
-from astromodels.functions.functions_1D.functions import (
-    _ComplexTestFunction,
-)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 try:
     from astromodels.functions import PhAbs, TbAbs, WAbs
@@ -26,6 +25,7 @@ except ImportError:
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model, load_model
+from astromodels.core.units import get_units
 from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
 
@@ -67,6 +67,9 @@ def test_constructor():
 
     ra, dec = (125.6, -75.3)
     l, b = (288.44190139183564, -20.717313145391525)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
+        l, b = np.deg2rad((l, b))
 
     # This should throw as we are using Powerlaw instead of Powerlaw()
     with pytest.raises(TypeError):
@@ -141,6 +144,12 @@ def test_constructor():
 
         _ = PointSource("test", l=120.0, b=-180.0, components=[c1, c2])
 
+    # From astropy.coordinates.SkyCoord
+    pos = SkyCoord(ra=0, dec=0, unit="deg", frame="icrs")
+    ps = PointSource("test", sky_position=pos, spectral_shape=Powerlaw())
+    assert ps.position.get_ra() * get_units().angle == pos.ra
+    assert ps.position.get_dec() * get_units().angle == pos.dec
+
 
 def test_call():
 
@@ -152,7 +161,9 @@ def test_call():
     c1 = SpectralComponent("component1", po1)
     c2 = SpectralComponent("component2", po2)
 
-    point_source = PointSource("test_source", 125.4, -22.3, components=[c1, c2])
+    point_source = PointSource(
+        "test_source", 125.4 * u.deg, -22.3 * u.deg, components=[c1, c2]
+    )
 
     assert np.all(point_source.spectrum.component1([1, 2, 3]) == po1([1, 2, 3]))
     assert np.all(point_source.spectrum.component2([1, 2, 3]) == po2([1, 2, 3]))
@@ -394,7 +405,9 @@ def test_call_with_composite_function_with_units():
 def test_free_param():
 
     spectrum = Log_parabola()
-    source = PointSource("test_source", ra=123.4, dec=56.7, spectral_shape=spectrum)
+    source = PointSource(
+        "test_source", ra=123.4 * u.deg, dec=56.7 * u.deg, spectral_shape=spectrum
+    )
 
     parameters = [
         spectrum.alpha,

@@ -1,3 +1,5 @@
+from importlib.util import find_spec
+
 import astropy.io.fits as fits
 import astropy.units as u
 import numpy as np
@@ -7,11 +9,10 @@ from astropy import wcs
 from astromodels.core.model import Model
 from astromodels.core.model_parser import clone_model
 from astromodels.core.spectral_component import SpectralComponent
+from astromodels.core.units import get_units
 from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
-
-from importlib.util import find_spec
 
 if find_spec("mhealpy") is not None:
     has_mhealpy = True
@@ -96,6 +97,9 @@ def test_constructor():
     # RA, Dec and L,B of the same point in the sky
 
     ra, dec = (125.6, -75.3)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
+
     # l, b = (288.44190139183564, -20.717313145391525)
 
     # This should throw an error as we are using Powerlaw instead of Powerlaw()
@@ -113,8 +117,9 @@ def test_constructor():
 
     shape = Gaussian_on_sphere()
     source1 = ExtendedSource("my_source", shape, Powerlaw())
-    shape.lon0 = ra * u.degree
-    shape.lat0 = dec * u.degree
+    current_angle = get_units().angle
+    shape.lon0 = ra * current_angle
+    shape.lat0 = dec * current_angle
 
     assert source1.spatial_shape.lon0.value == ra
     assert source1.spatial_shape.lat0.value == dec
@@ -135,6 +140,8 @@ def test_call(tmp_path):
     c2 = SpectralComponent("component2", po2)
 
     ra, dec = (125.6, -75.3)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
 
     def test_one(class_type, name):
 
@@ -225,6 +232,8 @@ def test_call_with_units(tmp_path):
     c2 = SpectralComponent("component2", po2)
 
     ra, dec = (125.6, -75.3)
+    if get_units().angle == u.rad:
+        ra, dec = np.deg2rad((ra, dec))
 
     def test_one(class_type, name):
 
@@ -364,3 +373,29 @@ def test_free_param():
     for i, param in enumerate(parameters):
         param.free = True
         assert len(source.free_parameters) == i + 1
+
+
+def test_extended_unit():
+    spectrum = Powerlaw()
+    for k, v in _known_functions.items():  # TODO: test all 2D functions
+        if k == "Disk_on_sphere":
+            spat = v()
+            es = ExtendedSource("test", spectral_shape=spectrum, spatial_shape=spat)
+            spat.radius = 1 * u.deg
+            spectrum.piv = 1 * u.keV
+            energy = get_units().energy
+            area = get_units().area ** -1
+            time = get_units().time
+            spectrum.K.max_value = 1e20  # the test config uses TeV-1 m-2 h-1 ...
+            spectrum.K = 1 * u.Unit("keV-1 cm-2 s-1")
+            ra = np.zeros(1) * u.deg
+            dec = np.zeros(1) * u.deg
+            E = np.ones(1) * u.keV
+
+            res = es(ra, dec, E)
+            assert str(res.unit) == str(
+                energy**-1 * time**-1 * area * get_units().solid_angle ** -1
+            ), "Unit is not matching"
+            assert np.isclose(
+                res.to(u.Unit("keV-1 cm-2 s-1 deg-2")).value, 1 / np.pi
+            ), "Value for Disk_on_sphere not matching"

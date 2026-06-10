@@ -7,9 +7,9 @@ __author__ = "giacomov"
 
 import copy
 
+import astropy.units as u
 import numpy as np
 
-import astropy.units as u
 from astromodels.core.model import (
     CannotWriteModel,
     DuplicatedNode,
@@ -24,12 +24,7 @@ from astromodels.core.model_parser import (
     load_model,
 )
 from astromodels.core.parameter import IndependentVariable, Parameter
-from astromodels.functions import (
-    Gaussian_on_sphere,
-    Line,
-    Powerlaw,
-    Uniform_prior,
-)
+from astromodels.functions import Gaussian_on_sphere, Line, Powerlaw, Uniform_prior
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
@@ -661,7 +656,10 @@ def test_input_output_with_complex_functions(tmp_path):
     synch_spectrum.particle_distribution = my_particle_distribution
 
     synch_source = PointSource(
-        "synch_source", ra=12.6, dec=-13.5, spectral_shape=synch_spectrum
+        "synch_source",
+        ra=12.6 * u.deg,
+        dec=-13.5 * u.deg,
+        spectral_shape=synch_spectrum,
     )
 
     my_model = Model(electrons, synch_source)
@@ -710,7 +708,7 @@ def test_input_output_with_complex_functions_as_composites(tmp_path):
     photon_spec.dummy_1 = "love"
 
     synch_source = PointSource(
-        "synch_source", ra=12.6, dec=-13.5, spectral_shape=photon_spec
+        "synch_source", ra=12.6 * u.deg, dec=-13.5 * u.deg, spectral_shape=photon_spec
     )
 
     my_model = Model(electrons, synch_source)
@@ -985,7 +983,7 @@ def test_time_domain_integration():
 
     src = PointSource("test", ra=0.0, dec=0.0, spectral_shape=po)
 
-    m = Model(src)  # type: model.Model
+    m = Model(src)  # type: Model
 
     # Add time independent variable
     time = IndependentVariable("time", 0.0, u.s)

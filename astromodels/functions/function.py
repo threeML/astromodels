@@ -2,9 +2,9 @@ import ast
 import copy
 import inspect
 import math
+import numbers
 import os
 import re
-import sys
 import textwrap
 import uuid
 from builtins import chr, map, str
@@ -12,6 +12,7 @@ from operator import attrgetter
 from typing import Dict, List, Optional, Tuple
 
 import astropy.units as u
+from astropy.coordinates import SkyCoord
 import numba as nb
 import numpy as np
 from yaml.reader import ReaderError
@@ -22,6 +23,7 @@ from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
+from astromodels.core.units import get_units
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.pretty_list import dict_to_list
@@ -91,21 +93,6 @@ class UnknownParameter(ValueError):
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = "(no latex formula available)"
-
-
-# A function to find the calling sequence of a function, compatible
-# with both python2 and 3
-def _py2to3_getargspec(function):
-    if sys.version_info[0] < 3:
-
-        argspec = inspect.getargspec(function)
-
-    else:  # PY3
-
-        argspec = inspect.getfullargspec(function)
-
-    return argspec
-
 
 # This dictionary will contain the known function by name, so that the model_parser can
 # instance them by looking into this dictionary. It will be filled by the FunctionMeta
@@ -259,7 +246,7 @@ class FunctionMeta(type):
 
                 if parameter_name in dct["_properties"]:
 
-                    log.error("you must specify unique parameters and propert names")
+                    log.error("You must specify unique parameters and property names")
 
                     raise DesignViolation()
 
@@ -548,13 +535,13 @@ class FunctionMeta(type):
 
         try:
 
-            calling_sequence = _py2to3_getargspec(function.input_object).args
+            calling_sequence = inspect.getfullargspec(function.input_object).args
 
         except AttributeError:
 
             # This might happen if the function is without memoization
 
-            calling_sequence = _py2to3_getargspec(function).args
+            calling_sequence = inspect.getfullargspec(function).args
 
         if not calling_sequence[0] == "self":
 
@@ -636,6 +623,8 @@ class FunctionMeta(type):
         ):
 
             du = u.dimensionless_unscaled
+        elif definition["unit"] == "angle":
+            du = get_units().angle
 
         else:
 
@@ -810,9 +799,10 @@ class Function(Node):
 
         if (name is None) or (function_definition is None) or (parameters is None):
 
-            log.error("improper call")
-
-            raise AssertionError()
+            raise AssertionError(
+                "Improper call: Expecting at least one of "
+                + "name, function_defintion or parameters to be not None"
+            )
 
         # Set up the node
 
@@ -1472,7 +1462,7 @@ class Function1D(Function):
                 x.to(self.x_unit, equivalencies=u.spectral()), *values
             )
 
-        except u.UnitsError:  # pragma: no cover
+        except u.UnitsError as e:  # pragma: no cover
 
             # see if this is a dimensionless function
 
@@ -1487,14 +1477,14 @@ class Function1D(Function):
                     msg += " the wrong ones, when calling function %s" % self.name
                     log.error(msg)
 
-                    raise u.UnitsError()
+                    raise u.UnitsError() from e
             else:
                 msg = "Looks like you didn't provide all the units, or you provided the"
                 msg += " wrong ones, when calling function %s" % self.name
 
                 log.error(msg)
 
-                raise u.UnitsError()
+                raise u.UnitsError() from e
 
         else:
 
@@ -1507,8 +1497,6 @@ class Function1D(Function):
         # whole computation will be without units, with a big speed gain (~10x)
 
         # NOTE: it is important to use value, and not _value, to support linking
-
-        # values = list(map(attrgetter("value"), self._get_children()))
 
         values = list(map(attrgetter("value"), self._get_parameters()))
 
@@ -1546,7 +1534,7 @@ class Function1D(Function):
 @nb.njit
 def _local_deriv(a, b, epsilon):
 
-    return np.log(b / a) / math.log(1.0 + epsilon)
+    return np.log(b / a) / math.log(1.0 + epsilon)  # pragma: no cover
 
 
 class Function2D(Function):
@@ -1623,18 +1611,49 @@ class Function2D(Function):
     def z_unit(self):
         return self._z_unit
 
-    def __call__(self, x, y, *args, **kwargs):
+    def __call__(self, *args, **kwargs):
+        if len(args) > 1 or ("x" in kwargs.keys() and "y" in kwargs.keys()):
+            if "x" not in kwargs.keys():
+                x = args[0]
+            else:
+                x = kwargs["x"]
+                del kwargs["x"]
+            if "y" not in kwargs.keys():
+                y = args[1]
+            else:
+                y = kwargs["y"]
+                del kwargs["y"]
+            if isinstance(x, np.ndarray):
+                assert isinstance(
+                    y,
+                    np.ndarray,
+                ), "If x is in an array, y must also be an array of the same length"
+                assert x.shape == y.shape
+            elif isinstance(x, u.Quantity):
+                assert isinstance(
+                    y,
+                    u.Quantity,
+                ), "If x is in a Quantity, y must also be a Quantity"
+            else:
+                if hasattr(x, "__len__") and hasattr(y, "__len__"):
+                    assert len(x) == len(y)
+                    x = np.array(x)
+                    y = np.array(y)
 
-        # This method's code violates explicitly duck typing. The reason is that
-        # astropy.units introduce a very significant overload on any computation. For
-        # this reason we treat differently the case with units from the case without
-        # units, so that the latter case remains fast. Also, transforming an input which
-        # is not an array into an array introduce a significant overload (10
-        # microseconds or so), so we perform this transformation only when strictly
-        # required
+                else:
+                    assert isinstance(x, numbers.Real) and isinstance(
+                        y, numbers.Real
+                    ), "2D input must either be arrays, Quantities or real numbers"
+            if len(args) > 2:
+                new_args = [x, y]
+                new_args.extend(args[2:])
+            else:
+                new_args = [x, y]
+            return self.__call_tuple__(*new_args, **kwargs)
+        else:
+            return self.__call_skycoord__(*args, **kwargs)
 
-        assert type(x) is type(y), "You have to use the same type for x and y"
-
+    def __call_tuple__(self, x, y, *args, **kwargs):
         if isinstance(x, np.ndarray):
 
             # We have an array or a quantity as input
@@ -1658,6 +1677,10 @@ class Function2D(Function):
         else:
 
             # This is either a single number or a list
+            if not isinstance(x, u.Quantity):
+                assert isinstance(x, numbers.Real) and isinstance(
+                    y, numbers.Real
+                ), "You have to use the same type for x and y"
 
             # Transform the input to an array of floats
 
@@ -1673,6 +1696,33 @@ class Function2D(Function):
 
             return np.squeeze(result)
 
+    def __call_skycoord__(self, *args, **kwargs):
+        assert isinstance(
+            args[0], SkyCoord
+        ), "You must either provide two numbers, arrays or Quantities or one SkyCoord"
+        _coord = args[0]
+
+        if hasattr(self, "_frame"):
+            frame = self._frame
+        else:
+            frame = get_units().frame
+        _coord = _coord.transform_to(frame)
+        names = list(_coord.representation_component_names)
+        x = getattr(_coord, names[0]).to(get_units().angle).value
+        y = getattr(_coord, names[1]).to(get_units().angle).value
+
+        new_x = np.array(x, dtype=float, ndmin=1, copy=copy_if_needed)
+        new_y = np.array(y, dtype=float, ndmin=1, copy=copy_if_needed)
+
+        # Compute the function
+
+        result = self._call_without_units(new_x, new_y)
+
+        # Now remove all dimensions of size 1. For example, an array of shape (1,)
+        # will become a single number.
+
+        return np.squeeze(result)
+
     def _call_with_units(self, x, y):
 
         # Gather the current parameters' values with units
@@ -1680,10 +1730,9 @@ class Function2D(Function):
         values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
+            results = self.evaluate(x.to(self._x_unit), y.to(self._y_unit), *values)
 
-            results = self.evaluate(x, y, *values)
-
-        except u.UnitsError:  # pragma: no cover
+        except u.UnitsError:
 
             log.error(
                 "Looks like you didn't provide all the units, or you provided the wrong"
@@ -1697,7 +1746,7 @@ class Function2D(Function):
 
         else:
 
-            return results
+            return results.to(self.z_unit)
 
     @memoize
     def _call_without_units(self, x, y):

@@ -4,19 +4,25 @@ import shutil
 import numpy as np
 import numpy.testing as npt
 import pytest
+from astropy import wcs
+from astropy.io import fits
+from astropy.utils.data import get_pkg_data_filename
 
 from astromodels import Model, PointSource, clone_model, load_model
+from astromodels.core.units import get_units
 from astromodels.functions import (
     Band,
     Powerlaw,
+    SpatialTemplate_2D,
     TemplateModel,
     TemplateModelFactory,
     XSPECTableModel,
 )
 from astromodels.functions.template_model import (
-    convert_old_table_model,
     UnivariateSpline,
+    convert_old_table_model,
 )
+from astromodels.sources import ExtendedSource
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.file_utils import get_user_data_path
 
@@ -250,6 +256,38 @@ def test_template_factory(tmp_path):
     npt.assert_almost_equal(test(xx), old_table(xx))
 
     p.unlink()
+
+
+def test_spatial_template():
+    df = get_pkg_data_filename("photometry/spitzer_example_image.fits")
+    ihdu = 0
+    with fits.open(df) as f:
+        temp_wcs = wcs.WCS(header=f[int(ihdu)].header)
+        temp_map = f[int(ihdu)].data
+        if np.nan_to_num(temp_map).sum() > 0:
+            temp_map = np.nan_to_num(temp_map, nan=0.0)
+            assert np.isnan(temp_map).sum() == 0, "Failed"
+
+    area = wcs.utils.proj_plane_pixel_area(temp_wcs)
+    dOmega = (area * get_units().angle).value
+    total = np.nan_to_num(temp_map).sum() * dOmega
+
+    shape = SpatialTemplate_2D(fits_file=df)
+    spectrum = Powerlaw()
+
+    source = ExtendedSource(
+        "simple_source", spectral_shape=spectrum, spatial_shape=shape
+    )
+
+    # check if the unit is set correct for the amplitude
+    assert source.spatial_shape.K.unit == 1 / (get_units().solid_angle)
+    assert np.isclose(
+        total, 0.5680887664160024
+    ), "reading in the map yielded wrong result"
+
+    assert np.isclose(
+        shape.get_total_spatial_integral(), 1, rtol=1e-2
+    ), "failed to normalize map"
 
 
 def test_xspec_table_model():
