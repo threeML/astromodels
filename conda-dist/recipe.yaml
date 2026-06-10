@@ -29,17 +29,23 @@ requirements:
     - python
     - pip
     - setuptools
-    - if: (python>=3.13)
-      then: numpy==2.1
-      else: numpy==1.26
+    - if: python >= "3.13"
+      then: 
+      - numpy==2.1
+    - if: python < "3.13"
+      then:
+        - numpy==1.26
     - versioneer
 
   run:
     - python
     - numpy>=1.26
-    - if: (python>=3.13)
-      then: numpy>=2.1
-      else: numpy>=1.26
+    - if: python >= "3.13"
+      then:
+        - numpy>=2.1
+    - if: python < "3.13"
+      then: 
+      - numpy>=1.26
     - pyyaml
     - astropy
     - scipy
@@ -52,7 +58,8 @@ requirements:
     - rich
     - versioneer
     - if: (osx and x86_64)
-      then: llvmlite<0.46
+      then: 
+      - llvmlite<0.46
 
 
   run_constraints:
