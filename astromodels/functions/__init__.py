@@ -1,4 +1,3 @@
-# astromodels/functions/__init__.py
 from __future__ import annotations
 
 import warnings
@@ -6,6 +5,11 @@ from importlib import import_module
 
 # lists in case we get external dependencies also at this level
 _exports = {
+    # Base function classes
+    "Function1D": (".function",),
+    "Function2D": (".function",),
+    "Function3D": (".function",),
+    "FunctionMeta": (".function",),
     # functions_1D
     "Band": (".functions_1D",),
     "Band_Calderone": (".functions_1D",),
@@ -48,11 +52,6 @@ _exports = {
     "VAPEC": (".functions_1D",),
     "EBLattenuation": (".functions_1D",),
     "Synchrotron": (".functions_1D",),
-    # Base function classes
-    "Function1D": (".function",),
-    "Function2D": (".function",),
-    "Function3D": (".function",),
-    "FunctionMeta": (".function",),
     # functions_2D
     "Asymm_Gaussian_on_sphere": (".functions_2D",),
     "Disk_on_sphere": (".functions_2D",),
