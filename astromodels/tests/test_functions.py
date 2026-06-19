@@ -889,7 +889,7 @@ def test_function3D():
         )
 
 
-def test_spatial_template_2D():
+def test_spatial_template_2D(tmp_path):
 
     # make the fits files with templates to test.
     cards = {
@@ -914,19 +914,19 @@ def test_spatial_template_2D():
     data = np.zeros([400, 400])
     data[0:100, 0:100] = 1
     hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
-    hdu.writeto("test1.fits", overwrite=True)
+    hdu.writeto(tmp_path / "test1.fits", overwrite=True)
 
     data[:, :] = 0
     data[200:300, 200:300] = 1
     hdu = fits.PrimaryHDU(data=data, header=fits.Header(cards))
-    hdu.writeto("test2.fits", overwrite=True)
+    hdu.writeto(tmp_path / "test2.fits", overwrite=True)
 
     # Now load template files and test their evaluation
-    shape1 = SpatialTemplate_2D(fits_file="test1.fits")
+    shape1 = SpatialTemplate_2D(fits_file=tmp_path / "test1.fits")
 
     shape1.K = 1
 
-    shape2 = SpatialTemplate_2D(fits_file="test2.fits")
+    shape2 = SpatialTemplate_2D(fits_file=tmp_path / "test2.fits")
 
     shape2.K = 1
 
@@ -955,8 +955,8 @@ def test_spatial_template_2D():
     assert np.all(shape1([312, 306], [41, 41], 0) == [1.0, 0.0])
     assert np.all(shape2([312, 306], [41, 41], 0) == [0.0, 10.0])
 
-    os.remove("test1.fits")
-    os.remove("test2.fits")
+    os.remove(tmp_path / "test1.fits")
+    os.remove(tmp_path / "test2.fits")
 
 
 def test_linking_external_functions():

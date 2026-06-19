@@ -491,12 +491,12 @@ def test_external_parameters():
     #     m.add_external_parameter(fake_parameter)
 
 
-def test_input_output_basic():
+def test_input_output_basic(tmp_path):
 
     mg = ModelGetter()
     m = mg.model
 
-    temp_file = "__test.yml"
+    temp_file = tmp_path / "__test.yml"
 
     m.save(temp_file, overwrite=True)
 
@@ -549,7 +549,7 @@ def test_input_output_basic():
     os.remove(temp_file)
 
 
-def test_input_output_with_links():
+def test_input_output_with_links(tmp_path):
 
     mg = ModelGetter()
     m = mg.model
@@ -557,7 +557,7 @@ def test_input_output_with_links():
     # Make a link
     m.link(m.one.spectrum.main.Powerlaw.K, m.two.spectrum.main.Powerlaw.K)
 
-    temp_file = "__test.yml"
+    temp_file = tmp_path / "__test.yml"
 
     m.save(temp_file, overwrite=True)
 
@@ -576,7 +576,7 @@ def test_input_output_with_links():
     assert m_reloaded.one.spectrum.main.Powerlaw.K.value == new_value
 
 
-def test_input_output_with_external_parameters():
+def test_input_output_with_external_parameters(tmp_path):
 
     mg = ModelGetter()
     m = mg.model
@@ -591,7 +591,7 @@ def test_input_output_with_external_parameters():
 
     # Save model
 
-    temp_file = "__test.yml"
+    temp_file = tmp_path / "__test.yml"
 
     m.save(temp_file, overwrite=True)
 
@@ -618,7 +618,7 @@ def test_input_output_with_external_parameters():
 
     # Save model
 
-    temp_file = "__test.yml"
+    temp_file = tmp_path / "__test.yml"
 
     m.save(temp_file, overwrite=True)
 
@@ -636,7 +636,7 @@ def test_input_output_with_external_parameters():
     assert m.external_parameter.value == m_reloaded.external_parameter.value
 
 
-def test_input_output_with_complex_functions():
+def test_input_output_with_complex_functions(tmp_path):
 
     my_particle_distribution = Powerlaw()
 
@@ -646,7 +646,7 @@ def test_input_output_with_complex_functions():
 
     # Now set up the synch. spectrum for our source and the source itself
 
-    synch_spectrum = _ComplexTestFunction(file_name="test.txt")
+    synch_spectrum = _ComplexTestFunction(file_name=tmp_path / "test.txt")
 
     synch_spectrum.dummy = "love"
 
@@ -663,9 +663,9 @@ def test_input_output_with_complex_functions():
 
     my_model.display()
 
-    my_model.save("__test.yml")
+    my_model.save(tmp_path / "__test.yml")
 
-    new_model = load_model("__test.yml")
+    new_model = load_model(tmp_path / "__test.yml")
 
     assert len(new_model.sources) == len(my_model.sources)
 
@@ -674,14 +674,16 @@ def test_input_output_with_complex_functions():
         == new_model.electrons.spectrum.main.shape.index.value
     )
 
-    assert new_model.synch_source.spectrum.main.shape.file_name.value == "test.txt"
+    assert new_model.synch_source.spectrum.main.shape.file_name.value == str(
+        tmp_path / "test.txt"
+    )
 
     assert new_model.synch_source.spectrum.main.shape.dummy.value == "love"
 
-    os.remove("__test.yml")
+    os.remove(tmp_path / "__test.yml")
 
 
-def test_input_output_with_complex_functions_as_composites():
+def test_input_output_with_complex_functions_as_composites(tmp_path):
 
     my_particle_distribution = Powerlaw()
 
@@ -710,9 +712,9 @@ def test_input_output_with_complex_functions_as_composites():
 
     my_model.display()
 
-    my_model.save("__test.yml")
+    my_model.save(tmp_path / "__test.yml")
 
-    new_model = load_model("__test.yml")
+    new_model = load_model(tmp_path / "__test.yml")
 
     assert len(new_model.sources) == len(my_model.sources)
 
@@ -725,7 +727,7 @@ def test_input_output_with_complex_functions_as_composites():
 
     assert new_model.synch_source.spectrum.main.shape.dummy_1.value == "love"
 
-    os.remove("__test.yml")
+    os.remove(tmp_path / "__test.yml")
 
 
 def test_add_remove_sources():
@@ -814,7 +816,7 @@ def test_add_and_remove_independent_variable():
         assert m.one.spectrum.main.Powerlaw.K.value == link_law(t)
 
 
-def test_input_output_with_independent_variable():
+def test_input_output_with_independent_variable(tmp_path):
 
     mg = ModelGetter()
     m = mg.model
@@ -827,7 +829,7 @@ def test_input_output_with_independent_variable():
 
     # Save model
 
-    temp_file = "__test.yml"
+    temp_file = tmp_path / "__test.yml"
 
     m.save(temp_file, overwrite=True)
 
@@ -945,29 +947,29 @@ def test_clone_model():
     _ = clone_model(m1)
 
 
-def test_model_parser():
+def test_model_parser(tmp_path):
 
     mg = ModelGetter()
     m1 = mg.model
 
-    m1.save("__test.yml")
+    m1.save(tmp_path / "__test.yml")
 
-    _ = ModelParser("__test.yml")
+    _ = ModelParser(tmp_path / "__test.yml")
 
     with pytest.raises(ModelIOError):
 
         _ = ModelParser("__not_existing.yml")
 
     # Corrupt the yaml file
-    with open("__test.yml", "a") as f:
+    with open(tmp_path / "__test.yml", "a") as f:
 
         f.write("this is made to break the yaml parser")
 
     with pytest.raises(ModelYAMLError):
 
-        _ = ModelParser("__test.yml")
+        _ = ModelParser(tmp_path / "__test.yml")
 
-    os.remove("__test.yml")
+    os.remove(tmp_path / "__test.yml")
 
 
 def test_time_domain_integration():

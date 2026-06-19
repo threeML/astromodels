@@ -50,8 +50,8 @@ def get_path_of_log_dir():
 
     # Create it if doesn't exist
     if not user_log.exists():
-
-        user_log.mkdir(parents=True)
+        # still need to catch this for parallelized tests
+        user_log.mkdir(parents=True, exist_ok=True)
 
     return user_log
 
