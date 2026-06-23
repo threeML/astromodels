@@ -75,6 +75,7 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         Sin,
         SmoothlyBrokenPowerLaw,
         SpatialTemplate_2D,
+        SpatialTemplate_2D_Healpix,
         Standard_Rv,
         StepFunction,
         StepFunctionUpper,

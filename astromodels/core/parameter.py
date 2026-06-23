@@ -931,7 +931,7 @@ class ParameterBase(Node):
     def to_dict(self, minimal=False) -> Dict[str, Any]:
         """Returns the representation for serialization."""
 
-        data = collections.OrderedDict()
+        data = dict()
 
         if minimal:
 
@@ -1488,7 +1488,7 @@ class Parameter(ParameterBase):
 
                 data["value"] = "f(%s)" % self._aux_variable["variable"]._get_path()
 
-                aux_variable_law_data = collections.OrderedDict()
+                aux_variable_law_data = dict()
                 aux_variable_law_data[self._aux_variable["law"].name] = (
                     self._aux_variable["law"].to_dict()
                 )

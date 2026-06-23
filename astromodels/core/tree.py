@@ -60,7 +60,7 @@ class Node(NodeBase):
 
     def to_dict(self, minimal: bool = False) -> Dict[str, Any]:
         """"""
-        this_dict: Dict[str, Any] = collections.OrderedDict()
+        this_dict: Dict[str, Any] = dict()
 
         for child in self._get_children():
 

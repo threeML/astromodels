@@ -71,7 +71,6 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
 
         self.K.unit = y_unit
 
-    # noinspection PyPep8Naming
     def evaluate(self, x, K, piv, index):
 
         if isinstance(x, astropy_units.Quantity):
@@ -89,6 +88,30 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
         result = nb_func.plaw_eval(x_, K_, index_, piv_)
 
         return result * unit_
+
+    def integral(self, a, b):
+        if isinstance(a, astropy_units.Quantity) and isinstance(
+            b, astropy_units.Quantity
+        ):
+            index_ = self.index.value
+            K_ = self.K.value
+            piv_ = self.piv.value
+            a_ = a.value
+            b_ = b.value
+
+            unit_ = self.y_unit
+
+        else:
+            unit_ = 1.0
+            K_, piv_, a_, b_, index_ = (
+                self.K.value,
+                self.piv.value,
+                a,
+                b,
+                self.index.value,
+            )
+
+        return nb_func.plaw_integral(a_, b_, K_, index_, piv_) * unit_
 
 
 # noinspection PyPep8Naming
@@ -1034,7 +1057,7 @@ class Band_Calderone(Function1D, metaclass=FunctionMeta):
 
         Esplit = (alpha - beta) * Ec
 
-        # Evaluate model integrated flux and normalization
+        # Evaluate model integrald flux and normalization
 
         if isinstance(alpha, astropy_units.Quantity):
 

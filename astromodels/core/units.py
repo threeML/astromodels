@@ -2,8 +2,6 @@ from builtins import object
 
 __author__ = "giacomov"
 
-import collections
-
 import astropy.units as u
 
 from astromodels.utils.pretty_list import dict_to_list
@@ -71,7 +69,7 @@ class _AstromodelsUnits(object):
         if area_unit is None:
             area_unit = _AREA
 
-        self._units = collections.OrderedDict()
+        self._units = dict()
 
         self._units["energy"] = energy_unit
         self._units["time"] = time_unit

@@ -36,7 +36,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                python-version: ["3.10", "3.11", "3.12", "3.13"]
+                python-version: ["3.11", "3.12", "3.13"]
                 os: ["ubuntu-latest", "macos-latest", "macos-15-intel","ubuntu-24.04-arm"]
         runs-on: ${{ matrix.os }}
         steps:
@@ -49,7 +49,8 @@ jobs:
             - name: Install dependencies
               run: |
                   python -m pip install --upgrade pip wheel
-                  pip install --upgrade flake8 coverage pytest-cov cython
+                  pip install --upgrade flake8 coverage pytest-cov cython pytest-xdist
+                  pip install mhealpy
                   
                   if [[ ${{matrix.os}} != ubuntu-latest && ${{matrix.os}} != ubuntu-24.04-arm ]];
                   then
@@ -66,7 +67,7 @@ jobs:
 
             - name: Test pip on ${{ matrix.python-version }}
               run: |
-                  python -m pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml
+                  pytest -vv --cov=astromodels/ --cov-report=xml --junitxml=junit/test-results.xml -n auto --dist worksteal
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
@@ -122,7 +123,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
             - name: Add conda ${{ matrix.python-version }} to system path
-              uses: conda-incubator/setup-miniconda@v3
+              uses: conda-incubator/setup-miniconda@v4
               with:
                   activate-environment: "test_env"
                   auto-activate-base: false
@@ -132,6 +133,8 @@ jobs:
                   environment-file: ${{ matrix.env-file }}
                   use-only-tar-bz2: false
                   channel-priority: true
+                  mamba-version: "2.5"
+
             - name: Init Env
               shell: bash -l {0}
               run: |
@@ -151,8 +154,8 @@ jobs:
 
                   export PKG_VERSION=$(python -c "import versioneer;print(versioneer.get_version())")
 
-                  mamba install ${PKG} codecov pytest-cov git flake8
-
+                  mamba install ${PKG} codecov pytest-cov git flake8 pytest-xdist
+            
             - name: Conda list
               shell: bash -l {0}
               run: |
@@ -160,6 +163,7 @@ jobs:
             - name: install it
               shell: bash -l {0}
               run: |
+                  pip install mhealpy
                   pip install -e .
             - name: Lint with flake8
               shell: bash -l {0}
@@ -175,11 +179,12 @@ jobs:
                 echo $LD_LIBRARY_PATH
                 #ls $CONDA_PREFIX/lib/libwcs*
                 ls $CONDA_PREFIX/heasoft/lib/libwcs*
-                python -c "import astromodels.xspec"
+                # also creates us all the models -- needed for the parallelized tests
+                python -c "from astromodels.xspec import *"
 
             - name: Test astromodels
               shell: bash -l {0}
-              run: python -m pytest -vv --cov=astromodels --cov-report=xml
+              run: pytest -vv --cov=astromodels --cov-report=xml -n auto --dist worksteal
               env:
                   OMP_NUM_THREADS: 1
                   MKL_NUM_THREADS: 1
