@@ -164,7 +164,6 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
-    <span class="c1"># noinspection PyPep8Naming</span>
 <div class="viewcode-block" id="Powerlaw.evaluate">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
@@ -184,6 +183,33 @@
         <span class="n">result</span> <span class="o">=</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_eval</span><span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">result</span> <span class="o">*</span> <span class="n">unit_</span></div>
+
+
+<div class="viewcode-block" id="Powerlaw.integral">
+<a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw.integral">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">b</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span>
+        <span class="p">):</span>
+            <span class="n">index_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">K_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">piv_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">a_</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">b_</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="n">unit_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_unit</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unit_</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">K_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">,</span> <span class="n">a_</span><span class="p">,</span> <span class="n">b_</span><span class="p">,</span> <span class="n">index_</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">piv</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                <span class="n">a</span><span class="p">,</span>
+                <span class="n">b</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">nb_func</span><span class="o">.</span><span class="n">plaw_integral</span><span class="p">(</span><span class="n">a_</span><span class="p">,</span> <span class="n">b_</span><span class="p">,</span> <span class="n">K_</span><span class="p">,</span> <span class="n">index_</span><span class="p">,</span> <span class="n">piv_</span><span class="p">)</span> <span class="o">*</span> <span class="n">unit_</span></div>
 </div>
 
 
@@ -1198,7 +1224,7 @@
 
         <span class="n">Esplit</span> <span class="o">=</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">Ec</span>
 
-        <span class="c1"># Evaluate model integrated flux and normalization</span>
+        <span class="c1"># Evaluate model integrald flux and normalization</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
 
