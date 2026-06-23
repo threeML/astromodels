@@ -1,6 +1,5 @@
 import logging
 
-import collections
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Type
 

@@ -1,6 +1,5 @@
 import logging
 
-import collections
 import gc
 import os
 import re

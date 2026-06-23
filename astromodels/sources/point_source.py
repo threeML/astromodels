@@ -1,6 +1,5 @@
 import logging
 
-import collections
 from typing import Dict, Optional
 
 import astropy.units as u

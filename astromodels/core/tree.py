@@ -1,6 +1,5 @@
 import logging
 
-import collections
 from typing import Any, Dict
 
 from astromodels.core.node_type import NodeBase
