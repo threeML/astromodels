@@ -1,9 +1,6 @@
 import numpy as np
 
-from astromodels.functions.function import (
-    Function1D,
-    FunctionMeta,
-)
+from astromodels.functions.function import Function1D, FunctionMeta
 
 
 def get_polynomial(order: int) -> Function1D:

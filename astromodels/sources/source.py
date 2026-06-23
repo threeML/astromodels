@@ -23,7 +23,7 @@ class UnknownSourceType(Exception):
     pass
 
 
-class Source(object):
+class Source:
     def __init__(
         self, list_of_components: List[Any], src_type: str, spatial_shape=None
     ):

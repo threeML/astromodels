@@ -1,3 +1,4 @@
+import pickle
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Type
 
@@ -5,14 +6,12 @@ from rich.tree import Tree
 
 from astromodels.utils.logging import setup_logger
 
-from .cpickle_compatibility_layer import cPickle
-
 log = setup_logger(__name__)
 
 
 # This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)
 # during unpickling
-class NewNodeUnpickler(object):
+class NewNodeUnpickler:
     def __call__(self, cls):
 
         instance = cls.__new__(cls)
@@ -76,7 +75,7 @@ class NodeBase:
     # This is necessary for copy.deepcopy to work
     def __deepcopy__(self, memodict={}):
 
-        return cPickle.loads(cPickle.dumps(self))
+        return pickle.loads(pickle.dumps(self))
 
     def _add_child(self, child: Type["NodeBase"]) -> None:
 

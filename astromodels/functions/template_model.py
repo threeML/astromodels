@@ -15,6 +15,12 @@ import scipy.interpolate
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
+from astromodels.utils.exceptions import (
+    IncompleteGrid,
+    InvalidTemplateModelFile,
+    MissingDataFile,
+    ValuesNotInGrid,
+)
 from astromodels.utils.file_utils import copy_if_needed
 from astromodels.utils.logging import setup_logger
 
@@ -33,28 +39,12 @@ __all__ = [
 ]
 
 
-class IncompleteGrid(RuntimeError):
-    pass
-
-
-class ValuesNotInGrid(ValueError):
-    pass
-
-
-class MissingDataFile(RuntimeError):
-    pass
-
-
-class InvalidTemplateModelFile(RuntimeError):
-    pass
-
-
 # This dictionary will keep track of the new classes already created in the current
 # session
 _classes_cache = {}
 
 
-class GridInterpolate(object):
+class GridInterpolate:
     def __init__(self, grid, values):
         self._grid = grid
         self._values = np.ascontiguousarray(values)
@@ -63,7 +53,7 @@ class GridInterpolate(object):
         return scipy.interpolate.interpn(self._grid, self._values, v)
 
 
-class UnivariateSpline(object):
+class UnivariateSpline:
     def __init__(self, x, y):
         self._x = x
         self._y = y
@@ -75,7 +65,7 @@ class UnivariateSpline(object):
             return np.interp(v, self._x, self._y)
 
 
-class TemplateModelFactory(object):
+class TemplateModelFactory:
     def __init__(
         self,
         name: str,
@@ -377,7 +367,7 @@ def add_method(self, method, name=None):
     setattr(self.__class__, name, method)
 
 
-class RectBivariateSplineWrapper(object):
+class RectBivariateSplineWrapper:
     """Wrapper around RectBivariateSpline, which supplies a __call__ method
     which accept the same syntax as the other interpolation methods."""
 
@@ -815,7 +805,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         return data
 
 
-class XSPECTableModel(object):
+class XSPECTableModel:
     def __init__(
         self,
         xspec_table_model_file,

@@ -1,21 +1,20 @@
 import math
-from builtins import object
 
-import numba as nb
 import numpy as np
+from numba import vectorize  # TODO: can we get rid of that somehow?
 
 
-@nb.vectorize
+@vectorize
 def _pow(x, y):
     return math.pow(x, y)
 
 
-@nb.vectorize
+@vectorize
 def _log10(x):
     return math.log10(x)
 
 
-class ParameterTransformation(object):
+class ParameterTransformation:
     def __init__(self, is_positive=False):
 
         self._is_positive = is_positive
@@ -38,7 +37,7 @@ class LogarithmicTransformation(ParameterTransformation):
 
         super(LogarithmicTransformation, self).__init__(is_positive=True)
 
-    def forward(self, external_value, vector=False):
+    def forward(self, external_value):
 
         #  Throw an error if taking the logarithm of a negative number (or nan)
 

@@ -1,7 +1,7 @@
 __author__ = "giacomov"
 
 
-import numpy
+import numpy as np
 
 from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
@@ -75,7 +75,7 @@ class ParticleSource(Source, Node):
             component.shape(energies) for component in list(self.components.values())
         ]
 
-        return numpy.sum(results, 0)
+        return np.sum(results, 0)
 
     def _repr__base(self, rich_output=False):
         """Representation of the object.

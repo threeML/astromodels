@@ -73,6 +73,7 @@ jobs:
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
+                  ATOMDB: "$HOME/atomdb"
 
             - name: Publish Unit Test Results Ubuntu
               uses: EnricoMi/publish-unit-test-result-action@v2
@@ -190,6 +191,8 @@ jobs:
                   MKL_NUM_THREADS: 1
                   NUMEXPR_NUM_THREADS: 1
                   MPLBACKEND: "Agg"
+                  ATOMDB: "$HOME/atomdb"
+
 
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v5

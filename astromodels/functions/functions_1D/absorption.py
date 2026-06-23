@@ -9,38 +9,17 @@ import numpy as np
 from astropy.io import fits
 
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils import _get_data_file_path
-from astromodels.utils.configuration import astromodels_config
+from astromodels.utils import _get_data_file_path, check_import
+from astromodels.utils.exceptions import InvalidUsageForFunction
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
-
-try:
-
-    # ebltable is a Python packages to read in and interpolate tables for the photon
-    # density of the Extragalactic Background Light (EBL) and the resulting opacity for
-    # high energy gamma rays.
-
+if check_import("ebltable", "EBLattenuation"):
     import ebltable.tau_from_model as ebltau
 
     has_ebltable = True
-
-except ImportError:
-
-    if astromodels_config.logging.startup_warnings:
-        msg = "The ebltable package is not available. Models that depend on it will"
-        msg += " not be available"
-        log.warning(msg)
-
+else:
     has_ebltable = False
-
-
-class EBLTableNotAvailable(ImportWarning):
-    pass
-
-
-class InvalidUsageForFunction(Exception):
-    pass
 
 
 @dataclass(frozen=False)
@@ -176,12 +155,7 @@ class PhAbs(Function1D, metaclass=FunctionMeta):
         self.redshift.unit = astropy_units.dimensionless_unscaled
 
     def _init_xsect(self):
-        """Set the abundance table.
-
-        :param abund_table: "ASPL", "AG89"
-        :returns:
-        :rtype:
-        """
+        """Set the abundance table."""
 
         # load cross section data
 
@@ -389,100 +363,94 @@ class WAbs(Function1D, metaclass=FunctionMeta):
         return spec
 
 
-if has_ebltable:
+class EBLattenuation(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+        Attenuation factor for absorption in the extragalactic background light
+        (EBL), to be used for extragalactic source spectra. Based on package
+        "ebltable" by Manuel Meyer, https://github.com/me-manu/ebltable .
 
-    class EBLattenuation(Function1D, metaclass=FunctionMeta):
-        r"""
-        description :
-            Attenuation factor for absorption in the extragalactic background light
-            (EBL), to be used for extragalactic source spectra. Based on package
-            "ebltable" by Manuel Meyer, https://github.com/me-manu/ebltable .
+    latex: not available
 
-        latex: not available
+    parameters :
 
-        parameters :
+      redshift :
+            desc : redshift of the source
+            initial value : 1.0
+            fix : yes
 
-          redshift :
-                desc : redshift of the source
-                initial value : 1.0
-                fix : yes
+      attenuation :
+            desc : scaling factor for the strength of attenuation
+            initial value : 1.0
+            min : 0.0
+            max : 10.0
+            fix : yes
 
-          attenuation :
-                desc : scaling factor for the strength of attenuation
-                initial value : 1.0
-                min : 0.0
-                max : 10.0
-                fix : yes
-
-        properties:
-           ebl_model:
-              desc: set the EBL model
-              initial value: dominguez
-              allowed values:
-                 - dominguez
-                 - franceschini
-                 - kneiske
-                 - inuoe
-                 - gilmore
-              function: _set_ebl_model
+    properties:
+       ebl_model:
+          desc: set the EBL model
+          initial value: dominguez
+          allowed values:
+             - dominguez
+             - franceschini
+             - kneiske
+             - inuoe
+             - gilmore
+          function: _set_ebl_model
 
 
-        """
+    """
 
-        # def _setup(self):
+    def __init__(self, *args, **kwargs):
+        check_import("ebltable", "EBLattenuation")
+        super().__init__(self, *args, **kwargs)
 
-        #     # define EBL model, use dominguez as default
-        #     self._tau = ebltau.OptDepth.readmodel(
-        # model=astromodels_config.absorption_models.ebl_table.value)
+    def _set_ebl_model(self):
 
-        def _set_ebl_model(self):
+        # passing modelname to ebltable, which will check if defined
+        self._tau = ebltau.OptDepth.readmodel(model=self.ebl_model.value)
 
-            # passing modelname to ebltable, which will check if defined
-            self._tau = ebltau.OptDepth.readmodel(model=self.ebl_model.value)
+    def _set_units(self, x_unit, y_unit):
 
-        def _set_units(self, x_unit, y_unit):
+        if not hasattr(x_unit, "physical_type") or x_unit.physical_type != "energy":
 
-            if not hasattr(x_unit, "physical_type") or x_unit.physical_type != "energy":
-
-                # x should be energy
-                raise InvalidUsageForFunction(
-                    "Unit for x is not an energy. The function "
-                    "EBLOptDepth calculates energy-dependent "
-                    "absorption."
-                )
-
-            # y should be dimensionless
-            if (
-                not hasattr(y_unit, "physical_type")
-                or y_unit.physical_type != "dimensionless"
-            ):
-                raise InvalidUsageForFunction("Unit for y is not dimensionless.")
-
-            self.redshift.unit = astropy_units.dimensionless_unscaled
-            self.attenuation.unit = astropy_units.dimensionless_unscaled
-
-        def evaluate(self, x, redshift, attenuation):
-
-            if isinstance(x, astropy_units.Quantity):
-
-                # ebltable expects TeV
-                eTeV = x.to(astropy_units.TeV).value
-                _unit = astropy_units.dimensionless_unscaled
-                _redshift = redshift.value
-                _attenuation = attenuation.value
-
-            else:
-
-                # otherwise it's in keV
-                eTeV = x / 1.0e9
-
-                _unit = 1.0
-                _redshift = redshift
-                _attenuation = attenuation
-
-            return (
-                _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation) * _unit
+            # x should be energy
+            raise InvalidUsageForFunction(
+                "Unit for x is not an energy. The function "
+                "EBLOptDepth calculates energy-dependent "
+                "absorption."
             )
+
+        # y should be dimensionless
+        if (
+            not hasattr(y_unit, "physical_type")
+            or y_unit.physical_type != "dimensionless"
+        ):
+            raise InvalidUsageForFunction("Unit for y is not dimensionless.")
+
+        self.redshift.unit = astropy_units.dimensionless_unscaled
+        self.attenuation.unit = astropy_units.dimensionless_unscaled
+
+    def evaluate(self, x, redshift, attenuation):
+
+        if isinstance(x, astropy_units.Quantity):
+
+            # ebltable expects TeV
+            eTeV = x.to(astropy_units.TeV).value
+            _unit = astropy_units.dimensionless_unscaled
+            _redshift = redshift.value
+            _attenuation = attenuation.value
+
+        else:
+
+            # otherwise it's in keV
+            eTeV = x / 1.0e9
+
+            _unit = 1.0
+            _redshift = redshift
+            _attenuation = attenuation
+
+        return _numba_eval(self._tau.opt_depth(_redshift, eTeV), _attenuation) * _unit
 
 
 @nb.vectorize

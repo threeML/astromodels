@@ -1,187 +1,133 @@
-from .functions_1D import (
-    Band,
-    Band_Calderone,
-    Band_grbm,
-    Blackbody,
-    Broken_powerlaw,
-    Constant,
-    Cubic,
-    Cutoff_powerlaw,
-    Cutoff_powerlaw_Ep,
-    DiracDelta,
-    DoubleSmoothlyBrokenPowerlaw,
-    Exponential_cutoff,
-    GenericFunction,
-    Inverse_cutoff_powerlaw,
-    Line,
-    Log_parabola,
-    ModifiedBlackbody,
-    NonDissipativePhotosphere,
-    NonDissipativePhotosphere_Deep,
-    PhAbs,
-    Powerlaw,
-    Powerlaw_Eflux,
-    Powerlaw_flux,
-    Quadratic,
-    Quartic,
-    Sin,
-    SmoothlyBrokenPowerLaw,
-    Standard_Rv,
-    StepFunction,
-    StepFunctionUpper,
-    Super_cutoff_powerlaw,
-    TbAbs,
-    WAbs,
-    ZDust,
-    get_polynomial,
-    has_atomdb,
-    has_ebltable,
-    has_gsl,
-    has_naima,
-)
+from __future__ import annotations
 
-if has_naima:
-    from .functions_1D import Synchrotron
+import warnings
+from importlib import import_module
 
-if has_gsl:
-    from .functions_1D import Cutoff_powerlaw_flux
+# lists in case we get external dependencies also at this level
+_exports = {
+    # Base function classes
+    "Function1D": (".function",),
+    "Function2D": (".function",),
+    "Function3D": (".function",),
+    "FunctionMeta": (".function",),
+    # functions_1D
+    "Band": (".functions_1D",),
+    "Band_Calderone": (".functions_1D",),
+    "Band_grbm": (".functions_1D",),
+    "Blackbody": (".functions_1D",),
+    "Broken_powerlaw": (".functions_1D",),
+    "Constant": (".functions_1D",),
+    "Cubic": (".functions_1D",),
+    "Cutoff_powerlaw": (".functions_1D",),
+    "Cutoff_powerlaw_Ep": (".functions_1D",),
+    "Cutoff_powerlaw_flux": (".functions_1D",),  # optional (gsl)
+    "DiracDelta": (".functions_1D",),
+    "DoubleSmoothlyBrokenPowerlaw": (".functions_1D",),
+    "Exponential_cutoff": (".functions_1D",),
+    "GenericFunction": (".functions_1D",),
+    "Inverse_cutoff_powerlaw": (".functions_1D",),
+    "Line": (".functions_1D",),
+    "Log_parabola": (".functions_1D",),
+    "ModifiedBlackbody": (".functions_1D",),
+    "NonDissipativePhotosphere": (".functions_1D",),
+    "NonDissipativePhotosphere_Deep": (".functions_1D",),
+    "PhAbs": (".functions_1D",),
+    "Powerlaw": (".functions_1D",),
+    "Powerlaw_Eflux": (".functions_1D",),
+    "Powerlaw_flux": (".functions_1D",),
+    "Quadratic": (".functions_1D",),
+    "Quartic": (".functions_1D",),
+    "Sin": (".functions_1D",),
+    "SmoothlyBrokenPowerLaw": (".functions_1D",),
+    "Standard_Rv": (".functions_1D",),
+    "StepFunction": (".functions_1D",),
+    "StepFunctionUpper": (".functions_1D",),
+    "Super_cutoff_powerlaw": (".functions_1D",),
+    "TbAbs": (".functions_1D",),
+    "WAbs": (".functions_1D",),
+    "ZDust": (".functions_1D",),
+    "get_polynomial": (".functions_1D",),
+    # Optional 1D features (deps handled in functions_1D)
+    "APEC": (".functions_1D",),
+    "VAPEC": (".functions_1D",),
+    "EBLattenuation": (".functions_1D",),
+    "Synchrotron": (".functions_1D",),
+    # functions_2D
+    "Asymm_Gaussian_on_sphere": (".functions_2D",),
+    "Disk_on_sphere": (".functions_2D",),
+    "Ellipse_on_sphere": (".functions_2D",),
+    "Gaussian_on_sphere": (".functions_2D",),
+    "Latitude_galactic_diffuse": (".functions_2D",),
+    "Power_law_on_sphere": (".functions_2D",),
+    "SpatialTemplate_2D": (".functions_2D",),
+    "SpatialTemplate_2D_Healpix": (".functions_2D",),
+    # functions_3D
+    "Continuous_injection_diffusion": (".functions_3D",),
+    "Continuous_injection_diffusion_ellipse": (".functions_3D",),
+    "Continuous_injection_diffusion_legacy": (".functions_3D",),
+    "GalPropTemplate_3D": (".functions_3D",),
+    "Hermes": (".functions_3D",),
+    # priors
+    "Beta": (".priors",),
+    "Cauchy": (".priors",),
+    "Cosine_Prior": (".priors",),
+    "Exponential": (".priors",),
+    "Gamma": (".priors",),
+    "Gaussian": (".priors",),
+    "Log_normal": (".priors",),
+    "Log_uniform_prior": (".priors",),
+    "Powerlaw_Prior": (".priors",),
+    "Truncated_gaussian": (".priors",),
+    "Uniform_prior": (".priors",),
+    # template_model
+    "TemplateModel": (".template_model",),
+    "TemplateModelFactory": (".template_model",),
+    "XSPECTableModel": (".template_model",),
+    # dark_matter
+    "DMFitFunction": (".dark_matter.dm_models",),
+    "DMSpectra": (".dark_matter.dm_models",),
+    "list_functions": ("astromodels.utils.list_functions",),
+    "has_atomdb": (".functions_1D",),
+    "has_ebltable": (".functions_1D",),
+    "has_naima": (".functions_1D",),
+    "has_gsl": (".functions_1D",),
+}
+_depcrecated = {
+    "ModelAssertionViolation": ("astromodels.utils.exceptions",),
+    "MissingDataFile": ("astromodels.utils.exceptions",),
+    "IncompleteGrid": ("astromodels.utils.exceptions",),
+    "ValuesNotInGrid": ("astromodels.utils.exceptions",),
+}
+_exports.update(_depcrecated)
 
-if has_ebltable:
-    from .functions_1D import EBLattenuation
+# Public API surface: stable list of names
+__all__ = sorted(_exports.keys())
 
-if has_atomdb:
 
-    from .functions_1D import APEC, VAPEC
+def __getattr__(name: str):
+    # Lazy re-export: import the defining module only when the symbol is accessed
+    mod_path = _exports.get(name)
+    dep_path = _depcrecated.get(name)
+    if dep_path:
+        warnings.warn(
+            f"astromodels.functions.{name} is deprecated; use {dep_path} instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+    if mod_path is None:
+        # Unknown name
+        raise AttributeError(name)
+    mod = import_module(mod_path[0], __name__)
+    try:
+        obj = getattr(mod, name)
+    except AttributeError as e:
+        raise AttributeError(
+            f"{name} is not present in {mod.__name__}. "
+            "This may indicate a missing optional dependency or an internal mismatch."
+        ) from e
+    globals()[name] = obj  # cache binding
+    return obj
 
-from .dark_matter.dm_models import DMFitFunction, DMSpectra
-from .function import (
-    Function1D,
-    Function2D,
-    Function3D,
-    FunctionMeta,
-    ModelAssertionViolation,
-)
-from .functions_2D import (
-    Asymm_Gaussian_on_sphere,
-    Disk_on_sphere,
-    Ellipse_on_sphere,
-    Gaussian_on_sphere,
-    Latitude_galactic_diffuse,
-    Power_law_on_sphere,
-    SpatialTemplate_2D,
-    SpatialTemplate_2D_Healpix,
-)
-from .functions_3D import (
-    Continuous_injection_diffusion,
-    Continuous_injection_diffusion_ellipse,
-    Continuous_injection_diffusion_legacy,
-    GalPropTemplate_3D,
-    Hermes,
-)
-from .priors import (
-    Beta,
-    Cauchy,
-    Cosine_Prior,
-    Exponential,
-    Gamma,
-    Gaussian,
-    Log_normal,
-    Log_uniform_prior,
-    Powerlaw_Prior,
-    Truncated_gaussian,
-    Uniform_prior,
-)
-from .template_model import (
-    MissingDataFile,
-    TemplateModel,
-    TemplateModelFactory,
-    XSPECTableModel,
-)
 
-__all__ = [
-    "Band",
-    "Band_Calderone",
-    "Band_grbm",
-    "Broken_powerlaw",
-    "Cutoff_powerlaw",
-    "Cutoff_powerlaw_Ep",
-    "Inverse_cutoff_powerlaw",
-    "Powerlaw",
-    "Powerlaw_Eflux",
-    "Powerlaw_flux",
-    "SmoothlyBrokenPowerLaw",
-    "DoubleSmoothlyBrokenPowerlaw",
-    "Super_cutoff_powerlaw",
-    "Constant",
-    "Cubic",
-    "DiracDelta",
-    "Exponential_cutoff",
-    "Line",
-    "Quadratic",
-    "Sin",
-    "StepFunction",
-    "StepFunctionUpper",
-    "GenericFunction",
-    "PhAbs",
-    "TbAbs",
-    "WAbs",
-    "Asymm_Gaussian_on_sphere",
-    "Disk_on_sphere",
-    "Ellipse_on_sphere",
-    "Gaussian_on_sphere",
-    "Latitude_galactic_diffuse",
-    "Power_law_on_sphere",
-    "SpatialTemplate_2D",
-    "SpatialTemplate_2D_Healpix",
-    "Continuous_injection_diffusion",
-    "Continuous_injection_diffusion_ellipse",
-    "Continuous_injection_diffusion_legacy",
-    "GalPropTemplate_3D",
-    "DMSpectra",
-    "DMFitFunction",
-    "Cauchy",
-    "Cosine_Prior",
-    "Gaussian",
-    "Log_normal",
-    "Log_uniform_prior",
-    "Truncated_gaussian",
-    "Uniform_prior",
-    "Beta",
-    "Gamma",
-    "Exponential",
-    "Powerlaw_Prior",
-    "TemplateModel",
-    "TemplateModelFactory",
-    "XSPECTableModel",
-    "MissingDataFile",
-    "Log_parabola",
-    "Blackbody",
-    "Function1D",
-    "Function2D",
-    "Function3D",
-    "FunctionMeta",
-    "ModelAssertionViolation",
-    "Quartic",
-    "get_polynomial",
-    "ZDust",
-    "Standard_Rv",
-    "ModifiedBlackbody",
-    "NonDissipativePhotosphere",
-    "NonDissipativePhotosphere_Deep",
-    "Hermes",
-]
-
-if has_atomdb:
-    __all__.extend(["APEC", "VAPEC"])
-
-if has_gsl:
-
-    __all__.extend(["Cutoff_powerlaw_flux"])
-
-if has_naima:
-
-    __all__.extend(["Synchrotron"])
-
-if has_ebltable:
-
-    __all__.extend(["EBLattenuation"])
+def __dir__():
+    return sorted(__all__)

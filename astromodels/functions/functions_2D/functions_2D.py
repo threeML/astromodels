@@ -8,9 +8,9 @@ from astropy.io import fits
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
+from astromodels.utils.check_import import check_import
 from astromodels.utils.logging import setup_logger
 from astromodels.utils.vincenty import vincenty
-from importlib.util import find_spec
 
 log = setup_logger(__name__)
 
@@ -880,7 +880,7 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
 
     def _load_file(self):
 
-        if find_spec("mhealpy") is not None:
+        if check_import("mhealpy", "SpatialTemplate_2D_Healpix"):
             from mhealpy import HealpixMap
         else:
             raise ModuleNotFoundError(

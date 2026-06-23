@@ -1,5 +1,6 @@
 import math
 import os
+from pathlib import Path
 
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model

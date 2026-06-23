@@ -13,7 +13,6 @@ from rich.theme import Theme
 from astromodels.utils.configuration import astromodels_config
 
 try:
-
     from threeML.config.config import threeML_config
 
     has_threeml = True
@@ -67,7 +66,7 @@ def get_path_of_log_file(log_file: str) -> Path:
     return get_path_of_log_dir() / log_file
 
 
-class LogFilter(object):
+class LogFilter:
     def __init__(self, level):
         self.__level = level
 

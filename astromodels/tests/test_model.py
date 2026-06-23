@@ -1,5 +1,4 @@
 import os
-from builtins import object, range
 
 import pytest
 
@@ -7,9 +6,10 @@ __author__ = "giacomov"
 
 import copy
 
+import astropy.units as u
 import numpy as np
 
-import astropy.units as u
+import astromodels.core.serialization  # noqa: F401
 from astromodels.core.model import (
     CannotWriteModel,
     DuplicatedNode,
@@ -24,12 +24,7 @@ from astromodels.core.model_parser import (
     load_model,
 )
 from astromodels.core.parameter import IndependentVariable, Parameter
-from astromodels.functions import (
-    Gaussian_on_sphere,
-    Line,
-    Powerlaw,
-    Uniform_prior,
-)
+from astromodels.functions import Gaussian_on_sphere, Line, Powerlaw, Uniform_prior
 from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 from astromodels.sources.extended_source import ExtendedSource
 from astromodels.sources.particle_source import ParticleSource
@@ -73,7 +68,7 @@ def _get_particle_source(name="test_part"):
     return part
 
 
-class ModelGetter(object):
+class ModelGetter:
     def __init__(self):
 
         # 2 point sources and 3 ext sources

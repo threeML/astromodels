@@ -249,7 +249,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
         The Cauchy distribution
 
-    latex : $K\frac{1}{\gamma\pi}\left[\frac{\gamma^2}{(x-x_0)^2+\gamma^2}\right]$
+    latex : $K \frac{1}{\gamma \pi} \left[ \frac{\gamma^2}{(x-x_0)^2 + \gamma^2}\right]$
 
     parameters :
 
@@ -276,10 +276,6 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
     """
 
-    # Place this here to avoid recomputing it all the time
-
-    __norm_const = 1.0 / math.sqrt(2 * np.pi)
-
     def _setup(self):
         self._is_prior = True
 
@@ -296,9 +292,8 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
 
     # noinspection PyPep8Naming
     def evaluate(self, x, K, x0, gamma):
-        norm = 1 / (gamma * np.pi)
-
         gamma2 = gamma * gamma
+        norm = 1.0 / (gamma * np.pi)
 
         return K * norm * gamma2 / ((x - x0) * (x - x0) + gamma2)
 

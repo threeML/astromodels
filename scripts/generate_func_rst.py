@@ -1,6 +1,9 @@
 from pathlib import Path
 
-from astromodels.functions.function import _known_functions
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_available_function_names,
+)
 
 narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]
 
@@ -24,12 +27,12 @@ one_d_func_list = []
 two_d_func_list = []
 # we will loop through all the functions and generate docs for them
 
-for k, v in _known_functions.items():
+for k in list_available_function_names():
 
     if k in models_to_exclude:
 
         continue
-
+    v = get_function_class(k)
     instance = v()
 
     if instance.n_dim == 1:

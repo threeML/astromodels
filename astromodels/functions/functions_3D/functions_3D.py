@@ -1,7 +1,8 @@
 import hashlib
-from astropy import wcs
+
 import astropy.units as u
 import numpy as np
+from astropy import wcs
 from astropy.coordinates import ICRS, BaseCoordinateFrame, SkyCoord
 from astropy.io import fits
 from scipy.interpolate import RegularGridInterpolator
@@ -667,7 +668,7 @@ class Continuous_injection_diffusion_legacy(Function3D, metaclass=FunctionMeta):
         return np.ones_like(z)
 
 
-class GalPropTemplate_3D(Function3D):
+class GalPropTemplate_3D(Function3D, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -692,8 +693,6 @@ class GalPropTemplate_3D(Function3D):
             fix : yes
 
     """
-
-    __metaclass__ = FunctionMeta
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):
 

@@ -4,7 +4,10 @@ import numpy as np
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.configuration import astromodels_config
+from astromodels.utils import check_import
+from astromodels.utils.exceptions import (
+    InvalidUsageForFunction,
+)
 from astromodels.utils.logging import setup_logger
 
 log = setup_logger(__name__)
@@ -14,64 +17,24 @@ __author__ = "giacomov"
 # 2016
 
 
-class GSLNotAvailable(ImportWarning):
-    pass
-
-
-class NaimaNotAvailable(ImportWarning):
-    pass
-
-
-class InvalidUsageForFunction(Exception):
-    pass
-
-
-# Now let's try and import optional dependencies
-
-
-try:
-
-    # Naima is for numerical computation of Synch. and Inverse compton spectra in
-    # randomly oriented magnetic fields
-
+# Naima is for numerical computation of Synch. and Inverse compton spectra in
+# randomly oriented magnetic fields
+if check_import("naima", "Synchrotron"):
     import naima
 
-except ImportError:
-
-    if astromodels_config.logging.startup_warnings:
-
-        log.warning(
-            "The naima package is not available. Models that depend on it will not be"
-            " available"
-        )
-
+    has_naima = True
+else:
     has_naima = False
 
-else:
 
-    has_naima = True
-
-try:
-
-    # GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used
-    # by some functions for faster computation
-
+# GSL is the GNU Scientific Library. Pygsl is the python wrapper for it. It is used
+# by some functions for faster computation
+if check_import("pygsl", "Cutoff_powerlaw_flux"):
     from pygsl.testing.sf import gamma_inc
 
-except ImportError:
-
-    if astromodels_config.logging.startup_warnings:
-
-        log.warning(
-            "The GSL library or the pygsl wrapper cannot be loaded. Models that depend"
-            " on it will not be available."
-        )
-
-    has_gsl = False
-
-else:
-
     has_gsl = True
+else:
+    has_gsl = False
 
 
 class GenericFunction(Function1D, metaclass=FunctionMeta):
