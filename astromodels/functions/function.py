@@ -14,6 +14,7 @@ from typing import Dict, List, Optional, Tuple
 import astropy.units as u
 import numba as nb
 import numpy as np
+from scipy.integrate import quad
 from yaml.reader import ReaderError
 
 from astromodels.core.memoization import memoize
@@ -1301,6 +1302,8 @@ class Function(Node):
 
 
 class Function1D(Function):
+    _integral_numerical_error = None
+
     def __init__(
         self,
         name: Optional[str] = None,
@@ -1542,6 +1545,67 @@ class Function1D(Function):
 
         return _local_deriv(a, b, epsilon)
 
+    def integrate(self, a, b, *args, **kwargs):
+        """
+        Integrates the function from a to b. If an analytically integral is available
+        will use this, otherwise fall back to the numerical integration using scipys
+        quadrature rule.
+
+        :param a: lower integration boundary
+        :type a: float or astropy.Quantity
+        :param b: upper integration boundary
+        :type b: float or astropy.Quantity
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+
+        returns: value of integral
+        """
+        if isinstance(a, u.Quantity) and isinstance(b, u.Quantity):
+            try:
+                a = a.to(self._x_unit).value
+                b = b.to(self._x_unit).value
+            except Exception as e:
+                raise ValueError(
+                    "You integral boundary unit must be converatble to "
+                    f"{self._x_unit}."
+                ) from e
+            return self.integral(a, b, *args, **kwargs) * self._y_unit * self._x_unit
+
+        elif (isinstance(a, u.Quantity) and not isinstance(b, u.Quantity)) or (
+            not isinstance(a, u.Quantity) and isinstance(b, u.Quantity)
+        ):
+            raise TypeError(
+                "a and b must either be astropy Quantities or floats. "
+                "You can not mix."
+            )
+        else:
+            return self.integral(a, b, *args, **kwargs)
+
+    def integral(self, a, b, *args, **kwargs):
+        """
+        The actual integral defintion. Needs to be overwritten for analytical integrals
+        :param a: lower integration boundary
+        :type a: float
+        :param b: upper integration boundary
+        :type b: float
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+        """
+        res = quad(self.__call__, a, b, *args, **kwargs)
+        self._integral_numerical_error = res[1]
+        return res[0]
+
+    @property
+    def integral_numerical_error(self):
+        if hasattr(self, "_integral_numerical_error"):
+            return self._integral_numerical_error
+        else:
+            return None
+
 
 @nb.njit
 def _local_deriv(a, b, epsilon):
@@ -1633,7 +1697,23 @@ class Function2D(Function):
         # microseconds or so), so we perform this transformation only when strictly
         # required
 
-        assert type(x) is type(y), "You have to use the same type for x and y"
+        if not type(x) is type(y):
+            if type(x) in [float, int, str] or type(y) is [float, int, str]:
+                x_type = type(x)
+                y_type = type(y)
+                try:
+                    x = float(x)
+                    y = float(y)
+                except Exception as e:
+                    raise TypeError(
+                        "You have to use the same type for x and y or they need to be "
+                        f"convertible to float. Got {x_type} and {y_type}"
+                    ) from e
+            else:
+                raise TypeError(
+                    "You have to use the same type for x and y or they need to be "
+                    f"convertible to float. Got {x_type} and {y_type}"
+                )
 
         if isinstance(x, np.ndarray):
 
