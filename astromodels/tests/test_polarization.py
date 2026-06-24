@@ -1,6 +1,8 @@
 import math
 import os
 
+import numpy as np
+
 from astromodels.core.model import Model
 from astromodels.core.model_parser import load_model
 from astromodels.core.polarization import (
@@ -8,6 +10,7 @@ from astromodels.core.polarization import (
     StokesPolarization,
     Unpolarized,
 )
+from astromodels.core.spectral_component import SpectralComponent
 from astromodels.functions import Constant, Powerlaw
 from astromodels.sources.point_source import PointSource
 
@@ -129,3 +132,67 @@ def test_unpolarized(tmp_path):
     assert ps.spectrum.main(1, stokes="Q") == ps.spectrum.main(
         1
     ), "Unpolarized changes the value!"
+
+
+def test_transform():
+    u = Constant()
+    q = Constant()
+    u.k = 0.5
+    q.k = 0.5
+    polarization = StokesPolarization(Q=q, U=u)
+    linear = polarization.to_linear_polarization()
+    assert np.isclose(linear(0, stokes="Q"), 0.5)
+    assert np.all(
+        np.isclose(linear(np.array([0, 1, 2, 3, 4]), stokes="U"), np.ones(5) * 0.5)
+    )
+    assert np.isclose(linear.degree.value(0), 0.7071067812)
+
+    polarization = StokesPolarization(Q=0.5, U=0.5)
+    linear = polarization.to_linear_polarization()
+    assert np.isclose(linear(0, stokes="Q"), 0.5)
+    assert np.all(
+        np.isclose(linear(np.array([0, 1, 2, 3, 4]), stokes="U"), np.ones(5) * 0.5)
+    )
+    assert np.isclose(linear.degree.value, 0.7071067812)
+
+
+def test_non_callable():
+    linear = LinearPolarization(degree=0.2, angle=90)
+    spec = SpectralComponent("test", Powerlaw(), polarization=linear)
+    spec(0.1, stokes="U")
+
+    assert np.isclose(spec.polarization(0, "U"), 0.0)
+    assert np.isclose(spec.polarization(0, "Q"), -0.2)
+    assert np.isclose(spec.polarization(0, None), 1)
+
+    stokes = StokesPolarization(Q=0.2, U=0.8)
+    spec = SpectralComponent("test", Powerlaw(), polarization=stokes)
+    spec(0.1, stokes="U")
+    assert spec.polarization(0, "Q") == 0.2
+    assert spec.polarization(0, "U") == 0.8
+    assert np.isclose(spec.polarization(0, None), 1)
+
+
+def test_callable():
+    deg = Constant()
+    deg.k = 0.2
+    ang = Constant()
+    ang.k = 90
+    linear = LinearPolarization(degree=deg, angle=ang)
+    spec = SpectralComponent("test", Powerlaw(), polarization=linear)
+    spec(0.1, stokes="U")
+
+    assert np.isclose(spec.polarization(0, "U"), 0.0)
+    assert np.isclose(spec.polarization(0, "Q"), -0.2)
+    assert np.isclose(spec.polarization(0, None), 1)
+
+    q = Constant()
+    q.k = 0.2
+    u = Constant()
+    u.k = 0.8
+    stokes = StokesPolarization(Q=q, U=u)
+    spec = SpectralComponent("test", Powerlaw(), polarization=stokes)
+    spec(0.1, stokes="U")
+    assert spec.polarization(0, "Q") == 0.2
+    assert spec.polarization(0, "U") == 0.8
+    assert np.isclose(spec.polarization(0, None), 1)

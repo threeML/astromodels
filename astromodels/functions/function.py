@@ -1084,6 +1084,9 @@ class Function(Node):
         instance."""
         return CompositeFunction("of", self, another_function)
 
+    def arctan2(self, another_function):
+        return CompositeFunction("arctan2", self, another_function)
+
     def __neg__(self):
 
         return CompositeFunction("*-", self)
@@ -1976,6 +1979,7 @@ _operations = {
     "**": np.power,
     "abs": np.abs,
     "of": "compose",
+    "arctan2": np.arctan2,
 }
 
 
