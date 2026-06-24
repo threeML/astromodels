@@ -91,7 +91,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.core.parameter</h1><div class="highlight"><pre>
-<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 
 <span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;&quot;&quot;&quot;</span>
 
@@ -107,12 +109,12 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter_transformation</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParameterTransformation</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.configuration</span><span class="w"> </span><span class="kn">import</span> <span class="n">astromodels_config</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.thread_safe_unit_format</span><span class="w"> </span><span class="kn">import</span> <span class="n">ThreadSafe</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="turn_off_parameter_transforms">

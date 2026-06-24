@@ -324,10 +324,30 @@
 
     <span class="n">log</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">astromodels_usr_log_handler</span><span class="p">)</span>
 
-    <span class="c1"># we do not want to duplicate teh messages in the parents</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">propagate</span> <span class="o">=</span> <span class="kc">False</span>
-
     <span class="k">return</span> <span class="n">log</span></div>
+
+
+<span class="c1"># Capture all startup warnings and log them on demand</span>
+
+
+<span class="n">_startup_warnings</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<div class="viewcode-block" id="add_startup_warning">
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.add_startup_warning">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">add_startup_warning</span><span class="p">(</span><span class="n">logger</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">):</span>
+    <span class="n">fn</span><span class="p">,</span> <span class="n">lno</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">sinfo</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">findCaller</span><span class="p">(</span><span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">makeRecord</span><span class="p">(</span><span class="n">logger</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">lno</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span>
+                               <span class="p">(),</span> <span class="kc">None</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">func</span><span class="p">,</span> <span class="n">sinfo</span><span class="o">=</span><span class="n">sinfo</span><span class="p">)</span>
+    <span class="n">_startup_warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="log_astromodels_startup_warnings">
+<a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.logging.log_astromodels_startup_warnings">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_astromodels_startup_warnings</span><span class="p">(</span><span class="n">logger</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">_startup_warnings</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">handle</span><span class="p">(</span><span class="n">w</span><span class="p">)</span></div>
 
 </pre></div>
 

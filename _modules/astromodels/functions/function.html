@@ -91,7 +91,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.functions.function</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">ast</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">inspect</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
@@ -117,11 +119,11 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.property</span><span class="w"> </span><span class="kn">import</span> <span class="n">FunctionProperty</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.file_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy_if_needed</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.pretty_list</span><span class="w"> </span><span class="kn">import</span> <span class="n">dict_to_list</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.table</span><span class="w"> </span><span class="kn">import</span> <span class="n">dict_to_table</span>
 
-<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
 

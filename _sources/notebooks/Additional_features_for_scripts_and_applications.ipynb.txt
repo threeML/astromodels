@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "markdown",
-   "id": "7129112d",
+   "id": "a1ad8222",
    "metadata": {},
    "source": [
     "# Additional features for scripts and applications\n",
@@ -15,47 +15,16 @@
   {
    "cell_type": "code",
    "execution_count": 1,
-   "id": "5bb11c68",
+   "id": "5f3ed286",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:49.341063Z",
-     "iopub.status.busy": "2026-06-23T15:35:49.340950Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.305776Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.304975Z"
+     "iopub.execute_input": "2026-06-24T00:35:03.792275Z",
+     "iopub.status.busy": "2026-06-24T00:35:03.792178Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.335001Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.334118Z"
     }
    },
-   "outputs": [
-    {
-     "data": {
-      "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">15:35:53 </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The naima package is not available. Models that depend on it will not be         </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#43\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">43</span></a>\n",
-       "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">available                                                                         </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
-       "</pre>\n"
-      ],
-      "text/plain": [
-       "\u001b[38;5;46m15:35:53\u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The naima package is not available. Models that depend on it will not be        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=2528792;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=2528793;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#43\u001b\\\u001b[2m43\u001b[0m\u001b]8;;\u001b\\\n",
-       "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mavailable                                                                        \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    },
-    {
-     "data": {
-      "text/html": [
-       "<pre style=\"white-space:pre;overflow-x:auto;line-height:normal;font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace\"><span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span><span style=\"color: #af5fd7; text-decoration-color: #af5fd7\">WARNING </span> <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\"> The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it  </span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">functions.py</span></a><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">:</span><a href=\"file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#65\" target=\"_blank\"><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">65</span></a>\n",
-       "<span style=\"color: #00ff00; text-decoration-color: #00ff00\">         </span>         <span style=\"color: #c6c6c6; text-decoration-color: #c6c6c6; font-weight: bold\">will not be available.                                                            </span><span style=\"color: #7f7f7f; text-decoration-color: #7f7f7f\">               </span>\n",
-       "</pre>\n"
-      ],
-      "text/plain": [
-       "\u001b[38;5;46m        \u001b[0m\u001b[38;5;46m \u001b[0m\u001b[38;5;134mWARNING \u001b[0m \u001b[1;38;5;251m The GSL library or the pygsl wrapper cannot be loaded. Models that depend on it \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b]8;id=2528799;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py\u001b\\\u001b[2mfunctions.py\u001b[0m\u001b]8;;\u001b\\\u001b[2m:\u001b[0m\u001b]8;id=2528800;file:///Users/runner/work/astromodels/astromodels/astromodels/functions/functions_1D/functions.py#65\u001b\\\u001b[2m65\u001b[0m\u001b]8;;\u001b\\\n",
-       "\u001b[38;5;46m         \u001b[0m         \u001b[1;38;5;251mwill not be available.                                                           \u001b[0m\u001b[1;38;5;251m \u001b[0m\u001b[2m               \u001b[0m\n"
-      ]
-     },
-     "metadata": {},
-     "output_type": "display_data"
-    }
-   ],
+   "outputs": [],
    "source": [
     "from astromodels import *"
    ]
@@ -63,13 +32,13 @@
   {
    "cell_type": "code",
    "execution_count": 2,
-   "id": "1fb05591",
+   "id": "a2a132c3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.308107Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.307778Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.323976Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.323254Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.337722Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.337314Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.351568Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.350917Z"
     }
    },
    "outputs": [],
@@ -79,7 +48,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ccfd7d9c",
+   "id": "69b495fc",
    "metadata": {},
    "source": [
     "## Get dictionaries of point and extended sources\n",
@@ -90,13 +59,13 @@
   {
    "cell_type": "code",
    "execution_count": 3,
-   "id": "cdb93e42",
+   "id": "338ee6d2",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.325548Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.325461Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.327616Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.327217Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.353176Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.353076Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.361657Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.360973Z"
     }
    },
    "outputs": [
@@ -122,7 +91,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9a4a7c91",
+   "id": "5e5594bb",
    "metadata": {},
    "source": [
     "You can use these dictionaries as usual. For example, you can loop over all point sources and print their position:"
@@ -131,13 +100,13 @@
   {
    "cell_type": "code",
    "execution_count": 4,
-   "id": "0437c19f",
+   "id": "a7e80c0b",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.329293Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.329211Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.337457Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.336890Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.363264Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.363181Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.369289Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.368623Z"
     }
    },
    "outputs": [
@@ -160,7 +129,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "530eddd1",
+   "id": "047a8807",
    "metadata": {},
    "source": [
     "## Accessing components and spectral shapes with no previous information\n",
@@ -171,13 +140,13 @@
   {
    "cell_type": "code",
    "execution_count": 5,
-   "id": "98c4f252",
+   "id": "b6928efd",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.339439Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.339328Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.341498Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.340999Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.370811Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.370727Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.378993Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.378442Z"
     }
    },
    "outputs": [
@@ -196,7 +165,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "030de202",
+   "id": "f4865fc7",
    "metadata": {},
    "source": [
     "So now we can loop over all the sources and print their components:"
@@ -205,13 +174,13 @@
   {
    "cell_type": "code",
    "execution_count": 6,
-   "id": "eda2b42d",
+   "id": "11b5ca65",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.343205Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.343113Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.345511Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.344965Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.380616Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.380531Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.387745Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.387185Z"
     }
    },
    "outputs": [
@@ -235,7 +204,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "e13c897c",
+   "id": "c9bc99e1",
    "metadata": {},
    "source": [
     "With a fully-qualified path, you would need to know the name of the function to access its parameters. Instead, you can use the generic name “shape”. For example these two statements point to the same function instance:"
@@ -244,13 +213,13 @@
   {
    "cell_type": "code",
    "execution_count": 7,
-   "id": "5a479876",
+   "id": "d1879bf5",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.347216Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.347105Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.350143Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.349406Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.389456Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.389372Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.399396Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.398757Z"
     },
     "lines_to_next_cell": 2
    },
@@ -272,7 +241,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "36fb3847",
+   "id": "a1977962",
    "metadata": {},
    "source": [
     "Once you have a function instance, you can obtain a dictionary of its parameters as:"
@@ -281,13 +250,13 @@
   {
    "cell_type": "code",
    "execution_count": 8,
-   "id": "77834ebb",
+   "id": "2dd57485",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.352603Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.352524Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.356982Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.356349Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.401222Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.401132Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.403312Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.402800Z"
     }
    },
    "outputs": [
@@ -306,7 +275,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "8bdfbb9f",
+   "id": "eed4d392",
    "metadata": {},
    "source": [
     "Putting it all together, let’s loop over all sources in our model, then over each component in each source, then over each parameter in each component:"
@@ -315,13 +284,13 @@
   {
    "cell_type": "code",
    "execution_count": 9,
-   "id": "1c998792",
+   "id": "13d11e89",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.358504Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.358430Z",
-     "iopub.status.idle": "2026-06-23T15:35:54.360846Z",
-     "shell.execute_reply": "2026-06-23T15:35:54.360370Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.404992Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.404915Z",
+     "iopub.status.idle": "2026-06-24T00:35:08.413759Z",
+     "shell.execute_reply": "2026-06-24T00:35:08.412999Z"
     }
    },
    "outputs": [
@@ -366,7 +335,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "e888ee18",
+   "id": "7c7331a8",
    "metadata": {},
    "source": [
     "Let’s now plot the differential flux between 1 and 100 keV of all components from all sources:\n",
@@ -376,13 +345,13 @@
   {
    "cell_type": "code",
    "execution_count": 10,
-   "id": "83284ee5",
+   "id": "dc69ad8f",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:35:54.362588Z",
-     "iopub.status.busy": "2026-06-23T15:35:54.362515Z",
-     "iopub.status.idle": "2026-06-23T15:36:10.606889Z",
-     "shell.execute_reply": "2026-06-23T15:36:10.606259Z"
+     "iopub.execute_input": "2026-06-24T00:35:08.415416Z",
+     "iopub.status.busy": "2026-06-24T00:35:08.415330Z",
+     "iopub.status.idle": "2026-06-24T00:35:19.732745Z",
+     "shell.execute_reply": "2026-06-24T00:35:19.731967Z"
     }
    },
    "outputs": [
@@ -458,7 +427,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "85b51dd5",
+   "id": "dd603f92",
    "metadata": {},
    "source": [
     "## Getting the path of an element and using it programmatically\n",
@@ -469,13 +438,13 @@
   {
    "cell_type": "code",
    "execution_count": 11,
-   "id": "a1259160",
+   "id": "192229a3",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:36:10.608773Z",
-     "iopub.status.busy": "2026-06-23T15:36:10.608622Z",
-     "iopub.status.idle": "2026-06-23T15:36:10.610967Z",
-     "shell.execute_reply": "2026-06-23T15:36:10.610559Z"
+     "iopub.execute_input": "2026-06-24T00:35:19.734579Z",
+     "iopub.status.busy": "2026-06-24T00:35:19.734426Z",
+     "iopub.status.idle": "2026-06-24T00:35:19.737096Z",
+     "shell.execute_reply": "2026-06-24T00:35:19.736493Z"
     }
    },
    "outputs": [
@@ -507,7 +476,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "f4dc7746",
+   "id": "eda4a254",
    "metadata": {},
    "source": [
     "If you have a path of an element in a string, you can use it to access the element by using the [] operator of the Model class like this:"
@@ -516,13 +485,13 @@
   {
    "cell_type": "code",
    "execution_count": 12,
-   "id": "b893022f",
+   "id": "8e4b9f2d",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:36:10.612609Z",
-     "iopub.status.busy": "2026-06-23T15:36:10.612516Z",
-     "iopub.status.idle": "2026-06-23T15:36:10.620549Z",
-     "shell.execute_reply": "2026-06-23T15:36:10.619960Z"
+     "iopub.execute_input": "2026-06-24T00:35:19.738512Z",
+     "iopub.status.busy": "2026-06-24T00:35:19.738415Z",
+     "iopub.status.idle": "2026-06-24T00:35:19.746435Z",
+     "shell.execute_reply": "2026-06-24T00:35:19.745924Z"
     }
    },
    "outputs": [
@@ -545,7 +514,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "ee879555",
+   "id": "2bd90cac",
    "metadata": {},
    "source": [
     "## Alternative way of accessing the information in the model\n",
@@ -556,13 +525,13 @@
   {
    "cell_type": "code",
    "execution_count": 13,
-   "id": "604603f9",
+   "id": "5d0476cb",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:36:10.621987Z",
-     "iopub.status.busy": "2026-06-23T15:36:10.621921Z",
-     "iopub.status.idle": "2026-06-23T15:36:10.624300Z",
-     "shell.execute_reply": "2026-06-23T15:36:10.623719Z"
+     "iopub.execute_input": "2026-06-24T00:35:19.748031Z",
+     "iopub.status.busy": "2026-06-24T00:35:19.747946Z",
+     "iopub.status.idle": "2026-06-24T00:35:19.756573Z",
+     "shell.execute_reply": "2026-06-24T00:35:19.756033Z"
     }
    },
    "outputs": [
@@ -597,7 +566,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "9130b739",
+   "id": "4cfab706",
    "metadata": {},
    "source": [
     "Once you have the ID of a source, you can obtain information about it with these methods of the Model class:"
@@ -606,13 +575,13 @@
   {
    "cell_type": "code",
    "execution_count": 14,
-   "id": "d8371759",
+   "id": "0f3d4642",
    "metadata": {
     "execution": {
-     "iopub.execute_input": "2026-06-23T15:36:10.625757Z",
-     "iopub.status.busy": "2026-06-23T15:36:10.625690Z",
-     "iopub.status.idle": "2026-06-23T15:36:10.637872Z",
-     "shell.execute_reply": "2026-06-23T15:36:10.637187Z"
+     "iopub.execute_input": "2026-06-24T00:35:19.758144Z",
+     "iopub.status.busy": "2026-06-24T00:35:19.758071Z",
+     "iopub.status.idle": "2026-06-24T00:35:19.769881Z",
+     "shell.execute_reply": "2026-06-24T00:35:19.769277Z"
     }
    },
    "outputs": [],
@@ -633,7 +602,7 @@
   },
   {
    "cell_type": "markdown",
-   "id": "6276cd13",
+   "id": "cb982931",
    "metadata": {},
    "source": [
     "Depending on your application you might find these methods more convenient that interrogating the sources directly. Note however that some features are not available through this interface. For example, it is not possible to get information about different components through these methods."
@@ -642,7 +611,7 @@
   {
    "cell_type": "code",
    "execution_count": null,
-   "id": "824819dc",
+   "id": "aeebd9af",
    "metadata": {},
    "outputs": [],
    "source": []
