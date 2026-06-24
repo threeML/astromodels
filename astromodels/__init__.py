@@ -13,6 +13,11 @@ del get_versions
 # These include the legacy function/prior names so that __all__ matches historical
 # behavior.
 _func_names = [
+    "Function",
+    "FunctionMeta",
+    "Function1D",
+    "Function2D",
+    "Function3D",
     "Blackbody",
     "ModifiedBlackbody",
     "NonDissipativePhotosphere",
