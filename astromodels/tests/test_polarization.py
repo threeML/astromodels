@@ -147,6 +147,14 @@ def test_transform():
     )
     assert np.isclose(linear.degree.value(0), 0.7071067812)
 
+    polarization = StokesPolarization(Q=0.5, U=0.5)
+    linear = polarization.to_linear_polarization()
+    assert np.isclose(linear(0, stokes="Q"), 0.5)
+    assert np.all(
+        np.isclose(linear(np.array([0, 1, 2, 3, 4]), stokes="U"), np.ones(5) * 0.5)
+    )
+    assert np.isclose(linear.degree.value, 0.7071067812)
+
 
 def test_non_callable():
     linear = LinearPolarization(degree=0.2, angle=90)
