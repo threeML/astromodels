@@ -95,9 +95,14 @@
 
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Polarization">
@@ -174,9 +179,6 @@
 
 
 
-<span class="c1"># TODO: add transform between polarizations</span>
-
-
 <div class="viewcode-block" id="LinearPolarization">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.LinearPolarization">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">LinearPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
@@ -187,9 +189,11 @@
 <span class="sd">        :param angle: The polarization angle</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">LinearPolarization</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">polarization_type</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">degree</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">degree</span> <span class="o">=</span> <span class="n">LinearParameter</span><span class="p">(</span><span class="s2">&quot;degree&quot;</span><span class="p">,</span> <span class="n">degree</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">degree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span>
                 <span class="n">degree</span><span class="p">,</span>
@@ -206,33 +210,45 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span>
                 <span class="n">angle</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="s2">&quot;angle&quot;</span><span class="p">,</span> <span class="s2">&quot;Polarization angle&quot;</span><span class="p">,</span> <span class="s2">&quot;deg&quot;</span>
             <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="p">):</span>
-
-        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
-                <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
-            <span class="p">)</span>
-        <span class="k">elif</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
-                <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
-            <span class="p">)</span>
-        <span class="k">return</span> <span class="mi">1</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span>
+                    <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span>
+                    <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree</span><span class="o">.</span><span class="n">value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">angle</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">return</span> <span class="mi">1</span></div>
 
 
 
 <div class="viewcode-block" id="StokesPolarization">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.StokesPolarization">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StokesPolarization</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">V</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">U</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stokes parameterization of polarization.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Only support Stokes parameters Q and U currently&quot;</span><span class="p">)</span>
+
         <span class="nb">super</span><span class="p">(</span><span class="n">StokesPolarization</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">polarization_type</span><span class="o">=</span><span class="s2">&quot;stokes&quot;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_Q</span> <span class="o">=</span> <span class="n">StokesParameter</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_Q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span>
                 <span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;Stokes Polarization Q&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
@@ -240,6 +256,7 @@
         <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">U</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_U</span> <span class="o">=</span> <span class="n">StokesParameter</span><span class="p">(</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="n">U</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_U</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parameter_from_input</span><span class="p">(</span>
                 <span class="n">U</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;Stokes Polarization U&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
             <span class="p">)</span>
@@ -248,26 +265,41 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mi">1</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_callable</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">elif</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="o">.</span><span class="n">value</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+<div class="viewcode-block" id="StokesPolarization.to_linear_polarization">
+<a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.StokesPolarization.to_linear_polarization">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_linear_polarization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">Real</span><span class="p">,</span> <span class="n">Function</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">Real</span><span class="p">,</span> <span class="n">Function</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">degree</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="o">.</span><span class="n">value</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="o">.</span><span class="n">value</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">Function</span><span class="p">):</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">90</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_U</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_Q</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">90</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s2">&quot;Either Q has to be a function or both Q and U need to be values&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">LinearPolarization</span><span class="p">(</span><span class="n">degree</span><span class="o">=</span><span class="n">degree</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">angle</span><span class="p">)</span></div>
+</div>
 
 
 
-<span class="c1">#     def to_linear_polarization(self):</span>
-<span class="c1">#         # polarization angle</span>
-<span class="c1"># #        psi = 0.5 * np.arctan2(U_bin, Q_bin)</span>
-<span class="c1">#</span>
-<span class="c1">#         # polarization fraction</span>
-<span class="c1"># #        frac = np.sqrt(Q_bin ** 2 + U_bin ** 2) / I_bin</span>
-<span class="c1">#</span>
-<span class="c1">#         pass</span>
-<span class="c1">#</span>
-<span class="c1">#         #angle = 0.5 * np.arctan2(se)</span>
-<span class="c1">#</span>
-<span class="c1">#</span>
 <div class="viewcode-block" id="Unpolarized">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.polarization.Unpolarized">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Unpolarized</span><span class="p">(</span><span class="n">Polarization</span><span class="p">):</span>
@@ -285,7 +317,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;V&quot;</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Q&quot;</span><span class="p">,</span> <span class="s2">&quot;U&quot;</span><span class="p">],</span> <span class="s2">&quot;Stokes Parameter must have name &#39;Q&#39; or &#39;U&#39;&quot;</span>
         <span class="n">Node</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
