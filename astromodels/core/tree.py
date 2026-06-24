@@ -1,8 +1,10 @@
+import logging
+
 from typing import Any, Dict
 
 from astromodels.core.node_type import NodeBase
 from astromodels.utils.io import display
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.valid_variable import is_valid_variable_name
 
 
@@ -18,7 +20,7 @@ class NonExistingAttribute(RuntimeWarning):
     pass
 
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class Node(NodeBase):

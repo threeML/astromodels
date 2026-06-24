@@ -202,7 +202,21 @@ def setup_logger(name):
 
     log.addHandler(astromodels_usr_log_handler)
 
-    # we do not want to duplicate teh messages in the parents
-    log.propagate = False
-
     return log
+
+# Capture all startup warnings and log them on demand
+
+
+_startup_warnings = []
+
+
+def add_startup_warning(logger, msg, level=logging.WARNING):
+    fn, lno, func, sinfo = logger.findCaller(stacklevel=2)
+    record = logger.makeRecord(logger.name, level, fn, lno, msg,
+                               (), None, func=func, sinfo=sinfo)
+    _startup_warnings.append(record)
+
+
+def log_astromodels_startup_warnings(logger):
+    for w in _startup_warnings:
+        logger.handle(w)

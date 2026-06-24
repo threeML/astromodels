@@ -123,9 +123,5 @@ if os.environ.get("ASTROMODELS_DEBUG", None) is None:
         activate_warnings,
     )
 
-import astropy.units as u
-
-log = setup_logger(__name__)
-
 __version__ = get_versions()["version"]
 del get_versions

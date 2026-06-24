@@ -1,3 +1,5 @@
+import logging
+
 import hashlib
 
 import astropy.units as u
@@ -8,11 +10,11 @@ from astropy.io import fits
 
 from astromodels.functions.function import Function2D, FunctionMeta
 from astromodels.utils.angular_distance import angular_distance
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.vincenty import vincenty
 from importlib.util import find_spec
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):

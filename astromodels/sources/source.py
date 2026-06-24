@@ -1,12 +1,14 @@
+import logging
+
 __author__ = "giacomov"
 
 from enum import Enum, unique
 from typing import Any, Dict, List
 
 from astromodels.core.parameter import Parameter
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+
+log = logging.getLogger(__name__)
 
 
 @unique

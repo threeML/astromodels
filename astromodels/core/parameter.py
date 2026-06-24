@@ -1,3 +1,5 @@
+import logging
+
 __author__ = "giacomov"
 
 __doc__ = """"""
@@ -14,12 +16,12 @@ import scipy.stats
 
 from astromodels.core.parameter_transformation import ParameterTransformation
 from astromodels.utils.configuration import astromodels_config
-from astromodels.utils.logging import setup_logger
+
 
 from .thread_safe_unit_format import ThreadSafe
 from .tree import Node
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 @contextlib.contextmanager

@@ -31,6 +31,7 @@ fluxes from the two components independently. See below for an example of how to
 
 ```python
 from astromodels import *
+import astropy.units as u
 component1 = SpectralComponent('synchrotron',shape=Powerlaw())
 component2 = SpectralComponent('IC',shape=Powerlaw())
 multicomp_source = PointSource('multicomp_source', ra=123.2, dec=-13.2, components=[component1,component2])
