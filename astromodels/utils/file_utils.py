@@ -52,7 +52,7 @@ def get_user_path() -> Path:
 
     if not user_path.exists():
 
-        user_path.mkdir(parents=True)
+        user_path.mkdir(parents=True, exist_ok=True)
 
     return user_path
 
@@ -64,7 +64,7 @@ def get_user_data_path() -> Path:
     # Create it if doesn't exist
     if not user_data.exists():
 
-        user_data.mkdir(parents=True)
+        user_data.mkdir(parents=True, exist_ok=True)
 
     return user_data
 
@@ -79,6 +79,6 @@ def get_path_of_user_config() -> Path:
 
     if not config_path.exists():
 
-        config_path.mkdir(parents=True)
+        config_path.mkdir(parents=True, exist_ok=True)
 
     return config_path

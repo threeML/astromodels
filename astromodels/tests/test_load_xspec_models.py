@@ -44,7 +44,7 @@ def test_xspec_load():
 
 
 @skip_if_xspec_is_not_available
-def test_xspec_saving():
+def test_xspec_saving(tmp_path):
 
     s = XS_powerlaw() + XS_bbody()
 
@@ -54,7 +54,7 @@ def test_xspec_saving():
 
     _ = clone_model(model)
 
-    filename = "_test_xspec_model.yml"
+    filename = tmp_path / "_test_xspec_model.yml"
 
     model.save(filename)
 
