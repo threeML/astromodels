@@ -2,6 +2,7 @@ __author__ = "giacomov"
 
 
 import numpy as np
+from numbers import Real
 
 from astromodels.core.parameter import Parameter
 from astromodels.core.tree import Node
@@ -177,9 +178,14 @@ class StokesPolarization(Polarization):
             return 1
 
     def to_linear_polarization(self):
-        if isinstance(self._Q.value, Function):
+        if isinstance(self._Q.value, (Real, Function)) and isinstance(
+            self._U.value, (Real, Function)
+        ):
             degree = (self._Q.value**2 + self._U.value**2) ** (0.5)
-            angle = self._U.value.arctan2(self._Q.value) * 90 / np.pi
+            if isinstance(self._U.value, Function):
+                angle = self._U.value.arctan2(self._Q.value) * 90 / np.pi
+            else:
+                angle = np.arctan2(self._U.value, self._Q.value) * 90 / np.pi
 
         else:
             raise NotImplementedError(
