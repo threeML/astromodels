@@ -1,6 +1,7 @@
 import math
 import os
 
+import pytest
 import numpy as np
 
 from astromodels.core.model import Model
@@ -154,6 +155,14 @@ def test_transform():
         np.isclose(linear(np.array([0, 1, 2, 3, 4]), stokes="U"), np.ones(5) * 0.5)
     )
     assert np.isclose(linear.degree.value, 0.7071067812)
+
+    fail_pol = StokesPolarization(Q=q, U=0.5)
+    with pytest.raises(NotImplementedError):
+        fail_pol.to_linear_polarization()
+
+    fail_pol = StokesPolarization(Q=0.5, U=u)
+    with pytest.raises(NotImplementedError):
+        fail_pol.to_linear_polarization()
 
 
 def test_non_callable():

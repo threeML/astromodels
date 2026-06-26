@@ -183,6 +183,10 @@ class StokesPolarization(Polarization):
         ):
             degree = (self._Q.value**2 + self._U.value**2) ** (0.5)
             if isinstance(self._U.value, Function):
+                if not isinstance(self._Q.value, Function):
+                    raise NotImplementedError(
+                        "Either Q has to be a function or both Q and U need to be values"
+                    )
                 angle = self._U.value.arctan2(self._Q.value) * 90 / np.pi
             else:
                 angle = np.arctan2(self._U.value, self._Q.value) * 90 / np.pi
