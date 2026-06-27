@@ -141,10 +141,12 @@
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
-    <span class="n">add_startup_warning</span><span class="p">(</span><span class="n">log</span><span class="p">,</span>
-                        <span class="s2">&quot;The naima package is not available. Models &quot;</span>
-                        <span class="s2">&quot;that depend on it will not be&quot;</span>
-                        <span class="s2">&quot; available&quot;</span><span class="p">)</span>
+    <span class="n">add_startup_warning</span><span class="p">(</span>
+        <span class="n">log</span><span class="p">,</span>
+        <span class="s2">&quot;The naima package is not available. Models &quot;</span>
+        <span class="s2">&quot;that depend on it will not be&quot;</span>
+        <span class="s2">&quot; available&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">has_naima</span> <span class="o">=</span> <span class="kc">False</span>
 
@@ -161,11 +163,12 @@
 
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
-    <span class="n">add_startup_warning</span><span class="p">(</span><span class="n">log</span><span class="p">,</span>
-                        <span class="s2">&quot;The GSL library or the pygsl wrapper &quot;</span>
-                        <span class="s2">&quot;cannot be loaded. Models that depend&quot;</span>
-                        <span class="s2">&quot; on it will not be available.&quot;</span>
-                        <span class="p">)</span>
+    <span class="n">add_startup_warning</span><span class="p">(</span>
+        <span class="n">log</span><span class="p">,</span>
+        <span class="s2">&quot;The GSL library or the pygsl wrapper &quot;</span>
+        <span class="s2">&quot;cannot be loaded. Models that depend&quot;</span>
+        <span class="s2">&quot; on it will not be available.&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="n">has_gsl</span> <span class="o">=</span> <span class="kc">False</span>
 
