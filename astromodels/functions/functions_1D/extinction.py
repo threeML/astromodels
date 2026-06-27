@@ -12,7 +12,6 @@ import numpy as np
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.file_utils import copy_if_needed
 
-
 log = logging.getLogger(__name__)
 
 

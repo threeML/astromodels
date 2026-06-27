@@ -19,7 +19,6 @@ from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import get_user_data_path
 from astromodels.utils.file_utils import copy_if_needed
 
-
 log = logging.getLogger(__name__)
 
 # A very small number which will be substituted to zero during the construction

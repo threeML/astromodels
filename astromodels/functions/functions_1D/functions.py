@@ -39,10 +39,12 @@ try:
 
 except ImportError:
 
-    add_startup_warning(log,
-                        "The naima package is not available. Models "
-                        "that depend on it will not be"
-                        " available")
+    add_startup_warning(
+        log,
+        "The naima package is not available. Models "
+        "that depend on it will not be"
+        " available",
+    )
 
     has_naima = False
 
@@ -59,11 +61,12 @@ try:
 
 except ImportError:
 
-    add_startup_warning(log,
-                        "The GSL library or the pygsl wrapper "
-                        "cannot be loaded. Models that depend"
-                        " on it will not be available."
-                        )
+    add_startup_warning(
+        log,
+        "The GSL library or the pygsl wrapper "
+        "cannot be loaded. Models that depend"
+        " on it will not be available.",
+    )
 
     has_gsl = False
 

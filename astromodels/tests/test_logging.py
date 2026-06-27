@@ -1,8 +1,10 @@
 import logging
 
-from astromodels.utils.logging import (add_startup_warning,
-                                       log_astromodels_startup_warnings,
-                                       setup_logger)
+from astromodels.utils.logging import (
+    add_startup_warning,
+    log_astromodels_startup_warnings,
+    setup_logger,
+)
 
 logger = setup_logger(__name__)
 

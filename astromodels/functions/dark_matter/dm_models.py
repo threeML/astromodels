@@ -7,7 +7,6 @@ from scipy.interpolate import RegularGridInterpolator
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import _get_data_file_path
 
-
 log = logging.getLogger(__name__)
 
 

@@ -11,7 +11,6 @@ from astromodels.functions.function import (
     ModelAssertionViolation,
 )
 
-
 log = logging.getLogger(__name__)
 
 __author__ = "giacomov"

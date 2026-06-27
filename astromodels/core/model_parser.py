@@ -20,7 +20,6 @@ from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
 
-
 log = logging.getLogger(__name__)
 
 

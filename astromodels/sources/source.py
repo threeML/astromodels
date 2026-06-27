@@ -7,7 +7,6 @@ from typing import Any, Dict, List
 
 from astromodels.core.parameter import Parameter
 
-
 log = logging.getLogger(__name__)
 
 
