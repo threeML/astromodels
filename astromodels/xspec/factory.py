@@ -717,6 +717,7 @@ def generate_xs_model_file(
             "delta": 0.1,
             "unit": "keV / (cm2 s)",
             "free": True,
+            "is_normalization": True,
         }
 
     assert model_type != "con", "Convolution models are not yet supported"
