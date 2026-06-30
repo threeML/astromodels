@@ -231,7 +231,7 @@ class TbAbs(Function1D, metaclass=FunctionMeta):
         NH :
             desc : absorbing column density in units of 1e22 particles per cm^2
             initial value : 1.0
-            is_normalization : True
+            is_normalization : False
             transformation : log10
             min : 1e-4
             max : 1e4
@@ -325,7 +325,7 @@ class WAbs(Function1D, metaclass=FunctionMeta):
         NH :
             desc : absorbing column density in units of 1e22 particles per cm^2
             initial value : 1.0
-            is_normalization : True
+            is_normalization : False
             transformation : log10
             min : 1e-4
             max : 1e4
