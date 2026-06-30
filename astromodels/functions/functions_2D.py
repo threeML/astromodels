@@ -31,6 +31,7 @@ class Latitude_galactic_diffuse(Function2D, metaclass=FunctionMeta):
 
             desc : normalization
             initial value : 1
+            is_normalization : True
 
         sigma_b :
 
@@ -675,6 +676,8 @@ class SpatialTemplate_2D(Function2D, metaclass=FunctionMeta):
             desc : normalization
             initial value : 1
             fix : yes
+            is_normalization : True
+
         hash :
 
             desc: hash of model map [needed for memoization]
@@ -860,6 +863,8 @@ class SpatialTemplate_2D_Healpix(Function2D, metaclass=FunctionMeta):
             desc : normalization
             initial value : 1
             fix : yes
+            is_normalization : True
+
         hash :
             desc: hash of model map
             initial value: 1
