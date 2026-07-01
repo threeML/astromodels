@@ -161,9 +161,10 @@ def test_call():
     two = point_source.spectrum.component2([1, 2, 3])
 
     assert np.all(np.abs(one + two - point_source([1, 2, 3])) == 0)
+    assert np.all(np.abs(one[0] + two[0] - point_source(1) == 0))
 
 
-def test_call_with_units():
+def test_call_with_units(tmp_path):
 
     po = Powerlaw()
 
@@ -253,9 +254,9 @@ def test_call_with_units():
 
             assert np.all(new_result == result)
 
-            model.save("__test.yml", overwrite=True)
+            model.save(tmp_path / "__test.yml", overwrite=True)
 
-            new_model = load_model("__test.yml")
+            new_model = load_model(tmp_path / "__test.yml")
 
             new_result = new_model["test"](np.array([1, 2, 3]) * x_unit_to_use)
 

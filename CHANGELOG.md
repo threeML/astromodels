@@ -1,6 +1,20 @@
 # Changelog
 
 
+## v2.6
+### [v2.6.0](https://github.com/threeML/astromodels/tree/v2.6.0) (2026-06-26)
+
+[Full Changelog](https://github.com/threeML/astromodels/compare/v2.5.1...v2.6.0)
+
+**Closed issues:**
+
+- Node.js 20 actions deprecated [\#254](https://github.com/threeML/astromodels/issues/254)
+- Add a way to check for null polarization [\#248](https://github.com/threeML/astromodels/issues/248)
+- ThreadSafe error with latest astromodels dev [\#243](https://github.com/threeML/astromodels/issues/243)
+- SpatialTemplate\_2D, ExtendedSource and default units [\#238](https://github.com/threeML/astromodels/issues/238)
+- Error Importing Astromodels with python 3.11.3 [\#201](https://github.com/threeML/astromodels/issues/201)
+
+
 ## v2.5
 ### [v2.5.1](https://github.com/threeML/astromodels/tree/v2.5.1) (2026-01-21)
 
@@ -61,6 +75,7 @@
 
 **Closed issues:**
 
+- An error occurred when installing astromodels using pip [\#211](https://github.com/threeML/astromodels/issues/211)
 - Installation broken in Python v3.12 [\#204](https://github.com/threeML/astromodels/issues/204)
 
 **Merged pull requests:**

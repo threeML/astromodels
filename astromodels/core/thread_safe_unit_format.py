@@ -31,7 +31,7 @@ def _format_one(xxx_todo_changeme):
     # This is for example 'cm-2' if base=cm and power=-2,
     # but only 'cm' if base=cm and power=1
 
-    (base, power) = xxx_todo_changeme
+    base, power = xxx_todo_changeme
     return "%s%s" % (base.to_string(), power if power != 1 else "")
 
 

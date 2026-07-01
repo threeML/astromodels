@@ -1,14 +1,13 @@
-import collections
+import logging
+
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Tuple, Type
 
 from rich.tree import Tree
 
-from astromodels.utils.logging import setup_logger
-
 from .cpickle_compatibility_layer import cPickle
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 # This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)
@@ -202,7 +201,7 @@ class NodeBase:
 
     def _recursively_gather_node_type(self, node, node_type) -> Dict[str, "NodeBase"]:
 
-        instances = collections.OrderedDict()
+        instances = dict()
 
         for child in node._get_children():
 
@@ -409,7 +408,7 @@ def _recurse_dict(d: Dict[str, Any], tree: Tree, branch_color: Optional[str] = N
 
     for k, v in d.items():
 
-        if isinstance(v, collections.OrderedDict):
+        if isinstance(v, dict):
 
             if branch_color is not None:
 

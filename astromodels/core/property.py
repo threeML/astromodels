@@ -1,12 +1,11 @@
-import collections
+import logging
+
 import copy
 from typing import Any, Dict, List, Optional
 
-from astromodels.utils.logging import setup_logger
-
 from .tree import Node
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 # Exception for when a parameter is out of its bounds
 
@@ -166,7 +165,7 @@ class PropertyBase(Node):
     def to_dict(self, minimal=False) -> Dict[str, Any]:
         """Returns the representation for serialization."""
 
-        data = collections.OrderedDict()
+        data = dict()
 
         if minimal:
             # In the minimal representation we just output the value

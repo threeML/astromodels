@@ -124,7 +124,7 @@ def test_constructor():
     assert source1.spatial_shape.lon0.free
 
 
-def test_call():
+def test_call(tmp_path):
 
     # Multi-component
 
@@ -149,8 +149,8 @@ def test_call():
             shape.lat0 = dec * u.degree
 
         if name == "SpatialTemplate_2D":
-            make_test_template(ra, dec, "__test.fits")
-            shape = class_type(fits_file="__test.fits")
+            make_test_template(ra, dec, tmp_path / "__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.K = 1.0
@@ -158,10 +158,11 @@ def test_call():
         if name == "SpatialTemplate_2D_Healpix":
             if not has_mhealpy:
                 pytest.skip(
-                  "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
+                    "Skipping SpatialTemplate_2D_Healpix test because "
+                    "mhealpy is missing"
                 )
-            make_test_healpix_template("__test.fits")
-            shape = class_type(fits_file="__test.fits")
+            make_test_healpix_template(tmp_path / "__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.K = 1.0
@@ -213,7 +214,7 @@ def test_call():
         )
 
 
-def test_call_with_units():
+def test_call_with_units(tmp_path):
 
     # Multi-component
 
@@ -242,9 +243,9 @@ def test_call_with_units():
             shape.lat0 = dec * u.degree
 
         if name == "SpatialTemplate_2D":
-            make_test_template(ra, dec, "__test.fits")
+            make_test_template(ra, dec, tmp_path / "__test.fits")
 
-            shape = class_type(fits_file="__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
             source = ExtendedSource(
                 "test_source_%s" % name,
                 spatial_shape=shape,
@@ -256,11 +257,12 @@ def test_call_with_units():
         if name == "SpatialTemplate_2D_Healpix":
             if not has_mhealpy:
                 pytest.skip(
-                  "Skipping SpatialTemplate_2D_Healpix test because mhealpy is missing"
+                    "Skipping SpatialTemplate_2D_Healpix test because "
+                    "mhealpy is missing"
                 )
-            make_test_healpix_template("__test.fits")
+            make_test_healpix_template(tmp_path / "__test.fits")
 
-            shape = class_type(fits_file="__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
             source = ExtendedSource(
                 "test_source_%s" % name,
                 spatial_shape=shape,

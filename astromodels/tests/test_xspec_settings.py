@@ -6,6 +6,7 @@ if find_spec("xspec") is None:
     has_XSPEC = False
 else:
     from astromodels.xspec.xspec_settings import xspec_abund, xspec_cosmo, xspec_xsect
+
     has_XSPEC = True
 
 
@@ -42,6 +43,7 @@ def test_xspec_xsect():
 @skip_if_xspec_is_not_available
 def test_xspec_model_import():
     from astromodels.xspec import XS_bbody, XS_phabs, XS_powerlaw
+
     assert XS_bbody is not None
     assert XS_phabs is not None
     assert XS_powerlaw is not None

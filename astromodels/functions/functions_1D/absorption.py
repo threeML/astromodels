@@ -1,3 +1,5 @@
+import logging
+
 import math
 from dataclasses import dataclass
 from pathlib import Path
@@ -10,10 +12,9 @@ from astropy.io import fits
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import _get_data_file_path
-from astromodels.utils.configuration import astromodels_config
-from astromodels.utils.logging import setup_logger
+from astromodels.utils.logging import add_startup_warning
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 try:
 
@@ -27,10 +28,9 @@ try:
 
 except ImportError:
 
-    if astromodels_config.logging.startup_warnings:
-        msg = "The ebltable package is not available. Models that depend on it will"
-        msg += " not be available"
-        log.warning(msg)
+    msg = "The ebltable package is not available. Models that depend on it will"
+    msg += " not be available"
+    add_startup_warning(log, msg)
 
     has_ebltable = False
 

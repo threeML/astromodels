@@ -1,6 +1,7 @@
+import logging
+
 __author__ = "giacomov"
 
-import collections
 
 import numpy
 
@@ -8,10 +9,10 @@ from astromodels.core.spectral_component import SpectralComponent
 from astromodels.core.tree import Node
 from astromodels.core.units import get_units
 from astromodels.sources.source import Source, SourceType
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.pretty_list import dict_to_list
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class ParticleSource(Source, Node):
@@ -87,12 +88,12 @@ class ParticleSource(Source, Node):
 
         # Make a dictionary which will then be transformed in a list
 
-        repr_dict = collections.OrderedDict()
+        repr_dict = dict()
 
         key = "%s (particle source)" % self.name
 
-        repr_dict[key] = collections.OrderedDict()
-        repr_dict[key]["spectrum"] = collections.OrderedDict()
+        repr_dict[key] = dict()
+        repr_dict[key]["spectrum"] = dict()
 
         for component_name, component in list(self.components.items()):
 
@@ -108,7 +109,7 @@ class ParticleSource(Source, Node):
 
         :return:
         """
-        free_parameters = collections.OrderedDict()
+        free_parameters = dict()
 
         for component in self._components.values():
 
@@ -128,7 +129,7 @@ class ParticleSource(Source, Node):
 
         :return:
         """
-        all_parameters = collections.OrderedDict()
+        all_parameters = dict()
 
         for component in self._components.values():
 

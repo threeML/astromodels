@@ -1,5 +1,6 @@
+import logging
+
 import ast
-import collections
 import copy
 import inspect
 import math
@@ -15,6 +16,7 @@ from typing import Dict, List, Optional, Tuple
 import astropy.units as u
 import numba as nb
 import numpy as np
+from scipy.integrate import quad
 from yaml.reader import ReaderError
 
 from astromodels.core.memoization import memoize
@@ -24,11 +26,11 @@ from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
 from astromodels.utils.file_utils import copy_if_needed
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 __author__ = "giacomov"
 
@@ -202,7 +204,7 @@ class FunctionMeta(type):
         if "properties" in function_definition:
             # parse the properties
 
-            dct["_properties"] = collections.OrderedDict()
+            dct["_properties"] = dict()
 
             for property_name, property_definition in function_definition[
                 "properties"
@@ -229,7 +231,7 @@ class FunctionMeta(type):
         # below this dictionary will be used to create a copy of each parameter which
         # will be made available as child of the *instance*.
 
-        dct["_parameters"] = collections.OrderedDict()
+        dct["_parameters"] = dict()
 
         for parameter_name, parameter_definition in list(
             function_definition["parameters"].items()
@@ -303,7 +305,8 @@ class FunctionMeta(type):
         # without instancing the class
 
         def info():
-            repr_dict = collections.OrderedDict()
+
+            repr_dict = dict()
 
             repr_dict["description"] = function_definition["description"]
 
@@ -311,7 +314,7 @@ class FunctionMeta(type):
                 repr_dict["formula"] = function_definition["latex"]
 
             # Add the description of each parameter and their current value
-            repr_dict["default parameters"] = collections.OrderedDict()
+            repr_dict["default parameters"] = dict()
 
             for parameter_name in list(dct["_parameters"].keys()):
                 repr_dict["default parameters"][parameter_name] = dct["_parameters"][
@@ -320,7 +323,7 @@ class FunctionMeta(type):
 
             if dct["_properties"] is not None:
                 # Add the description of each parameter and their current value
-                repr_dict["default properties"] = collections.OrderedDict()
+                repr_dict["default properties"] = dict()
 
                 for property_name in list(dct["_properties"].keys()):
                     repr_dict["default properties"][property_name] = dct["_properties"][
@@ -362,7 +365,7 @@ class FunctionMeta(type):
         # Create a copy of the parameters dictionary which is in the type,
         # otherwise every instance would share the same dictionary
 
-        copy_of_parameters = collections.OrderedDict()
+        copy_of_parameters = dict()
 
         # Fill it by duplicating the parameters contained in the dictionary in the type
 
@@ -379,7 +382,8 @@ class FunctionMeta(type):
         # now we check to see if there are any properties
 
         if type(instance)._properties is not None:
-            copy_of_properties = collections.OrderedDict()
+
+            copy_of_properties = dict()
 
             for key, value in type(instance)._properties.items():
                 copy_of_properties[key] = value.duplicate()
@@ -747,7 +751,7 @@ class Function(Node):
         # might be different than the actual name of the parameter, use the .add_child
         # method instead of the add_children method
 
-        self._parameters: Dict[str, Parameter] = collections.OrderedDict()
+        self._parameters: Dict[str, Parameter] = dict()
 
         for child_name, child in list(parameters.items()):
             self._parameters[child_name] = child
@@ -759,9 +763,8 @@ class Function(Node):
         # Now add the properties if there are any
 
         if properties is not None:
-            self._properties: Optional[Dict[str, FunctionProperty]] = (
-                collections.OrderedDict()
-            )
+
+            self._properties: Optional[Dict[str, FunctionProperty]] = dict()
 
             for child_name, child in properties.items():
                 self._properties[child_name] = child
@@ -788,7 +791,7 @@ class Function(Node):
 
         # stores any extrernally linked functions
 
-        self._external_functions: Dict[str, "Function"] = collections.OrderedDict()
+        self._external_functions: Dict[str, "Function"] = dict()
 
     @property
     def n_dim(self) -> int:
@@ -804,7 +807,7 @@ class Function(Node):
         :return: dictionary of free parameters
         """
 
-        free_parameters = collections.OrderedDict(
+        free_parameters = dict(
             [(k, v) for k, v in list(self.parameters.items()) if v.free]
         )
 
@@ -906,7 +909,8 @@ class Function(Node):
             # their path
 
             if self._external_functions:
-                data["external_functions"] = collections.OrderedDict()
+
+                data["external_functions"] = dict()
 
                 for k, v in self._external_functions.items():
                     data["external_functions"][k] = v.path
@@ -978,6 +982,9 @@ class Function(Node):
         function to compose with the current one :return: a composite function
         instance."""
         return CompositeFunction("of", self, another_function)
+
+    def arctan2(self, another_function):
+        return CompositeFunction("arctan2", self, another_function)
 
     def __neg__(self):
         return CompositeFunction("*-", self)
@@ -1087,7 +1094,8 @@ class Function(Node):
     __rtruediv__ = __rdiv__
 
     def _repr__base(self, rich_output):
-        repr_dict = collections.OrderedDict()
+
+        repr_dict = dict()
 
         repr_dict["description"] = self._function_definition["description"]
 
@@ -1095,7 +1103,7 @@ class Function(Node):
             repr_dict["formula"] = self._function_definition["latex"]
 
         # Add the description of each parameter and their current value
-        repr_dict["parameters"] = collections.OrderedDict()
+        repr_dict["parameters"] = dict()
 
         for parameter in self._get_children():
             repr_dict["parameters"][parameter.name] = parameter.to_dict()
@@ -1174,6 +1182,8 @@ class Function(Node):
 
 
 class Function1D(Function):
+    _integral_numerical_error = None
+
     def __init__(
         self,
         name: Optional[str] = None,
@@ -1393,6 +1403,67 @@ class Function1D(Function):
 
         return _local_deriv(a, b, epsilon)
 
+    def integrate(self, a, b, *args, **kwargs):
+        """
+        Integrates the function from a to b. If an analytically integral is available
+        will use this, otherwise fall back to the numerical integration using scipys
+        quadrature rule.
+
+        :param a: lower integration boundary
+        :type a: float or astropy.Quantity
+        :param b: upper integration boundary
+        :type b: float or astropy.Quantity
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+
+        returns: value of integral
+        """
+        if isinstance(a, u.Quantity) and isinstance(b, u.Quantity):
+            try:
+                a = a.to(self._x_unit).value
+                b = b.to(self._x_unit).value
+            except Exception as e:
+                raise ValueError(
+                    "You integral boundary unit must be converatble to "
+                    f"{self._x_unit}."
+                ) from e
+            return self.integral(a, b, *args, **kwargs) * self._y_unit * self._x_unit
+
+        elif (isinstance(a, u.Quantity) and not isinstance(b, u.Quantity)) or (
+            not isinstance(a, u.Quantity) and isinstance(b, u.Quantity)
+        ):
+            raise TypeError(
+                "a and b must either be astropy Quantities or floats. "
+                "You can not mix."
+            )
+        else:
+            return self.integral(a, b, *args, **kwargs)
+
+    def integral(self, a, b, *args, **kwargs):
+        """
+        The actual integral defintion. Needs to be overwritten for analytical integrals
+        :param a: lower integration boundary
+        :type a: float
+        :param b: upper integration boundary
+        :type b: float
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+        """
+        res = quad(self.__call__, a, b, *args, **kwargs)
+        self._integral_numerical_error = res[1]
+        return res[0]
+
+    @property
+    def integral_numerical_error(self):
+        if hasattr(self, "_integral_numerical_error"):
+            return self._integral_numerical_error
+        else:
+            return None
+
 
 @nb.njit
 def _local_deriv(a, b, epsilon):
@@ -1476,7 +1547,23 @@ class Function2D(Function):
         # microseconds or so), so we perform this transformation only when strictly
         # required
 
-        assert type(x) is type(y), "You have to use the same type for x and y"
+        if not type(x) is type(y):
+            if type(x) in [float, int, str] or type(y) is [float, int, str]:
+                x_type = type(x)
+                y_type = type(y)
+                try:
+                    x = float(x)
+                    y = float(y)
+                except Exception as e:
+                    raise TypeError(
+                        "You have to use the same type for x and y or they need to be "
+                        f"convertible to float. Got {x_type} and {y_type}"
+                    ) from e
+            else:
+                raise TypeError(
+                    "You have to use the same type for x and y or they need to be "
+                    f"convertible to float. Got {x_type} and {y_type}"
+                )
 
         if isinstance(x, np.ndarray):
             # We have an array or a quantity as input
@@ -1712,6 +1799,7 @@ _operations = {
     "**": np.power,
     "abs": np.abs,
     "of": "compose",
+    "arctan2": np.arctan2,
 }
 
 
@@ -1854,11 +1942,11 @@ class CompositeFunction(Function):
         # Build the parameters dictionary assigning a new name to each parameter to
         # account for possible duplicates.
 
-        parameters = collections.OrderedDict()
+        parameters = dict()
 
-        properties = collections.OrderedDict()
+        properties = dict()
 
-        self._sub_children = collections.OrderedDict()
+        self._sub_children = dict()
 
         log.debug_node(f"we now have {len(self._functions)}")
 
@@ -1914,7 +2002,7 @@ class CompositeFunction(Function):
 
             # now, some functions may have children and we want to keep track of those
 
-            self._sub_children[function.name] = collections.OrderedDict()
+            self._sub_children[function.name] = dict()
 
             for child_name, child in function._children.items():
                 if child_name not in function.parameters:
@@ -2079,10 +2167,12 @@ class CompositeFunction(Function):
                     flag = True
 
             if flag:
-                data["external_functions"] = collections.OrderedDict()
+
+                data["external_functions"] = dict()
 
                 for i, function in enumerate(self._functions):
-                    this_function = collections.OrderedDict()
+
+                    this_function = dict()
 
                     for k, v in function.external_functions.items():
                         this_function[k] = v.path
@@ -2139,7 +2229,7 @@ def get_function(function_name, composite_function_expression=None):
         if function_name in _known_functions:
             function_class = _known_functions[function_name]
 
-            deferred_properites = collections.OrderedDict()
+            deferred_properites = dict()
 
             if function_class._properties is not None:
                 for name, func_prop in function_class._properties.items():
@@ -2242,7 +2332,7 @@ def list_functions():
 
     # Order by key (i.e., by function name)
 
-    ordered = collections.OrderedDict(sorted(functions_and_descriptions.items()))
+    ordered = dict(sorted(functions_and_descriptions.items()))
 
     # Format in a table
 
@@ -2315,7 +2405,7 @@ def _parse_function_expression(function_specification):
                 # let's see if there are any deferred
                 # properties
 
-                deferred_properites = collections.OrderedDict()
+                deferred_properites = dict()
 
                 if function_class._properties is not None:
                     for name, func_prop in function_class._properties.items():
