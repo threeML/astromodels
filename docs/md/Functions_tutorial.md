@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.19.1
+      jupytext_version: 1.19.3
   kernelspec:
     display_name: Python 3
     language: python
@@ -220,7 +220,7 @@ print(len(another_composite2.parameters)) # 9 parameters
 ## Integrating Functions
 
 ### Function1D
-Since `astromodels v2.6.1` we provide the `.integrate(a, b)` function on 1D functions.
+Since `astromodels v2.6.0` we provide the `.integrate(a, b)` function on 1D functions.
 This returns the analytical integral from `a` to `b` if the integral is known and otherwise
 uses `scipy.integrate.quad` to numerically integrate the function.
 The latter is the default and in case you want to provide your own analytical solution
