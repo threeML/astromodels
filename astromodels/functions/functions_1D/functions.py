@@ -683,7 +683,22 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
         # print("Receiving %s" % ([K, piv, alpha, beta]))
 
         xx = np.divide(x, piv)
-        return np.power(K * xx, (alpha - beta * np.log(xx)))
+
+        try:
+
+            return K * xx ** (alpha - beta * np.log(xx))
+
+        except ValueError:
+
+            # The current version of astropy (1.1.x) has a bug for which quantities that
+            # have become dimensionless because of a division (like xx here) are not
+            # recognized as such by the power operator, which throws an exception:
+            # ValueError: Quantities and Units may only be raised to a scalar power
+            # This is a quick fix, waiting for astropy 1.2 which will fix this
+
+            xx = xx.to("")
+
+            return K * xx ** (alpha - beta * np.log(xx))
 
     @property
     def peak_energy(self):
