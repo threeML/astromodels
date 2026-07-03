@@ -225,6 +225,8 @@ This returns the analytical integral from `a` to `b` if the integral is known an
 uses `scipy.integrate.quad` to numerically integrate the function.
 The latter is the default and in case you want to provide your own analytical solution
 for your custom function you need to overwrite the `.integral` function.
+When a numerical integral is performed the numerical error from scipy is stored in the 
+`.integral_numerical_error` property of the `astromodels` function.
 
 ```python
 from astromodels.functions import Powerlaw
@@ -266,6 +268,33 @@ class JustALine(Function1D, metaclass=FunctionMeta):
 
 jl = JustALine()
 print(jl.integrate(0,1))
+```
+
+Otherwise `scipy` is used:
+```python
+class JustANumericalLine(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+        A linear function
+    latex : $ b * x + a $
+    parameters :
+        a :
+            desc :  intercept
+            initial value : 0
+        b :
+            desc : coeff
+            initial value : 1
+    """
+    def _set_units(self,x_unit,y_unit):
+        self.a.unit = y_unit
+        self.b.unit = y_unit / x_unit
+
+    def evaluate(self, x, a, b):
+        return b * x + a
+
+jl = JustANumericalLine()
+print(jl.integrate(0,1))
+print(jl.integral_numerical_error)
 ```
 
 ### Function2D and Function3D
@@ -390,11 +419,12 @@ Keep in mind that this is in YAML format.
 
 ### Set units
 
-astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy's unit system. Keep in mind that models are fit with a differential photon flux, 
+astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy's unit system. Keep in mind that spectral models are fit with a differential photon flux, 
 
 $$\frac{d N_p}{dA dt dE}$$
 
 so your units should reflect this convention. Therefore, proper normalizations should be taken into account.
+
 
 
 ### Evaluate
