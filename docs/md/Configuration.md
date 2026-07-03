@@ -55,6 +55,12 @@ modeling:
 Not all options are required to be set and the defaults will be applied to anything not set. 
 <!-- #endregion -->
 
+<div class="alert alert-info">
+
+**Note:** In `astromodels v2.6.0` the logging was changed - setting the `startup_warnings` is no longer supported.
+</div>
+
+
 ## Configuration options
 
 There are a few special configuration options
