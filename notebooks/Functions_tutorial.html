@@ -144,7 +144,7 @@
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
-<div><table id="table4806419920">
+<div><table id="table5306045264">
 <thead><tr><th>name</th><th>Description</th></tr></thead>
 <tr><td>Asymm_Gaussian_on_sphere</td><td>A bidimensional Gaussian function on a sphere (in spherical coordinates) see https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</td></tr>
 <tr><td>Band</td><td>Band model from Band et al., 1993, parametrized with the peak energy</td></tr>
@@ -727,7 +727,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-2.28 μs ± 110 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
+2.25 μs ± 252 ns per loop (mean ± std. dev. of 7 runs, 100,000 loops each)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -743,7 +743,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-76.2 μs ± 3.94 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+76.8 μs ± 4.05 μs per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 </pre></div></div>
 </div>
 <p>As you can see using <strong>astropy.units requires about 10x more than using a plain assignment</strong>. In an interactive analysis you are unlikely to notice the difference, but if you use units in a loop or during a fit this slow-down will add up an become very noticeable. <strong>Note that this is a feature of astropy.units, not of astromodels.</strong></p>
@@ -855,7 +855,8 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <h2>Integrating Functions<a class="headerlink" href="#Integrating-Functions" title="Link to this heading"></a></h2>
 <section id="Function1D">
 <h3>Function1D<a class="headerlink" href="#Function1D" title="Link to this heading"></a></h3>
-<p>Since <code class="docutils literal notranslate"><span class="pre">astromodels</span> <span class="pre">v2.6.1</span></code> we provide the <code class="docutils literal notranslate"><span class="pre">.integrate(a,</span> <span class="pre">b)</span></code> function on 1D functions. This returns the analytical integral from <code class="docutils literal notranslate"><span class="pre">a</span></code> to <code class="docutils literal notranslate"><span class="pre">b</span></code> if the integral is known and otherwise uses <code class="docutils literal notranslate"><span class="pre">scipy.integrate.quad</span></code> to numerically integrate the function. The latter is the default and in case you want to provide your own analytical solution for your custom function you need to overwrite the <code class="docutils literal notranslate"><span class="pre">.integral</span></code> function.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">astromodels</span> <span class="pre">v2.6.0</span></code> we provide the <code class="docutils literal notranslate"><span class="pre">.integrate(a,</span> <span class="pre">b)</span></code> function on 1D functions. This returns the analytical integral from <code class="docutils literal notranslate"><span class="pre">a</span></code> to <code class="docutils literal notranslate"><span class="pre">b</span></code> if the integral is known and otherwise uses <code class="docutils literal notranslate"><span class="pre">scipy.integrate.quad</span></code> to numerically integrate the function. The latter is the default and in case you want to provide your own analytical solution for your custom function you need to overwrite the <code class="docutils literal notranslate"><span class="pre">.integral</span></code> function. When a numerical integral is performed the numerical error from scipy is stored in
+the <code class="docutils literal notranslate"><span class="pre">.integral_numerical_error</span></code> property of the <code class="docutils literal notranslate"><span class="pre">astromodels</span></code> function.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -926,12 +927,54 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 0.5
 </pre></div></div>
 </div>
+<p>Otherwise <code class="docutils literal notranslate"><span class="pre">scipy</span></code> is used:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">JustANumericalLine</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description :</span>
+<span class="sd">        A linear function</span>
+<span class="sd">    latex : $ b * x + a $</span>
+<span class="sd">    parameters :</span>
+<span class="sd">        a :</span>
+<span class="sd">            desc :  intercept</span>
+<span class="sd">            initial value : 0</span>
+<span class="sd">        b :</span>
+<span class="sd">            desc : coeff</span>
+<span class="sd">            initial value : 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span> <span class="o">/</span> <span class="n">x_unit</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">b</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a</span>
+
+
+<span class="n">jl</span> <span class="o">=</span> <span class="n">JustANumericalLine</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jl</span><span class="o">.</span><span class="n">integrate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">jl</span><span class="o">.</span><span class="n">integral_numerical_error</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.5
+5.551115123125783e-15
+</pre></div></div>
+</div>
 </section>
 <section id="Function2D-and-Function3D">
 <h3>Function2D and Function3D<a class="headerlink" href="#Function2D-and-Function3D" title="Link to this heading"></a></h3>
 <p>For multidimensional functions we do not provide a integrate function, as the user might want to only integrate over one or two dimensions. However doing that numerically with <code class="docutils literal notranslate"><span class="pre">scipy.integrate.nquad</span></code> is straigforward:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">nquad</span><span class="p">,</span> <span class="n">quad</span>
@@ -944,7 +987,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <p>Let’s first integrate over the first coordinate:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">val</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">quad</span><span class="p">(</span><span class="n">disk</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
@@ -962,7 +1005,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <p>In case you want to integrate over the second one, you need to wrap the function:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wrapper</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">disk</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -981,7 +1024,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <p>And in case you want to perform a multidimensional integration you can use something like this. This might be a bit slow so we are fine with an rough estimate:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">val</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">nquad</span><span class="p">(</span><span class="n">disk</span><span class="p">,</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)),</span> <span class="n">opts</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;epsabs&quot;</span><span class="p">:</span> <span class="mf">1e-2</span><span class="p">,</span> <span class="s2">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">})</span>
@@ -1018,7 +1061,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <p>One of the most powerful aspects of astromodels is the ability to quickly build custom functions on the fly. The source code for a function can be pure python, FORTRAN linked via f2py, C++ linked via cython, etc. Anything that provides a python function can be used to fit data.</p>
 <p>To build a custom spectral 1D function in astromodels, we need to import a few things that will allow astromodels to recognize your model.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -1107,7 +1150,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </section>
 <section id="Set-units">
 <h3>Set units<a class="headerlink" href="#Set-units" title="Link to this heading"></a></h3>
-<p>astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy’s unit system. Keep in mind that models are fit with a differential photon flux,</p>
+<p>astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy’s unit system. Keep in mind that spectral models are fit with a differential photon flux,</p>
 <div class="math notranslate nohighlight">
 \[\frac{d N_p}{dA dt dE}\]</div>
 <p>so your units should reflect this convention. Therefore, proper normalizations should be taken into account.</p>
@@ -1122,7 +1165,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 <h2>Custom functions in other langauges<a class="headerlink" href="#Custom-functions-in-other-langauges" title="Link to this heading"></a></h2>
 <p>What if your model is built from a C++ function and you want to fit that directly to the data? using Cython, pybind11, f2py, etc, you can wrap these models and call them easily.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cpp_function_wrapper</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
@@ -1134,7 +1177,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpp_function_wrapper</span><span class="p">(</span><span class="mf">2.0</span><span class="p">)</span>
@@ -1142,7 +1185,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1152,7 +1195,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <p>Now we will define a astromodels function that will handle both the unit and non-unit call.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
@@ -1209,7 +1252,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </div>
 <p>We can check the unit and non-unit call by making a point source and evaluating it</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cpp_spectrum</span> <span class="o">=</span> <span class="n">CppModel</span><span class="p">()</span>
@@ -1232,7 +1275,7 @@ Parameter K = 1.2230000000000013e-08 [1 / (keV s cm2)]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -1245,7 +1288,7 @@ $1 \; \mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 <p>We are not limited to functions that can only take numerical parameters as arguments. We can also link other astromodels function into a function to expand its abilities. ### Properties</p>
 <p>Let’s create a function that uses text based switches to alter its functionality</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SwitchFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
@@ -1298,7 +1341,7 @@ $1 \; \mathrm{\frac{1}{keV\,s\,cm^{2}}}$</div></div>
 <p>We have added a text parameter called switch and specified the allowed values that it can take on. We can of course allow it to take on any value. Additionally, we have specified a function to call whenever we change the value. This allows use to do things like read in a table from a dictionary or load a file, etc. Properties can be set in the constructor of a function. They behave just like parameters except that they do not participate in the function call. Thus, their state is saved whenever
 you serialize the model to disk.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="n">f</span> <span class="o">=</span> <span class="n">SwitchFunction</span><span class="p">()</span>
@@ -1321,7 +1364,7 @@ cosine
 <h3>Linking functions<a class="headerlink" href="#Linking-functions" title="Link to this heading"></a></h3>
 <p>What if you need to call another astromodels function from inside your custom function? This is achieved by linking functions. For example, let’s create a convolutional model that redshifts the energies of and model linked to it:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Redshifter</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
@@ -1383,7 +1426,7 @@ cosine
 </div>
 <p>With this function, whenever we set the linked_function property to another astromodels function, its call will return that function redshifted.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">Powerlaw</span><span class="p">()</span>
