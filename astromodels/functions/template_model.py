@@ -419,6 +419,7 @@ class TemplateFile:
             f.attrs["description"] = self.description
             f.attrs["interpolation_degree"] = self.interpolation_degree
             f.attrs["spline_smoothing_factor"] = self.spline_smoothing_factor
+            f.attrs["model_type"] = "spectral"
 
             f.create_dataset("energies", data=self.energies, compression="gzip")
 
