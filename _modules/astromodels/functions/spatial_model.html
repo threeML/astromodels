@@ -1,0 +1,1097 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>astromodels.functions.spatial_model &mdash; Astromodels latest documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
+
+  
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=c6e86fd7"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../_static/copybutton.js?v=f281be69"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script src="../../../_static/dark_mode_js/default_dark.js?v=fd565c74"></script>
+      <script src="../../../_static/dark_mode_js/theme_switcher.js?v=358d3910"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Astromodels
+              <img src="../../../_static/transp_logo.png" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Quick_start.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/function_list.html">Available Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Functions_tutorial.html">Functions tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Point_source_tutorial.html">Point sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Extended_sources_tutorial.html">Extended source tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Multi_component_sources.html">Multi-component sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Model_tutorial.html">Model tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Priors_for_Bayesian_analysis.html">Priors for Bayesian analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks/Additional_features_for_scripts_and_applications.html">Additional features for scripts and applications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/API.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOG.html">Changelog</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Astromodels</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">astromodels.functions.spatial_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for astromodels.functions.spatial_model</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Template fitting of 3D energy dependent model&quot;&quot;&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">range</span><span class="p">,</span> <span class="nb">str</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">OrderedDict</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">TypeAlias</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">h5py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.coordinates</span><span class="w"> </span><span class="kn">import</span> <span class="n">SkyCoord</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astropy.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">fits</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.interpolate</span><span class="w"> </span><span class="kn">import</span> <span class="n">RectBivariateSpline</span><span class="p">,</span> <span class="n">RegularGridInterpolator</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.parameter</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parameter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function3D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.template_model</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">GridInterpolate</span><span class="p">,</span>
+    <span class="n">IncompleteGrid</span><span class="p">,</span>
+    <span class="n">InvalidTemplateModelFile</span><span class="p">,</span>
+    <span class="n">MissingDataFile</span><span class="p">,</span>
+    <span class="n">RectBivariateSplineWrapper</span><span class="p">,</span>
+    <span class="n">UnivariateSpline</span><span class="p">,</span>
+    <span class="n">ValuesNotInGrid</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_data_path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.utils.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="n">ndarray</span><span class="p">:</span> <span class="n">TypeAlias</span> <span class="o">=</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">]</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Ramiro&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1&quot;</span>
+<span class="n">__comment__</span> <span class="o">=</span> <span class="s2">&quot;Aims to be part of the astromodels package&quot;</span>
+
+
+<span class="c1"># NOTE: Script adapted GalProp and TemplateModelFactory in Astromodels.</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;IncompleteGrid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ValuesNotInGrid&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;InvalidTemplateModelFile&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MissingDataFile&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ModelFactory&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;HaloModel&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="c1"># This dictionary will keep track of the new classes already</span>
+<span class="c1"># created in the current session</span>
+<span class="n">_classes_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<span class="c1"># This class builds a dataframe from morphology parameters for a source</span>
+<span class="c1"># The information from the source comes from FITS files with</span>
+<span class="c1"># 3D template model maps</span>
+<div class="viewcode-block" id="ModelFactory">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.ModelFactory">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelFactory</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">names_of_parameters</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">degree_of_interpolation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Class builds a data table from 3d mapcube templates with information</span>
+<span class="sd">        on morphology and spectral parameters for different energy bins. These</span>
+<span class="sd">        parameters are used for interpolation in the class HaloModel</span>
+
+<span class="sd">        :param name: Name of output HDF5 file</span>
+<span class="sd">        :param description: A brief summary of the template model for reference</span>
+<span class="sd">        :param names_of_parameters: unique name for parameters to interpolate over</span>
+<span class="sd">        :param degree_of_interpolation: Polynomial degree for interpolating,</span>
+<span class="sd">        defaults to 1</span>
+<span class="sd">        :param spline_smoothing_factor: Smoothing factor used during spline</span>
+<span class="sd">        interpolation, defaults to 0</span>
+<span class="sd">        :raises RuntimeError: Raised if name of the file cannot contain spaces or</span>
+<span class="sd">        special characters.</span>
+<span class="sd">        Example:</span>
+<span class="sd">        &gt;&gt;&gt; model_factory = ModelFactory(</span>
+<span class="sd">        ...     &quot;my_model&quot;,</span>
+<span class="sd">        ...     &quot;A brief summary of the model&quot;,</span>
+<span class="sd">        ...     [&quot;param1&quot;, &quot;param2&quot;],</span>
+<span class="sd">        ...     degree_of_interpolation=1,</span>
+<span class="sd">        ...     spline_smoothing_factor=0,</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; model_factory.define_parameter_grid(</span>
+<span class="sd">        ...     &quot;param1&quot;, np.linspace(0, 10, 100)</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; model_factory.define_parameter_grid(</span>
+<span class="sd">        ...     &quot;param2&quot;, np.linspace(0, 10, 100)</span>
+<span class="sd">        ... )</span>
+<span class="sd">        &gt;&gt;&gt; for i, val1 in enumerate(model_factory._parameters_grids[&quot;param1&quot;]):</span>
+<span class="sd">        &gt;&gt;&gt;     for j, val2 in enumerate(model_factory._parameters_grids[&quot;param2&quot;]):</span>
+<span class="sd">        &gt;&gt;&gt;         model_factory.add_interpolation_data(fits_file=&quot;template.fits&quot;,</span>
+<span class="sd">        ...                                             param1=val1,</span>
+<span class="sd">        ...                                             param2=val2)</span>
+<span class="sd">        &gt;&gt;&gt; # Save the data to a file.</span>
+<span class="sd">        ... # If the data file already exists, it won&#39;t overwrite</span>
+<span class="sd">        ... # the current file until overwrite is set to overwrite = True</span>
+<span class="sd">        &gt;&gt;&gt; model_factory.save_data()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refLonPix</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refLatPix</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_refEnPix</span><span class="p">:</span> <span class="nb">float</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span><span class="p">:</span> <span class="nb">int</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">:</span> <span class="n">ndarray</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">:</span> <span class="n">ndarray</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">:</span> <span class="n">ndarray</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">:</span> <span class="n">ndarray</span>
+
+        <span class="c1"># Store the model name</span>
+        <span class="c1"># Ensure that it contains no spaces nor special characters</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s2">&quot;[a-zA-Z_][a-zA-Z0-9_]*&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The provided name </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not a valid name. &quot;</span>
+                <span class="s2">&quot;You cannot use spaces, nor special characters.&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">degree_of_interpolation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spline_smoothing_factor</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">spline_smoothing_factor</span><span class="p">)</span>
+
+        <span class="c1"># Create a dictionary which will contain the grid for each parameter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="n">names_of_parameters</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ModelFactory.define_parameter_grid">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.ModelFactory.define_parameter_grid">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_parameter_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Defines the user provider parameter grid for a given parameter with its</span>
+<span class="sd">        associated name</span>
+
+<span class="sd">        :param parameter_name: Name of parameter for later access when using model</span>
+<span class="sd">        :param grid: Array of allowed values for the paremter</span>
+<span class="sd">        :raises AssertionError: Check that the parameter is part of the model</span>
+<span class="sd">        :raises AssertionError: Ensure all parameter values in the grid are</span>
+<span class="sd">        non-repeating</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">parameter_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2"> is not part of this model.&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="c1"># if the grid is not numpy array, conver it to one</span>
+        <span class="n">grid_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">grid_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;A grid for a parameter must containt at least two &quot;</span>
+                <span class="s2">&quot;elements for interpolation.&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="c1"># Assert that all elements are unique</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">grid_</span><span class="p">)</span> <span class="o">==</span> <span class="n">grid_</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Non-unique elements found in grid of parameter </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_</span></div>
+
+
+<div class="viewcode-block" id="ModelFactory.add_interpolation_data">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.ModelFactory.add_interpolation_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_interpolation_data</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">fits_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ihdu</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters_values_input</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fill data table with information from 3D mapcube templates.</span>
+
+<span class="sd">        :param fits_file: FITS file with 3D mapcube</span>
+<span class="sd">        :param ihdu: Path to primary HDU, defaults to 0</span>
+<span class="sd">        :raises IncompleteGrid: Check if the grid is not filled with strange values</span>
+<span class="sd">        :raises RuntimeError: Checks that a FITS file was provided</span>
+<span class="sd">        :raises AssertionError: Ensure we have the right number of parameters as</span>
+<span class="sd">        provided in the define_parameter_grid method</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Verify that a grid has been defined for all parameters</span>
+        <span class="k">for</span> <span class="n">grid</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">grid</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">&quot;You need to define a grid for all parameters, &quot;</span>
+                    <span class="s2">&quot;by using the define_parameter_grid method.&quot;</span>
+                <span class="p">)</span>
+
+                <span class="k">raise</span> <span class="n">IncompleteGrid</span><span class="p">()</span>
+
+        <span class="c1"># Now load the information from the FITS 3D template model</span>
+        <span class="c1"># template models contain flux values in terms of energy, RA, and dec</span>
+
+        <span class="k">if</span> <span class="n">fits_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You need to specify a FITS file with a template map.&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fits_file</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">fits_file</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fits_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT1&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT2&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT3&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL1&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL2&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL3&quot;</span><span class="p">]</span>  <span class="c1"># Log(E/MeV) -&gt; GeV to MeV</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLonPix</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRPIX1&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLatPix</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRPIX2&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refEnPix</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRPIX3&quot;</span><span class="p">]</span>
+
+            <span class="c1"># 3D array containing the flux values</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS1&quot;</span><span class="p">]</span>  <span class="c1"># Longitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS2&quot;</span><span class="p">]</span>  <span class="c1"># Latitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS3&quot;</span><span class="p">]</span>  <span class="c1"># Energy</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refLonPix</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refLonPix</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refLatPix</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_refLatPix</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span><span class="p">,</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="c1"># for i, e in enumerate(self._E):</span>
+            <span class="c1">#</span>
+            <span class="c1">#    self._map[i] = np.fliplr(self._map[i])</span>
+
+            <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+            <span class="n">shape</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grid shape: </span><span class="si">{</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">shape</span><span class="p">))</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;grid shape actual: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># This is the first data set, create the data frame</span>
+            <span class="c1"># The dataframe is indexed by a parameter multi-index for rows and</span>
+            <span class="c1"># with the 3D template multi-index information as the columns</span>
+
+            <span class="c1"># log.info(&quot;Creating the multi-indices....&quot;)</span>
+
+        <span class="c1"># Make sure we have all parameters and order the values in the same way</span>
+        <span class="c1"># as the dictionary</span>
+        <span class="n">parameter_idx</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">l</span><span class="p">,</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parameters_values_input</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parameter </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is not in input&quot;</span><span class="p">)</span>
+
+            <span class="n">parameter_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">val</span> <span class="o">==</span> <span class="n">parameters_values_input</span><span class="p">[</span><span class="n">key</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+            <span class="p">)</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;have index </span><span class="si">{</span><span class="n">parameter_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You didn&#39;t specify all parameters&#39; values&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
+
+        <span class="c1"># filling the data map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">parameter_idx</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span></div>
+
+
+<div class="viewcode-block" id="ModelFactory.save_data">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.ModelFactory.save_data">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the table into a file for later usage with SpatialModel.</span>
+
+<span class="sd">        :param overwrite: Allows the overwriting of an already existing file,</span>
+<span class="sd">        defaults to False</span>
+<span class="sd">        :raises AssertionError: Raised if there are any strange values within the table</span>
+<span class="sd">        :raises IOError: Raised if the filed exists and deleting it not permitted</span>
+<span class="sd">        :raises IOError: Raised if the filed exists and overriting it is not enabled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># First make sure that the whole data matrix has been filled</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">)):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">&quot;You have NaNs in the data matrix. Usually this means &quot;</span>
+                <span class="s2">&quot;that you didn&#39;t fill it up completely, or that some of &quot;</span>
+                <span class="s2">&quot;your data contains nans. Cannot save the file.&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">()</span>
+
+        <span class="c1"># Get the data directory</span>
+        <span class="n">data_dir_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_user_data_path</span><span class="p">()</span>
+
+        <span class="c1"># Sanitize the data file</span>
+        <span class="n">filename_sanitized</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">data_dir_path</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">.h5&quot;</span>
+
+        <span class="c1"># Check if the file already exists</span>
+        <span class="c1"># if os.path.exists(filename_sanitized):</span>
+        <span class="k">if</span> <span class="n">filename_sanitized</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">overwrite</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists. &quot;</span>
+                        <span class="s2">&quot;and cannot be removed (maybe you do not have &quot;</span>
+                        <span class="s2">&quot;enough permissions to do so?).&quot;</span>
+                    <span class="p">)</span>
+
+                    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">()</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists! &quot;</span>
+                    <span class="s2">&quot;You cannot call two different spatial models with the &quot;</span>
+                    <span class="s2">&quot;same name.&quot;</span>
+                <span class="p">)</span>
+
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Open the HDF5 and write objects</span>
+            <span class="n">template_file</span><span class="p">:</span> <span class="n">TemplateFile</span> <span class="o">=</span> <span class="n">TemplateFile</span><span class="p">(</span>
+                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
+                <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">,</span>
+                <span class="n">spline_smoothing_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_spline_smoothing_factor</span><span class="p">,</span>
+                <span class="n">degree_of_interpolation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">,</span>
+                <span class="n">grid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">,</span>
+                <span class="n">energies</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">,</span>
+                <span class="n">lats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">,</span>
+                <span class="n">lons</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">,</span>
+                <span class="n">parameters</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">,</span>
+                <span class="n">parameter_order</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+            <span class="p">)</span>
+
+            <span class="n">template_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="o">.</span><span class="n">as_posix</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;No data frame to save&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateFile</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    simple container to read and write the</span>
+<span class="sd">    data to an hdf5 file</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">description</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">grid</span><span class="p">:</span> <span class="n">ndarray</span>
+    <span class="n">energies</span><span class="p">:</span> <span class="n">ndarray</span>
+    <span class="n">lats</span><span class="p">:</span> <span class="n">ndarray</span>
+    <span class="n">lons</span><span class="p">:</span> <span class="n">ndarray</span>
+    <span class="n">parameters</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">]</span>
+    <span class="n">parameter_order</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">degree_of_interpolation</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize the contents to a file and save it</span>
+
+<span class="sd">        :param file_name: Path of output file</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;degree_of_interpolation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">degree_of_interpolation</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spline_smoothing_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_smoothing_factor</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;model_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;spatial&quot;</span>
+
+            <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;energies&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">energies</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;lats&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lats</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;lons&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lons</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;grid&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+
+            <span class="c1"># store the parameter order</span>
+            <span class="n">dt</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">special_dtype</span><span class="p">(</span><span class="n">vlen</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">po</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameter_order</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="s2">&quot;parameter_order&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">po</span><span class="p">)</span>
+            <span class="n">par_group</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="s2">&quot;parameters&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameter_order</span><span class="p">:</span>
+                <span class="n">par_group</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;gzip&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Read the contents from a template file</span>
+
+<span class="sd">        :param file_name: Path to the file</span>
+<span class="sd">        :return: TemplateFile holding the data from the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">description</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span>
+            <span class="n">degree_of_interpolation</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;degree_of_interpolation&quot;</span><span class="p">]</span>
+            <span class="n">spline_smoothing_factor</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s2">&quot;spline_smoothing_factor&quot;</span><span class="p">]</span>
+
+            <span class="n">parameter_order</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;parameter_order&quot;</span><span class="p">][()]</span>
+            <span class="n">energies</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;energies&quot;</span><span class="p">][()]</span>
+            <span class="n">lats</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;lats&quot;</span><span class="p">][()]</span>
+            <span class="n">lons</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;lons&quot;</span><span class="p">][()]</span>
+
+            <span class="n">grid</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">][()]</span>
+
+            <span class="n">parameters</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">parameter_order</span><span class="p">:</span>
+                <span class="n">parameters</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s2">&quot;parameters&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">][()]</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span>
+            <span class="n">degree_of_interpolation</span><span class="o">=</span><span class="n">degree_of_interpolation</span><span class="p">,</span>
+            <span class="n">spline_smoothing_factor</span><span class="o">=</span><span class="n">spline_smoothing_factor</span><span class="p">,</span>
+            <span class="n">energies</span><span class="o">=</span><span class="n">energies</span><span class="p">,</span>
+            <span class="n">lats</span><span class="o">=</span><span class="n">lats</span><span class="p">,</span>
+            <span class="n">lons</span><span class="o">=</span><span class="n">lons</span><span class="p">,</span>
+            <span class="n">parameter_order</span><span class="o">=</span><span class="n">parameter_order</span><span class="p">,</span>
+            <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
+            <span class="n">grid</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="c1"># class SpatialModel(with_metaclass(FunctionMeta, Function3D)):</span>
+<div class="viewcode-block" id="HaloModel">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.HaloModel">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HaloModel</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    description: 3D interpolation over morphology of a source using FITS templates</span>
+<span class="sd">                with spectral and spatial information.</span>
+
+<span class="sd">    latex: $n.a.$</span>
+
+
+<span class="sd">    parameters:</span>
+
+<span class="sd">        K:</span>
+
+<span class="sd">            desc: Normalization (freeze this to 1 if the template provides the</span>
+<span class="sd">                    normalization by itself)</span>
+<span class="sd">            initial value: 1</span>
+<span class="sd">            fix: yes</span>
+
+<span class="sd">        lon0:</span>
+
+<span class="sd">            desc: Longitude of the center of source</span>
+<span class="sd">            initial value: 0.0</span>
+<span class="sd">            min: 0.0</span>
+<span class="sd">            max: 360.0</span>
+
+<span class="sd">        lat0:</span>
+
+<span class="sd">            desc: Latitude of the center of source</span>
+<span class="sd">            initial value: 0.0</span>
+<span class="sd">            min: -90.0</span>
+<span class="sd">            max: 90.0</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_custom_init_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">other_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Custom initialization for this model</span>
+<span class="sd">        :param model_name: the name of the model, corresponding to the</span>
+<span class="sd">        root of the .h5 file in the data directory</span>
+<span class="sd">        :param other_name: (optional) the name to be used as name of the model</span>
+<span class="sd">        when used in astromodels. If None</span>
+<span class="sd">        (default), use the same as model_name.</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Get the data directory</span>
+        <span class="n">data_dir_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">=</span> <span class="n">get_user_data_path</span><span class="p">()</span>
+
+        <span class="c1"># Sanitize the file</span>
+        <span class="n">filename_sanitized</span> <span class="o">=</span> <span class="n">data_dir_path</span><span class="o">.</span><span class="n">absolute</span><span class="p">()</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.h5&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filename_sanitized</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;The data file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span>
+                <span class="s2">&quot; Did you use the ModelFactory?&quot;</span>
+            <span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">MissingDataFile</span>
+
+        <span class="c1"># Open the template definition and read from it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_file</span> <span class="o">=</span> <span class="n">filename_sanitized</span>
+
+        <span class="c1"># use the file shadow to read</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">template_file</span><span class="p">:</span> <span class="n">TemplateFile</span> <span class="o">=</span> <span class="n">TemplateFile</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidTemplateModelFile</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">template_file</span><span class="o">.</span><span class="n">parameter_order</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># sometimes this is stored binary</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c1"># if not, load as a normal str</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">key</span>
+
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;reading parameter </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+        <span class="c1"># get the template parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">energies</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">lats</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">lons</span>
+
+        <span class="c1"># get the dataframe</span>
+        <span class="c1"># self.grid = template_file.grid</span>
+
+        <span class="c1"># Now get the metadata</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">description</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">degree_of_interpolation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_spline_smoothing_factor</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">spline_smoothing_factor</span>
+
+        <span class="c1"># Make the dictionary of parameters for the model</span>
+        <span class="n">function_definition</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">function_definition</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="n">function_definition</span><span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;n.a.&quot;</span>
+
+        <span class="c1"># Now build the parameters according to the content of the parameter grid</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Parameter</span><span class="p">]</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;K&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;K&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;lon0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;lon0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">360.0</span><span class="p">)</span>
+        <span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;lat0&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span><span class="s2">&quot;lat0&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=-</span><span class="mf">90.0</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="mf">90.0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">parameter_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span>
+
+            <span class="n">parameters</span><span class="p">[</span><span class="n">parameter_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Parameter</span><span class="p">(</span>
+                <span class="n">parameter_name</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">grid</span><span class="p">),</span>
+                <span class="n">min_value</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+                <span class="n">max_value</span><span class="o">=</span><span class="n">grid</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">other_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">other_name</span><span class="p">,</span> <span class="n">function_definition</span><span class="p">,</span> <span class="n">parameters</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_setup</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span> <span class="o">=</span> <span class="n">template_file</span><span class="o">.</span><span class="n">grid</span>
+
+        <span class="c1"># self._prepare_interpolators(log_interp=True, data_frame=template_file.grid)</span>
+        <span class="c1"># clean things up a bit</span>
+
+        <span class="c1"># Setup cache to avoid unnecessary computations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="p">:</span> <span class="n">OrderedDict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">collections</span><span class="o">.</span><span class="n">OrderedDict</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="k">del</span> <span class="n">template_file</span>
+
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_msg</span><span class="p">(</span><span class="n">interp_degree</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrun a message for the user</span>
+
+<span class="sd">        :param interp_degree: degree of interpolation</span>
+<span class="sd">        :param parameter_name: name of parameter over which to interpolate</span>
+<span class="sd">        :return: message to user</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;You cannot use an interpolation degree of </span><span class="si">{</span><span class="n">interp_degree</span><span class="si">}</span><span class="s2"> if &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;you don&#39;t provide at least </span><span class="si">{</span><span class="n">interp_degree</span><span class="si">}</span><span class="s2"> points &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;in the </span><span class="si">{</span><span class="n">parameter_name</span><span class="si">}</span><span class="s2"> direction. Increase the number of &quot;</span>
+            <span class="s2">&quot;templates or decrease interpolation degree.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_interpolators</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_interp</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">data_frame</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reads data frame of normalized flux values and performs interpolation</span>
+<span class="sd">        over morphology parameters declared in ModelFactory&#39;s parameter grid</span>
+
+<span class="sd">        :param log_interp: interpolation carried on log scale</span>
+<span class="sd">        :param data_frame: Data table with information from template grid</span>
+<span class="sd">        :raises RuntimeError: Raised if degree of interpolation for x is not at</span>
+<span class="sd">        least &gt; 1 than number of parameters in x direction</span>
+<span class="sd">        least &gt; 1 than number of parameters in y direction</span>
+<span class="sd">        :return: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Preparing the interpolators...&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Figure out the shape of the data matrices</span>
+        <span class="n">para_shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span>
+        <span class="p">)</span>
+        <span class="n">parameter_grid_values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">parameter_values_len</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameter_grid_values</span><span class="p">)</span>
+
+        <span class="c1"># interpolate over the parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">RectBivariateSpline</span><span class="p">,</span> <span class="n">GridInterpolate</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">this_interpolator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">UnivariateSpline</span><span class="p">,</span> <span class="n">RectBivariateSpline</span><span class="p">,</span> <span class="n">GridInterpolate</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">product</span><span class="p">(</span>
+            <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="n">reshaped_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">data_frame</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">para_shape</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">log_interp</span><span class="p">:</span>
+                <span class="n">reshaped_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">reshaped_data</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_is_log10</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_is_log10</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="n">this_data</span> <span class="o">=</span> <span class="n">reshaped_data</span>
+
+            <span class="k">if</span> <span class="n">parameter_values_len</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">xpoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">parameter_grid_values</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">parameter_values_len</span><span class="p">)][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">ypoints</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">this_data</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">this_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])])</span>
+
+                <span class="n">this_interpolator</span> <span class="o">=</span> <span class="n">UnivariateSpline</span><span class="p">(</span><span class="n">xpoints</span><span class="p">,</span> <span class="n">ypoints</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">parameter_values_len</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parameters_grids</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+                <span class="c1"># Make sure that the requested polynomial degree is</span>
+                <span class="c1"># less thant the number of data sets in</span>
+                <span class="c1"># both directions</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_msg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">))</span>
+
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_msg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">))</span>
+
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
+
+                <span class="n">this_interpolator</span> <span class="o">=</span> <span class="n">RectBivariateSplineWrapper</span><span class="p">(</span>
+                    <span class="n">x</span><span class="p">,</span>
+                    <span class="n">y</span><span class="p">,</span>
+                    <span class="n">this_data</span><span class="p">,</span>
+                    <span class="n">kx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">,</span>
+                    <span class="n">ky</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_degree_of_interpolation</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_spline_smoothing_factor</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># In more than 2d, we can only interpolate linearly</span>
+                <span class="n">this_interpolator</span> <span class="o">=</span> <span class="n">GridInterpolate</span><span class="p">(</span>
+                    <span class="nb">tuple</span><span class="p">(</span>
+                        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;&lt;f8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parameter_grid_values</span><span class="p">]</span>
+                    <span class="p">),</span>
+                    <span class="n">this_data</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_interpolator</span><span class="p">)</span>
+
+        <span class="k">del</span> <span class="n">data_frame</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_interpolate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">energies</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">lons</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">lats</span><span class="p">:</span> <span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">parameter_values</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluates the morphology parameters and generates interpolated map</span>
+<span class="sd">        that is then used for the interpolation over energy RA, Dec and energy</span>
+
+<span class="sd">        :param energies: Energy values</span>
+<span class="sd">        :param lons: Longitudes within the extended source boundaries</span>
+<span class="sd">        :param lats: Latitutdes within the extended source boundaries</span>
+<span class="sd">        :param parameter_values: User provided morphology parameters defined in</span>
+<span class="sd">        ModelFactory</span>
+<span class="sd">        :raises AttributeError: Longitudes and latitudes do not have the same</span>
+<span class="sd">        dimensions</span>
+<span class="sd">        :return: Map of interpolated values over energies, longitudes, and latitudes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_interpolators&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_interpolators</span><span class="p">(</span><span class="n">log_interp</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_data_frame</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+            <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">energies</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;keV&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span>
+            <span class="p">)</span>
+
+        <span class="c1"># transform energy from keV to MeV (galprop likes MeV, 3ML likes keV)</span>
+        <span class="n">log_energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">energies</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">parameter_values</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># self._log_interpolated_map = self._cached_values[parameter_values]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="p">[</span><span class="n">parameter_values</span><span class="p">]</span>
+
+        <span class="n">evaluated_map</span><span class="p">:</span> <span class="n">Sequence</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+            <span class="nb">map</span><span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">interpolator</span><span class="p">:</span> <span class="n">interpolator</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">parameter_values</span><span class="p">)),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log_interpolated_map</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">evaluated_map</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;&lt;f8&quot;</span><span class="p">)</span>
+
+        <span class="c1"># limit the size of the cache to 30 values and pop the oldest entries</span>
+        <span class="c1"># inserted valued (follows the FIFO approach)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="o">.</span><span class="n">popitem</span><span class="p">(</span><span class="n">last</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">map_shape</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">]]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_L</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_B</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log_interpolated_map</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">map_shape</span><span class="p">),</span>
+            <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">lons</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">lats</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Lons and lats should have the same size!&quot;</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span>
+
+        <span class="c1"># f_interpolated = np.zeros([energies.size, lats.size])</span>
+        <span class="n">f_interpolated</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">lons</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">energies</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
+
+        <span class="c1"># # evaluate the interpolators over energy, ra, and dec</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">log_energies</span><span class="p">):</span>
+            <span class="n">engs</span><span class="p">:</span> <span class="n">ndarray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">lats</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="n">interpolated_slice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolator</span><span class="p">((</span><span class="n">engs</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">))</span>
+
+            <span class="c1"># clean up the data</span>
+            <span class="n">bad_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">interpolated_slice</span><span class="p">)</span>
+            <span class="n">interpolated_slice</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">bad_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">interpolated_slice</span><span class="p">)</span>
+            <span class="n">interpolated_slice</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_log10</span><span class="p">:</span>
+                <span class="c1"># NOTE: if interpolation is carried using the log10 scale,</span>
+                <span class="c1"># ensure that values outside range of interpolation remain</span>
+                <span class="c1"># zero after conversion to linear scale.</span>
+                <span class="c1"># because if function returns zero, 10**(0) = 1.</span>
+                <span class="c1"># This affects the fit in 3ML and breaks things.</span>
+
+                <span class="n">log_interpolated_slice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span><span class="mf">0.0</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">interpolated_slice</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">f_interpolated</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_interpolated_slice</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f_interpolated</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">interpolated_slice</span>
+
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">f_interpolated</span><span class="p">)),</span> <span class="s2">&quot;some values are wrong!&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cached_values</span><span class="p">[</span><span class="n">parameter_values</span><span class="p">]</span> <span class="o">=</span> <span class="n">f_interpolated</span>
+
+        <span class="k">return</span> <span class="n">f_interpolated</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="s2">&quot;icrs&quot;</span>  <span class="c1"># ICRS()</span>
+
+<div class="viewcode-block" id="HaloModel.clean">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.HaloModel.clean">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Table models can consume a lof of memory.</span>
+<span class="sd">        This method calls a clean method and removes some of the memory</span>
+<span class="sd">        consumed by the models.</span>
+<span class="sd">        :returns: none</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolators</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;You have cleaned the table model and it will no longer be usable.&quot;</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># clear the cache</span>
+        <span class="c1"># self._cached_values.clear()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
+
+        <span class="c1"># self.K.unit = 1 / (u.MeV * u.cm**2 * u.s * u.sr)</span>
+        <span class="c1"># keep this units to if templates have been normalized</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HaloModel.evaluate">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.HaloModel.evaluate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">lon0</span><span class="p">,</span> <span class="n">lat0</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">lons</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">lats</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">z</span>
+
+        <span class="c1"># angsep = angular_distance_fast(lon0, lat0, lons, lats)</span>
+
+        <span class="c1"># if only one energy is passed, make sure we can iterate just once</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+
+        <span class="n">interpolated_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpolate</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">lons</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
+
+        <span class="c1"># return np.multiply(K, self._interpolate(log_energies, lons, lats, args))</span>
+        <span class="c1"># return np.multiply(K, interpolated_image/1000)</span>
+        <span class="c1"># to go from MeV to keV</span>
+        <span class="c1"># return np.multiply(K, interpolated_image / 1000)</span>
+
+        <span class="c1"># if templates are normalized no need to convert back</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">interpolated_image</span><span class="p">)</span></div>
+
+
+    <span class="c1"># def set_frame(self, new_frame):</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1"># Set a new frame for the coordinates (the default is ICRS J2000)</span>
+    <span class="c1"># :param new_frame: a coordinate frame from astropy</span>
+    <span class="c1"># :return: (none)</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1"># assert isinstance(new_frame, BaseCoordinateFrame)</span>
+    <span class="c1">#</span>
+    <span class="c1"># self._frame = new_frame</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_file</span>
+
+<div class="viewcode-block" id="HaloModel.to_dict">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.HaloModel.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;extra_setup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;_frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
+                <span class="s2">&quot;ramin&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span><span class="p">,</span>
+                <span class="s2">&quot;ramax&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span><span class="p">,</span>
+                <span class="s2">&quot;decmin&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span><span class="p">,</span>
+                <span class="s2">&quot;decmax&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span><span class="p">,</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">data</span></div>
+
+
+    <span class="c1"># Define the region within the template ROI</span>
+<div class="viewcode-block" id="HaloModel.define_region">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.HaloModel.define_region">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">define_region</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">xcoord_start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">xcoord_end</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ycoord_start</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">ycoord_end</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">galactic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Defined boundaries of template</span>
+
+<span class="sd">        :param xcoord_start: Minimum longitude (RA)</span>
+<span class="sd">        :param xcoord_end: Maximum longitude (RA)</span>
+<span class="sd">        :param ycoord_start: Minimum latitute (Dec)</span>
+<span class="sd">        :param ycoord_end: Maximum latitue (Dec)</span>
+<span class="sd">        :param galactic: Determine whether coordinates are galactic, defaults to False</span>
+<span class="sd">        :return: coordinates of the boundaries of the template</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">galactic</span><span class="p">:</span>
+            <span class="n">lmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">xcoord_start</span>
+            <span class="n">lmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">xcoord_end</span>
+            <span class="n">bmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">ycoord_start</span>
+            <span class="n">bmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">ycoord_end</span>
+
+            <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span>
+                <span class="n">l</span><span class="o">=</span><span class="p">[</span><span class="n">lmin</span><span class="p">,</span> <span class="n">lmin</span><span class="p">,</span> <span class="n">lmax</span><span class="p">,</span> <span class="n">lmax</span><span class="p">],</span> <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="n">bmin</span><span class="p">,</span> <span class="n">bmax</span><span class="p">,</span> <span class="n">bmax</span><span class="p">,</span> <span class="n">bmin</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;galactic&quot;</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span> <span class="o">=</span> <span class="n">xcoord_start</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span> <span class="o">=</span> <span class="n">xcoord_end</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span> <span class="o">=</span> <span class="n">ycoord_start</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span> <span class="o">=</span> <span class="n">ycoord_end</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span></div>
+
+
+<div class="viewcode-block" id="HaloModel.get_boundaries">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.HaloModel.get_boundaries">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the boundaries of the template</span>
+
+<span class="sd">        :return: Boundaries of template for (min longitude, max longtiude),</span>
+<span class="sd">        (min latitude, max latitude)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">min_longitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span>
+        <span class="n">max_longitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span>
+        <span class="n">min_latitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span>
+        <span class="n">max_latitude</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">min_longitude</span><span class="p">,</span> <span class="n">max_longitude</span><span class="p">),</span> <span class="p">(</span><span class="n">min_latitude</span><span class="p">,</span> <span class="n">max_latitude</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright (2026), the ThreeML developers.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -3284,6 +3284,194 @@ initial value : 1.0</p>
 </dd></dl>
 
 </section>
+<section id="module-astromodels.functions.spatial_model">
+<span id="astromodels-functions-spatial-model-module"></span><h2>astromodels.functions.spatial_model module<a class="headerlink" href="#module-astromodels.functions.spatial_model" title="Link to this heading"></a></h2>
+<p>Template fitting of 3D energy dependent model</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.spatial_model.</span></span><span class="sig-name descname"><span class="pre">HaloModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<dl class="simple">
+<dt>description: 3D interpolation over morphology of a source using FITS templates</dt><dd><p>with spectral and spatial information.</p>
+</dd>
+</dl>
+<p>latex: $n.a.$</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>K</strong> –</p>
+<dl class="simple">
+<dt>desc: Normalization (freeze this to 1 if the template provides the</dt><dd><p>normalization by itself)</p>
+</dd>
+</dl>
+<p>initial value: 1
+fix: yes</p>
+</li>
+<li><p><strong>lon0</strong> – desc: Longitude of the center of source
+initial value: 0.0
+min: 0.0
+max: 360.0</p></li>
+<li><p><strong>lat0</strong> – desc: Latitude of the center of source
+initial value: 0.0
+min: -90.0
+max: 90.0</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.clean" title="Link to this definition"></a></dt>
+<dd><p>Table models can consume a lof of memory.
+This method calls a clean method and removes some of the memory
+consumed by the models.
+:returns: none</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.data_file">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">data_file</span></span><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.data_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.define_region">
+<span class="sig-name descname"><span class="pre">define_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xcoord_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xcoord_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ycoord_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ycoord_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">galactic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.define_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.define_region" title="Link to this definition"></a></dt>
+<dd><p>Defined boundaries of template</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xcoord_start</strong> – Minimum longitude (RA)</p></li>
+<li><p><strong>xcoord_end</strong> – Maximum longitude (RA)</p></li>
+<li><p><strong>ycoord_start</strong> – Minimum latitute (Dec)</p></li>
+<li><p><strong>ycoord_end</strong> – Maximum latitue (Dec)</p></li>
+<li><p><strong>galactic</strong> – Determine whether coordinates are galactic, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>coordinates of the boundaries of the template</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.evaluate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.get_boundaries" title="Link to this definition"></a></dt>
+<dd><p>Get the boundaries of the template</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Boundaries of template for (min longitude, max longtiude),</p>
+</dd>
+</dl>
+<p>(min latitude, max latitude)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.info">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.HaloModel.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.HaloModel.to_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.IncompleteGrid">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.spatial_model.</span></span><span class="sig-name descname"><span class="pre">IncompleteGrid</span></span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#IncompleteGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.IncompleteGrid" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.InvalidTemplateModelFile">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.spatial_model.</span></span><span class="sig-name descname"><span class="pre">InvalidTemplateModelFile</span></span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#InvalidTemplateModelFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.InvalidTemplateModelFile" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.MissingDataFile">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.spatial_model.</span></span><span class="sig-name descname"><span class="pre">MissingDataFile</span></span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#MissingDataFile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.MissingDataFile" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RuntimeError</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.ModelFactory">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.spatial_model.</span></span><span class="sig-name descname"><span class="pre">ModelFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names_of_parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree_of_interpolation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_smoothing_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.ModelFactory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.ModelFactory.add_interpolation_data">
+<span class="sig-name descname"><span class="pre">add_interpolation_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fits_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ihdu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters_values_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory.add_interpolation_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.ModelFactory.add_interpolation_data" title="Link to this definition"></a></dt>
+<dd><p>Fill data table with information from 3D mapcube templates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fits_file</strong> – FITS file with 3D mapcube</p></li>
+<li><p><strong>ihdu</strong> – Path to primary HDU, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#astromodels.functions.spatial_model.IncompleteGrid" title="astromodels.functions.spatial_model.IncompleteGrid"><strong>IncompleteGrid</strong></a> – Check if the grid is not filled with strange values</p></li>
+<li><p><strong>RuntimeError</strong> – Checks that a FITS file was provided</p></li>
+<li><p><strong>AssertionError</strong> – Ensure we have the right number of parameters as</p></li>
+</ul>
+</dd>
+</dl>
+<p>provided in the define_parameter_grid method
+:return: none</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.ModelFactory.define_parameter_grid">
+<span class="sig-name descname"><span class="pre">define_parameter_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory.define_parameter_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.ModelFactory.define_parameter_grid" title="Link to this definition"></a></dt>
+<dd><p>Defines the user provider parameter grid for a given parameter with its
+associated name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameter_name</strong> – Name of parameter for later access when using model</p></li>
+<li><p><strong>grid</strong> – Array of allowed values for the paremter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AssertionError</strong> – Check that the parameter is part of the model</p></li>
+<li><p><strong>AssertionError</strong> – Ensure all parameter values in the grid are</p></li>
+</ul>
+</dd>
+</dl>
+<p>non-repeating</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.ModelFactory.save_data">
+<span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory.save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.ModelFactory.save_data" title="Link to this definition"></a></dt>
+<dd><p>Save the table into a file for later usage with SpatialModel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>overwrite</strong> – Allows the overwriting of an already existing file,</p>
+</dd>
+</dl>
+<p>defaults to False
+:raises AssertionError: Raised if there are any strange values within the table
+:raises IOError: Raised if the filed exists and deleting it not permitted
+:raises IOError: Raised if the filed exists and overriting it is not enabled</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="astromodels.functions.spatial_model.ValuesNotInGrid">
+<span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.spatial_model.</span></span><span class="sig-name descname"><span class="pre">ValuesNotInGrid</span></span><a class="reference internal" href="../_modules/astromodels/functions/template_model.html#ValuesNotInGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.spatial_model.ValuesNotInGrid" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+</dd></dl>
+
+</section>
 <section id="module-astromodels.functions.template_model">
 <span id="astromodels-functions-template-model-module"></span><h2>astromodels.functions.template_model module<a class="headerlink" href="#module-astromodels.functions.template_model" title="Link to this heading"></a></h2>
 <dl class="py exception">
@@ -5698,6 +5886,100 @@ initial value : 1</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">HaloModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">other_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.HaloModel" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
+<dl class="simple">
+<dt>description: 3D interpolation over morphology of a source using FITS templates</dt><dd><p>with spectral and spatial information.</p>
+</dd>
+</dl>
+<p>latex: $n.a.$</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul>
+<li><p><strong>K</strong> –</p>
+<dl class="simple">
+<dt>desc: Normalization (freeze this to 1 if the template provides the</dt><dd><p>normalization by itself)</p>
+</dd>
+</dl>
+<p>initial value: 1
+fix: yes</p>
+</li>
+<li><p><strong>lon0</strong> – desc: Longitude of the center of source
+initial value: 0.0
+min: 0.0
+max: 360.0</p></li>
+<li><p><strong>lat0</strong> – desc: Latitude of the center of source
+initial value: 0.0
+min: -90.0
+max: 90.0</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.clean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.HaloModel.clean" title="Link to this definition"></a></dt>
+<dd><p>Table models can consume a lof of memory.
+This method calls a clean method and removes some of the memory
+consumed by the models.
+:returns: none</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.data_file">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">data_file</span></span><a class="headerlink" href="#astromodels.functions.HaloModel.data_file" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.define_region">
+<span class="sig-name descname"><span class="pre">define_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xcoord_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xcoord_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ycoord_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ycoord_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">galactic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.define_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.HaloModel.define_region" title="Link to this definition"></a></dt>
+<dd><p>Defined boundaries of template</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xcoord_start</strong> – Minimum longitude (RA)</p></li>
+<li><p><strong>xcoord_end</strong> – Maximum longitude (RA)</p></li>
+<li><p><strong>ycoord_start</strong> – Minimum latitute (Dec)</p></li>
+<li><p><strong>ycoord_end</strong> – Maximum latitue (Dec)</p></li>
+<li><p><strong>galactic</strong> – Determine whether coordinates are galactic, defaults to False</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>coordinates of the boundaries of the template</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">K</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lon0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lat0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.HaloModel.evaluate" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.get_boundaries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.HaloModel.get_boundaries" title="Link to this definition"></a></dt>
+<dd><p>Get the boundaries of the template</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Boundaries of template for (min longitude, max longtiude),</p>
+</dd>
+</dl>
+<p>(min latitude, max latitude)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.info">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#astromodels.functions.HaloModel.info" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.HaloModel.to_dict">
+<span class="sig-name descname"><span class="pre">to_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#HaloModel.to_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.HaloModel.to_dict" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="astromodels.functions.Hermes">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">Hermes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/functions_3D.html#Hermes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.Hermes" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#astromodels.functions.function.Function3D" title="astromodels.functions.function.Function3D"><code class="xref py py-class docutils literal notranslate"><span class="pre">Function3D</span></code></a></p>
@@ -6210,6 +6492,72 @@ fix : yes</p>
 <dt class="sig sig-object py" id="astromodels.functions.ModelAssertionViolation">
 <span class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">ModelAssertionViolation</span></span><a class="reference internal" href="../_modules/astromodels/functions/function.html#ModelAssertionViolation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.ModelAssertionViolation" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="astromodels.functions.ModelFactory">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">astromodels.functions.</span></span><span class="sig-name descname"><span class="pre">ModelFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">description</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names_of_parameters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degree_of_interpolation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_smoothing_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.ModelFactory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.ModelFactory.add_interpolation_data">
+<span class="sig-name descname"><span class="pre">add_interpolation_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fits_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ihdu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">parameters_values_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory.add_interpolation_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.ModelFactory.add_interpolation_data" title="Link to this definition"></a></dt>
+<dd><p>Fill data table with information from 3D mapcube templates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fits_file</strong> – FITS file with 3D mapcube</p></li>
+<li><p><strong>ihdu</strong> – Path to primary HDU, defaults to 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><a class="reference internal" href="#astromodels.functions.spatial_model.IncompleteGrid" title="astromodels.functions.spatial_model.IncompleteGrid"><strong>IncompleteGrid</strong></a> – Check if the grid is not filled with strange values</p></li>
+<li><p><strong>RuntimeError</strong> – Checks that a FITS file was provided</p></li>
+<li><p><strong>AssertionError</strong> – Ensure we have the right number of parameters as</p></li>
+</ul>
+</dd>
+</dl>
+<p>provided in the define_parameter_grid method
+:return: none</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.ModelFactory.define_parameter_grid">
+<span class="sig-name descname"><span class="pre">define_parameter_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameter_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory.define_parameter_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.ModelFactory.define_parameter_grid" title="Link to this definition"></a></dt>
+<dd><p>Defines the user provider parameter grid for a given parameter with its
+associated name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameter_name</strong> – Name of parameter for later access when using model</p></li>
+<li><p><strong>grid</strong> – Array of allowed values for the paremter</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AssertionError</strong> – Check that the parameter is part of the model</p></li>
+<li><p><strong>AssertionError</strong> – Ensure all parameter values in the grid are</p></li>
+</ul>
+</dd>
+</dl>
+<p>non-repeating</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="astromodels.functions.ModelFactory.save_data">
+<span class="sig-name descname"><span class="pre">save_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/astromodels/functions/spatial_model.html#ModelFactory.save_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#astromodels.functions.ModelFactory.save_data" title="Link to this definition"></a></dt>
+<dd><p>Save the table into a file for later usage with SpatialModel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>overwrite</strong> – Allows the overwriting of an already existing file,</p>
+</dd>
+</dl>
+<p>defaults to False
+:raises AssertionError: Raised if there are any strange values within the table
+:raises IOError: Raised if the filed exists and deleting it not permitted
+:raises IOError: Raised if the filed exists and overriting it is not enabled</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
