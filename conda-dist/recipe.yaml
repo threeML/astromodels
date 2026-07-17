@@ -32,18 +32,16 @@ requirements:
     - if: python >= "3.13"
       then: 
       - numpy==2.1
-    - if: python < "3.13"
-      then:
-        - numpy==1.26
+      else:
+      - numpy==1.26
     - versioneer
 
   run:
     - python
     - if: python >= "3.13"
       then:
-        - numpy>=2.1
-    - if: python < "3.13"
-      then: 
+      - numpy>=2.1
+      else:
       - numpy>=1.26
     - pyyaml
     - astropy
