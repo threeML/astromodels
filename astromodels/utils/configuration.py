@@ -23,7 +23,8 @@ def update_config_with_user_configs(astromodels_config):
                     "You've provided 'logging.startup_warnings' in "
                     + str(user_config_file)
                     + ". "
-                    + "This is deprecated since v2.6.0 - will ignore it"
+                    + "This is deprecated since v2.6.0 - will ignore it",
+                    DeprecationWarning,
                 )
                 del _partial_conf.logging.startup_warnings
 

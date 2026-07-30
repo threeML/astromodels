@@ -1,5 +1,6 @@
 import os
 
+import pytest
 import yaml
 from omegaconf import OmegaConf
 
@@ -21,8 +22,8 @@ def test_user_configuration(tmp_path):
 
             with path.open("w") as f:
                 yaml.dump(stream=f, data=c, Dumper=yaml.SafeDumper)
-
-        dummy_config = update_config_with_user_configs(dummy_config)
+        with pytest.warns(DeprecationWarning):
+            dummy_config = update_config_with_user_configs(dummy_config)
     except Exception as e:
         raise e
     finally:
