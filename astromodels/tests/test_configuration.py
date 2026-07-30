@@ -3,17 +3,15 @@ import os
 import yaml
 from omegaconf import OmegaConf
 
-from astromodels.utils.configuration import update_config_with_user_configs
 from astromodels.utils.config_structure import Config
+from astromodels.utils.configuration import update_config_with_user_configs
 
 
 def test_user_configuration(tmp_path):
     original_config_path = os.environ.get("ASTROMODELS_CONFIG")
     os.environ["ASTROMODELS_CONFIG"] = str(tmp_path)
     try:
-
         dummy_config = OmegaConf.structured(Config)
-
         configs = [
             {"logging": {"usr": "off", "startup_warnings": "off"}},
         ]
