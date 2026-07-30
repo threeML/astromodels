@@ -225,8 +225,10 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: DMFitFunction only appropriate for masses &lt;= 10 TeV&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;To model DM from 2 GeV &lt; mass &lt; 1 PeV use DMSpectra&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Warning: DMFitFunction only appropriate for masses &lt;= 10 TeV &quot;</span>
+                <span class="s2">&quot;To model DM from 2 GeV &lt; mass &lt; 1 PeV use DMSpectra&quot;</span>
+            <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 

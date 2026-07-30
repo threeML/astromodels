@@ -378,10 +378,8 @@
 
         <span class="c1"># Now perform a minimal check of the &#39;evaluate&#39; function</span>
 
-        <span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">parameters_in_calling_sequence</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">FunctionMeta</span><span class="o">.</span><span class="n">check_calling_sequence</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;evaluate&quot;</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;evaluate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">]</span>
-            <span class="p">)</span>
+        <span class="n">variables</span><span class="p">,</span> <span class="n">parameters_in_calling_sequence</span> <span class="o">=</span> <span class="n">FunctionMeta</span><span class="o">.</span><span class="n">check_calling_sequence</span><span class="p">(</span>
+            <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;evaluate&quot;</span><span class="p">,</span> <span class="n">dct</span><span class="p">[</span><span class="s2">&quot;evaluate&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
         <span class="c1"># Now check that all the parameters used in &#39;evaluate&#39; are part of the</span>
@@ -1940,9 +1938,9 @@
         <span class="c1"># microseconds or so), so we perform this transformation only when strictly</span>
         <span class="c1"># required</span>
 
-        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">z</span><span class="p">),</span> <span class="p">(</span>
-            <span class="s2">&quot;You have to use the same type for x, y and z&quot;</span>
-        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span>
+            <span class="n">z</span>
+        <span class="p">),</span> <span class="s2">&quot;You have to use the same type for x, y and z&quot;</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="c1"># We have an array as input</span>
@@ -2329,13 +2327,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_np_operator</span> <span class="o">=</span> <span class="n">np_operator</span>
 
         <span class="k">if</span> <span class="n">np_operator</span> <span class="o">==</span> <span class="s2">&quot;compose&quot;</span><span class="p">:</span>
-            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_f2</span><span class="p">,</span> <span class="s2">&quot;evaluate&quot;</span><span class="p">),</span> <span class="p">(</span>
-                <span class="s2">&quot;Second member of .of cannot be a scalar&quot;</span>
-            <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span><span class="p">,</span> <span class="s2">&quot;evaluate&quot;</span>
+            <span class="p">),</span> <span class="s2">&quot;Second member of .of cannot be a scalar&quot;</span>
 
-            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f1</span><span class="o">.</span><span class="n">n_dim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span><span class="o">.</span><span class="n">n_dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
-                <span class="s2">&quot;Can only compose with .of functions of 1 variable&quot;</span>
-            <span class="p">)</span>
+            <span class="k">assert</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_f1</span><span class="o">.</span><span class="n">n_dim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f2</span><span class="o">.</span><span class="n">n_dim</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">),</span> <span class="s2">&quot;Can only compose with .of functions of 1 variable&quot;</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">=</span> <span class="n">_cf_evaluate_func_of_func</span>
 
