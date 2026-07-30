@@ -250,10 +250,8 @@ class FunctionMeta(type):
 
         # Now perform a minimal check of the 'evaluate' function
 
-        (variables, parameters_in_calling_sequence) = (
-            FunctionMeta.check_calling_sequence(
-                name, "evaluate", dct["evaluate"], ["x", "y", "z"]
-            )
+        variables, parameters_in_calling_sequence = FunctionMeta.check_calling_sequence(
+            name, "evaluate", dct["evaluate"], ["x", "y", "z"]
         )
 
         # Now check that all the parameters used in 'evaluate' are part of the
@@ -1719,9 +1717,9 @@ class Function3D(Function):
         # microseconds or so), so we perform this transformation only when strictly
         # required
 
-        assert type(x) is type(y) and type(y) is type(z), (
-            "You have to use the same type for x, y and z"
-        )
+        assert type(x) is type(y) and type(y) is type(
+            z
+        ), "You have to use the same type for x, y and z"
 
         if isinstance(x, np.ndarray):
             # We have an array as input
@@ -2102,13 +2100,13 @@ class CompositeFunction(Function):
         self._np_operator = np_operator
 
         if np_operator == "compose":
-            assert hasattr(self._f2, "evaluate"), (
-                "Second member of .of cannot be a scalar"
-            )
+            assert hasattr(
+                self._f2, "evaluate"
+            ), "Second member of .of cannot be a scalar"
 
-            assert self._f1.n_dim == 1 and self._f2.n_dim == 1, (
-                "Can only compose with .of functions of 1 variable"
-            )
+            assert (
+                self._f1.n_dim == 1 and self._f2.n_dim == 1
+            ), "Can only compose with .of functions of 1 variable"
 
             self.evaluate = _cf_evaluate_func_of_func
 

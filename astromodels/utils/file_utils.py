@@ -8,8 +8,6 @@ from typing import Optional, Union
 
 import numpy as np
 
-_custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
-
 copy_if_needed: Optional[bool]
 
 if np.lib.NumpyVersion(np.__version__) >= "2.0.0":
@@ -71,11 +69,15 @@ def get_user_data_path() -> Path:
 
 def get_path_of_user_config() -> Path:
 
+    _custom_config_path = os.environ.get("ASTROMODELS_CONFIG", None)
+
     if _custom_config_path is not None:
 
         config_path: Path = Path(_custom_config_path)
 
-    config_path: Path = Path().home() / ".config" / "astromodels"
+    else:
+
+        config_path: Path = Path().home() / ".config" / "astromodels"
 
     if not config_path.exists():
 
