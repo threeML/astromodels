@@ -130,8 +130,10 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
 
         if self.mass.value > 10000:
 
-            print("Warning: DMFitFunction only appropriate for masses <= 10 TeV")
-            print("To model DM from 2 GeV < mass < 1 PeV use DMSpectra")
+            log.warning(
+                "Warning: DMFitFunction only appropriate for masses <= 10 TeV "
+                "To model DM from 2 GeV < mass < 1 PeV use DMSpectra"
+            )
 
     def _set_units(self, x_unit, y_unit):
 
