@@ -15,6 +15,7 @@ narrow_energy_funcs = ["PhAbs", "TbAbs", "WAbs"]
 models_to_exclude = [
     "_ComplexTestFunction",
     "TemplateModel",
+    "HaloModel",
     "SpatialTemplate_2D",
     "GenericFunction",
     "Hermes",

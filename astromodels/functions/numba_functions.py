@@ -258,3 +258,13 @@ def dbl_sbpl(x, K, a1, a2, b1, xp, xb, n1, n2, xpiv):
     )
 
     return K * out
+
+
+@nb.njit(fastmath=True, cache=_cache_functions)
+def plaw_integral(a, b, K, i, piv):
+    if i != -1:
+        return K * piv * (b / piv) ** (i + 1) / (i + 1) - K * piv * (a / piv) ** (
+            i + 1
+        ) / (i + 1)
+    else:
+        return K * piv * np.log(b / piv) - K * piv * np.log(a / piv)

@@ -1,5 +1,6 @@
+import logging
+
 import ast
-import collections
 import copy
 import inspect
 import math
@@ -15,6 +16,7 @@ from typing import Dict, List, Optional, Tuple
 import astropy.units as u
 import numba as nb
 import numpy as np
+from scipy.integrate import quad
 from yaml.reader import ReaderError
 
 from astromodels.core.memoization import memoize
@@ -24,25 +26,22 @@ from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
 from astromodels.utils.file_utils import copy_if_needed
-from astromodels.utils.logging import setup_logger
+
 from astromodels.utils.pretty_list import dict_to_list
 from astromodels.utils.table import dict_to_table
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 __author__ = "giacomov"
 
 
 try:
-
     from IPython.display import HTML, display
 
 except ImportError:
-
     has_ipython = False
 
 else:
-
     has_ipython = True
 
 
@@ -98,11 +97,9 @@ NO_LATEX_FORMULA = "(no latex formula available)"
 # with both python2 and 3
 def _py2to3_getargspec(function):
     if sys.version_info[0] < 3:
-
         argspec = inspect.getargspec(function)
 
     else:  # PY3
-
         argspec = inspect.getfullargspec(function)
 
     return argspec
@@ -122,14 +119,12 @@ class FunctionMeta(type):
     the documentation of the function class."""
 
     def __new__(mcs, name, bases, dct):
-
         # We do the parsing of the parameters in the __new__ instead of the __init__ so
         # this is the first thing that runs when importing astromodels
 
         # Enforce the presence of the evaluate method
 
         if "evaluate" not in dct:
-
             log.error("You have to implement the 'evaluate' method in %s" % name)
 
             raise AttributeError()
@@ -150,19 +145,14 @@ class FunctionMeta(type):
         # Parse it
 
         try:
-
             yaml_string = textwrap.dedent(dct["__doc__"]).strip()
 
             if not yaml_string.startswith("---"):
                 yaml_string = f"---\n{yaml_string}"
 
-            function_definition = my_yaml.load(
-                yaml_string,
-                Loader=my_yaml.FullLoader,
-            )
+            function_definition = my_yaml.load(yaml_string, Loader=my_yaml.FullLoader)
 
         except ReaderError:  # pragma: no cover
-
             log.error(
                 "Docstring parsing has failed. "
                 "Did you remember to specify the docstring of %s as raw? "
@@ -174,7 +164,6 @@ class FunctionMeta(type):
             raise DocstringIsNotRaw()
 
         else:
-
             # Store the function definition in the type
 
             dct["_function_definition"] = function_definition
@@ -182,7 +171,6 @@ class FunctionMeta(type):
         # Enforce the presence of a description and of a parameters dictionary
 
         if "description" not in list(function_definition.keys()):
-
             log.error(
                 "You have to provide a 'description' token in the "
                 "documentation of class %s" % name
@@ -191,7 +179,6 @@ class FunctionMeta(type):
             raise AssertionError()
 
         if "parameters" not in list(function_definition.keys()):
-
             log.error(
                 "You have to provide a 'parameters' token in the "
                 "documentation of class %s" % name
@@ -202,14 +189,12 @@ class FunctionMeta(type):
         # If there is a latex formula, store it in the type
 
         if "latex" in function_definition:
-
             # First remove the escaping we did to overcome the limitation of the YAML
             # parser
 
             latex_formula = function_definition["latex"].replace(r"\\", chr(92))
 
         else:
-
             latex_formula = NO_LATEX_FORMULA
 
         # Store latex formula in the type
@@ -217,15 +202,13 @@ class FunctionMeta(type):
 
         # see if we have any properties
         if "properties" in function_definition:
-
             # parse the properties
 
-            dct["_properties"] = collections.OrderedDict()
+            dct["_properties"] = dict()
 
             for property_name, property_definition in function_definition[
                 "properties"
             ].items():
-
                 this_property = FunctionMeta.parse_property_definition(
                     name, property_name, property_definition
                 )
@@ -233,12 +216,10 @@ class FunctionMeta(type):
                 dct["_properties"][this_property.name] = this_property
 
         else:
-
             dct["_properties"] = None
 
         # Parse the parameters' dictionary
         if not isinstance(function_definition["parameters"], dict):
-
             log.error(
                 "Wrong syntax in 'parameters' token. It must be "
                 "a dictionary. Refer to the documentation."
@@ -250,16 +231,13 @@ class FunctionMeta(type):
         # below this dictionary will be used to create a copy of each parameter which
         # will be made available as child of the *instance*.
 
-        dct["_parameters"] = collections.OrderedDict()
+        dct["_parameters"] = dict()
 
         for parameter_name, parameter_definition in list(
             function_definition["parameters"].items()
         ):
-
             if dct["_properties"] is not None:
-
                 if parameter_name in dct["_properties"]:
-
                     log.error("you must specify unique parameters and propert names")
 
                     raise DesignViolation()
@@ -272,10 +250,7 @@ class FunctionMeta(type):
 
         # Now perform a minimal check of the 'evaluate' function
 
-        (
-            variables,
-            parameters_in_calling_sequence,
-        ) = FunctionMeta.check_calling_sequence(
+        variables, parameters_in_calling_sequence = FunctionMeta.check_calling_sequence(
             name, "evaluate", dct["evaluate"], ["x", "y", "z"]
         )
 
@@ -286,18 +261,15 @@ class FunctionMeta(type):
         set2 = set(parameters_in_calling_sequence)
 
         if set1 != set2:
-
             # The parameters are different. Figure out who is missing and raise an
             # exception accordingly
 
             if set1 > set2:
-
                 missing = set1 - set2
                 msg = "Parameters %s have init values but are" % ",".join(missing)
                 msg += "not used in 'evaluate' in %s" % name
 
             else:
-
                 missing = set2 - set1
 
                 msg = "Parameters %s are used in 'evaluate' but do" % (
@@ -322,11 +294,9 @@ class FunctionMeta(type):
         # like the TemplateModel
 
         if "_custom_init_" in dct:
-
             dct["__init__"] = dct["_custom_init_"]
 
         else:
-
             dct["__init__"] = FunctionMeta.class_init
 
         # Finally, add the info() method to the type so that it can be called even
@@ -334,7 +304,7 @@ class FunctionMeta(type):
 
         def info():
 
-            repr_dict = collections.OrderedDict()
+            repr_dict = dict()
 
             repr_dict["description"] = function_definition["description"]
 
@@ -342,31 +312,26 @@ class FunctionMeta(type):
                 repr_dict["formula"] = function_definition["latex"]
 
             # Add the description of each parameter and their current value
-            repr_dict["default parameters"] = collections.OrderedDict()
+            repr_dict["default parameters"] = dict()
 
             for parameter_name in list(dct["_parameters"].keys()):
-
                 repr_dict["default parameters"][parameter_name] = dct["_parameters"][
                     parameter_name
                 ].to_dict()
 
             if dct["_properties"] is not None:
-
                 # Add the description of each parameter and their current value
-                repr_dict["default properties"] = collections.OrderedDict()
+                repr_dict["default properties"] = dict()
 
                 for property_name in list(dct["_properties"].keys()):
-
                     repr_dict["default properties"][property_name] = dct["_properties"][
                         property_name
                     ].to_dict()
 
             if has_ipython:
-
                 display(HTML(dict_to_list(repr_dict, html=True)))
 
             else:
-
                 print(dict_to_list(repr_dict, html=False))
 
         dct["info"] = staticmethod(info)
@@ -377,7 +342,6 @@ class FunctionMeta(type):
         return super(FunctionMeta, mcs).__new__(mcs, name, bases, dct)
 
     def __init__(cls, name, bases, dct):
-
         # This is the MetaClass init, which is called after the __new__ is done
 
         # Store the name of the function in the type
@@ -393,19 +357,17 @@ class FunctionMeta(type):
 
     @staticmethod
     def class_init(instance, **kwargs):
-
         # This is what is going to be called as the __init__ of the class, every time a
         # new instance is created
 
         # Create a copy of the parameters dictionary which is in the type,
         # otherwise every instance would share the same dictionary
 
-        copy_of_parameters = collections.OrderedDict()
+        copy_of_parameters = dict()
 
         # Fill it by duplicating the parameters contained in the dictionary in the type
 
         for key, value in type(instance)._parameters.items():
-
             copy_of_parameters[key] = value.duplicate()
 
             # If the user has specified a value in the constructor, update the
@@ -413,17 +375,15 @@ class FunctionMeta(type):
             # my_powerlaw = powerlaw(logK=1.0, index=-2)
 
             if key in kwargs:
-
                 copy_of_parameters[key].value = kwargs[key]
 
         # now we check to see if there are any properties
 
         if type(instance)._properties is not None:
 
-            copy_of_properties = collections.OrderedDict()
+            copy_of_properties = dict()
 
             for key, value in type(instance)._properties.items():
-
                 copy_of_properties[key] = value.duplicate()
 
                 # now we see if it was a deferred value and fail
@@ -433,7 +393,6 @@ class FunctionMeta(type):
                     copy_of_properties[key].is_deferred
                     and copy_of_properties[key].value is None
                 ):
-
                     if key not in kwargs:
                         msg = f"{key} is not specified as a deferred parameter, but no"
                         msg += " value was specfied in the constructor of "
@@ -447,31 +406,23 @@ class FunctionMeta(type):
                 # my_powerlaw = powerlaw(logK=1.0, index=-2)
 
                 if key in kwargs:
-
                     copy_of_properties[key].value = kwargs[key]
 
         else:
-
             copy_of_properties = None
 
         # Now check that all the parameters specified in the kwargs are actually
         # parameters of this function
         for key in list(kwargs.keys()):
-
             try:
-
                 copy_of_parameters[key]
 
             except KeyError:
-
                 if copy_of_properties is not None:
-
                     try:
-
                         copy_of_properties[key]
 
                     except KeyError:
-
                         log.error(
                             "You specified an init value for %s, which is not a "
                             "parameter of function %s" % (key, type(instance)._name)
@@ -480,7 +431,6 @@ class FunctionMeta(type):
                         raise UnknownParameter()
 
                 else:
-
                     log.error(
                         "You specified an init value for %s, which is not a "
                         "parameter of function %s" % (key, type(instance)._name)
@@ -492,7 +442,6 @@ class FunctionMeta(type):
         n_dim = type(instance)._n_dim
 
         if n_dim == 1:
-
             Function1D.__init__(
                 instance,
                 type(instance)._name,
@@ -502,7 +451,6 @@ class FunctionMeta(type):
             )
 
         elif n_dim == 2:
-
             Function2D.__init__(
                 instance,
                 type(instance)._name,
@@ -512,7 +460,6 @@ class FunctionMeta(type):
             )
 
         elif n_dim == 3:
-
             Function3D.__init__(
                 instance,
                 type(instance)._name,
@@ -523,7 +470,6 @@ class FunctionMeta(type):
 
         # Last, if the class provides a setup method, call it
         if hasattr(instance, "_setup"):
-
             log.debug_node(f"running setup of {instance._name}")
 
             instance._setup()
@@ -548,17 +494,14 @@ class FunctionMeta(type):
         # If the function has been memoized, it will have a "input_object" member
 
         try:
-
             calling_sequence = _py2to3_getargspec(function.input_object).args
 
         except AttributeError:
-
             # This might happen if the function is without memoization
 
             calling_sequence = _py2to3_getargspec(function).args
 
         if not calling_sequence[0] == "self":
-
             log.error(
                 "Wrong syntax for 'evaluate' in %s. The first argument "
                 "should be called 'self'." % name
@@ -574,7 +517,6 @@ class FunctionMeta(type):
         # as specified in possible_variables
 
         if not len(variables) > 0:
-
             log.error(
                 "The name of the variables for 'evaluate' in %s must be one or more "
                 "among %s, instead of %s"
@@ -582,7 +524,6 @@ class FunctionMeta(type):
             )
 
         if variables != possible_variables[: len(variables)]:
-
             log.error(
                 "The variables %s are out of order in '%s' of %s. Should be %s."
                 % (
@@ -603,13 +544,11 @@ class FunctionMeta(type):
 
     @staticmethod
     def parse_parameter_definition(func_name, par_name, definition) -> Parameter:
-
         # Parse definition of parameter
 
         # Enforce the presence of attributes 'value' and 'desc'
 
         if "initial value" not in definition:
-
             log.error(
                 "Error for parameter %s of function %s: value for parameter must be"
                 " specified" % (par_name, func_name)
@@ -618,7 +557,6 @@ class FunctionMeta(type):
             raise FunctionDefinitionError()
 
         if "desc" not in definition:
-
             log.error(
                 "Error for parameter %s of function %s: desc for parameter must be"
                 " specified" % (par_name, func_name)
@@ -635,38 +573,30 @@ class FunctionMeta(type):
             or definition["unit"] is None
             or definition["unit"] == ""
         ):
-
             du = u.dimensionless_unscaled
 
         else:
-
             unit = u.Unit(definition["unit"])
 
             if (u.dimensionless_unscaled.physical_type == unit.physical_type) and (
                 unit.scale != 1
             ):
-
                 # some xpsec models list the unit as a number
                 # but this screws things up
 
                 du = u.dimensionless_unscaled
 
             else:
-
                 du = u.Unit(definition["unit"])
 
         def _parse_value(val):
-
             if isinstance(val, str):
-
                 return eval(val)
 
             elif val is None:
-
                 return None
 
             else:
-
                 return float(val)
 
         value = _parse_value(definition["initial value"])
@@ -712,7 +642,6 @@ class FunctionMeta(type):
 
     @staticmethod
     def parse_property_definition(func_name, prop_name, definition) -> FunctionProperty:
-
         # Parse definition of parameter
 
         # see if we required a value at class construction
@@ -722,9 +651,7 @@ class FunctionMeta(type):
         # Enforce the presence of attributes 'value' and 'desc'
 
         if "initial value" not in definition:
-
             if not deferred:
-
                 log.error(
                     "Error for property %s of function %s: value for parameter must be"
                     " specified" % (prop_name, func_name)
@@ -733,7 +660,6 @@ class FunctionMeta(type):
                 raise FunctionDefinitionError()
 
         if "desc" not in definition:
-
             log.error(
                 "Error for property %s of function %s: desc for parameter must be"
                 " specified" % (prop_name, func_name)
@@ -746,26 +672,20 @@ class FunctionMeta(type):
         allowed_values: Optional[List[str]] = None
 
         if "allowed values" in definition:
-
             allowed_values = []
             for val in definition["allowed values"]:
-
                 allowed_values.append(str(val))
 
         if "function" in definition:
-
             eval_func = definition["function"]
 
         else:
-
             eval_func = None
 
         if not deferred:
-
             value = str(definition["initial value"])
 
             if allowed_values is not None:
-
                 if value not in allowed_values:
                     msg = f"Error for property {prop_name} of {func_name}: {value} is"
                     msg += f"not in {','.join(allowed_values)}"
@@ -774,18 +694,12 @@ class FunctionMeta(type):
                     raise FunctionDefinitionError()
 
         else:
-
             value = None
 
         desc = definition["desc"]
 
         new_property = FunctionProperty(
-            prop_name,
-            desc,
-            value,
-            allowed_values,
-            defer=deferred,
-            eval_func=eval_func,
+            prop_name, desc, value, allowed_values, defer=deferred, eval_func=eval_func
         )
 
         return new_property
@@ -804,13 +718,11 @@ class Function(Node):
         parameters: Optional[Dict[str, Parameter]] = None,
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
-
         # I use default values only to avoid warnings from pycharm and other software
         # about the calling sequence of this contructor. We actually need to enforce its
         # proper use, with this assert
 
         if (name is None) or (function_definition is None) or (parameters is None):
-
             log.error("improper call")
 
             raise AssertionError()
@@ -824,13 +736,11 @@ class Function(Node):
         # Store also the function definition
 
         if "description" not in function_definition:
-
             log.error("Function definition must contain a description")
 
             raise AssertionError()
 
         if "latex" not in function_definition:
-
             function_definition["latex"] = "$n.a.$"
 
         self._function_definition = function_definition
@@ -839,10 +749,9 @@ class Function(Node):
         # might be different than the actual name of the parameter, use the .add_child
         # method instead of the add_children method
 
-        self._parameters: Dict[str, Parameter] = collections.OrderedDict()
+        self._parameters: Dict[str, Parameter] = dict()
 
         for child_name, child in list(parameters.items()):
-
             self._parameters[child_name] = child
 
             # Add the parameter as a child of the function
@@ -853,12 +762,9 @@ class Function(Node):
 
         if properties is not None:
 
-            self._properties: Optional[Dict[str, FunctionProperty]] = (
-                collections.OrderedDict()
-            )
+            self._properties: Optional[Dict[str, FunctionProperty]] = dict()
 
             for child_name, child in properties.items():
-
                 self._properties[child_name] = child
 
                 # Add the parameter as a child of the function
@@ -866,7 +772,6 @@ class Function(Node):
                 self._add_child(child)
 
         else:
-
             self._properties = None
 
         # Now generate a unique identifier (UUID) in a thread safe, multi-processing
@@ -884,7 +789,7 @@ class Function(Node):
 
         # stores any extrernally linked functions
 
-        self._external_functions: Dict[str, "Function"] = collections.OrderedDict()
+        self._external_functions: Dict[str, "Function"] = dict()
 
     @property
     def n_dim(self) -> int:
@@ -900,7 +805,7 @@ class Function(Node):
         :return: dictionary of free parameters
         """
 
-        free_parameters = collections.OrderedDict(
+        free_parameters = dict(
             [(k, v) for k, v in list(self.parameters.items()) if v.free]
         )
 
@@ -949,13 +854,11 @@ class Function(Node):
         :returns:
         """
         if not isinstance(function, Function):
-
             log.error("external functions must be of type Function")
 
             raise RuntimeError()
 
         if internal_name in self._external_functions:
-
             log.error(
                 f"a function with internal name {internal_name} is already linked!"
             )
@@ -974,7 +877,6 @@ class Function(Node):
         :returns:
         """
         if internal_name not in self._external_functions:
-
             log.error(f"{internal_name} is not linked.")
             log.error(f"Have {','.join(list(self._external_functions.keys()))}")
 
@@ -990,30 +892,25 @@ class Function(Node):
         names = list(self._external_functions.keys())
 
         for n in names:
-
             self._external_functions.pop(n)
 
     @property
     def external_functions(self):
-
         return self._external_functions
 
     def to_dict(self, minimal: bool = False):
-
         data = super(Function, self).to_dict(minimal)
 
         if not minimal:
-
             # link the external functions
             # by there internal name and
             # their path
 
             if self._external_functions:
 
-                data["external_functions"] = collections.OrderedDict()
+                data["external_functions"] = dict()
 
                 for k, v in self._external_functions.items():
-
                     data["external_functions"][k] = v.path
 
         return data
@@ -1034,7 +931,7 @@ class Function(Node):
         :return: True or False
         """
 
-        return not (self._fixed_units is None)
+        return self._fixed_units is not None
 
     @property
     def is_prior(self) -> bool:
@@ -1084,54 +981,46 @@ class Function(Node):
         instance."""
         return CompositeFunction("of", self, another_function)
 
-    def __neg__(self):
+    def arctan2(self, another_function):
+        return CompositeFunction("arctan2", self, another_function)
 
+    def __neg__(self):
         return CompositeFunction("*-", self)
 
     def __abs__(self):
-
         return CompositeFunction("abs", self)
 
     def __pow__(self, other_instance):
-
         return CompositeFunction("**", self, other_instance)
 
     def __rpow__(self, other_instance):
-
         return CompositeFunction("**", other_instance, self)
 
     def __add__(self, other_instance):
-
         return CompositeFunction("+", self, other_instance)
 
     __radd__ = __add__
 
     def __sub__(self, other_instance):
-
         return CompositeFunction("-", self, other_instance)
 
     def __rsub__(self, other_instance):
-
         return CompositeFunction("-", other_instance, self)
 
     def __mul__(self, other_instance):
-
         c = CompositeFunction("*", self, other_instance)
 
         # If the other instance is a function (and not a number), flag it so its units
         # will be made dimensionless in the set_units method of the composite function
 
         if isinstance(other_instance, Function):
-
             if self.has_fixed_units():
-
                 # This is likely a XSpec model. The multiplication of two models with
                 # units will give the wrong units to the results. So, depending on the
                 # type of the first and second model, we need to adjust their units so
                 # that the result will keep the right units.
 
                 if not u.Unit(self.fixed_units[1]) == u.dimensionless_unscaled:
-
                     # This function has fixed unit and is not dimensionless (likely an
                     # additive XSpec model). We need to make the other function
                     # dimensionless so that the multiplication of them will keep the
@@ -1142,7 +1031,6 @@ class Function(Node):
                     log.debug(f"{other_instance} is not dimensionless")
 
                 else:
-
                     # This function has fixed unit, but it is dimensionless (likely a
                     # multiplicative XSpec model) The other function should keep its
                     # units, so we flag self instead
@@ -1166,7 +1054,6 @@ class Function(Node):
 
                         log.debug(f"{c.name} is completely dimensionless")
             else:
-
                 # We need to make the other instance dimensionless so that this function
                 # (which is not dimensionless) multiplied by the other function (which
                 # we will make dimensionless) will give the right units as the results
@@ -1180,22 +1067,18 @@ class Function(Node):
     __rmul__ = __mul__
 
     def __div__(self, other_instance):
-
         c = CompositeFunction("/", self, other_instance)
 
         # If the other instance is a function (and not a number), flag it so its units
         # will be made dimensionless in the set_units method of the composite function
 
         if isinstance(other_instance, Function):
-
             if self.has_fixed_units():
-
                 # This is likely a XSpec model. Division is not supported.
 
                 raise NotImplementedError("Division for XSpec models is not supported")
 
             else:
-
                 # We need to make the other instance dimensionless
 
                 other_instance._make_dimensionless = True
@@ -1203,7 +1086,6 @@ class Function(Node):
         return c
 
     def __rdiv__(self, other_instance):
-
         return CompositeFunction("/", other_instance, self)
 
     __truediv__ = __div__
@@ -1211,19 +1093,17 @@ class Function(Node):
 
     def _repr__base(self, rich_output):
 
-        repr_dict = collections.OrderedDict()
+        repr_dict = dict()
 
         repr_dict["description"] = self._function_definition["description"]
 
         if "latex" in self._function_definition:
-
             repr_dict["formula"] = self._function_definition["latex"]
 
         # Add the description of each parameter and their current value
-        repr_dict["parameters"] = collections.OrderedDict()
+        repr_dict["parameters"] = dict()
 
         for parameter in self._get_children():
-
             repr_dict["parameters"][parameter.name] = parameter.to_dict()
 
         return dict_to_list(repr_dict, rich_output)
@@ -1239,7 +1119,6 @@ class Function(Node):
         return self._uuid
 
     def __eq__(self, o):
-
         log.debug_node(f"checking equality of {self._uuid} and {o.uuid}")
 
         return self._uuid == o.uuid
@@ -1268,11 +1147,9 @@ class Function(Node):
         raise NotImplementedError("You have to implement this")
 
     def __call__(self, *args):  # pragma: no cover
-
         raise NotImplementedError("You have to implement this")
 
     def fast_call(self, *args):  # pragma: no cover
-
         raise NotImplementedError("You have to implement this")
 
     def evaluate_at(self, *args, **parameter_specification):  # pragma: no cover
@@ -1286,7 +1163,6 @@ class Function(Node):
 
         # Set the parameters to the provided values
         for parameter in parameter_specification:
-
             self._get_child(parameter).value = parameter_specification[parameter]
 
         return self(*args)
@@ -1304,6 +1180,8 @@ class Function(Node):
 
 
 class Function1D(Function):
+    _integral_numerical_error = None
+
     def __init__(
         self,
         name: Optional[str] = None,
@@ -1311,18 +1189,15 @@ class Function1D(Function):
         parameters: Optional[Dict[str, Parameter]] = None,
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
-
         Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
         self._y_unit = None
 
     def evaluate(self, x, *args, **kwargs):  # pragma: no cover
-
         raise NotImplementedError("You have to re-implement this")
 
     def set_units(self, in_x_unit, in_y_unit):
-
         # Transform None in input to '', so that u.Unit() will generate a dimensionless
         # unit
 
@@ -1332,12 +1207,10 @@ class Function1D(Function):
         # Get a Unit instance from the inputs
 
         try:
-
             in_x_unit = u.Unit(in_x_unit)
             in_y_unit = u.Unit(in_y_unit)
 
         except ValueError:
-
             msg = "Could not get a Unit instance from provided units "
             msg += f"{(in_x_unit, in_y_unit)} when setting units "
             msg += f"\n for function {self.name}"
@@ -1355,19 +1228,16 @@ class Function1D(Function):
         # class' attributes after the call to _set_units
 
         if new_units is not None:
-
             new_x_unit, new_y_unit = new_units
 
             self._x_unit = new_x_unit
             self._y_unit = new_y_unit
 
         else:
-
             self._x_unit = in_x_unit
             self._y_unit = in_y_unit
 
     def _set_units(self, x_unit, y_unit):  # pragma: no cover
-
         # This will be overridden by derived classes
 
         raise NotImplementedError(
@@ -1387,7 +1257,6 @@ class Function1D(Function):
         return self._y_unit
 
     def __call__(self, x):
-
         # This method's code violates explicitly duck typing. The reason is that
         # astropy.units introduce a very significant overload on any computation. For
         # this reason we treat differently the case with units from the case without
@@ -1400,17 +1269,14 @@ class Function1D(Function):
         # isinstance(q, np.ndarray) returns True
 
         if isinstance(x, np.ndarray):
-
             # We have an array as input (or a single quantity)
 
             if not isinstance(x, u.Quantity):
-
                 # This is a normal array, let's use the fast call (without units)
 
                 return self.fast_call(x)
 
             else:
-
                 # This is an array with units or a single quantity, let's use the slow
                 # call which preserves units
 
@@ -1434,7 +1300,6 @@ class Function1D(Function):
                 return np.squeeze(results.to(self.y_unit).value) * self.y_unit
 
         else:
-
             # This is either a single number or a list
 
             # Transform the input to an array of floats. If x is a single number, this
@@ -1455,34 +1320,27 @@ class Function1D(Function):
             # if this is still a list after all this work this its
             # shape will be
             if sq.shape:
-
                 return sq
 
             else:
-
                 # this is a single number and we assume it is a float
 
                 return np.float64(sq)
 
     def _call_with_units(self, x):
-
         # Gather the current parameters' values with units
         values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
-
             results = self.evaluate(
                 x.to(self.x_unit, equivalencies=u.spectral()), *values
             )
 
         except u.UnitsError:  # pragma: no cover
-
             # see if this is a dimensionless function
 
             if self.has_fixed_units():
-
                 try:
-
                     results = self.evaluate(x.to(self.x_unit), *values)
 
                 except u.UnitsError:
@@ -1500,12 +1358,10 @@ class Function1D(Function):
                 raise u.UnitsError()
 
         else:
-
             return results
 
     @memoize
     def fast_call(self, x) -> np.ndarray:
-
         # Gather the current parameters' values without units, which means that the
         # whole computation will be without units, with a big speed gain (~10x)
 
@@ -1545,10 +1401,70 @@ class Function1D(Function):
 
         return _local_deriv(a, b, epsilon)
 
+    def integrate(self, a, b, *args, **kwargs):
+        """
+        Integrates the function from a to b. If an analytically integral is available
+        will use this, otherwise fall back to the numerical integration using scipys
+        quadrature rule.
+
+        :param a: lower integration boundary
+        :type a: float or astropy.Quantity
+        :param b: upper integration boundary
+        :type b: float or astropy.Quantity
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+
+        returns: value of integral
+        """
+        if isinstance(a, u.Quantity) and isinstance(b, u.Quantity):
+            try:
+                a = a.to(self._x_unit).value
+                b = b.to(self._x_unit).value
+            except Exception as e:
+                raise ValueError(
+                    "You integral boundary unit must be converatble to "
+                    f"{self._x_unit}."
+                ) from e
+            return self.integral(a, b, *args, **kwargs) * self._y_unit * self._x_unit
+
+        elif (isinstance(a, u.Quantity) and not isinstance(b, u.Quantity)) or (
+            not isinstance(a, u.Quantity) and isinstance(b, u.Quantity)
+        ):
+            raise TypeError(
+                "a and b must either be astropy Quantities or floats. "
+                "You can not mix."
+            )
+        else:
+            return self.integral(a, b, *args, **kwargs)
+
+    def integral(self, a, b, *args, **kwargs):
+        """
+        The actual integral defintion. Needs to be overwritten for analytical integrals
+        :param a: lower integration boundary
+        :type a: float
+        :param b: upper integration boundary
+        :type b: float
+        :param args: additional positional arguments for scipy.integrate.quad
+        :type args: list
+        :param kwargs: additional keyword aguments for scipy.integrate.quad
+        :type kwargs: dict
+        """
+        res = quad(self.__call__, a, b, *args, **kwargs)
+        self._integral_numerical_error = res[1]
+        return res[0]
+
+    @property
+    def integral_numerical_error(self):
+        if hasattr(self, "_integral_numerical_error"):
+            return self._integral_numerical_error
+        else:
+            return None
+
 
 @nb.njit
 def _local_deriv(a, b, epsilon):
-
     return np.log(b / a) / math.log(1.0 + epsilon)
 
 
@@ -1560,7 +1476,6 @@ class Function2D(Function):
         parameters: Optional[Dict[str, Parameter]] = None,
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
-
         Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
@@ -1568,11 +1483,9 @@ class Function2D(Function):
         self._z_unit = None
 
     def evaluate(self, x, y, *args):  # pragma: no cover
-
         raise NotImplementedError("You have to re-implement this")
 
     def set_units(self, in_x_unit, in_y_unit, in_z_unit):
-
         # Change None to '' for the inputs so that the following u.Unit construction
         # will generate a dimensionless# unit (it would fail with None)
 
@@ -1581,13 +1494,11 @@ class Function2D(Function):
         in_z_unit = in_z_unit if in_z_unit is not None else ""
 
         try:
-
             in_x_unit = u.Unit(in_x_unit)
             in_y_unit = u.Unit(in_y_unit)
             in_z_unit = u.Unit(in_z_unit)
 
         except ValueError:
-
             msg = (
                 "Could not get a Unit instance from provided units when setting units "
             )
@@ -1607,7 +1518,6 @@ class Function2D(Function):
         self._set_units(self._x_unit, self._y_unit, self._z_unit)
 
     def _set_units(self, x_unit, y_unit, z_unit):  # pragma: no cover
-
         # This will be overridden by derived classes
 
         raise NotImplementedError(
@@ -1627,7 +1537,6 @@ class Function2D(Function):
         return self._z_unit
 
     def __call__(self, x, y, *args, **kwargs):
-
         # This method's code violates explicitly duck typing. The reason is that
         # astropy.units introduce a very significant overload on any computation. For
         # this reason we treat differently the case with units from the case without
@@ -1636,20 +1545,33 @@ class Function2D(Function):
         # microseconds or so), so we perform this transformation only when strictly
         # required
 
-        assert type(x) is type(y), "You have to use the same type for x and y"
+        if not type(x) is type(y):
+            if type(x) in [float, int, str] or type(y) is [float, int, str]:
+                x_type = type(x)
+                y_type = type(y)
+                try:
+                    x = float(x)
+                    y = float(y)
+                except Exception as e:
+                    raise TypeError(
+                        "You have to use the same type for x and y or they need to be "
+                        f"convertible to float. Got {x_type} and {y_type}"
+                    ) from e
+            else:
+                raise TypeError(
+                    "You have to use the same type for x and y or they need to be "
+                    f"convertible to float. Got {x_type} and {y_type}"
+                )
 
         if isinstance(x, np.ndarray):
-
             # We have an array or a quantity as input
 
             if not isinstance(x, u.Quantity):
-
                 # This is a normal array, let's use the fast call (without units)
 
                 return self._call_without_units(x, y)
 
             else:
-
                 # This is an array with units or a single quantity, let's use the slow
                 # call which preserves units
 
@@ -1659,7 +1581,6 @@ class Function2D(Function):
                 return np.squeeze(results.to(self.z_unit).value) * self.z_unit
 
         else:
-
             # This is either a single number or a list
 
             # Transform the input to an array of floats
@@ -1677,17 +1598,14 @@ class Function2D(Function):
             return np.squeeze(result)
 
     def _call_with_units(self, x, y):
-
         # Gather the current parameters' values with units
 
         values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
-
             results = self.evaluate(x, y, *values)
 
         except u.UnitsError:  # pragma: no cover
-
             log.error(
                 "Looks like you didn't provide all the units, or you provided the wrong"
                 f" ones, when calling function {self.name}"
@@ -1699,12 +1617,10 @@ class Function2D(Function):
             )
 
         else:
-
             return results
 
     @memoize
     def _call_without_units(self, x, y):
-
         # Gather the current parameters' values without units, which means that the
         # whole computation will be without units, with a big speed gain (~10x)
 
@@ -1721,7 +1637,6 @@ class Function3D(Function):
         parameters: Optional[Dict[str, Parameter]] = None,
         properties: Optional[Dict[str, FunctionProperty]] = None,
     ):
-
         Function.__init__(self, name, function_definition, parameters, properties)
 
         self._x_unit = None
@@ -1730,11 +1645,9 @@ class Function3D(Function):
         self._w_unit = None
 
     def evaluate(self, x, y, z, *args, **kwargs):  # pragma: no cover
-
         raise NotImplementedError("You have to re-implement this")
 
     def set_units(self, in_x_unit, in_y_unit, in_z_unit, in_w_unit):
-
         # Change None to '' for the inputs so that the following u.Unit construction
         # will generate a dimensionless unit (it would fail with None)
 
@@ -1746,14 +1659,12 @@ class Function3D(Function):
         # Get instances of Unit
 
         try:
-
             in_x_unit = u.Unit(in_x_unit)
             in_y_unit = u.Unit(in_y_unit)
             in_z_unit = u.Unit(in_z_unit)
             in_w_unit = u.Unit(in_w_unit)
 
         except ValueError:
-
             msg = (
                 "Could not get a Unit instance from provided units when setting units "
             )
@@ -1775,7 +1686,6 @@ class Function3D(Function):
         self._set_units(self._x_unit, self._y_unit, self._z_unit, self._w_unit)
 
     def _set_units(self, x_unit, y_unit, z_unit, w_unit):  # pragma: no cover
-
         # This will be overridden by derived classes
 
         raise NotImplementedError(
@@ -1799,7 +1709,6 @@ class Function3D(Function):
         return self._w_unit
 
     def __call__(self, x, y, z):
-
         # This method's code violates explicitly duck typing. The reason is that
         # astropy.units introduce a very significant overload on any computation. For
         # this reason we treat differently the case with units from the case without
@@ -1813,17 +1722,14 @@ class Function3D(Function):
         ), "You have to use the same type for x, y and z"
 
         if isinstance(x, np.ndarray):
-
             # We have an array as input
 
             if not isinstance(x, u.Quantity):
-
                 # This is a normal array, let's use the fast call (without units)
 
                 return self._call_without_units(x, y, z)
 
             else:
-
                 # This is an array with units or a single quantity, let's use the slow
                 # call which preserves units
 
@@ -1834,7 +1740,6 @@ class Function3D(Function):
                 return np.squeeze(results.to(self.w_unit).value) * self.w_unit
 
         else:
-
             # This is either a single number or a list
             # Transform the input to an array of floats
 
@@ -1852,29 +1757,24 @@ class Function3D(Function):
             return np.squeeze(result)
 
     def _call_with_units(self, x, y, z):
-
         # Gather the current parameters' values with units
 
         values = list(map(attrgetter("as_quantity"), self._get_parameters()))
 
         try:
-
             results = self.evaluate(x, y, z, *values)
 
         except u.UnitsError:  # pragma: no cover
-
             raise u.UnitsError(
                 "Looks like you didn't provide all the units, or you provided the wrong"
                 f"ones, when calling function {self.name}"
             )
 
         else:
-
             return results
 
     @memoize
     def _call_without_units(self, x, y, z):
-
         # Gather the current parameters' values without units, which means that the
         # whole computation will be without units, with a big speed gain (~10x)
 
@@ -1897,6 +1797,7 @@ _operations = {
     "**": np.power,
     "abs": np.abs,
     "of": "compose",
+    "arctan2": np.arctan2,
 }
 
 
@@ -1930,9 +1831,7 @@ def _cf_evaluate_func_of_func(np_operator, f1, f2, *args):
 
 class CompositeFunction(Function):
     def __init__(self, operation, function_or_scalar_1, function_or_scalar_2=None):
-
         if operation not in _operations:
-
             log.error("Do not know operation %s" % operation)
 
             raise AssertionError()
@@ -1940,11 +1839,7 @@ class CompositeFunction(Function):
         # Save this to make the class pickeable (see the __setstate__ and
         # __getstate__ methods)
 
-        self._calling_sequence = (
-            operation,
-            function_or_scalar_1,
-            function_or_scalar_2,
-        )
+        self._calling_sequence = (operation, function_or_scalar_1, function_or_scalar_2)
 
         self._requested_x_unit = None
         self._requested_y_unit = None
@@ -1968,41 +1863,33 @@ class CompositeFunction(Function):
         self._functions = []
 
         for function in [function_or_scalar_1, function_or_scalar_2]:
-
             # Check whether this is already a composite function. If it is, add the
             # functions contained in it
 
             if isinstance(function, CompositeFunction):
-
                 log.debug_node(f"{function.name} is a composite function")
 
                 for sub_function in function.functions:
-
                     log.debug_node(f"checking sub function {sub_function.name}")
 
                     if sub_function not in self._functions:
-
                         log.debug_node(f"now adding {sub_function.name}")
 
                         self._functions.append(sub_function)
 
             elif isinstance(function, Function):
-
                 # This is a simple function.
                 # Add it only if it is not there already (avoid duplicate)
 
                 if function not in self._functions:
-
                     log.debug_node(f"{function.name} is being added")
 
                     self._functions.append(function)
 
                 else:
-
                     log.debug_node(f"{function.name} is a duplicate")
 
             else:
-
                 # This is a scalar, no need to add it among the functions
 
                 pass
@@ -2016,7 +1903,6 @@ class CompositeFunction(Function):
         self._n_dim = self._functions[0].n_dim
 
         if self._n_dim > 1:
-
             log.error(
                 "CompositeFunction class can only handle 1-dimensional functions at the"
                 " moment."
@@ -2025,9 +1911,7 @@ class CompositeFunction(Function):
             raise NotImplementedError()
 
         for function in self._functions:
-
             if function.n_dim != self._n_dim:
-
                 log.error("You cannot compose functions of different dimensionality")
 
                 raise RuntimeError()
@@ -2042,7 +1926,6 @@ class CompositeFunction(Function):
         expression = self._uuid_expression
 
         for i, function in enumerate(self._functions):
-
             self._id_to_uid[i + 1] = function.uuid
 
             expression = expression.replace(
@@ -2057,33 +1940,29 @@ class CompositeFunction(Function):
         # Build the parameters dictionary assigning a new name to each parameter to
         # account for possible duplicates.
 
-        parameters = collections.OrderedDict()
+        parameters = dict()
 
-        properties = collections.OrderedDict()
+        properties = dict()
 
-        self._sub_children = collections.OrderedDict()
+        self._sub_children = dict()
 
         log.debug_node(f"we now have {len(self._functions)}")
 
         for i, function in enumerate(self._functions):
-
             log.debug_node(f"func path before comp: {function.path}")
 
             for parameter_name, parameter in function.parameters.items():
-
                 # New name to avoid possible duplicates
 
                 match = re.match("(.+)_[0-9]+$", parameter_name)
 
                 if match is not None:
-
                     original_name = match.groups()[0]
 
                 else:
-
                     original_name = parameter_name
 
-                new_name = f"{original_name}_{i+1}"
+                new_name = f"{original_name}_{i + 1}"
 
                 log.debug_node(f"rename {original_name} -> {new_name}")
 
@@ -2095,25 +1974,18 @@ class CompositeFunction(Function):
                 parameter._change_name(new_name, clear_parent=False)
 
             if function.properties is not None:
-
-                for (
-                    property_name,
-                    function_property,
-                ) in function.properties.items():
-
+                for property_name, function_property in function.properties.items():
                     # New name to avoid possible duplicates
 
                     match = re.match("(.+)_[0-9]+$", property_name)
 
                     if match is not None:
-
                         original_name = match.groups()[0]
 
                     else:
-
                         original_name = property_name
 
-                    new_name = f"{original_name}_{i+1}"
+                    new_name = f"{original_name}_{i + 1}"
 
                     log.debug_node(f"rename {original_name} -> {new_name}")
 
@@ -2128,12 +2000,10 @@ class CompositeFunction(Function):
 
             # now, some functions may have children and we want to keep track of those
 
-            self._sub_children[function.name] = collections.OrderedDict()
+            self._sub_children[function.name] = dict()
 
             for child_name, child in function._children.items():
-
                 if child_name not in function.parameters:
-
                     log.debug_node(f"{function.name} has child {child_name}")
 
                     self._sub_children[function.name][child_name] = child.to_dict(
@@ -2141,7 +2011,6 @@ class CompositeFunction(Function):
                     )
 
             if not function.is_root:
-
                 log.warning(
                     f"{function.name} was previously assigned to "
                     f"{function._root(source_only=True).name}"
@@ -2162,7 +2031,6 @@ class CompositeFunction(Function):
         # reset properties if there were none
 
         if not properties:
-
             properties = None
 
         # Now build a meaningful description
@@ -2179,29 +2047,23 @@ class CompositeFunction(Function):
         self._uuid = self._uuid_expression
 
     def set_units(self, x_unit, y_unit, relaxed=False):
-
         if relaxed and (x_unit is None) and (y_unit is None):
-
             # This can happen when rebuilding a composite function during unpickling,
             # when there are more than two functions composed together. We do not need
             # to to anything in that case
             pass
 
         else:
-
             self._requested_x_unit = x_unit
             self._requested_y_unit = y_unit
 
             # Just rely on the single functions to adjust themselves.
 
             for function in self.functions:
-
                 if hasattr(function, "_make_dimensionless"):
-
                     function.set_units(x_unit, u.dimensionless_unscaled)
 
                 else:
-
                     function.set_units(x_unit, y_unit)
 
     @property
@@ -2210,31 +2072,24 @@ class CompositeFunction(Function):
 
     @staticmethod
     def _get_uuid_expression(operation, name_1, name_2=None):
-
         if name_2 is None:
-
             return "(%s %s)" % (operation, name_1.uuid)
 
         if hasattr(name_1, "uuid"):
-
             name_1_uuid = name_1.uuid
 
         else:
-
             name_1_uuid = "%s" % name_1
 
         if hasattr(name_2, "uuid"):
-
             name_2_uuid = name_2.uuid
 
         else:
-
             name_2_uuid = "%s" % name_2
 
         return "(%s %s %s)" % (name_1_uuid, operation, name_2_uuid)
 
     def _decide_evaluate_type(self):
-
         # Assign to __call__ the right evaluate according to the type of the elements
         # in the expression
 
@@ -2245,7 +2100,6 @@ class CompositeFunction(Function):
         self._np_operator = np_operator
 
         if np_operator == "compose":
-
             assert hasattr(
                 self._f2, "evaluate"
             ), "Second member of .of cannot be a scalar"
@@ -2257,27 +2111,20 @@ class CompositeFunction(Function):
             self.evaluate = _cf_evaluate_func_of_func
 
         else:
-
             # Check whether the second member is a function, or a number
 
             if hasattr(self._f1, "evaluate"):
-
                 if hasattr(self._f2, "evaluate"):
-
                     self.evaluate = _cf_evaluate_func_func
 
                 else:
-
                     self.evaluate = _cf_evaluate_func_number
 
             else:
-
                 if hasattr(self._f2, "evaluate"):
-
                     self.evaluate = _cf_evaluate_number_func
 
                 else:  # pragma: no cover
-
                     # Should never get here!
 
                     raise RuntimeError("Should never get here")
@@ -2288,7 +2135,6 @@ class CompositeFunction(Function):
         return self._functions
 
     def evaluate(self):  # pragma: no cover
-
         raise NotImplementedError(
             "You cannot instance and use a composite function by itself. Use the "
             "factories."
@@ -2297,7 +2143,6 @@ class CompositeFunction(Function):
     # This dumb function must be here because it is not possible to override at runtime
     # __call__ (nor any other special method)
     def __call__(self, x):
-
         return self.evaluate(self._np_operator, self._f1, self._f2, x)
 
     # For composite function, fast_call is the same as __call__ (because the call will
@@ -2308,36 +2153,51 @@ class CompositeFunction(Function):
     # Override the to_dict method of the Node class to add the expression to re-build
     # this composite function
     def to_dict(self, minimal=False):
-
         data = super(CompositeFunction, self).to_dict(minimal)
 
         if not minimal:
-
             data["expression"] = self._expression
 
             flag = False
 
             for function in self._functions:
-
                 if function.external_functions:
-
                     flag = True
 
             if flag:
 
-                data["external_functions"] = collections.OrderedDict()
+                data["external_functions"] = dict()
 
                 for i, function in enumerate(self._functions):
 
-                    this_function = collections.OrderedDict()
+                    this_function = dict()
 
                     for k, v in function.external_functions.items():
-
                         this_function[k] = v.path
 
                     data["external_functions"][i] = this_function
 
         return data
+
+
+def _load_template_or_spatial(name):
+    """Check the file attribute `model_type` to distinguish between a 3D
+    template and a spectral template.
+    """
+    import h5py
+
+    from astromodels.functions import HaloModel, TemplateModel
+    from astromodels.functions.template_model import MissingDataFile
+    from astromodels.utils import get_user_data_path
+
+    path = get_user_data_path() / f"{name}.h5"
+    if not path.exists():
+        raise MissingDataFile()
+    with h5py.File(path, "r") as f:
+        model_type = f.attrs.get("model_type", "spectral")
+    if model_type == "spatial":
+        return HaloModel(name)
+    return TemplateModel(name)
 
 
 def get_function(function_name, composite_function_expression=None):
@@ -2354,7 +2214,6 @@ def get_function(function_name, composite_function_expression=None):
 
     # Check whether this is a composite function or a simple function
     if composite_function_expression is not None:
-
         # Composite function
 
         # get the function
@@ -2365,32 +2224,25 @@ def get_function(function_name, composite_function_expression=None):
         return composite_function
 
     else:
-
         if function_name in _known_functions:
-
             function_class = _known_functions[function_name]
 
-            deferred_properites = collections.OrderedDict()
+            deferred_properites = dict()
 
             if function_class._properties is not None:
-
                 for name, func_prop in function_class._properties.items():
-
                     # we need to specify this in hte constructor
                     # this will change to the saved value when the
                     # function is fully built
 
                     if func_prop.is_deferred:
-
                         if func_prop._allowed_values is not None:
-
                             # if there are only allowed values
                             # then we select the first one
 
                             deferred_properites[name] = func_prop._allowed_values[0]
 
                         else:
-
                             deferred_properites[name] = "_tmp"
 
             # Ok, let's create the instance
@@ -2400,7 +2252,6 @@ def get_function(function_name, composite_function_expression=None):
             return instance
 
         else:
-
             # Maybe this is a template
 
             # NOTE: import here to avoid circular import
@@ -2408,18 +2259,17 @@ def get_function(function_name, composite_function_expression=None):
             from astromodels.functions.template_model import (
                 InvalidTemplateModelFile,
                 MissingDataFile,
-                TemplateModel,
             )
 
             try:
-
-                instance = TemplateModel(function_name)
+                # instance = TemplateModel(function_name)
+                instance = _load_template_or_spatial(function_name)
+                # loaded_template = True
 
             except MissingDataFile:
-
                 log.error(
-                    "Function %s is not known. Known functions are: %s"
-                    % (function_name, ",".join(list(_known_functions.keys())))
+                    f"Function {function_name} is not known. "
+                    f"Known functions are: {','.join(list(_known_functions.keys()))}"
                 )
 
                 raise UnknownFunction()
@@ -2428,9 +2278,8 @@ def get_function(function_name, composite_function_expression=None):
             # netspec
 
             except InvalidTemplateModelFile:
-
+                # if not loaded_template:
                 try:
-
                     log.debug("check if it is an emulator")
 
                     from netspec import EmulatorModel
@@ -2438,26 +2287,17 @@ def get_function(function_name, composite_function_expression=None):
                     instance = EmulatorModel(function_name)
 
                 except Exception as e:
-
                     log.debug(e)
 
                     log.error(
                         "Function %s is not known. Known functions are: %s"
-                        % (
-                            function_name,
-                            ",".join(list(_known_functions.keys())),
-                        )
+                        % (function_name, ",".join(list(_known_functions.keys())))
                     )
 
-                    raise UnknownFunction()
+                    raise UnknownFunction() from e
 
-                else:
-
-                    return instance
-
-            else:
-
-                return instance
+                # return instance
+            return instance
 
 
 def get_function_class(function_name):
@@ -2469,11 +2309,9 @@ def get_function_class(function_name):
     """
 
     if function_name in _known_functions:
-
         return _known_functions[function_name]
 
     else:
-
         log.error(
             "Function %s is not known. Known functions are: %s"
             % (function_name, ",".join(list(_known_functions.keys())))
@@ -2483,7 +2321,6 @@ def get_function_class(function_name):
 
 
 def list_functions():
-
     # Gather all defined functions and their descriptions
 
     functions_and_descriptions = {
@@ -2493,7 +2330,7 @@ def list_functions():
 
     # Order by key (i.e., by function name)
 
-    ordered = collections.OrderedDict(sorted(functions_and_descriptions.items()))
+    ordered = dict(sorted(functions_and_descriptions.items()))
 
     # Format in a table
 
@@ -2551,7 +2388,6 @@ def _parse_function_expression(function_specification):
     # Loop over the unique functions and create instances
 
     for unique_function, number in unique_functions:
-
         complete_function_specification = "%s{%s}" % (unique_function, number)
 
         # As first safety measure, check that the unique function is in the dictionary
@@ -2559,37 +2395,30 @@ def _parse_function_expression(function_specification):
         # only check
 
         if unique_function in _known_functions:
-
             # Get the function class and check that it is indeed a proper Function class
 
             function_class = _known_functions[unique_function]
 
             if issubclass(function_class, Function):
-
                 # let's see if there are any deferred
                 # properties
 
-                deferred_properites = collections.OrderedDict()
+                deferred_properites = dict()
 
                 if function_class._properties is not None:
-
                     for name, func_prop in function_class._properties.items():
-
                         # we need to specify this in hte constructor
                         # this will change to the saved value when the
                         # function is fully built
 
                         if func_prop.is_deferred:
-
                             if func_prop._allowed_values is not None:
-
                                 # if there are only allowed values
                                 # then we select the first one
 
                                 deferred_properites[name] = func_prop._allowed_values[0]
 
                             else:
-
                                 deferred_properites[name] = "_tmp"
 
                 # Ok, let's create the instance
@@ -2601,7 +2430,6 @@ def _parse_function_expression(function_specification):
                 instances[complete_function_specification] = instance
 
             else:
-
                 log.error(
                     "The function specification %s does not contain a proper function"
                     % unique_function
@@ -2610,7 +2438,6 @@ def _parse_function_expression(function_specification):
                 raise FunctionDefinitionError()
 
         else:
-
             # It might be a template
 
             # This import is here to avoid circular dependency between this module and
@@ -2618,13 +2445,12 @@ def _parse_function_expression(function_specification):
             import astromodels.functions.template_model
 
             try:
-
-                instance = astromodels.functions.template_model.TemplateModel(
-                    unique_function
-                )
+                # instance = astromodels.functions.template_model.TemplateModel(
+                #     unique_function
+                # )
+                instance = _load_template_or_spatial(unique_function)
 
             except astromodels.functions.template_model.MissingDataFile:
-
                 # It's not a template
 
                 raise UnknownFunction(
@@ -2634,17 +2460,14 @@ def _parse_function_expression(function_specification):
                 )
 
             except astromodels.functions.template_model.InvalidTemplateModelFile:
-
                 # It's not a template
 
                 try:
-
                     import netspec
 
                     instance = netspec.EmulatorModel(unique_function)
 
                 except Exception:
-
                     raise UnknownFunction(
                         f"Function {unique_function} in expression "
                         f"{function_specification}"
@@ -2653,11 +2476,9 @@ def _parse_function_expression(function_specification):
                     )
 
                 else:
-
                     instances[complete_function_specification] = instance
 
             else:
-
                 # It's a template
 
                 instances[complete_function_specification] = instance
@@ -2665,7 +2486,6 @@ def _parse_function_expression(function_specification):
     # Check that we have found at least one instance.
 
     if len(instances) == 0:
-
         log.error("No known function in function specification")
 
         raise DesignViolation()
@@ -2699,7 +2519,6 @@ def _parse_function_expression(function_specification):
     # Let's start from the function expression
 
     for function_expression in list(instances.keys()):
-
         log.debug_node(function_expression)
 
         string_for_literal_eval = string_for_literal_eval.replace(
@@ -2711,7 +2530,6 @@ def _parse_function_expression(function_specification):
     # Now remove all the known operators
 
     for operator in list(_operations.keys()):
-
         string_for_literal_eval = string_for_literal_eval.replace(operator, "0 ")
 
     log.debug_node(string_for_literal_eval)
@@ -2720,7 +2538,6 @@ def _parse_function_expression(function_specification):
     # one or more spaces
 
     if re.match("""([a-zA-Z]+)""", string_for_literal_eval):
-
         log.error("Extraneous input in function specification")
 
         raise DesignViolation()
@@ -2738,17 +2555,14 @@ def _parse_function_expression(function_specification):
 
     # Now try to execute the string
     try:
-
         ast.literal_eval(string_for_literal_eval)
 
     except (ValueError, SyntaxError):
-
         log.error("The given expression is not a valid function expression")
 
         raise DesignViolation()
 
     else:
-
         # The expression is safe, let's eval it
 
         # First substitute the reference to the functions (like 'powerlaw{1}') with a
@@ -2757,7 +2571,6 @@ def _parse_function_expression(function_specification):
         sanitized_function_specification = function_specification
 
         for function_expression in list(instances.keys()):
-
             sanitized_function_specification = sanitized_function_specification.replace(
                 function_expression, 'instances["%s"]' % function_expression
             )

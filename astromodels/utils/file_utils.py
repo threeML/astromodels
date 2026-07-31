@@ -8,13 +8,12 @@ from typing import Optional, Union
 
 import numpy as np
 
-_custom_config_path = os.environ.get("ASTROMODELS_CONFIG")
-
 copy_if_needed: Optional[bool]
 
 if np.lib.NumpyVersion(np.__version__) >= "2.0.0":
     copy_if_needed = None
-else:
+else:  # pragma: no cover
+    # in case if we use numpy <2.0
     copy_if_needed = False
 
 
@@ -51,7 +50,7 @@ def get_user_path() -> Path:
 
     if not user_path.exists():
 
-        user_path.mkdir(parents=True)
+        user_path.mkdir(parents=True, exist_ok=True)
 
     return user_path
 
@@ -63,21 +62,25 @@ def get_user_data_path() -> Path:
     # Create it if doesn't exist
     if not user_data.exists():
 
-        user_data.mkdir(parents=True)
+        user_data.mkdir(parents=True, exist_ok=True)
 
     return user_data
 
 
 def get_path_of_user_config() -> Path:
 
+    _custom_config_path = os.environ.get("ASTROMODELS_CONFIG", None)
+
     if _custom_config_path is not None:
 
         config_path: Path = Path(_custom_config_path)
 
-    config_path: Path = Path().home() / ".config" / "astromodels"
+    else:
+
+        config_path: Path = Path().home() / ".config" / "astromodels"
 
     if not config_path.exists():
 
-        config_path.mkdir(parents=True)
+        config_path.mkdir(parents=True, exist_ok=True)
 
     return config_path

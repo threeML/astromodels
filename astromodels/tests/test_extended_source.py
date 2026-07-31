@@ -11,7 +11,28 @@ from astromodels.functions import Gaussian_on_sphere, Log_parabola, Powerlaw
 from astromodels.functions.function import _known_functions
 from astromodels.sources.extended_source import ExtendedSource
 
+from importlib.util import find_spec
+
+if find_spec("mhealpy") is not None:
+    has_mhealpy = True
+    from mhealpy import HealpixMap
+else:
+    has_mhealpy = False
+
 __author__ = "henrikef"
+
+
+def make_test_healpix_template(fitsfile):
+    # Test template function with healpix map
+    skymap = HealpixMap(nside=8, scheme="ring", dtype=float, coordsys="G")
+    skymap[:] = 1
+
+    # normalise to the pixel area
+    area = skymap.pixarea().value
+    skymap[:] = np.sum(skymap) / area
+
+    # write the fits file
+    skymap.write_map(fitsfile, overwrite=True)
 
 
 def make_test_template(ra, dec, fitsfile):
@@ -103,7 +124,7 @@ def test_constructor():
     assert source1.spatial_shape.lon0.free
 
 
-def test_call():
+def test_call(tmp_path):
 
     # Multi-component
 
@@ -119,7 +140,7 @@ def test_call():
 
         print("testing %s ..." % name)
 
-        if name != "SpatialTemplate_2D":
+        if not name.startswith("SpatialTemplate_2D"):
 
             shape = class_type()
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
@@ -127,9 +148,21 @@ def test_call():
             shape.lon0 = ra * u.degree
             shape.lat0 = dec * u.degree
 
-        else:
-            make_test_template(ra, dec, "__test.fits")
-            shape = class_type(fits_file="__test.fits")
+        if name == "SpatialTemplate_2D":
+            make_test_template(ra, dec, tmp_path / "__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
+            source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
+
+            shape.K = 1.0
+
+        if name == "SpatialTemplate_2D_Healpix":
+            if not has_mhealpy:
+                pytest.skip(
+                    "Skipping SpatialTemplate_2D_Healpix test because "
+                    "mhealpy is missing"
+                )
+            make_test_healpix_template(tmp_path / "__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
             source = ExtendedSource("test_source_%s" % name, shape, components=[c1, c2])
 
             shape.K = 1.0
@@ -164,7 +197,7 @@ def test_call():
 
         this_function = _known_functions[key]
 
-        if key in ["SpatialTemplate_2D"]:
+        if key in ["SpatialTemplate_2D", "SpatialTemplate_2D_Healpix"]:
 
             test_one(this_function, key)
 
@@ -181,7 +214,7 @@ def test_call():
         )
 
 
-def test_call_with_units():
+def test_call_with_units(tmp_path):
 
     # Multi-component
 
@@ -197,7 +230,7 @@ def test_call_with_units():
 
         print("testing %s ..." % name)
 
-        if name != "SpatialTemplate_2D":
+        if not name.startswith("SpatialTemplate_2D"):
 
             shape = class_type()
             source = ExtendedSource(
@@ -209,10 +242,27 @@ def test_call_with_units():
             shape.lon0 = ra * u.degree
             shape.lat0 = dec * u.degree
 
-        else:
-            make_test_template(ra, dec, "__test.fits")
+        if name == "SpatialTemplate_2D":
+            make_test_template(ra, dec, tmp_path / "__test.fits")
 
-            shape = class_type(fits_file="__test.fits")
+            shape = class_type(fits_file=tmp_path / "__test.fits")
+            source = ExtendedSource(
+                "test_source_%s" % name,
+                spatial_shape=shape,
+                components=[c1, c2],
+            )
+
+            shape.K = 1.0
+
+        if name == "SpatialTemplate_2D_Healpix":
+            if not has_mhealpy:
+                pytest.skip(
+                    "Skipping SpatialTemplate_2D_Healpix test because "
+                    "mhealpy is missing"
+                )
+            make_test_healpix_template(tmp_path / "__test.fits")
+
+            shape = class_type(fits_file=tmp_path / "__test.fits")
             source = ExtendedSource(
                 "test_source_%s" % name,
                 spatial_shape=shape,
@@ -270,7 +320,7 @@ def test_call_with_units():
 
         this_function = _known_functions[key]
 
-        if key in ["SpatialTemplate_2D"]:
+        if key in ["SpatialTemplate_2D", "SpatialTemplate_2D_Healpix"]:
 
             test_one(this_function, key)
 

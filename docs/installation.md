@@ -3,7 +3,7 @@
 If you plan to install `threeML` as well please also refer to its [installation instructions](inv:threeML#installation) which are more detailed.
 
 
-## TL;DR
+## In a nutshell:
 **careful with dependencies!**
 
 with `conda` without `XSPEC`
@@ -77,7 +77,8 @@ pip install --upgrade --pre astromodels
 
 ## With XSPEC
 The easiest way to install `astromodels` with `XSPEC` support is via `conda`.
-Note that you first need to install `XSPEC` before installing `astromodels`.
+Note that you first need to install `XSPEC` before installing `astromodels`, otherwise
+the relevant parts will not be compiled.
 
 First let's create a new environment
 ```bash
@@ -102,8 +103,14 @@ and finally test it by importing all the models
 python -c "from astromodels.xspec import *"
 ```
 
-The last step will build all the models and save it to your disk, usually on 
+This last step will build all the models and save it to your disk, usually on 
 `$HOME/.astromodels/data`. You can also get this path by running 
 ```bash
 python -c "from astromodels.utils.file_utils import get_user_data_path; print(get_user_data_path())"
 ```
+
+Please note that `XSEPC` support for Linux arm64 is not possible, as there is currently
+no `conda` `XSPEC` package for that architecture available.
+You *might* get it to work by building and installing `XSPEC` from source and then
+installing `astromodels` via `pip`.
+We did not test this and therefore can not provide any support.

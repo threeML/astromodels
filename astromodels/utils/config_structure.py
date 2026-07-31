@@ -19,7 +19,6 @@ class Logging:
     usr: bool = "on"
     console: bool = "on"
     level: LoggingLevel = LoggingLevel.INFO
-    startup_warnings: bool = "on"
     info_style: str = "medium_spring_green"
     warn_style: str = "medium_orchid"
     error_style: str = "blink bold bright_red"

@@ -1,13 +1,14 @@
+import logging
+
 import astropy.units as astropy_units
 import astropy.units as u
 import numpy as np
 
 from astromodels.core.units import get_units
 from astromodels.functions.function import Function1D, FunctionMeta
-from astromodels.utils.configuration import astromodels_config
-from astromodels.utils.logging import setup_logger
+from astromodels.utils.logging import add_startup_warning
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 __author__ = "giacomov"
 # DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,
@@ -38,12 +39,12 @@ try:
 
 except ImportError:
 
-    if astromodels_config.logging.startup_warnings:
-
-        log.warning(
-            "The naima package is not available. Models that depend on it will not be"
-            " available"
-        )
+    add_startup_warning(
+        log,
+        "The naima package is not available. Models "
+        "that depend on it will not be"
+        " available",
+    )
 
     has_naima = False
 
@@ -60,12 +61,12 @@ try:
 
 except ImportError:
 
-    if astromodels_config.logging.startup_warnings:
-
-        log.warning(
-            "The GSL library or the pygsl wrapper cannot be loaded. Models that depend"
-            " on it will not be available."
-        )
+    add_startup_warning(
+        log,
+        "The GSL library or the pygsl wrapper "
+        "cannot be loaded. Models that depend"
+        " on it will not be available.",
+    )
 
     has_gsl = False
 
@@ -188,6 +189,17 @@ class StepFunction(Function1D, metaclass=FunctionMeta):
 
         return result
 
+    def integral(self, a, b):
+        sign = 1
+        if a > b:
+            a, b = b, a
+            sign = -1
+        if a < self.lower_bound.value:
+            a = self.lower_bound.value
+        if b > self.upper_bound.value:
+            b = self.upper_bound.value
+        return sign * (b - a) * self.value.value
+
 
 class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
     r"""
@@ -247,12 +259,6 @@ class StepFunctionUpper(Function1D, metaclass=FunctionMeta):
         return result
 
 
-# noinspection PyPep8Naming
-
-
-# noinspection PyPep8Naming
-
-
 class Sin(Function1D, metaclass=FunctionMeta):
     r"""
     description :
@@ -305,6 +311,16 @@ class Sin(Function1D, metaclass=FunctionMeta):
     def evaluate(self, x, K, f, phi):
         return K * np.sin(2 * np.pi * f * x + phi)
 
+    def integral(self, a, b):
+        return (
+            -self.K.value
+            / (2 * np.pi * self.f.value)
+            * (
+                np.cos(2 * np.pi * self.f.value * b + self.phi.value)
+                - np.cos(2 * np.pi * self.f.value * a + self.phi.value)
+            )
+        )
+
 
 class DiracDelta(Function1D, metaclass=FunctionMeta):
     r"""
@@ -348,6 +364,12 @@ class DiracDelta(Function1D, metaclass=FunctionMeta):
         out[x == zero_point] = value
 
         return out
+
+    def integral(self, a, b):
+        if a <= self.zero_point.value <= b:
+            return self.value.value
+        else:
+            return 0
 
 
 if has_naima:

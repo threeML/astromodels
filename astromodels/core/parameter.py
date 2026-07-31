@@ -1,3 +1,5 @@
+import logging
+
 __author__ = "giacomov"
 
 __doc__ = """"""
@@ -14,12 +16,12 @@ import scipy.stats
 
 from astromodels.core.parameter_transformation import ParameterTransformation
 from astromodels.utils.configuration import astromodels_config
-from astromodels.utils.logging import setup_logger
+
 
 from .thread_safe_unit_format import ThreadSafe
 from .tree import Node
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 @contextlib.contextmanager
@@ -929,7 +931,7 @@ class ParameterBase(Node):
     def to_dict(self, minimal=False) -> Dict[str, Any]:
         """Returns the representation for serialization."""
 
-        data = collections.OrderedDict()
+        data = dict()
 
         if minimal:
 
@@ -1486,7 +1488,7 @@ class Parameter(ParameterBase):
 
                 data["value"] = "f(%s)" % self._aux_variable["variable"]._get_path()
 
-                aux_variable_law_data = collections.OrderedDict()
+                aux_variable_law_data = dict()
                 aux_variable_law_data[self._aux_variable["law"].name] = (
                     self._aux_variable["law"].to_dict()
                 )

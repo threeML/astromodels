@@ -1,4 +1,5 @@
 from typing import Optional
+import warnings
 
 from omegaconf import OmegaConf
 from omegaconf.dictconfig import DictConfig
@@ -11,13 +12,27 @@ from .config_structure import Config
 # Read the default Config
 astromodels_config: Config = OmegaConf.structured(Config)
 
+
 # now glob the config directory
+def update_config_with_user_configs(astromodels_config):
+    for user_config_file in get_path_of_user_config().glob("*.yml"):
+        _partial_conf = OmegaConf.load(user_config_file)
+        if "logging" in _partial_conf.keys():
+            if "startup_warnings" in _partial_conf["logging"].keys():
+                warnings.warn(
+                    "You've provided 'logging.startup_warnings' in "
+                    + str(user_config_file)
+                    + ". "
+                    + "This is deprecated since v2.6.0 - will ignore it",
+                    DeprecationWarning,
+                )
+                del _partial_conf.logging.startup_warnings
 
-for user_config_file in get_path_of_user_config().glob("*.yml"):
+        astromodels_config: Config = OmegaConf.merge(astromodels_config, _partial_conf)
+    return astromodels_config
 
-    _partial_conf = OmegaConf.load(user_config_file)
 
-    astromodels_config: Config = OmegaConf.merge(astromodels_config, _partial_conf)
+astromodels_config = update_config_with_user_configs(astromodels_config)
 
 
 def recurse_dict(d, tree):

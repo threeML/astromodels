@@ -1,12 +1,13 @@
+import logging
+
 import astropy.units as astropy_units
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils import _get_data_file_path
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class DMFitFunction(Function1D, metaclass=FunctionMeta):
@@ -129,8 +130,10 @@ class DMFitFunction(Function1D, metaclass=FunctionMeta):
 
         if self.mass.value > 10000:
 
-            print("Warning: DMFitFunction only appropriate for masses <= 10 TeV")
-            print("To model DM from 2 GeV < mass < 1 PeV use DMSpectra")
+            log.warning(
+                "Warning: DMFitFunction only appropriate for masses <= 10 TeV "
+                "To model DM from 2 GeV < mass < 1 PeV use DMSpectra"
+            )
 
     def _set_units(self, x_unit, y_unit):
 

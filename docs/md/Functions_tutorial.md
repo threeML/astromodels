@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.11.2
+      jupytext_version: 1.19.3
   kernelspec:
     display_name: Python 3
     language: python
@@ -217,6 +217,119 @@ print(len(another_composite.parameters)) # 6 parameters
 print(len(another_composite2.parameters)) # 9 parameters
 ```
 
+## Integrating Functions
+
+### Function1D
+Since `astromodels v2.6.0` we provide the `.integrate(a, b)` function on 1D functions.
+This returns the analytical integral from `a` to `b` if the integral is known and otherwise
+uses `scipy.integrate.quad` to numerically integrate the function.
+The latter is the default and in case you want to provide your own analytical solution
+for your custom function you need to overwrite the `.integral` function.
+When a numerical integral is performed the numerical error from scipy is stored in the 
+`.integral_numerical_error` property of the `astromodels` function.
+
+```python
+from astromodels.functions import Powerlaw
+
+pl = Powerlaw()
+pl.index.value = -2
+pl.K.value = 1
+pl.piv.value = 1
+print(pl.integrate(a = 1, b = 10))
+```
+
+For defining your own analytical integral, this suffices:
+```python
+import numpy as np
+class JustALine(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+        A linear function
+    latex : $ b * x + a $
+    parameters :
+        a :
+            desc :  intercept
+            initial value : 0
+        b :
+            desc : coeff
+            initial value : 1
+    """
+    def _set_units(self,x_unit,y_unit):
+        self.a.unit = y_unit
+        self.b.unit = y_unit / x_unit
+
+    def evaluate(self, x, a, b):
+        return b * x + a
+
+    def integral(self, a, b):
+        return self.a.value * (b - a) + 0.5 * self.b.value * (
+            np.power(b, 2) - np.power(a, 2)
+        )
+
+jl = JustALine()
+print(jl.integrate(0,1))
+```
+
+Otherwise `scipy` is used:
+```python
+class JustANumericalLine(Function1D, metaclass=FunctionMeta):
+    r"""
+    description :
+        A linear function
+    latex : $ b * x + a $
+    parameters :
+        a :
+            desc :  intercept
+            initial value : 0
+        b :
+            desc : coeff
+            initial value : 1
+    """
+    def _set_units(self,x_unit,y_unit):
+        self.a.unit = y_unit
+        self.b.unit = y_unit / x_unit
+
+    def evaluate(self, x, a, b):
+        return b * x + a
+
+jl = JustANumericalLine()
+print(jl.integrate(0,1))
+print(jl.integral_numerical_error)
+```
+
+### Function2D and Function3D
+
+For multidimensional functions we do not provide a integrate function, as the user might
+want to only integrate over one or two dimensions.
+However doing that numerically with `scipy.integrate.nquad` is straigforward:
+
+```python
+from scipy.integrate import nquad,quad
+from astromodels.functions import Disk_on_sphere
+
+disk = Disk_on_sphere()
+disk.radius = 15
+```
+
+Let's first integrate over the first coordinate:
+```python
+val, err = quad(disk,0,15,args=(0))
+print(val)
+```
+In case you want to integrate over the second one, you need to wrap the function:
+```python
+wrapper = lambda y,x: disk(x,y)
+val, err = quad(wrapper,0,15,args=(0))
+print(val)
+```
+And in case you want to perform a multidimensional integration you can use something like
+this. This might be a bit slow so we are fine with an rough estimate: 
+
+```python
+val, err = nquad(disk,((0,15),(0,15)),opts ={"epsabs": 1e-2,"limit":10})
+print(val)
+```
+
 ## Creating custom functions
 
 One of the most powerful aspects of astromodels is the ability to quickly build custom functions on the fly. The source code for a function can be pure python, FORTRAN linked via f2py, C++ linked via cython, etc. Anything that provides a python function can be used to fit data. 
@@ -306,11 +419,12 @@ Keep in mind that this is in YAML format.
 
 ### Set units
 
-astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy's unit system. Keep in mind that models are fit with a differential photon flux, 
+astromodels keeps track of units for you. However, a model must be set up to properly describe the units with astropy's unit system. Keep in mind that spectral models are fit with a differential photon flux, 
 
 $$\frac{d N_p}{dA dt dE}$$
 
 so your units should reflect this convention. Therefore, proper normalizations should be taken into account.
+
 
 
 ### Evaluate

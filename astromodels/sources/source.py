@@ -1,13 +1,13 @@
+import logging
+
 __author__ = "giacomov"
 
-import collections
 from enum import Enum, unique
 from typing import Any, Dict, List
 
 from astromodels.core.parameter import Parameter
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 @unique
@@ -30,7 +30,7 @@ class Source(object):
     ):
 
         # Make the dictionary of components
-        self._components: Dict[str, Any] = collections.OrderedDict()
+        self._components: Dict[str, Any] = dict()
 
         for component in list_of_components:
 

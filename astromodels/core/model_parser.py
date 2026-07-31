@@ -1,3 +1,5 @@
+import logging
+
 from builtins import object, str
 
 __author__ = "giacomov"
@@ -17,9 +19,8 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 class ModelIOError(IOError):
@@ -723,7 +724,7 @@ class SourceParser(object):
 
             # just make a default polarization
 
-            this_polarization = polarization.Polarization()
+            this_polarization = polarization.Unpolarized()
             # raise ModelSyntaxError("Polarization specification for source %s has an
             # invalid parameters. You need to specify either 'angle' and 'degree', or
             # 'I' ,'Q', 'U' and 'V'." % self._source_name)
@@ -777,7 +778,7 @@ class SourceParser(object):
 
         else:
 
-            this_polarization = polarization.Polarization()
+            this_polarization = polarization.Unpolarized()
 
         this_spectral_component = spectral_component.SpectralComponent(
             component_name, shape, this_polarization

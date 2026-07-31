@@ -1,3 +1,5 @@
+import logging
+
 import math
 from dataclasses import dataclass
 from enum import Enum
@@ -9,9 +11,8 @@ import numpy as np
 
 from astromodels.functions.function import Function1D, FunctionMeta
 from astromodels.utils.file_utils import copy_if_needed
-from astromodels.utils.logging import setup_logger
 
-log = setup_logger(__name__)
+log = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)

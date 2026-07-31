@@ -50,7 +50,6 @@ if has_ebltable:
     from .functions_1D import EBLattenuation
 
 if has_atomdb:
-
     from .functions_1D import APEC, VAPEC
 
 from .dark_matter.dm_models import DMFitFunction, DMSpectra
@@ -69,6 +68,7 @@ from .functions_2D import (
     Latitude_galactic_diffuse,
     Power_law_on_sphere,
     SpatialTemplate_2D,
+    SpatialTemplate_2D_Healpix,
 )
 from .functions_3D import (
     Continuous_injection_diffusion,
@@ -90,6 +90,7 @@ from .priors import (
     Truncated_gaussian,
     Uniform_prior,
 )
+from .spatial_model import HaloModel, ModelFactory
 from .template_model import (
     MissingDataFile,
     TemplateModel,
@@ -131,6 +132,7 @@ __all__ = [
     "Latitude_galactic_diffuse",
     "Power_law_on_sphere",
     "SpatialTemplate_2D",
+    "SpatialTemplate_2D_Healpix",
     "Continuous_injection_diffusion",
     "Continuous_injection_diffusion_ellipse",
     "Continuous_injection_diffusion_legacy",
@@ -140,6 +142,8 @@ __all__ = [
     "Cauchy",
     "Cosine_Prior",
     "Gaussian",
+    "HaloModel",
+    "ModelFactory",
     "Log_normal",
     "Log_uniform_prior",
     "Truncated_gaussian",
@@ -173,13 +177,10 @@ if has_atomdb:
     __all__.extend(["APEC", "VAPEC"])
 
 if has_gsl:
-
     __all__.extend(["Cutoff_powerlaw_flux"])
 
 if has_naima:
-
     __all__.extend(["Synchrotron"])
 
 if has_ebltable:
-
     __all__.extend(["EBLattenuation"])
