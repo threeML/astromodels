@@ -2,18 +2,29 @@
 
 
 ## v2.6
-### [v2.6.0](https://github.com/threeML/astromodels/tree/v2.6.0) (2026-07-31)
+### [v2.6.0](https://github.com/threeML/astromodels/tree/v2.6.0) (2026-08-03)
 
 [Full Changelog](https://github.com/threeML/astromodels/compare/v2.5.1...v2.6.0)
 
 **Implemented enhancements:**
 
+- Add ability to transform between polarization conventions [\#250](https://github.com/threeML/astromodels/issues/250)
+- Add integrate\(\) method to Function class [\#199](https://github.com/threeML/astromodels/issues/199)
 - Use builtin dicts instead of OrderedDicts [\#262](https://github.com/threeML/astromodels/pull/262) ([PreisTo](https://github.com/PreisTo))
+
+**Fixed bugs:**
+
+- Polarization from non-callables fails [\#276](https://github.com/threeML/astromodels/issues/276)
 
 **Closed issues:**
 
+- Astromodels 2.6.0.dev2 has numpy\>2.1 also for python 3.11 [\#277](https://github.com/threeML/astromodels/issues/277)
+- Remove I from the StokesParameters [\#272](https://github.com/threeML/astromodels/issues/272)
+- StokesPolarization can't be initialized floating point numbers [\#264](https://github.com/threeML/astromodels/issues/264)
+- PointSource call fails with float in some cases [\#259](https://github.com/threeML/astromodels/issues/259)
 - Node.js 20 actions deprecated [\#254](https://github.com/threeML/astromodels/issues/254)
 - Add a way to check for null polarization [\#248](https://github.com/threeML/astromodels/issues/248)
+- SpatialTemplate\_2D normalization for extended sources [\#246](https://github.com/threeML/astromodels/issues/246)
 - ThreadSafe error with latest astromodels dev [\#243](https://github.com/threeML/astromodels/issues/243)
 - SpatialTemplate\_2D, ExtendedSource and default units [\#238](https://github.com/threeML/astromodels/issues/238)
 - Error Importing Astromodels with python 3.11.3 [\#201](https://github.com/threeML/astromodels/issues/201)
