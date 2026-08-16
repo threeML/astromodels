@@ -3,7 +3,7 @@ import logging
 __author__ = "giacomov"
 
 from enum import Enum, unique
-from typing import Any, Dict, List
+from typing import Any, Dict, Iterable
 
 from astromodels.core.parameter import Parameter
 
@@ -26,7 +26,7 @@ class UnknownSourceType(Exception):
 
 class Source(object):
     def __init__(
-        self, list_of_components: List[Any], src_type: str, spatial_shape=None
+        self, list_of_components: Iterable[Any], src_type: str, spatial_shape=None
     ):
 
         # Make the dictionary of components

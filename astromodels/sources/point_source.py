@@ -3,7 +3,6 @@ import logging
 from typing import Dict, Optional
 
 import astropy.units as u
-import numba as nb
 import numpy as np
 import scipy.integrate
 
@@ -163,12 +162,11 @@ class PointSource(Source, Node):
         # Add a node called 'spectrum'
 
         spectrum_node = Node("spectrum")
-        spectrum_node._add_children(list(self._components.values()))
+        spectrum_node._add_children(self._components.values())
 
         self._add_child(spectrum_node)
 
-        # Now set the units
-        # Now sets the units of the parameters for the energy domain
+        # Now set the units of the parameters for the energy domain
 
         current_units = get_units()
 
@@ -180,41 +178,22 @@ class PointSource(Source, Node):
         )
 
         # Now set the units of the components
-        for component in list(self._components.values()):
+        for component in self._components.values():
 
             component.shape.set_units(x_unit, y_unit)
 
     def __call__(self, x, tag=None, stokes=None):
 
+        is_scalar = np.isscalar(x)
+        x = np.atleast_1d(x)
+
         if tag is None:
 
             # No integration nor time-varying or whatever-varying
 
-            if isinstance(x, u.Quantity):
-
-                # Slow version with units
-
-                results = [
-                    component(x, stokes) for component in list(self.components.values())
-                ]
-                # We need to sum like this (slower) because using np.sum will not
-                # preserve the units (thanks astropy.units)
-
-                return sum(results)
-
-            else:
-
-                # Fast version without units, where x is supposed to be in the same
-                # units as currently defined in units.get_units()
-
-                results = np.array(
-                    [
-                        component(x, stokes)
-                        for component in list(self.components.values())
-                    ]
-                )
-
-                return _sum(results)
+            # using sum() combines/preserves compatible units and data
+            # types across components
+            results = sum(co(x, stokes) for co in self.components.values())
 
         else:
 
@@ -222,51 +201,41 @@ class PointSource(Source, Node):
 
             integration_variable, a, b = tag
 
-            if b is None:
 
-                # Evaluate in a, do not integrate
+            # Suspend memoization because the memoization gets confused when
+            # integrating
 
-                # Suspend memoization because the memoization gets confused when
-                # integrating
-                with use_astromodels_memoization(False):
+            with use_astromodels_memoization(False):
+
+                if b is None:
+
+                    # Evaluate at a; do not integrate
 
                     integration_variable.value = a
 
-                    res = self.__call__(x, tag=None)
+                    results = self.__call__(x, tag=None)
 
-                return res
-
-            else:
-
-                # Integrate between a and b
-                if hasattr(x, "__len__"):
-                    integrals = np.zeros(len(x))
                 else:
-                    integrals = np.zeros(1)
 
-                # TODO: implement an integration scheme avoiding the for loop
-
-                # Suspend memoization because the memoization gets confused when
-                # integrating
-                with use_astromodels_memoization(False):
+                    # Integrate between a and b
 
                     reentrant_call = self.__call__
-                    if not hasattr(x, "__len__"):
-                        x = [x]
-                    for i, e in enumerate(x):
 
-                        def integral(y):
+                    def integral(y):
+                        integration_variable.value = y
+                        return reentrant_call(x, tag=None)
 
-                            integration_variable.value = y
+                    # Now integrate
+                    integrals = scipy.integrate.quad_vec(
+                        integral, a, b, epsrel=1e-5
+                    )[0]
 
-                            return reentrant_call(e, tag=None)
+                    results = integrals / (b - a)
 
-                        # Now integrate
-                        integrals[i] = scipy.integrate.quad(
-                            integral, a, b, epsrel=1e-5
-                        )[0]
+        if is_scalar:
+            results = results.item()
 
-                return integrals / (b - a)
+        return results
 
     @property
     def has_free_parameters(self) -> bool:
@@ -275,15 +244,15 @@ class PointSource(Source, Node):
         :return:
         """
 
-        for component in list(self._components.values()):
+        for component in self._components.values():
 
-            for par in list(component.shape.parameters.values()):
+            for par in component.shape.parameters.values():
 
                 if par.free:
 
                     return True
 
-        for par in list(self.position.parameters.values()):
+        for par in self.position.parameters.values():
 
             if par.free:
 
@@ -301,15 +270,15 @@ class PointSource(Source, Node):
         """
         free_parameters = dict()
 
-        for component in list(self._components.values()):
+        for component in self._components.values():
 
-            for par in list(component.shape.parameters.values()):
+            for par in component.shape.parameters.values():
 
                 if par.free:
 
                     free_parameters[par.path] = par
 
-        for par in list(self.position.parameters.values()):
+        for par in self.position.parameters.values():
 
             if par.free:
 
@@ -356,13 +325,8 @@ class PointSource(Source, Node):
         repr_dict[key]["position"] = self._sky_position.to_dict(minimal=True)
         repr_dict[key]["spectrum"] = dict()
 
-        for component_name, component in list(self.components.items()):
+        for component_name, component in self.components.items():
 
             repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
-
-
-@nb.njit(fastmath=True)
-def _sum(x):
-    return np.sum(x, axis=0)

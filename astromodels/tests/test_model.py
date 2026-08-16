@@ -1011,7 +1011,7 @@ def test_time_domain_integration():
         0, energies, tag=(time, 0, 10)
     )  # type: np.ndarray
 
-    assert np.all(results == 1.0)
+    assert np.allclose(results, 1.0, rtol=1e-15)
 
     # Now test the linking of the normalization, first with a constant then with a line
     # with a certain angular coefficient

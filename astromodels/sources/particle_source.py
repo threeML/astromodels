@@ -50,7 +50,7 @@ class ParticleSource(Source, Node):
         # Add a node called 'spectrum'
 
         spectrum_node = Node("spectrum")
-        spectrum_node._add_children(list(self._components.values()))
+        spectrum_node._add_children(self._components.values())
 
         self._add_child(spectrum_node)
 
@@ -66,18 +66,16 @@ class ParticleSource(Source, Node):
         y_unit = 1 / current_units.energy
 
         # Now set the units of the components
-        for component in list(self._components.values()):
+        for component in self._components.values():
             component.shape.set_units(x_unit, y_unit)
 
     def get_flux(self, energies):
         """Get the total flux of this particle source at the given energies
         (summed over the components)"""
 
-        results = [
-            component.shape(energies) for component in list(self.components.values())
-        ]
-
-        return numpy.sum(results, 0)
+        return sum(
+            component.shape(energies) for component in self.components.values()
+        )
 
     def _repr__base(self, rich_output=False):
         """Representation of the object.
@@ -90,12 +88,12 @@ class ParticleSource(Source, Node):
 
         repr_dict = dict()
 
-        key = "%s (particle source)" % self.name
+        key = f"{self.name} (particle source)"
 
         repr_dict[key] = dict()
         repr_dict[key]["spectrum"] = dict()
 
-        for component_name, component in list(self.components.items()):
+        for component_name, component in self.components.items():
 
             repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
