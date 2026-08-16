@@ -1,6 +1,6 @@
 import astropy.units as astropy_units
 
-import astromodels.functions.numba_functions as nb_func
+import astromodels.functions.core_functions as nb_func
 from astromodels.functions.function import (
     Function1D,
     FunctionMeta,
