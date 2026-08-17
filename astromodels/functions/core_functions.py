@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def plaw_eval(x, K, index, piv):
 
     return K * np.pow(x / piv, index)
@@ -45,7 +46,7 @@ def band_eval(x, K, alpha, beta, E0, piv):
 
     factor_ab = np.exp(beta - alpha) * np.pow(break_point / piv, alpha - beta)
 
-    lo_mask = (x < break_point)
+    lo_mask = x < break_point
 
     xlo = x[lo_mask]
     out[lo_mask] = K * np.pow(xlo / piv, alpha) * np.exp(-xlo / E0)
@@ -62,10 +63,10 @@ def bplaw_eval(x, K, xb, alpha, beta, piv):
 
     factor = np.pow(xb / piv, alpha - beta)
 
-    lo_mask = (x < xb)
+    lo_mask = x < xb
 
     xlo = x[lo_mask]
-    out[lo_mask] =  K * np.pow(xlo / piv, alpha)
+    out[lo_mask] = K * np.pow(xlo / piv, alpha)
 
     xhi = x[~lo_mask]
     out[~lo_mask] = K * factor * np.pow(xhi / piv, beta)
@@ -74,6 +75,7 @@ def bplaw_eval(x, K, xb, alpha, beta, piv):
 
 
 LN2 = np.log(2.0)
+
 
 def sbplaw_eval(x, K, alpha, be, bs, beta, piv):
 
@@ -156,7 +158,7 @@ def dbl_sbpl(x, K, a1, a2, b1, xp, xb, n1, n2, xpiv):
 
 def plaw_integral(a, b, K, i, piv):
     if i != -1:
-        M = K * piv / (i+1)
+        M = K * piv / (i + 1)
         return M * ((b / piv) ** (i + 1) - (a / piv) ** (i + 1))
     else:
         M = K * piv
