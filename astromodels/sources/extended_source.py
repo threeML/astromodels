@@ -175,8 +175,9 @@ class ExtendedSource(Source, Node):
         # Get the differential flux from the spectral components
 
         spatial_int = self.spatial_shape.get_total_spatial_integral(energies)
-        differential_flux = sum(spatial_int * co.shape(energies)
-                                for co in self.components.values())
+        differential_flux = sum(
+            spatial_int * co.shape(energies) for co in self.components.values()
+        )
 
         return differential_flux
 
@@ -200,8 +201,7 @@ class ExtendedSource(Source, Node):
 
         # using sum() combines/preserves compatible units and data
         # types across components
-        differential_flux = sum(co.shape(energies)
-                                for co in self.components.values())
+        differential_flux = sum(co.shape(energies) for co in self.components.values())
 
         # Get brightness from spatial model
 
@@ -214,8 +214,9 @@ class ExtendedSource(Source, Node):
             n_energies = differential_flux.shape[0]
 
             # subok preserves Quantity
-            cube = np.broadcast_to(differential_flux,
-                                   (n_points, n_energies), subok=True)
+            cube = np.broadcast_to(
+                differential_flux, (n_points, n_energies), subok=True
+            )
 
             result = cube * brightness.T
 

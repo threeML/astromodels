@@ -201,7 +201,6 @@ class PointSource(Source, Node):
 
             integration_variable, a, b = tag
 
-
             # Suspend memoization because the memoization gets confused when
             # integrating
 
@@ -226,9 +225,7 @@ class PointSource(Source, Node):
                         return reentrant_call(x, tag=None)
 
                     # Now integrate
-                    integrals = scipy.integrate.quad_vec(
-                        integral, a, b, epsrel=1e-5
-                    )[0]
+                    integrals = scipy.integrate.quad_vec(integral, a, b, epsrel=1e-5)[0]
 
                     results = integrals / (b - a)
 

@@ -73,9 +73,7 @@ class ParticleSource(Source, Node):
         """Get the total flux of this particle source at the given energies
         (summed over the components)"""
 
-        return sum(
-            component.shape(energies) for component in self.components.values()
-        )
+        return sum(component.shape(energies) for component in self.components.values())
 
     def _repr__base(self, rich_output=False):
         """Representation of the object.
