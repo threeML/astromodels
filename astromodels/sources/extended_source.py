@@ -209,17 +209,7 @@ class ExtendedSource(Source, Node):
 
             brightness = self._spatial_shape(lon, lat)
 
-            # In this case the spectrum is the same everywhere
-            n_points = lat.shape[0]
-            n_energies = differential_flux.shape[0]
-
-            # subok preserves Quantity
-            cube = np.broadcast_to(
-                differential_flux, (n_points, n_energies), subok=True
-            )
-
-            result = cube * brightness.T
-
+            result = np.outer(brightness, differential_flux)
         else:
 
             result = self._spatial_shape(lon, lat, energies) * differential_flux
