@@ -620,13 +620,15 @@ class Uniform_prior(Prior, metaclass=FunctionMeta):
 
     def evaluate(self, x, lower_bound, upper_bound, value):
         # The value * 0 is to keep the units right
+        if hasattr(x, "shape"):
+            result = np.zeros(x.shape) * value * 0
 
-        result = np.zeros(x.shape) * value * 0
+            idx = (x >= lower_bound) & (x <= upper_bound)
+            result[idx] = value
 
-        idx = (x >= lower_bound) & (x <= upper_bound)
-        result[idx] = value
-
-        return result
+            return result
+        else:
+            return value if (x >= lower_bound) & (x <= upper_bound) else 0
 
     def from_unit_cube(self, x):
         """Used by multinest.
