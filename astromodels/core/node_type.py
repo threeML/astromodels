@@ -1,7 +1,7 @@
 import logging
 
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, Type
+from typing import Any, Dict, Iterable, Optional, Tuple, Type
 
 from rich.tree import Tree
 
@@ -110,7 +110,7 @@ class NodeBase:
 
             raise AttributeError()
 
-    def _add_children(self, children: List[Type["NodeBase"]]) -> None:
+    def _add_children(self, children: Iterable[Type["NodeBase"]]) -> None:
 
         for child in children:
             self._add_child(child)

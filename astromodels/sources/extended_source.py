@@ -149,7 +149,7 @@ class ExtendedSource(Source, Node):
         # Add a node called 'spectrum'
 
         spectrum_node = Node("spectrum")
-        spectrum_node._add_children(list(self._components.values()))
+        spectrum_node._add_children(self._components.values())
 
         self._add_child(spectrum_node)
 
@@ -174,29 +174,14 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        results = [
-            self.spatial_shape.get_total_spatial_integral(energies)
-            * component.shape(energies)
-            for component in self.components.values()
-        ]
+        spatial_int = self.spatial_shape.get_total_spatial_integral(energies)
 
-        if isinstance(energies, u.Quantity):
+        components = iter(self.components.values())
+        differential_flux = next(components).shape(energies)
+        for component in components:
+            differential_flux += component.shape(energies)
 
-            # Slow version with units
-
-            # We need to sum like this (slower) because using np.sum will not preserve
-            # the units (thanks astropy.units)
-
-            differential_flux = sum(results)
-
-        else:
-
-            # Fast version without units, where x is supposed to be in the same units as
-            # currently defined in units.get_units()
-
-            differential_flux = np.sum(results, 0)
-
-        return differential_flux
+        return spatial_int * differential_flux
 
     def __call__(self, lon, lat, energies):
         """Returns brightness of source at the given position and energy :param
@@ -216,47 +201,28 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        results = [
-            component.shape(energies) for component in list(self.components.values())
-        ]
+        # Create result from first component so it has the right
+        # type/unit, then add the results for any other components.
+        # (self.components() must be non-empty!)
+        #
+        # Unlike sum(), this avoids allocating a zero array
+        # and does in-place adds for any remaining components
 
-        if isinstance(energies, u.Quantity):
-
-            # Slow version with units
-
-            # We need to sum like this (slower) because using np.sum will not preserve
-            # the units (thanks astropy.units)
-
-            differential_flux = sum(results)
-
-        else:
-
-            # Fast version without units, where x is supposed to be in the same units as
-            # currently defined in units.get_units()
-
-            differential_flux = np.sum(results, 0)
+        components = iter(self.components.values())
+        differential_flux = next(components).shape(energies)
+        for component in components:
+            differential_flux += component.shape(energies)
 
         # Get brightness from spatial model
 
         if self._spatial_shape.n_dim == 2:
 
             brightness = self._spatial_shape(lon, lat)
-
-            # In this case the spectrum is the same everywhere
-            n_points = lat.shape[0]
-            n_energies = differential_flux.shape[0]
-
-            # The following is a little obscure, but it is 6x faster than doing a for
-            # loop
-
-            cube = (
-                np.repeat(differential_flux, n_points).reshape(n_energies, n_points).T
-            )
-            result = (cube.T * brightness).T
-
+            result = np.outer(brightness, differential_flux)
         else:
 
-            result = self._spatial_shape(lon, lat, energies) * differential_flux
+            brightness = self._spatial_shape(lon, lat, energies)
+            result = brightness * differential_flux
 
         # Do not clip the output, otherwise it will not be possible to use ext. sources
         # with negative fluxes
@@ -270,15 +236,15 @@ class ExtendedSource(Source, Node):
         :return:
         """
 
-        for component in list(self._components.values()):
+        for component in self._components.values():
 
-            for par in list(component.shape.parameters.values()):
+            for par in component.shape.parameters.values():
 
                 if par.free:
 
                     return True
 
-        for par in list(self.spatial_shape.parameters.values()):
+        for par in self.spatial_shape.parameters.values():
 
             if par.free:
 
@@ -296,15 +262,15 @@ class ExtendedSource(Source, Node):
         """
         free_parameters = dict()
 
-        for component in list(self._components.values()):
+        for component in self._components.values():
 
-            for par in list(component.shape.parameters.values()):
+            for par in component.shape.parameters.values():
 
                 if par.free:
 
                     free_parameters[par.path] = par
 
-        for par in list(self.spatial_shape.parameters.values()):
+        for par in self.spatial_shape.parameters.values():
 
             if par.free:
 
@@ -322,13 +288,13 @@ class ExtendedSource(Source, Node):
         """
         all_parameters = dict()
 
-        for component in list(self._components.values()):
+        for component in self._components.values():
 
-            for par in list(component.shape.parameters.values()):
+            for par in component.shape.parameters.values():
 
                 all_parameters[par.path] = par
 
-        for par in list(self.spatial_shape.parameters.values()):
+        for par in self.spatial_shape.parameters.values():
 
             all_parameters[par.path] = par
 
@@ -351,7 +317,7 @@ class ExtendedSource(Source, Node):
         repr_dict[key]["shape"] = self._spatial_shape.to_dict(minimal=True)
         repr_dict[key]["spectrum"] = dict()
 
-        for component_name, component in list(self.components.items()):
+        for component_name, component in self.components.items():
             repr_dict[key]["spectrum"][component_name] = component.to_dict(minimal=True)
 
         return dict_to_list(repr_dict, rich_output)
