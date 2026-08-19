@@ -73,7 +73,19 @@ class ParticleSource(Source, Node):
         """Get the total flux of this particle source at the given energies
         (summed over the components)"""
 
-        return sum(component.shape(energies) for component in self.components.values())
+        # Create result from first component so it has the right
+        # type/unit, then add the results for any other components.
+        # (self.components() must be non-empty!)
+        #
+        # Unlike sum(), this avoids allocating a zero array
+        # and does in-place adds for any remaining components
+
+        components = iter(self.components.values())
+        flux = next(components).shape(energies)
+        for component in components:
+            flux += component.shape(energies)
+
+        return flux
 
     def _repr__base(self, rich_output=False):
         """Representation of the object.

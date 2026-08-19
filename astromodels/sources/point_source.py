@@ -191,9 +191,17 @@ class PointSource(Source, Node):
 
             # No integration nor time-varying or whatever-varying
 
-            # using sum() combines/preserves compatible units and data
-            # types across components
-            results = sum(co(x, stokes) for co in self.components.values())
+            # Create result from first component so it has the right
+            # type/unit, then add the results for any other components.
+            # (self.components() must be non-empty!)
+            #
+            # Unlike sum(), this avoids allocating a zero array
+            # and does in-place adds for any remaining components
+
+            components = iter(self.components.values())
+            results = next(components)(x, stokes)
+            for component in components:
+                results += component(x, stokes)
 
         else:
 

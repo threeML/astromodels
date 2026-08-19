@@ -175,11 +175,13 @@ class ExtendedSource(Source, Node):
         # Get the differential flux from the spectral components
 
         spatial_int = self.spatial_shape.get_total_spatial_integral(energies)
-        differential_flux = sum(
-            spatial_int * co.shape(energies) for co in self.components.values()
-        )
 
-        return differential_flux
+        components = iter(self.components.values())
+        differential_flux = next(components).shape(energies)
+        for component in components:
+            differential_flux += component.shape(energies)
+
+        return spatial_int * differential_flux
 
     def __call__(self, lon, lat, energies):
         """Returns brightness of source at the given position and energy :param
@@ -199,9 +201,17 @@ class ExtendedSource(Source, Node):
 
         # Get the differential flux from the spectral components
 
-        # using sum() combines/preserves compatible units and data
-        # types across components
-        differential_flux = sum(co.shape(energies) for co in self.components.values())
+        # Create result from first component so it has the right
+        # type/unit, then add the results for any other components.
+        # (self.components() must be non-empty!)
+        #
+        # Unlike sum(), this avoids allocating a zero array
+        # and does in-place adds for any remaining components
+
+        components = iter(self.components.values())
+        differential_flux = next(components).shape(energies)
+        for component in components:
+            differential_flux += component.shape(energies)
 
         # Get brightness from spatial model
 
