@@ -663,6 +663,15 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
             desc : curvature (positive is concave, negative is convex)
             initial value : 1.0
 
+    properties :
+
+        clip_value :
+            desc : Value at which the log value of the evaluation will be clipped
+                    e.g. anything larger than exp(700) or smaller than exp(-700) will
+                    return 0
+            initial value : 700
+
+
     """
 
     def _set_units(self, x_unit, y_unit):
@@ -679,26 +688,21 @@ class Log_parabola(Function1D, metaclass=FunctionMeta):
         self.beta.unit = astropy_units.dimensionless_unscaled
 
     def evaluate(self, x, K, piv, alpha, beta):
-
-        # print("Receiving %s" % ([K, piv, alpha, beta]))
-
-        xx = np.divide(x, piv)
-
-        try:
-
-            return K * xx ** (alpha - beta * np.log(xx))
-
-        except ValueError:
-
-            # The current version of astropy (1.1.x) has a bug for which quantities that
-            # have become dimensionless because of a division (like xx here) are not
-            # recognized as such by the power operator, which throws an exception:
-            # ValueError: Quantities and Units may only be raised to a scalar power
-            # This is a quick fix, waiting for astropy 1.2 which will fix this
-
-            xx = xx.to("")
-
-            return K * xx ** (alpha - beta * np.log(xx))
+        if isinstance(x, u.Quantity):
+            x = x.to(piv.unit).value
+            unit = K.unit
+            K = K.value
+            piv = piv.value
+            alpha = alpha.value
+            beta = beta.value
+        else:
+            unit = 1.0
+        log_xx = np.log(x / piv)
+        log_result = np.log(K) + (alpha - beta * log_xx) * log_xx
+        log_result = np.clip(
+            log_result, -float(self.clip_value.value), float(self.clip_value.value)
+        )
+        return np.exp(log_result) * unit
 
     @property
     def peak_energy(self):
