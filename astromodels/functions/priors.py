@@ -13,7 +13,37 @@ rad2deg = 180.0 / np.pi
 # noinspection PyPep8Naming
 
 
-class Gaussian(Function1D, metaclass=FunctionMeta):
+class Prior(Function1D):
+
+    def _pdf_scipy(self, x):
+        return self.evaluate(x, *[p.value for p in self.parameters.values()])
+
+    def _logpdf_scipy(self, x):
+        return np.log(self._pdf_scipy(x))
+
+    def rvs(self, size=1):
+        return self.from_unit_cube(np.random.rand(size))
+
+    def dim(self):
+        return 1
+
+    @property
+    def scipy_dist(self):
+        """Return a frozen scipy rv_continuous-like object."""
+        if not hasattr(self, "_scipy_dist"):
+            parent = self
+
+            class _ScipyWrapper(stats.rv_continuous):
+                def _pdf(self_inner, x):
+                    return parent._pdf_scipy(x)
+
+            self._scipy_dist = _ScipyWrapper(
+                a=self.lower_bound.value, b=self.upper_bound.value, name=self.name
+            )
+        return self._scipy_dist
+
+
+class Gaussian(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -98,7 +128,7 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
         return res
 
 
-class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
+class Truncated_gaussian(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -243,7 +273,7 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
         return np.clip(out, lower_bound, upper_bound)
 
 
-class Cauchy(Function1D, metaclass=FunctionMeta):
+class Cauchy(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -319,7 +349,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
         return res
 
 
-class Cosine_Prior(Function1D, metaclass=FunctionMeta):
+class Cosine_Prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -424,7 +454,7 @@ class Cosine_Prior(Function1D, metaclass=FunctionMeta):
         return dec
 
 
-class Log_normal(Function1D, metaclass=FunctionMeta):
+class Log_normal(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -533,7 +563,7 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
         return np.exp(res)
 
 
-class Uniform_prior(Function1D, metaclass=FunctionMeta):
+class Uniform_prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -590,13 +620,15 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
 
     def evaluate(self, x, lower_bound, upper_bound, value):
         # The value * 0 is to keep the units right
+        if hasattr(x, "shape"):
+            result = np.zeros(x.shape) * value * 0
 
-        result = np.zeros(x.shape) * value * 0
+            idx = (x >= lower_bound) & (x <= upper_bound)
+            result[idx] = value
 
-        idx = (x >= lower_bound) & (x <= upper_bound)
-        result[idx] = value
-
-        return result
+            return result
+        else:
+            return value if (x >= lower_bound) & (x <= upper_bound) else 0
 
     def from_unit_cube(self, x):
         """Used by multinest.
@@ -618,7 +650,7 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
         return par
 
 
-class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
+class Log_uniform_prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -703,7 +735,7 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
         return par
 
 
-class Beta(Function1D, metaclass=FunctionMeta):
+class Beta(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -756,7 +788,7 @@ class Beta(Function1D, metaclass=FunctionMeta):
         return stats.beta.ppf(x, a, b)
 
 
-class Gamma(Function1D, metaclass=FunctionMeta):
+class Gamma(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -810,7 +842,7 @@ class Gamma(Function1D, metaclass=FunctionMeta):
         return stats.gamma.ppf(x, alpha, scale=1.0 / beta)
 
 
-class Exponential(Function1D, metaclass=FunctionMeta):
+class Exponential(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -853,7 +885,7 @@ class Exponential(Function1D, metaclass=FunctionMeta):
         return stats.expon.ppf(x, scale=1.0 / self.alpha.value)
 
 
-class Powerlaw_Prior(Function1D, metaclass=FunctionMeta):
+class Powerlaw_Prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
