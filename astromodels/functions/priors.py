@@ -27,6 +27,12 @@ class Prior(Function1D):
     def dim(self):
         return 1
 
+    def _get_support(self):
+        if hasattr(self, "lower_bound") and hasattr(self, "upper_bound"):
+            return self.lower_bound.value, self.upper_bound.value
+        else:
+            return -np.inf, np.inf
+
     @property
     def scipy_dist(self):
         """Return a frozen scipy rv_continuous-like object."""
@@ -37,9 +43,20 @@ class Prior(Function1D):
                 def _pdf(self_inner, x):
                     return parent._pdf_scipy(x)
 
-            self._scipy_dist = _ScipyWrapper(
-                a=self.lower_bound.value, b=self.upper_bound.value, name=self.name
-            )
+                def _logpdf(self_inner, x):
+                    return parent._logpdf_scipy(x)
+
+                def _get_support(self_inner, *args, **kwargs):
+                    return parent._get_support(*args, **kwargs)
+
+            # here we initialize the scipy wrapping class and assign it
+            if hasattr(self, "lower_bound") and hasattr(self, "upper_bound"):
+                self._scipy_dist = _ScipyWrapper(
+                    a=self.lower_bound.value, b=self.upper_bound.value, name=self.name
+                )
+            else:
+                self._scipy_dist = _ScipyWrapper(name=self.name)
+
         return self._scipy_dist
 
 
