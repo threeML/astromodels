@@ -1023,7 +1023,7 @@ class Parameter(ParameterBase):
         # This extends ParameterBase by adding the possibility for free/fix, and a delta
         # for fitting purposes, as well as a prior
 
-        super(Parameter, self).__init__(
+        super().__init__(
             name,
             value,
             min_value=min_value,
@@ -1467,7 +1467,7 @@ class Parameter(ParameterBase):
     def to_dict(self, minimal=False):
         """Returns the representation for serialization."""
 
-        data = super(Parameter, self).to_dict()
+        data = super().to_dict()
 
         # Add wether is a normalization or not
         data["is_normalization"] = self._is_normalization
@@ -1573,7 +1573,7 @@ class IndependentVariable(ParameterBase):
 
     def __init__(self, name, value, unit, min_value=None, max_value=None, desc=None):
 
-        super(IndependentVariable, self).__init__(
+        super().__init__(
             name,
             value,
             unit=unit,
