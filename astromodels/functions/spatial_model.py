@@ -5,7 +5,6 @@ import gc
 import hashlib
 import os
 import re
-from builtins import range, str
 from dataclasses import dataclass
 from itertools import product
 from pathlib import Path

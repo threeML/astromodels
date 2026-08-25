@@ -1,5 +1,4 @@
 import gc
-from builtins import range
 
 import astropy.units as u
 import pytest

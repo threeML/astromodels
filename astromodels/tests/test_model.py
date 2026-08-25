@@ -1,5 +1,4 @@
 import os
-from builtins import object, range
 
 import pytest
 
