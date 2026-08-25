@@ -1,3 +1,4 @@
+import pickle
 import logging
 
 from dataclasses import dataclass, field
@@ -5,7 +6,6 @@ from typing import Any, Dict, List, Optional, Tuple, Type
 
 from rich.tree import Tree
 
-from .cpickle_compatibility_layer import cPickle
 
 log = logging.getLogger(__name__)
 
@@ -76,7 +76,7 @@ class NodeBase:
     # This is necessary for copy.deepcopy to work
     def __deepcopy__(self, memodict={}):
 
-        return cPickle.loads(cPickle.dumps(self))
+        return pickle.loads(pickle.dumps(self))
 
     def _add_child(self, child: Type["NodeBase"]) -> None:
 
