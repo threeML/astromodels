@@ -4,11 +4,10 @@ __author__ = "giacomov"
 
 __doc__ = """"""
 
-import collections
 import contextlib
 import copy
 import warnings
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Optional
 
 import astropy.units as u
 import numpy as np
@@ -213,7 +212,7 @@ class ParameterBase(Node):
         self._unit = self._safe_assign_unit(unit)
 
         # A ParameterBase instance cannot have auxiliary variables
-        self._aux_variable: Optional[Dict[str, Any]] = None
+        self._aux_variable: Optional[dict[str, Any]] = None
 
         # Set min and max to None first so that the .value setter will work,
         # we will override them later if needed
@@ -884,7 +883,7 @@ class ParameterBase(Node):
 
         self.max_value = max_value
 
-    def _get_bounds(self) -> Tuple[float]:
+    def _get_bounds(self) -> tuple[float]:
         """Returns the current boundaries for the parameter."""
 
         return self.min_value, self.max_value
@@ -928,7 +927,7 @@ class ParameterBase(Node):
 
         return new_parameter
 
-    def to_dict(self, minimal=False) -> Dict[str, Any]:
+    def to_dict(self, minimal=False) -> dict[str, Any]:
         """Returns the representation for serialization."""
 
         data = dict()
@@ -1419,7 +1418,7 @@ class Parameter(ParameterBase):
         return self._aux_variable is not None
 
     @property
-    def auxiliary_variable(self) -> Tuple:
+    def auxiliary_variable(self) -> tuple:
         """Returns a tuple with the auxiliary variable and the law.
 
         :return: tuple (variable, law)
