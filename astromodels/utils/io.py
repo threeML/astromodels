@@ -18,7 +18,7 @@ try:
 
 except ImportError:
 
-    class Latex(object):
+    class Latex:
         """Mock version of the IPython Latex object, used if there is no
         ipython installed."""
 

@@ -1,6 +1,6 @@
 import logging
 
-from builtins import object, str
+from builtins import str
 
 __author__ = "giacomov"
 
@@ -68,7 +68,7 @@ def model_unpickler(state):
     return ModelParser(model_dict=state).get_model()
 
 
-class ModelParser(object):
+class ModelParser:
     def __init__(self, model_file=None, model_dict=None):
 
         if not ((model_file is not None) or (model_dict is not None)):
@@ -265,7 +265,7 @@ class ModelParser(object):
         return new_model
 
 
-class IndependentVariableParser(object):
+class IndependentVariableParser:
     def __init__(self, name, definition):
 
         self._variable = parameter.IndependentVariable(name, **definition)
@@ -275,7 +275,7 @@ class IndependentVariableParser(object):
         return self._variable
 
 
-class ParameterParser(object):
+class ParameterParser:
     def __init__(self, name, definition):
 
         self._links = []
@@ -373,7 +373,7 @@ class ParameterParser(object):
         return self._links
 
 
-class SourceParser(object):
+class SourceParser:
     def __init__(self, source_name, source_definition):
 
         # Get the type of the source
@@ -837,7 +837,7 @@ class SourceParser(object):
         return this_ext_source
 
 
-class ShapeParser(object):
+class ShapeParser:
     def __init__(self, source_name):
 
         self._source_name = source_name
