@@ -330,13 +330,13 @@ class TemplateModelFactory(object):
                 try:
                     os.remove(filename_sanitized)
 
-                except IOError:
+                except OSError:
                     log.error(
                         "The file %s already exists and cannot be removed (maybe you do"
                         "not have permissions to do so?). " % filename_sanitized
                     )
 
-                    raise IOError(
+                    raise OSError(
                         f"The file {filename_sanitized} already exists and cannot be"
                         "removed (maybe you do not have permissions to do so?). "
                     )
@@ -347,7 +347,7 @@ class TemplateModelFactory(object):
                     "template models with the same name" % filename_sanitized
                 )
 
-                raise IOError(
+                raise OSError(
                     f"The file {filename_sanitized} already exists! You cannot call two"
                     " different template models with the same name"
                 )

@@ -344,7 +344,7 @@ class ModelFactory:
                         "enough permissions to do so?)."
                     )
 
-                    raise IOError() from exc
+                    raise OSError() from exc
 
             else:
                 log.error(
@@ -353,7 +353,7 @@ class ModelFactory:
                     "same name."
                 )
 
-                raise IOError()
+                raise OSError()
 
         if self._data_frame is not None:
             # Open the HDF5 and write objects
