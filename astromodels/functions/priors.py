@@ -49,13 +49,10 @@ class Prior(Function1D):
                 def _get_support(self_inner, *args, **kwargs):
                     return parent._get_support(*args, **kwargs)
 
-            # here we initialize the scipy wrapping class and assign it
-            if hasattr(self, "lower_bound") and hasattr(self, "upper_bound"):
-                self._scipy_dist = _ScipyWrapper(
-                    a=self.lower_bound.value, b=self.upper_bound.value, name=self.name
-                )
-            else:
-                self._scipy_dist = _ScipyWrapper(name=self.name)
+                def rvs(self_inner, size=1):
+                    return parent.rvs(size)
+
+            self._scipy_dist = _ScipyWrapper(name=self.name)
 
         return self._scipy_dist
 
