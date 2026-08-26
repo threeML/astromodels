@@ -34,7 +34,7 @@ def _get_data_file_path(data_file: Union[str, Path]) -> Path:
             raise FileNotFoundError
 
     except Exception:
-        raise IOError(
+        raise OSError(
             f"Could not read or find data file {data_file}. "
             "Try reinstalling astromodels. "
             f"If this does not fix your problem, open an issue on github."
