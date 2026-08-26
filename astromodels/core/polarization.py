@@ -90,7 +90,7 @@ class LinearPolarization(Polarization):
         :param degree: The polarization degree
         :param angle: The polarization angle
         """
-        super(LinearPolarization, self).__init__(polarization_type="linear")
+        super().__init__(polarization_type="linear")
         self._callable = False
 
         if callable(degree):
@@ -143,7 +143,7 @@ class StokesPolarization(Polarization):
         if len(kwargs.keys()) > 0:
             log.warning("Only support Stokes parameters Q and U currently")
 
-        super(StokesPolarization, self).__init__(polarization_type="stokes")
+        super().__init__(polarization_type="stokes")
 
         if callable(Q):
             self._Q = StokesParameter("Q", Q)
@@ -197,7 +197,7 @@ class StokesPolarization(Polarization):
 
 class Unpolarized(Polarization):
     def __init__(self):
-        super(Unpolarized, self).__init__(polarization_type="unpolarized")
+        super().__init__(polarization_type="unpolarized")
 
     def __call__(self, *args, **kwargs):
         return 1

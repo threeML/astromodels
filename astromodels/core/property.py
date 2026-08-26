@@ -111,7 +111,7 @@ class PropertyBase(Node):
         # we intecept here becuase we want
         # to make sure the eval works
 
-        super(PropertyBase, self)._set_parent(parent)
+        super()._set_parent(parent)
 
         # now we want to update because we have a parent
         self.value = self._internal_value
@@ -195,7 +195,7 @@ class FunctionProperty(PropertyBase):
         defer: bool = False,
         eval_func: Optional[str] = None,
     ):
-        super(FunctionProperty, self).__init__(
+        super().__init__(
             name=name,
             desc=desc,
             value=value,
