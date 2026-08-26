@@ -9,7 +9,6 @@ import re
 import sys
 import textwrap
 import uuid
-from builtins import chr, map, str
 from operator import attrgetter
 from typing import Dict, List, Optional, Tuple
 

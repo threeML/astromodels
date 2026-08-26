@@ -1,6 +1,5 @@
 import logging
 
-from builtins import object, str
 
 __author__ = "giacomov"
 

@@ -1,4 +1,3 @@
-from builtins import object
 
 import astropy.units as u
 import pytest

@@ -1,6 +1,5 @@
 import logging
 
-from builtins import zip
 
 __author__ = "giacomov"
 
