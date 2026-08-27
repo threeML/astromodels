@@ -1,5 +1,6 @@
 // 
-//  Copyright (C) 2008  Smithsonian Astrophysical Observatory
+//  Copyright (C) 2008, 2026
+//  Smithsonian Astrophysical Observatory
 //
 //
 //  This program is free software; you can redistribute it and/or modify
@@ -123,29 +124,6 @@ namespace sherpa { namespace constants {
 
 
 }  }  /* namespace constants, namespace sherpa */
-
-
-#ifndef _SHERPA_CONST
-#define _SHERPA_CONST(name)	sherpa::constants::name< DataType >()
-#endif
-
-#define SMP_MIN			_SHERPA_CONST(smp_min)
-#define SMP_MAX			_SHERPA_CONST(smp_max)
-#define LOGTEN			_SHERPA_CONST(logten)
-#define PI			_SHERPA_CONST(pi)
-#define TWOPI			_SHERPA_CONST(twopi)
-#define H_ERG			_SHERPA_CONST(h_erg)
-#define E_EV			_SHERPA_CONST(e_ev)
-#define H_KEV			_SHERPA_CONST(h_kev)
-#define C_KM			_SHERPA_CONST(c_km)
-#define C_CM			_SHERPA_CONST(c_cm)
-#define C_ANG			_SHERPA_CONST(c_ang)
-#define K			_SHERPA_CONST(k)
-#define TWO_H_OVER_C_SQUARED	_SHERPA_CONST(two_h_over_c_squared)
-#define H_OVER_K		_SHERPA_CONST(h_over_k)
-#define GFACTOR			_SHERPA_CONST(gfactor)
-#define SQRT_GFACTOR		_SHERPA_CONST(sqrt_gfactor)
-#define SQRT_PI			_SHERPA_CONST(sqrt_pi)
 
 
 /*

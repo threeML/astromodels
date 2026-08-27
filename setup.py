@@ -16,7 +16,7 @@ import versioneer
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
 
-_default_xspec_version = "12.15.1"  # default when installing xspec according following
+_default_xspec_version = "13.0.0"  # default when installing xspec according following
 # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
 
@@ -441,7 +441,7 @@ def setup_xspec():
         msg += " supported version for astromodels"
         print(msg)
         return None
-    elif xspec_version > packaging_version.Version("12.15.1"):
+    elif xspec_version > packaging_version.Version("13.0.0"):
         msg = "WARN: XSPEC version is greater than 12.15.1, which is the"
         msg += " maximal supported version for astromodels"
         print(msg)
@@ -459,6 +459,7 @@ def setup_xspec():
         (12, 14, 1),
         (12, 15, 0),
         (12, 15, 1),
+        (13, 0, 0),
     ]:
 
         version = "{}.{}.{}".format(major, minor, patch)
@@ -473,17 +474,32 @@ def setup_xspec():
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system
     # paths)
+    if xspec_version > packaging_version.Version("12.15.1"):
+        libraries_root = [
+            "XSCore",
+            "XSData",
+            "XSPy",
+            "XSSim",
+            "XSFunctions",
+            "XSModel",
+            "XSUtil",
+            "cfitsio",
+            "CCfits",
+            "wcs",
+            "gfortran",
+        ]
 
-    libraries_root = [
-        "XSFunctions",
-        "XSModel",
-        "XSUtil",
-        "XS",
-        "cfitsio",
-        "CCfits",
-        "wcs",
-        "gfortran",
-    ]
+    else:
+        libraries_root = [
+            "XSFunctions",
+            "XSModel",
+            "XSUtil",
+            "XS",
+            "cfitsio",
+            "CCfits",
+            "wcs",
+            "gfortran",
+        ]
 
     libraries = []
     library_dirs = []
