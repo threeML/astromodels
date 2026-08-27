@@ -191,10 +191,10 @@ def get_models(model_dat_path):
                     max_energy,
                     library_function,
                     model_type,
-                    flag,
+                    flag_or_grad,
                 ) = line.split()
 
-            else:
+            elif len(tokens) == 8:
 
                 (
                     model_name,
@@ -204,7 +204,19 @@ def get_models(model_dat_path):
                     library_function,
                     model_type,
                     flag,
+                    flag_or_grad,
+                ) = line.split()
+            else:
+                (
+                    model_name,
+                    n_parameters,
+                    min_energy,
+                    max_energy,
+                    library_function,
+                    model_type,
+                    flag,
                     flag_2,
+                    flag_or_grad,
                 ) = line.split()
 
             this_model = dict()
