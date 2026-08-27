@@ -15,9 +15,13 @@ import versioneer
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
+if sys.version_info.major >= 3 and sys.version_info.minor>13:
+    _default_xspec_version = "13.0.0"  # default when installing xspec according following
+    # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
+else:
+    _default_xspec_version = "12.15.1"  # default when installing xspec according following
+    # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
-_default_xspec_version = "13.0.0"  # default when installing xspec according following
-# https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
 
 class My_build_ext(_build_ext):
