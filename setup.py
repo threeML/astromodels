@@ -16,7 +16,7 @@ import versioneer
 
 # This is needed to use numpy in this module, and should work whether or not numpy is
 # already installed. If it's not, it will trigger an installation
-if sys.version_info.major >= 3 and sys.version_info.minor > 13:
+if sys.version_info >= (3, 13):
     _default_xspec_version = (
         "13.0.0"  # default when installing xspec according following
     )
