@@ -525,10 +525,6 @@ def setup_xspec():
     # paths)
     if xspec_version > packaging_version.Version("12.15.1"):
         libraries_root = [
-            "XSCore",
-            "XSData",
-            "XSPy",
-            "XSSim",
             "XSFunctions",
             "XSModel",
             "XSUtil",
