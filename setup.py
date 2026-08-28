@@ -14,8 +14,6 @@ from setuptools.command.build_ext import build_ext as _build_ext
 
 import versioneer
 
-# This is needed to use numpy in this module, and should work whether or not numpy is
-# already installed. If it's not, it will trigger an installation
 if sys.version_info >= (3, 13):
     _default_xspec_version = (
         "13.0.0"  # default when installing xspec according following
@@ -491,7 +489,7 @@ def setup_xspec():
         print(msg)
         return None
     elif xspec_version > packaging_version.Version("13.0.0"):
-        msg = "WARN: XSPEC version is greater than 12.15.1, which is the"
+        msg = "WARN: XSPEC version is greater than 13.0.0, which is the"
         msg += " maximal supported version for astromodels"
         print(msg)
         return None
