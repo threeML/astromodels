@@ -11,7 +11,7 @@ import textwrap
 import uuid
 from builtins import chr, map, str
 from operator import attrgetter
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import astropy.units as u
 import numba as nb
@@ -669,7 +669,7 @@ class FunctionMeta(type):
 
         # get the allowed values
 
-        allowed_values: Optional[List[str]] = None
+        allowed_values: Optional[list[str]] = None
 
         if "allowed values" in definition:
             allowed_values = []
@@ -715,8 +715,8 @@ class Function(Node):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         # I use default values only to avoid warnings from pycharm and other software
         # about the calling sequence of this contructor. We actually need to enforce its
@@ -749,7 +749,7 @@ class Function(Node):
         # might be different than the actual name of the parameter, use the .add_child
         # method instead of the add_children method
 
-        self._parameters: Dict[str, Parameter] = dict()
+        self._parameters: dict[str, Parameter] = dict()
 
         for child_name, child in list(parameters.items()):
             self._parameters[child_name] = child
@@ -762,7 +762,7 @@ class Function(Node):
 
         if properties is not None:
 
-            self._properties: Optional[Dict[str, FunctionProperty]] = dict()
+            self._properties: Optional[dict[str, FunctionProperty]] = dict()
 
             for child_name, child in properties.items():
                 self._properties[child_name] = child
@@ -789,7 +789,7 @@ class Function(Node):
 
         # stores any extrernally linked functions
 
-        self._external_functions: Dict[str, "Function"] = dict()
+        self._external_functions: dict[str, "Function"] = dict()
 
     @property
     def n_dim(self) -> int:
@@ -799,7 +799,7 @@ class Function(Node):
         return type(self)._n_dim
 
     @property
-    def free_parameters(self) -> Dict[str, Parameter]:
+    def free_parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of free parameters for this function.
 
         :return: dictionary of free parameters
@@ -820,14 +820,14 @@ class Function(Node):
                 return True
         return False
 
-    def _get_parameters(self) -> Tuple[Parameter]:
+    def _get_parameters(self) -> tuple[Parameter]:
         """Return a tuple of parameters similar to get_children but for
         functions."""
 
         return tuple(self._parameters.values())
 
     @property
-    def properties(self) -> Optional[Dict[str, FunctionProperty]]:
+    def properties(self) -> Optional[dict[str, FunctionProperty]]:
         """Return the properties of the function.
 
         :returns:
@@ -961,7 +961,7 @@ class Function(Node):
 
     # Add a property returning the parameters dictionary
     @property
-    def parameters(self) -> Dict[str, Parameter]:
+    def parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of parameters."""
         return self._parameters
 
@@ -1186,8 +1186,8 @@ class Function1D(Function):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         Function.__init__(self, name, function_definition, parameters, properties)
 
@@ -1473,8 +1473,8 @@ class Function2D(Function):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         Function.__init__(self, name, function_definition, parameters, properties)
 
@@ -1634,8 +1634,8 @@ class Function3D(Function):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         Function.__init__(self, name, function_definition, parameters, properties)
 

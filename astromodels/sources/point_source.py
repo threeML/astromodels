@@ -1,6 +1,6 @@
 import logging
 
-from typing import Dict, Optional
+from typing import Optional
 
 import astropy.units as u
 import numba as nb
@@ -292,7 +292,7 @@ class PointSource(Source, Node):
         return False
 
     @property
-    def free_parameters(self) -> Dict[str, Parameter]:
+    def free_parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of free parameters for this source. We use the
         parameter path as the key because it's guaranteed to be unique, unlike
         the parameter name.
@@ -318,7 +318,7 @@ class PointSource(Source, Node):
         return free_parameters
 
     @property
-    def parameters(self) -> Dict[str, Parameter]:
+    def parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of all parameters for this source. We use the
         parameter path as the key because it's guaranteed to be unique, unlike
         the parameter name.
