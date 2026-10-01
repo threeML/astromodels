@@ -125,19 +125,17 @@ class Gaussian(Prior, metaclass=FunctionMeta):
         :param upper_bound:
         :return:
         """
-
+        x = np.atleast_1d(x)
         mu = self.mu.value
         sigma = self.sigma.value
 
         sqrt_two = 1.414213562
-
-        if x < 1e-16 or (1 - x) < 1e-16:
-
-            res = -1e32
-
-        else:
-
-            res = mu + sigma * sqrt_two * erfcinv(2 * (1 - x))
+        res = np.zeros_like(x)
+        mask = np.zeros_like(x).astype(bool)
+        mask[x < 1e-16] = True
+        mask[(1 - x) < 1e-16] = True
+        res[mask] = -1e32
+        res[~mask] = mu + sigma * sqrt_two * erfcinv(2 * (1 - x[~mask]))
 
         return res
 
@@ -560,19 +558,20 @@ class Log_normal(Prior, metaclass=FunctionMeta):
         :param upper_bound:
         :return:
         """
-
+        x = np.atleast_1d(x)
         mu = self.mu.value
         sigma = self.sigma.value
 
         sqrt_two = 1.414213562
+        res = np.zeros_like(x)
+        mask = np.zeros_like(x).astype(bool)
 
-        if x < 1e-16 or (1 - x) < 1e-16:
+        mask[x < 1e-16] = True
+        mask[(1 - x) < 1e-16] = True
 
-            res = -1e32
+        res[mask] = -1e32
 
-        else:
-
-            res = mu + sigma * sqrt_two * erfcinv(2 * (1 - x))
+        res[~mask] = mu + sigma * sqrt_two * erfcinv(2 * (1 - x[~mask]))
 
         return np.exp(res)
 
