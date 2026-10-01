@@ -17,3 +17,11 @@ def test_bounded_prior():
     bounds = uni.scipy_dist.support()
     assert bounds[0] == uni.lower_bound.value
     assert bounds[1] == uni.upper_bound.value
+
+
+def test_unbounded_prior():
+    gauss = Gaussian()
+
+    assert gauss(0.2) == gauss.scipy_dist.pdf(0.2)
+    rvs = gauss.scipy_dist.rvs(size=100000)
+    assert np.isclose(rvs.mean(), 0.0, atol=rvs.std() * 2)
