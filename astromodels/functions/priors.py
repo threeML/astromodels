@@ -2,7 +2,7 @@ import math
 
 import astropy.units as astropy_units
 import numpy as np
-import scipy.stats as stats
+from scipy import stats
 from scipy.special import erf, erfcinv
 
 from astromodels.functions.function import Function1D, FunctionMeta
