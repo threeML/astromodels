@@ -656,7 +656,7 @@ class Uniform_prior(Prior, metaclass=FunctionMeta):
         upper_bound = self.upper_bound.value
 
         low = lower_bound
-        spread = float(upper_bound - lower_bound)
+        spread = upper_bound - lower_bound
 
         par = x * spread + low
 
