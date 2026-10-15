@@ -52,12 +52,6 @@ jobs:
                   pip install --upgrade flake8 coverage pytest-cov cython pytest-xdist
                   pip install mhealpy
                   
-                  if [[ ${{matrix.os}} != ubuntu-latest && ${{matrix.os}} != ubuntu-24.04-arm ]];
-                  then
-                    brew update
-                    brew install hdf5 lzo c-blosc
-                  fi
-
                   pip install -e .
 
             - name: Lint with flake8
