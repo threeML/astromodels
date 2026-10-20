@@ -1,7 +1,6 @@
 import os
 import re
 import sys
-import time
 import warnings
 import logging
 
@@ -191,10 +190,10 @@ def get_models(model_dat_path):
                     max_energy,
                     library_function,
                     model_type,
-                    flag,
+                    flag_or_grad,
                 ) = line.split()
 
-            else:
+            elif len(tokens) == 8:
 
                 (
                     model_name,
@@ -204,7 +203,19 @@ def get_models(model_dat_path):
                     library_function,
                     model_type,
                     flag,
+                    flag_or_grad,
+                ) = line.split()
+            else:
+                (
+                    model_name,
+                    n_parameters,
+                    min_energy,
+                    max_energy,
+                    library_function,
+                    model_type,
+                    flag,
                     flag_2,
+                    flag_or_grad,
                 ) = line.split()
 
             this_model = dict()
@@ -742,8 +753,6 @@ def generate_xs_model_file(
 
         f.write("# This code has been automatically generated. Do not edit.\n")
         f.write("\n\n%s\n" % code)
-
-    time.sleep(0.5)
 
 
 def xspec_model_factory(model_name, xspec_function, model_type, definition):

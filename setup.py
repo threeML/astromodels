@@ -2,10 +2,11 @@
 
 import ctypes.util
 import glob
+import json
 import os
 import re
-import sys
 import subprocess
+import sys
 
 from packaging import version as packaging_version
 from setuptools import Extension, setup
@@ -13,11 +14,30 @@ from setuptools.command.build_ext import build_ext as _build_ext
 
 import versioneer
 
-# This is needed to use numpy in this module, and should work whether or not numpy is
-# already installed. If it's not, it will trigger an installation
+if sys.version_info >= (3, 13):
+    _default_xspec_version = (
+        "13.0.0"  # default when installing xspec according following
+    )
+    # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
+else:
+    _default_xspec_version = (
+        "12.15.1"  # default when installing xspec according following
+    )
+    # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 
-_default_xspec_version = "12.15.1"  # default when installing xspec according following
-# https://heasarc.gsfc.nasa.gov/docs/software/conda.html
+HEASOFT_TO_XSPEC = {
+    "6.29": "12.12.0",
+    "6.30": "12.12.1",
+    "6.31": "12.13.0",
+    "6.32": "12.13.1",
+    "6.33": "12.14.0",
+    "6.34": "12.14.1",
+    "6.35": "12.15.0",
+    "6.35.1": "12.15.0",
+    "6.35.2": "12.15.0",
+    "6.36": "12.15.1",
+    "6.37": "13.0.0",
+}
 
 
 class My_build_ext(_build_ext):
@@ -323,13 +343,40 @@ def find_library(library_root, additional_places=None):
 
 
 def get_xspec_conda_version():
-    """Get the version string from conda"""
-    try:
-        import xspec
+    """
+    Return the XSPEC/HEASoft version installed in the active Conda environment.
 
-        return xspec.Xset.version[1]
-    except ModuleNotFoundError:
+    Supports HEASARC packages named `xspec` and `heasoft`.
+    Returns None if neither is installed.
+    """
+    conda_prefix = os.environ.get("CONDA_PREFIX") or os.environ.get("PREFIX")
+
+    if not conda_prefix:
         return None
+
+    conda_meta = os.path.join(conda_prefix, "conda-meta")
+
+    if not os.path.isdir(conda_meta):
+        return None
+
+    # Prefer the dedicated XSPEC package if both somehow exist.
+    for package_name in ("xspec", "heasoft"):
+        pattern = os.path.join(conda_meta, f"{package_name}-*.json")
+
+        for metadata_file in glob.glob(pattern):
+            try:
+                with open(metadata_file, encoding="utf-8") as f:
+                    metadata = json.load(f)
+            except (OSError, json.JSONDecodeError):
+                continue
+
+            if metadata.get("name") == "xspec":
+                return metadata.get("version")
+            elif metadata.get("name") == "heasoft":
+                print(metadata.get("version"))
+                return HEASOFT_TO_XSPEC.get(metadata.get("version"))
+
+    return None
 
 
 def setup_xspec():
@@ -441,8 +488,8 @@ def setup_xspec():
         msg += " supported version for astromodels"
         print(msg)
         return None
-    elif xspec_version > packaging_version.Version("12.15.1"):
-        msg = "WARN: XSPEC version is greater than 12.15.1, which is the"
+    elif xspec_version > packaging_version.Version("13.0.0"):
+        msg = "WARN: XSPEC version is greater than 13.0.0, which is the"
         msg += " maximal supported version for astromodels"
         print(msg)
         return None
@@ -459,6 +506,7 @@ def setup_xspec():
         (12, 14, 1),
         (12, 15, 0),
         (12, 15, 1),
+        (13, 0, 0),
     ]:
 
         version = "{}.{}.{}".format(major, minor, patch)
@@ -473,17 +521,28 @@ def setup_xspec():
     # Make sure these libraries exist and are linkable right now
     # (they need to be in LD_LIBRARY_PATH or DYLD_LIBRARY_PATH or in one of the system
     # paths)
+    if xspec_version > packaging_version.Version("12.15.1"):
+        libraries_root = [
+            "XSFunctions",
+            "XSModel",
+            "XSUtil",
+            "cfitsio",
+            "CCfits",
+            "wcs",
+            "gfortran",
+        ]
 
-    libraries_root = [
-        "XSFunctions",
-        "XSModel",
-        "XSUtil",
-        "XS",
-        "cfitsio",
-        "CCfits",
-        "wcs",
-        "gfortran",
-    ]
+    else:
+        libraries_root = [
+            "XSFunctions",
+            "XSModel",
+            "XSUtil",
+            "XS",
+            "cfitsio",
+            "CCfits",
+            "wcs",
+            "gfortran",
+        ]
 
     libraries = []
     library_dirs = []
