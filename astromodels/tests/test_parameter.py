@@ -1,4 +1,3 @@
-from builtins import object
 
 import astropy.units as u
 import pytest
@@ -608,7 +607,7 @@ def test_callback():
         unit="MeV",
     )
 
-    class Callback(object):
+    class Callback:
         def __init__(self):
 
             self._control_value = None
@@ -829,7 +828,7 @@ def test_in_unit_of():
     assert p.in_unit_of(u.keV, as_quantity=True).to("MeV").value == 1.0
 
 
-class Callback(object):
+class Callback:
     def __init__(self):
 
         self._control_value = None

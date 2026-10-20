@@ -1,5 +1,5 @@
 import os
-from builtins import object, range
+from builtins import range
 
 import pytest
 
@@ -73,7 +73,7 @@ def _get_particle_source(name="test_part"):
     return part
 
 
-class ModelGetter(object):
+class ModelGetter:
     def __init__(self):
 
         # 2 point sources and 3 ext sources

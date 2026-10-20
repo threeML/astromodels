@@ -1,4 +1,3 @@
-from builtins import object
 
 __author__ = "giacomov"
 
@@ -52,7 +51,7 @@ def _check_unit(new_unit, old_unit):
         )
 
 
-class _AstromodelsUnits(object):
+class _AstromodelsUnits:
     """Store the fundamental units of time, energy, angle and area to be used
     in astromodels."""
 
@@ -165,7 +164,7 @@ class _AstromodelsUnits(object):
 # class
 
 
-class _AstromodelsUnitsFactory(object):
+class _AstromodelsUnitsFactory:
 
     _instance = None
 

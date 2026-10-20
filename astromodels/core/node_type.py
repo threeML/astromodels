@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 
 # This is necessary for pickle to be able to reconstruct a NewNode class (or derivate)
 # during unpickling
-class NewNodeUnpickler(object):
+class NewNodeUnpickler:
     def __call__(self, cls):
 
         instance = cls.__new__(cls)
