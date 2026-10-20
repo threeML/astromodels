@@ -52,7 +52,7 @@ class CannotWriteModel(IOError):
             free_space / 1024.0 / 1024.0,
         )
 
-        super(CannotWriteModel, self).__init__(message)
+        super().__init__(message)
 
 
 class ModelInternalError(ValueError):
@@ -92,7 +92,7 @@ class Model(Node):
         # Setup the node, using the special name '__root__' to indicate that this is the
         # root of the tree
 
-        super(Model, self).__init__("__root__")
+        super().__init__("__root__")
 
         # Dictionary to keep point sources
 
@@ -703,7 +703,7 @@ class Model(Node):
         # This will automatically choose the best representation among repr and
         # repr_html
 
-        super(Model, self).display()
+        super().display()
 
         # Go back to default
 

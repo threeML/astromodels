@@ -602,10 +602,10 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             )
 
         if other_name is None:
-            super(TemplateModel, self).__init__(name, function_definition, parameters)
+            super().__init__(name, function_definition, parameters)
 
         else:
-            super(TemplateModel, self).__init__(
+            super().__init__(
                 other_name, function_definition, parameters
             )
 

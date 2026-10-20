@@ -339,7 +339,7 @@ class FunctionMeta(type):
         # Now call the __new__ of the "type" class (which then will call the __init__
         # of this metaclass)
 
-        return super(FunctionMeta, mcs).__new__(mcs, name, bases, dct)
+        return super().__new__(mcs, name, bases, dct)
 
     def __init__(cls, name, bases, dct):
         # This is the MetaClass init, which is called after the __new__ is done
@@ -353,7 +353,7 @@ class FunctionMeta(type):
 
         # Finally call the init of the type class
 
-        super(FunctionMeta, cls).__init__(name, bases, dct)
+        super().__init__(name, bases, dct)
 
     @staticmethod
     def class_init(instance, **kwargs):
@@ -729,7 +729,7 @@ class Function(Node):
 
         # Set up the node
 
-        super(Function, self).__init__(name)
+        super().__init__(name)
 
         # Store name, number of dimensions and the latex formula
 
@@ -899,7 +899,7 @@ class Function(Node):
         return self._external_functions
 
     def to_dict(self, minimal: bool = False):
-        data = super(Function, self).to_dict(minimal)
+        data = super().to_dict(minimal)
 
         if not minimal:
             # link the external functions
@@ -2153,7 +2153,7 @@ class CompositeFunction(Function):
     # Override the to_dict method of the Node class to add the expression to re-build
     # this composite function
     def to_dict(self, minimal=False):
-        data = super(CompositeFunction, self).to_dict(minimal)
+        data = super().to_dict(minimal)
 
         if not minimal:
             data["expression"] = self._expression
