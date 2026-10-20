@@ -88,7 +88,7 @@ class ModelParser:
 
                     self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
-            except IOError:
+            except OSError:
                 msg = "File %s cannot be read. " % model_file
                 msg += "Check path and permissions for current user."
 

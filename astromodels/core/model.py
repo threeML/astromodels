@@ -1298,7 +1298,7 @@ class Model(Node):
 
                     f.write(representation.replace("\n", "\n\n"))
 
-            except IOError:
+            except OSError:
 
                 raise CannotWriteModel(
                     os.path.dirname(os.path.abspath(output_file)),
