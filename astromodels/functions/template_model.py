@@ -6,7 +6,7 @@ import re
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 import astropy.io.fits as fits
 import astropy.units as u
@@ -82,7 +82,7 @@ class TemplateModelFactory(object):
         name: str,
         description: str,
         energies: np.ndarray,
-        names_of_parameters: List[str],
+        names_of_parameters: list[str],
         interpolation_degree: int = 1,
         spline_smoothing_factor: int = 0,
     ):
@@ -136,7 +136,7 @@ class TemplateModelFactory(object):
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids: Dict[str, Optional[np.ndarray]] = dict()
+        self._parameters_grids: dict[str, Optional[np.ndarray]] = dict()
 
         for parameter_name in names_of_parameters:
             self._parameters_grids[parameter_name] = None
@@ -180,7 +180,7 @@ class TemplateModelFactory(object):
     def add_interpolation_data(
         self,
         differential_fluxes: np.ndarray,
-        **parameters_values_input: Dict[str, float],
+        **parameters_values_input: dict[str, float],
     ):
         # Verify that the grid has been defined for all parameters
 
@@ -401,8 +401,8 @@ class TemplateFile:
     name: str
     description: str
     grid: np.ndarray
-    parameters: Dict[str, np.ndarray]
-    parameter_order: List[str]
+    parameters: dict[str, np.ndarray]
+    parameter_order: list[str]
     energies: np.ndarray
     interpolation_degree: int
     spline_smoothing_factor: float

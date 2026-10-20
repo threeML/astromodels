@@ -3,7 +3,6 @@ import logging
 import math
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
 
 import astropy.units as astropy_units
 import numba as nb
@@ -46,7 +45,7 @@ class InvalidUsageForFunction(Exception):
 @dataclass(frozen=False)
 class AbundanceTable:
     name: str
-    tables: List[str]
+    tables: list[str]
     _current_table: str
 
     def set_table(self, table: str):

@@ -6,7 +6,6 @@ __author__ = "giacomov"
 
 import re
 import warnings
-from typing import Dict, List
 
 from astromodels.core import (
     model,
@@ -444,7 +443,7 @@ class SourceParser(object):
         return self._extra_setups
 
     @property
-    def external_functions(self) -> List[Dict[str, str]]:
+    def external_functions(self) -> list[dict[str, str]]:
 
         return self._external_functions
 

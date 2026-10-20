@@ -9,7 +9,7 @@ from builtins import range, str
 from dataclasses import dataclass
 from itertools import product
 from pathlib import Path
-from typing import List, Optional, OrderedDict, Sequence, Tuple, TypeAlias
+from typing import Optional, OrderedDict, Sequence, TypeAlias
 
 import astropy.units as u
 import h5py
@@ -67,7 +67,7 @@ class ModelFactory:
         self,
         name: str,
         description: str,
-        names_of_parameters: List[str],
+        names_of_parameters: list[str],
         degree_of_interpolation: int = 1,
         spline_smoothing_factor: int = 0,
     ) -> None:
@@ -390,7 +390,7 @@ class TemplateFile:
     lats: ndarray
     lons: ndarray
     parameters: OrderedDict[str, ndarray]
-    parameter_order: List[str]
+    parameter_order: list[str]
     degree_of_interpolation: int
     spline_smoothing_factor: int
 
@@ -434,7 +434,7 @@ class TemplateFile:
             degree_of_interpolation: int = f.attrs["degree_of_interpolation"]
             spline_smoothing_factor: int = f.attrs["spline_smoothing_factor"]
 
-            parameter_order: List[str] = f["parameter_order"][()]
+            parameter_order: list[str] = f["parameter_order"][()]
             energies: ndarray = f["energies"][()]
             lats: ndarray = f["lats"][()]
             lons: ndarray = f["lons"][()]
@@ -595,7 +595,7 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         # clean things up a bit
 
         # Setup cache to avoid unnecessary computations
-        self._cached_values: OrderedDict[Tuple[float, ...], ndarray] = (
+        self._cached_values: OrderedDict[tuple[float, ...], ndarray] = (
             collections.OrderedDict()
         )
 
@@ -636,11 +636,11 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         para_shape = np.array(
             [x.shape[0] for x in list(self._parameters_grids.values())]
         )
-        parameter_grid_values: List[float] = list(self._parameters_grids.values())
+        parameter_grid_values: list[float] = list(self._parameters_grids.values())
         parameter_values_len: int = len(parameter_grid_values)
 
         # interpolate over the parameters
-        self._interpolators: List[Optional[RectBivariateSpline, GridInterpolate]] = []
+        self._interpolators: list[Optional[RectBivariateSpline, GridInterpolate]] = []
 
         this_interpolator: Optional[
             UnivariateSpline, RectBivariateSpline, GridInterpolate

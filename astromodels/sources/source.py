@@ -3,7 +3,7 @@ import logging
 __author__ = "giacomov"
 
 from enum import Enum, unique
-from typing import Any, Dict, List
+from typing import Any
 
 from astromodels.core.parameter import Parameter
 
@@ -26,11 +26,11 @@ class UnknownSourceType(Exception):
 
 class Source(object):
     def __init__(
-        self, list_of_components: List[Any], src_type: str, spatial_shape=None
+        self, list_of_components: list[Any], src_type: str, spatial_shape=None
     ):
 
         # Make the dictionary of components
-        self._components: Dict[str, Any] = dict()
+        self._components: dict[str, Any] = dict()
 
         for component in list_of_components:
 
@@ -53,7 +53,7 @@ class Source(object):
         raise NotImplementedError("You need to override this")
 
     @property
-    def free_parameters(self) -> Dict[str, Parameter]:
+    def free_parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of free parameters for this source.
 
         :return:
@@ -62,7 +62,7 @@ class Source(object):
         raise NotImplementedError("You need to override this")
 
     @property
-    def components(self) -> Dict[str, Any]:
+    def components(self) -> dict[str, Any]:
         """Return the dictionary of components.
 
         :return: dictionary of components
