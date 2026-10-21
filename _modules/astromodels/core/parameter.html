@@ -1183,7 +1183,7 @@
         <span class="c1"># This extends ParameterBase by adding the possibility for free/fix, and a delta</span>
         <span class="c1"># for fitting purposes, as well as a prior</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">Parameter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">name</span><span class="p">,</span>
             <span class="n">value</span><span class="p">,</span>
             <span class="n">min_value</span><span class="o">=</span><span class="n">min_value</span><span class="p">,</span>
@@ -1641,7 +1641,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Returns the representation for serialization."""</span>
 
-        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Parameter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
 
         <span class="c1"># Add wether is a normalization or not</span>
         <span class="n">data</span><span class="p">[</span><span class="s2">"is_normalization"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_normalization</span>
@@ -1754,7 +1754,7 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">IndependentVariable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="n">name</span><span class="p">,</span>
             <span class="n">value</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span>

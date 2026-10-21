@@ -467,7 +467,7 @@
         <span class="c1"># Now call the __new__ of the "type" class (which then will call the __init__</span>
         <span class="c1"># of this metaclass)</span>
 
-        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">FunctionMeta</span><span class="p">,</span> <span class="n">mcs</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">):</span>
         <span class="c1"># This is the MetaClass init, which is called after the __new__ is done</span>
@@ -481,7 +481,7 @@
 
         <span class="c1"># Finally call the init of the type class</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">FunctionMeta</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">dct</span><span class="p">)</span>
 
 <div class="viewcode-block" id="FunctionMeta.class_init">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.function.FunctionMeta.class_init">[docs]</a>
@@ -872,7 +872,7 @@
 
         <span class="c1"># Set up the node</span>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">Function</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="c1"># Store name, number of dimensions and the latex formula</span>
 
@@ -1053,7 +1053,7 @@
 <div class="viewcode-block" id="Function.to_dict">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.function.Function.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
             <span class="c1"># link the external functions</span>
@@ -2385,7 +2385,7 @@
 <div class="viewcode-block" id="CompositeFunction.to_dict">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.function.CompositeFunction.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CompositeFunction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s2">"expression"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expression</span>
