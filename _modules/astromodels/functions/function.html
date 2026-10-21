@@ -219,17 +219,6 @@
 <span class="n">NO_LATEX_FORMULA</span> <span class="o">=</span> <span class="s2">"(no latex formula available)"</span>
 
 
-<span class="c1"># A function to find the calling sequence of a function, compatible</span>
-<span class="c1"># with both python2 and 3</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">_py2to3_getargspec</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">argspec</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>  <span class="c1"># PY3</span>
-        <span class="n">argspec</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">argspec</span>
-
 
 <span class="c1"># This dictionary will contain the known function by name, so that the model_parser can</span>
 <span class="c1"># instance them by looking into this dictionary. It will be filled by the FunctionMeta</span>
@@ -627,12 +616,12 @@
         <span class="c1"># If the function has been memoized, it will have a "input_object" member</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">calling_sequence</span> <span class="o">=</span> <span class="n">_py2to3_getargspec</span><span class="p">(</span><span class="n">function</span><span class="o">.</span><span class="n">input_object</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
+            <span class="n">calling_sequence</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">function</span><span class="o">.</span><span class="n">input_object</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
 
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
             <span class="c1"># This might happen if the function is without memoization</span>
 
-            <span class="n">calling_sequence</span> <span class="o">=</span> <span class="n">_py2to3_getargspec</span><span class="p">(</span><span class="n">function</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
+            <span class="n">calling_sequence</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="n">function</span><span class="p">)</span><span class="o">.</span><span class="n">args</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">calling_sequence</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"self"</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
