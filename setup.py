@@ -16,7 +16,7 @@ import versioneer
 
 if sys.version_info >= (3, 13):
     _default_xspec_version = (
-        "13.0.0"  # default when installing xspec according following
+        "13.0.1"  # default when installing xspec according following
     )
     # https://heasarc.gsfc.nasa.gov/docs/software/conda.html
 else:
@@ -37,6 +37,7 @@ HEASOFT_TO_XSPEC = {
     "6.35.2": "12.15.0",
     "6.36": "12.15.1",
     "6.37": "13.0.0",
+    "6.37.1": "13.0.1",
 }
 
 
@@ -488,8 +489,8 @@ def setup_xspec():
         msg += " supported version for astromodels"
         print(msg)
         return None
-    elif xspec_version > packaging_version.Version("13.0.0"):
-        msg = "WARN: XSPEC version is greater than 13.0.0, which is the"
+    elif xspec_version > packaging_version.Version("13.0.1"):
+        msg = "WARN: XSPEC version is greater than 13.0.1, which is the"
         msg += " maximal supported version for astromodels"
         print(msg)
         return None
@@ -507,6 +508,7 @@ def setup_xspec():
         (12, 15, 0),
         (12, 15, 1),
         (13, 0, 0),
+        (13, 0, 1),
     ]:
 
         version = "{}.{}.{}".format(major, minor, patch)
