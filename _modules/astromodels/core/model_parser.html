@@ -93,7 +93,7 @@
   <h1>Source code for astromodels.core.model_parser</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">object</span><span class="p">,</span> <span class="nb">str</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">str</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 
@@ -180,7 +180,7 @@
 
 <div class="viewcode-block" id="ModelParser">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ModelParser">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ModelParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModelParser</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">model_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">model_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)):</span>
@@ -383,7 +383,7 @@
 
 <div class="viewcode-block" id="IndependentVariableParser">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.IndependentVariableParser">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">IndependentVariableParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">IndependentVariableParser</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_variable</span> <span class="o">=</span> <span class="n">parameter</span><span class="o">.</span><span class="n">IndependentVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">definition</span><span class="p">)</span>
@@ -399,7 +399,7 @@
 
 <div class="viewcode-block" id="ParameterParser">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ParameterParser">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ParameterParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ParameterParser</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">definition</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_links</span> <span class="o">=</span> <span class="p">[]</span>
@@ -503,7 +503,7 @@
 
 <div class="viewcode-block" id="SourceParser">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.SourceParser">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">SourceParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SourceParser</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">source_definition</span><span class="p">):</span>
 
         <span class="c1"># Get the type of the source</span>
@@ -973,7 +973,7 @@
 
 <div class="viewcode-block" id="ShapeParser">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.model_parser.ShapeParser">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ShapeParser</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ShapeParser</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_name</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_source_name</span> <span class="o">=</span> <span class="n">source_name</span>

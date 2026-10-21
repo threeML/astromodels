@@ -160,7 +160,7 @@
 <span class="n">_classes_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">GridInterpolate</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GridInterpolate</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grid</span> <span class="o">=</span> <span class="n">grid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
@@ -169,7 +169,7 @@
         <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interpn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_grid</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">UnivariateSpline</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UnivariateSpline</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_x</span> <span class="o">=</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_y</span> <span class="o">=</span> <span class="n">y</span>
@@ -183,7 +183,7 @@
 
 <div class="viewcode-block" id="TemplateModelFactory">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.TemplateModelFactory">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">TemplateModelFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateModelFactory</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -495,7 +495,7 @@
     <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">RectBivariateSplineWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RectBivariateSplineWrapper</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Wrapper around RectBivariateSpline, which supplies a __call__ method</span>
 <span class="sd">    which accept the same syntax as the other interpolation methods."""</span>
 
@@ -948,7 +948,7 @@
 
 <div class="viewcode-block" id="XSPECTableModel">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.spatial_model.XSPECTableModel">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">XSPECTableModel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">XSPECTableModel</span><span class="p">:</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">xspec_table_model_file</span><span class="p">,</span>
