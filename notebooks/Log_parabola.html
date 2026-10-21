@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -151,10 +151,10 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parameters</span>
-<span class="n">func_name</span> <span class="o">=</span> <span class="s2">&quot;Log_parabola&quot;</span>
+<span class="n">func_name</span> <span class="o">=</span> <span class="s2">"Log_parabola"</span>
 <span class="n">wide_energy_range</span> <span class="o">=</span> <span class="kc">True</span>
-<span class="n">x_scale</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span>
-<span class="n">y_scale</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span>
+<span class="n">x_scale</span> <span class="o">=</span> <span class="s2">"log"</span>
+<span class="n">y_scale</span> <span class="o">=</span> <span class="s2">"log"</span>
 <span class="n">linear_range</span> <span class="o">=</span> <span class="kc">False</span>
 <br/></pre></div>
 </div>
@@ -295,8 +295,8 @@ NOTE that we use the high-energy convention of using the natural log in place of
 
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">blue</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;photon flux&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"energy (keV)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"photon flux"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">y_scale</span><span class="p">)</span>
 <br/></pre></div>
@@ -322,8 +322,8 @@ NOTE that we use the high-energy convention of using the natural log in place of
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">,</span> <span class="n">energy_grid</span> <span class="o">*</span> <span class="n">func</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">),</span> <span class="n">red</span><span class="p">)</span>
 
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;energy flux (F$_{\nu}$)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"energy (keV)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"energy flux (F$_{\nu}$)"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">y_scale</span><span class="p">)</span>
 <br/><br/></pre></div>
@@ -349,8 +349,8 @@ NOTE that we use the high-energy convention of using the natural log in place of
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">,</span> <span class="n">energy_grid</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">func</span><span class="p">(</span><span class="n">energy_grid</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">green</span><span class="p">)</span>
 
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\nu$F$_{\nu}$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"energy (keV)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\nu$F$_{\nu}$"</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="n">x_scale</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="n">y_scale</span><span class="p">)</span>
 <br/></pre></div>

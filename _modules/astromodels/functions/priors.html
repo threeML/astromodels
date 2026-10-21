@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -109,7 +109,7 @@
 <div class="viewcode-block" id="Gaussian">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Gaussian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A Gaussian function</span>
@@ -139,7 +139,7 @@
 <span class="sd">        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</span>
 <span class="sd">        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Place this here to avoid recomputing it all the time</span>
 
@@ -174,13 +174,13 @@
 <div class="viewcode-block" id="Gaussian.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Gaussian.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">value</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">value</span>
@@ -203,7 +203,7 @@
 <div class="viewcode-block" id="Truncated_gaussian">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Truncated_gaussian">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Truncated_gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A  truncated Gaussian function defined on the interval between the lower_bound</span>
@@ -251,7 +251,7 @@
 <span class="sd">        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</span>
 <span class="sd">        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Place this here to avoid recomputing it all the time</span>
 
@@ -357,7 +357,7 @@
 <div class="viewcode-block" id="Cauchy">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Cauchy">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cauchy</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        The Cauchy distribution</span>
@@ -387,7 +387,7 @@
 <span class="sd">        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</span>
 <span class="sd">        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Place this here to avoid recomputing it all the time</span>
 
@@ -421,13 +421,13 @@
 <div class="viewcode-block" id="Cauchy.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Cauchy.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">x0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="o">.</span><span class="n">value</span>
         <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="o">.</span><span class="n">value</span>
@@ -442,7 +442,7 @@
 <div class="viewcode-block" id="Cosine_Prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cosine_Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A function which is constant on the interval angular interval of cosine</span>
@@ -473,7 +473,7 @@
 
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -529,13 +529,13 @@
 <div class="viewcode-block" id="Cosine_Prior.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">cosdec_min</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="mf">90.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
         <span class="n">cosdec_max</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">deg2rad</span> <span class="o">*</span> <span class="p">(</span><span class="mf">90.0</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
 
@@ -559,7 +559,7 @@
 <div class="viewcode-block" id="Log_normal">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Log_normal">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Log_normal</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A log normal function</span>
@@ -594,7 +594,7 @@
 <span class="sd">        - { x : 0.0, function value: 0.3989422804014327, tolerance: 1e-10}</span>
 <span class="sd">        - { x : -1.0, function value: 0.24197072451914337, tolerance: 1e-9}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Place this here to avoid recomputing it all the time</span>
 
@@ -628,7 +628,7 @@
 
         <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">F</span> <span class="o">*</span> <span class="mi">0</span>
 
-        <span class="c1"># The log normal is not defined if x &lt; 0. The &quot;0 * x&quot; part is to conserve the</span>
+        <span class="c1"># The log normal is not defined if x &lt; 0. The "0 * x" part is to conserve the</span>
         <span class="c1"># units if x has them, because 0 * x will be a Quantity with the same units as x</span>
         <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">x</span>
 
@@ -648,13 +648,13 @@
 <div class="viewcode-block" id="Log_normal.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Log_normal.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">value</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">value</span>
@@ -677,7 +677,7 @@
 <div class="viewcode-block" id="Uniform_prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0</span>
@@ -718,7 +718,7 @@
 <span class="sd">        - { x : 0.5, function value: 1.0, tolerance: 1e-20}</span>
 <span class="sd">        - { x : -0.5, function value: 0, tolerance: 1e-20}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_is_prior</span> <span class="o">=</span> <span class="kc">True</span>
@@ -747,13 +747,13 @@
 <div class="viewcode-block" id="Uniform_prior.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">lower_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="o">.</span><span class="n">value</span>
         <span class="n">upper_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span>
@@ -771,7 +771,7 @@
 <div class="viewcode-block" id="Log_uniform_prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Log_uniform_prior">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Log_uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A function which is K/x on the interval lower_bound - upper_bound and 0 outside</span>
@@ -810,7 +810,7 @@
 <span class="sd">            initial value : 1</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -843,13 +843,13 @@
 <div class="viewcode-block" id="Log_uniform_prior.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Log_uniform_prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">low</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
         <span class="n">up</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
@@ -865,7 +865,7 @@
 <div class="viewcode-block" id="Beta">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Beta">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Beta</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A beta distribution function</span>
@@ -886,7 +886,7 @@
 <span class="sd">            initial value : 0.5</span>
 <span class="sd">            min: 0.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -908,13 +908,13 @@
 <div class="viewcode-block" id="Beta.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Beta.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">value</span>
         <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
@@ -927,7 +927,7 @@
 <div class="viewcode-block" id="Gamma">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Gamma">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Gamma</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A gamma distribution function</span>
@@ -949,7 +949,7 @@
 <span class="sd">            initial value : 1.</span>
 <span class="sd">            min: 0.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -971,13 +971,13 @@
 <div class="viewcode-block" id="Gamma.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Gamma.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
         <span class="n">beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">value</span>
@@ -990,7 +990,7 @@
 <div class="viewcode-block" id="Exponential">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Exponential">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Exponential</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        An exponential distribution function</span>
@@ -1005,7 +1005,7 @@
 <span class="sd">            initial value : 1</span>
 <span class="sd">            min: 0.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -1026,13 +1026,13 @@
 <div class="viewcode-block" id="Exponential.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Exponential.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">return</span> <span class="n">stats</span><span class="o">.</span><span class="n">expon</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
 </div>
@@ -1042,7 +1042,7 @@
 <div class="viewcode-block" id="Powerlaw_Prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Powerlaw_Prior">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw_Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        An power law distribution function between a-b</span>
@@ -1065,7 +1065,7 @@
 <span class="sd">            initial value: 1</span>
 <span class="sd">            min: 0.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -1090,13 +1090,13 @@
 <div class="viewcode-block" id="Powerlaw_Prior.from_unit_cube">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Powerlaw_Prior.from_unit_cube">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_unit_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Used by multinest.</span>
+<span class="w">        </span><span class="sd">"""Used by multinest.</span>
 
 <span class="sd">        :param x: 0 &lt; x &lt; 1</span>
 <span class="sd">        :param lower_bound:</span>
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">value</span>
 

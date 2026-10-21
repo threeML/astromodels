@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -97,7 +97,7 @@
 <div class="viewcode-block" id="angular_distance_fast">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance_fast">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">angular_distance_fast</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute angular distance using the Haversine formula. Use this one when</span>
+<span class="w">    </span><span class="sd">"""Compute angular distance using the Haversine formula. Use this one when</span>
 <span class="sd">    you know you will never ask for points at their antipodes. If this is not</span>
 <span class="sd">    the case, use the angular_distance function which is slower, but works also</span>
 <span class="sd">    for antipodes.</span>
@@ -107,7 +107,7 @@
 <span class="sd">    :param lon2:</span>
 <span class="sd">    :param lat2:</span>
 <span class="sd">    :return:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">lon1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">ra1</span><span class="p">)</span>
     <span class="n">lat1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">dec1</span><span class="p">)</span>
@@ -125,7 +125,7 @@
 <div class="viewcode-block" id="angular_distance">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.angular_distance.angular_distance">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">angular_distance</span><span class="p">(</span><span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the angular distance between two points, two sets of points, or</span>
+<span class="w">    </span><span class="sd">"""Returns the angular distance between two points, two sets of points, or</span>
 <span class="sd">    a set of points and one point.</span>
 
 <span class="sd">    :param ra1: array or float, longitude of first point(s)</span>
@@ -133,7 +133,7 @@
 <span class="sd">    :param ra2: array or float, longitude of second point(s)</span>
 <span class="sd">    :param dec2: array or float, latitude of second point(s)</span>
 <span class="sd">    :return: angular distance(s) in degrees</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># Vincenty formula, slower than the Haversine formula in some cases, but stable also</span>
     <span class="c1"># at antipodes</span>
@@ -161,7 +161,7 @@
 <div class="viewcode-block" id="spherical_angle">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.angular_distance.spherical_angle">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">spherical_angle</span><span class="p">(</span><span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns the spherical angle distance between two sets of great circles</span>
+<span class="w">    </span><span class="sd">"""Returns the spherical angle distance between two sets of great circles</span>
 <span class="sd">    defined by (ra0, dec0), (ra1, dec1) and (ra0, dec0), (ra2, dec2)</span>
 
 <span class="sd">    :param ra0: array or float, longitude of intersection point(s)</span>
@@ -171,7 +171,7 @@
 <span class="sd">    :param ra2: array or float, longitude of second point(s)</span>
 <span class="sd">    :param dec2: array or float, latitude of second point(s)</span>
 <span class="sd">    :return: spherical angle in degrees</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angular_distance</span><span class="p">(</span><span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra1</span><span class="p">,</span> <span class="n">dec1</span><span class="p">))</span>
     <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angular_distance</span><span class="p">(</span><span class="n">ra0</span><span class="p">,</span> <span class="n">dec0</span><span class="p">,</span> <span class="n">ra2</span><span class="p">,</span> <span class="n">dec2</span><span class="p">))</span>

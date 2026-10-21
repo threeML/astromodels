@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -117,7 +117,7 @@
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s2">&quot;my_model.yml&quot;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s2">"my_model.yml"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -156,7 +156,7 @@ dict_keys([])
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">point_source</span> <span class="ow">in</span> <span class="n">point_sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;The model contain point source </span><span class="si">%s</span><span class="s2"> at </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">source_name</span><span class="p">,</span> <span class="n">point_source</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="s2">"The model contain point source </span><span class="si">%s</span><span class="s2"> at </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">source_name</span><span class="p">,</span> <span class="n">point_source</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -199,7 +199,7 @@ dict_keys([&#39;synchrotron&#39;, &#39;IC&#39;])
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">point_source</span> <span class="ow">in</span> <span class="n">my_model</span><span class="o">.</span><span class="n">point_sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
     <span class="nb">print</span><span class="p">(</span>
-        <span class="s2">&quot;Point source </span><span class="si">%s</span><span class="s2"> has components </span><span class="si">%s</span><span class="s2">&quot;</span>
+        <span class="s2">"Point source </span><span class="si">%s</span><span class="s2"> has components </span><span class="si">%s</span><span class="s2">"</span>
         <span class="o">%</span> <span class="p">(</span><span class="n">source_name</span><span class="p">,</span> <span class="n">point_source</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="p">)</span>
 </pre></div>
@@ -257,17 +257,17 @@ dict_keys([&#39;K&#39;, &#39;piv&#39;, &#39;index&#39;])
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">source_name</span><span class="p">,</span> <span class="n">point_source</span> <span class="ow">in</span> <span class="n">my_model</span><span class="o">.</span><span class="n">point_sources</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Found source </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">source_name</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Found source </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">source_name</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Position of point source: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">point_source</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"  Position of point source: </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">point_source</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">point_source</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;    Found component </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">component_name</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"    Found component </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">component_name</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">parameter</span> <span class="ow">in</span> <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;      Found parameter </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">parameter_name</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"      Found parameter </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">parameter_name</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -305,7 +305,7 @@ Found source source_2
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupyterthemes</span><span class="w"> </span><span class="kn">import</span> <span class="n">jtplot</span>
 
-<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">"talk"</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 
@@ -329,15 +329,15 @@ Found source source_2
             <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span>
                 <span class="n">energies</span><span class="p">,</span>
                 <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">energies</span><span class="p">),</span>
-                <span class="s2">&quot;--&quot;</span><span class="p">,</span>
-                <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">component_name</span><span class="p">,</span> <span class="n">source_name</span><span class="p">),</span>
+                <span class="s2">"--"</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> of </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">component_name</span><span class="p">,</span> <span class="n">source_name</span><span class="p">),</span>
             <span class="p">)</span>
 
 <span class="c1"># Add a legend</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Flux (ph cm$^{-2}$ s$^{-1}$ keV$^{-1}$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Energy (keV)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Flux (ph cm$^{-2}$ s$^{-1}$ keV$^{-1}$"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -404,7 +404,7 @@ source_2.spectrum.IC.Powerlaw.index
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_path</span> <span class="o">=</span> <span class="s2">&quot;source_2.spectrum.IC.Powerlaw.K&quot;</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">my_path</span> <span class="o">=</span> <span class="s2">"source_2.spectrum.IC.Powerlaw.K"</span>
 
 <span class="n">K</span> <span class="o">=</span> <span class="n">my_model</span><span class="p">[</span><span class="n">my_path</span><span class="p">]</span>
 
@@ -436,14 +436,14 @@ Parameter K = 0.8 [1 / (keV s cm2)]
 
 <span class="c1"># Get the name of the first point source</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The first point source is called </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">my_model</span><span class="o">.</span><span class="n">get_point_source_name</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The second point source is called </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">my_model</span><span class="o">.</span><span class="n">get_point_source_name</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The first point source is called </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">my_model</span><span class="o">.</span><span class="n">get_point_source_name</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"The second point source is called </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">my_model</span><span class="o">.</span><span class="n">get_point_source_name</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
 
 <span class="c1"># Of course you can achieve the same in a loop</span>
 
 <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_pts</span><span class="p">):</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Point source ID </span><span class="si">%s</span><span class="s2"> has name </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">my_model</span><span class="o">.</span><span class="n">get_point_source_name</span><span class="p">(</span><span class="nb">id</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Point source ID </span><span class="si">%s</span><span class="s2"> has name </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">my_model</span><span class="o">.</span><span class="n">get_point_source_name</span><span class="p">(</span><span class="nb">id</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>

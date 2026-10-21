@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -106,7 +106,7 @@
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 <span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu)</span>
 <span class="c1"># Oct 26, 2016</span>
 
@@ -116,7 +116,7 @@
 <div class="viewcode-block" id="Powerlaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A simple power-law</span>
@@ -152,7 +152,7 @@
 <span class="sd">        - { x : 10, function value: 0.01, tolerance: 1e-20}</span>
 <span class="sd">        - { x : 100, function value: 0.0001, tolerance: 1e-20}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The index is always dimensionless</span>
@@ -221,7 +221,7 @@
 <div class="viewcode-block" id="Powerlaw_flux">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_flux">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw_flux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A simple power-law with the photon flux in a band used as normalization. This</span>
@@ -261,7 +261,7 @@
 <span class="sd">            fix : yes</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The flux is the integral over x, so:</span>
@@ -305,7 +305,7 @@
 <div class="viewcode-block" id="Powerlaw_Eflux">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Powerlaw_Eflux">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw_Eflux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 <span class="sd">        A  power-law where the normalization is the energy flux defined between a and b</span>
 <span class="sd">    latex : $F~\left(\frac{x}{piv}\right)^{index} $</span>
@@ -341,7 +341,7 @@
 <span class="sd">            min : 0</span>
 <span class="sd">            fix: yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The index is always dimensionless</span>
@@ -391,7 +391,7 @@
 <div class="viewcode-block" id="Cutoff_powerlaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A power law multiplied by an exponential cutoff</span>
@@ -430,7 +430,7 @@
 <span class="sd">            transformation : log10</span>
 <span class="sd">            min: 1.0</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The index is always dimensionless</span>
@@ -473,7 +473,7 @@
 <div class="viewcode-block" id="Cutoff_powerlaw_Ep">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Cutoff_powerlaw_Ep">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Cutoff_powerlaw_Ep</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A power law multiplied by an exponential cutoff parametrized with Ep</span>
@@ -513,7 +513,7 @@
 <span class="sd">            max : 1e4</span>
 <span class="sd">            transformation : log10</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The index is always dimensionless</span>
@@ -560,7 +560,7 @@
 <div class="viewcode-block" id="Inverse_cutoff_powerlaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Inverse_cutoff_powerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Inverse_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description : A power law multiplied by an exponential cutoff</span>
 <span class="sd">        Note, instead of cutoff energy energy parameter xc, b = 1/xc is used</span>
 <span class="sd">    latex : $K~\left(\frac{x}{piv}\right)^{index}\exp{(-x~b)} $</span>
@@ -585,7 +585,7 @@
 <span class="sd">        b :</span>
 <span class="sd">            desc : inverse cutoff energy i.e 1/xc</span>
 <span class="sd">            initial value : 1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The index is always dimensionless</span>
@@ -628,7 +628,7 @@
 <div class="viewcode-block" id="Super_cutoff_powerlaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Super_cutoff_powerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Super_cutoff_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A power law with a super-exponential cutoff</span>
@@ -672,7 +672,7 @@
 <span class="sd">            min : 0.1</span>
 <span class="sd">            max : 10.0</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The index is always dimensionless</span>
@@ -718,7 +718,7 @@
 <div class="viewcode-block" id="SmoothlyBrokenPowerLaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.SmoothlyBrokenPowerLaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SmoothlyBrokenPowerLaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A Smoothly Broken Power Law</span>
@@ -773,7 +773,7 @@
 <span class="sd">            fix: yes</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
@@ -827,7 +827,7 @@
 <div class="viewcode-block" id="Broken_powerlaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Broken_powerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Broken_powerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A broken power law function</span>
@@ -872,7 +872,7 @@
 <span class="sd">            initial value : 1.0</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The normalization has the same units as y</span>
@@ -919,7 +919,7 @@
 <div class="viewcode-block" id="Band">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Band</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Band model from Band et al., 1993, parametrized with the peak energy</span>
@@ -966,7 +966,7 @@
 <span class="sd">            desc : pivot energy</span>
 <span class="sd">            initial value : 100.0</span>
 <span class="sd">            fix : yes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The normalization has the same units as y</span>
@@ -988,8 +988,8 @@
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="n">beta</span><span class="p">:</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">beta</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Alpha is currently less than beta. Setting alpha = beta.&quot;</span><span class="p">)</span>
-            <span class="c1"># raise ModelAssertionViolation(&quot;Alpha cannot be less than beta&quot;)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Alpha is currently less than beta. Setting alpha = beta."</span><span class="p">)</span>
+            <span class="c1"># raise ModelAssertionViolation("Alpha cannot be less than beta")</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">alpha_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
@@ -1013,7 +1013,7 @@
 <div class="viewcode-block" id="Band_grbm">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_grbm">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Band_grbm</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Band model from Band et al., 1993, parametrized with the cutoff energy</span>
@@ -1056,7 +1056,7 @@
 <span class="sd">            desc : pivot energy</span>
 <span class="sd">            initial value : 100.0</span>
 <span class="sd">            fix : yes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The normalization has the same units as y</span>
@@ -1076,7 +1076,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">xc</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">piv</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="n">beta</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">&quot;Alpha cannot be less than beta&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">"Alpha cannot be less than beta"</span><span class="p">)</span>
 
         <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">xc</span>
 
@@ -1101,7 +1101,7 @@
 <div class="viewcode-block" id="Band_Calderone">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Band_Calderone</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        The Band model from Band et al. 1993, implemented however in a way which reduces</span>
@@ -1165,7 +1165,7 @@
 <span class="sd">            max : 1</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
@@ -1203,13 +1203,13 @@
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Band_Calderone.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">opt</span><span class="p">):</span>
 
-        <span class="k">assert</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Opt must be either 0 or 1&quot;</span>
+        <span class="k">assert</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">opt</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"Opt must be either 0 or 1"</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="n">beta</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">&quot;Alpha cannot be smaller than beta&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">"Alpha cannot be smaller than beta"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">alpha</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">&quot;Alpha cannot be smaller than -2&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">ModelAssertionViolation</span><span class="p">(</span><span class="s2">"Alpha cannot be smaller than -2"</span><span class="p">)</span>
 
         <span class="c1"># Cutoff energy</span>
 
@@ -1301,7 +1301,7 @@
 <div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DoubleSmoothlyBrokenPowerlaw</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description : A smoothly broken power law with two breaks as parameterized in</span>
 <span class="sd">                    Ravasio, M. E. et al. Astron Astrophys 613, A16 (2018).</span>
 
@@ -1376,7 +1376,7 @@
 <span class="sd">            desc : pivot energy</span>
 <span class="sd">            initial value : 1.</span>
 <span class="sd">            fix : yes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The normalization has the same units as y</span>
@@ -1420,10 +1420,10 @@
 <div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.free_curvature">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.free_curvature">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Free the two curvature parameters n1, n2.</span>
+<span class="w">        </span><span class="sd">"""Free the two curvature parameters n1, n2.</span>
 
 <span class="sd">        :returns:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">free</span> <span class="o">=</span> <span class="kc">True</span></div>
 
@@ -1431,10 +1431,10 @@
 <div class="viewcode-block" id="DoubleSmoothlyBrokenPowerlaw.fix_curvature">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.DoubleSmoothlyBrokenPowerlaw.fix_curvature">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">fix_curvature</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fix the two curvature parameters n1, n2.</span>
+<span class="w">        </span><span class="sd">"""Fix the two curvature parameters n1, n2.</span>
 
 <span class="sd">        :returns:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n1</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n2</span><span class="o">.</span><span class="n">fix</span> <span class="o">=</span> <span class="kc">True</span></div>
 

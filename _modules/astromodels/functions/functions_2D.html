@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -113,7 +113,7 @@
 <div class="viewcode-block" id="Latitude_galactic_diffuse">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Latitude_galactic_diffuse</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A Gaussian distribution in Galactic latitude around the Galactic plane</span>
@@ -142,7 +142,7 @@
 <span class="sd">            desc : max Longtitude</span>
 <span class="sd">            initial value : 30</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="c1"># This is optional, and it is only needed if we need more setup after the</span>
     <span class="c1"># constructor provided by the meta class</span>
@@ -154,11 +154,11 @@
 <div class="viewcode-block" id="Latitude_galactic_diffuse.set_frame">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.set_frame">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a new frame for the coordinates (the default is ICRS J2000)</span>
+<span class="w">        </span><span class="sd">"""Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
 <span class="sd">        :param new_frame: a coordinate frame from astropy</span>
 <span class="sd">        :return: (none)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_frame</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">new_frame</span></div>
@@ -176,10 +176,10 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">sigma_b</span><span class="p">,</span> <span class="n">l_min</span><span class="p">,</span> <span class="n">l_max</span><span class="p">):</span>
 
         <span class="c1"># We assume x and y are R.A. and Dec</span>
-        <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+        <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
 
-        <span class="n">b</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"galactic"</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"galactic"</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
 
         <span class="k">return</span> <span class="p">(</span>
             <span class="n">K</span>
@@ -202,15 +202,15 @@
         <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span>
             <span class="n">l</span><span class="o">=</span><span class="p">[</span><span class="n">l_min</span><span class="p">,</span> <span class="n">l_min</span><span class="p">,</span> <span class="n">l_max</span><span class="p">,</span> <span class="n">l_max</span><span class="p">],</span>
             <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="n">max_b</span> <span class="o">*</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">max_b</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">max_b</span> <span class="o">*</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">max_b</span> <span class="o">*</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">],</span>
-            <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;galactic&quot;</span><span class="p">,</span>
-            <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">,</span>
+            <span class="n">frame</span><span class="o">=</span><span class="s2">"galactic"</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># no dealing with 0 360 overflow</span>
-        <span class="n">min_lat</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">max_lat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">min_lon</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-        <span class="n">max_lon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">min_lat</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">max_lat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">min_lon</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">max_lon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">min_lon</span><span class="p">,</span> <span class="n">max_lon</span><span class="p">),</span> <span class="p">(</span><span class="n">min_lat</span><span class="p">,</span> <span class="n">max_lat</span><span class="p">)</span></div>
 
@@ -218,13 +218,13 @@
 <div class="viewcode-block" id="Latitude_galactic_diffuse.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Latitude_galactic_diffuse.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">dL</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">l_max</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_min</span><span class="o">.</span><span class="n">value</span>
@@ -246,7 +246,7 @@
 <div class="viewcode-block" id="Gaussian_on_sphere">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A bidimensional Gaussian function on a sphere (in spherical coordinates)</span>
@@ -282,12 +282,12 @@
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 20</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -353,13 +353,13 @@
 <div class="viewcode-block" id="Gaussian_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -371,7 +371,7 @@
 <div class="viewcode-block" id="Asymm_Gaussian_on_sphere">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Asymm_Gaussian_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 <span class="sd">       A bidimensional Gaussian function on a sphere (in spherical coordinates) see</span>
 <span class="sd">       https://en.wikipedia.org/wiki/Gaussian_function#Two-dimensional_Gaussian_function</span>
@@ -413,12 +413,12 @@
 <span class="sd">            min : -90.0</span>
 <span class="sd">            max : 90.0</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and a have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -514,13 +514,13 @@
 <div class="viewcode-block" id="Asymm_Gaussian_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Asymm_Gaussian_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -532,7 +532,7 @@
 <div class="viewcode-block" id="Disk_on_sphere">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Disk_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A bidimensional disk/tophat function on a sphere (in spherical coordinates)</span>
@@ -565,12 +565,12 @@
 <span class="sd">            min : 0</span>
 <span class="sd">            max : 20</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -632,13 +632,13 @@
 <div class="viewcode-block" id="Disk_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Disk_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -650,7 +650,7 @@
 <div class="viewcode-block" id="Ellipse_on_sphere">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Ellipse_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        An ellipse function on a sphere (in spherical coordinates)</span>
@@ -696,7 +696,7 @@
 <span class="sd">            initial value : 0.0</span>
 <span class="sd">            min : -90.0</span>
 <span class="sd">            max : 90.0</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">lon1</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">lat1</span> <span class="o">=</span> <span class="kc">None</span>
@@ -707,7 +707,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 have most probably all units of degrees.</span>
-        <span class="c1"># However, let&#39;s set them up here just to save for the possibility of</span>
+        <span class="c1"># However, let's set them up here just to save for the possibility of</span>
         <span class="c1"># using the formula with other units (although it is probably never</span>
         <span class="c1"># going to happen)</span>
 
@@ -804,13 +804,13 @@
 <div class="viewcode-block" id="Ellipse_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Ellipse_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -822,7 +822,7 @@
 <div class="viewcode-block" id="SpatialTemplate_2D">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SpatialTemplate_2D</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        User input Spatial Template.  Expected to be normalized to 1/sr</span>
@@ -861,7 +861,7 @@
 <span class="sd">            - fk5</span>
 <span class="sd">            - fk4</span>
 <span class="sd">            - fk4_no_e</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
@@ -872,7 +872,7 @@
 
     <span class="c1"># def _setup(self):</span>
 
-    <span class="c1"># self._frame = &quot;icrs&quot;</span>
+    <span class="c1"># self._frame = "icrs"</span>
     <span class="c1"># self._fitsfile = None</span>
     <span class="c1"># self._map = None</span>
 
@@ -885,21 +885,21 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">WCS</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">data</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS1&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS2&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS1"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS2"</span><span class="p">]</span>
 
             <span class="c1"># note: map coordinates are switched compared to header. NAXIS1 is</span>
             <span class="c1"># coordinate 1, not 0. see</span>
             <span class="c1"># http://docs.astropy.org/en/stable/io/fits/#working-with-image-data</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span>
-            <span class="p">),</span> <span class="s2">&quot;NAXIS1 = </span><span class="si">%d</span><span class="s2"> in fits header, but </span><span class="si">%d</span><span class="s2"> in map&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="p">),</span> <span class="s2">"NAXIS1 = </span><span class="si">%d</span><span class="s2"> in fits header, but </span><span class="si">%d</span><span class="s2"> in map"</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="k">assert</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span>
-            <span class="p">),</span> <span class="s2">&quot;NAXIS2 = </span><span class="si">%d</span><span class="s2"> in fits header, but </span><span class="si">%d</span><span class="s2"> in map&quot;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="p">),</span> <span class="s2">"NAXIS2 = </span><span class="si">%d</span><span class="s2"> in fits header, but </span><span class="si">%d</span><span class="s2"> in map"</span> <span class="o">%</span> <span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_nY</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
             <span class="p">)</span>
@@ -910,23 +910,23 @@
             <span class="n">total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="n">dOmega</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;SpatialTemplate_2D is accurates for only small region model&quot;</span>
-                <span class="o">+</span> <span class="s2">&quot; please consider using SpatialTemplate_2D_Healpix otherwise&quot;</span>
+                <span class="s2">"SpatialTemplate_2D is accurates for only small region model"</span>
+                <span class="o">+</span> <span class="s2">" please consider using SpatialTemplate_2D_Healpix otherwise"</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                    <span class="s2">&quot;2D template read from </span><span class="si">{}</span><span class="s2"> is normalized to </span><span class="si">{}</span><span class="s2"> (expected: 1)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="s2">"2D template read from </span><span class="si">{}</span><span class="s2"> is normalized to </span><span class="si">{}</span><span class="s2"> (expected: 1)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">,</span> <span class="n">total</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
             <span class="c1"># hash sum uniquely identifying the template function (defined by its 2D map</span>
-            <span class="c1"># array and coordinate system) this is needed so that the memoization won&#39;t</span>
+            <span class="c1"># array and coordinate system) this is needed so that the memoization won't</span>
             <span class="c1"># confuse different SpatialTemplate_2D objects.</span>
             <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
             <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)</span>
-            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
 
     <span class="c1"># def to_dict(self, minimal=False):</span>
@@ -935,18 +935,18 @@
 
     <span class="c1">#      if not minimal:</span>
 
-    <span class="c1">#         data[&#39;extra_setup&#39;] = {&quot;_fitsfile&quot;: self._fitsfile,&quot;_frame&quot;:self._frame}</span>
+    <span class="c1">#         data['extra_setup'] = {"_fitsfile": self._fitsfile,"_frame":self._frame}</span>
 
     <span class="c1">#      return data</span>
 
     <span class="c1"># def set_frame(self, new_frame):</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     """</span>
     <span class="c1">#         Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
     <span class="c1">#         :param new_frame: a coordinate frame from astropy</span>
     <span class="c1">#         :return: (none)</span>
-    <span class="c1">#         &quot;&quot;&quot;</span>
-    <span class="c1">#     assert new_frame.lower() in [&#39;icrs&#39;, &#39;galactic&#39;, &#39;fk5&#39;, &#39;fk4&#39;, &#39;fk4_no_e&#39; ]</span>
+    <span class="c1">#         """</span>
+    <span class="c1">#     assert new_frame.lower() in ['icrs', 'galactic', 'fk5', 'fk4', 'fk4_no_e' ]</span>
 
     <span class="c1">#     self._frame = new_frame</span>
 
@@ -955,7 +955,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">,</span> <span class="n">ihdu</span><span class="p">):</span>
 
         <span class="c1"># X and Y are defined by the frame (ICRS,galactic, etc..)</span>
-        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
 
         <span class="c1"># transform input coordinates to pixel coordinates;</span>
         <span class="c1"># SkyCoord takes care of necessary coordinate frame transformations.</span>
@@ -982,7 +982,7 @@
         <span class="c1">#     self.load_file(self._fitsfile)</span>
 
         <span class="c1"># We use the max/min RA/Dec of the image corners to define the boundaries.</span>
-        <span class="c1"># Use the &#39;outside&#39; of the pixel corners, i.e. from pixel 0 to nX in 0-indexed</span>
+        <span class="c1"># Use the 'outside' of the pixel corners, i.e. from pixel 0 to nX in 0-indexed</span>
         <span class="c1"># accounting.</span>
 
         <span class="n">Xcorners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nX</span><span class="p">])</span>
@@ -1004,13 +1004,13 @@
 <div class="viewcode-block" id="SpatialTemplate_2D.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -1022,7 +1022,7 @@
 <div class="viewcode-block" id="SpatialTemplate_2D_Healpix">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SpatialTemplate_2D_Healpix</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 <span class="sd">        User input Spatial Template using HealpixMap from mhealpy.</span>
 
@@ -1044,7 +1044,7 @@
 <span class="sd">            defer: True</span>
 <span class="sd">            function: _load_file</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
@@ -1055,11 +1055,11 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="s2">&quot;mhealpy&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">find_spec</span><span class="p">(</span><span class="s2">"mhealpy"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">mhealpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">HealpixMap</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
-                <span class="s2">&quot;You need to install mhealpy via pip for using this class&quot;</span>
+                <span class="s2">"You need to install mhealpy via pip for using this class"</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_file</span><span class="o">.</span><span class="n">value</span>
@@ -1072,13 +1072,13 @@
         <span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span> <span class="o">*</span> <span class="n">area</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;2D template is normalized to </span><span class="si">{}</span><span class="s2"> (expected: 1)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"2D template is normalized to </span><span class="si">{}</span><span class="s2"> (expected: 1)"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">total</span><span class="p">))</span>
 
         <span class="c1"># hash sum uniquely identifying the template function (defined by its 2D map</span>
-        <span class="c1"># array and coordinate system) this is needed so that the memoization won&#39;t</span>
+        <span class="c1"># array and coordinate system) this is needed so that the memoization won't</span>
         <span class="c1"># confuse different SpatialTemplate_2D_Healpix objects.</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
-        <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span>
         <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="p">)</span><span class="o">.</span><span class="n">tobytes</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
 
@@ -1087,7 +1087,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="nb">hash</span><span class="p">):</span>
 
         <span class="c1"># X and Y are defined by the frame (ICRS,galactic, etc..)</span>
-        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
+        <span class="n">coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
 
         <span class="c1"># transform input coordinates to pixel coordinates;</span>
         <span class="n">pix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="o">.</span><span class="n">ang2pix</span><span class="p">(</span><span class="n">coord</span><span class="p">)</span>
@@ -1107,13 +1107,13 @@
 <div class="viewcode-block" id="SpatialTemplate_2D_Healpix.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.SpatialTemplate_2D_Healpix.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -1122,8 +1122,8 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the coordinate frame of the map.&quot;&quot;&quot;</span>
-        <span class="c1"># This maps the internal coordsys to the &#39;frame&#39; property</span>
+<span class="w">        </span><span class="sd">"""Return the coordinate frame of the map."""</span>
+        <span class="c1"># This maps the internal coordsys to the 'frame' property</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hpmap</span><span class="o">.</span><span class="n">coordsys</span></div>
 
 
@@ -1131,7 +1131,7 @@
 <div class="viewcode-block" id="Power_law_on_sphere">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Power_law_on_sphere</span><span class="p">(</span><span class="n">Function2D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A power law function on a sphere (in spherical coordinates)</span>
@@ -1176,12 +1176,12 @@
 <span class="sd">            initial value : 0.05</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -1241,13 +1241,13 @@
 <div class="viewcode-block" id="Power_law_on_sphere.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_2D.Power_law_on_sphere.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -1257,7 +1257,7 @@
 
 
 <span class="c1"># class FunctionIntegrator(Function2D):</span>
-<span class="c1">#     r&quot;&quot;&quot;</span>
+<span class="c1">#     r"""</span>
 <span class="c1">#         description :</span>
 <span class="c1">#</span>
 <span class="c1">#             Returns the average of the integrand function (a 1-d function) over the</span>
@@ -1277,22 +1277,22 @@
 <span class="c1">#                        otherwise (default) it will.</span>
 <span class="c1">#                 initial value : 1</span>
 <span class="c1">#                 fix : yes</span>
-<span class="c1">#         &quot;&quot;&quot;</span>
+<span class="c1">#         """</span>
 <span class="c1">#</span>
 <span class="c1">#     __metaclass__ = FunctionMeta</span>
 <span class="c1">#</span>
 <span class="c1">#     def _set_units(self, x_unit, y_unit, z_unit):</span>
 <span class="c1">#</span>
 <span class="c1">#         # lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-<span class="c1">#         # let&#39;s set them up here just to save for the possibility of using the</span>
+<span class="c1">#         # let's set them up here just to save for the possibility of using the</span>
 <span class="c1">#         # formula with other units (although it is probably never going to happen)</span>
 <span class="c1">#</span>
 <span class="c1">#         self.s = u.dimensionless_unscaled</span>
 <span class="c1">#</span>
 <span class="c1">#     def evaluate(self, x, y, s):</span>
 <span class="c1">#</span>
-<span class="c1">#         assert y-x &gt;= 0, &quot;Cannot obtain the integral if the integration interval is</span>
-<span class="c1">#                           zero or negative!&quot;</span>
+<span class="c1">#         assert y-x &gt;= 0, "Cannot obtain the integral if the integration interval is</span>
+<span class="c1">#                           zero or negative!"</span>
 <span class="c1">#</span>
 <span class="c1">#         integral = self._integrand.integral(x, y)</span>
 <span class="c1">#</span>
@@ -1318,7 +1318,7 @@
 <span class="c1">#         return self._integrand</span>
 <span class="c1">#</span>
 <span class="c1">#     integrand = property(_get_integrand, _set_integrand,</span>
-<span class="c1">#                          doc=&quot;&quot;&quot;Get/set the integrand&quot;&quot;&quot;)</span>
+<span class="c1">#                          doc="""Get/set the integrand""")</span>
 <span class="c1">#</span>
 <span class="c1">#</span>
 <span class="c1">#     def to_dict(self, minimal=False):</span>
@@ -1326,7 +1326,7 @@
 <span class="c1">#         data = super(Function2D, self).to_dict(minimal)</span>
 <span class="c1">#</span>
 <span class="c1">#         if not minimal:</span>
-<span class="c1">#             data[&#39;extra_setup&#39;] = {&#39;integrand&#39;: self.integrand.path}</span>
+<span class="c1">#             data['extra_setup'] = {'integrand': self.integrand.path}</span>
 <span class="c1">#</span>
 <span class="c1">#         return data</span>
 </pre></div>

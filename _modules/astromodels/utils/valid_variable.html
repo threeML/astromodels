@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -97,15 +97,15 @@
 <div class="viewcode-block" id="is_valid_variable_name">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.valid_variable.is_valid_variable_name">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_valid_variable_name</span><span class="p">(</span><span class="n">string_to_check</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns whether the provided name is a valid variable name in Python.</span>
+<span class="w">    </span><span class="sd">"""Returns whether the provided name is a valid variable name in Python.</span>
 
 <span class="sd">    :param string_to_check: the string to be checked</span>
 <span class="sd">    :return: True or False</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">try</span><span class="p">:</span>
 
-        <span class="n">parse</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> = None&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string_to_check</span><span class="p">))</span>
+        <span class="n">parse</span><span class="p">(</span><span class="s2">"</span><span class="si">{}</span><span class="s2"> = None"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">string_to_check</span><span class="p">))</span>
         <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">except</span> <span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>

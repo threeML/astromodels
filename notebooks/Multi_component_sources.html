@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -110,10 +110,10 @@ polarization, which can be useful when studying polarized sources (to be impleme
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 
-<span class="n">component1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;synchrotron&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
-<span class="n">component2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;IC&quot;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+<span class="n">component1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"synchrotron"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
+<span class="n">component2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"IC"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">Powerlaw</span><span class="p">())</span>
 <span class="n">multicomp_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
-    <span class="s2">&quot;multicomp_source&quot;</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.2</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">component1</span><span class="p">,</span> <span class="n">component2</span><span class="p">]</span>
+    <span class="s2">"multicomp_source"</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.2</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.2</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">component1</span><span class="p">,</span> <span class="n">component2</span><span class="p">]</span>
 <span class="p">)</span>
 
 <span class="n">multicomp_source</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>

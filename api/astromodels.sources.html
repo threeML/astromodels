@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -269,7 +269,7 @@ the parameter name.</p>
 </ul>
 <p>automatically called ‘main’):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;my_source&#39;</span><span class="p">,</span> <span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">'my_source'</span><span class="p">,</span> <span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -277,20 +277,20 @@ the parameter name.</p>
 </ul>
 <p>automatically called ‘main’):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
-<span class="go">            &#39;my_source&#39;, l=15.67, b=80.75, spectral_shape=Powerlaw()</span>
+<span class="go">            'my_source', l=15.67, b=80.75, spectral_shape=Powerlaw()</span>
 <span class="go">        )</span>
 </pre></div>
 </div>
 <ul>
 <li><p>with Equatorial position or Galactic position and a list of spectral components:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;component1&quot;</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;component2&quot;</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">&quot;test_source&quot;</span><span class="p">,</span><span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"component1"</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"component2"</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">"test_source"</span><span class="p">,</span><span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])</span>
 
 <span class="go">Or with Galactic position:</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
-<span class="go">            &quot;test_source&quot;,l=15.67, b=80.75,components=[c1,c2]</span>
+<span class="go">            "test_source",l=15.67, b=80.75,components=[c1,c2]</span>
 <span class="go">        )</span>
 </pre></div>
 </div>
@@ -571,7 +571,7 @@ the parameter name.</p>
 </ul>
 <p>automatically called ‘main’):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">astromodels</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">&#39;my_source&#39;</span><span class="p">,</span> <span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s1">'my_source'</span><span class="p">,</span> <span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
 </pre></div>
 </div>
 <ul class="simple">
@@ -579,20 +579,20 @@ the parameter name.</p>
 </ul>
 <p>automatically called ‘main’):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
-<span class="go">            &#39;my_source&#39;, l=15.67, b=80.75, spectral_shape=Powerlaw()</span>
+<span class="go">            'my_source', l=15.67, b=80.75, spectral_shape=Powerlaw()</span>
 <span class="go">        )</span>
 </pre></div>
 </div>
 <ul>
 <li><p>with Equatorial position or Galactic position and a list of spectral components:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;component1&quot;</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;component2&quot;</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">&quot;test_source&quot;</span><span class="p">,</span><span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">c1</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"component1"</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c2</span> <span class="o">=</span> <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"component2"</span><span class="p">,</span> <span class="n">Powerlaw</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="s2">"test_source"</span><span class="p">,</span><span class="mf">125.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.3</span><span class="p">,</span><span class="n">components</span><span class="o">=</span><span class="p">[</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])</span>
 
 <span class="go">Or with Galactic position:</span>
 
 <span class="gp">&gt;&gt;&gt; </span><span class="n">point_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
-<span class="go">            &quot;test_source&quot;,l=15.67, b=80.75,components=[c1,c2]</span>
+<span class="go">            "test_source",l=15.67, b=80.75,components=[c1,c2]</span>
 <span class="go">        )</span>
 </pre></div>
 </div>

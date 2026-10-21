@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -110,15 +110,15 @@
 <div class="viewcode-block" id="update_config_with_user_configs">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.configuration.update_config_with_user_configs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">update_config_with_user_configs</span><span class="p">(</span><span class="n">astromodels_config</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">user_config_file</span> <span class="ow">in</span> <span class="n">get_path_of_user_config</span><span class="p">()</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.yml&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">user_config_file</span> <span class="ow">in</span> <span class="n">get_path_of_user_config</span><span class="p">()</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.yml"</span><span class="p">):</span>
         <span class="n">_partial_conf</span> <span class="o">=</span> <span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">user_config_file</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;logging&quot;</span> <span class="ow">in</span> <span class="n">_partial_conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="s2">&quot;startup_warnings&quot;</span> <span class="ow">in</span> <span class="n">_partial_conf</span><span class="p">[</span><span class="s2">&quot;logging&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">"logging"</span> <span class="ow">in</span> <span class="n">_partial_conf</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="s2">"startup_warnings"</span> <span class="ow">in</span> <span class="n">_partial_conf</span><span class="p">[</span><span class="s2">"logging"</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="s2">&quot;You&#39;ve provided &#39;logging.startup_warnings&#39; in &quot;</span>
+                    <span class="s2">"You've provided 'logging.startup_warnings' in "</span>
                     <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">user_config_file</span><span class="p">)</span>
-                    <span class="o">+</span> <span class="s2">&quot;. &quot;</span>
-                    <span class="o">+</span> <span class="s2">&quot;This is deprecated since v2.6.0 - will ignore it&quot;</span><span class="p">,</span>
+                    <span class="o">+</span> <span class="s2">". "</span>
+                    <span class="o">+</span> <span class="s2">"This is deprecated since v2.6.0 - will ignore it"</span><span class="p">,</span>
                     <span class="ne">DeprecationWarning</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="k">del</span> <span class="n">_partial_conf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">startup_warnings</span>
@@ -140,7 +140,7 @@
         <span class="k">if</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DictConfig</span><span class="p">):</span>
 
             <span class="n">branch</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="n">k</span><span class="p">,</span> <span class="n">guide_style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span>
+                <span class="n">k</span><span class="p">,</span> <span class="n">guide_style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span>
             <span class="p">)</span>
 
             <span class="n">recurse_dict</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">branch</span><span class="p">)</span>
@@ -148,9 +148,9 @@
         <span class="k">else</span><span class="p">:</span>
 
             <span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: [blink cornflower_blue]</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                <span class="n">guide_style</span><span class="o">=</span><span class="s2">&quot;medium_spring_green&quot;</span><span class="p">,</span>
-                <span class="n">style</span><span class="o">=</span><span class="s2">&quot;medium_spring_green&quot;</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">: [blink cornflower_blue]</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="n">guide_style</span><span class="o">=</span><span class="s2">"medium_spring_green"</span><span class="p">,</span>
+                <span class="n">style</span><span class="o">=</span><span class="s2">"medium_spring_green"</span><span class="p">,</span>
             <span class="p">)</span>
 
     <span class="k">return</span></div>
@@ -160,14 +160,14 @@
 <div class="viewcode-block" id="show_configuration">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.configuration.show_configuration">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">show_configuration</span><span class="p">(</span><span class="n">sub_menu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display the current configuration or a sub menu if provided.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Display the current configuration or a sub menu if provided."""</span>
 
     <span class="k">if</span> <span class="n">sub_menu</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span>
-            <span class="s2">&quot;config&quot;</span><span class="p">,</span>
-            <span class="n">guide_style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span>
-            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span>
+            <span class="s2">"config"</span><span class="p">,</span>
+            <span class="n">guide_style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">recurse_dict</span><span class="p">(</span><span class="n">astromodels_config</span><span class="p">,</span> <span class="n">tree</span><span class="p">)</span>
@@ -177,16 +177,16 @@
         <span class="k">if</span> <span class="n">sub_menu</span> <span class="ow">in</span> <span class="n">astromodels_config</span><span class="p">:</span>
 
             <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span>
-                <span class="s2">&quot;config&quot;</span><span class="p">,</span>
-                <span class="n">guide_style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span>
-                <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span>
+                <span class="s2">"config"</span><span class="p">,</span>
+                <span class="n">guide_style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span>
+                <span class="n">style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="n">recurse_dict</span><span class="p">(</span><span class="n">astromodels_config</span><span class="p">[</span><span class="n">sub_menu</span><span class="p">],</span> <span class="n">tree</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sub_menu</span><span class="si">}</span><span class="s2"> is not in the astromodels configuration&quot;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sub_menu</span><span class="si">}</span><span class="s2"> is not in the astromodels configuration"</span>
 
             <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 

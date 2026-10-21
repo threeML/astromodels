@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -131,7 +131,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">eval_func</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defer</span><span class="p">):</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;property </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was given no initial value but is NOT deferred&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"property </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> was given no initial value but is NOT deferred"</span><span class="p">)</span>
 
         <span class="c1"># now we set the value</span>
 
@@ -142,17 +142,17 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_desc</span> <span class="o">=</span> <span class="n">desc</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return current parameter value.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return current parameter value."""</span>
 
         <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;accessing the property </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"accessing the property </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> with value </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the current value of the parameter, ensuring that it is within</span>
-<span class="sd">        the allowed range.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Sets the current value of the parameter, ensuring that it is within</span>
+<span class="sd">        the allowed range."""</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_defer</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">new_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="c1"># this is ok</span>
@@ -161,8 +161,8 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">new_value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> can only take the values &quot;</span>
-                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">)</span><span class="si">}</span><span class="s2"> not </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> can only take the values "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">)</span><span class="si">}</span><span class="s2"> not </span><span class="si">{</span><span class="n">new_value</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
                 <span class="k">raise</span> <span class="n">SettingUnknownValue</span><span class="p">()</span>
@@ -173,7 +173,7 @@
         <span class="c1"># then we need to execute the function</span>
         <span class="c1"># on the parent</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span> <span class="o">==</span> <span class="s2">&quot;_tmp&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defer</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_internal_value</span> <span class="o">==</span> <span class="s2">"_tmp"</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_defer</span><span class="p">:</span>
             <span class="c1"># do not execute in this mode</span>
 
             <span class="k">return</span>
@@ -181,15 +181,15 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_eval_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># if there is a parent</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;composite&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"composite"</span><span class="p">:</span>
                     <span class="c1"># ok, we have a composite function</span>
 
-                    <span class="n">func_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="n">func_idx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
 
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> has a composite parent and&quot;</span><span class="p">)</span>
-                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;is being executed on func idx </span><span class="si">{</span><span class="n">func_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> has a composite parent and"</span><span class="p">)</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">"is being executed on func idx </span><span class="si">{</span><span class="n">func_idx</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;and the parent has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> functions&quot;</span>
+                        <span class="sa">f</span><span class="s2">"and the parent has </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_functions</span><span class="p">)</span><span class="si">}</span><span class="s2"> functions"</span>
                     <span class="p">)</span>
 
                     <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_functions</span><span class="p">[</span><span class="n">func_idx</span><span class="p">],</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eval_func</span><span class="p">))()</span>
@@ -202,7 +202,7 @@
     <span class="n">value</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
         <span class="n">_get_value</span><span class="p">,</span>
         <span class="n">_set_value</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;Get and sets the current value for the property&quot;</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">"Get and sets the current value for the property"</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
@@ -220,17 +220,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a description of this parameter.</span>
+<span class="w">        </span><span class="sd">"""Return a description of this parameter.</span>
 
 <span class="sd">        :return: a string cointaining a description of the meaning of</span>
 <span class="sd">            this parameter</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desc</span>
 
 <div class="viewcode-block" id="PropertyBase.duplicate">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.property.PropertyBase.duplicate">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;FunctionProperty&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an exact copy of the current property.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"FunctionProperty"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns an exact copy of the current property."""</span>
 
         <span class="c1"># Deep copy everything to make sure that there are no ties between the new</span>
         <span class="c1"># instance and the old one</span>
@@ -242,17 +242,17 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;You need to implement this for the actual Property class&quot;</span>
+            <span class="s2">"You need to implement this for the actual Property class"</span>
         <span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_to_python_type</span><span class="p">(</span><span class="n">variable</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the value in the variable handling also np.array of one</span>
+<span class="w">        </span><span class="sd">"""Returns the value in the variable handling also np.array of one</span>
 <span class="sd">        element.</span>
 
 <span class="sd">        :param variable: input variable</span>
 <span class="sd">        :return: the value of the variable having a python type (int, float, ...)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Assume variable is a np.array, fall back to the case where variable is already</span>
         <span class="c1"># a primitive type</span>
@@ -266,24 +266,24 @@
 <div class="viewcode-block" id="PropertyBase.to_dict">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.property.PropertyBase.to_dict">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">minimal</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the representation for serialization.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Returns the representation for serialization."""</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="n">minimal</span><span class="p">:</span>
             <span class="c1"># In the minimal representation we just output the value</span>
 
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># In the complete representation we output everything is needed to re-build</span>
             <span class="c1"># the object</span>
 
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">bool</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;desc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_desc</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;allowed values&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;defer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_defer</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;function&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eval_func</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">bool</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"desc"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_desc</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"allowed values"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"defer"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_python_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_defer</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"function"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eval_func</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">data</span></div>
 </div>
@@ -312,9 +312,9 @@
         <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="n">rep</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot; ,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">)</span>
+        <span class="n">rep</span> <span class="o">=</span> <span class="s2">"all"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">" ,"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_allowed_values</span><span class="p">)</span>
         <span class="n">representation</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Property </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2"> (allowed values = </span><span class="si">{</span><span class="n">rep</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="sa">f</span><span class="s2">"Property </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="se">\n</span><span class="s2"> (allowed values = </span><span class="si">{</span><span class="n">rep</span><span class="si">}</span><span class="s2">)"</span>
         <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">representation</span></div>

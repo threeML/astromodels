@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -106,7 +106,7 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion_ellipse">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Continuous_injection_diffusion_ellipse</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Positron and electrons diffusing away from the accelerator</span>
@@ -186,12 +186,12 @@
 <span class="sd">            min : 0.1</span>
 <span class="sd">            max : 10.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -251,11 +251,11 @@
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
             <span class="c1"># This happens when using units, because astropy.units fails with the</span>
-            <span class="c1"># message: &quot;ValueError: Quantities and Units may only be raised to a scalar</span>
-            <span class="c1"># power&quot;</span>
+            <span class="c1"># message: "ValueError: Quantities and Units may only be raised to a scalar</span>
+            <span class="c1"># power"</span>
 
             <span class="c1"># Work around the problem with this loop, which is slow but using units is</span>
-            <span class="c1"># only for testing purposes or single calls, so it shouldn&#39;t matter too much</span>
+            <span class="c1"># only for testing purposes or single calls, so it shouldn't matter too much</span>
             <span class="n">rdiff_a</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
@@ -355,13 +355,13 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion_ellipse.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Continuous_injection_diffusion_ellipse.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -373,7 +373,7 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Continuous_injection_diffusion">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Continuous_injection_diffusion</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Positron and electrons diffusing away from the accelerator</span>
@@ -446,12 +446,12 @@
 <span class="sd">            min : 0</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -563,13 +563,13 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Continuous_injection_diffusion.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -581,7 +581,7 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion_legacy">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Continuous_injection_diffusion_legacy</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Positron and electrons diffusing away from the accelerator</span>
@@ -645,12 +645,12 @@
 <span class="sd">            min : 0</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
 
         <span class="c1"># lon0 and lat0 and rdiff have most probably all units of degrees. However,</span>
-        <span class="c1"># let&#39;s set them up here just to save for the possibility of using the</span>
+        <span class="c1"># let's set them up here just to save for the possibility of using the</span>
         <span class="c1"># formula with other units (although it is probably never going to happen)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lon0</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span>
@@ -700,11 +700,11 @@
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
 
             <span class="c1"># This happens when using units, because astropy.units fails with the</span>
-            <span class="c1"># message: &quot;ValueError: Quantities and Units may only be raised to a scalar</span>
-            <span class="c1"># power&quot;</span>
+            <span class="c1"># message: "ValueError: Quantities and Units may only be raised to a scalar</span>
+            <span class="c1"># power"</span>
 
             <span class="c1"># Work around the problem with this loop, which is slow but using units is</span>
-            <span class="c1"># only for testing purposes or single calls, so it shouldn&#39;t matter too much</span>
+            <span class="c1"># only for testing purposes or single calls, so it shouldn't matter too much</span>
             <span class="n">rdiff</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
                     <span class="p">[</span>
@@ -781,13 +781,13 @@
 <div class="viewcode-block" id="Continuous_injection_diffusion_legacy.get_total_spatial_integral">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Continuous_injection_diffusion_legacy.get_total_spatial_integral">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_total_spatial_integral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the total integral (for 2D functions) or the integral over</span>
+<span class="w">        </span><span class="sd">"""Returns the total integral (for 2D functions) or the integral over</span>
 <span class="sd">        the spatial components (for 3D functions). needs to be implemented in</span>
 <span class="sd">        subclasses.</span>
 
 <span class="sd">        :return: an array of values of the integral (same dimension as</span>
 <span class="sd">            z).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">value</span>
@@ -799,7 +799,7 @@
 <div class="viewcode-block" id="GalPropTemplate_3D">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.GalPropTemplate_3D">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GalPropTemplate_3D</span><span class="p">(</span><span class="n">Function3D</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Use a 3D template that has morphology and flux information.</span>
@@ -822,7 +822,7 @@
 <span class="sd">            initial value : 1</span>
 <span class="sd">            fix : yes</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">FunctionMeta</span>
 
@@ -840,11 +840,11 @@
 <div class="viewcode-block" id="GalPropTemplate_3D.set_frame">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.GalPropTemplate_3D.set_frame">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set a new frame for the coordinates (the default is ICRS J2000)</span>
+<span class="w">        </span><span class="sd">"""Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
 <span class="sd">        :param new_frame: a coordinate frame from astropy</span>
 <span class="sd">        :return: (none)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_frame</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">new_frame</span></div>
@@ -855,7 +855,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fitsfile</span><span class="p">,</span> <span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">,</span> <span class="n">galactic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">ihdu</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="n">fitsfile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Need to specify a fits file with a template map.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Need to specify a fits file with a template map."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span> <span class="o">=</span> <span class="n">fitsfile</span>
         <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">define_region</span><span class="p">(</span><span class="n">phi1</span><span class="p">,</span> <span class="n">phi2</span><span class="p">,</span> <span class="n">theta1</span><span class="p">,</span> <span class="n">theta2</span><span class="p">,</span> <span class="n">galactic</span><span class="p">)</span>
@@ -866,16 +866,16 @@
 
         <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT1&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT2&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT3&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL1&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL2&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL3&quot;</span><span class="p">]</span>  <span class="c1"># values in log10</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CDELT1"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CDELT2"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CDELT3"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CRVAL1"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CRVAL2"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CRVAL3"</span><span class="p">]</span>  <span class="c1"># values in log10</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS1&quot;</span><span class="p">]</span>  <span class="c1"># longitude</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS2&quot;</span><span class="p">]</span>  <span class="c1"># latitude</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS3&quot;</span><span class="p">]</span>  <span class="c1"># energy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS1"</span><span class="p">]</span>  <span class="c1"># longitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS2"</span><span class="p">]</span>  <span class="c1"># latitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">ihdu</span><span class="p">]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS3"</span><span class="p">]</span>  <span class="c1"># energy</span>
 
             <span class="c1"># Create the function for the interpolation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
@@ -916,13 +916,13 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">minimal</span><span class="p">:</span>
 
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;extra_setup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s2">&quot;_fitsfile&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">,</span>
-                <span class="s2">&quot;_frame&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
-                <span class="s2">&quot;ramin&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span><span class="p">,</span>
-                <span class="s2">&quot;ramax&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span><span class="p">,</span>
-                <span class="s2">&quot;decmin&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span><span class="p">,</span>
-                <span class="s2">&quot;decmax&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span><span class="p">,</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"extra_setup"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"_fitsfile"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">,</span>
+                <span class="s2">"_frame"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span>
+                <span class="s2">"ramin"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramin</span><span class="p">,</span>
+                <span class="s2">"ramax"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ramax</span><span class="p">,</span>
+                <span class="s2">"decmin"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmin</span><span class="p">,</span>
+                <span class="s2">"decmax"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decmax</span><span class="p">,</span>
             <span class="p">}</span>
 
         <span class="k">return</span> <span class="n">data</span></div>
@@ -954,15 +954,15 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_interpmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
             <span class="c1"># We assume x and y are R.A. and Dec</span>
-            <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
-            <span class="n">lat</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">lon</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
+            <span class="n">lat</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"galactic"</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">lon</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"galactic"</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
 
             <span class="c1"># transform energy from keV to MeV. Galprop Model starts at 100 MeV</span>
-            <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;keV&quot;</span><span class="p">)</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">MeV</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"keV"</span><span class="p">)</span> <span class="o">/</span> <span class="n">u</span><span class="o">.</span><span class="n">keV</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Lon and Lat should be the same size&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">"Lon and Lat should be the same size"</span><span class="p">)</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">energy</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
             <span class="c1"># E0 = self._refEn</span>
             <span class="c1"># Ef = self._refEn + (self._ne - 1) * self._delEn</span>
@@ -981,7 +981,7 @@
             <span class="n">f</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">bad_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="n">f</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="s2">&quot;some interpolated values are wrong&quot;</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="s2">"some interpolated values are wrong"</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_interpmap</span> <span class="o">=</span> <span class="n">f</span>
 
         <span class="c1"># (1000 is to change from MeV to KeV)</span>
@@ -1001,14 +1001,14 @@
             <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span>
                 <span class="n">l</span><span class="o">=</span><span class="p">[</span><span class="n">lmin</span><span class="p">,</span> <span class="n">lmin</span><span class="p">,</span> <span class="n">lmax</span><span class="p">,</span> <span class="n">lmax</span><span class="p">],</span>
                 <span class="n">b</span><span class="o">=</span><span class="p">[</span><span class="n">bmin</span><span class="p">,</span> <span class="n">bmax</span><span class="p">,</span> <span class="n">bmax</span><span class="p">,</span> <span class="n">bmin</span><span class="p">],</span>
-                <span class="n">frame</span><span class="o">=</span><span class="s2">&quot;galactic&quot;</span><span class="p">,</span>
-                <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">,</span>
+                <span class="n">frame</span><span class="o">=</span><span class="s2">"galactic"</span><span class="p">,</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">,</span>
             <span class="p">)</span>
 
-            <span class="n">ramin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">ramax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">decmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-            <span class="n">decmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;icrs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">ramin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">ramax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">ra</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">decmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">decmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"icrs"</span><span class="p">)</span><span class="o">.</span><span class="n">dec</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">ramin</span> <span class="o">=</span> <span class="n">a</span>
@@ -1033,7 +1033,7 @@
 <div class="viewcode-block" id="Hermes">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Hermes">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Hermes</span><span class="p">(</span><span class="n">Function3D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Use a 3D template that has morphology and flux information</span>
@@ -1076,7 +1076,7 @@
 <span class="sd">                - fk5</span>
 <span class="sd">                - fk4</span>
 <span class="sd">                - fk4_no_e</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">,</span> <span class="n">z_unit</span><span class="p">,</span> <span class="n">w_unit</span><span class="p">):</span>
         <span class="c1"># self.N*K.unit = (u.keV * u.cm**2 * u.s * u.sr) ** (-1)</span>
@@ -1086,18 +1086,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">w_unit</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="s2">&quot;icrs&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="s2">"icrs"</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Hermes.set_frame">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.functions_3D.Hermes.set_frame">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Set a new frame for the coordinates (the default is ICRS J2000)</span>
 
 <span class="sd">        :param new_frame: a coordinate frame from astropy</span>
 <span class="sd">        :return: (none)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_frame</span><span class="p">,</span> <span class="n">BaseCoordinateFrame</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span> <span class="o">=</span> <span class="n">new_frame</span></div>
@@ -1106,25 +1106,25 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_load_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_file</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Need to specify a fits file with a template map.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Need to specify a fits file with a template map."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fits_file</span><span class="o">.</span><span class="n">value</span>
 
         <span class="k">with</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT1&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT2&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CDELT3&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL1&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL2&quot;</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;CRVAL3&quot;</span><span class="p">]</span>  <span class="c1"># values in log10</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CDELT1"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CDELT2"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CDELT3"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLon</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CRVAL1"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refLat</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CRVAL2"</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_refEn</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"CRVAL3"</span><span class="p">]</span>  <span class="c1"># values in log10</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">data</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span> <span class="o">=</span> <span class="n">wcs</span><span class="o">.</span><span class="n">WCS</span><span class="p">(</span><span class="n">header</span><span class="o">=</span><span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS1&quot;</span><span class="p">]</span>  <span class="c1"># longitude</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS2&quot;</span><span class="p">]</span>  <span class="c1"># latitude</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">&quot;NAXIS3&quot;</span><span class="p">]</span>  <span class="c1"># energy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nl</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS1"</span><span class="p">]</span>  <span class="c1"># longitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_nb</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS2"</span><span class="p">]</span>  <span class="c1"># latitude</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_ne</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ihdu</span><span class="o">.</span><span class="n">value</span><span class="p">)]</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"NAXIS3"</span><span class="p">]</span>  <span class="c1"># energy</span>
 
             <span class="c1"># Create the function for the interpolation</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_L</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
@@ -1144,7 +1144,7 @@
 
             <span class="n">h</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha224</span><span class="p">()</span>
             <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_map</span><span class="p">)</span>
-            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="n">h</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wcs</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span> <span class="mi">16</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Hermes.evaluate">
@@ -1155,15 +1155,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_load_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fitsfile</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&quot;deg&quot;</span><span class="p">)</span>
-            <span class="n">b</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">&quot;galactic&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">_coord</span> <span class="o">=</span> <span class="n">SkyCoord</span><span class="p">(</span><span class="n">ra</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"deg"</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"galactic"</span><span class="p">)</span><span class="o">.</span><span class="n">b</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">_coord</span><span class="o">.</span><span class="n">transform_to</span><span class="p">(</span><span class="s2">"galactic"</span><span class="p">)</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">value</span>
             <span class="n">lon</span> <span class="o">=</span> <span class="n">l</span>
             <span class="n">lat</span> <span class="o">=</span> <span class="n">b</span>
             <span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">lon</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">lat</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Lon and Lat should be the same size&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">"Lon and Lat should be the same size"</span><span class="p">)</span>
             <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">lon</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">energy</span><span class="o">.</span><span class="n">size</span><span class="p">])</span>
             <span class="c1"># E0 = self._refEn</span>
             <span class="c1"># Ef = self._refEn + (self._ne-1)*self._delEn</span>
@@ -1180,7 +1180,7 @@
             <span class="n">f</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">bad_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isinf</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="n">f</span><span class="p">[</span><span class="n">bad_idx</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="s2">&quot;some interpolated values are wrong&quot;</span>
+            <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="s2">"some interpolated values are wrong"</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span> <span class="o">=</span> <span class="n">f</span>
 
         <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_intmap</span><span class="p">)</span>

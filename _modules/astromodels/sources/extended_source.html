@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -128,20 +128,20 @@
             <span class="c1"># Now gather the component(s)</span>
 
             <span class="c1"># We need either a single component, or a list of components, but not both</span>
-            <span class="c1"># (that&#39;s the ^ symbol)</span>
+            <span class="c1"># (that's the ^ symbol)</span>
 
             <span class="k">assert</span> <span class="p">(</span><span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">),</span> <span class="p">(</span>
-                <span class="s2">&quot;You have to provide either a single &quot;</span>
-                <span class="s2">&quot;component, or a list of components &quot;</span>
-                <span class="s2">&quot;(but not both).&quot;</span>
+                <span class="s2">"You have to provide either a single "</span>
+                <span class="s2">"component, or a list of components "</span>
+                <span class="s2">"(but not both)."</span>
             <span class="p">)</span>
 
             <span class="c1"># If the user specified only one component, make a list of one element with</span>
-            <span class="c1"># a default name (&quot;main&quot;)</span>
+            <span class="c1"># a default name ("main")</span>
 
             <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-                <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)]</span>
+                <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)]</span>
 
             <span class="c1"># Components in this case have energy as x and differential flux as y</span>
 
@@ -168,7 +168,7 @@
                 <span class="c1"># This is a template. Add a component which is just a renormalization</span>
 
                 <span class="n">spectral_shape</span> <span class="o">=</span> <span class="n">Constant</span><span class="p">()</span>
-                <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
+                <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">)]</span>
 
                 <span class="c1"># set the units</span>
                 <span class="n">diff_flux_units</span> <span class="o">=</span> <span class="p">(</span>
@@ -190,9 +190,9 @@
                 <span class="k">if</span> <span class="ow">not</span> <span class="p">((</span><span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="o">^</span> <span class="p">(</span><span class="n">components</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)):</span>
 
                     <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                        <span class="s2">&quot;You can provide either a single &quot;</span>
-                        <span class="s2">&quot;component, or a list of components &quot;</span>
-                        <span class="s2">&quot;(but not both).&quot;</span>
+                        <span class="s2">"You can provide either a single "</span>
+                        <span class="s2">"component, or a list of components "</span>
+                        <span class="s2">"(but not both)."</span>
                     <span class="p">)</span>
 
                     <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
@@ -200,7 +200,7 @@
                 <span class="k">if</span> <span class="n">spectral_shape</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
                     <span class="n">components</span> <span class="o">=</span> <span class="p">[</span>
-                        <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)</span>
+                        <span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="p">,</span> <span class="n">polarization</span><span class="p">)</span>
                     <span class="p">]</span>
 
                 <span class="c1"># Assign units</span>
@@ -222,7 +222,7 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;The spatial shape must have either 2 or 3 dimensions.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"The spatial shape must have either 2 or 3 dimensions."</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">()</span>
 
@@ -241,30 +241,30 @@
         <span class="c1"># Add the same node also with the name of the function</span>
         <span class="c1"># self._add_child(self._shape, self._shape.__name__)</span>
 
-        <span class="c1"># Add a node called &#39;spectrum&#39;</span>
+        <span class="c1"># Add a node called 'spectrum'</span>
 
-        <span class="n">spectrum_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;spectrum&quot;</span><span class="p">)</span>
+        <span class="n">spectrum_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">"spectrum"</span><span class="p">)</span>
         <span class="n">spectrum_node</span><span class="o">.</span><span class="n">_add_children</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">spectrum_node</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">spatial_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A generic name for the spatial shape.</span>
+<span class="w">        </span><span class="sd">"""A generic name for the spatial shape.</span>
 
 <span class="sd">        :return: the spatial shape instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spatial_shape</span>
 
 <div class="viewcode-block" id="ExtendedSource.get_spatially_integrated_flux">
 <a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.extended_source.ExtendedSource.get_spatially_integrated_flux">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_spatially_integrated_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns total flux of source at the given energy :param energies:</span>
+<span class="w">        </span><span class="sd">"""Returns total flux of source at the given energy :param energies:</span>
 
 <span class="sd">        energies (array or float)</span>
 <span class="sd">        :return: differential flux at given energy.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
             <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">ndmin</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -297,14 +297,14 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns brightness of source at the given position and energy :param</span>
+<span class="w">        </span><span class="sd">"""Returns brightness of source at the given position and energy :param</span>
 <span class="sd">        lon: longitude (array or float) :param lat: latitude (array or float)</span>
 <span class="sd">        :param energies: energies (array or float) :return: differential flux</span>
-<span class="sd">        at given position and energy.&quot;&quot;&quot;</span>
+<span class="sd">        at given position and energy."""</span>
 
         <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">(</span>
             <span class="n">energies</span>
-        <span class="p">),</span> <span class="s2">&quot;Type mismatch in input of call&quot;</span>
+        <span class="p">),</span> <span class="s2">"Type mismatch in input of call"</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
 
@@ -363,10 +363,10 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">has_free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True or False whether there is any parameter in this source.</span>
+<span class="w">        </span><span class="sd">"""Returns True or False whether there is any parameter in this source.</span>
 
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
 
@@ -386,12 +386,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of free parameters for this source We use the</span>
-<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="w">        </span><span class="sd">"""Returns a dictionary of free parameters for this source We use the</span>
+<span class="sd">        parameter path as the key because it's guaranteed to be unique, unlike</span>
 <span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">free_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
@@ -412,12 +412,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of all parameters for this source. We use the</span>
-<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="w">        </span><span class="sd">"""Returns a dictionary of all parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it's guaranteed to be unique, unlike</span>
 <span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">all_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
@@ -433,35 +433,35 @@
         <span class="k">return</span> <span class="n">all_parameters</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representation of the object.</span>
+<span class="w">        </span><span class="sd">"""Representation of the object.</span>
 
 <span class="sd">        :param rich_output: if True, generates HTML, otherwise text</span>
 <span class="sd">        :return: the representation</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Make a dictionary which will then be transformed in a list</span>
 
         <span class="n">repr_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (extended source)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> (extended source)"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
         <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spatial_shape</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"shape"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spatial_shape</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"spectrum"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-            <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"spectrum"</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="n">repr_dict</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ExtendedSource.get_boundaries">
 <a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.extended_source.ExtendedSource.get_boundaries">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_boundaries</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the boundaries for this extended source.</span>
+<span class="w">        </span><span class="sd">"""Returns the boundaries for this extended source.</span>
 
 <span class="sd">        :return: a tuple of tuples ((min. lon, max. lon), (min lat, max</span>
 <span class="sd">            lat))</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spatial_shape</span><span class="o">.</span><span class="n">get_boundaries</span><span class="p">()</span></div>
 </div>
 

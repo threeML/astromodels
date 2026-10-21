@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -106,7 +106,7 @@
 <div class="viewcode-block" id="DMFitFunction">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMFitFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DMFitFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Class that evaluates the spectrum for a DM particle of a given</span>
@@ -140,14 +140,14 @@
 <span class="sd">            desc : Target total J-factor (GeV^2 cm^-5)</span>
 <span class="sd">            initial value : 1.e20</span>
 <span class="sd">            fix : yes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">tablepath</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/gammamc_dif.dat&quot;</span><span class="p">)</span>
+        <span class="n">tablepath</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">"dark_matter/gammamc_dif.dat"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">tablepath</span><span class="p">)</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mapping between the channel codes and the rows in the gammamc file.</span>
+<span class="w">        </span><span class="sd">"""Mapping between the channel codes and the rows in the gammamc file.</span>
 
 <span class="sd">        1 : 8, # ee</span>
 <span class="sd">        2 : 6, # mumu</span>
@@ -161,7 +161,7 @@
 <span class="sd">        10 : 10, # uu</span>
 <span class="sd">        11 : 11, # dd</span>
 <span class="sd">        12 : 9, # ss</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">channel_index_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>  <span class="c1"># ee</span>
@@ -226,8 +226,8 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
 
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Warning: DMFitFunction only appropriate for masses &lt;= 10 TeV &quot;</span>
-                <span class="s2">&quot;To model DM from 2 GeV &lt; mass &lt; 1 PeV use DMSpectra&quot;</span>
+                <span class="s2">"Warning: DMFitFunction only appropriate for masses &lt;= 10 TeV "</span>
+                <span class="s2">"To model DM from 2 GeV &lt; mass &lt; 1 PeV use DMSpectra"</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
@@ -248,18 +248,18 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">print_channel_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">channel_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;ee&quot;</span><span class="p">,</span>
-            <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;mumu&quot;</span><span class="p">,</span>
-            <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;tautau&quot;</span><span class="p">,</span>
-            <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span>
-            <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;tt&quot;</span><span class="p">,</span>
-            <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;gg&quot;</span><span class="p">,</span>
-            <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;ww&quot;</span><span class="p">,</span>
-            <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;zz&quot;</span><span class="p">,</span>
-            <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;cc&quot;</span><span class="p">,</span>
-            <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;uu&quot;</span><span class="p">,</span>
-            <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;dd&quot;</span><span class="p">,</span>
-            <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;ss&quot;</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="s2">"ee"</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="s2">"mumu"</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="s2">"tautau"</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="s2">"bb"</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="s2">"tt"</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="s2">"gg"</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="s2">"ww"</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="s2">"zz"</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="s2">"cc"</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="s2">"uu"</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="s2">"dd"</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="s2">"ss"</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="n">channel_mapping</span><span class="p">)</span>
@@ -301,7 +301,7 @@
 <div class="viewcode-block" id="DMSpectra">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMSpectra">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DMSpectra</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Class that evaluates the spectrum for a DM particle of a given</span>
@@ -337,18 +337,18 @@
 <span class="sd">            desc : Target total J-factor (GeV^2 cm^-5)</span>
 <span class="sd">            initial value : 1.e20</span>
 <span class="sd">            fix : yes</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Get and open the two data files</span>
 
-        <span class="n">tablepath_h</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/dmSpecTab.npy&quot;</span><span class="p">)</span>
+        <span class="n">tablepath_h</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">"dark_matter/dmSpecTab.npy"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">tablepath_h</span><span class="p">)</span>
 
-        <span class="n">tablepath_f</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">&quot;dark_matter/gammamc_dif.dat&quot;</span><span class="p">)</span>
+        <span class="n">tablepath_f</span> <span class="o">=</span> <span class="n">_get_data_file_path</span><span class="p">(</span><span class="s2">"dark_matter/gammamc_dif.dat"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data_f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">tablepath_f</span><span class="p">)</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mapping between the channel codes and the rows in the gammamc file</span>
+<span class="w">        </span><span class="sd">"""Mapping between the channel codes and the rows in the gammamc file</span>
 <span class="sd">        dmSpecTab.npy created to match this mapping too.</span>
 
 <span class="sd">        1 : 8, # ee</span>
@@ -363,7 +363,7 @@
 <span class="sd">        10 : 10, # uu</span>
 <span class="sd">        11 : 11, # dd</span>
 <span class="sd">        12 : 9, # ss</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="n">channel_index_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="mi">1</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>  <span class="c1"># ee</span>
@@ -493,11 +493,11 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="o">.</span><span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">mass</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mf">10000.0</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;currently spectra for selected channel and mass not implemented.&quot;</span>
+                <span class="s2">"currently spectra for selected channel and mass not implemented."</span>
             <span class="p">)</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="s2">&quot;Spectra for channels [&#39;ee&#39;,&#39;gg&#39;,&#39;WW&#39;] currently not available for mass&quot;</span>
-                <span class="s2">&quot; &gt; 10 TeV&quot;</span>
+                <span class="s2">"Spectra for channels ['ee','gg','WW'] currently not available for mass"</span>
+                <span class="s2">" &gt; 10 TeV"</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
@@ -511,18 +511,18 @@
 <a class="viewcode-back" href="../../../../api/astromodels.functions.dark_matter.html#astromodels.functions.DMSpectra.print_channel_mapping">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">print_channel_mapping</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">channel_mapping</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;ee&quot;</span><span class="p">,</span>
-            <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;mumu&quot;</span><span class="p">,</span>
-            <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;tautau&quot;</span><span class="p">,</span>
-            <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;bb&quot;</span><span class="p">,</span>
-            <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;tt&quot;</span><span class="p">,</span>
-            <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;gg&quot;</span><span class="p">,</span>
-            <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;ww&quot;</span><span class="p">,</span>
-            <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;zz&quot;</span><span class="p">,</span>
-            <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;cc&quot;</span><span class="p">,</span>
-            <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;uu&quot;</span><span class="p">,</span>
-            <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;dd&quot;</span><span class="p">,</span>
-            <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;ss&quot;</span><span class="p">,</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="s2">"ee"</span><span class="p">,</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="s2">"mumu"</span><span class="p">,</span>
+            <span class="mi">3</span><span class="p">:</span> <span class="s2">"tautau"</span><span class="p">,</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="s2">"bb"</span><span class="p">,</span>
+            <span class="mi">5</span><span class="p">:</span> <span class="s2">"tt"</span><span class="p">,</span>
+            <span class="mi">6</span><span class="p">:</span> <span class="s2">"gg"</span><span class="p">,</span>
+            <span class="mi">7</span><span class="p">:</span> <span class="s2">"ww"</span><span class="p">,</span>
+            <span class="mi">8</span><span class="p">:</span> <span class="s2">"zz"</span><span class="p">,</span>
+            <span class="mi">9</span><span class="p">:</span> <span class="s2">"cc"</span><span class="p">,</span>
+            <span class="mi">10</span><span class="p">:</span> <span class="s2">"uu"</span><span class="p">,</span>
+            <span class="mi">11</span><span class="p">:</span> <span class="s2">"dd"</span><span class="p">,</span>
+            <span class="mi">12</span><span class="p">:</span> <span class="s2">"ss"</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="nb">print</span><span class="p">(</span><span class="n">channel_mapping</span><span class="p">)</span>

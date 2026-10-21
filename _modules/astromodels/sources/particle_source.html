@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -93,7 +93,7 @@
   <h1>Source code for astromodels.sources.particle_source</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
@@ -111,7 +111,7 @@
 <div class="viewcode-block" id="ParticleSource">
 <a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.particle_source.ParticleSource">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ParticleSource</span><span class="p">(</span><span class="n">Source</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A source of particles with a certain distribution. This source does not</span>
+<span class="w">    </span><span class="sd">"""A source of particles with a certain distribution. This source does not</span>
 <span class="sd">    produce any electromagnetic signal, but it is useful if used in conjuction</span>
 <span class="sd">    with spectral shapes which need a particle distribution as input, like for</span>
 <span class="sd">    example a Synchrotron kernel.</span>
@@ -121,7 +121,7 @@
 <span class="sd">        distribution of the particles</span>
 <span class="sd">    :param components: a list of SpectralComponents instances</span>
 <span class="sd">    :return:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">distribution_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
@@ -132,19 +132,19 @@
             <span class="k">if</span> <span class="n">distribution_shape</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 
                 <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                    <span class="s2">&quot;You have to either provied a list of components, or a &quot;</span>
-                    <span class="s2">&quot;distribution shape&quot;</span>
+                    <span class="s2">"You have to either provied a list of components, or a "</span>
+                    <span class="s2">"distribution shape"</span>
                 <span class="p">)</span>
 
                 <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">()</span>
 
-            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">&quot;main&quot;</span><span class="p">,</span> <span class="n">distribution_shape</span><span class="p">)]</span>
+            <span class="n">components</span> <span class="o">=</span> <span class="p">[</span><span class="n">SpectralComponent</span><span class="p">(</span><span class="s2">"main"</span><span class="p">,</span> <span class="n">distribution_shape</span><span class="p">)]</span>
 
         <span class="n">Source</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">SourceType</span><span class="o">.</span><span class="n">PARTICLE_SOURCE</span><span class="p">)</span>
 
-        <span class="c1"># Add a node called &#39;spectrum&#39;</span>
+        <span class="c1"># Add a node called 'spectrum'</span>
 
-        <span class="n">spectrum_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;spectrum&quot;</span><span class="p">)</span>
+        <span class="n">spectrum_node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">"spectrum"</span><span class="p">)</span>
         <span class="n">spectrum_node</span><span class="o">.</span><span class="n">_add_children</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">spectrum_node</span><span class="p">)</span>
@@ -167,8 +167,8 @@
 <div class="viewcode-block" id="ParticleSource.get_flux">
 <a class="viewcode-back" href="../../../api/astromodels.sources.html#astromodels.sources.particle_source.ParticleSource.get_flux">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the total flux of this particle source at the given energies</span>
-<span class="sd">        (summed over the components)&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Get the total flux of this particle source at the given energies</span>
+<span class="sd">        (summed over the components)"""</span>
 
         <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">component</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span> <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
@@ -178,35 +178,35 @@
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representation of the object.</span>
+<span class="w">        </span><span class="sd">"""Representation of the object.</span>
 
 <span class="sd">        :param rich_output: if True, generates HTML, otherwise text</span>
 <span class="sd">        :return: the representation</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Make a dictionary which will then be transformed in a list</span>
 
         <span class="n">repr_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-        <span class="n">key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (particle source)&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2"> (particle source)"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
         <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"spectrum"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component_name</span><span class="p">,</span> <span class="n">component</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 
-            <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">&quot;spectrum&quot;</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">repr_dict</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s2">"spectrum"</span><span class="p">][</span><span class="n">component_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">component</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dict_to_list</span><span class="p">(</span><span class="n">repr_dict</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">free_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of free parameters for this source. We use the</span>
-<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="w">        </span><span class="sd">"""Returns a dictionary of free parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it's guaranteed to be unique, unlike</span>
 <span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">free_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -221,12 +221,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dictionary of all parameters for this source. We use the</span>
-<span class="sd">        parameter path as the key because it&#39;s guaranteed to be unique, unlike</span>
+<span class="w">        </span><span class="sd">"""Returns a dictionary of all parameters for this source. We use the</span>
+<span class="sd">        parameter path as the key because it's guaranteed to be unique, unlike</span>
 <span class="sd">        the parameter name.</span>
 
 <span class="sd">        :return:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">all_parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_components</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>

@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -103,7 +103,7 @@
 
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 <span class="c1"># DMFitFunction and DMSpectra add by Andrea Albert (aalbert@slac.stanford.edu) Oct 26,</span>
 <span class="c1"># 2016</span>
 
@@ -129,7 +129,7 @@
 
 
 
-<span class="c1"># Now let&#39;s try and import optional dependencies</span>
+<span class="c1"># Now let's try and import optional dependencies</span>
 
 
 <span class="k">try</span><span class="p">:</span>
@@ -143,9 +143,9 @@
 
     <span class="n">add_startup_warning</span><span class="p">(</span>
         <span class="n">log</span><span class="p">,</span>
-        <span class="s2">&quot;The naima package is not available. Models &quot;</span>
-        <span class="s2">&quot;that depend on it will not be&quot;</span>
-        <span class="s2">&quot; available&quot;</span><span class="p">,</span>
+        <span class="s2">"The naima package is not available. Models "</span>
+        <span class="s2">"that depend on it will not be"</span>
+        <span class="s2">" available"</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">has_naima</span> <span class="o">=</span> <span class="kc">False</span>
@@ -165,9 +165,9 @@
 
     <span class="n">add_startup_warning</span><span class="p">(</span>
         <span class="n">log</span><span class="p">,</span>
-        <span class="s2">&quot;The GSL library or the pygsl wrapper &quot;</span>
-        <span class="s2">&quot;cannot be loaded. Models that depend&quot;</span>
-        <span class="s2">&quot; on it will not be available.&quot;</span><span class="p">,</span>
+        <span class="s2">"The GSL library or the pygsl wrapper "</span>
+        <span class="s2">"cannot be loaded. Models that depend"</span>
+        <span class="s2">" on it will not be available."</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">has_gsl</span> <span class="o">=</span> <span class="kc">False</span>
@@ -180,7 +180,7 @@
 <div class="viewcode-block" id="GenericFunction">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GenericFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        Return k*f(x)</span>
@@ -193,7 +193,7 @@
 
 <span class="sd">            desc : Constant value</span>
 <span class="sd">            initial value : 1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="GenericFunction.set_function">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.GenericFunction.set_function">[docs]</a>
@@ -213,7 +213,7 @@
     <span class="n">function</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
         <span class="n">get_function</span><span class="p">,</span>
         <span class="n">set_function</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get/set function&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">"""Get/set function"""</span><span class="p">,</span>
     <span class="p">)</span>
 
 <div class="viewcode-block" id="GenericFunction.evaluate">
@@ -228,7 +228,7 @@
                 <span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">k</span> <span class="o">*</span> <span class="n">ones</span>
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;You must define a function with set_function!&quot;</span><span class="p">)</span></div>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"You must define a function with set_function!"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GenericFunction.to_dict">
@@ -242,7 +242,7 @@
                 <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_function</span>
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="n">f</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;extra_setup&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;function&quot;</span><span class="p">:</span> <span class="n">f</span><span class="p">}</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">"extra_setup"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"function"</span><span class="p">:</span> <span class="n">f</span><span class="p">}</span>
 
         <span class="k">return</span> <span class="n">data</span></div>
 </div>
@@ -252,7 +252,7 @@
 <div class="viewcode-block" id="StepFunction">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunction">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StepFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0</span>
@@ -288,7 +288,7 @@
 <span class="sd">        - { x : 0.5, function value: 1.0, tolerance: 1e-20}</span>
 <span class="sd">        - { x : -0.5, function value: 0, tolerance: 1e-20}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># Lower and upper bound has the same unit as x</span>
@@ -330,7 +330,7 @@
 <div class="viewcode-block" id="StepFunctionUpper">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.StepFunctionUpper">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StepFunctionUpper</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A function which is constant on the interval lower_bound - upper_bound and 0</span>
@@ -366,7 +366,7 @@
 <span class="sd">        - { x : 0.5, function value: 1.0, tolerance: 1e-20}</span>
 <span class="sd">        - { x : -0.5, function value: 0, tolerance: 1e-20}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># Lower and upper bound has the same unit as x</span>
@@ -394,7 +394,7 @@
 <div class="viewcode-block" id="Sin">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Sin">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Sin</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A sinusodial function</span>
@@ -427,14 +427,14 @@
 <span class="sd">        - { x : 0.0, function value: 0.0, tolerance: 1e-10}</span>
 <span class="sd">        - { x : 1.5707963267948966, function value: 1.0, tolerance: 1e-10}</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># The normalization has the same unit of y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">y_unit</span>
 
         <span class="c1"># The unit of f is 1 / [x] because fx must be a pure number. However,</span>
-        <span class="c1"># np.pi of course doesn&#39;t have units, so we add a rad</span>
+        <span class="c1"># np.pi of course doesn't have units, so we add a rad</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">x_unit</span> <span class="o">**</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">astropy_units</span><span class="o">.</span><span class="n">rad</span>
 
         <span class="c1"># The unit of phi is always the same (radians)</span>
@@ -466,7 +466,7 @@
 <div class="viewcode-block" id="DiracDelta">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.DiracDelta">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DiracDelta</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        return  at zero_point</span>
@@ -493,7 +493,7 @@
 <span class="sd">             fix : yes</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
@@ -525,7 +525,7 @@
 <span class="k">if</span> <span class="n">has_naima</span><span class="p">:</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Synchrotron</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        description :</span>
 <span class="sd">            Synchrotron spectrum from an input particle distribution, using Naima</span>
 <span class="sd">            (naima.readthedocs.org)</span>
@@ -555,7 +555,7 @@
 <span class="sd">                min : 2</span>
 <span class="sd">                max : 100</span>
 <span class="sd">                fix : yes</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
@@ -575,10 +575,10 @@
         <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
             <span class="c1"># This function can only be used as a spectrum,</span>
-            <span class="c1"># so let&#39;s check that x_unit is a energy and y_unit is</span>
+            <span class="c1"># so let's check that x_unit is a energy and y_unit is</span>
             <span class="c1"># differential flux</span>
 
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="s2">&quot;physical_type&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">==</span> <span class="s2">&quot;energy&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x_unit</span><span class="p">,</span> <span class="s2">"physical_type"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">==</span> <span class="s2">"energy"</span><span class="p">:</span>
 
                 <span class="c1"># Now check that y is a differential flux</span>
                 <span class="n">current_units</span> <span class="o">=</span> <span class="n">get_units</span><span class="p">()</span>
@@ -587,30 +587,30 @@
                 <span class="p">)</span>
 
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">should_be_unitless</span><span class="p">,</span> <span class="s2">&quot;physical_type&quot;</span><span class="p">)</span>
-                    <span class="ow">or</span> <span class="n">should_be_unitless</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="s2">&quot;dimensionless&quot;</span>
+                    <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">should_be_unitless</span><span class="p">,</span> <span class="s2">"physical_type"</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="n">should_be_unitless</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="s2">"dimensionless"</span>
                 <span class="p">):</span>
                     <span class="c1"># y is not a differential flux</span>
                     <span class="k">raise</span> <span class="n">InvalidUsageForFunction</span><span class="p">(</span>
-                        <span class="s2">&quot;Unit for y is not differential flux. The function synchrotron &quot;</span>
-                        <span class="s2">&quot;can only be used as a spectrum.&quot;</span>
+                        <span class="s2">"Unit for y is not differential flux. The function synchrotron "</span>
+                        <span class="s2">"can only be used as a spectrum."</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
 
                 <span class="k">raise</span> <span class="n">InvalidUsageForFunction</span><span class="p">(</span>
-                    <span class="s2">&quot;Unit for x is not an energy. The function synchrotron can only be &quot;</span>
-                    <span class="s2">&quot;used as a spectrum&quot;</span>
+                    <span class="s2">"Unit for x is not an energy. The function synchrotron can only be "</span>
+                    <span class="s2">"used as a spectrum"</span>
                 <span class="p">)</span>
 
-                <span class="c1"># we actually don&#39;t need to do anything as the units are already set up</span>
+                <span class="c1"># we actually don't need to do anything as the units are already set up</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">set_particle_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
 
-            <span class="k">if</span> <span class="s2">&quot;particle_distribution&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"particle_distribution"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">unlink_external_function</span><span class="p">(</span><span class="s2">&quot;particle_distribution&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">unlink_external_function</span><span class="p">(</span><span class="s2">"particle_distribution"</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s2">&quot;particle_distribution&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s2">"particle_distribution"</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_particle_distribution_name</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">name</span>
 
@@ -634,12 +634,12 @@
 
         <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">[</span><span class="s2">&quot;particle_distribution&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">[</span><span class="s2">"particle_distribution"</span><span class="p">]</span>
 
         <span class="n">particle_distribution</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
             <span class="n">get_particle_distribution</span><span class="p">,</span>
             <span class="n">set_particle_distribution</span><span class="p">,</span>
-            <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get/set particle distribution for electrons&quot;&quot;&quot;</span><span class="p">,</span>
+            <span class="n">doc</span><span class="o">=</span><span class="s2">"""Get/set particle distribution for electrons"""</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">fix_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">emin</span><span class="p">,</span> <span class="n">emax</span><span class="p">):</span>
@@ -688,15 +688,15 @@
             <span class="n">data</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">minimal</span><span class="p">)</span>
 
             <span class="c1"># if not minimal:</span>
-            <span class="c1">#     data[&quot;extra_setup&quot;] = {</span>
-            <span class="c1">#         &quot;particle_distribution&quot;: self.particle_distribution.path</span>
+            <span class="c1">#     data["extra_setup"] = {</span>
+            <span class="c1">#         "particle_distribution": self.particle_distribution.path</span>
             <span class="c1">#     }</span>
 
             <span class="k">return</span> <span class="n">data</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_ComplexTestFunction</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 <span class="sd">        A useless function to be used during automatic tests</span>
 
@@ -727,7 +727,7 @@
 <span class="sd">                - test</span>
 <span class="sd">                - love</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
@@ -736,11 +736,11 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">set_particle_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="s2">&quot;particle_distribution&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"particle_distribution"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">unlink_external_function</span><span class="p">(</span><span class="s2">&quot;particle_distribution&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unlink_external_function</span><span class="p">(</span><span class="s2">"particle_distribution"</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s2">&quot;particle_distribution&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">link_external_function</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="s2">"particle_distribution"</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_particle_distribution_name</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">name</span>
 
@@ -748,12 +748,12 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_particle_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">[</span><span class="s2">&quot;particle_distribution&quot;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_external_functions</span><span class="p">[</span><span class="s2">"particle_distribution"</span><span class="p">]</span>
 
     <span class="n">particle_distribution</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
         <span class="n">get_particle_distribution</span><span class="p">,</span>
         <span class="n">set_particle_distribution</span><span class="p">,</span>
-        <span class="n">doc</span><span class="o">=</span><span class="s2">&quot;&quot;&quot;Get/set particle distribution for electrons&quot;&quot;&quot;</span><span class="p">,</span>
+        <span class="n">doc</span><span class="o">=</span><span class="s2">"""Get/set particle distribution for electrons"""</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># noinspection PyPep8Naming</span>
@@ -767,8 +767,8 @@
 
         <span class="c1"># if not minimal:</span>
 
-        <span class="c1">#     data[&quot;extra_setup&quot;] = {</span>
-        <span class="c1">#         &quot;particle_distribution&quot;: self.particle_distribution.name</span>
+        <span class="c1">#     data["extra_setup"] = {</span>
+        <span class="c1">#         "particle_distribution": self.particle_distribution.name</span>
         <span class="c1">#     }</span>
 
         <span class="k">return</span> <span class="n">data</span>
@@ -777,7 +777,7 @@
 <div class="viewcode-block" id="Log_parabola">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Log_parabola</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        A log-parabolic function.</span>
@@ -815,7 +815,7 @@
 <span class="sd">            desc : curvature (positive is concave, negative is convex)</span>
 <span class="sd">            initial value : 1.0</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
 
@@ -834,7 +834,7 @@
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
 
-        <span class="c1"># print(&quot;Receiving %s&quot; % ([K, piv, alpha, beta]))</span>
+        <span class="c1"># print("Receiving %s" % ([K, piv, alpha, beta]))</span>
 
         <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">piv</span><span class="p">)</span>
 
@@ -850,17 +850,17 @@
             <span class="c1"># ValueError: Quantities and Units may only be raised to a scalar power</span>
             <span class="c1"># This is a quick fix, waiting for astropy 1.2 which will fix this</span>
 
-            <span class="n">xx</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">xx</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">xx</span> <span class="o">**</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xx</span><span class="p">))</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">peak_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the peak energy in the nuFnu spectrum.</span>
+<span class="w">        </span><span class="sd">"""Returns the peak energy in the nuFnu spectrum.</span>
 
 <span class="sd">        :return: peak energy in keV</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="c1"># Eq. 6 in Massaro et al. 2004</span>
         <span class="c1"># (http://adsabs.harvard.edu/abs/2004A%26A...413..489M)</span>
@@ -875,7 +875,7 @@
 <span class="k">if</span> <span class="n">has_gsl</span><span class="p">:</span>
 
     <span class="k">class</span><span class="w"> </span><span class="nc">Cutoff_powerlaw_flux</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        description :</span>
 
 <span class="sd">            A cutoff power law having the flux as normalization, which should reduce the</span>
@@ -914,7 +914,7 @@
 <span class="sd">                desc : upper bound for the band in which computing the integral F</span>
 <span class="sd">                initial value : 100.0</span>
 <span class="sd">                fix : yes</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
             <span class="c1"># K has units of y * x</span>
@@ -948,7 +948,7 @@
 <div class="viewcode-block" id="Exponential_cutoff">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Exponential_cutoff">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Exponential_cutoff</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
 <span class="sd">        An exponential cutoff</span>
@@ -968,7 +968,7 @@
 <span class="sd">            desc : cutoff</span>
 <span class="sd">            initial value : 100</span>
 <span class="sd">            min : 1</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
         <span class="c1"># K has units of y</span>

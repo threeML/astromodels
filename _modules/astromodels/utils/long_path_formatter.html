@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -96,24 +96,24 @@
 
 <div class="viewcode-block" id="long_path_formatter">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.long_path_formatter.long_path_formatter">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">long_path_formatter</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">&quot;max_colwidth&quot;</span><span class="p">)):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;If a path is longer than max_width, it substitute it with the first and</span>
-<span class="sd">    last element, joined by &quot;...&quot;. For example</span>
-<span class="sd">    &#39;this.is.a.long.path.which.we.want.to.shorten&#39; becomes &#39;this...shorten&#39;.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">long_path_formatter</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">max_width</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">get_option</span><span class="p">(</span><span class="s2">"max_colwidth"</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">"""If a path is longer than max_width, it substitute it with the first and</span>
+<span class="sd">    last element, joined by "...". For example</span>
+<span class="sd">    'this.is.a.long.path.which.we.want.to.shorten' becomes 'this...shorten'.</span>
 
 <span class="sd">    :param line:</span>
 <span class="sd">    :param max_width:</span>
 <span class="sd">    :return:</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_width</span><span class="p">:</span>
 
-        <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">trial1</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">...</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="n">trial1</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%s</span><span class="s2">...</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trial1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_width</span><span class="p">:</span>
 
-            <span class="k">return</span> <span class="s2">&quot;...</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">max_width</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)])</span>
+            <span class="k">return</span> <span class="s2">"...</span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span> <span class="p">:</span> <span class="o">-</span><span class="p">(</span><span class="n">max_width</span> <span class="o">-</span> <span class="mi">3</span><span class="p">)])</span>
 
         <span class="k">else</span><span class="p">:</span>
 

@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -91,7 +91,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.utils.table</h1><div class="highlight"><pre>
-<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.table</span>
 
@@ -99,15 +99,15 @@
 <div class="viewcode-block" id="dict_to_table">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.table.dict_to_table">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dict_to_table</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">list_of_keys</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a table representing the dictionary.</span>
+<span class="w">    </span><span class="sd">"""Return a table representing the dictionary.</span>
 
 <span class="sd">    :param dictionary: the dictionary to represent</span>
 <span class="sd">    :param list_of_keys: optionally, only the keys in this list will be</span>
 <span class="sd">        inserted in the table</span>
 <span class="sd">    :return: a Table instance</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="c1"># assert len(dictionary.values()) &gt; 0, &quot;Dictionary cannot be empty&quot;</span>
+    <span class="c1"># assert len(dictionary.values()) &gt; 0, "Dictionary cannot be empty"</span>
 
     <span class="c1"># Create an empty table</span>
 
@@ -119,7 +119,7 @@
 
         <span class="c1"># Add the names as first column</span>
 
-        <span class="n">table</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">table</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dictionary</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
         <span class="c1"># Now add all other properties</span>
 
@@ -152,14 +152,14 @@
 <div class="viewcode-block" id="Table">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.table.Table">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Table</span><span class="p">(</span><span class="n">astropy</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">Table</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrapper around the astropy table to remove some useless clutter (like</span>
-<span class="sd">    the format of each column)&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Wrapper around the astropy table to remove some useless clutter (like</span>
+<span class="sd">    the format of each column)"""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_base_repr_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Override the method in the astropy.Table class to avoid displaying</span>
-<span class="sd">        the description, and the format of the columns.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Override the method in the astropy.Table class to avoid displaying</span>
+<span class="sd">        the description, and the format of the columns."""</span>
 
-        <span class="n">table_id</span> <span class="o">=</span> <span class="s2">&quot;table</span><span class="si">{id}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+        <span class="n">table_id</span> <span class="o">=</span> <span class="s2">"table</span><span class="si">{id}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
         <span class="n">data_lines</span><span class="p">,</span> <span class="n">outs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">formatter</span><span class="o">.</span><span class="n">_pformat_table</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -171,10 +171,10 @@
             <span class="n">show_dtype</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">out</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_lines</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_lines</span><span class="p">)</span>
 
         <span class="c1"># if astropy.table.six.PY2 and isinstance(out, astropy.table.six.text_type):</span>
-        <span class="c1">#    out = out.encode(&#39;utf-8&#39;)</span>
+        <span class="c1">#    out = out.encode('utf-8')</span>
 
         <span class="k">return</span> <span class="n">out</span></div>
 

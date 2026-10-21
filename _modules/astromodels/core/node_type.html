@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -121,23 +121,23 @@
 <span class="nd">@dataclass</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">unsafe_hash</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">NodeBase</span><span class="p">:</span>
     <span class="n">_name</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">_parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">_children</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
+    <span class="n">_parent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">_children</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Type</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span>
         <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span>
     <span class="p">)</span>
-    <span class="n">_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
 
     <span class="c1"># The next 3 methods are *really* necessary for anything to work</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">state</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parent</span><span class="p">()</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">()</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;child_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">]]</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
-        <span class="n">state</span><span class="p">[</span><span class="s2">&quot;__dict__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"parent"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_parent</span><span class="p">()</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"path"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"children"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_children</span><span class="p">()</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"child_names"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">"children"</span><span class="p">]]</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"__dict__"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span>
 
         <span class="k">return</span> <span class="n">NewNodeUnpickler</span><span class="p">(),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">,),</span> <span class="n">state</span>
 
@@ -147,44 +147,44 @@
 
         <span class="c1"># Set the name of this node</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
 
         <span class="c1"># Set the parent</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;parent&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"parent"</span><span class="p">]</span>
 
         <span class="c1"># set the path</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;path&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"path"</span><span class="p">]</span>
 
         <span class="c1"># Set the children</span>
         <span class="c1"># do this manually to avoid recursion</span>
         <span class="c1"># issues for children not yet built</span>
 
-        <span class="k">for</span> <span class="n">child</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">&quot;children&quot;</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;child_names&quot;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">child</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"children"</span><span class="p">],</span> <span class="n">state</span><span class="p">[</span><span class="s2">"child_names"</span><span class="p">]):</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
 
         <span class="c1"># Restore everything else</span>
 
-        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;__dict__&quot;</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">"__dict__"</span><span class="p">]:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">&quot;__dict__&quot;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"__dict__"</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
 
     <span class="c1"># This is necessary for copy.deepcopy to work</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memodict</span><span class="o">=</span><span class="p">{}):</span>
 
         <span class="k">return</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">cPickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">NodeBase</span><span class="p">):</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2"> is not of type Node&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">child</span><span class="si">}</span><span class="s2"> is not of type Node"</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">()</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;adding child </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">"adding child </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
 
@@ -204,17 +204,17 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;A child with name </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> already exists&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"A child with name </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2"> already exists"</span><span class="p">)</span>
 
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_children</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">children</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_remove_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a child.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_remove_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delete</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return a child."""</span>
 
         <span class="c1"># this kills the child</span>
 
@@ -243,8 +243,8 @@
             <span class="c1"># return self._children.pop(name)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_orphan</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This will disconnect the current node from its parent and inform all</span>
-<span class="sd">        the children about the change.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This will disconnect the current node from its parent and inform all</span>
+<span class="sd">        the children about the change."""</span>
 
         <span class="c1"># disconnect from parent</span>
 
@@ -254,62 +254,62 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_update_child_path</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the parent and update path.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Set the parent and update path."""</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
 
         <span class="n">parent_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">parent_path</span> <span class="o">==</span> <span class="s2">&quot;__root__&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">parent_path</span> <span class="o">==</span> <span class="s2">"__root__"</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">parent_path</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">parent_path</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">"</span>
 
-        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;path is now: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug_node</span><span class="p">(</span><span class="sa">f</span><span class="s2">"path is now: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NodeBase&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a child object.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"NodeBase"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a child object."""</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_has_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this child (name) in the tree.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Is this child (name) in the tree."""</span>
         <span class="k">return</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">&quot;NodeBase&quot;</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a tuple of children.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_children</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="s2">"NodeBase"</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return a tuple of children."""</span>
 
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_child_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NodeBase&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a child from a string path.&quot;&quot;&quot;</span>
-        <span class="n">nodes</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_child_from_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"NodeBase"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get a child from a string path."""</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
         <span class="n">_next</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
             <span class="n">_next</span> <span class="o">=</span> <span class="n">_next</span><span class="o">.</span><span class="n">_get_child</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">_next</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NodeBase&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"NodeBase"</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_child_from_path</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_recursively_gather_node_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">&quot;NodeBase&quot;</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_recursively_gather_node_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">node_type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s2">"NodeBase"</span><span class="p">]:</span>
 
         <span class="n">instances</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">_get_children</span><span class="p">():</span>
 
-            <span class="c1"># log.debug(f&quot;on child {child._name}&quot;)</span>
+            <span class="c1"># log.debug(f"on child {child._name}")</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">node_type</span><span class="p">):</span>
 
                 <span class="n">path</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span>
 
-                <span class="c1"># log.debug(f&quot;on child {path}&quot;)</span>
+                <span class="c1"># log.debug(f"on child {path}")</span>
 
                 <span class="n">instances</span><span class="p">[</span><span class="n">path</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
 
@@ -325,20 +325,20 @@
 
         <span class="k">return</span> <span class="n">instances</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NodeBase&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"NodeBase"</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;str&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the str path of this node.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"str"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns the str path of this node."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;NodeBase&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the root of the node, will stop at the source if source_only</span>
-<span class="sd">        is set to True.&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_only</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"NodeBase"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Returns the root of the node, will stop at the source if source_only</span>
+<span class="sd">        is set to True."""</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_root</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span>
 
@@ -355,7 +355,7 @@
 
                 <span class="k">if</span> <span class="n">source_only</span><span class="p">:</span>
 
-                    <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;__root__&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"__root__"</span><span class="p">:</span>
 
                         <span class="k">return</span> <span class="n">current_node</span>
 
@@ -370,27 +370,27 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_update_child_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the path of all children recursively. This is needed if the</span>
+<span class="w">        </span><span class="sd">"""Update the path of all children recursively. This is needed if the</span>
 <span class="sd">        name is changed.</span>
 
 <span class="sd">        :returns:</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="c1"># recursively update the path</span>
 
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
 
-            <span class="n">child</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_parent</span><span class="o">.</span><span class="n">_get_path</span><span class="p">()</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">_name</span><span class="si">}</span><span class="s2">"</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">child</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">:</span>
 
                 <span class="n">child</span><span class="o">.</span><span class="n">_update_child_path</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_change_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">clear_parent</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Change the name of this node.</span>
+<span class="w">        </span><span class="sd">"""Change the name of this node.</span>
 
 <span class="sd">        This will have to update the children about the change. if</span>
 <span class="sd">        clear_parent is provided, then the parent is removed</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">clear_parent</span><span class="p">):</span>
@@ -402,12 +402,12 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_root</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this the root of the tree.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Is this the root of the tree."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="ow">is</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Is this a a leaf of the tree.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Is this a a leaf of the tree."""</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
 
@@ -427,10 +427,10 @@
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="c1"># log.error(f&quot;Accessing an element {name} of the node that does not exist&quot;)</span>
+            <span class="c1"># log.error(f"Accessing an element {name} of the node that does not exist")</span>
 
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Accessing an element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of the node that does not exist&quot;</span>
+                <span class="sa">f</span><span class="s2">"Accessing an element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of the node that does not exist"</span>
             <span class="p">)</span>
 
             <span class="c1"># return super(NodeBase).__getattr__(name)</span>
@@ -441,16 +441,16 @@
         <span class="c1"># but if the node has a value</span>
         <span class="c1"># attribute, we want to call that</span>
 
-        <span class="k">if</span> <span class="s2">&quot;_children&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">"_children"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">:</span>
 
-                <span class="k">if</span> <span class="s2">&quot;_internal_value&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">"_internal_value"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
 
                     <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">:</span>
 
                         <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;Trying to set the value of a linked parameter (</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">)&quot;</span>
-                            <span class="s2">&quot; directly has no effect &quot;</span>
+                            <span class="sa">f</span><span class="s2">"Trying to set the value of a linked parameter (</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">)"</span>
+                            <span class="s2">" directly has no effect "</span>
                         <span class="p">)</span>
 
                         <span class="k">return</span>
@@ -465,11 +465,11 @@
                     <span class="c1"># this is going to be a node which</span>
                     <span class="c1"># we are not allowed to erase</span>
 
-                    <span class="c1"># log.error(f&quot;Accessing an element {name} of the node that does not</span>
-                    <span class="c1"># exist&quot;)</span>
+                    <span class="c1"># log.error(f"Accessing an element {name} of the node that does not</span>
+                    <span class="c1"># exist")</span>
 
                     <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;Accessing an element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of the node that does not exist&quot;</span>
+                        <span class="sa">f</span><span class="s2">"Accessing an element </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of the node that does not exist"</span>
                     <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -480,12 +480,12 @@
 <div class="viewcode-block" id="NodeBase.plot_tree">
 <a class="viewcode-back" href="../../../api/astromodels.core.html#astromodels.core.node_type.NodeBase.plot_tree">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tree</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;This plots the tree to the screen.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""This plots the tree to the screen."""</span>
 
         <span class="k">try</span><span class="p">:</span>
 
             <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_dict_with_types</span><span class="p">()</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;model&quot;</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">"model"</span>
 
         <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
 
@@ -494,8 +494,8 @@
 
         <span class="n">tree</span> <span class="o">=</span> <span class="n">Tree</span><span class="p">(</span>
             <span class="n">name</span><span class="p">,</span>
-            <span class="n">guide_style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span>
-            <span class="n">style</span><span class="o">=</span><span class="s2">&quot;bold medium_orchid&quot;</span><span class="p">,</span>
+            <span class="n">guide_style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span>
+            <span class="n">style</span><span class="o">=</span><span class="s2">"bold medium_orchid"</span><span class="p">,</span>
             <span class="n">highlight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -518,42 +518,42 @@
 
             <span class="k">else</span><span class="p">:</span>
 
-                <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;not bold not blink medium_spring_green&quot;</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="s2">"not bold not blink medium_spring_green"</span>
 
-            <span class="k">if</span> <span class="s2">&quot;position&quot;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"position"</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
 
-                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;🔭 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;bold not blink medium_spring_green&quot;</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"🔭 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="s2">"bold not blink medium_spring_green"</span>
 
-            <span class="k">if</span> <span class="s2">&quot;(point source)&quot;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"(point source)"</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
 
-                <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(point source)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"(point source)"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
-                <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;bold blink medium_orchid&quot;</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="s2">"bold blink medium_orchid"</span>
 
-                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;✨ </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"✨ </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span>
 
-            <span class="k">if</span> <span class="s2">&quot;(extended source)&quot;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"(extended source)"</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
 
-                <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(extended source)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"(extended source)"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
-                <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;bold blink medium_orchid&quot;</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="s2">"bold blink medium_orchid"</span>
 
-                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;🌌 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"🌌 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span>
 
-            <span class="k">if</span> <span class="s2">&quot;spectrum&quot;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"spectrum"</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
 
-                <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;bold not blink light_goldenrod1&quot;</span>
+                <span class="n">color</span> <span class="o">=</span> <span class="s2">"bold not blink light_goldenrod1"</span>
 
-                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;🌈 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"🌈 </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span>
 
-                <span class="n">branch_color</span> <span class="o">=</span> <span class="s2">&quot;not bold not blink light_goldenrod1&quot;</span>
+                <span class="n">branch_color</span> <span class="o">=</span> <span class="s2">"not bold not blink light_goldenrod1"</span>
 
-            <span class="k">if</span> <span class="s2">&quot;main&quot;</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"main"</span> <span class="ow">in</span> <span class="n">k</span><span class="p">:</span>
 
-                <span class="n">branch_color</span> <span class="o">=</span> <span class="s2">&quot;not bold not blink turquoise2&quot;</span>
+                <span class="n">branch_color</span> <span class="o">=</span> <span class="s2">"not bold not blink turquoise2"</span>
 
-            <span class="n">branch</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">guide_style</span><span class="o">=</span><span class="s2">&quot;bold not blink grey74&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+            <span class="n">branch</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">guide_style</span><span class="o">=</span><span class="s2">"bold not blink grey74"</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
 
             <span class="n">_recurse_dict</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">branch</span><span class="p">,</span> <span class="n">branch_color</span><span class="o">=</span><span class="n">branch_color</span><span class="p">)</span>
 

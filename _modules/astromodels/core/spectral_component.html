@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -91,7 +91,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for astromodels.core.spectral_component</h1><div class="highlight"><pre>
-<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span></span><span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.polarization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Unpolarized</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.core.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
@@ -111,8 +111,8 @@
         <span class="c1"># Check that we can call the shape (i.e., it is a function)</span>
 
         <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span>
-            <span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;__call__&quot;</span>
-        <span class="p">),</span> <span class="s2">&quot;The shape must be callable (i.e., behave like a function)&quot;</span>
+            <span class="n">shape</span><span class="p">,</span> <span class="s2">"__call__"</span>
+        <span class="p">),</span> <span class="s2">"The shape must be callable (i.e., behave like a function)"</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span> <span class="o">=</span> <span class="n">shape</span>
 
@@ -136,34 +136,34 @@
         <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">&quot;Couldn&#39;t instance the spectral component. Please verify that you are&quot;</span>
-                <span class="s2">&quot; using an *instance* of a function, and not a class. For example, you&quot;</span>
-                <span class="s2">&quot; need to use &#39;</span><span class="si">%s</span><span class="s2">()&#39;, and not &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
+                <span class="s2">"Couldn't instance the spectral component. Please verify that you are"</span>
+                <span class="s2">" using an *instance* of a function, and not a class. For example, you"</span>
+                <span class="s2">" need to use '</span><span class="si">%s</span><span class="s2">()', and not '</span><span class="si">%s</span><span class="s2">'."</span> <span class="o">%</span> <span class="p">(</span><span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span>
             <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_repr__base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rich_output</span><span class="p">):</span>
 
-        <span class="n">representation</span> <span class="o">=</span> <span class="s2">&quot;Spectral component </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-        <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;    -shape: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">representation</span> <span class="o">=</span> <span class="s2">"Spectral component </span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">representation</span> <span class="o">+=</span> <span class="s2">"    -shape: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span><span class="o">.</span><span class="n">name</span>
 
-        <span class="c1"># Print the polarization only if it&#39;s not None</span>
+        <span class="c1"># Print the polarization only if it's not None</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">representation</span> <span class="o">+=</span> <span class="s2">&quot;    -polarization: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">representation</span> <span class="o">+=</span> <span class="s2">"    -polarization: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">"</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span><span class="o">.</span><span class="n">name</span>
 
         <span class="k">return</span> <span class="n">representation</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;A generic name for the spectral shape.</span>
+<span class="w">        </span><span class="sd">"""A generic name for the spectral shape.</span>
 
 <span class="sd">        :return: the spectral shape instance</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_spectral_shape</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">spec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;Q&quot;</span> <span class="ow">or</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">&quot;U&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">"Q"</span> <span class="ow">or</span> <span class="n">stokes</span> <span class="o">==</span> <span class="s2">"U"</span><span class="p">:</span>
             <span class="n">spec</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_polarization</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">stokes</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">spec</span></div>
 

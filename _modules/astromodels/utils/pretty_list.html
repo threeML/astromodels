@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -93,7 +93,7 @@
   <h1>Source code for astromodels.utils.pretty_list</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">str</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 
@@ -102,10 +102,10 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_process_html</span><span class="p">(</span><span class="n">dictionary</span><span class="p">):</span>
 
-    <span class="n">list_start</span> <span class="o">=</span> <span class="s2">&quot;&lt;ul&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="n">list_stop</span> <span class="o">=</span> <span class="s2">&quot;&lt;/ul&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-    <span class="n">entry_start</span> <span class="o">=</span> <span class="s2">&quot;&lt;li&gt;&quot;</span>
-    <span class="n">entry_stop</span> <span class="o">=</span> <span class="s2">&quot;&lt;/li&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">list_start</span> <span class="o">=</span> <span class="s2">"&lt;ul&gt;</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="n">list_stop</span> <span class="o">=</span> <span class="s2">"&lt;/ul&gt;</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="n">entry_start</span> <span class="o">=</span> <span class="s2">"&lt;li&gt;"</span>
+    <span class="n">entry_stop</span> <span class="o">=</span> <span class="s2">"&lt;/li&gt;</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="p">[</span><span class="n">list_start</span><span class="p">]</span>
 
@@ -113,14 +113,14 @@
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
 
-            <span class="c1"># Check whether the dictionary is empty. In that case, don&#39;t print anything</span>
+            <span class="c1"># Check whether the dictionary is empty. In that case, don't print anything</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
 
                 <span class="k">continue</span>
 
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">):</span>
 
-                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry_start</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span><span class="p">)</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry_start</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">": "</span><span class="p">)</span>
                 <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_process_html</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
                 <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry_stop</span><span class="p">)</span>
 
@@ -129,18 +129,18 @@
                 <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">entry_start</span>
                     <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-                    <span class="o">+</span> <span class="s2">&quot;: &quot;</span>
+                    <span class="o">+</span> <span class="s2">": "</span>
                     <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
                     <span class="o">+</span> <span class="n">entry_stop</span>
                 <span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
 
-            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry_start</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="n">entry_stop</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry_start</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="o">+</span> <span class="s2">": "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="n">entry_stop</span><span class="p">)</span>
 
     <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">list_stop</span><span class="p">)</span>
 
-    <span class="n">final_output</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+    <span class="n">final_output</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">final_output</span>
 
@@ -151,9 +151,9 @@
 
     <span class="n">string_repr</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="c1"># Add a &#39;*&#39; for each point in the list and indent appropriately</span>
+    <span class="c1"># Add a '*' for each point in the list and indent appropriately</span>
 
-    <span class="n">final_output</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\s*)(.+)&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">1  * </span><span class="se">\\</span><span class="s2">2&quot;</span><span class="p">,</span> <span class="n">string_repr</span><span class="p">)</span>
+    <span class="n">final_output</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">"(\s*)(.+)"</span><span class="p">,</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">1  * </span><span class="se">\\</span><span class="s2">2"</span><span class="p">,</span> <span class="n">string_repr</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">final_output</span>
 
@@ -161,12 +161,12 @@
 <div class="viewcode-block" id="dict_to_list">
 <a class="viewcode-back" href="../../../api/astromodels.utils.html#astromodels.utils.pretty_list.dict_to_list">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">dict_to_list</span><span class="p">(</span><span class="n">dictionary</span><span class="p">,</span> <span class="n">html</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a dictionary into a unordered list.</span>
+<span class="w">    </span><span class="sd">"""Convert a dictionary into a unordered list.</span>
 
 <span class="sd">    :param dictionary: a dictionary</span>
 <span class="sd">    :param html: whether to output HTML or simple text (True or False)</span>
 <span class="sd">    :return: the list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">if</span> <span class="n">html</span><span class="p">:</span>
 

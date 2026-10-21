@@ -9,7 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../../../_static/dark_mode_css/dark.css?v=70edf1c7" />
 
@@ -93,7 +93,7 @@
   <h1>Source code for astromodels.core.units</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span><span class="w"> </span><span class="nn">builtins</span><span class="w"> </span><span class="kn">import</span> <span class="nb">object</span>
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;giacomov&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">"giacomov"</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
 
@@ -124,13 +124,13 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_check_unit</span><span class="p">(</span><span class="n">new_unit</span><span class="p">,</span> <span class="n">old_unit</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check that the new unit is compatible with the old unit for the quantity</span>
+<span class="w">    </span><span class="sd">"""Check that the new unit is compatible with the old unit for the quantity</span>
 <span class="sd">    described by variable_name.</span>
 
 <span class="sd">    :param new_unit: instance of astropy.units.Unit</span>
 <span class="sd">    :param old_unit: instance of astropy.units.Unit</span>
 <span class="sd">    :return: nothin</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="k">try</span><span class="p">:</span>
 
@@ -139,21 +139,21 @@
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
 
         <span class="k">raise</span> <span class="n">UnitMismatch</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;The provided unit (</span><span class="si">{</span><span class="n">new_unit</span><span class="si">}</span><span class="s2">) has no physical type. Was expecting a unit&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot; for </span><span class="si">{</span><span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"The provided unit (</span><span class="si">{</span><span class="n">new_unit</span><span class="si">}</span><span class="s2">) has no physical type. Was expecting a unit"</span>
+            <span class="sa">f</span><span class="s2">" for </span><span class="si">{</span><span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span> <span class="o">!=</span> <span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="p">:</span>
 
         <span class="k">raise</span> <span class="n">UnitMismatch</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Physical type mismatch: you provided a unit for </span><span class="si">{</span><span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot; instead of a unit for </span><span class="si">{</span><span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Physical type mismatch: you provided a unit for </span><span class="si">{</span><span class="n">new_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">" instead of a unit for </span><span class="si">{</span><span class="n">old_unit</span><span class="o">.</span><span class="n">physical_type</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_AstromodelsUnits</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Store the fundamental units of time, energy, angle and area to be used</span>
-<span class="sd">    in astromodels.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Store the fundamental units of time, energy, angle and area to be used</span>
+<span class="sd">    in astromodels."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">energy_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">angle_unit</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">area_unit</span><span class="o">=</span><span class="kc">None</span>
@@ -170,10 +170,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_units</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy_unit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_unit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;angle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_unit</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">&quot;area&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">area_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"energy"</span><span class="p">]</span> <span class="o">=</span> <span class="n">energy_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"angle"</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_unit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s2">"area"</span><span class="p">]</span> <span class="o">=</span> <span class="n">area_unit</span>
 
     <span class="c1"># This __new__ method add the properties to the class. We could have achieved the</span>
     <span class="c1"># same with a metaclass, but this method is more clearer, for a tiny performance</span>
@@ -182,10 +182,10 @@
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-        <span class="bp">cls</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">&quot;energy&quot;</span><span class="p">)))</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">)))</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">&quot;angle&quot;</span><span class="p">)))</span>
-        <span class="bp">cls</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">&quot;area&quot;</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">"energy"</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">"time"</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">angle</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">"angle"</span><span class="p">)))</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">_create_property</span><span class="p">(</span><span class="s2">"area"</span><span class="p">)))</span>
 
         <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">_AstromodelsUnits</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span>
 
@@ -204,8 +204,8 @@
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 
             <span class="k">raise</span> <span class="n">UnknownUnit</span><span class="p">(</span>
-                <span class="s2">&quot;You can only assign units for energy, time, angle and area. Don&#39;t know&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot; anything about </span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="s2">"You can only assign units for energy, time, angle and area. Don't know"</span>
+                <span class="sa">f</span><span class="s2">" anything about </span><span class="si">{</span><span class="n">what</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
 
         <span class="c1"># This allows to use strings in place of Unit instances as new_unit</span>
@@ -227,7 +227,7 @@
 
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
 
-            <span class="k">raise</span> <span class="n">UnknownUnit</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is not a fundamental unit&quot;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">UnknownUnit</span><span class="p">(</span><span class="s2">"</span><span class="si">%s</span><span class="s2"> is not a fundamental unit"</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
 
     <span class="c1"># This is a function which generates the elements needed to make a property.photon</span>
     <span class="c1"># Just a trick to avoid having to duplicate the same code for each unit.</span>
@@ -239,7 +239,7 @@
         <span class="k">return</span> <span class="p">(</span>
             <span class="k">lambda</span> <span class="bp">self</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_unit</span><span class="p">(</span><span class="n">what</span><span class="p">),</span>
             <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_unit</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">),</span>
-            <span class="s2">&quot;Sets or gets the unit for </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">what</span><span class="p">,</span>
+            <span class="s2">"Sets or gets the unit for </span><span class="si">%s</span><span class="s2">"</span> <span class="o">%</span> <span class="n">what</span><span class="p">,</span>
         <span class="p">)</span>
 
     <span class="c1"># Add the == and != operators</span>

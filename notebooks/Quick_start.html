@@ -10,7 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
+      <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
       <link rel="stylesheet" type="text/css" href="../_static/nbsphinx-code-cells.css?v=2aa19091" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/general.css?v=c0a7eb24" />
       <link rel="stylesheet" type="text/css" href="../_static/dark_mode_css/dark.css?v=70edf1c7" />
@@ -113,7 +113,7 @@
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
-    <span class="s2">&quot;test_source&quot;</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.22</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.56</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw_flux</span><span class="p">()</span>
+    <span class="s2">"test_source"</span><span class="p">,</span> <span class="n">ra</span><span class="o">=</span><span class="mf">123.22</span><span class="p">,</span> <span class="n">dec</span><span class="o">=-</span><span class="mf">13.56</span><span class="p">,</span> <span class="n">spectral_shape</span><span class="o">=</span><span class="n">Powerlaw_flux</span><span class="p">()</span>
 <span class="p">)</span>
 
 <span class="n">my_model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">test_source</span><span class="p">)</span>
@@ -130,7 +130,7 @@
 <span class="n">differential_flux_at_1_keV</span> <span class="o">=</span> <span class="n">my_model</span><span class="o">.</span><span class="n">test_source</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span>
-    <span class="s2">&quot;Differential flux @ 1 keV : </span><span class="si">%.3f</span><span class="s2"> photons / ( cm2 s keV)&quot;</span>
+    <span class="s2">"Differential flux @ 1 keV : </span><span class="si">%.3f</span><span class="s2"> photons / ( cm2 s keV)"</span>
     <span class="o">%</span> <span class="n">differential_flux_at_1_keV</span>
 <span class="p">)</span>
 </pre></div>
@@ -155,7 +155,7 @@ Differential flux @ 1 keV : 1.010 photons / ( cm2 s keV)
 <span class="o">%</span><span class="k">matplotlib</span> inline
 <span class="kn">from</span><span class="w"> </span><span class="nn">jupyterthemes</span><span class="w"> </span><span class="kn">import</span> <span class="n">jtplot</span>
 
-<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">&quot;talk&quot;</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">jtplot</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">context</span><span class="o">=</span><span class="s2">"talk"</span><span class="p">,</span> <span class="n">fscale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ticks</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># Set up the energies</span>
 
@@ -170,8 +170,8 @@ Differential flux @ 1 keV : 1.010 photons / ( cm2 s keV)
 
 <span class="n">ax</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">differential_flux</span><span class="p">)</span>
 
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Energy (keV)&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Differential flux (ph./cm2/s/keV)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"Energy (keV)"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Differential flux (ph./cm2/s/keV)"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
