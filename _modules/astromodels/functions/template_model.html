@@ -445,13 +445,13 @@
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename_sanitized</span><span class="p">)</span>
 
-                <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
                     <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
                         <span class="s2">"The file </span><span class="si">%s</span><span class="s2"> already exists and cannot be removed (maybe you do"</span>
                         <span class="s2">"not have permissions to do so?). "</span> <span class="o">%</span> <span class="n">filename_sanitized</span>
                     <span class="p">)</span>
 
-                    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
+                    <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">"The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists and cannot be"</span>
                         <span class="s2">"removed (maybe you do not have permissions to do so?). "</span>
                     <span class="p">)</span>
@@ -462,7 +462,7 @@
                     <span class="s2">"template models with the same name"</span> <span class="o">%</span> <span class="n">filename_sanitized</span>
                 <span class="p">)</span>
 
-                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span>
+                <span class="k">raise</span> <span class="ne">OSError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"The file </span><span class="si">{</span><span class="n">filename_sanitized</span><span class="si">}</span><span class="s2"> already exists! You cannot call two"</span>
                     <span class="s2">" different template models with the same name"</span>
                 <span class="p">)</span>

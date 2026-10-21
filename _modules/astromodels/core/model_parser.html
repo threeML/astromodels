@@ -201,7 +201,7 @@
 
                     <span class="bp">self</span><span class="o">.</span><span class="n">_model_dict</span> <span class="o">=</span> <span class="n">my_yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">my_yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span>
 
-            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">"File </span><span class="si">%s</span><span class="s2"> cannot be read. "</span> <span class="o">%</span> <span class="n">model_file</span>
                 <span class="n">msg</span> <span class="o">+=</span> <span class="s2">"Check path and permissions for current user."</span>
 
