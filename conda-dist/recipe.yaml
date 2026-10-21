@@ -22,7 +22,9 @@ requirements:
     - ${{ compiler('c') }}
     - ${{ compiler('cxx') }}
     - ${{ compiler('fortran') }}
-    - if: not (linux and aarch64)
+    - if: not (linux and aarch64) and match(python, ">=3.14")
+      then: xspec==13.0.1
+    - if: not (linux and aarch64) and match(python, "<3.14")
       then: xspec==12.15.1
 
   host:
@@ -58,10 +60,11 @@ requirements:
       then: 
       - llvmlite<0.46
 
-
   run_constraints:
-    - if: not (linux and aarch64)
-      then: xspec>=12.15.1
+    - if: not (linux and aarch64) and match(python, ">=3.14")
+      then: xspec>12.15.1
+    - if: not (linux and aarch64) and match(python, "<3.14")
+      then: xspec<13.0.0
 
 tests:
   - python:
