@@ -6,7 +6,6 @@ import inspect
 import math
 import os
 import re
-import sys
 import textwrap
 import uuid
 from builtins import chr, map, str
@@ -91,8 +90,6 @@ class UnknownParameter(ValueError):
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = "(no latex formula available)"
-
-
 
 # This dictionary will contain the known function by name, so that the model_parser can
 # instance them by looking into this dictionary. It will be filled by the FunctionMeta
