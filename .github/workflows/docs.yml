@@ -49,8 +49,6 @@ jobs:
 
           eval "$(/usr/libexec/path_helper)"
 
-          brew install lzo c-blosc
-
           pip install tempita jupytext jupyterthemes jupyter_latex_envs jupyter notebook papermill matplotlib tables healpy ebltable black cython pkgconfig wheel
 
       - name: Install the package
@@ -160,9 +158,6 @@ jobs:
       - name: Build the API doc
         run: |
 
-          brew install c-blosc
-          brew install hdf5
-
           pip3 install tempita tables
           pip3 install cython blosc2 h5py
           pip3 install numpy scipy numba astropy pandas
@@ -215,8 +210,6 @@ jobs:
       - name: Install package
         run: |
 
-          brew install c-blosc
-          brew install hdf5
 
           pip3 install tempita
           pip3 install cython blosc2 h5py
