@@ -17,7 +17,6 @@ from astromodels.core.parameter_transformation import ParameterTransformation
 from astromodels.utils.configuration import astromodels_config
 
 
-from .thread_safe_unit_format import ThreadSafe
 from .tree import Node
 
 log = logging.getLogger(__name__)
