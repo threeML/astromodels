@@ -3,7 +3,6 @@ import logging
 import math
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
 
 import astropy.units as astropy_units
 import numba as nb
@@ -263,6 +262,6 @@ _smc_extinction = _ExtinctionCurve(
 )
 
 
-_extinctions_laws: Dict[str, _ExtinctionCurve] = dict(
+_extinctions_laws: dict[str, _ExtinctionCurve] = dict(
     mw=_mw_extinction, lmc=_lmc_extinction, smc=_smc_extinction
 )

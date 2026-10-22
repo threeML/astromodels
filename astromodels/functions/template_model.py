@@ -6,7 +6,7 @@ import re
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Optional
 
 import astropy.io.fits as fits
 import astropy.units as u
@@ -55,7 +55,7 @@ class InvalidTemplateModelFile(RuntimeError):
 _classes_cache = {}
 
 
-class GridInterpolate(object):
+class GridInterpolate:
     def __init__(self, grid, values):
         self._grid = grid
         self._values = np.ascontiguousarray(values)
@@ -64,7 +64,7 @@ class GridInterpolate(object):
         return scipy.interpolate.interpn(self._grid, self._values, v)
 
 
-class UnivariateSpline(object):
+class UnivariateSpline:
     def __init__(self, x, y):
         self._x = x
         self._y = y
@@ -76,13 +76,13 @@ class UnivariateSpline(object):
             return np.interp(v, self._x, self._y)
 
 
-class TemplateModelFactory(object):
+class TemplateModelFactory:
     def __init__(
         self,
         name: str,
         description: str,
         energies: np.ndarray,
-        names_of_parameters: List[str],
+        names_of_parameters: list[str],
         interpolation_degree: int = 1,
         spline_smoothing_factor: int = 0,
     ):
@@ -136,7 +136,7 @@ class TemplateModelFactory(object):
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids: Dict[str, Optional[np.ndarray]] = dict()
+        self._parameters_grids: dict[str, Optional[np.ndarray]] = dict()
 
         for parameter_name in names_of_parameters:
             self._parameters_grids[parameter_name] = None
@@ -180,7 +180,7 @@ class TemplateModelFactory(object):
     def add_interpolation_data(
         self,
         differential_fluxes: np.ndarray,
-        **parameters_values_input: Dict[str, float],
+        **parameters_values_input: dict[str, float],
     ):
         # Verify that the grid has been defined for all parameters
 
@@ -330,13 +330,13 @@ class TemplateModelFactory(object):
                 try:
                     os.remove(filename_sanitized)
 
-                except IOError:
+                except OSError:
                     log.error(
                         "The file %s already exists and cannot be removed (maybe you do"
                         "not have permissions to do so?). " % filename_sanitized
                     )
 
-                    raise IOError(
+                    raise OSError(
                         f"The file {filename_sanitized} already exists and cannot be"
                         "removed (maybe you do not have permissions to do so?). "
                     )
@@ -347,7 +347,7 @@ class TemplateModelFactory(object):
                     "template models with the same name" % filename_sanitized
                 )
 
-                raise IOError(
+                raise OSError(
                     f"The file {filename_sanitized} already exists! You cannot call two"
                     " different template models with the same name"
                 )
@@ -378,7 +378,7 @@ def add_method(self, method, name=None):
     setattr(self.__class__, name, method)
 
 
-class RectBivariateSplineWrapper(object):
+class RectBivariateSplineWrapper:
     """Wrapper around RectBivariateSpline, which supplies a __call__ method
     which accept the same syntax as the other interpolation methods."""
 
@@ -401,8 +401,8 @@ class TemplateFile:
     name: str
     description: str
     grid: np.ndarray
-    parameters: Dict[str, np.ndarray]
-    parameter_order: List[str]
+    parameters: dict[str, np.ndarray]
+    parameter_order: list[str]
     energies: np.ndarray
     interpolation_degree: int
     spline_smoothing_factor: float
@@ -602,10 +602,10 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             )
 
         if other_name is None:
-            super(TemplateModel, self).__init__(name, function_definition, parameters)
+            super().__init__(name, function_definition, parameters)
 
         else:
-            super(TemplateModel, self).__init__(
+            super().__init__(
                 other_name, function_definition, parameters
             )
 
@@ -817,7 +817,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         return data
 
 
-class XSPECTableModel(object):
+class XSPECTableModel:
     def __init__(
         self,
         xspec_table_model_file,

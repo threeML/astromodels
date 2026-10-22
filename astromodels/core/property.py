@@ -1,7 +1,7 @@
 import logging
 
 import copy
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from .tree import Node
 
@@ -20,7 +20,7 @@ class PropertyBase(Node):
         name: str,
         desc: str,
         value: Optional[str] = None,
-        allowed_values: Optional[List[str]] = None,
+        allowed_values: Optional[list[str]] = None,
         defer: bool = False,
         eval_func: Optional[str] = None,
     ):
@@ -28,7 +28,7 @@ class PropertyBase(Node):
 
         Node.__init__(self, name)
 
-        self._allowed_values: Optional[List[str]] = allowed_values
+        self._allowed_values: Optional[list[str]] = allowed_values
         self._defer: bool = defer
         self._eval_func: Optional[str] = eval_func
 
@@ -111,7 +111,7 @@ class PropertyBase(Node):
         # we intecept here becuase we want
         # to make sure the eval works
 
-        super(PropertyBase, self)._set_parent(parent)
+        super()._set_parent(parent)
 
         # now we want to update because we have a parent
         self.value = self._internal_value
@@ -162,7 +162,7 @@ class PropertyBase(Node):
         except AttributeError:
             return variable
 
-    def to_dict(self, minimal=False) -> Dict[str, Any]:
+    def to_dict(self, minimal=False) -> dict[str, Any]:
         """Returns the representation for serialization."""
 
         data = dict()
@@ -191,11 +191,11 @@ class FunctionProperty(PropertyBase):
         name: str,
         desc: str,
         value: Optional[str] = None,
-        allowed_values: Optional[List[Any]] = None,
+        allowed_values: Optional[list[Any]] = None,
         defer: bool = False,
         eval_func: Optional[str] = None,
     ):
-        super(FunctionProperty, self).__init__(
+        super().__init__(
             name=name,
             desc=desc,
             value=value,

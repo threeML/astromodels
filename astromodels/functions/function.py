@@ -6,12 +6,11 @@ import inspect
 import math
 import os
 import re
-import sys
 import textwrap
 import uuid
 from builtins import chr, map, str
 from operator import attrgetter
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import astropy.units as u
 import numba as nb
@@ -91,18 +90,6 @@ class UnknownParameter(ValueError):
 
 # Value to indicate that no latex formula has been given
 NO_LATEX_FORMULA = "(no latex formula available)"
-
-
-# A function to find the calling sequence of a function, compatible
-# with both python2 and 3
-def _py2to3_getargspec(function):
-    if sys.version_info[0] < 3:
-        argspec = inspect.getargspec(function)
-
-    else:  # PY3
-        argspec = inspect.getfullargspec(function)
-
-    return argspec
 
 
 # This dictionary will contain the known function by name, so that the model_parser can
@@ -339,7 +326,7 @@ class FunctionMeta(type):
         # Now call the __new__ of the "type" class (which then will call the __init__
         # of this metaclass)
 
-        return super(FunctionMeta, mcs).__new__(mcs, name, bases, dct)
+        return super().__new__(mcs, name, bases, dct)
 
     def __init__(cls, name, bases, dct):
         # This is the MetaClass init, which is called after the __new__ is done
@@ -353,7 +340,7 @@ class FunctionMeta(type):
 
         # Finally call the init of the type class
 
-        super(FunctionMeta, cls).__init__(name, bases, dct)
+        super().__init__(name, bases, dct)
 
     @staticmethod
     def class_init(instance, **kwargs):
@@ -494,12 +481,12 @@ class FunctionMeta(type):
         # If the function has been memoized, it will have a "input_object" member
 
         try:
-            calling_sequence = _py2to3_getargspec(function.input_object).args
+            calling_sequence = inspect.getfullargspec(function.input_object).args
 
         except AttributeError:
             # This might happen if the function is without memoization
 
-            calling_sequence = _py2to3_getargspec(function).args
+            calling_sequence = inspect.getfullargspec(function).args
 
         if not calling_sequence[0] == "self":
             log.error(
@@ -669,7 +656,7 @@ class FunctionMeta(type):
 
         # get the allowed values
 
-        allowed_values: Optional[List[str]] = None
+        allowed_values: Optional[list[str]] = None
 
         if "allowed values" in definition:
             allowed_values = []
@@ -715,8 +702,8 @@ class Function(Node):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         # I use default values only to avoid warnings from pycharm and other software
         # about the calling sequence of this contructor. We actually need to enforce its
@@ -729,7 +716,7 @@ class Function(Node):
 
         # Set up the node
 
-        super(Function, self).__init__(name)
+        super().__init__(name)
 
         # Store name, number of dimensions and the latex formula
 
@@ -749,7 +736,7 @@ class Function(Node):
         # might be different than the actual name of the parameter, use the .add_child
         # method instead of the add_children method
 
-        self._parameters: Dict[str, Parameter] = dict()
+        self._parameters: dict[str, Parameter] = dict()
 
         for child_name, child in list(parameters.items()):
             self._parameters[child_name] = child
@@ -762,7 +749,7 @@ class Function(Node):
 
         if properties is not None:
 
-            self._properties: Optional[Dict[str, FunctionProperty]] = dict()
+            self._properties: Optional[dict[str, FunctionProperty]] = dict()
 
             for child_name, child in properties.items():
                 self._properties[child_name] = child
@@ -789,7 +776,7 @@ class Function(Node):
 
         # stores any extrernally linked functions
 
-        self._external_functions: Dict[str, "Function"] = dict()
+        self._external_functions: dict[str, "Function"] = dict()
 
     @property
     def n_dim(self) -> int:
@@ -799,7 +786,7 @@ class Function(Node):
         return type(self)._n_dim
 
     @property
-    def free_parameters(self) -> Dict[str, Parameter]:
+    def free_parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of free parameters for this function.
 
         :return: dictionary of free parameters
@@ -820,14 +807,14 @@ class Function(Node):
                 return True
         return False
 
-    def _get_parameters(self) -> Tuple[Parameter]:
+    def _get_parameters(self) -> tuple[Parameter]:
         """Return a tuple of parameters similar to get_children but for
         functions."""
 
         return tuple(self._parameters.values())
 
     @property
-    def properties(self) -> Optional[Dict[str, FunctionProperty]]:
+    def properties(self) -> Optional[dict[str, FunctionProperty]]:
         """Return the properties of the function.
 
         :returns:
@@ -899,7 +886,7 @@ class Function(Node):
         return self._external_functions
 
     def to_dict(self, minimal: bool = False):
-        data = super(Function, self).to_dict(minimal)
+        data = super().to_dict(minimal)
 
         if not minimal:
             # link the external functions
@@ -961,7 +948,7 @@ class Function(Node):
 
     # Add a property returning the parameters dictionary
     @property
-    def parameters(self) -> Dict[str, Parameter]:
+    def parameters(self) -> dict[str, Parameter]:
         """Returns a dictionary of parameters."""
         return self._parameters
 
@@ -1186,8 +1173,8 @@ class Function1D(Function):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         Function.__init__(self, name, function_definition, parameters, properties)
 
@@ -1473,8 +1460,8 @@ class Function2D(Function):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         Function.__init__(self, name, function_definition, parameters, properties)
 
@@ -1634,8 +1621,8 @@ class Function3D(Function):
         self,
         name: Optional[str] = None,
         function_definition: Optional[str] = None,
-        parameters: Optional[Dict[str, Parameter]] = None,
-        properties: Optional[Dict[str, FunctionProperty]] = None,
+        parameters: Optional[dict[str, Parameter]] = None,
+        properties: Optional[dict[str, FunctionProperty]] = None,
     ):
         Function.__init__(self, name, function_definition, parameters, properties)
 
@@ -2153,7 +2140,7 @@ class CompositeFunction(Function):
     # Override the to_dict method of the Node class to add the expression to re-build
     # this composite function
     def to_dict(self, minimal=False):
-        data = super(CompositeFunction, self).to_dict(minimal)
+        data = super().to_dict(minimal)
 
         if not minimal:
             data["expression"] = self._expression

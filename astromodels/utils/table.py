@@ -83,4 +83,4 @@ class Table(astropy.table.Table):
 
 class NumericMatrix(Table):
     def _base_repr_(self, html=False, show_name=True, **kwargs):
-        return super(NumericMatrix, self)._base_repr_(html, False)
+        return super()._base_repr_(html, False)

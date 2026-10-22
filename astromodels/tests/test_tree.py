@@ -18,7 +18,7 @@ class _SimpleInheritance(Node):
 
         self._placeholder = 2
 
-        super(_SimpleInheritance, self).__init__(name)
+        super().__init__(name)
 
     @property
     def placeholder(self):
@@ -28,7 +28,7 @@ class _SimpleInheritance(Node):
 class _ComplexInheritance(Node):
     def __init__(self, name, min_value, max_value):
 
-        super(_ComplexInheritance, self).__init__(name)
+        super().__init__(name)
 
         self._min_value = min_value * u.Unit("1 / (keV * cm**2 * s)")
         self._max_value = max_value * u.Unit("1 / (keV * cm**2 * s)")

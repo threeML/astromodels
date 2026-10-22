@@ -1,5 +1,4 @@
 import math
-from builtins import object
 
 import numba as nb
 import numpy as np
@@ -15,7 +14,7 @@ def _log10(x):
     return math.log10(x)
 
 
-class ParameterTransformation(object):
+class ParameterTransformation:
     def __init__(self, is_positive=False):
 
         self._is_positive = is_positive
@@ -36,7 +35,7 @@ class ParameterTransformation(object):
 class LogarithmicTransformation(ParameterTransformation):
     def __init__(self):
 
-        super(LogarithmicTransformation, self).__init__(is_positive=True)
+        super().__init__(is_positive=True)
 
     def forward(self, external_value, vector=False):
 

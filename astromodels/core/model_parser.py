@@ -1,12 +1,11 @@
 import logging
 
-from builtins import object, str
+from builtins import str
 
 __author__ = "giacomov"
 
 import re
 import warnings
-from typing import Dict, List
 
 from astromodels.core import (
     model,
@@ -68,7 +67,7 @@ def model_unpickler(state):
     return ModelParser(model_dict=state).get_model()
 
 
-class ModelParser(object):
+class ModelParser:
     def __init__(self, model_file=None, model_dict=None):
 
         if not ((model_file is not None) or (model_dict is not None)):
@@ -89,7 +88,7 @@ class ModelParser(object):
 
                     self._model_dict = my_yaml.load(f, Loader=my_yaml.FullLoader)
 
-            except IOError:
+            except OSError:
                 msg = "File %s cannot be read. " % model_file
                 msg += "Check path and permissions for current user."
 
@@ -265,7 +264,7 @@ class ModelParser(object):
         return new_model
 
 
-class IndependentVariableParser(object):
+class IndependentVariableParser:
     def __init__(self, name, definition):
 
         self._variable = parameter.IndependentVariable(name, **definition)
@@ -275,7 +274,7 @@ class IndependentVariableParser(object):
         return self._variable
 
 
-class ParameterParser(object):
+class ParameterParser:
     def __init__(self, name, definition):
 
         self._links = []
@@ -373,7 +372,7 @@ class ParameterParser(object):
         return self._links
 
 
-class SourceParser(object):
+class SourceParser:
     def __init__(self, source_name, source_definition):
 
         # Get the type of the source
@@ -444,7 +443,7 @@ class SourceParser(object):
         return self._extra_setups
 
     @property
-    def external_functions(self) -> List[Dict[str, str]]:
+    def external_functions(self) -> list[dict[str, str]]:
 
         return self._external_functions
 
@@ -837,7 +836,7 @@ class SourceParser(object):
         return this_ext_source
 
 
-class ShapeParser(object):
+class ShapeParser:
     def __init__(self, source_name):
 
         self._source_name = source_name
