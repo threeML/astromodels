@@ -5,7 +5,6 @@
 # ply.yacc and is thread safe
 
 import re
-from builtins import map, str, zip
 from functools import reduce
 
 import astropy.units as u

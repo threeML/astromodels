@@ -8,7 +8,6 @@ import os
 import re
 import textwrap
 import uuid
-from builtins import chr, map, str
 from operator import attrgetter
 from typing import Optional
 
