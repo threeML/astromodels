@@ -7,7 +7,6 @@ __doc__ = """"""
 
 import contextlib
 import copy
-import warnings
 from typing import Any, Optional
 
 import astropy.units as u
