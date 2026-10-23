@@ -95,7 +95,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">astropy_units</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">stats</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.special</span><span class="w"> </span><span class="kn">import</span> <span class="n">erf</span><span class="p">,</span> <span class="n">erfcinv</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">astromodels.functions.function</span><span class="w"> </span><span class="kn">import</span> <span class="n">Function1D</span><span class="p">,</span> <span class="n">FunctionMeta</span>
@@ -106,9 +106,62 @@
 <span class="c1"># noinspection PyPep8Naming</span>
 
 
+<div class="viewcode-block" id="Prior">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Prior">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">):</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pdf_scipy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_logpdf_scipy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pdf_scipy</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Prior.rvs">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Prior.rvs">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rvs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_unit_cube</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">size</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Prior.dim">
+<a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Prior.dim">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_support</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"lower_bound"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"upper_bound"</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_bound</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">scipy_dist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return a frozen scipy rv_continuous-like object."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_scipy_dist"</span><span class="p">):</span>
+            <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+            <span class="k">class</span><span class="w"> </span><span class="nc">_ScipyWrapper</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">rv_continuous</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="nf">_pdf</span><span class="p">(</span><span class="n">self_inner</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">_pdf_scipy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+                <span class="k">def</span><span class="w"> </span><span class="nf">_logpdf</span><span class="p">(</span><span class="n">self_inner</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">_logpdf_scipy</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+                <span class="k">def</span><span class="w"> </span><span class="nf">_get_support</span><span class="p">(</span><span class="n">self_inner</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">_get_support</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+                <span class="k">def</span><span class="w"> </span><span class="nf">rvs</span><span class="p">(</span><span class="n">self_inner</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">parent</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scipy_dist</span> <span class="o">=</span> <span class="n">_ScipyWrapper</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scipy_dist</span></div>
+
+
+
 <div class="viewcode-block" id="Gaussian">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Gaussian">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Gaussian</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -181,19 +234,17 @@
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        """</span>
-
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">value</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">value</span>
 
         <span class="n">sqrt_two</span> <span class="o">=</span> <span class="mf">1.414213562</span>
-
-        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mf">1e-16</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">:</span>
-
-            <span class="n">res</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e32</span>
-
-        <span class="k">else</span><span class="p">:</span>
-
-            <span class="n">res</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sqrt_two</span> <span class="o">*</span> <span class="n">erfcinv</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">mask</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">mask</span><span class="p">[(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e32</span>
+        <span class="n">res</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sqrt_two</span> <span class="o">*</span> <span class="n">erfcinv</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]))</span>
 
         <span class="k">return</span> <span class="n">res</span></div>
 </div>
@@ -202,7 +253,7 @@
 
 <div class="viewcode-block" id="Truncated_gaussian">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Truncated_gaussian">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Truncated_gaussian</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Truncated_gaussian</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -356,7 +407,7 @@
 
 <div class="viewcode-block" id="Cauchy">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Cauchy">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Cauchy</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cauchy</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -441,7 +492,7 @@
 
 <div class="viewcode-block" id="Cosine_Prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Cosine_Prior">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Cosine_Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cosine_Prior</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -558,7 +609,7 @@
 
 <div class="viewcode-block" id="Log_normal">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Log_normal">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Log_normal</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Log_normal</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -655,19 +706,20 @@
 <span class="sd">        :param upper_bound:</span>
 <span class="sd">        :return:</span>
 <span class="sd">        """</span>
-
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">mu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mu</span><span class="o">.</span><span class="n">value</span>
         <span class="n">sigma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">value</span>
 
         <span class="n">sqrt_two</span> <span class="o">=</span> <span class="mf">1.414213562</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mf">1e-16</span> <span class="ow">or</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">:</span>
+        <span class="n">mask</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">mask</span><span class="p">[(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-16</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
-            <span class="n">res</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e32</span>
+        <span class="n">res</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1e32</span>
 
-        <span class="k">else</span><span class="p">:</span>
-
-            <span class="n">res</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sqrt_two</span> <span class="o">*</span> <span class="n">erfcinv</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">))</span>
+        <span class="n">res</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">sqrt_two</span> <span class="o">*</span> <span class="n">erfcinv</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]))</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
 </div>
@@ -676,7 +728,7 @@
 
 <div class="viewcode-block" id="Uniform_prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Uniform_prior</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -735,13 +787,15 @@
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Uniform_prior.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">lower_bound</span><span class="p">,</span> <span class="n">upper_bound</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c1"># The value * 0 is to keep the units right</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">"shape"</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">0</span>
 
-        <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">0</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
-        <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)</span>
-        <span class="n">result</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-
-        <span class="k">return</span> <span class="n">result</span></div>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span></div>
 
 
 <div class="viewcode-block" id="Uniform_prior.from_unit_cube">
@@ -759,7 +813,7 @@
         <span class="n">upper_bound</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_bound</span><span class="o">.</span><span class="n">value</span>
 
         <span class="n">low</span> <span class="o">=</span> <span class="n">lower_bound</span>
-        <span class="n">spread</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">upper_bound</span> <span class="o">-</span> <span class="n">lower_bound</span><span class="p">)</span>
+        <span class="n">spread</span> <span class="o">=</span> <span class="n">upper_bound</span> <span class="o">-</span> <span class="n">lower_bound</span>
 
         <span class="n">par</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">spread</span> <span class="o">+</span> <span class="n">low</span>
 
@@ -770,7 +824,7 @@
 
 <div class="viewcode-block" id="Log_uniform_prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Log_uniform_prior">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Log_uniform_prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Log_uniform_prior</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -864,7 +918,7 @@
 
 <div class="viewcode-block" id="Beta">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Beta">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Beta</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Beta</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -926,7 +980,7 @@
 
 <div class="viewcode-block" id="Gamma">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Gamma">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Gamma</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Gamma</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -989,7 +1043,7 @@
 
 <div class="viewcode-block" id="Exponential">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Exponential">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Exponential</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Exponential</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 
@@ -1041,7 +1095,7 @@
 
 <div class="viewcode-block" id="Powerlaw_Prior">
 <a class="viewcode-back" href="../../../api/astromodels.functions.html#astromodels.functions.priors.Powerlaw_Prior">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw_Prior</span><span class="p">(</span><span class="n">Function1D</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Powerlaw_Prior</span><span class="p">(</span><span class="n">Prior</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FunctionMeta</span><span class="p">):</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    description :</span>
 

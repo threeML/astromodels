@@ -815,6 +815,15 @@
 <span class="sd">            desc : curvature (positive is concave, negative is convex)</span>
 <span class="sd">            initial value : 1.0</span>
 
+<span class="sd">    properties :</span>
+
+<span class="sd">        clip_value :</span>
+<span class="sd">            desc : Value at which the log value of the evaluation will be clipped</span>
+<span class="sd">                    e.g. anything larger than exp(700) or smaller than exp(-700) will</span>
+<span class="sd">                    return 0</span>
+<span class="sd">            initial value : 700</span>
+
+
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_set_units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_unit</span><span class="p">,</span> <span class="n">y_unit</span><span class="p">):</span>
@@ -833,26 +842,21 @@
 <div class="viewcode-block" id="Log_parabola.evaluate">
 <a class="viewcode-back" href="../../../../api/astromodels.functions.functions_1D.html#astromodels.functions.Log_parabola.evaluate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">piv</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
-
-        <span class="c1"># print("Receiving %s" % ([K, piv, alpha, beta]))</span>
-
-        <span class="n">xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">piv</span><span class="p">)</span>
-
-        <span class="k">try</span><span class="p">:</span>
-
-            <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">xx</span> <span class="o">**</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xx</span><span class="p">))</span>
-
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-
-            <span class="c1"># The current version of astropy (1.1.x) has a bug for which quantities that</span>
-            <span class="c1"># have become dimensionless because of a division (like xx here) are not</span>
-            <span class="c1"># recognized as such by the power operator, which throws an exception:</span>
-            <span class="c1"># ValueError: Quantities and Units may only be raised to a scalar power</span>
-            <span class="c1"># This is a quick fix, waiting for astropy 1.2 which will fix this</span>
-
-            <span class="n">xx</span> <span class="o">=</span> <span class="n">xx</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="n">K</span> <span class="o">*</span> <span class="n">xx</span> <span class="o">**</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xx</span><span class="p">))</span></div>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">Quantity</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">unit</span>
+            <span class="n">K</span> <span class="o">=</span> <span class="n">K</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">piv</span> <span class="o">=</span> <span class="n">piv</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">log_xx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">piv</span><span class="p">)</span>
+        <span class="n">log_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">K</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">*</span> <span class="n">log_xx</span><span class="p">)</span> <span class="o">*</span> <span class="n">log_xx</span>
+        <span class="n">log_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span>
+            <span class="n">log_result</span><span class="p">,</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clip_value</span><span class="o">.</span><span class="n">value</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">clip_value</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_result</span><span class="p">)</span> <span class="o">*</span> <span class="n">unit</span></div>
 
 
     <span class="nd">@property</span>
