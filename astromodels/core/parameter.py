@@ -1,4 +1,5 @@
 import logging
+import warnings
 
 __author__ = "giacomov"
 
@@ -6,7 +7,6 @@ __doc__ = """"""
 
 import contextlib
 import copy
-import warnings
 from typing import Any, Optional
 
 import astropy.units as u
@@ -713,9 +713,10 @@ class ParameterBase(Node):
                     # set it by default to for the user
                     min_value = 1e-99
 
-                    log.warning(
+                    warnings.warn(
                         f"We have set the min_value of {self.path} to 1e-99 because"
-                        " there was a postive transform"
+                        " there was a postive transform",
+                        UserWarning,
                     )
 
         # Store the minimum as a pure float
@@ -730,10 +731,11 @@ class ParameterBase(Node):
             and self.value < self._external_min_value
         ):
 
-            log.warning(
+            warnings.warn(
                 "The current value of the parameter %s (%s) "
                 "was below the new minimum %s."
-                % (self.name, self.value, self._external_min_value)
+                % (self.name, self.value, self._external_min_value),
+                RuntimeWarning,
             )
 
             self.value = self._external_min_value
@@ -797,7 +799,6 @@ class ParameterBase(Node):
     @accept_quantity(float, allow_none=True)
     def _set_max_value(self, max_value) -> None:
         """Sets current maximum allowed value."""
-
         self._external_max_value = max_value
 
         # Check that the current value of the parameter is still within the boundaries.
@@ -807,11 +808,11 @@ class ParameterBase(Node):
             self._external_max_value is not None
             and self.value > self._external_max_value
         ):
-
-            log.warning(
+            warnings.warn(
                 "The current value of the parameter %s (%s) "
                 "was above the new maximum %s."
-                % (self.name, self.value, self._external_max_value)
+                % (self.name, self.value, self._external_max_value),
+                RuntimeWarning,
             )
             self.value = self._external_max_value
 

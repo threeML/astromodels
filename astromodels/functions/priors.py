@@ -2,7 +2,7 @@ import math
 
 import astropy.units as astropy_units
 import numpy as np
-import scipy.stats as stats
+from scipy import stats
 from scipy.special import erf, erfcinv
 
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -13,7 +13,51 @@ rad2deg = 180.0 / np.pi
 # noinspection PyPep8Naming
 
 
-class Gaussian(Function1D, metaclass=FunctionMeta):
+class Prior(Function1D):
+
+    def _pdf_scipy(self, x):
+        return self.evaluate(x, *[p.value for p in self.parameters.values()])
+
+    def _logpdf_scipy(self, x):
+        return np.log(self._pdf_scipy(x))
+
+    def rvs(self, size=1):
+        return self.from_unit_cube(np.random.rand(size))
+
+    def dim(self):
+        return 1
+
+    def _get_support(self):
+        if hasattr(self, "lower_bound") and hasattr(self, "upper_bound"):
+            return self.lower_bound.value, self.upper_bound.value
+        else:
+            return -np.inf, np.inf
+
+    @property
+    def scipy_dist(self):
+        """Return a frozen scipy rv_continuous-like object."""
+        if not hasattr(self, "_scipy_dist"):
+            parent = self
+
+            class _ScipyWrapper(stats.rv_continuous):
+                def _pdf(self_inner, x):
+                    return parent._pdf_scipy(x)
+
+                def _logpdf(self_inner, x):
+                    return parent._logpdf_scipy(x)
+
+                def _get_support(self_inner, *args, **kwargs):
+                    return parent._get_support(*args, **kwargs)
+
+                def rvs(self_inner, size=1):
+                    return parent.rvs(size)
+
+            self._scipy_dist = _ScipyWrapper(name=self.name)
+
+        return self._scipy_dist
+
+
+class Gaussian(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -81,24 +125,22 @@ class Gaussian(Function1D, metaclass=FunctionMeta):
         :param upper_bound:
         :return:
         """
-
+        x = np.atleast_1d(x)
         mu = self.mu.value
         sigma = self.sigma.value
 
         sqrt_two = 1.414213562
-
-        if x < 1e-16 or (1 - x) < 1e-16:
-
-            res = -1e32
-
-        else:
-
-            res = mu + sigma * sqrt_two * erfcinv(2 * (1 - x))
+        res = np.zeros_like(x)
+        mask = np.zeros_like(x).astype(bool)
+        mask[x < 1e-16] = True
+        mask[(1 - x) < 1e-16] = True
+        res[mask] = -1e32
+        res[~mask] = mu + sigma * sqrt_two * erfcinv(2 * (1 - x[~mask]))
 
         return res
 
 
-class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
+class Truncated_gaussian(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -243,7 +285,7 @@ class Truncated_gaussian(Function1D, metaclass=FunctionMeta):
         return np.clip(out, lower_bound, upper_bound)
 
 
-class Cauchy(Function1D, metaclass=FunctionMeta):
+class Cauchy(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -319,7 +361,7 @@ class Cauchy(Function1D, metaclass=FunctionMeta):
         return res
 
 
-class Cosine_Prior(Function1D, metaclass=FunctionMeta):
+class Cosine_Prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -424,7 +466,7 @@ class Cosine_Prior(Function1D, metaclass=FunctionMeta):
         return dec
 
 
-class Log_normal(Function1D, metaclass=FunctionMeta):
+class Log_normal(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -516,24 +558,25 @@ class Log_normal(Function1D, metaclass=FunctionMeta):
         :param upper_bound:
         :return:
         """
-
+        x = np.atleast_1d(x)
         mu = self.mu.value
         sigma = self.sigma.value
 
         sqrt_two = 1.414213562
+        res = np.zeros_like(x)
+        mask = np.zeros_like(x).astype(bool)
 
-        if x < 1e-16 or (1 - x) < 1e-16:
+        mask[x < 1e-16] = True
+        mask[(1 - x) < 1e-16] = True
 
-            res = -1e32
+        res[mask] = -1e32
 
-        else:
-
-            res = mu + sigma * sqrt_two * erfcinv(2 * (1 - x))
+        res[~mask] = mu + sigma * sqrt_two * erfcinv(2 * (1 - x[~mask]))
 
         return np.exp(res)
 
 
-class Uniform_prior(Function1D, metaclass=FunctionMeta):
+class Uniform_prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -590,13 +633,15 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
 
     def evaluate(self, x, lower_bound, upper_bound, value):
         # The value * 0 is to keep the units right
+        if hasattr(x, "shape"):
+            result = np.zeros(x.shape) * value * 0
 
-        result = np.zeros(x.shape) * value * 0
+            idx = (x >= lower_bound) & (x <= upper_bound)
+            result[idx] = value
 
-        idx = (x >= lower_bound) & (x <= upper_bound)
-        result[idx] = value
-
-        return result
+            return result
+        else:
+            return value if (x >= lower_bound) & (x <= upper_bound) else 0
 
     def from_unit_cube(self, x):
         """Used by multinest.
@@ -611,14 +656,14 @@ class Uniform_prior(Function1D, metaclass=FunctionMeta):
         upper_bound = self.upper_bound.value
 
         low = lower_bound
-        spread = float(upper_bound - lower_bound)
+        spread = upper_bound - lower_bound
 
         par = x * spread + low
 
         return par
 
 
-class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
+class Log_uniform_prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -703,7 +748,7 @@ class Log_uniform_prior(Function1D, metaclass=FunctionMeta):
         return par
 
 
-class Beta(Function1D, metaclass=FunctionMeta):
+class Beta(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -756,7 +801,7 @@ class Beta(Function1D, metaclass=FunctionMeta):
         return stats.beta.ppf(x, a, b)
 
 
-class Gamma(Function1D, metaclass=FunctionMeta):
+class Gamma(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -810,7 +855,7 @@ class Gamma(Function1D, metaclass=FunctionMeta):
         return stats.gamma.ppf(x, alpha, scale=1.0 / beta)
 
 
-class Exponential(Function1D, metaclass=FunctionMeta):
+class Exponential(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
@@ -853,7 +898,7 @@ class Exponential(Function1D, metaclass=FunctionMeta):
         return stats.expon.ppf(x, scale=1.0 / self.alpha.value)
 
 
-class Powerlaw_Prior(Function1D, metaclass=FunctionMeta):
+class Powerlaw_Prior(Prior, metaclass=FunctionMeta):
     r"""
     description :
 
