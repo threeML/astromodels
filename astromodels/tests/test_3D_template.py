@@ -14,7 +14,7 @@ import h5py
 import numpy as np
 import pytest
 from astropy.io import fits
-from scipy.interpolate import RegualrGridInterpolator
+from scipy.interpolate import RegularGridInterpolator
 
 # ---------------------------------------------------------------------------
 # Helpers to build minimal FITS / HDF5 fixtures in memory
@@ -121,14 +121,14 @@ class TestGridInterpolate:
     def test_returns_correct_value_1d(self):
         x = np.array([0.0, 1.0, 2.0], dtype="<f8")
         y = np.array([0.0, 1.0, 4.0], dtype="<f8")
-        interp = RegualrGridInterpolator((x,), y)
+        interp = RegularGridInterpolator((x,), y)
         result = interp(np.array([[1.0]]))
         assert np.isfinite(result)
 
     def test_shape_preserved(self):
         x = np.array([0.0, 1.0, 2.0], dtype="<f8")
         y = np.array([10.0, 20.0, 30.0], dtype="<f8")
-        interp = RegualrGridInterpolator((x,), y)
+        interp = RegularGridInterpolator((x,), y)
         val = interp(np.array([[1.0]]))
         # Extract scalar to avoid deprecation warning
         val_scalar = val.item()
