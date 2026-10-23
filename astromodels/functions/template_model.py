@@ -1,14 +1,12 @@
-import logging
-
 import gc
+import logging
 import os
 import re
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
-import astropy.io.fits as fits
+import astropy.io as fits
 import astropy.units as u
 import h5py
 import numpy as np
@@ -27,10 +25,10 @@ _TINY_ = 1e-50
 
 __all__ = [
     "IncompleteGrid",
-    "ValuesNotInGrid",
     "MissingDataFile",
-    "TemplateModelFactory",
     "TemplateModel",
+    "TemplateModelFactory",
+    "ValuesNotInGrid",
 ]
 
 
@@ -136,7 +134,7 @@ class TemplateModelFactory:
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids: dict[str, Optional[np.ndarray]] = dict()
+        self._parameters_grids: dict[str, np.ndarray | None] = dict()
 
         for parameter_name in names_of_parameters:
             self._parameters_grids[parameter_name] = None
@@ -268,8 +266,7 @@ class TemplateModelFactory:
 
         if not self._energies.shape[0] == differential_fluxes.shape[0]:
             log.error(
-                "Differential fluxes and energies must have "
-                "the same number of elements"
+                "Differential fluxes and energies must have the same number of elements"
             )
 
             raise AssertionError()
@@ -504,7 +501,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
     def _custom_init_(
         self,
         model_name: str,
-        other_name: Optional[str] = None,
+        other_name: str | None = None,
         log_interp: bool = True,
     ):
         """Custom initialization for this model.
@@ -560,7 +557,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
                 k = key
 
-            log.debug(f"reading parameter {str(k)}")
+            log.debug(f"reading parameter {k!s}")
 
             self._parameters_grids[str(k)] = template_file.parameters[key]
 
@@ -605,9 +602,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             super().__init__(name, function_definition, parameters)
 
         else:
-            super().__init__(
-                other_name, function_definition, parameters
-            )
+            super().__init__(other_name, function_definition, parameters)
 
         # Finally prepare the interpolators
 
