@@ -1915,6 +1915,10 @@ class CompositeFunction(Function):
                 log.error("You cannot compose functions of different dimensionality")
 
                 raise RuntimeError()
+            if type(function).__name__ == "DiracDelta":
+                log.error("DiracDelta cannot be used inside a CompositeFunction")
+
+                raise RuntimeError()
 
         # Now assign a unique name to all the functions,
         # to make clear which is which in the definition
