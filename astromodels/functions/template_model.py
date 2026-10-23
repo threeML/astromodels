@@ -54,11 +54,6 @@ class InvalidTemplateModelFile(RuntimeError):
 _classes_cache = {}
 
 
-class GridInterpolate(RegularGridInterpolator):
-    pass
-
-
-
 class UnivariateSpline:
     def __init__(self, x, y):
         self._x = x
@@ -362,16 +357,6 @@ class TemplateModelFactory:
         template_file.save(filename_sanitized)
 
 
-# This adds a method to a class at runtime
-
-
-def add_method(self, method, name=None):
-    if name is None:
-        name = method.__name__
-
-    setattr(self.__class__, name, method)
-
-
 class RectBivariateSplineWrapper:
     """Wrapper around RectBivariateSpline, which supplies a __call__ method
     which accept the same syntax as the other interpolation methods."""
@@ -536,8 +521,8 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         try:
             template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
 
-        except Exception:
-            raise InvalidTemplateModelFile()
+        except Exception as e:
+            raise InvalidTemplateModelFile from e
 
         self._parameters_grids = {}
 
