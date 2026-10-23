@@ -1,18 +1,17 @@
-import logging
-
 import gc
+import logging
 import os
 import re
 import warnings
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
-import astropy.io.fits as fits
 import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
+from astropy.io import fits
+from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -27,10 +26,10 @@ _TINY_ = 1e-50
 
 __all__ = [
     "IncompleteGrid",
-    "ValuesNotInGrid",
     "MissingDataFile",
-    "TemplateModelFactory",
     "TemplateModel",
+    "TemplateModelFactory",
+    "ValuesNotInGrid",
 ]
 
 
@@ -53,15 +52,6 @@ class InvalidTemplateModelFile(RuntimeError):
 # This dictionary will keep track of the new classes already created in the current
 # session
 _classes_cache = {}
-
-
-class GridInterpolate:
-    def __init__(self, grid, values):
-        self._grid = grid
-        self._values = np.ascontiguousarray(values)
-
-    def __call__(self, v):
-        return scipy.interpolate.interpn(self._grid, self._values, v)
 
 
 class UnivariateSpline:
@@ -136,7 +126,7 @@ class TemplateModelFactory:
 
         # We create a dictionary which will contain the grid for each parameter
 
-        self._parameters_grids: dict[str, Optional[np.ndarray]] = dict()
+        self._parameters_grids: dict[str, np.ndarray | None] = {}
 
         for parameter_name in names_of_parameters:
             self._parameters_grids[parameter_name] = None
@@ -244,7 +234,7 @@ class TemplateModelFactory:
         # If the user did not specify one of the parameters, then the parameters_values
         # array will contain nan
 
-        if not len(parameter_idx) == len(self._parameters_grids):
+        if len(parameter_idx) != len(self._parameters_grids):
             log.error("You didn't specify all parameters' values.")
 
             raise AssertionError()
@@ -266,10 +256,9 @@ class TemplateModelFactory:
 
         # Now let's check for valid inputs
 
-        if not self._energies.shape[0] == differential_fluxes.shape[0]:
+        if self._energies.shape[0] != differential_fluxes.shape[0]:
             log.error(
-                "Differential fluxes and energies must have "
-                "the same number of elements"
+                "Differential fluxes and energies must have the same number of elements"
             )
 
             raise AssertionError()
@@ -293,7 +282,7 @@ class TemplateModelFactory:
             log.warning(
                 "You have zeros in the differential flux. Since the interpolation"
                 " happens in the log space, this cannot be accepted."
-                "We will substitute zeros with %g" % _TINY_
+                f"We will substitute zeros with {_TINY_:g}"
             )
 
             idx = differential_fluxes == 0  # type: np.ndarray
@@ -332,8 +321,8 @@ class TemplateModelFactory:
 
                 except OSError:
                     log.error(
-                        "The file %s already exists and cannot be removed (maybe you do"
-                        "not have permissions to do so?). " % filename_sanitized
+                        f"The file {filename_sanitized} already exists and cannot be "
+                        "removed (maybe you do not have permissions to do so?). "
                     )
 
                     raise OSError(
@@ -343,8 +332,8 @@ class TemplateModelFactory:
 
             else:
                 log.error(
-                    "The file %s already exists! You cannot call two different "
-                    "template models with the same name" % filename_sanitized
+                    f"The file {filename_sanitized} already exists! You cannot call two"
+                    "different template models with the same name"
                 )
 
                 raise OSError(
@@ -366,16 +355,6 @@ class TemplateModelFactory:
         )
 
         template_file.save(filename_sanitized)
-
-
-# This adds a method to a class at runtime
-
-
-def add_method(self, method, name=None):
-    if name is None:
-        name = method.__name__
-
-    setattr(self.__class__, name, method)
 
 
 class RectBivariateSplineWrapper:
@@ -455,7 +434,7 @@ class TemplateFile:
 
             grid = f["grid"][()]
 
-            parameters = dict()
+            parameters = {}
 
             for k in parameter_order:
                 parameters[k] = f["parameters"][k][()]
@@ -504,7 +483,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
     def _custom_init_(
         self,
         model_name: str,
-        other_name: Optional[str] = None,
+        other_name: str | None = None,
         log_interp: bool = True,
     ):
         """Custom initialization for this model.
@@ -542,10 +521,10 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         try:
             template_file: TemplateFile = TemplateFile.from_file(filename_sanitized)
 
-        except Exception:
-            raise InvalidTemplateModelFile()
+        except Exception as e:
+            raise InvalidTemplateModelFile from e
 
-        self._parameters_grids = dict()
+        self._parameters_grids = {}
 
         for key in template_file.parameter_order:
             try:
@@ -560,7 +539,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
                 k = key
 
-            log.debug(f"reading parameter {str(k)}")
+            log.debug(f"reading parameter {k!s}")
 
             self._parameters_grids[str(k)] = template_file.parameters[key]
 
@@ -577,7 +556,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         # Make the dictionary of parameters
 
-        function_definition = dict()
+        function_definition = {}
 
         function_definition["description"] = description
 
@@ -585,7 +564,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
         # Now build the parameters according to the content of the parameter grid
 
-        parameters = dict()
+        parameters = {}
 
         parameters["K"] = Parameter("K", 1.0)
         parameters["scale"] = Parameter("scale", 1.0)
@@ -605,9 +584,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
             super().__init__(name, function_definition, parameters)
 
         else:
-            super().__init__(
-                other_name, function_definition, parameters
-            )
+            super().__init__(other_name, function_definition, parameters)
 
         # Finally prepare the interpolators
 
@@ -626,15 +603,16 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
     def _prepare_interpolators(self, log_interp: bool, data_frame):
         # Figure out the shape of the data matrices
         data_shape = [x.shape[0] for x in list(self._parameters_grids.values())]
+        data_shape.append(len(self._energies))
 
-        def _construct_element(i):
+        def _construct_element():
             with warnings.catch_warnings():
                 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
                 with np.errstate(all="ignore"):
                     if log_interp:
                         this_data = np.array(
-                            np.log10(data_frame[..., i]).reshape(*data_shape),
+                            np.log10(data_frame[...]).reshape(*data_shape),
                             dtype=float,
                         )
 
@@ -643,7 +621,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                     else:
                         # work in linear space
                         this_data = np.array(
-                            data_frame[..., i].reshape(*data_shape), dtype=float
+                            data_frame[...].reshape(*data_shape), dtype=float
                         )
 
                         self._is_log10 = False
@@ -697,7 +675,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
                     else:
                         # In more than 2d we can only use linear interpolation
 
-                        this_interpolator = GridInterpolate(
+                        this_interpolator = RegularGridInterpolator(
                             tuple(
                                 [
                                     np.array(x, dtype="<f8")
@@ -709,9 +687,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
 
                     return this_interpolator
 
-        self._interpolators = [
-            _construct_element(i) for i in range(len(self._energies))
-        ]
+        self._interpolators = _construct_element()
 
         # clear the data
         self._data_frame = None
@@ -755,10 +731,7 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # note that if these are not logged, then the name is superflous
 
         log_interpolations = np.array(
-            [
-                self._interpolators[i](np.atleast_1d(parameters_values))
-                for i in range(self._energies.shape[0])
-            ]
+            self._interpolators(np.atleast_1d(parameters_values))
         )
 
         # Now interpolate the interpolations to get the flux at the requested energies
@@ -766,14 +739,21 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # NOTE: the variable "interpolations" contains already the log10 of the values,
 
         if self._is_log10:
-            interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
-
-            values = np.power(10.0, interpolator(log_energies))
+            values = np.power(
+                10.0,
+                np.interp(
+                    log_energies,
+                    np.log10(e_tilde),
+                    np.asarray(log_interpolations).reshape(np.shape(e_tilde)),
+                ),
+            )
 
         else:
-            interpolator = UnivariateSpline(e_tilde, log_interpolations)
-
-            values = interpolator(log_energies)
+            values = np.interp(
+                log_energies,
+                e_tilde,
+                np.asarray(log_interpolations).reshape(np.shape(e_tilde)),
+            )
 
         # The division by scale results from the differential:
         # E = e * scale
@@ -952,8 +932,8 @@ def convert_old_table_model(model_name: str):
 
     if not filename_sanitized.exists():
         log.error(
-            "The data file %s does not exists. Did you use the "
-            "TemplateFactory?" % (filename_sanitized)
+            f"The data file {filename_sanitized} does not exists. Did you use the "
+            "TemplateFactory?"
         )
 
         raise MissingDataFile()
@@ -961,7 +941,7 @@ def convert_old_table_model(model_name: str):
     with HDFStore(filename_sanitized) as store:
         data_frame = store["data_frame"]
 
-        parameters_grids = dict()
+        parameters_grids = {}
 
         processed_parameters = 0
 
@@ -977,7 +957,7 @@ def convert_old_table_model(model_name: str):
                 this_parameter_number = int(tokens[0])
                 this_parameter_name = str(tokens[1])
 
-                if not this_parameter_number == processed_parameters:
+                if this_parameter_number != processed_parameters:
                     log.error("Parameters out of order!")
 
                     raise AssertionError()
@@ -1013,7 +993,7 @@ def convert_old_table_model(model_name: str):
 
         # Make the dictionary of parameters
 
-        function_definition = dict()
+        function_definition = {}
 
         function_definition["description"] = description
 

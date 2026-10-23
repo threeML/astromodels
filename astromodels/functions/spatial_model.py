@@ -21,7 +21,6 @@ from scipy.interpolate import RectBivariateSpline, RegularGridInterpolator
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function3D, FunctionMeta
 from astromodels.functions.template_model import (
-    GridInterpolate,
     IncompleteGrid,
     InvalidTemplateModelFile,
     MissingDataFile,
@@ -639,10 +638,12 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
         parameter_values_len: int = len(parameter_grid_values)
 
         # interpolate over the parameters
-        self._interpolators: list[Optional[RectBivariateSpline, GridInterpolate]] = []
+        self._interpolators: list[
+            Optional[RectBivariateSpline, RegularGridInterpolator]
+        ] = []
 
         this_interpolator: Optional[
-            UnivariateSpline, RectBivariateSpline, GridInterpolate
+            UnivariateSpline, RectBivariateSpline, RegularGridInterpolator
         ] = None
 
         indices = product(
@@ -697,7 +698,7 @@ class HaloModel(Function3D, metaclass=FunctionMeta):
 
             else:
                 # In more than 2d, we can only interpolate linearly
-                this_interpolator = GridInterpolate(
+                this_interpolator = RegularGridInterpolator(
                     tuple(
                         [np.array(x, dtype="<f8") for x in self._parameter_grid_values]
                     ),
