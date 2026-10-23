@@ -321,8 +321,8 @@ class TemplateModelFactory:
 
                 except OSError:
                     log.error(
-                        f"The file {filename_sanitized} already exists and cannot be removed (maybe you do"
-                        "not have permissions to do so?). "
+                        f"The file {filename_sanitized} already exists and cannot be "
+                        "removed (maybe you do not have permissions to do so?). "
                     )
 
                     raise OSError(
@@ -332,8 +332,8 @@ class TemplateModelFactory:
 
             else:
                 log.error(
-                    f"The file {filename_sanitized} already exists! You cannot call two different "
-                    "template models with the same name"
+                    f"The file {filename_sanitized} already exists! You cannot call two"
+                    "different template models with the same name"
                 )
 
                 raise OSError(
