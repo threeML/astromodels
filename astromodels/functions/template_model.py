@@ -11,6 +11,7 @@ import astropy.units as u
 import h5py
 import numpy as np
 import scipy.interpolate
+from scipy.interpolate import RegularGridInterpolator
 
 from astromodels.core.parameter import Parameter
 from astromodels.functions.function import Function1D, FunctionMeta
@@ -53,13 +54,9 @@ class InvalidTemplateModelFile(RuntimeError):
 _classes_cache = {}
 
 
-class GridInterpolate:
-    def __init__(self, grid, values):
-        self._grid = grid
-        self._values = np.ascontiguousarray(values)
+class GridInterpolate(RegularGridInterpolator):
+    pass
 
-    def __call__(self, v):
-        return scipy.interpolate.interpn(self._grid, self._values, v)
 
 
 class UnivariateSpline:
@@ -761,14 +758,21 @@ class TemplateModel(Function1D, metaclass=FunctionMeta):
         # NOTE: the variable "interpolations" contains already the log10 of the values,
 
         if self._is_log10:
-            interpolator = UnivariateSpline(np.log10(e_tilde), log_interpolations)
-
-            values = np.power(10.0, interpolator(log_energies))
+            values = np.power(
+                10.0,
+                np.interp(
+                    log_energies,
+                    np.log10(e_tilde),
+                    np.asarray(log_interpolations).reshape(np.shape(e_tilde)),
+                ),
+            )
 
         else:
-            interpolator = UnivariateSpline(e_tilde, log_interpolations)
-
-            values = interpolator(log_energies)
+            values = np.interp(
+                log_energies,
+                e_tilde,
+                np.asarray(log_interpolations).reshape(np.shape(e_tilde)),
+            )
 
         # The division by scale results from the differential:
         # E = e * scale
