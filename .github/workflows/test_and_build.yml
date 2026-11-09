@@ -37,7 +37,10 @@ jobs:
             fail-fast: false
             matrix:
                 python-version: ["3.11", "3.12", "3.13"]
-                os: ["ubuntu-latest", "macos-latest", "macos-15-intel","ubuntu-24.04-arm"]
+                os:
+                 - ubuntu-latest
+                 - ubuntu-24.04-arm
+                 - macos-latest
         runs-on: ${{ matrix.os }}
         steps:
             - name: Checkout
@@ -94,7 +97,10 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                os: ["ubuntu-latest", "macos-latest", "macos-15-intel","ubuntu-24.04-arm"]
+                os:
+                 - ubuntu-latest
+                 - ubuntu-24.04-arm
+                 - macos-latest
                 python-version: ["3.11","3.13"]
                 env-file: [ci/environment.yml,ci/environment_heasoft.yml]
                 
