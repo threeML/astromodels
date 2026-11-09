@@ -1,3 +1,4 @@
+import logging
 import pickle
 import shutil
 
@@ -14,11 +15,13 @@ from astromodels.functions import (
     XSPECTableModel,
 )
 from astromodels.functions.template_model import (
-    convert_old_table_model,
     UnivariateSpline,
+    convert_old_table_model,
 )
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.file_utils import get_user_data_path
+
+log = logging.getLogger()
 
 __author__ = "giacomov"
 
@@ -41,8 +44,6 @@ def test_template_factory_1D():
     t = TemplateModelFactory("__test1D", "A test template", energies, ["alpha"])
 
     alpha_grid = np.linspace(-1.5, 1, 15)
-    # beta_grid = np.linspace(-3.5, -1.6, 15)
-    # xp_grid = np.logspace(1, 3, 20)
 
     t.define_parameter_grid("alpha", alpha_grid)
 
@@ -53,7 +54,7 @@ def test_template_factory_1D():
 
         t.add_interpolation_data(mo(energies), alpha=a)
 
-    print("Data has been prepared")
+    log.info("Data has been prepared")
 
     t.save_data(overwrite=True)
 
@@ -78,9 +79,7 @@ def test_template_factory(tmp_path):
     t.define_parameter_grid("xp", xp_grid)
 
     for a in alpha_grid:
-
         for b in beta_grid:
-
             for xp in xp_grid:
                 mo.alpha = a
                 mo.beta = b
@@ -111,11 +110,8 @@ def test_template_factory(tmp_path):
     mo1.K = 1
 
     for a in new_alpha_grid:
-
         for b in new_beta_grid:
-
             for xp in new_xp_grid:
-
                 mo1.alpha = a
                 mo1.beta = b
                 mo1.xp = xp
@@ -132,12 +128,10 @@ def test_template_factory(tmp_path):
                 idx = deltas > 0.1
 
                 if np.any(idx):
-
                     raise AssertionError(
-                        "Interpolation precision @ %s is %s, "
-                        "worse than 10 percent, "
-                        "with parameters %s!"
-                        % (new_energies[idx], deltas[idx], [a, b, xp])
+                        f"Interpolation precision @ {new_energies[idx]} is ",
+                        f"{deltas[idx]}, worse than 10 percent, with parameters ",
+                        f"{[a, b, xp]}!",
                     )
 
     tm = TemplateModel("__test")
@@ -250,6 +244,83 @@ def test_template_factory(tmp_path):
     npt.assert_almost_equal(test(xx), old_table(xx))
 
     p.unlink()
+
+
+def test_template_model_exceptions():
+    mo = get_comparison_function()
+
+    energies = np.logspace(1, 3, 50)
+
+    t = TemplateModelFactory(
+        "__test_fail", "A test template", energies, ["alpha", "xp", "beta"]
+    )
+
+    alpha_grid = np.linspace(-1.5, 1, 15)
+    beta_grid = np.linspace(-3.5, -1.6, 15)
+    xp_grid = np.logspace(1, 3, 20)
+
+    t.define_parameter_grid("alpha", alpha_grid)
+    t.define_parameter_grid("beta", beta_grid)
+    t.define_parameter_grid("xp", xp_grid)
+
+    # check assertion error when diff flux shape does not match energy shape
+    with pytest.raises(AssertionError):
+        t.add_interpolation_data(
+            mo(energies)[:-1], alpha=alpha_grid[0], xp=xp_grid[0], beta=beta_grid[0]
+        )
+
+    # check assertion when parameter is missing
+    with pytest.raises(AssertionError):
+        t.add_interpolation_data(mo(energies), alpha=alpha_grid[0], xp=xp_grid[0])
+
+    if (get_user_data_path() / "__test_fail.h5").exists():
+        (get_user_data_path() / "__test_fail.h5").unlink()
+
+    t.save_data()
+    with pytest.raises(OSError):
+        t.save_data()
+
+    (get_user_data_path() / "__test_fail.h5").unlink()
+
+
+def test_linear_interp():
+    mo = get_comparison_function()
+
+    energies = np.logspace(1, 3, 50)
+
+    t = TemplateModelFactory(
+        "__test_linear", "A test template", energies, ["alpha", "xp", "beta"]
+    )
+
+    alpha_grid = np.linspace(-1.5, 1, 15)
+    beta_grid = np.linspace(-3.5, -1.6, 15)
+    xp_grid = np.logspace(1, 3, 20)
+
+    t.define_parameter_grid("alpha", alpha_grid)
+    t.define_parameter_grid("beta", beta_grid)
+    t.define_parameter_grid("xp", xp_grid)
+
+    for a in alpha_grid:
+        for b in beta_grid:
+            for xp in xp_grid:
+                mo.alpha = a
+                mo.beta = b
+                mo.xp = xp
+
+                t.add_interpolation_data(mo(energies), alpha=a, xp=xp, beta=b)
+
+    t.save_data(overwrite=True)
+
+    tm = TemplateModel("__test_linear", "LinearTM", log_interp=False)
+
+    tm.alpha.value = 0.1
+    tm.beta.value = -2.1
+    tm.xp.value = np.power(10, 2.1)
+    mo.alpha.value = 0.1
+    mo.beta.value = -2.1
+    mo.xp.value = np.power(10, 2.1)
+
+    assert np.all(np.isclose(tm(energies), mo(energies), atol=0.01))
 
 
 def test_xspec_table_model():
