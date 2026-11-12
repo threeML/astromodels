@@ -89,3 +89,4 @@ Contents:
     notebooks/Additional_features_for_scripts_and_applications.ipynb
     api/API
     CHANGELOG.md
+    notebooks/dev_notes.ipynb
