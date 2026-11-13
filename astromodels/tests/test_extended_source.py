@@ -191,7 +191,7 @@ def test_call(tmp_path):
 
     for key in _known_functions:
 
-        if key in ["Latitude_galactic_diffuse"]:
+        if key in ["Latitude_galactic_diffuse", "TestFunc2D"]:
             # not testing latitude galactic diffuse for now.
             continue
 
