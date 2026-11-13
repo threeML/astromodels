@@ -1,4 +1,5 @@
 import pickle
+from copy import deepcopy
 import logging
 
 from dataclasses import dataclass, field
@@ -71,6 +72,26 @@ class NodeBase:
         for k in state["__dict__"]:
 
             self.__dict__[k] = state["__dict__"][k]
+
+    def __deepcopy__(self, memo):
+        """Deep-copy a node while preserving shared references."""
+
+        if id(self) in memo:
+            return memo[id(self)]
+
+        # Construct without calling __init__.
+        cls = type(self)
+        result = cls.__new__(cls)
+
+        # Register before copying attributes to handle
+        # parent-child circular references.
+        memo[id(self)] = result
+
+        # Copy the entire instance state with the same memo.
+        # Update __dict__ directly to avoid NodeBase.__setattr__.
+        result.__dict__.update(deepcopy(self.__dict__, memo))
+
+        return result
 
     def _add_child(self, child: type["NodeBase"]) -> None:
 
