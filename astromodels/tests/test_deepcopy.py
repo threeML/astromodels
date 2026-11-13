@@ -139,3 +139,50 @@ def test_deepcopy_standalone_function():
 
     assert copied.parameters["index"].value == pytest.approx(-2.8)
     assert function.index.value == pytest.approx(original_value)
+
+
+@pytest.mark.parametrize("reverse_order", [False, True])
+def test_deepcopy_shared_references(reverse_order):
+    pl = Powerlaw()
+    source = PointSource("src", ra=0, dec=0, spectral_shape=pl)
+    model = Model(source)
+
+    references = {
+        "model": model,
+        "source": source,
+        "function": pl,
+        "parameter": pl.index,
+    }
+
+    if reverse_order:
+        references = dict(reversed(list(references.items())))
+
+    copied = copy.deepcopy(references)
+
+    cm = copied["model"]
+    cs = copied["source"]
+    cf = copied["function"]
+    cp = copied["parameter"]
+
+    # All aliases inside the copied graph must agree.
+    assert cm.point_sources["src"] is cs
+    assert cm._get_child("src") is cs
+    assert cm.parameters[pl.index.path] is cp
+    assert cf.parameters["index"] is cp
+
+    # Parent references must also point to copies.
+    assert cs._parent is cm
+    assert cp._parent is cf
+
+    # The copied objects must be independent.
+    assert cm is not model
+    assert cs is not source
+    assert cf is not pl
+    assert cp is not pl.index
+
+    original_value = pl.index.value
+    cp.value = -2.8
+
+    assert cf.index.value == pytest.approx(-2.8)
+    assert cm.parameters[pl.index.path].value == pytest.approx(-2.8)
+    assert pl.index.value == pytest.approx(original_value)
