@@ -6,7 +6,6 @@ from typing import Any, Optional
 
 from rich.tree import Tree
 
-
 log = logging.getLogger(__name__)
 
 
@@ -72,11 +71,6 @@ class NodeBase:
         for k in state["__dict__"]:
 
             self.__dict__[k] = state["__dict__"][k]
-
-    # This is necessary for copy.deepcopy to work
-    def __deepcopy__(self, memodict={}):
-
-        return pickle.loads(pickle.dumps(self))
 
     def _add_child(self, child: type["NodeBase"]) -> None:
 
