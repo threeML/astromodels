@@ -48,6 +48,10 @@ jobs:
                   python-version: ${{ matrix.python-version }}
             - name: Install dependencies
               run: |
+                  if [[ ${{ matrix.os }} == "macos-15-intel" ]]; then
+                    brew install llvm
+                  fi
+
                   python -m pip install --upgrade pip wheel
                   pip install --upgrade flake8 coverage pytest-cov cython pytest-xdist
                   pip install mhealpy
