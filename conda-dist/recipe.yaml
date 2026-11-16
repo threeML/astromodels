@@ -23,9 +23,9 @@ requirements:
     - ${{ compiler('cxx') }}
     - ${{ compiler('fortran') }}
     - if: not (linux and aarch64) and match(python, ">=3.14")
-      then: xspec==13.0.1
+      then: xspec ==13.0.1
     - if: not (linux and aarch64) and match(python, "<3.14")
-      then: xspec==12.15.1
+      then: xspec ==12.15.1
 
   host:
     - python
@@ -33,26 +33,26 @@ requirements:
     - setuptools
     - if: python >= "3.12"
       then: 
-      - numpy==2.1
+      - numpy ==2.1
       else:
-      - numpy==1.26
+      - numpy ==1.26
     - versioneer
 
   run:
     - python
     - if: python >= "3.12"
       then:
-      - numpy>=2.1
+      - numpy >=2.1
       else:
-      - numpy>=1.26
+      - numpy >=1.26
     - pyyaml
-    - astropy>=7.2
+    - astropy-base >=7.2
     - scipy
     - pytables
     - pandas
     - dill
     - numba
-    - h5py>=3.9
+    - h5py >=3.9
     - omegaconf
     - rich
     - versioneer
@@ -60,9 +60,9 @@ requirements:
 
   run_constraints:
     - if: not (linux and aarch64) and match(python, ">=3.14")
-      then: xspec>12.15.1
+      then: xspec >12.15.1
     - if: not (linux and aarch64) and match(python, "<3.14")
-      then: xspec<13.0.0
+      then: xspec <13.0.0
 
 tests:
   - python:
