@@ -285,6 +285,12 @@ html_logo = "media/transp_logo.png"
 html_show_sourcelink = False
 html_favicon = "media/favicon.ico"
 
+html_static_path = ["_static"]
+
+html_css_files = [
+    ("notebooks.css", {"priority": 1000}),
+]
+
 autosectionlabel_prefix_document = True
 
 intersphinx_mapping = {
