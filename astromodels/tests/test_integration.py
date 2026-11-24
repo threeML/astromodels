@@ -24,6 +24,24 @@ def test_analytical_integral():
         )
 
 
+def test_analytical_integral_vectorized():
+    pl = Powerlaw()
+    pl.index.value = -2
+    assert np.all(
+        np.isclose(pl.integrate(np.ones(10) * 0.1, np.ones(10)), np.ones(10) * 9)
+    )
+    assert pl.integral_numerical_error is None
+    c = Constant()
+    c.k.value = 1
+    assert np.all(np.isclose(c.integrate(np.zeros(11), np.ones(11)), np.ones(11)))
+
+    for order in range(2, 5, 1):
+        pol = get_polynomial(order)
+        assert np.isclose(
+            pol.integrate(0, 1), np.sum([1 / (i + 1) for i in range(order + 1)])
+        )
+
+
 def test_integrate_function1D():
     for k, v in _known_functions.items():
         # exclude the functions that need external input for now
@@ -49,6 +67,13 @@ def test_numerical_integral():
     assert np.isclose(line.integrate(0, 1, use_scipy=True), 0.5)
     assert line.integral_numerical_error is not None
     assert np.isclose(line.integrate(1, 0, use_scipy=True), -0.5)
+
+    lower = np.array([0.0, 1.0, 2.0])
+    upper = np.array([1.0, 2.0, 0.0])
+    assert np.allclose(
+        line.integrate(lower, upper, use_scipy=True), np.array([0.5, 1.5, -2.0])
+    )
+    assert np.shape(line.integral_numerical_error) == lower.shape
 
 
 def test_quantities():
