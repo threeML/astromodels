@@ -110,10 +110,13 @@ class Powerlaw(Function1D, metaclass=FunctionMeta):
                 self.index.value,
             )
 
-        return nb_func.plaw_integral(a_, b_, K_, index_, piv_) * unit_
-
-
-# noinspection PyPep8Naming
+        if index_ != -1:
+            return (
+                K_ * piv_ * (b_ / piv_) ** (index_ + 1) / (index_ + 1)
+                - K_ * piv_ * (a_ / piv_) ** (index_ + 1) / (index_ + 1) * unit_
+            )
+        else:
+            return K_ * piv_ * np.log(b_ / piv_) - K_ * piv_ * np.log(a_ / piv_) * unit_
 
 
 class Powerlaw_flux(Function1D, metaclass=FunctionMeta):
