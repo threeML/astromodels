@@ -1394,9 +1394,9 @@ class Function1D(Function):
         quadrature rule.
 
         :param a: lower integration boundary
-        :type a: float or astropy.Quantity
+        :type a: float, astropy.Quantity or array
         :param b: upper integration boundary
-        :type b: float or astropy.Quantity
+        :type b: float, astropy.Quantity or array
         :param args: additional positional arguments for scipy.integrate.quad
         :type args: list
         :param kwargs: additional keyword aguments for scipy.integrate.quad
@@ -1406,8 +1406,8 @@ class Function1D(Function):
         """
         if isinstance(a, u.Quantity) and isinstance(b, u.Quantity):
             try:
-                a = a.to(self._x_unit).value
-                b = b.to(self._x_unit).value
+                a = a.to_value(self._x_unit)
+                b = b.to_value(self._x_unit)
             except Exception as e:
                 raise ValueError(
                     "You integral boundary unit must be converatble to "
@@ -1437,9 +1437,22 @@ class Function1D(Function):
         :param kwargs: additional keyword aguments for scipy.integrate.quad
         :type kwargs: dict
         """
-        res = quad(self.__call__, a, b, *args, **kwargs)
-        self._integral_numerical_error = res[1]
-        return res[0]
+        if np.ndim(a) == 0 and np.ndim(b) == 0:
+            res = quad(self.__call__, a, b, *args, **kwargs)
+            self._integral_numerical_error = res[1]
+            return res[0]
+
+        lower, upper = np.broadcast_arrays(a, b)
+        integral = np.empty(lower.shape, dtype=float)
+        errors = np.empty(lower.shape, dtype=float)
+
+        for index in np.ndindex(lower.shape):
+            res = quad(self.__call__, lower[index], upper[index], *args, **kwargs)
+            integral[index] = res[0]
+            errors[index] = res[1]
+
+        self._integral_numerical_error = errors
+        return integral
 
     @property
     def integral_numerical_error(self):
