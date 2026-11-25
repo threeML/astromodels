@@ -10,11 +10,11 @@ import astromodels
 from astromodels.core.property import SettingUnknownValue
 from astromodels.functions import (
     Continuous_injection_diffusion,
+    Cutoff_powerlaw_Ep,
     Gaussian_on_sphere,
     Line,
     Powerlaw,
     SpatialTemplate_2D,
-    Cutoff_powerlaw_Ep,
 )
 from astromodels.functions import function as function_module
 from astromodels.functions.function import (
@@ -1030,7 +1030,13 @@ def test_function_properties():
 
 def test_abs_model():
 
-    for i, m in enumerate([astromodels.TbAbs, astromodels.WAbs, astromodels.PhAbs]):
+    for i, m in enumerate(
+        [
+            astromodels.functions.functions_1D.TbAbs,
+            astromodels.functions.functions_1D.WAbs,
+            astromodels.functions.functions_1D.PhAbs,
+        ]
+    ):
 
         instance = m()
 
@@ -1055,11 +1061,11 @@ def test_complex_composites():
 
     # now make sure that we can do some really crazy stuff
 
-    a = astromodels.TbAbs(abundance_table="ASPL")
-    b = astromodels.PhAbs()
+    a = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="ASPL")
+    b = astromodels.functions.functions_1D.PhAbs()
 
-    c = astromodels.Powerlaw()
-    d = astromodels.Blackbody()
+    c = astromodels.functions.functions_1D.powerlaws.Powerlaw()
+    d = astromodels.functions.functions_1D.Blackbody()
 
     f = a * (c + b * d)
 
@@ -1067,17 +1073,17 @@ def test_complex_composites():
 
     assert tbabs._current_table == "ASPL"
 
-    _ = astromodels.PointSource("test", 0, 0, spectral_shape=f)
+    _ = astromodels.sources.PointSource("test", 0, 0, spectral_shape=f)
 
     f.abundance_table_1 = "WILM"
 
     assert tbabs._current_table == "WILM"
 
-    a = astromodels.TbAbs(abundance_table="ASPL")
-    b = astromodels.PhAbs()
+    a = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="ASPL")
+    b = astromodels.functions.functions_1D.absorption.PhAbs()
 
-    c = astromodels.TbAbs(abundance_table="ASPL")
-    d = astromodels.TbAbs(abundance_table="WILM")
+    c = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="ASPL")
+    d = astromodels.functions.functions_1D.absorption.TbAbs(abundance_table="WILM")
 
     a * b + c * d
 

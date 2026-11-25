@@ -6,7 +6,6 @@ from typing import Any, Optional
 
 from rich.tree import Tree
 
-
 log = logging.getLogger(__name__)
 
 

@@ -8,8 +8,8 @@ import astromodels.functions.numba_functions as nb_func
 from astromodels.functions.function import (
     Function1D,
     FunctionMeta,
-    ModelAssertionViolation,
 )
+from astromodels.utils.exceptions import ModelAssertionViolation
 
 log = logging.getLogger(__name__)
 

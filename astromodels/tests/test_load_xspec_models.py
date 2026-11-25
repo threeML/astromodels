@@ -5,15 +5,16 @@ import logging
 import astropy.units as u
 import pytest
 
-from astromodels import Model, PointSource, clone_model, load_model
+from astromodels import Model, clone_model, load_model
+from astromodels.sources import PointSource
 
 try:
 
     from astromodels.xspec import XS_bbody, XS_phabs, XS_powerlaw
     from astromodels.xspec.factory import (
         find_model_dat,
-        get_models,
         generate_xs_model_file,
+        get_models,
         xspec_model_factory,
     )
 

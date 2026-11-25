@@ -1,5 +1,5 @@
-import contextlib
-import functools
+from contextlib import contextmanager
+from functools import wraps
 
 import astropy.units as u
 
@@ -7,7 +7,7 @@ _WITH_MEMOIZATION = False
 _CACHE_SIZE = 20
 
 
-@contextlib.contextmanager
+@contextmanager
 def use_astromodels_memoization(switch, cache_size=_CACHE_SIZE):
     """Activate/deactivate memoization temporarily.
 
@@ -46,7 +46,7 @@ def memoize(method):
     _get = cache.get
     _popitem = cache.popitem
 
-    @functools.wraps(method)
+    @wraps(method)
     def memoizer(instance, x, *args, **kwargs):
 
         if not _WITH_MEMOIZATION or isinstance(x, u.Quantity):
@@ -90,3 +90,6 @@ def memoize(method):
     memoizer.input_object = method
 
     return memoizer
+
+
+__all__ = ["use_astromodels_memoization"]

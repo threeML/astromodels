@@ -1,5 +1,5 @@
+import abc
 import logging
-
 import ast
 import copy
 import inspect
@@ -9,7 +9,7 @@ import re
 import textwrap
 import uuid
 from operator import attrgetter
-from typing import Optional
+from typing import Optional, Dict, Type
 
 import astropy.units as u
 import numba as nb
@@ -23,68 +23,60 @@ from astromodels.core.parameter import Parameter
 from astromodels.core.parameter_transformation import get_transformation
 from astromodels.core.property import FunctionProperty
 from astromodels.core.tree import Node
+from astromodels.utils import check_import
+from astromodels.utils.exceptions import (  # noqa: F401
+    DesignViolation,
+    DocstringIsNotRaw,
+    FunctionDefinitionError,
+    FunctionInstanceError,
+    InvalidTemplateModelFile,
+    MissingDataFile,
+    ModelAssertionViolation,
+    UnknownFunction,
+    UnknownParameter,
+)
 from astromodels.utils.file_utils import copy_if_needed
-
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_function_names,
+    list_functions,
+)
 from astromodels.utils.pretty_list import dict_to_list
-from astromodels.utils.table import dict_to_table
 
 log = logging.getLogger(__name__)
 
 __author__ = "giacomov"
 
 
-try:
+if check_import("IPython"):
+    has_ipython = True
     from IPython.display import HTML, display
 
-except ImportError:
+else:
     has_ipython = False
 
-else:
-    has_ipython = True
+# astromodels/functions/function.py
 
 
-class WarningNoTests(ImportWarning):
-    pass
+# Public name -> class (authoritative)
+_FUNCTION_REGISTRY: Dict[str, Type] = {}
 
 
-class FunctionDefinitionError(Exception):
-    pass
+def register_function_class(name: str, cls: type) -> None:
+    _FUNCTION_REGISTRY[name] = cls
 
 
-class FunctionInstanceError(Exception):
-    pass
+def unregister_function_class(name: str) -> None:
+    _FUNCTION_REGISTRY.pop(name, None)
 
 
-class DesignViolation(Exception):
-    pass
+def get_registered_function_class(name: str) -> Optional[type]:
+    return _FUNCTION_REGISTRY.get(name)
 
 
-class ModelAssertionViolation(Exception):
-    pass
-
-
-class WrongDimensionality(Exception):
-    pass
-
-
-class TestSpecificationError(Exception):
-    pass
-
-
-class TestFailed(Exception):
-    pass
-
-
-class DocstringIsNotRaw(ValueError):
-    pass
-
-
-class UnknownFunction(ValueError):
-    pass
-
-
-class UnknownParameter(ValueError):
-    pass
+def iter_registered_functions() -> Dict[str, Type]:
+    # Return a shallow copy to prevent external mutation
+    return dict(_FUNCTION_REGISTRY)
 
 
 # Value to indicate that no latex formula has been given
@@ -95,11 +87,9 @@ NO_LATEX_FORMULA = "(no latex formula available)"
 # instance them by looking into this dictionary. It will be filled by the FunctionMeta
 # meta-class.
 
-_known_functions = {}
-
 
 # The following is a metaclass for all the functions
-class FunctionMeta(type):
+class FunctionMeta(abc.ABCMeta):
     """A metaclass for the models, which takes care of setting up the
     parameters and the other attributes according to the definition given in
     the documentation of the function class."""
@@ -331,15 +321,29 @@ class FunctionMeta(type):
         # This is the MetaClass init, which is called after the __new__ is done
 
         # Store the name of the function in the type
-        cls._name = cls.__name__
 
         # Add this as a known function
 
-        _known_functions[name] = cls
-
         # Finally call the init of the type class
+        cls._name = cls.__name__
 
         super().__init__(name, bases, dct)
+
+        # Skip scaffolding/base helpers
+        if name in {"Function1D", "Function2D", "Function3D", "TemplateModel"}:
+            return
+
+        # Allow opt‑out
+        if getattr(cls, "__register__", True) is False:
+            return
+
+        # Optional: skip abstracts
+        # import inspect
+        # if inspect.isabstract(cls):
+        #     return
+
+        public_name = getattr(cls, "__public_name__", name)
+        register_function_class(public_name, cls)
 
     @staticmethod
     def class_init(instance, **kwargs):
@@ -2210,8 +2214,10 @@ def get_function(function_name, composite_function_expression=None):
         return composite_function
 
     else:
-        if function_name in _known_functions:
-            function_class = _known_functions[function_name]
+
+        if function_name in list_function_names():
+
+            function_class = get_function_class(function_name)
 
             deferred_properites = dict()
 
@@ -2242,11 +2248,6 @@ def get_function(function_name, composite_function_expression=None):
 
             # NOTE: import here to avoid circular import
 
-            from astromodels.functions.template_model import (
-                InvalidTemplateModelFile,
-                MissingDataFile,
-            )
-
             try:
                 # instance = TemplateModel(function_name)
                 instance = _load_template_or_spatial(function_name)
@@ -2254,8 +2255,11 @@ def get_function(function_name, composite_function_expression=None):
 
             except MissingDataFile:
                 log.error(
-                    f"Function {function_name} is not known. "
-                    f"Known functions are: {','.join(list(_known_functions.keys()))}"
+                    "Function %s is not known. Known functions are: %s"
+                    % (
+                        function_name,
+                        ",".join(list(list_functions(return_dict=True).keys())),
+                    )
                 )
 
                 raise UnknownFunction()
@@ -2277,52 +2281,16 @@ def get_function(function_name, composite_function_expression=None):
 
                     log.error(
                         "Function %s is not known. Known functions are: %s"
-                        % (function_name, ",".join(list(_known_functions.keys())))
+                        % (
+                            function_name,
+                            ",".join(list(list_functions(return_dict=True).keys())),
+                        )
                     )
 
                     raise UnknownFunction() from e
 
                 # return instance
             return instance
-
-
-def get_function_class(function_name):
-    """Return the type for the requested function.
-
-    :param function_name: the function to return
-    :return: the type for that function (i.e., this is a class, not an
-        instance)
-    """
-
-    if function_name in _known_functions:
-        return _known_functions[function_name]
-
-    else:
-        log.error(
-            "Function %s is not known. Known functions are: %s"
-            % (function_name, ",".join(list(_known_functions.keys())))
-        )
-
-        raise UnknownFunction()
-
-
-def list_functions():
-    # Gather all defined functions and their descriptions
-
-    functions_and_descriptions = {
-        key: {"Description": value._function_definition["description"]}
-        for key, value in list(_known_functions.items())
-    }
-
-    # Order by key (i.e., by function name)
-
-    ordered = dict(sorted(functions_and_descriptions.items()))
-
-    # Format in a table
-
-    table = dict_to_table(ordered)
-
-    return table
 
 
 def _parse_function_expression(function_specification):
@@ -2377,13 +2345,14 @@ def _parse_function_expression(function_specification):
         complete_function_specification = "%s{%s}" % (unique_function, number)
 
         # As first safety measure, check that the unique function is in the dictionary
-        # of _known_functions. This could still be easily hacked, so it won't be the
+        # of known functions. This could still be easily hacked, so it won't be the
         # only check
 
-        if unique_function in _known_functions:
+        if unique_function in list_function_names():
+
             # Get the function class and check that it is indeed a proper Function class
 
-            function_class = _known_functions[unique_function]
+            function_class = get_function_class(unique_function)
 
             if issubclass(function_class, Function):
                 # let's see if there are any deferred

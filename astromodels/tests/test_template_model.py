@@ -5,7 +5,7 @@ import numpy as np
 import numpy.testing as npt
 import pytest
 
-from astromodels import Model, PointSource, clone_model, load_model
+from astromodels import Model, clone_model, load_model
 from astromodels.functions import (
     Band,
     Powerlaw,
@@ -14,9 +14,10 @@ from astromodels.functions import (
     XSPECTableModel,
 )
 from astromodels.functions.template_model import (
-    convert_old_table_model,
     UnivariateSpline,
+    convert_old_table_model,
 )
+from astromodels.sources import PointSource
 from astromodels.utils import _get_data_file_path
 from astromodels.utils.file_utils import get_user_data_path
 

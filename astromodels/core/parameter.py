@@ -11,13 +11,13 @@ from typing import Any, Optional
 
 import astropy.units as u
 import numpy as np
-import scipy.stats
+from scipy.stats import truncnorm
 
 from astromodels.core.parameter_transformation import ParameterTransformation
 from astromodels.utils.configuration import astromodels_config
 
 
-from .thread_safe_unit_format import ThreadSafe
+from .thread_safe_unit_format import ThreadSafe  # noqa: F401
 from .tree import Node
 
 log = logging.getLogger(__name__)
@@ -1544,7 +1544,7 @@ class Parameter(ParameterBase):
 
                 b = np.inf
 
-            sample = scipy.stats.truncnorm.rvs(a, b, loc=value, scale=std, size=1)
+            sample = truncnorm.rvs(a, b, loc=value, scale=std, size=1)
 
             if (min_value is not None and sample < min_value) or (
                 max_value is not None and sample > max_value
@@ -1590,3 +1590,11 @@ class IndependentVariable(ParameterBase):
             self.min_value,
             self.max_value,
         )
+
+
+__all__ = [
+    "IndependentVariable",
+    "Parameter",
+    "SettingOutOfBounds",
+    "turn_off_parameter_transforms",
+]

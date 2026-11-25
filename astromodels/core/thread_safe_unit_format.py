@@ -8,7 +8,6 @@ import re
 from functools import reduce
 
 import astropy.units as u
-
 from astropy.units.format.base import Base
 
 try:

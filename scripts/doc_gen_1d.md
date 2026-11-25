@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 import warnings
 warnings.simplefilter("ignore")
 
-from astromodels.functions.function import _known_functions
+from astromodels.utils.list_functions import get_function_class 
 
 
 from jupyterthemes import jtplot
@@ -45,7 +45,7 @@ wide_energy_range = False
 ```
 
 ```python nbsphinx="hidden" tags=[]
-func = _known_functions[func_name]()
+func = get_function_class(func_name)()
 
 if wide_energy_range:
 

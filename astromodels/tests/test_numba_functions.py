@@ -1,15 +1,16 @@
+import numpy as np
+
 from astromodels.functions.numba_functions import (
-    _expm1,
     _exp,
-    _sqrt,
-    _pow,
+    _expm1,
     _log,
     _log10,
+    _pow,
+    _sqrt,
+    cplaw_eval,
     plaw_eval,
     plaw_flux_norm,
-    cplaw_eval,
 )
-import numpy as np
 
 
 def test_vectorized_functions():

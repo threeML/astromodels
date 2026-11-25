@@ -1,6 +1,7 @@
-import pytest
-import numpy as np
 from importlib.util import find_spec
+
+import numpy as np
+import pytest
 
 if find_spec("xspec") is None:
     has_XSPEC = False

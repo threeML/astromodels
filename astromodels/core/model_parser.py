@@ -1,12 +1,11 @@
 import logging
 
-
 __author__ = "giacomov"
 
 import re
 import warnings
 
-from astromodels.core import (
+from astromodels.core import (  # TODO!
     model,
     parameter,
     polarization,
@@ -17,20 +16,9 @@ from astromodels.core.my_yaml import my_yaml
 from astromodels.functions import function
 from astromodels.sources import extended_source, particle_source, point_source
 from astromodels.sources.source import SourceType
+from astromodels.utils.exceptions import ModelIOError, ModelSyntaxError, ModelYAMLError
 
 log = logging.getLogger(__name__)
-
-
-class ModelIOError(IOError):
-    pass
-
-
-class ModelYAMLError(my_yaml.YAMLError):
-    pass
-
-
-class ModelSyntaxError(RuntimeError):
-    pass
 
 
 def load_model(filename):
@@ -1188,3 +1176,6 @@ class ShapeParser:
             )
 
         return function_instance
+
+
+__all__ = ["clone_model", "load_model"]

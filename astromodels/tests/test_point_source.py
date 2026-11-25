@@ -11,9 +11,7 @@ from astromodels.functions import (
     Log_parabola,
     Powerlaw,
 )
-from astromodels.functions.functions_1D.functions import (
-    _ComplexTestFunction,
-)
+from astromodels.functions.functions_1D.functions import _ComplexTestFunction
 
 try:
     from astromodels.functions import PhAbs, TbAbs, WAbs
@@ -30,7 +28,6 @@ from astromodels.sources.particle_source import ParticleSource
 from astromodels.sources.point_source import PointSource
 
 try:
-
     from astromodels.xspec import XS_phabs, XS_powerlaw
 
 except ImportError:
@@ -41,19 +38,15 @@ else:
 
     has_xspec = True
 
-try:
+from astromodels.functions import has_ebltable
 
+if has_ebltable:
     from astromodels.functions import EBLattenuation
 
-except ImportError:
-
-    has_ebl = False
-
-else:
-
-    has_ebl = True
-
-from astromodels.functions.function import _known_functions
+from astromodels.utils.list_functions import (
+    get_function_class,
+    list_available_function_names,
+)
 
 __author__ = "giacomov"
 
@@ -266,9 +259,9 @@ def test_call_with_units(tmp_path):
 
             print("Skipping prior function")
 
-    for key in _known_functions:
+    for key in list_available_function_names():
 
-        this_function = _known_functions[key]
+        this_function = get_function_class(key)
 
         # Test only the power law of XSpec, which is the only one we know we can test
         # at 1 keV
@@ -300,7 +293,7 @@ def test_call_with_units(tmp_path):
 
             print("testing %s ..." % key)
 
-            test_one(_known_functions[key])
+            test_one(get_function_class(key))
 
 
 def test_call_with_composite_function_with_units():
@@ -384,7 +377,7 @@ def test_call_with_composite_function_with_units():
 
         one_test(spectrum)
 
-    if has_ebl:
+    if has_ebltable:
 
         spectrum = Powerlaw() * EBLattenuation()
 

@@ -2,7 +2,11 @@ import astropy.units as u
 import warnings
 import numpy as np
 import pytest
-from astromodels.functions.function import _known_functions, Function1D
+from astromodels.functions.function import Function1D
+from astromodels.utils.list_functions import (
+    list_available_functions,
+    get_function_class,
+)
 
 
 from astromodels.functions import Constant, Line, Powerlaw, get_polynomial
@@ -25,8 +29,9 @@ def test_analytical_integral():
 
 
 def test_integrate_function1D():
-    for k, v in _known_functions.items():
+    for k, v in list_available_functions(return_dict=True).items():
         # exclude the functions that need external input for now
+        v = get_function_class(k)
         if issubclass(v, Function1D):
             if k in [
                 "GenericFunction",

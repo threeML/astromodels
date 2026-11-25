@@ -1,116 +1,81 @@
-from .blackbody import (
-    Blackbody,
-    ModifiedBlackbody,
-    NonDissipativePhotosphere,
-    NonDissipativePhotosphere_Deep,
-)
-from .functions import (
-    DiracDelta,
-    Exponential_cutoff,
-    GenericFunction,
-    Log_parabola,
-    Sin,
-    StepFunction,
-    StepFunctionUpper,
-    has_gsl,
-    has_naima,
-)
+from importlib import import_module
+from importlib.util import find_spec
 
-if has_naima:
-    from .functions import Synchrotron
-
-if has_gsl:
-
-    from .functions import Cutoff_powerlaw_flux
-
-from .absorption import PhAbs, TbAbs, WAbs, has_ebltable
-from .apec import has_atomdb
-
-if has_ebltable:
-    from .absorption import EBLattenuation
-
-from .extinction import Standard_Rv, ZDust
-from .polynomials import (
-    Constant,
-    Cubic,
-    Line,
-    Quadratic,
-    Quartic,
-    get_polynomial,
-)
-from .powerlaws import (
-    Band,
-    Band_Calderone,
-    Band_grbm,
-    Broken_powerlaw,
-    Cutoff_powerlaw,
-    Cutoff_powerlaw_Ep,
-    DoubleSmoothlyBrokenPowerlaw,
-    Inverse_cutoff_powerlaw,
-    Powerlaw,
-    Powerlaw_Eflux,
-    Powerlaw_flux,
-    SmoothlyBrokenPowerLaw,
-    Super_cutoff_powerlaw,
-)
-
-if has_atomdb:
-
-    from .apec import APEC, VAPEC
+# class name: (file, external dependencies)
+_exports = {
+    "Blackbody": (".blackbody", []),
+    "ModifiedBlackbody": (".blackbody", []),
+    "NonDissipativePhotosphere": (".blackbody", []),
+    "NonDissipativePhotosphere_Deep": (".blackbody", []),
+    "DiracDelta": (".functions", []),
+    "Exponential_cutoff": (".functions", []),
+    "GenericFunction": (".functions", []),
+    "Log_parabola": (".functions", []),
+    "Sin": (".functions", []),
+    "StepFunction": (".functions", []),
+    "StepFunctionUpper": (".functions", []),
+    "Synchrotron": (".functions", ["naima"]),
+    "Cutoff_powerlaw_flux": (".functions", ["pygsl"]),
+    "Band": (".powerlaws", []),
+    "Band_Calderone": (".powerlaws", []),
+    "Band_grbm": (".powerlaws", []),
+    "Broken_powerlaw": (".powerlaws", []),
+    "Cutoff_powerlaw": (".powerlaws", []),
+    "Cutoff_powerlaw_Ep": (".powerlaws", []),
+    "DoubleSmoothlyBrokenPowerlaw": (".powerlaws", []),
+    "Inverse_cutoff_powerlaw": (".powerlaws", []),
+    "Powerlaw": (".powerlaws", []),
+    "Powerlaw_Eflux": (".powerlaws", []),
+    "Powerlaw_flux": (".powerlaws", []),
+    "SmoothlyBrokenPowerLaw": (".powerlaws", []),
+    "Super_cutoff_powerlaw": (".powerlaws", []),
+    "APEC": (".apec", ["pyatomdb"]),
+    "VAPEC": (".apec", ["pyatomdb"]),
+    "Standard_Rv": (".extinction", []),
+    "ZDust": (".extinction", []),
+    "Constant": (".polynomials", []),
+    "Cubic": (".polynomials", []),
+    "Line": (".polynomials", []),
+    "Quadratic": (".polynomials", []),
+    "Quartic": (".polynomials", []),
+    "get_polynomial": (".polynomials", []),
+    "EBLattenuation": (".absorption", ["ebltable"]),
+    "PhAbs": (".absorption", []),
+    "WAbs": (".absorption", []),
+    "TbAbs": (".absorption", []),
+    "has_ebltable": (".absorption", []),
+    "has_atomdb": (".apec", []),
+    "has_naima": (".functions", []),
+    "has_gsl": (".functions", []),
+}
 
 
-__all__ = [
-    "Band",
-    "Band_Calderone",
-    "Band_grbm",
-    "Broken_powerlaw",
-    "Cutoff_powerlaw",
-    "Cutoff_powerlaw_Ep",
-    "Inverse_cutoff_powerlaw",
-    "Powerlaw",
-    "Powerlaw_Eflux",
-    "Powerlaw_flux",
-    "SmoothlyBrokenPowerLaw",
-    "DoubleSmoothlyBrokenPowerlaw",
-    "Super_cutoff_powerlaw",
-    "Constant",
-    "Cubic",
-    "DiracDelta",
-    "Exponential_cutoff",
-    "Line",
-    "Quadratic",
-    "Sin",
-    "StepFunction",
-    "StepFunctionUpper",
-    "GenericFunction",
-    "PhAbs",
-    "TbAbs",
-    "WAbs",
-    "Log_parabola",
-    "Blackbody",
-    "ModifiedBlackbody",
-    "NonDissipativePhotosphere",
-    "NonDissipativePhotosphere_Deep",
-    "Quartic",
-    "get_polynomial",
-    "ZDust",
-    "Standard_Rv",
-]
-
-if has_atomdb:
-    __all__.extend(["APEC", "VAPEC"])
+def _available(name: str) -> bool:
+    _, deps = _exports[name]
+    return all(find_spec(d) is not None for d in deps)
 
 
-if has_gsl:
-
-    __all__.extend(["Cutoff_powerlaw_flux"])
-
-
-if has_naima:
-
-    __all__.extend(["Synchrotron"])
+# Compute __all__ dynamically based on availability
+__all__ = sorted([name for name in _exports if _available(name)])
 
 
-if has_ebltable:
+def __getattr__(name: str):
+    # If a name isn’t in __all__, treat as absent
+    if name not in __all__:
+        # Optional: more specific message
+        if name in _exports:
+            _, deps = _exports[name]
+            missing = [d for d in deps if find_spec(d) is None]
+            raise AttributeError(
+                f"{name} is unavailable; missing deps: {', '.join(missing)}. "
+            )
+        raise AttributeError(name)
+    mod_path, _ = _exports[name]
+    mod = import_module(mod_path, __name__)
+    obj = getattr(mod, name)
+    globals()[name] = obj
+    return obj
 
-    __all__.extend(["EBLattenuation"])
+
+def __dir__():
+    return sorted(__all__)

@@ -40,10 +40,11 @@ sys.path.insert(1, str(Path("..", "astromodels").resolve()))
 
 def run_apidoc(app):
     """Download API stubs from GitHub Actions artifact or generate them locally."""
-    import subprocess
-    import requests
-    import zipfile
     import io
+    import subprocess
+    import zipfile
+
+    import requests
 
     api_dir = DOCS / "api"
     api_dir.mkdir(exist_ok=True)

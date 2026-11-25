@@ -1,6 +1,5 @@
 __author__ = "giacomov"
 
-
 import numpy as np
 from numbers import Real
 
@@ -225,3 +224,6 @@ class LinearParameter(Node):
 
     def __call__(self, energies):
         return self.value(energies)
+
+
+__all__ = ["LinearPolarization", "StokesPolarization", "Unpolarized"]

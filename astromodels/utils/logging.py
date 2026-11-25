@@ -13,7 +13,6 @@ from rich.theme import Theme
 from astromodels.utils.configuration import astromodels_config
 
 try:
-
     from threeML.config.config import threeML_config
 
     has_threeml = True

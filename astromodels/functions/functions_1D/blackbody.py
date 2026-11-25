@@ -1,10 +1,7 @@
 import astropy.units as astropy_units
 
 import astromodels.functions.numba_functions as nb_func
-from astromodels.functions.function import (
-    Function1D,
-    FunctionMeta,
-)
+from astromodels.functions.function import Function1D, FunctionMeta
 
 
 class Blackbody(Function1D, metaclass=FunctionMeta):
