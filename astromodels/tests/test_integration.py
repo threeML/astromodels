@@ -31,6 +31,16 @@ def test_analytical_integral_vectorized():
         np.isclose(pl.integrate(np.ones(10) * 0.1, np.ones(10)), np.ones(10) * 9)
     )
     assert pl.integral_numerical_error is None
+
+    pl = Powerlaw()
+    pl.index.value = -1
+    assert np.all(
+        np.isclose(
+            pl.integrate(np.ones(10) * 0.1, np.ones(10)), np.ones(10) * 2.302585093
+        )
+    )
+    assert pl.integral_numerical_error is None
+
     c = Constant()
     c.k.value = 1
     assert np.all(np.isclose(c.integrate(np.zeros(11), np.ones(11)), np.ones(11)))
